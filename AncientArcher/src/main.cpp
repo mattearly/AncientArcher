@@ -2,7 +2,10 @@
 #include <GLFW/glfw3.h>
 #include <string>
 #include <iostream>
+#include "stb_image.h"
 #include "Shader.h"
+#include <fstream>
+#include <sstream>
 
 void reshapeCallback(GLFWwindow* window, int w, int h);
 void processInput(GLFWwindow* window);
@@ -51,13 +54,15 @@ int main() {
 
 	/* prep to send to send vertex buffer object */
 	glBindBuffer(GL_ARRAY_BUFFER, VBO);
-	/* verticies for drawing */
-	float vertices[] = {
-		0.5f, 0.5f, 0.0f,
-		0.5f, -0.5f, 0.0f,
-		-0.5f, -0.5f, 0.0f,
-		-0.5f, 0.5f, 0.0f
-	};
+
+  float vertices[] = {
+    // positions          // colors           // texture coords
+     0.5f,  0.5f, 0.0f,   1.0f, 0.0f, 0.0f,   1.0f, 1.0f, // top right
+     0.5f, -0.5f, 0.0f,   0.0f, 1.0f, 0.0f,   1.0f, 0.0f, // bottom right
+    -0.5f, -0.5f, 0.0f,   0.0f, 0.0f, 1.0f,   0.0f, 0.0f, // bottom left
+    -0.5f,  0.5f, 0.0f,   1.0f, 1.0f, 0.0f,   0.0f, 1.0f  // top left 
+  };
+
 	/* send vertices to graphics card */
 	glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
 
@@ -70,12 +75,42 @@ int main() {
 	/* send the indices to the graphics card*/
 	glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(indices), indices, GL_STATIC_DRAW);
 
-	/* set which vertex attribute to use for upcoming operations */
-	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), (void*)0);
+  // position attribute
+  glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void*)0);
 	glEnableVertexAttribArray(0);
+  // color attribute
+  glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void*)(3 * sizeof(float)));
+  glEnableVertexAttribArray(1);
+  // texture coord attribute
+  glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void*)(6 * sizeof(float)));
+  glEnableVertexAttribArray(2);
+
+  // load and create a texture 
+// -------------------------
+  unsigned int texture;
+  glGenTextures(1, &texture);
+  glBindTexture(GL_TEXTURE_2D, texture); // all upcoming GL_TEXTURE_2D operations now have effect on this texture object
+  // set the texture wrapping parameters
+  glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);	// set texture wrapping to GL_REPEAT (default wrapping method)
+  glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+  // set texture filtering parameters
+  glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+  glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+  // load image, create texture and generate mipmaps
+  int width, height, nrChannels;
+
+
+  unsigned char *data = stbi_load("../AncientArcher/res/crate.png", &width, &height, &nrChannels, 0);
+  if (data) {
+    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, data);
+    glGenerateMipmap(GL_TEXTURE_2D);
+  } else {
+    std::cout << "Failed to load texture" << std::endl;
+  }
+  stbi_image_free(data);
+
 
 	glBindBuffer(GL_ARRAY_BUFFER, 0);   //unbind EBO
-
 	glBindVertexArray(0);  //unbind VAO
 
 	//glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
@@ -86,13 +121,15 @@ int main() {
 		glClearColor(0.2f, 0.3f, 0.2f, 1.0f);
 		glClear(GL_COLOR_BUFFER_BIT);
 		
-		float timeValue = glfwGetTime();
-		/* change color */
-		float greenValue = (sin(timeValue) / 2.0f) + 0.5f;
+		//float timeValue = glfwGetTime();
+		///* change color */
+		//float greenValue = (sin(timeValue) / 2.0f) + 0.5f;
+  //  shader.use();
+
+  //  shader.setVec4("ourColor", 0.0f, greenValue, 0.0f, 1.0f);
+
+    glBindTexture(GL_TEXTURE_2D, texture);
     shader.use();
-
-    shader.setVec4("ourColor", 0.0f, greenValue, 0.0f, 1.0f);
-
 		glBindVertexArray(VAO); // seeing as we only have a single VAO there's no need to bind it every time, but we'll do so to keep things a bit more organized
 		/* draw based on element routine*/
 		glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
