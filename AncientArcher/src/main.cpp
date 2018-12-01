@@ -10,12 +10,6 @@
 void reshapeCallback(GLFWwindow* window, int w, int h);
 void processInput(GLFWwindow* window);
 
-float texCoords[] = {
-    0.0f, 0.0f,  // lower-left corner
-    1.0f, 0.0f,  // lower-right corner
-    0.5f, 1.0f   // top-center corner
-};
-
 int main() {
 	/* init glfw and opengl */
 	glfwInit();
@@ -72,7 +66,8 @@ int main() {
 		0, 1, 3,
 		1, 2, 3
 	};
-	/* send the indices to the graphics card*/
+	
+  /* send the indices to the graphics card*/
 	glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(indices), indices, GL_STATIC_DRAW);
 
   // position attribute
@@ -85,11 +80,12 @@ int main() {
   glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void*)(6 * sizeof(float)));
   glEnableVertexAttribArray(2);
 
-  // load and create a texture 
-// -------------------------
-  unsigned int texture;
-  glGenTextures(1, &texture);
-  glBindTexture(GL_TEXTURE_2D, texture); // all upcoming GL_TEXTURE_2D operations now have effect on this texture object
+  // load and create a texture1
+  // -------------------------
+  unsigned int texture1;
+  glGenTextures(1, &texture1);
+  glActiveTexture(GL_TEXTURE0); // activate the texture unit first before binding texture
+  glBindTexture(GL_TEXTURE_2D, texture1); // all upcoming GL_TEXTURE_2D operations now have effect on this texture object
   // set the texture wrapping parameters
   glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);	// set texture wrapping to GL_REPEAT (default wrapping method)
   glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
@@ -98,8 +94,7 @@ int main() {
   glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
   // load image, create texture and generate mipmaps
   int width, height, nrChannels;
-
-
+  stbi_set_flip_vertically_on_load(true); // tell stb_image.h to flip loaded texture's on the y-axis.
   unsigned char *data = stbi_load("../AncientArcher/res/crate.png", &width, &height, &nrChannels, 0);
   if (data) {
     glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, data);
@@ -108,6 +103,37 @@ int main() {
     std::cout << "Failed to load texture" << std::endl;
   }
   stbi_image_free(data);
+  // texture 2
+// ---------
+  unsigned int texture2;
+  glGenTextures(1, &texture2);
+  glBindTexture(GL_TEXTURE_2D, texture2);
+  // set the texture wrapping parameters
+  glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);	// set texture wrapping to GL_REPEAT (default wrapping method)
+  glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+  // set texture filtering parameters
+  glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+  glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+  // load image, create texture and generate mipmaps
+  data = stbi_load("../AncientArcher/res/awesomeface.png", &width, &height, &nrChannels, 0);
+  if (data) {
+    // note that the awesomeface.png has transparency and thus an alpha channel, so make sure to tell OpenGL the data type is of GL_RGBA
+    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, width, height, 0, GL_RGBA, GL_UNSIGNED_BYTE, data);
+    glGenerateMipmap(GL_TEXTURE_2D);
+  } else {
+    std::cout << "Failed to load texture" << std::endl;
+  }
+  stbi_image_free(data);
+
+
+
+  // tell opengl for each sampler to which texture unit it belongs to (only has to be done once)
+  // -------------------------------------------------------------------------------------------
+  shader.use(); // don't forget to activate/use the shader before setting uniforms!
+  // either set it manually like so:
+  glUniform1i(glGetUniformLocation(shader.ID, "texture1"), 0);
+  // or set it via the texture class
+  shader.setInt("texture2", 1);
 
 
 	glBindBuffer(GL_ARRAY_BUFFER, 0);   //unbind EBO
@@ -124,11 +150,14 @@ int main() {
 		//float timeValue = glfwGetTime();
 		///* change color */
 		//float greenValue = (sin(timeValue) / 2.0f) + 0.5f;
-  //  shader.use();
+    //shader.use();
 
-  //  shader.setVec4("ourColor", 0.0f, greenValue, 0.0f, 1.0f);
+    //shader.setVec4("ourColor", 0.0f, greenValue, 0.0f, 1.0f);
+    glActiveTexture(GL_TEXTURE0);
+    glBindTexture(GL_TEXTURE_2D, texture1);
+    glActiveTexture(GL_TEXTURE1);
+    glBindTexture(GL_TEXTURE_2D, texture2);
 
-    glBindTexture(GL_TEXTURE_2D, texture);
     shader.use();
 		glBindVertexArray(VAO); // seeing as we only have a single VAO there's no need to bind it every time, but we'll do so to keep things a bit more organized
 		/* draw based on element routine*/

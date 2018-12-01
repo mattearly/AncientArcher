@@ -135,6 +135,7 @@
     <None Include="shaders\main.vs" />
   </ItemGroup>
   <ItemGroup>
+    <Image Include="res\awesomeface.png" />
     <Image Include="res\crate.png" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
