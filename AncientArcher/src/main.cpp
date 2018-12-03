@@ -2,8 +2,8 @@
 #include <GLFW/glfw3.h>
 #include <string>
 #include <iostream>
-#include "stb_image.h"
-#include "Shader.h"
+#include "../req/stb_image.h"
+#include "../req/Shader.h"
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtc/type_ptr.hpp>
@@ -11,6 +11,7 @@
 void processInput(GLFWwindow* window);
 
 void reshapeCallback(GLFWwindow* window, int w, int h);
+
 int main() {
 
   /* glm test */
@@ -19,7 +20,6 @@ int main() {
   transtest = glm::translate(transtest, glm::vec3(1.0f, 1.0f, 0.0f));
   vtest = transtest * vtest;
   std::cout << vtest.x << vtest.y << vtest.z << std::endl; // should output "2,1,0" 
-
 
 	/* init glfw and opengl */
 	glfwInit();
@@ -113,8 +113,9 @@ int main() {
     std::cout << "Failed to load texture" << std::endl;
   }
   stbi_image_free(data);
+
   // texture 2
-// ---------
+  // ---------
   unsigned int texture2;
   glGenTextures(1, &texture2);
   glBindTexture(GL_TEXTURE_2D, texture2);
@@ -135,8 +136,6 @@ int main() {
   }
   stbi_image_free(data);
 
-
-
   // tell opengl for each sampler to which texture unit it belongs to (only has to be done once)
   // -------------------------------------------------------------------------------------------
   shader.use(); // don't forget to activate/use the shader before setting uniforms!
@@ -150,36 +149,33 @@ int main() {
 
 	//glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
 
-
-  //      /* translate for our object*/
+  /* translate for our object*/
 
   //glm::mat4 trans = glm::mat4(1.0f);
   //trans = glm::scale(trans, glm::vec3(0.5f, -0.5f, 0.5f));
   //trans = glm::rotate(trans, (float)glfwGetTime(), glm::vec3(0.0, 0.0, 1.0));
 
-
-  ///* send to shader  setup */
+  /* send to shader  setup */
   //unsigned int transformLoc = glGetUniformLocation(shader.ID, "transform");
   //glUniformMatrix4fv(transformLoc, 1, GL_FALSE, glm::value_ptr(trans));
 
-
 	/* main program loop */
 	while (!glfwWindowShouldClose(window)) {
-		processInput(window);
+
+    processInput(window);
 		glClearColor(0.2f, 0.3f, 0.2f, 1.0f);
 		glClear(GL_COLOR_BUFFER_BIT);
 		
 		//float timeValue = glfwGetTime();
-		///* change color */
+		/* change color */
 		//float greenValue = (sin(timeValue) / 2.0f) + 0.5f;
     //shader.use();
 
-      /* translate for our object*/
+    /* translate for our object */
 
     glm::mat4 trans = glm::mat4(1.0f);
     trans = glm::translate(trans, glm::vec3(0.5f, -0.5f, 0.5f));
     trans = glm::rotate(trans, (float)glfwGetTime(), glm::vec3(0.0, 0.0, 1.0));
-
 
     /* send to shader  setup */
     unsigned int transformLoc = glGetUniformLocation(shader.ID, "transform");
@@ -199,7 +195,8 @@ int main() {
 
 		glfwSwapBuffers(window);
 		glfwPollEvents();
-	}
+	
+  }
 
 	glDeleteVertexArrays(1, &VAO);
 	glDeleteBuffers(1, &VBO);
@@ -207,7 +204,8 @@ int main() {
 
 	glfwTerminate();
 
-	return  0;
+	return 0;
+
 }
 
 void reshapeCallback(GLFWwindow* window, int w, int h) {

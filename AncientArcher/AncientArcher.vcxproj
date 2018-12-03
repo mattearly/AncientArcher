@@ -70,8 +70,8 @@
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
-    <IncludePath>C:\OpenGL\Include;$(IncludePath)</IncludePath>
-    <LibraryPath>C:\OpenGL\Libraries;$(LibraryPath)</LibraryPath>
+    <IncludePath>C:\Users\m\source\repos\AncientArcher\AncientArcher\Include;$(IncludePath)</IncludePath>
+    <LibraryPath>C:\Users\m\source\repos\AncientArcher\AncientArcher\Libraries;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
@@ -121,14 +121,16 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="..\..\..\..\..\..\OpenGL\glad.c" />
-    <ClCompile Include="src\Shader.cpp" />
+    <ClCompile Include="glad.c" />
+    <ClCompile Include="src\Game.cpp" />
+    <ClCompile Include="req\Shader.cpp" />
     <ClCompile Include="src\main.cpp" />
-    <ClCompile Include="src\stb_image.cpp" />
+    <ClCompile Include="req\stb_image.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="src\Shader.h" />
-    <ClInclude Include="src\stb_image.h" />
+    <ClInclude Include="src\Game.h" />
+    <ClInclude Include="req\Shader.h" />
+    <ClInclude Include="req\stb_image.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="shaders\main.fs" />
