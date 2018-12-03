@@ -133,8 +133,8 @@
     <ClInclude Include="req\stb_image.h" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="shaders\main.fs" />
-    <None Include="shaders\main.vs" />
+    <None Include="shaders\fragment.shader" />
+    <None Include="shaders\vertex.shader" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="res\awesomeface.png" />

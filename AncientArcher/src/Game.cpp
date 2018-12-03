@@ -9,7 +9,6 @@
 
 #include <iostream>
 
-
 Game::Game() {
 
   /* init glfw and opengl and game components */
@@ -42,7 +41,7 @@ Game::Game() {
     exit(-1);
   }
 
-  shader = new Shader("../AncientArcher/shaders/main.vs", "../AncientArcher/shaders/main.fs");
+  shader = new Shader("../AncientArcher/shaders/vertex.shader", "../AncientArcher/shaders/fragment.shader");
 
   /* set up an area to store a vertex data */
   glGenVertexArrays(1, &VAO);
@@ -164,11 +163,6 @@ void Game::mainLoop() {
     glClearColor(0.2f, 0.3f, 0.2f, 1.0f);
     glClear(GL_COLOR_BUFFER_BIT);
 
-    //float timeValue = glfwGetTime();
-    /* change color */
-    //float greenValue = (sin(timeValue) / 2.0f) + 0.5f;
-    //shader.use();
-
     /* translate for our object */
     glm::mat4 trans = glm::mat4(1.0f);
     trans = glm::translate(trans, glm::vec3(0.5f, -0.5f, 0.5f));
@@ -178,7 +172,6 @@ void Game::mainLoop() {
     unsigned int transformLoc = glGetUniformLocation(shader->ID, "transform");
     glUniformMatrix4fv(transformLoc, 1, GL_FALSE, glm::value_ptr(trans));
 
-    //shader.setVec4("ourColor", 0.0f, greenValue, 0.0f, 1.0f);
     glActiveTexture(GL_TEXTURE0);
     glBindTexture(GL_TEXTURE_2D, texture001);
     glActiveTexture(GL_TEXTURE1);
@@ -195,7 +188,6 @@ void Game::mainLoop() {
 
   }
 }
-
 
 void Game::processInput(GLFWwindow * window) {
   if (glfwGetKey(window, GLFW_KEY_ESCAPE) == GLFW_PRESS) {

@@ -43,8 +43,8 @@
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <None Include="shaders\main.vs" />
-    <None Include="shaders\main.fs" />
+    <None Include="shaders\vertex.shader" />
+    <None Include="shaders\fragment.shader" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="res\crate.png">
