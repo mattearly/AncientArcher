@@ -14,11 +14,10 @@ Camera::Camera() {
   updateCameraVectors();
 }
 
-
 Camera::~Camera() {}
 
 glm::mat4 Camera::getViewMatrix() {
-  return glm::lookAt(Position, Position + Front, Up);
+  return glm::lookAt(Position, Position + Front, Up);  
 }
 
 // Calculates the front vector from the Camera's (updated) Euler Angles

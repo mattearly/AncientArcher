@@ -41,6 +41,65 @@ Game::Game() {
   }
 
   shader = new Shader("../AncientArcher/shaders/vertex.shader", "../AncientArcher/shaders/fragment.shader");
+  //camera = new Camera();  // init Camera with all defaults
+
+
+
+  float vertices[] = {
+    // positions        // texture coords
+      //0.5f,  0.5f, 0.0f, 1.0f, 1.0f, // top right
+      //0.5f, -0.5f, 0.0f, 1.0f, 0.0f, // bottom right
+      //-0.5f, -0.5f, 0.0f, 0.0f, 0.0f, // bottom left
+      //-0.5f,  0.5f, 0.0f, 0.0f, 1.0f  // top left 
+
+    //cube
+        -0.5f, -0.5f, -0.5f,  0.0f, 0.0f,
+     0.5f, -0.5f, -0.5f,  1.0f, 0.0f,
+     0.5f,  0.5f, -0.5f,  1.0f, 1.0f,
+     0.5f,  0.5f, -0.5f,  1.0f, 1.0f,
+    -0.5f,  0.5f, -0.5f,  0.0f, 1.0f,
+    -0.5f, -0.5f, -0.5f,  0.0f, 0.0f,
+
+    -0.5f, -0.5f,  0.5f,  0.0f, 0.0f,
+     0.5f, -0.5f,  0.5f,  1.0f, 0.0f,
+     0.5f,  0.5f,  0.5f,  1.0f, 1.0f,
+     0.5f,  0.5f,  0.5f,  1.0f, 1.0f,
+    -0.5f,  0.5f,  0.5f,  0.0f, 1.0f,
+    -0.5f, -0.5f,  0.5f,  0.0f, 0.0f,
+
+    -0.5f,  0.5f,  0.5f,  1.0f, 0.0f,
+    -0.5f,  0.5f, -0.5f,  1.0f, 1.0f,
+    -0.5f, -0.5f, -0.5f,  0.0f, 1.0f,
+    -0.5f, -0.5f, -0.5f,  0.0f, 1.0f,
+    -0.5f, -0.5f,  0.5f,  0.0f, 0.0f,
+    -0.5f,  0.5f,  0.5f,  1.0f, 0.0f,
+
+     0.5f,  0.5f,  0.5f,  1.0f, 0.0f,
+     0.5f,  0.5f, -0.5f,  1.0f, 1.0f,
+     0.5f, -0.5f, -0.5f,  0.0f, 1.0f,
+     0.5f, -0.5f, -0.5f,  0.0f, 1.0f,
+     0.5f, -0.5f,  0.5f,  0.0f, 0.0f,
+     0.5f,  0.5f,  0.5f,  1.0f, 0.0f,
+
+    -0.5f, -0.5f, -0.5f,  0.0f, 1.0f,
+     0.5f, -0.5f, -0.5f,  1.0f, 1.0f,
+     0.5f, -0.5f,  0.5f,  1.0f, 0.0f,
+     0.5f, -0.5f,  0.5f,  1.0f, 0.0f,
+    -0.5f, -0.5f,  0.5f,  0.0f, 0.0f,
+    -0.5f, -0.5f, -0.5f,  0.0f, 1.0f,
+
+    -0.5f,  0.5f, -0.5f,  0.0f, 1.0f,
+     0.5f,  0.5f, -0.5f,  1.0f, 1.0f,
+     0.5f,  0.5f,  0.5f,  1.0f, 0.0f,
+     0.5f,  0.5f,  0.5f,  1.0f, 0.0f,
+    -0.5f,  0.5f,  0.5f,  0.0f, 0.0f,
+    -0.5f,  0.5f, -0.5f,  0.0f, 1.0f
+  };
+
+  unsigned int indices[] = {
+    0, 1, 3,
+    1, 2, 3
+  };
 
   /* set up an area to store a vertex data */
   glGenVertexArrays(1, &VAO);
@@ -51,42 +110,24 @@ Game::Game() {
 
   /* prep to send to send vertex buffer object */
   glBindBuffer(GL_ARRAY_BUFFER, VBO);
-
-  float vertices[] = {
-    // positions          // colors           // texture coords
-     0.5f,  0.5f, 0.0f,   1.0f, 0.0f, 0.0f,   1.0f, 1.0f, // top right
-     0.5f, -0.5f, 0.0f,   0.0f, 1.0f, 0.0f,   1.0f, 0.0f, // bottom right
-    -0.5f, -0.5f, 0.0f,   0.0f, 0.0f, 1.0f,   0.0f, 0.0f, // bottom left
-    -0.5f,  0.5f, 0.0f,   1.0f, 1.0f, 0.0f,   0.0f, 1.0f  // top left 
-  };
-
-  /* send vertices to graphics card */
   glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
 
   /* prep element buffer object */
   glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);
-  unsigned int indices[] = {
-    0, 1, 3,
-    1, 2, 3
-  };
-
-  /* send the indices to the graphics card*/
   glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(indices), indices, GL_STATIC_DRAW);
 
   // position attribute
-  glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void*)0);
+  glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 5 * sizeof(float), (void*)0);
   glEnableVertexAttribArray(0);
-  // color attribute
-  glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void*)(3 * sizeof(float)));
-  glEnableVertexAttribArray(1);
+
   // texture coord attribute
-  glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void*)(6 * sizeof(float)));
-  glEnableVertexAttribArray(2);
+  glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 5 * sizeof(float), (void*)(3 * sizeof(float)));
+  glEnableVertexAttribArray(1);
 
   // load and create a texture001
   // -------------------------
   glGenTextures(1, &texture001);
-  glActiveTexture(GL_TEXTURE0); // activate the texture unit first before binding texture
+  //glActiveTexture(GL_TEXTURE0); // activate the texture unit first before binding texture - doesn't seem needed
   glBindTexture(GL_TEXTURE_2D, texture001); // all upcoming GL_TEXTURE_2D operations now have effect on this texture object
   // set the texture wrapping parameters
   glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);	// set texture wrapping to GL_REPEAT (default wrapping method)
@@ -131,12 +172,16 @@ Game::Game() {
   // -------------------------------------------------------------------------------------------
   shader->use(); // don't forget to activate/use the shader before setting uniforms!
   // either set it manually like so:
-  glUniform1i(glGetUniformLocation(shader->ID, "texture001"), 0);
+  //glUniform1i(glGetUniformLocation(shader->ID, "texture001"), 0);
+
   // or set it via the texture class
+  shader->setInt("texture001", 0);
   shader->setInt("texture002", 1);
 
   glBindBuffer(GL_ARRAY_BUFFER, 0);   //unbind EBO
   glBindVertexArray(0);  //unbind VAO
+
+  glEnable(GL_DEPTH_TEST);
 
 }
 

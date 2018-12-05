@@ -22,6 +22,9 @@ public:
 
   glm::mat4 getViewMatrix();
 
+  /* graphics card locatoins of the model, view, location */
+  unsigned int model, view, location;
+
 private:
   void updateCameraVectors();
 };
