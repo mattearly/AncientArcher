@@ -17,6 +17,10 @@ Camera::Camera() {
 
 Camera::~Camera() {}
 
+glm::mat4 Camera::getViewMatrix() {
+  return glm::lookAt(Position, Position + Front, Up);
+}
+
 // Calculates the front vector from the Camera's (updated) Euler Angles
 void Camera::updateCameraVectors() {
   // An abstract camera class that processes input and calculates the corresponding Euler Angles, Vectors and Matrices for use in OpenGL

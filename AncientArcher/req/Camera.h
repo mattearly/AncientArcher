@@ -20,6 +20,8 @@ public:
   float MouseSensitivity;
   float Zoom;
 
+  glm::mat4 getViewMatrix();
+
 private:
   void updateCameraVectors();
 };

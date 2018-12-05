@@ -125,6 +125,7 @@
     <ClCompile Include="glad.c" />
     <ClCompile Include="src\Game.cpp" />
     <ClCompile Include="req\Shader.cpp" />
+    <ClCompile Include="src\GameMainLoop.cpp" />
     <ClCompile Include="src\main.cpp" />
     <ClCompile Include="req\stb_image.cpp" />
   </ItemGroup>
