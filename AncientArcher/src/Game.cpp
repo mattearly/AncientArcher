@@ -8,6 +8,8 @@
 
 #include <iostream>
 
+
+
 Game::Game() {
 
   /* init glfw and opengl and game components */
