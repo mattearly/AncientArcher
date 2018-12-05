@@ -121,6 +121,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="req\Camera.cpp" />
     <ClCompile Include="glad.c" />
     <ClCompile Include="src\Game.cpp" />
     <ClCompile Include="req\Shader.cpp" />
@@ -128,6 +129,7 @@
     <ClCompile Include="req\stb_image.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="req\Camera.h" />
     <ClInclude Include="src\Game.h" />
     <ClInclude Include="req\Shader.h" />
     <ClInclude Include="req\stb_image.h" />
