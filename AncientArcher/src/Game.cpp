@@ -1,4 +1,5 @@
 #include "Game.h"
+#include "Controls.h"
 
 #include <stb_image.h>
 
@@ -7,8 +8,6 @@
 #include <glm/gtc/type_ptr.hpp>
 
 #include <iostream>
-
-
 
 Game::Game() {
 
@@ -23,7 +22,7 @@ Game::Game() {
 #endif
 
   /* init window */
-  window = glfwCreateWindow(800, 600, "TITLE", nullptr, nullptr);
+  window = glfwCreateWindow(window_width, window_height, "TITLE", nullptr, nullptr);
   if (window == nullptr) {
     std::cout << "failed to create glfw window" << std::endl;
     glfwTerminate();
@@ -33,7 +32,7 @@ Game::Game() {
   }
   glfwMakeContextCurrent(window);
   setupReshapeWindow();
-  //glfwSetFramebufferSizeCallback(window, reshapeWindow);
+  setupMouseHandler();
 
   if (!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress)) {
     std::cout << "failed to init GLAD" << std::endl;
@@ -42,20 +41,16 @@ Game::Game() {
     exit(-1);
   }
 
+  control = new Controls();
   shader = new Shader("../AncientArcher/shaders/vertex.shader", "../AncientArcher/shaders/fragment.shader");
-  //camera = new Camera();  // init Camera with all defaults
+  camera = new Camera();  // init Camera with all defaults
 
+  glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
 
-
+     // cube
   float vertices[] = {
-    // positions        // texture coords
-      //0.5f,  0.5f, 0.0f, 1.0f, 1.0f, // top right
-      //0.5f, -0.5f, 0.0f, 1.0f, 0.0f, // bottom right
-      //-0.5f, -0.5f, 0.0f, 0.0f, 0.0f, // bottom left
-      //-0.5f,  0.5f, 0.0f, 0.0f, 1.0f  // top left 
-
-    //cube
-        -0.5f, -0.5f, -0.5f,  0.0f, 0.0f,
+    // positions          // texture coords
+    -0.5f, -0.5f, -0.5f,  0.0f, 0.0f,
      0.5f, -0.5f, -0.5f,  1.0f, 0.0f,
      0.5f,  0.5f, -0.5f,  1.0f, 1.0f,
      0.5f,  0.5f, -0.5f,  1.0f, 1.0f,
@@ -98,15 +93,10 @@ Game::Game() {
     -0.5f,  0.5f, -0.5f,  0.0f, 1.0f
   };
 
-  unsigned int indices[] = {
-    0, 1, 3,
-    1, 2, 3
-  };
-
   /* set up an area to store a vertex data */
   glGenVertexArrays(1, &VAO);
   glGenBuffers(1, &VBO);
-  glGenBuffers(1, &EBO);
+  //glGenBuffers(1, &EBO);
 
   glBindVertexArray(VAO);
 
@@ -115,8 +105,8 @@ Game::Game() {
   glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
 
   /* prep element buffer object */
-  glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);
-  glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(indices), indices, GL_STATIC_DRAW);
+  //glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);
+  //glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(indices), indices, GL_STATIC_DRAW);
 
   // position attribute
   glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 5 * sizeof(float), (void*)0);
@@ -187,7 +177,6 @@ Game::Game() {
 
 }
 
-
 Game::~Game() {
 
   glDeleteVertexArrays(1, &VAO);
@@ -201,15 +190,14 @@ Game::~Game() {
 
  }
 
-void Game::processInput(GLFWwindow * window) {
-  if (glfwGetKey(window, GLFW_KEY_ESCAPE) == GLFW_PRESS) {
-    glfwSetWindowShouldClose(window, true);
-  }
-}
-
 void Game::reshapeWindow(GLFWwindow * window, int w, int h) {
   glViewport(0, 0, w, h);
 }
+
+void Game::mouseHandler(GLFWwindow * window, double xpos, double ypos) {
+  control->mouseMovement(xpos, ypos, camera);
+}
+
 
 static Game * g_CurrentInstance;
 
@@ -217,7 +205,16 @@ extern "C" void reshapeCallback(GLFWwindow *window, int w, int h) {
   g_CurrentInstance->reshapeWindow(window, w, h);
 }
 
+extern "C" void mouseCallback(GLFWwindow *window, double xpos, double ypos) {
+  g_CurrentInstance->mouseHandler(window, xpos, ypos);
+}
+
 void Game::setupReshapeWindow() {
   ::g_CurrentInstance = this;
   ::glfwSetFramebufferSizeCallback(window, ::reshapeCallback);
+}
+
+void Game::setupMouseHandler() {
+  ::g_CurrentInstance = this;
+  ::glfwSetCursorPosCallback(window, ::mouseCallback);
 }

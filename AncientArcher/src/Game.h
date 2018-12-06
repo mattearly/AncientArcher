@@ -4,18 +4,23 @@
 #include <GLFW/glfw3.h>
 #include <Shader.h>
 #include <Camera.h>
+#include <Controls.h>
+
+static float deltaTime = 0.0f;
+static float lastFrame = 0.0f;
 
 class Game {
 public:
   Game();
   ~Game();
 
-  //Camera *camera;
+  Camera *camera;
+  Controls *control;
 
   void mainLoop();
 
   void reshapeWindow(GLFWwindow *window, int w, int h);
-  void processInput(GLFWwindow *window);
+  void mouseHandler(GLFWwindow* window, double xpos, double ypos);
 
 private:
   GLFWwindow *window;
@@ -24,6 +29,9 @@ private:
   unsigned int VAO, VBO, EBO;
   unsigned int texture001, texture002;
 
+  //unsigned int model, view, loc;
+
   void setupReshapeWindow();
+  void setupMouseHandler();
 
 };

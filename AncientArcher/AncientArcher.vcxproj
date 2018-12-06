@@ -121,8 +121,10 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="src\Player.cpp" />
+    <ClCompile Include="req\Controls.cpp" />
     <ClCompile Include="req\Camera.cpp" />
-    <ClCompile Include="glad.c" />
+    <ClCompile Include="req\glad.c" />
     <ClCompile Include="src\Game.cpp" />
     <ClCompile Include="req\Shader.cpp" />
     <ClCompile Include="src\GameMainLoop.cpp" />
@@ -130,6 +132,8 @@
     <ClCompile Include="req\stb_image.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="src\Player.h" />
+    <ClInclude Include="req\Controls.h" />
     <ClInclude Include="req\Camera.h" />
     <ClInclude Include="src\Game.h" />
     <ClInclude Include="req\Shader.h" />
