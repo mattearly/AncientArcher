@@ -278,7 +278,6 @@ Game::Game() {
   shader->setInt("texture006", 5);
   shader->setInt("texture007", 6);
 
-
   /* update projection matrix  - this may rarely chance and could be more efficient
      by not being in the main loop */
   glm::mat4 projection = glm::perspective(glm::radians(camera->FoV),

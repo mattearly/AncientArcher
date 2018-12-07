@@ -1,7 +1,5 @@
 #include "Camera.h"
 
-#include <iostream>
-
 Camera::Camera() {
   FoV = 45.0f;
 

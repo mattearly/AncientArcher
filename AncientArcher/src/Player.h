@@ -2,7 +2,7 @@
 
 /* stats */
 static float MoveSpeed = 6.5f;
-static float Position[] = { -25.0f, -10.0f, -25.0f };
+static float Position[] = { 5.0f, -6.0f, 5.0f };
 
 class Player {
 public:
