@@ -121,6 +121,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="req\Constraints.cpp" />
     <ClCompile Include="src\Player.cpp" />
     <ClCompile Include="req\Controls.cpp" />
     <ClCompile Include="req\Camera.cpp" />
@@ -132,6 +133,7 @@
     <ClCompile Include="req\stb_image.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="req\Constraints.h" />
     <ClInclude Include="src\Player.h" />
     <ClInclude Include="req\Controls.h" />
     <ClInclude Include="req\Camera.h" />
@@ -146,6 +148,7 @@
   <ItemGroup>
     <Image Include="res\awesomeface.png" />
     <Image Include="res\crate.png" />
+    <Image Include="res\radial.png" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

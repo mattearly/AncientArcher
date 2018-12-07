@@ -1,10 +1,8 @@
 #include "Controls.h"
 #include <glm/glm.hpp>
-
-//#include <iostream>
+#include "Constraints.h"
 
 #include "../src/Player.h"
-#include "../src/Game.h"
 
 Controls::Controls() {
   firstMouse = true;
@@ -97,11 +95,25 @@ void Controls::keyboardInput(GLFWwindow * window, Camera *cam, float time) {
       velocity += velocity;
     }
 
-
     if (movedir.forward) cam->Position += cam->Front * velocity;
     if (movedir.back) cam->Position -= cam->Front * velocity;
     if (movedir.right) cam->Position += cam->Right * velocity;
     if (movedir.left) cam->Position -= cam->Right * velocity;
+
+    cam->Position.y = camstart[1];
+
+    /* clamp to level */
+    if (cam->Position.x > world_width || cam->Position.z > world_width) {
+      if (movedir.forward) cam->Position -= cam->Front * velocity;
+      if (movedir.back) cam->Position += cam->Front * velocity;
+      if (movedir.right) cam->Position -= cam->Right * velocity;
+      if (movedir.left) cam->Position += cam->Right * velocity;
+    } else if (cam->Position.x < 0.0f || cam->Position.z < 0.0f) {
+      if (movedir.forward) cam->Position -= cam->Front * velocity;
+      if (movedir.back) cam->Position += cam->Front * velocity;
+      if (movedir.right) cam->Position -= cam->Right * velocity;
+      if (movedir.left) cam->Position += cam->Right * velocity;
+    }
   }
 
 }

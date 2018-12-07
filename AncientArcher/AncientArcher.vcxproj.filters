@@ -42,6 +42,9 @@
     <ClCompile Include="src\Player.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="req\Constraints.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="req\Shader.h">
@@ -62,6 +65,9 @@
     <ClInclude Include="src\Player.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="req\Constraints.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="shaders\vertex.shader" />
@@ -72,6 +78,9 @@
       <Filter>Resource Files</Filter>
     </Image>
     <Image Include="res\awesomeface.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="res\radial.png">
       <Filter>Resource Files</Filter>
     </Image>
   </ItemGroup>
