@@ -81,7 +81,7 @@
       <ConformanceMode>true</ConformanceMode>
     </ClCompile>
     <Link>
-      <AdditionalDependencies>opengl32.lib;glfw3.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>opengl32.lib;glfw3.lib;SDL2_mixer.lib;SDL2.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
@@ -122,6 +122,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="req\Constraints.cpp" />
+    <ClCompile Include="req\Sound.cpp" />
     <ClCompile Include="src\Player.cpp" />
     <ClCompile Include="req\Controls.cpp" />
     <ClCompile Include="req\Camera.cpp" />
@@ -134,6 +135,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="req\Constraints.h" />
+    <ClInclude Include="req\Sound.h" />
     <ClInclude Include="src\Player.h" />
     <ClInclude Include="req\Controls.h" />
     <ClInclude Include="req\Camera.h" />
