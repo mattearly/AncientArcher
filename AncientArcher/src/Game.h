@@ -29,7 +29,7 @@ private:
   Shader *shader;
 
   unsigned int VAO, VBO, EBO;
-  unsigned int texture001, texture002, texture003, texture004, texture005;
+  unsigned int texture001, texture002, texture003, texture004, texture005, texture006, texture007;
  
   void setupReshapeWindow();
   void setupMouseHandler();

@@ -213,7 +213,51 @@ Game::Game() {
   // load image, create texture and generate mipmaps
   data = stbi_load("../AncientArcher/res/stonetex.png", &width, &height, &nrChannels, 0);
   if (data) {
-    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, data);
+    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, width, height, 0, GL_RGBA, GL_UNSIGNED_BYTE, data);
+    glGenerateMipmap(GL_TEXTURE_2D);
+  } else {
+    std::cout << "Failed to load texture" << std::endl;
+  }
+  stbi_image_free(data);  
+  
+  // math texture, texture 6
+// ---------
+  glGenTextures(1, &texture006);
+  glBindTexture(GL_TEXTURE_2D, texture006);
+  // set the texture wrapping parameters
+  glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);	// set texture wrapping to GL_REPEAT (default wrapping method)
+  glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+  // set texture filtering parameters
+  glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+  glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+  // load image, create texture and generate mipmaps
+  stbi_set_flip_vertically_on_load(true); // tell stb_image.h to flip loaded texture's on the y-axis.
+  data = stbi_load("../AncientArcher/res/mathematics.png", &width, &height, &nrChannels, 0);
+  if (data) {
+    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, width, height, 0, GL_RGBA, GL_UNSIGNED_BYTE, data);
+    glGenerateMipmap(GL_TEXTURE_2D);
+  } else {
+    std::cout << "Failed to load texture" << std::endl;
+  }
+  stbi_image_free(data); 
+  
+  
+  // meme texture, texture 7
+// ---------
+  glGenTextures(1, &texture007);
+  glBindTexture(GL_TEXTURE_2D, texture007);
+  // set the texture wrapping parameters
+  glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);	// set texture wrapping to GL_REPEAT (default wrapping method)
+  glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+  // set texture filtering parameters
+  glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+  glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+  // load image, create texture and generate mipmaps
+  stbi_set_flip_vertically_on_load(false); // tell stb_image.h to flip loaded texture's on the y-axis.
+
+  data = stbi_load("../AncientArcher/res/progstates.png", &width, &height, &nrChannels, 0);
+  if (data) {
+    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, width, height, 0, GL_RGBA, GL_UNSIGNED_BYTE, data);
     glGenerateMipmap(GL_TEXTURE_2D);
   } else {
     std::cout << "Failed to load texture" << std::endl;
@@ -231,12 +275,14 @@ Game::Game() {
   shader->setInt("texture003", 2);
   shader->setInt("texture004", 3);
   shader->setInt("texture005", 4);
+  shader->setInt("texture006", 5);
+  shader->setInt("texture007", 6);
 
 
   /* update projection matrix  - this may rarely chance and could be more efficient
      by not being in the main loop */
   glm::mat4 projection = glm::perspective(glm::radians(camera->FoV),
-    (float)window_width / (float)window_height, 0.1f, 100.0f);
+    (float)window_width / (float)window_height, 0.1f, 200.0f);
   shader->setMat4("projection", projection);
 
 
@@ -255,6 +301,11 @@ Game::~Game() {
 
   glDeleteBuffers(1, &texture001);
   glDeleteBuffers(1, &texture002);
+  glDeleteBuffers(1, &texture003);
+  glDeleteBuffers(1, &texture004);
+  glDeleteBuffers(1, &texture005);
+  glDeleteBuffers(1, &texture006);
+  glDeleteBuffers(1, &texture007);
 
   glfwTerminate();
 

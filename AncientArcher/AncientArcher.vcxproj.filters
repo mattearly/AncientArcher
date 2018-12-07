@@ -83,5 +83,17 @@
     <Image Include="res\radial.png">
       <Filter>Resource Files</Filter>
     </Image>
+    <Image Include="res\grasstex.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="res\stonetex.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="res\mathematics.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="res\progstates.png">
+      <Filter>Resource Files</Filter>
+    </Image>
   </ItemGroup>
 </Project>

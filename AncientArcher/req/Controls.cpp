@@ -103,17 +103,27 @@ void Controls::keyboardInput(GLFWwindow * window, Camera *cam, float time) {
     cam->Position.y = camstart[1];
 
     /* clamp to level */
-    if (cam->Position.x > world_width || cam->Position.z > world_width) {
-      if (movedir.forward) cam->Position -= cam->Front * velocity;
-      if (movedir.back) cam->Position += cam->Front * velocity;
-      if (movedir.right) cam->Position -= cam->Right * velocity;
-      if (movedir.left) cam->Position += cam->Right * velocity;
-    } else if (cam->Position.x < 0.0f || cam->Position.z < 0.0f) {
-      if (movedir.forward) cam->Position -= cam->Front * velocity;
-      if (movedir.back) cam->Position += cam->Front * velocity;
-      if (movedir.right) cam->Position -= cam->Right * velocity;
-      if (movedir.left) cam->Position += cam->Right * velocity;
-    }
+    if (cam->Position.x > world_width) {
+      if (movedir.forward) cam->Position.x -= cam->Front.x * velocity;
+      if (movedir.back)    cam->Position.x += cam->Front.x * velocity;
+      if (movedir.right)   cam->Position.x -= cam->Right.x * velocity;
+      if (movedir.left)    cam->Position.x += cam->Right.x * velocity;
+    } else if (cam->Position.x < 0.0f) {
+      if (movedir.forward) cam->Position.x -= cam->Front.x * velocity;
+      if (movedir.back)    cam->Position.x += cam->Front.x * velocity;
+      if (movedir.right)   cam->Position.x -= cam->Right.x * velocity;
+      if (movedir.left)    cam->Position.x += cam->Right.x * velocity;
+    } else if (cam->Position.z > world_width) {
+      if (movedir.forward) cam->Position.z -= cam->Front.z * velocity;
+      if (movedir.back)    cam->Position.z += cam->Front.z * velocity;
+      if (movedir.right)   cam->Position.z -= cam->Right.z * velocity;
+      if (movedir.left)    cam->Position.z += cam->Right.z * velocity;
+    } else if (cam->Position.z < 0.0f) {
+      if (movedir.forward) cam->Position.z -= cam->Front.z * velocity;
+      if (movedir.back)    cam->Position.z += cam->Front.z * velocity;
+      if (movedir.right)   cam->Position.z -= cam->Right.z * velocity;
+      if (movedir.left)    cam->Position.z += cam->Right.z * velocity;
+    } 
   }
 
 }
