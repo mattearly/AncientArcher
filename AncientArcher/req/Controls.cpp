@@ -91,7 +91,7 @@ void Controls::keyboardInput(GLFWwindow * window, Camera *cam, float time) {
   if (movedir.back || movedir.forward || movedir.left || movedir.right) {
 
     float velocity = MoveSpeed * time;
-    if (movedir.boost) {
+    if (movedir.boost && !movedir.back) {
       velocity += velocity;
     }
 
