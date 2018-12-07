@@ -6,6 +6,7 @@
 #include <iostream>
 
 void Game::mainLoop() {
+  glm::mat4 model = glm::mat4(1.0f);
 
   while (!glfwWindowShouldClose(window)) {
 
@@ -19,33 +20,56 @@ void Game::mainLoop() {
     glClearColor(0.2f, 0.3f, 0.2f, 1.0f);
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
+    /* switch to light shader and adjust values */
+    lightShader->use();
+    lightShader->setVec3("objectColor", 1.0f, 0.5f, 0.31f); 
+    lightShader->setVec3("lightColor", 1.0f, 1.0f, 1.0f); // white
+    lightShader->setVec3("lightPos", light.lightPos);
 
-    shader->use();
+    // view/projection transformations - might only need to do this once if it doesn't change
+    glm::mat4 projection = glm::perspective(glm::radians(camera->FoV),
+      (float)window_width / (float)window_height, 0.1f, 200.0f);
+    lightShader->setMat4("projection", projection);
 
-    /* update view matrix */
     glm::mat4 view = camera->getViewMatrix();
+    lightShader->setMat4("view", view);
+
+    /* render light projection object*/
+
+          // world transformation
+    model = glm::mat4(1.0f);
+    lightShader->setMat4("model", model);
+
+    // render the cube
+    glBindVertexArray(cubeVAO);
+    glDrawArrays(GL_TRIANGLES, 0, 36);
+
+    /* switch to object shader and adjust values */
+    shader->use();
+    /* update view matrix */
+    //already got the view matrix just need to update this shader too
+    //glm::mat4 view = camera->getViewMatrix();  
     shader->setMat4("view", view);
 
-    glBindVertexArray(VAO); // seeing as we only have a single VAO there's no need to bind it every time, but we'll do so to keep things a bit more organized
+    //was drawing light object here
 
-    glActiveTexture(GL_TEXTURE0);
-    glBindTexture(GL_TEXTURE_2D, texture001);
-    glActiveTexture(GL_TEXTURE1);
-    glBindTexture(GL_TEXTURE_2D, texture002);
-    glActiveTexture(GL_TEXTURE2);
-    glBindTexture(GL_TEXTURE_2D, texture003);  
-    glActiveTexture(GL_TEXTURE3);
-    glBindTexture(GL_TEXTURE_2D, texture004);    
-    glActiveTexture(GL_TEXTURE4);
-    glBindTexture(GL_TEXTURE_2D, texture005);  
-    glActiveTexture(GL_TEXTURE5);
-    glBindTexture(GL_TEXTURE_2D, texture006);  
-    glActiveTexture(GL_TEXTURE6);
-    glBindTexture(GL_TEXTURE_2D, texture007);
+    /* draw lamp light source cube */
+           // also draw the lamp object
+    model = glm::mat4(1.0f);
+    model = glm::translate(model, light.lightPos);
+    model = glm::scale(model, glm::vec3(0.2f)); // a smaller cube
+    shader->setMat4("model", model);
+
+    //glBindVertexArray(lightVAO);
+    glDrawArrays(GL_TRIANGLES, 0, 36);
+
+
+
+    //glBindVertexArray(cubeVAO); 
 
     shader->setBool("tex1", true);
 
-    glm::mat4 model = glm::mat4(1.0f);
+    //glm::mat4 model = glm::mat4(1.0f);  //moved to global
     for (unsigned int i = 0; i < 30; i++) {   //4 sides of area blocked with boxes
       model = glm::mat4(1.0f);
       model = glm::translate(model, glm::vec3(1.0f + 2.0f * i, -9.0f, -1.0f));
@@ -115,7 +139,8 @@ void Game::mainLoop() {
     shader->setBool("tex6", false);
     shader->setBool("tex7", false);
 
-    //glBindVertexArray(0);  // we don't really need to unbind it every time
+    glBindVertexArray(0);  // unbind vertex array
+
     glfwSwapBuffers(window);
     glfwPollEvents();
 

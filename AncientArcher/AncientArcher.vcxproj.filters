@@ -48,6 +48,9 @@
     <ClCompile Include="req\Sound.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="req\Lighting.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="req\Shader.h">
@@ -74,10 +77,15 @@
     <ClInclude Include="req\Sound.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="req\Lighting.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="shaders\vertex.shader" />
     <None Include="shaders\fragment.shader" />
+    <None Include="shaders\lightvertex.shader" />
+    <None Include="shaders\lightfragment.shader" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="res\crate.png">

@@ -121,6 +121,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="req\Lighting.cpp" />
     <ClCompile Include="req\Constraints.cpp" />
     <ClCompile Include="req\Sound.cpp" />
     <ClCompile Include="src\Player.cpp" />
@@ -134,6 +135,7 @@
     <ClCompile Include="req\stb_image.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="req\Lighting.h" />
     <ClInclude Include="req\Constraints.h" />
     <ClInclude Include="req\Sound.h" />
     <ClInclude Include="src\Player.h" />
@@ -145,6 +147,8 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="shaders\fragment.shader" />
+    <None Include="shaders\lightfragment.shader" />
+    <None Include="shaders\lightvertex.shader" />
     <None Include="shaders\vertex.shader" />
   </ItemGroup>
   <ItemGroup>

@@ -5,8 +5,10 @@
 #include <Shader.h>
 #include <Camera.h>
 #include <Controls.h>
+#include <Lighting.h>
 
 static float lastFrame = 0.0f;
+
 
 class Game {
 public:
@@ -15,6 +17,7 @@ public:
 
   Camera *camera;
   Controls *control;
+  Lighting light;
 
   void mainLoop();
 
@@ -27,8 +30,9 @@ private:
 
   GLFWwindow *window;
   Shader *shader;
+  Shader *lightShader;
 
-  unsigned int VAO, VBO, EBO;
+  unsigned int cubeVAO, lightVAO, cubeVBO, lightVBO;
   unsigned int texture001, texture002, texture003, texture004, texture005, texture006, texture007;
  
   void setupReshapeWindow();
