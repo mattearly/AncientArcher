@@ -4,7 +4,7 @@
 
 static int window_width = 1024;
 static int window_height = 800;
-static float camstart[] = { 5.0f, -6.0f, 5.0f };
+static float camstart[] = { 5.0f, 2.5f, 5.0f };
 
 class Camera {
 public:

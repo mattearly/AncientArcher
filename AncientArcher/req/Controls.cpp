@@ -42,8 +42,9 @@ void Controls::mouseMovement(double xpos, double ypos, Camera *cam) {
 
 void Controls::keyboardInput(GLFWwindow * window, Camera *cam, float time) {
 
-  if (glfwGetKey(window, GLFW_KEY_ESCAPE) == GLFW_PRESS)
+  if (glfwGetKey(window, GLFW_KEY_ESCAPE) == GLFW_PRESS) {
     glfwSetWindowShouldClose(window, true);
+  }
 
   if (glfwGetKey(window, GLFW_KEY_LEFT_SHIFT) == GLFW_PRESS) {
     movedir.boost = true;
@@ -68,6 +69,11 @@ void Controls::keyboardInput(GLFWwindow * window, Camera *cam, float time) {
     movedir.right = true;
   }
 
+  if (movedir.canJumpAgain && glfwGetKey(window, GLFW_KEY_SPACE) == GLFW_PRESS) {
+    movedir.jump = true;
+    movedir.canJumpAgain = false;
+  }
+
   if (glfwGetKey(window, GLFW_KEY_W) == GLFW_RELEASE) {
     movedir.forward = false;
   }
@@ -82,15 +88,21 @@ void Controls::keyboardInput(GLFWwindow * window, Camera *cam, float time) {
 
   if (glfwGetKey(window, GLFW_KEY_D) == GLFW_RELEASE) {
     movedir.right = false;
-  }  
-  
+  }
+
   if (glfwGetKey(window, GLFW_KEY_LEFT_SHIFT) == GLFW_RELEASE) {
     movedir.boost = false;
   }
 
+  if (glfwGetKey(window, GLFW_KEY_SPACE) == GLFW_RELEASE) {
+    movedir.canJumpAgain = true;
+  }
+  
+
+  float velocity = MoveSpeed * time;
+
   if (movedir.back || movedir.forward || movedir.left || movedir.right) {
 
-    float velocity = MoveSpeed * time;
     if (movedir.boost && !movedir.back) {
       velocity += velocity;
     }
@@ -100,7 +112,6 @@ void Controls::keyboardInput(GLFWwindow * window, Camera *cam, float time) {
     if (movedir.right) cam->Position += cam->Right * velocity;
     if (movedir.left) cam->Position -= cam->Right * velocity;
 
-    cam->Position.y = camstart[1];
 
     /* clamp to level */
     if (cam->Position.x > world_width) {
@@ -125,5 +136,40 @@ void Controls::keyboardInput(GLFWwindow * window, Camera *cam, float time) {
       if (movedir.left)    cam->Position.z += cam->Right.z * velocity;
     } 
   }
+
+
+  // jump system
+
+
+  if (movedir.jump && movedir.onGround) {   // if jump is pressed while on the ground
+    //cam->Position.y += cam->WorldUp.y * velocity;
+    movedir.onGround = false;
+
+  } else if (movedir.falling) {   // currently going down
+    cam->Position.y -= cam->WorldUp.y * velocity * 0.5;
+
+    if (cam->Position.y <= camstart[1]) {
+      movedir.onGround = true;
+      movedir.falling = false;
+      cam->Position.y = camstart[1];
+
+    }
+
+  } else if (!movedir.onGround) {  // currently going up
+    movedir.jump = false;
+
+    velocity = MoveSpeed * time * (1.11f - (cam->Position.y - Position[1]));   // causes user to hang in the air for a moment at jump peak
+
+    cam->Position.y += cam->WorldUp.y * velocity;
+
+    if (cam->Position.y > JumpHeight + Position[1])
+      movedir.falling = true;
+  
+  }
+
+
+  if (movedir.onGround) cam->Position.y = camstart[1];
+
+
 
 }

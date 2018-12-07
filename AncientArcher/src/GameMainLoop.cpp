@@ -72,25 +72,25 @@ void Game::mainLoop() {
     //glm::mat4 model = glm::mat4(1.0f);  //moved to global
     for (unsigned int i = 0; i < 30; i++) {   //4 sides of area blocked with boxes
       model = glm::mat4(1.0f);
-      model = glm::translate(model, glm::vec3(1.0f + 2.0f * i, -9.0f, -1.0f));
+      model = glm::translate(model, glm::vec3(1.0f + 2.0f * i, 1.0f, -1.0f));
       model = glm::scale(model, glm::vec3(2.0f, 2.0f, 2.0f));
       shader->setMat4("model", model);
       glDrawArrays(GL_TRIANGLES, 0, 36);
 
       model = glm::mat4(1.0f);
-      model = glm::translate(model, glm::vec3(1.0f + 2.0f * i, -9.0f, 61.0f));
+      model = glm::translate(model, glm::vec3(1.0f + 2.0f * i, 1.0f, 61.0f));
       model = glm::scale(model, glm::vec3(2.0f, 2.0f, 2.0f));
       shader->setMat4("model", model);
       glDrawArrays(GL_TRIANGLES, 0, 36);
 
       model = glm::mat4(1.0f);
-      model = glm::translate(model, glm::vec3(-1.0f, -9.0f, 1.0f + 2.0f * i));
+      model = glm::translate(model, glm::vec3(-1.0f, 1.0f, 1.0f + 2.0f * i));
       model = glm::scale(model, glm::vec3(2.0f, 2.0f, 2.0f));
       shader->setMat4("model", model);
       glDrawArrays(GL_TRIANGLES, 0, 36);
 
       model = glm::mat4(1.0f);
-      model = glm::translate(model, glm::vec3(61.0f, -9.0f, 1.0f + 2.0f * i));
+      model = glm::translate(model, glm::vec3(61.0f, 1.0f, 1.0f + 2.0f * i));
       model = glm::scale(model, glm::vec3(2.0f, 2.0f, 2.0f));
       shader->setMat4("model", model);
       glDrawArrays(GL_TRIANGLES, 0, 36);
@@ -103,7 +103,7 @@ void Game::mainLoop() {
     shader->setBool("tex4", true);
 
     model = glm::mat4(1.0f);
-    model = glm::translate(model, glm::vec3(30.0f, -10.0, 30.0f));
+    model = glm::translate(model, glm::vec3(30.0f, 0.0f, 30.0f));
     model = glm::scale(model, glm::vec3(60.0f, 0.01f, 60.0f));
     shader->setMat4("model", model);
     glDrawArrays(GL_TRIANGLES, 0, 36);
