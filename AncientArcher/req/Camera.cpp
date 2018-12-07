@@ -1,10 +1,10 @@
 #include "Camera.h"
-#include "../src/Player.h"
-#include "../src/Game.h"
+
+#include <iostream>
 
 Camera::Camera() {
   FoV = 45.0f;
-  
+
   Front = glm::vec3(0.0f, 0.0f, -1.0f);
 
   Position = glm::vec3(0.0f, 1.0f, 0.0f);
@@ -17,45 +17,9 @@ Camera::Camera() {
 
 Camera::~Camera() {}
 
-void Camera::move() {
-  bool moved = false;
-
-  float velocity = MoveSpeed * deltaTime;
-
-  if (movedir.forward) {
-    Position += Front * velocity;
-    moved = true;
-  } 
-
-  if (movedir.back) {
-    Position -= Front * velocity;
-
-    moved = true;
-
-  }
-
-  if (movedir.left) {
-    Position -= Right * velocity;
-
-    moved = true;
-
-  }
-
-  if (movedir.right) {
-    Position += Right * velocity;
-
-    moved = true;
-
-  }
-
-  updateCameraVectors();
-
-}
-
 glm::mat4 Camera::getViewMatrix() {
-  return glm::lookAt(Position, Position + Front, Up);  
+  return glm::lookAt(Position, Position + Front, Up);
 }
-
 
 void Camera::updateCameraVectors() {
   glm::vec3 front;

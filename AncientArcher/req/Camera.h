@@ -5,11 +5,6 @@
 static int window_width = 800;
 static int window_height = 600;
 
-static struct Movement {
-  bool forward = false, back = false;
-  bool left = false, right = false;
-} movedir;
-
 class Camera {
 public:
   Camera();

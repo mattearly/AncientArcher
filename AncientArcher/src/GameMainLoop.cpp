@@ -3,6 +3,8 @@
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtc/type_ptr.hpp>
 
+#include <iostream>
+
 glm::vec3 cubePositions[] = {
   glm::vec3(0.0f,  0.0f,  0.0f),
   glm::vec3(2.0f,  5.0f, -15.0f),
@@ -23,25 +25,21 @@ void Game::mainLoop() {
     float currentFrame = glfwGetTime();
     deltaTime = currentFrame - lastFrame;
     lastFrame = currentFrame;
+    //std::cout << deltaTime << std::endl;
 
-    control->keyboardInput(window, camera);
+    control->keyboardInput(window, camera, deltaTime);
 
     glClearColor(0.2f, 0.3f, 0.2f, 1.0f);
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-    glActiveTexture(GL_TEXTURE0);
-    glBindTexture(GL_TEXTURE_2D, texture001);
-    glActiveTexture(GL_TEXTURE1);
-    glBindTexture(GL_TEXTURE_2D, texture002);
 
     shader->use();
 
-    /* update projection matrix  - this may rarely chance and could be more efficient
-       by not being in the main loop */
-    glm::mat4 projection = glm::perspective(glm::radians(camera->FoV), 
-      (float)window_width / (float)window_height, 0.1f, 100.0f);
-    shader->setMat4("projection", projection);
-
+    ///* update projection matrix  - this may rarely chance and could be more efficient
+    //   by not being in the main loop */
+    //glm::mat4 projection = glm::perspective(glm::radians(camera->FoV), 
+    //  (float)window_width / (float)window_height, 0.1f, 100.0f);
+    //shader->setMat4("projection", projection);
 
     /* update view matrix */
     glm::mat4 view = camera->getViewMatrix();
@@ -49,6 +47,12 @@ void Game::mainLoop() {
 
 
     glBindVertexArray(VAO); // seeing as we only have a single VAO there's no need to bind it every time, but we'll do so to keep things a bit more organized
+
+
+    glActiveTexture(GL_TEXTURE0);
+    glBindTexture(GL_TEXTURE_2D, texture001);
+    glActiveTexture(GL_TEXTURE1);
+    glBindTexture(GL_TEXTURE_2D, texture002);
 
     for (unsigned int i = 0; i < 10; i++) {
       glm::mat4 model = glm::mat4(1.0f);

@@ -1,9 +1,14 @@
 #include "Controls.h"
 #include <glm/glm.hpp>
 
+//#include <iostream>
+
+#include "../src/Player.h"
+#include "../src/Game.h"
+
 Controls::Controls() {
   firstMouse = true;
-  sensitivity = 0.1f;
+  mouseSensitivity = 0.08f;
 }
 
 Controls::~Controls() {}
@@ -21,8 +26,8 @@ void Controls::mouseMovement(double xpos, double ypos, Camera *cam) {
   lastX = xpos;
   lastY = ypos;
 
-  xoffset *= sensitivity;
-  yoffset *= sensitivity;
+  xoffset *= mouseSensitivity;
+  yoffset *= mouseSensitivity;
 
   cam->Yaw += xoffset;
   cam->Pitch += yoffset;
@@ -37,12 +42,12 @@ void Controls::mouseMovement(double xpos, double ypos, Camera *cam) {
 
 }
 
-void Controls::keyboardInput(GLFWwindow * window, Camera *cam) {
+void Controls::keyboardInput(GLFWwindow * window, Camera *cam, float time) {
 
   if (glfwGetKey(window, GLFW_KEY_ESCAPE) == GLFW_PRESS)
     glfwSetWindowShouldClose(window, true);
 
-  //float cameraSpeed = 2.5 * deltaTime;
+  float velocity = MoveSpeed * time;
 
   if (glfwGetKey(window, GLFW_KEY_W) == GLFW_PRESS) {
     movedir.back = false;
@@ -79,5 +84,11 @@ void Controls::keyboardInput(GLFWwindow * window, Camera *cam) {
     movedir.right = false;
   }
 
-  cam->move();
+  if (movedir.back || movedir.forward || movedir.left || movedir.right) {
+    if (movedir.forward) cam->Position += cam->Front * velocity;
+    if (movedir.back) cam->Position -= cam->Front * velocity;
+    if (movedir.right) cam->Position += cam->Right * velocity;
+    if (movedir.left) cam->Position -= cam->Right * velocity;
+  }
+
 }

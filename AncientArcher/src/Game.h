@@ -6,7 +6,6 @@
 #include <Camera.h>
 #include <Controls.h>
 
-static float deltaTime = 0.0f;
 static float lastFrame = 0.0f;
 
 class Game {
@@ -23,6 +22,9 @@ public:
   void mouseHandler(GLFWwindow* window, double xpos, double ypos);
 
 private:
+
+  float deltaTime = 0.0f;
+
   GLFWwindow *window;
   Shader *shader;
 

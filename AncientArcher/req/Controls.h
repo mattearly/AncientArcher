@@ -1,17 +1,22 @@
 #pragma once
+#include <glad/glad.h>
 #include <GLFW/glfw3.h>
 #include <Camera.h>
 
-
+static struct Movement {
+  bool forward = false, back = false;
+  bool left = false, right = false;
+} movedir;
 
 class Controls {
+
 public:
   Controls();
   ~Controls();
 
   void mouseMovement(double xpos, double ypos, Camera *cam);
 
-  void keyboardInput(GLFWwindow *window, Camera *cam);
+  void keyboardInput(GLFWwindow *window, Camera *cam, float time);
 
 private:
 
@@ -19,7 +24,7 @@ private:
 
   float lastX, lastY;
 
-  float sensitivity;
+  float mouseSensitivity;
 
 };
 

@@ -170,6 +170,14 @@ Game::Game() {
   shader->setInt("texture001", 0);
   shader->setInt("texture002", 1);
 
+
+  /* update projection matrix  - this may rarely chance and could be more efficient
+     by not being in the main loop */
+  glm::mat4 projection = glm::perspective(glm::radians(camera->FoV),
+    (float)window_width / (float)window_height, 0.1f, 100.0f);
+  shader->setMat4("projection", projection);
+
+
   glBindBuffer(GL_ARRAY_BUFFER, 0);   //unbind EBO
   glBindVertexArray(0);  //unbind VAO
 
@@ -202,6 +210,8 @@ void Game::mouseHandler(GLFWwindow * window, double xpos, double ypos) {
 static Game * g_CurrentInstance;
 
 extern "C" void reshapeCallback(GLFWwindow *window, int w, int h) {
+  window_width = w;
+  window_height = h;
   g_CurrentInstance->reshapeWindow(window, w, h);
 }
 
