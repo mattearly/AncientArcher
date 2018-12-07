@@ -6,6 +6,7 @@
 static struct Movement {
   bool forward = false, back = false;
   bool left = false, right = false;
+  bool boost = false;
 } movedir;
 
 class Controls {

@@ -1,7 +1,7 @@
 #pragma once
 
 /* stats */
-static float MoveSpeed = 2.5f;
+static float MoveSpeed = 3.5f;
 
 class Player {
 public:

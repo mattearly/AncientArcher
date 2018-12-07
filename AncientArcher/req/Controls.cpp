@@ -47,7 +47,9 @@ void Controls::keyboardInput(GLFWwindow * window, Camera *cam, float time) {
   if (glfwGetKey(window, GLFW_KEY_ESCAPE) == GLFW_PRESS)
     glfwSetWindowShouldClose(window, true);
 
-  float velocity = MoveSpeed * time;
+  if (glfwGetKey(window, GLFW_KEY_LEFT_SHIFT) == GLFW_PRESS) {
+    movedir.boost = true;
+  }
 
   if (glfwGetKey(window, GLFW_KEY_W) == GLFW_PRESS) {
     movedir.back = false;
@@ -82,9 +84,20 @@ void Controls::keyboardInput(GLFWwindow * window, Camera *cam, float time) {
 
   if (glfwGetKey(window, GLFW_KEY_D) == GLFW_RELEASE) {
     movedir.right = false;
+  }  
+  
+  if (glfwGetKey(window, GLFW_KEY_LEFT_SHIFT) == GLFW_RELEASE) {
+    movedir.boost = false;
   }
 
   if (movedir.back || movedir.forward || movedir.left || movedir.right) {
+
+    float velocity = MoveSpeed * time;
+    if (movedir.boost) {
+      velocity += velocity;
+    }
+
+
     if (movedir.forward) cam->Position += cam->Front * velocity;
     if (movedir.back) cam->Position -= cam->Front * velocity;
     if (movedir.right) cam->Position += cam->Right * velocity;

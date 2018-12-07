@@ -16,10 +16,7 @@ public:
 
   glm::mat4 getViewMatrix();
 
-  void move();
-
 private:
-
 
   glm::vec3 Position;  // position of the camera
   glm::vec3 Front;  // where the camera is facing
