@@ -1,7 +1,6 @@
 #include "Controls.h"
 #include <glm/glm.hpp>
 #include "Constraints.h"
-
 #include "../src/Player.h"
 
 Controls::Controls() {
@@ -69,7 +68,7 @@ void Controls::keyboardInput(GLFWwindow * window, Camera *cam, float time) {
     movedir.right = true;
   }
 
-  if (movedir.canJumpAgain && glfwGetKey(window, GLFW_KEY_SPACE) == GLFW_PRESS) {
+  if (glfwGetKey(window, GLFW_KEY_SPACE) == GLFW_PRESS && movedir.onGround && movedir.canJumpAgain) {
     movedir.jump = true;
     movedir.canJumpAgain = false;
   }
@@ -97,14 +96,16 @@ void Controls::keyboardInput(GLFWwindow * window, Camera *cam, float time) {
   if (glfwGetKey(window, GLFW_KEY_SPACE) == GLFW_RELEASE) {
     movedir.canJumpAgain = true;
   }
-  
 
-  float velocity = MoveSpeed * time;
+
+
 
   if (movedir.back || movedir.forward || movedir.left || movedir.right) {
 
+    float velocity = (mainPlayer::LegPower+11) * time;
+
     if (movedir.boost && !movedir.back) {
-      velocity += velocity;
+      velocity += velocity;   //faster move forward while holding shift
     }
 
     if (movedir.forward) cam->Position += cam->Front * velocity;
@@ -124,7 +125,9 @@ void Controls::keyboardInput(GLFWwindow * window, Camera *cam, float time) {
       if (movedir.back)    cam->Position.x += cam->Front.x * velocity;
       if (movedir.right)   cam->Position.x -= cam->Right.x * velocity;
       if (movedir.left)    cam->Position.x += cam->Right.x * velocity;
-    } else if (cam->Position.z > world_width) {
+    } 
+    
+    if (cam->Position.z > world_width) {
       if (movedir.forward) cam->Position.z -= cam->Front.z * velocity;
       if (movedir.back)    cam->Position.z += cam->Front.z * velocity;
       if (movedir.right)   cam->Position.z -= cam->Right.z * velocity;
@@ -134,42 +137,33 @@ void Controls::keyboardInput(GLFWwindow * window, Camera *cam, float time) {
       if (movedir.back)    cam->Position.z += cam->Front.z * velocity;
       if (movedir.right)   cam->Position.z -= cam->Right.z * velocity;
       if (movedir.left)    cam->Position.z += cam->Right.z * velocity;
-    } 
+    }
+
   }
 
-
   // jump system
-
-
   if (movedir.jump && movedir.onGround) {   // if jump is pressed while on the ground
-    //cam->Position.y += cam->WorldUp.y * velocity;
     movedir.onGround = false;
+    movedir.jump = false;
+
+  } else if (movedir.onGround) {
+    cam->Position.y = camstart[1];
+  
+  } else if (!movedir.falling && !movedir.onGround) {  // currently going up
+    cam->Position.y += cam->WorldUp.y;
+    
+    if (cam->Position.y > mainPlayer::LegPower + camstart[1])
+      movedir.falling = true;
 
   } else if (movedir.falling) {   // currently going down
-    cam->Position.y -= cam->WorldUp.y * velocity * 0.5;
+    cam->Position.y -= cam->WorldUp.y;
 
     if (cam->Position.y <= camstart[1]) {
       movedir.onGround = true;
       movedir.falling = false;
       cam->Position.y = camstart[1];
-
     }
 
-  } else if (!movedir.onGround) {  // currently going up
-    movedir.jump = false;
-
-    velocity = MoveSpeed * time * (1.11f - (cam->Position.y - Position[1]));   // causes user to hang in the air for a moment at jump peak
-
-    cam->Position.y += cam->WorldUp.y * velocity;
-
-    if (cam->Position.y > JumpHeight + Position[1])
-      movedir.falling = true;
-  
-  }
-
-
-  if (movedir.onGround) cam->Position.y = camstart[1];
-
-
+  } 
 
 }

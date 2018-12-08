@@ -9,7 +9,6 @@
 
 static float lastFrame = 0.0f;
 
-
 class Game {
 public:
   Game();
