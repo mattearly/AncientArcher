@@ -137,6 +137,7 @@
     <ClCompile Include="src\GameMainLoop.cpp" />
     <ClCompile Include="src\main.cpp" />
     <ClCompile Include="req\stb_image.cpp" />
+    <ClCompile Include="TextureBank.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="req\mearly.h" />
@@ -149,6 +150,7 @@
     <ClInclude Include="src\Game.h" />
     <ClInclude Include="req\Shader.h" />
     <ClInclude Include="req\stb_image.h" />
+    <ClInclude Include="TextureBank.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="shaders\fragment.shader" />

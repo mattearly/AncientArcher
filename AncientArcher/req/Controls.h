@@ -8,7 +8,6 @@ static struct Movement {
   bool left = false, right = false;
   bool boost = false;
 
-
   bool jumped = false;
   bool canJumpAgain = true;
   bool onGround = true;
