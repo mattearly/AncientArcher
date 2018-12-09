@@ -2,6 +2,7 @@
 #include <glm/glm.hpp>
 #include "Constraints.h"
 #include "../src/Player.h"
+#include "Sound.h"
 
 Controls::Controls() {
   firstMouse = true;
@@ -160,22 +161,23 @@ void Controls::keyboardInput(GLFWwindow * window, Camera *cam, float time) {
   if (movedir.jumped) {   // Jump Start
     movedir.onGround = false;
     movedir.jumped = false;
+    playgruntsound();
   } else if (!movedir.onGround && !movedir.falling) {  // Jump Rising
-    cam->Position.y += cam->WorldUp.y * ((mainPlayer::LegPower / 10.0f) + 2.5f) * time;  // RISING SPEED CALC: jump speed based on LegPower Player Stat
-    if (cam->Position.y > (mainPlayer::LegPower / 10.0f) + 0.5f + camstart[1]) {  // MAX HEIGHT CALC: jump height based on LegPower Player Stat
+    cam->Position.y += cam->WorldUp.y * ((mainPlayer::LegPower / 10.0f) + 4.0f) * time;  // RISING SPEED CALC: jump speed based on LegPower Player Stat
+    if (cam->Position.y > (mainPlayer::LegPower / 10.0f) + 0.8f + camstart[1]) {  // MAX HEIGHT CALC: jump height based on LegPower Player Stat
       movedir.falling = true;
+      //todo: added gravity to falling y = 1/2at^2 + vt  
     }
   } else if (movedir.falling && !movedir.onGround) {   // currently going down
-    cam->Position.y -= cam->WorldUp.y * 2.5f * time;  // GRAVITY PULL DOWN CALC: static value, todo: make dynamic based on falling time
-
+    cam->Position.y -= cam->WorldUp.y * 5.0f * time;  // GRAVITY PULL DOWN CALC: static value, todo: make dynamic based on falling time
+    
     if (cam->Position.y <= camstart[1]) {
       movedir.onGround = true;
       movedir.falling = false;
-      cam->Position.y = camstart[1];
+      playlandingsound();
     }
 
   } 
-
 
   if (movedir.onGround) {
     cam->Position.y = camstart[1];
