@@ -63,13 +63,11 @@ void Game::mainLoop() {
     //glBindVertexArray(lightVAO);
     glDrawArrays(GL_TRIANGLES, 0, 36);
 
-
-
     //glBindVertexArray(cubeVAO); 
 
-    shader->setBool("tex1", true);
+    shader->setUint("texnum", 0);
 
-    //glm::mat4 model = glm::mat4(1.0f);  //moved to global
+    //glm::mat4 model = glm::mat4(1.0f);  //moved to top of function
     for (unsigned int i = 0; i < 30; i++) {   //4 sides of area blocked with boxes
       model = glm::mat4(1.0f);
       model = glm::translate(model, glm::vec3(1.0f + 2.0f * i, 1.0f, -1.0f));
@@ -95,12 +93,11 @@ void Game::mainLoop() {
       shader->setMat4("model", model);
       glDrawArrays(GL_TRIANGLES, 0, 36);
 
-
     }
 
-    /* grassy floor */
-    shader->setBool("tex1", false);
-    shader->setBool("tex4", true);
+    ///* grassy floor */
+    shader->setUint("texnum", 3);
+
 
     model = glm::mat4(1.0f);
     model = glm::translate(model, glm::vec3(30.0f, 0.0f, 30.0f));
@@ -108,9 +105,9 @@ void Game::mainLoop() {
     shader->setMat4("model", model);
     glDrawArrays(GL_TRIANGLES, 0, 36);
 
-    /* math wall */
-    shader->setBool("tex4", false);
-    shader->setBool("tex6", true);
+    ///* math wall */
+    shader->setUint("texnum", 5);
+
 
     model = glm::mat4(1.0f);
     model = glm::translate(model, glm::vec3(62.0f, 32.0f, 30.0f));
@@ -119,9 +116,9 @@ void Game::mainLoop() {
     shader->setMat4("model", model);
     glDrawArrays(GL_TRIANGLES, 0, 36);  
     
-    /* meme wall */
-    shader->setBool("tex6", false);
-    shader->setBool("tex7", true);
+    ///* meme wall */
+    shader->setUint("texnum", 6);
+
 
     model = glm::mat4(1.0f);
     model = glm::translate(model, glm::vec3(-2.0f, 32.0f, 30.0f));
@@ -130,14 +127,14 @@ void Game::mainLoop() {
     shader->setMat4("model", model);
     glDrawArrays(GL_TRIANGLES, 0, 36);
 
-    //reset all texture
-    shader->setBool("tex1", false);
-    shader->setBool("tex2", false);
-    shader->setBool("tex3", false);
-    shader->setBool("tex4", false);
-    shader->setBool("tex5", false);
-    shader->setBool("tex6", false);
-    shader->setBool("tex7", false);
+    ////reset all texture
+    //shader->setBool("tex1", false);
+    //shader->setBool("tex2", false);
+    //shader->setBool("tex3", false);
+    //shader->setBool("tex4", false);
+    //shader->setBool("tex5", false);
+    //shader->setBool("tex6", false);
+    //shader->setBool("tex7", false);
 
     glBindVertexArray(0);  // unbind vertex array
 

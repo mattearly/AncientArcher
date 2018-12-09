@@ -137,7 +137,7 @@
     <ClCompile Include="src\GameMainLoop.cpp" />
     <ClCompile Include="src\main.cpp" />
     <ClCompile Include="req\stb_image.cpp" />
-    <ClCompile Include="TextureBank.cpp" />
+    <ClCompile Include="req\TextureBank.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="req\mearly.h" />
@@ -150,22 +150,13 @@
     <ClInclude Include="src\Game.h" />
     <ClInclude Include="req\Shader.h" />
     <ClInclude Include="req\stb_image.h" />
-    <ClInclude Include="TextureBank.h" />
+    <ClInclude Include="req\TextureBank.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="shaders\fragment.shader" />
     <None Include="shaders\lightfragment.shader" />
     <None Include="shaders\lightvertex.shader" />
     <None Include="shaders\vertex.shader" />
-  </ItemGroup>
-  <ItemGroup>
-    <Image Include="res\awesomeface.png" />
-    <Image Include="res\crate.png" />
-    <Image Include="res\grasstex.png" />
-    <Image Include="res\mathematics.png" />
-    <Image Include="res\progstates.png" />
-    <Image Include="res\radial.png" />
-    <Image Include="res\stonetex.png" />
   </ItemGroup>
   <ItemGroup>
     <Media Include="res\sfx\feetlanding.wav" />

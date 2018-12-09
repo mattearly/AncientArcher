@@ -54,7 +54,7 @@
     <ClCompile Include="req\mearly.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="TextureBank.cpp">
+    <ClCompile Include="req\TextureBank.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -89,7 +89,7 @@
     <ClInclude Include="req\mearly.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="TextureBank.h">
+    <ClInclude Include="req\TextureBank.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
@@ -98,29 +98,6 @@
     <None Include="shaders\fragment.shader" />
     <None Include="shaders\lightvertex.shader" />
     <None Include="shaders\lightfragment.shader" />
-  </ItemGroup>
-  <ItemGroup>
-    <Image Include="res\crate.png">
-      <Filter>Resource Files</Filter>
-    </Image>
-    <Image Include="res\awesomeface.png">
-      <Filter>Resource Files</Filter>
-    </Image>
-    <Image Include="res\radial.png">
-      <Filter>Resource Files</Filter>
-    </Image>
-    <Image Include="res\grasstex.png">
-      <Filter>Resource Files</Filter>
-    </Image>
-    <Image Include="res\stonetex.png">
-      <Filter>Resource Files</Filter>
-    </Image>
-    <Image Include="res\mathematics.png">
-      <Filter>Resource Files</Filter>
-    </Image>
-    <Image Include="res\progstates.png">
-      <Filter>Resource Files</Filter>
-    </Image>
   </ItemGroup>
   <ItemGroup>
     <Media Include="res\sfx\feetlanding.wav">

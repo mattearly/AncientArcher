@@ -6,6 +6,7 @@
 #include <Camera.h>
 #include <Controls.h>
 #include <Lighting.h>
+#include "TextureBank.h"
 
 static float lastFrame = 0.0f;
 
@@ -16,6 +17,7 @@ public:
 
   Camera *camera;
   Controls *control;
+  TextureBank texBank;
   Lighting light;
 
   void mainLoop();
@@ -32,7 +34,6 @@ private:
   Shader *lightShader;
 
   unsigned int cubeVAO, lightVAO, cubeVBO, lightVBO;
-  unsigned int texture001, texture002, texture003, texture004, texture005, texture006, texture007;
  
   void setupReshapeWindow();
   void setupMouseHandler();

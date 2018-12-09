@@ -10,13 +10,16 @@ improvements over last engine (prog3)
 - glm mathematics instead of Angel
 - player position tracked seperately from camera
 
-by Wednesday
+done 
 
-- player textures
-- archery firing
-- melee swing
 - jump
 - sound effects
+
+by Wednesday
+
+- player models
+- archery firing
+- melee swing
 - basic lighting
 - badguys (AI) / targets to win
 
@@ -40,4 +43,5 @@ to run
 		- add glfw3.lib
 		- add SDL2_mixer.lib
 		- add SDL2.lib
+		- add SDL2main.lib
 	- address any missing dependencies
