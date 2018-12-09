@@ -46,31 +46,43 @@ void Controls::keyboardInput(GLFWwindow * window, Camera *cam, float time) {
   }
 
   if (glfwGetKey(window, GLFW_KEY_LEFT_SHIFT) == GLFW_PRESS) {
-    movedir.boost = true;
+    if (movedir.onGround) {
+      movedir.boost = true;
+    }
   }
 
   if (glfwGetKey(window, GLFW_KEY_W) == GLFW_PRESS) {
-    movedir.back = false;
-    movedir.forward = true;
+    if (movedir.onGround) {
+      movedir.back = false;
+      movedir.forward = true;
+    }
   }
 
   if (glfwGetKey(window, GLFW_KEY_S) == GLFW_PRESS) {
-    movedir.forward = false;
-    movedir.back = true;
+    if (movedir.onGround) {
+      movedir.forward = false;
+      movedir.back = true;
+    }
   }
 
   if (glfwGetKey(window, GLFW_KEY_A) == GLFW_PRESS) {
-    movedir.right = false;
-    movedir.left = true;
+    if (movedir.onGround) {
+      movedir.right = false;
+      movedir.left = true;
+    }
   }
 
   if (glfwGetKey(window, GLFW_KEY_D) == GLFW_PRESS) {
-    movedir.right = true;
+    if (movedir.onGround) {
+      movedir.right = true;
+    }
   }
 
-  if (glfwGetKey(window, GLFW_KEY_SPACE) == GLFW_PRESS && movedir.onGround && movedir.canJumpAgain) {
-    movedir.jump = true;
-    movedir.canJumpAgain = false;
+  if (glfwGetKey(window, GLFW_KEY_SPACE) == GLFW_PRESS) {
+    if (movedir.onGround && movedir.canJumpAgain) {  //can jump again is to make the spacebar spam by holding it down not work
+      movedir.jumped = true;
+      movedir.canJumpAgain = false;
+    }
   }
 
   if (glfwGetKey(window, GLFW_KEY_W) == GLFW_RELEASE) {
@@ -99,22 +111,24 @@ void Controls::keyboardInput(GLFWwindow * window, Camera *cam, float time) {
 
 
 
-
   if (movedir.back || movedir.forward || movedir.left || movedir.right) {
 
-    float velocity = (mainPlayer::LegPower+11) * time;
+    float velocity = ((mainPlayer::LegPower / 10.0f) + 10.0f) * time;
 
     if (movedir.boost && !movedir.back) {
       velocity += velocity;   //faster move forward while holding shift
     }
 
-    if (movedir.forward) cam->Position += cam->Front * velocity;
-    if (movedir.back) cam->Position -= cam->Front * velocity;
+    if (movedir.back || movedir.forward) {  // locks moving foward and backwards to the x and z axii, not that you can use the cam->Front instead of movefront to do a fly type thing
+      glm::vec3 moveFront = { cam->Front.x, 0.0f, cam->Front.z };
+      if (movedir.forward) cam->Position += moveFront * velocity;
+      if (movedir.back) cam->Position -= moveFront * velocity;
+    }
+
     if (movedir.right) cam->Position += cam->Right * velocity;
     if (movedir.left) cam->Position -= cam->Right * velocity;
 
-
-    /* clamp to level */
+    /* clamp to level - x */
     if (cam->Position.x > world_width) {
       if (movedir.forward) cam->Position.x -= cam->Front.x * velocity;
       if (movedir.back)    cam->Position.x += cam->Front.x * velocity;
@@ -126,7 +140,8 @@ void Controls::keyboardInput(GLFWwindow * window, Camera *cam, float time) {
       if (movedir.right)   cam->Position.x -= cam->Right.x * velocity;
       if (movedir.left)    cam->Position.x += cam->Right.x * velocity;
     } 
-    
+
+    /* clamp to level - z */
     if (cam->Position.z > world_width) {
       if (movedir.forward) cam->Position.z -= cam->Front.z * velocity;
       if (movedir.back)    cam->Position.z += cam->Front.z * velocity;
@@ -141,22 +156,17 @@ void Controls::keyboardInput(GLFWwindow * window, Camera *cam, float time) {
 
   }
 
-  // jump system
-  if (movedir.jump && movedir.onGround) {   // if jump is pressed while on the ground
+  /* Jump System */
+  if (movedir.jumped) {   // Jump Start
     movedir.onGround = false;
-    movedir.jump = false;
-
-  } else if (movedir.onGround) {
-    cam->Position.y = camstart[1];
-  
-  } else if (!movedir.falling && !movedir.onGround) {  // currently going up
-    cam->Position.y += cam->WorldUp.y;
-    
-    if (cam->Position.y > mainPlayer::LegPower + camstart[1])
+    movedir.jumped = false;
+  } else if (!movedir.onGround && !movedir.falling) {  // Jump Rising
+    cam->Position.y += cam->WorldUp.y * ((mainPlayer::LegPower / 10.0f) + 2.5f) * time;  // RISING SPEED CALC: jump speed based on LegPower Player Stat
+    if (cam->Position.y > (mainPlayer::LegPower / 10.0f) + 0.5f + camstart[1]) {  // MAX HEIGHT CALC: jump height based on LegPower Player Stat
       movedir.falling = true;
-
-  } else if (movedir.falling) {   // currently going down
-    cam->Position.y -= cam->WorldUp.y;
+    }
+  } else if (movedir.falling && !movedir.onGround) {   // currently going down
+    cam->Position.y -= cam->WorldUp.y * 2.5f * time;  // GRAVITY PULL DOWN CALC: static value, todo: make dynamic based on falling time
 
     if (cam->Position.y <= camstart[1]) {
       movedir.onGround = true;
@@ -165,5 +175,10 @@ void Controls::keyboardInput(GLFWwindow * window, Camera *cam, float time) {
     }
 
   } 
+
+
+  if (movedir.onGround) {
+    cam->Position.y = camstart[1];
+  }
 
 }
