@@ -165,6 +165,19 @@
     <Image Include="res\radial.png" />
     <Image Include="res\stonetex.png" />
   </ItemGroup>
+  <ItemGroup>
+    <Media Include="res\sfx\feetlanding.wav" />
+    <Media Include="res\sfx\footstep01.wav" />
+    <Media Include="res\sfx\footstep02.wav" />
+    <Media Include="res\sfx\footstep03.wav" />
+    <Media Include="res\sfx\footstep04.wav" />
+    <Media Include="res\sfx\footstep05.wav" />
+    <Media Include="res\sfx\footstep06.wav" />
+    <Media Include="res\sfx\grunt01.wav" />
+    <Media Include="res\sfx\grunt02.wav" />
+    <Media Include="res\sfx\grunt03.wav" />
+    <Media Include="res\sfx\grunt04.wav" />
+  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>

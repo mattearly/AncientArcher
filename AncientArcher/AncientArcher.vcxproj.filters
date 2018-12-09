@@ -116,4 +116,39 @@
       <Filter>Resource Files</Filter>
     </Image>
   </ItemGroup>
+  <ItemGroup>
+    <Media Include="res\sfx\feetlanding.wav">
+      <Filter>Resource Files</Filter>
+    </Media>
+    <Media Include="res\sfx\footstep01.wav">
+      <Filter>Resource Files</Filter>
+    </Media>
+    <Media Include="res\sfx\footstep02.wav">
+      <Filter>Resource Files</Filter>
+    </Media>
+    <Media Include="res\sfx\footstep03.wav">
+      <Filter>Resource Files</Filter>
+    </Media>
+    <Media Include="res\sfx\footstep04.wav">
+      <Filter>Resource Files</Filter>
+    </Media>
+    <Media Include="res\sfx\footstep05.wav">
+      <Filter>Resource Files</Filter>
+    </Media>
+    <Media Include="res\sfx\footstep06.wav">
+      <Filter>Resource Files</Filter>
+    </Media>
+    <Media Include="res\sfx\grunt01.wav">
+      <Filter>Resource Files</Filter>
+    </Media>
+    <Media Include="res\sfx\grunt02.wav">
+      <Filter>Resource Files</Filter>
+    </Media>
+    <Media Include="res\sfx\grunt03.wav">
+      <Filter>Resource Files</Filter>
+    </Media>
+    <Media Include="res\sfx\grunt04.wav">
+      <Filter>Resource Files</Filter>
+    </Media>
+  </ItemGroup>
 </Project>
