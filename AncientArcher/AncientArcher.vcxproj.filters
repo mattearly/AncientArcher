@@ -127,19 +127,31 @@
     </Media>
   </ItemGroup>
   <ItemGroup>
-    <Image Include="res\texture\grass_mosaic.png">
+    <Image Include="res\texture\00-pixelized_grass.png">
       <Filter>Resource Files</Filter>
     </Image>
-    <Image Include="res\texture\glass.png">
+    <Image Include="res\texture\01-pixelized_stone.png">
       <Filter>Resource Files</Filter>
     </Image>
-    <Image Include="res\texture\stone_mosaic.png">
+    <Image Include="res\texture\02-pixelized_wood.png">
       <Filter>Resource Files</Filter>
     </Image>
-    <Image Include="res\texture\tiger.png">
+    <Image Include="res\texture\03-pixelized_shrub.png">
       <Filter>Resource Files</Filter>
     </Image>
-    <Image Include="res\texture\mathematics.png">
+    <Image Include="res\texture\04-pixelized_portal.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="res\texture\05-pixelized_darkstone.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="res\texture\06-pixelized_water_droplet.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="res\texture\07-pixelized_gravel.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="res\texture\08-pixelized_water.png">
       <Filter>Resource Files</Filter>
     </Image>
   </ItemGroup>

@@ -113,13 +113,13 @@ void Controls::keyboardInput(GLFWwindow * window, Camera *cam, float dtime) {
 
   if (movedir.back || movedir.forward || movedir.left || movedir.right) {
 
-    float velocity = ((mainPlayer::LegPower / 10.0f) + 10.0f) * dtime;
+    float velocity = ((mainPlayer::LegPower / stat_divisor) + 10.0f) * dtime;
 
     if (movedir.boost && !movedir.back) {
       velocity += velocity;   //faster move forward while holding shift
     }
 
-    if (movedir.back || movedir.forward) {  // locks moving foward and backwards to the x and z axii, not that you can use the cam->Front instead of movefront to do a fly type thing
+    if (movedir.back || movedir.forward) {  // locks moving foward and backwards to the x and z axii. note that you can use the cam->Front instead of movefront to do a fly type thing while the y is unlocked or you are jumping
       glm::vec3 moveFront = { cam->Front.x, 0.0f, cam->Front.z };
       if (movedir.forward) cam->Position += moveFront * velocity;
       if (movedir.back) cam->Position -= moveFront * velocity;
@@ -162,8 +162,8 @@ void Controls::keyboardInput(GLFWwindow * window, Camera *cam, float dtime) {
     movedir.jumped = false;
     playgruntsound();
   } else if (!movedir.onGround && !movedir.falling) {  // Jump Rising
-    cam->Position.y += cam->WorldUp.y * ((mainPlayer::LegPower / 10.0f) + 4.0f) * dtime;  // RISING SPEED CALC: jump speed based on LegPower Player Stat
-    if (cam->Position.y > (mainPlayer::LegPower / 10.0f) + 0.8f + camstart[1]) {  // MAX HEIGHT CALC: jump height based on LegPower Player Stat
+    cam->Position.y += cam->WorldUp.y * ((mainPlayer::LegPower / stat_divisor) + 4.0f) * dtime;  // RISING SPEED CALC: jump speed based on LegPower Player Stat
+    if (cam->Position.y > (mainPlayer::LegPower / stat_divisor) + 0.8f + camstart[1]) {  // MAX HEIGHT CALC: jump height based on LegPower Player Stat
       movedir.falling = true;
       //todo: added gravity to falling y = 1/2at^2 + vt  
     }

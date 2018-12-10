@@ -110,19 +110,25 @@ Game::Game() {
   glEnableVertexAttribArray(1);
 
   /* load textures */
-  texBank.loadTexture("../AncientArcher/res/texture/grass_mosaic.png", shader);
-  texBank.loadTexture("../AncientArcher/res/texture/stone_mosaic.png", shader);
-  texBank.loadTexture("../AncientArcher/res/texture/glass.png", shader, true);
-  texBank.loadTexture("../AncientArcher/res/texture/mathematics.png", shader);
-  texBank.loadTexture("../AncientArcher/res/texture/tiger.png", shader);
+  texBank.loadTexture("../AncientArcher/res/texture/00-pixelized_grass.png", shader);
+  texBank.loadTexture("../AncientArcher/res/texture/01-pixelized_stone.png", shader);
+  texBank.loadTexture("../AncientArcher/res/texture/02-pixelized_wood.png", shader);
+  texBank.loadTexture("../AncientArcher/res/texture/03-pixelized_shrub.png", shader);
+  texBank.loadTexture("../AncientArcher/res/texture/04-pixelized_portal.png", shader);
+  texBank.loadTexture("../AncientArcher/res/texture/05-pixelized_darkstone.png", shader);
+  texBank.loadTexture("../AncientArcher/res/texture/06-pixelized_water_droplet.png", shader);
+  texBank.loadTexture("../AncientArcher/res/texture/07-pixelized_gravel.png", shader);
+  texBank.loadTexture("../AncientArcher/res/texture/08-pixelized_water.png", shader);
+  //texBank.loadTexture("../AncientArcher/res/texture/07-pixelized_gravel.png", shader);
 
-  /* update projection matrix  -  if changes, needs to be moved to main loop */
+  /* update projection matrix  -  if changes, this needs to be moved to main loop or updated specifically when appropriate */
   glm::mat4 projection = glm::perspective(glm::radians(camera->FoV), (float)window_width / (float)window_height, 0.1f, 200.0f);
   shader->setMat4("projection", projection);
 
-  glBindBuffer(GL_ARRAY_BUFFER, 0);   //unbind VBO
+  //glBindBuffer(GL_ARRAY_BUFFER, 0);   //unbind VBO
   //glBindVertexArray(0);  //unbind VAO
 
+  // only render the objects not line of sight blocked by other objects 
   glEnable(GL_DEPTH_TEST);
 
 }

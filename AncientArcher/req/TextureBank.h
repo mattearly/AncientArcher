@@ -1,24 +1,30 @@
 #pragma once
 #include<string>
 #include<Shader.h>
+
+/* requirements on TextureBank image use:
+   1.  must be a .png
+   2.  must have alpha channel
+   3.  must have width divisable by 4
+*/
 class TextureBank {
 public:
   TextureBank();
   ~TextureBank();
   
   /* loadTexture adds a new texture to the bank of usable textures */
-  void loadTexture(std::string path, Shader *shader, bool alpha = false);
+  void loadTexture(std::string path, Shader *shader);
 
-  /* signal to use a certain texture */
+  /* signal graphics card to use a certain texture for the upcoming draw functions */
   void activate(Shader *shader, int n);
 
 private:
 
+  static constexpr int MAXTEXTURES = 16;  // 0 - 15
+
   int active_tex;
 
-  int num_textures;
-
-  static constexpr unsigned int MAXTEXTURES = 16;  // 0 - 15
+  int num_loaded_textures;
 
   unsigned int texture[MAXTEXTURES]; // 16 array
 

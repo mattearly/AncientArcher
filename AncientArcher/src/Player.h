@@ -1,7 +1,7 @@
 #pragma once
 
 namespace mainPlayer {
-  static float LegPower = 1.0f;
+  static float LegPower = 10.0f;
 }
 
 class Player {
