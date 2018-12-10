@@ -14,7 +14,7 @@ public:
 
 private:
 
-  //int active_tex;
+  int active_tex;
 
   int num_textures;
 
@@ -23,6 +23,8 @@ private:
   unsigned int texture[MAXTEXTURES]; // 16 array
 
   int width, height, nrChannels;
+
+  bool initiated;
 
 };
 

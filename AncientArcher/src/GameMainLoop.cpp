@@ -78,9 +78,9 @@ void Game::mainLoop() {
     shader->setMat4("model", model);
     glDrawArrays(GL_TRIANGLES, 0, 36);  
     
-    texBank.activate(shader, 4);
+    texBank.activate(shader, 2);
 
-    ///* meme wall */
+    ///* GLASS wall */
     model = glm::mat4(1.0f);
     model = glm::translate(model, glm::vec3(-2.0f, 32.0f, 30.0f));
     model = glm::scale(model, glm::vec3(0.01f, 60.0f, 60.0f));
@@ -88,9 +88,9 @@ void Game::mainLoop() {
     shader->setMat4("model", model);
     glDrawArrays(GL_TRIANGLES, 0, 36);
 
-    texBank.activate(shader, 2);
+    texBank.activate(shader, 4);
 
-    /* random stone box */
+    /* random tiger box */
     model = glm::mat4(1.0f);
     model = glm::translate(model, glm::vec3(25.0f, 4.0f, 25.0f));
     model = glm::scale(model, glm::vec3(2.0f, 2.0f, 2.0f));
