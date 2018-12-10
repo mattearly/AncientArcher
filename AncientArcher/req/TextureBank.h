@@ -22,7 +22,7 @@ private:
 
   unsigned int texture[MAXTEXTURES]; // 16 array
 
-  int width, height, nrChannels;
+  int width, height, nrChannel;  
 
   bool initiated;
 
