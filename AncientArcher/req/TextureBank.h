@@ -6,17 +6,23 @@ public:
   TextureBank();
   ~TextureBank();
   
-  static constexpr unsigned int MAXTEXTURES = 16;  // 0 - 15
-
-  unsigned int texture[MAXTEXTURES];
-
-  /*static*/ int num_textures;
-
   /* loadTexture adds a new texture to the bank of usable textures */
   void loadTexture(std::string path, Shader *shader, bool alpha = false);
 
-  int width, height, nrChannels;
+  /* signal to use a certain texture */
+  void activate(Shader *shader, int n);
 
+private:
+
+  //int active_tex;
+
+  int num_textures;
+
+  static constexpr unsigned int MAXTEXTURES = 16;  // 0 - 15
+
+  unsigned int texture[MAXTEXTURES]; // 16 array
+
+  int width, height, nrChannels;
 
 };
 

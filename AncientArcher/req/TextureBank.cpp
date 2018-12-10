@@ -8,6 +8,7 @@
 
 TextureBank::TextureBank() {
   num_textures = 0;
+  //active_tex = 0;
 }
 
 TextureBank::~TextureBank() {}
@@ -154,7 +155,17 @@ void TextureBank::loadTexture(std::string path, Shader *shader, bool alpha) {
   }
   glBindTexture(GL_TEXTURE_2D, texture[num_textures]);
 
+  std::cout <<
+    num_textures << ". " << path << "\n";
+
+
   num_textures++;
 
-  std::cout << "loaded texture: " << path << "\n";
+}
+
+void TextureBank::activate(Shader * shader, int n) {
+  //if (active_tex != n) {
+    shader->setInt("texnum", n);
+    //active_tex = n;
+  //}
 }

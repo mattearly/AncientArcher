@@ -125,7 +125,6 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="req\mearly.cpp" />
-    <ClCompile Include="req\Lighting.cpp" />
     <ClCompile Include="req\Constraints.cpp" />
     <ClCompile Include="req\Sound.cpp" />
     <ClCompile Include="src\Player.cpp" />
@@ -141,7 +140,6 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="req\mearly.h" />
-    <ClInclude Include="req\Lighting.h" />
     <ClInclude Include="req\Constraints.h" />
     <ClInclude Include="req\Sound.h" />
     <ClInclude Include="src\Player.h" />
@@ -154,8 +152,6 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="shaders\fragment.shader" />
-    <None Include="shaders\lightfragment.shader" />
-    <None Include="shaders\lightvertex.shader" />
     <None Include="shaders\vertex.shader" />
   </ItemGroup>
   <ItemGroup>
@@ -170,6 +166,13 @@
     <Media Include="res\sfx\grunt02.wav" />
     <Media Include="res\sfx\grunt03.wav" />
     <Media Include="res\sfx\grunt04.wav" />
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="res\texture\glass.png" />
+    <Image Include="res\texture\grass_mosaic.png" />
+    <Image Include="res\texture\mathematics.png" />
+    <Image Include="res\texture\stone_mosaic.png" />
+    <Image Include="res\texture\tiger.png" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

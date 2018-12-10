@@ -48,6 +48,8 @@ Shader::Shader(const char *vertex_file, const char *fragment_file) {
   if (!v_success) {
     glGetShaderInfoLog(vertexShader, 512, nullptr, v_infoLog);
     std::cout << "error in vertex shader, compilation failed: " << v_infoLog << std::endl;
+    char a;
+    std::cin >> a;
     exit(-1);
   }
 
@@ -63,6 +65,8 @@ Shader::Shader(const char *vertex_file, const char *fragment_file) {
   if (!f_success) {
     glGetShaderInfoLog(fragmentShader, 512, nullptr, f_infoLog);
     std::cout << "error in fragment shader, compilation failed: " << f_infoLog << std::endl;
+    char a;
+    std::cin >> a;
     exit(-1);
   }
 
@@ -79,6 +83,8 @@ Shader::Shader(const char *vertex_file, const char *fragment_file) {
   if (!p_success) {
     glGetProgramInfoLog(ID, 512, nullptr, p_infoLog);
     std::cout << "error in ID: " << p_infoLog << std::endl;
+    char a;
+    std::cin >> a;
     exit(-1);
   }
 

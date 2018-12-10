@@ -31,6 +31,13 @@ void playlandingsound() {
   Mix_PlayChannel(-1, landingsoundeffect, 0);
 }
 
+void playsuccesssound() {
+
+  if (!soundReady) initsound();
+
+  Mix_PlayChannel(-1, successsoundeffect, 0);
+}
+
 //void playdoorsound() {
 //
 //  if (!soundReady) initsound();
@@ -145,6 +152,14 @@ void initsound() {
   
   landingsoundeffect = Mix_LoadWAV("../AncientArcher/res/sfx/feetlanding.wav");
   if (landingsoundeffect == nullptr) {
+    SDL_LogError(SDL_LOG_CATEGORY_APPLICATION,
+      "Couldn't load audio: %s",
+      Mix_GetError());
+  }
+
+    
+  successsoundeffect = Mix_LoadWAV("../AncientArcher/res/sfx/success.wav");
+  if (successsoundeffect == nullptr) {
     SDL_LogError(SDL_LOG_CATEGORY_APPLICATION,
       "Couldn't load audio: %s",
       Mix_GetError());

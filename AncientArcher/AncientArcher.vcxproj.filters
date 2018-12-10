@@ -48,9 +48,6 @@
     <ClCompile Include="req\Sound.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="req\Lighting.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="req\mearly.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -83,9 +80,6 @@
     <ClInclude Include="req\Sound.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="req\Lighting.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="req\mearly.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -96,8 +90,6 @@
   <ItemGroup>
     <None Include="shaders\vertex.shader" />
     <None Include="shaders\fragment.shader" />
-    <None Include="shaders\lightvertex.shader" />
-    <None Include="shaders\lightfragment.shader" />
   </ItemGroup>
   <ItemGroup>
     <Media Include="res\sfx\feetlanding.wav">
@@ -133,5 +125,22 @@
     <Media Include="res\sfx\grunt04.wav">
       <Filter>Resource Files</Filter>
     </Media>
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="res\texture\grass_mosaic.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="res\texture\glass.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="res\texture\stone_mosaic.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="res\texture\tiger.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="res\texture\mathematics.png">
+      <Filter>Resource Files</Filter>
+    </Image>
   </ItemGroup>
 </Project>

@@ -41,8 +41,8 @@ Game::Game() {
 
   control = new Controls();
   shader = new Shader("../AncientArcher/shaders/vertex.shader", "../AncientArcher/shaders/fragment.shader");
-  lightShader = new Shader("../AncientArcher/shaders/lightvertex.shader", "../AncientArcher/shaders/lightfragment.shader");
-  camera = new Camera();  // init Camera with all defaults
+  camera = new Camera();
+
 
   glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
 
@@ -92,61 +92,12 @@ Game::Game() {
     -0.5f,  0.5f, -0.5f,  0.0f, 1.0f
   };
 
-  // set up vertex data (and buffer(s)) and configure vertex attributes
-// ------------------------------------------------------------------
-  float lightingNormals[] = {
-      0.0f,  0.0f, -1.0f,
-      0.0f,  0.0f, -1.0f,
-      0.0f,  0.0f, -1.0f,
-      0.0f,  0.0f, -1.0f,
-      0.0f,  0.0f, -1.0f,
-      0.0f,  0.0f, -1.0f,
-
-      0.0f,  0.0f,  1.0f,
-      0.0f,  0.0f,  1.0f,
-      0.0f,  0.0f,  1.0f,
-      0.0f,  0.0f,  1.0f,
-      0.0f,  0.0f,  1.0f,
-      0.0f,  0.0f,  1.0f,
-
-      1.0f,  0.0f,  0.0f,
-      1.0f,  0.0f,  0.0f,
-      1.0f,  0.0f,  0.0f,
-      1.0f,  0.0f,  0.0f,
-      1.0f,  0.0f,  0.0f,
-      1.0f,  0.0f,  0.0f,
-
-      1.0f,  0.0f,  0.0f,
-      1.0f,  0.0f,  0.0f,
-      1.0f,  0.0f,  0.0f,
-      1.0f,  0.0f,  0.0f,
-      1.0f,  0.0f,  0.0f,
-      1.0f,  0.0f,  0.0f,
-
-      0.0f, -1.0f,  0.0f,
-      0.0f, -1.0f,  0.0f,
-      0.0f, -1.0f,  0.0f,
-      0.0f, -1.0f,  0.0f,
-      0.0f, -1.0f,  0.0f,
-      0.0f, -1.0f,  0.0f,
-
-      0.0f,  1.0f,  0.0f,
-      0.0f,  1.0f,  0.0f,
-      0.0f,  1.0f,  0.0f,
-      0.0f,  1.0f,  0.0f,
-      0.0f,  1.0f,  0.0f,
-      0.0f,  1.0f,  0.0f
-  };
-
-
-  /* set up an area to store a vertex data */
+  /* set up an area to store vertex data */
   glGenVertexArrays(1, &cubeVAO);
   glGenBuffers(1, &cubeVBO);
-  //glGenBuffers(1, &EBO);
 
   glBindVertexArray(cubeVAO);
 
-  /* prep to send to send vertex buffer object */
   glBindBuffer(GL_ARRAY_BUFFER, cubeVBO);
   glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
 
@@ -158,28 +109,19 @@ Game::Game() {
   glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 5 * sizeof(float), (void*)(3 * sizeof(float)));
   glEnableVertexAttribArray(1);
 
-  // lighting attribute in it's own vertex array
-  glGenVertexArrays(1, &lightVAO);
-  glGenBuffers(1, &lightVBO);
-  glBindVertexArray(lightVAO);
-
-  glBindBuffer(GL_ARRAY_BUFFER, lightVBO);
-  glBufferData(GL_ARRAY_BUFFER, sizeof(lightingNormals), lightingNormals, GL_STATIC_DRAW);
-
-  glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), (void*)0);
-  glEnableVertexAttribArray(0);
-
-  /* preload some textures */
+  /* load textures */
   texBank.loadTexture("../AncientArcher/res/texture/grass_mosaic.png", shader);
+  texBank.loadTexture("../AncientArcher/res/texture/stone_mosaic.png", shader);
+  texBank.loadTexture("../AncientArcher/res/texture/glass.png", shader, true);
+  texBank.loadTexture("../AncientArcher/res/texture/mathematics.png", shader);
+  texBank.loadTexture("../AncientArcher/res/texture/tiger.png", shader);
 
-  /* update projection matrix  - this may rarely chance and could be more efficient
-     by not being in the main loop */
-  glm::mat4 projection = glm::perspective(glm::radians(camera->FoV),
-    (float)window_width / (float)window_height, 0.1f, 200.0f);
+  /* update projection matrix  -  if changes, needs to be moved to main loop */
+  glm::mat4 projection = glm::perspective(glm::radians(camera->FoV), (float)window_width / (float)window_height, 0.1f, 200.0f);
   shader->setMat4("projection", projection);
 
   glBindBuffer(GL_ARRAY_BUFFER, 0);   //unbind VBO
-  glBindVertexArray(0);  //unbind VAO
+  //glBindVertexArray(0);  //unbind VAO
 
   glEnable(GL_DEPTH_TEST);
 

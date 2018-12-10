@@ -14,6 +14,9 @@ void playgruntsound();
 static Mix_Chunk *landingsoundeffect;
 void playlandingsound();
 
+static Mix_Chunk *successsoundeffect;
+void playsuccesssound();
+
 //static Mix_Chunk *dooropensoundeffect;
 //void playdoorsound();
 //

@@ -5,7 +5,6 @@
 #include <Shader.h>
 #include <Camera.h>
 #include <Controls.h>
-#include <Lighting.h>
 #include "TextureBank.h"
 
 static float lastFrame = 0.0f;
@@ -18,7 +17,6 @@ public:
   Camera *camera;
   Controls *control;
   TextureBank texBank;
-  Lighting light;
 
   void mainLoop();
 
@@ -31,9 +29,8 @@ private:
 
   GLFWwindow *window;
   Shader *shader;
-  Shader *lightShader;
 
-  unsigned int cubeVAO, lightVAO, cubeVBO, lightVBO;
+  unsigned int cubeVAO, cubeVBO;
  
   void setupReshapeWindow();
   void setupMouseHandler();
