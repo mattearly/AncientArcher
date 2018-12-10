@@ -113,7 +113,7 @@ void Controls::keyboardInput(GLFWwindow * window, Camera *cam, float dtime) {
 
   if (movedir.back || movedir.forward || movedir.left || movedir.right) {
 
-    float velocity = ((mainPlayer::LegPower / stat_divisor) + 10.0f) * dtime;
+    float velocity = ((mainPlayer::LegPower / stat_divisor) + mainPlayer::BaseSpeed) * dtime;  // MOVEMENT SPEED CALC : based on player stats
 
     if (movedir.boost && !movedir.back) {
       velocity += velocity;   //faster move forward while holding shift
