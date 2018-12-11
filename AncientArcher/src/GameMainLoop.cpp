@@ -28,20 +28,17 @@ void Game::mainLoop() {
 
     //glBindVertexArray(cubeVAO);  // bind vertex array, our only one, stays in use
 
-
     //PLAYER MODEL STUFF
-    //shader->setBool("player", 1);  // player render set to true
 
-    //shader->setVec3("playerPos", *camera->getPosition());  // send player pos (camera position for now...) to shader
-
-    texBank.activate(shader, 9);  // player pin location thing
+    texBank.activate(shader, 9);  // player demo texture
     model = glm::mat4(1.0f);
     model = glm::translate(model, *camera->getPosition() + *camera->getFront());
+    model = glm::rotate(model, glm::radians(-camera->getYaw()), glm::vec3(0.0f, 1.0f, 0.0f));
+    //model = glm::rotate(model, glm::radians(-camera->getPitch()), glm::vec3(1.0f, 0.0f, 1.0f));
     model = glm::scale(model, glm::vec3(0.1f, 0.3f, 0.1f));
     shader->setMat4("model", model);
     glDrawArrays(GL_TRIANGLES, 0, 36);
 
-    //shader->setBool("player", 0);  // player render set to false
 
     // WORLD MODEL STUFF
     texBank.activate(shader, 0);  // grass

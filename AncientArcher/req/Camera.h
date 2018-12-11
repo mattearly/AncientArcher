@@ -25,6 +25,9 @@ public:
   //return a reference to Front
   glm::vec3* getFront();
 
+  //return copy of Yaw
+  float getYaw();
+
 private:
 
   glm::vec3 Position;  // position of the camera
