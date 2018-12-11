@@ -111,6 +111,14 @@ void Controls::keyboardInput(GLFWwindow * window, Camera *cam, float dtime) {
     movedir.canJumpAgain = true;
   }
 
+  if (glfwGetKey(window, GLFW_KEY_1) == GLFW_RELEASE) {
+    mainPlayer::weaponSelect = MELEE;
+  }  
+  
+  if (glfwGetKey(window, GLFW_KEY_2) == GLFW_RELEASE) {
+    mainPlayer::weaponSelect = RANGED;
+  }
+
   if (movedir.back || movedir.forward || movedir.left || movedir.right) {
 
     float velocity = ((mainPlayer::LegPower / stat_divisor) + mainPlayer::BaseSpeed) * dtime;  // MOVEMENT SPEED CALC : based on player stats

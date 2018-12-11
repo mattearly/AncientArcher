@@ -25,8 +25,15 @@ public:
   //return a reference to Front
   glm::vec3* getFront();
 
+  //return a reference to Right
+  glm::vec3* getRight();
+
   //return copy of Yaw
   float getYaw();
+
+  //return copy of Pitch
+  float getPitch();
+
 
 private:
 

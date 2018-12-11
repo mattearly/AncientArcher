@@ -125,6 +125,9 @@
     <Media Include="res\sfx\grunt04.wav">
       <Filter>Resource Files</Filter>
     </Media>
+    <Media Include="res\sfx\success.wav">
+      <Filter>Resource Files</Filter>
+    </Media>
   </ItemGroup>
   <ItemGroup>
     <Image Include="res\texture\00-pixelized_grass.png">
@@ -152,6 +155,15 @@
       <Filter>Resource Files</Filter>
     </Image>
     <Image Include="res\texture\08-pixelized_water.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="res\texture\09-pixelized_player.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="res\texture\10-pixelized_mud.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="res\texture\11-pixelized_darkwood.png">
       <Filter>Resource Files</Filter>
     </Image>
   </ItemGroup>

@@ -166,6 +166,7 @@
     <Media Include="res\sfx\grunt02.wav" />
     <Media Include="res\sfx\grunt03.wav" />
     <Media Include="res\sfx\grunt04.wav" />
+    <Media Include="res\sfx\success.wav" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="res\texture\00-pixelized_grass.png" />
@@ -177,6 +178,9 @@
     <Image Include="res\texture\06-pixelized_water_droplet.png" />
     <Image Include="res\texture\07-pixelized_gravel.png" />
     <Image Include="res\texture\08-pixelized_water.png" />
+    <Image Include="res\texture\09-pixelized_player.png" />
+    <Image Include="res\texture\10-pixelized_mud.png" />
+    <Image Include="res\texture\11-pixelized_darkwood.png" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

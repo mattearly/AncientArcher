@@ -41,7 +41,8 @@ void main() {
   case 8: FragColor = texture(texture8, TexCoord); break; 
   case 9: FragColor = texture(texture9, TexCoord); break; 
   case 10: FragColor = texture(texture10, TexCoord); break; 
-  case 11: FragColor = texture(texture12, TexCoord); break; 
+  case 11: FragColor = texture(texture11, TexCoord); break; 
+  case 12: FragColor = texture(texture12, TexCoord); break; 
   case 13: FragColor = texture(texture13, TexCoord); break; 
   case 14: FragColor = texture(texture14, TexCoord); break; 
   case 15: FragColor = texture(texture15, TexCoord); break; 

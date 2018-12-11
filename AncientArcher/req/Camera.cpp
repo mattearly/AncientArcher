@@ -28,8 +28,16 @@ glm::vec3 * Camera::getFront() {
   return &Front;
 }
 
+glm::vec3 * Camera::getRight() {
+  return &Right;
+}
+
 float Camera::getYaw() {
   return Yaw;
+}
+
+float Camera::getPitch() {
+  return Pitch;
 }
 
 void Camera::updateCameraVectors() {

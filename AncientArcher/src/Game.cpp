@@ -46,7 +46,7 @@ Game::Game() {
 
   glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
 
-     // cube
+  // cube
   float vertices[] = {
     // positions          // texture coords
     -0.5f, -0.5f, -0.5f,  0.0f, 0.0f,
@@ -121,8 +121,8 @@ Game::Game() {
   texBank.loadTexture("../AncientArcher/res/texture/08-pixelized_water.png", shader);
   texBank.loadTexture("../AncientArcher/res/texture/09-pixelized_player.png", shader);
   texBank.loadTexture("../AncientArcher/res/texture/10-pixelized_mud.png", shader);
-  //texBank.loadTexture("../AncientArcher/res/texture/10-pixelized_mud.png", shader);  // room for 5 more
-  //texBank.loadTexture("../AncientArcher/res/texture/10-pixelized_mud.png", shader);
+  texBank.loadTexture("../AncientArcher/res/texture/11-pixelized_darkwood.png", shader);
+  //texBank.loadTexture("../AncientArcher/res/texture/10-pixelized_mud.png", shader);// room for 4 more
   //texBank.loadTexture("../AncientArcher/res/texture/10-pixelized_mud.png", shader);
   //texBank.loadTexture("../AncientArcher/res/texture/10-pixelized_mud.png", shader);
   //texBank.loadTexture("../AncientArcher/res/texture/10-pixelized_mud.png", shader);
@@ -146,7 +146,7 @@ Game::~Game() {
 
   glfwTerminate();
 
- }
+}
 
 void Game::reshapeWindow(GLFWwindow * window, int w, int h) {
   glViewport(0, 0, w, h);
