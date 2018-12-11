@@ -1,6 +1,8 @@
 #include "mearly.h"
 
 namespace mearly {
+
+  // returns a double between zero and one randomly
   double ZTOR() {
     // initialize the random number generator with time-dependent seed
     static uint64_t timeSeed = std::chrono::high_resolution_clock::now().time_since_epoch().count();
@@ -11,6 +13,7 @@ namespace mearly {
     return unif(mgen);
   }
 
+  // returns integer zero or one randomly [true / false]
   int ZOOR() {
     static uint64_t timeSeed = std::chrono::high_resolution_clock::now().time_since_epoch().count();
     static std::seed_seq ss{ uint32_t(timeSeed & 0xffffffff), uint32_t(timeSeed >> 32) };
@@ -20,6 +23,7 @@ namespace mearly {
     return dist2(mgen);
   }
 
+  // returns an interger between n and k randomly
   int NTKR(int n, int k) {
     static uint64_t timeSeed = std::chrono::high_resolution_clock::now().time_since_epoch().count();
     static std::seed_seq ss{ uint32_t(timeSeed & 0xffffffff), uint32_t(timeSeed >> 32) };
