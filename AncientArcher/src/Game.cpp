@@ -119,7 +119,13 @@ Game::Game() {
   texBank.loadTexture("../AncientArcher/res/texture/06-pixelized_water_droplet.png", shader);
   texBank.loadTexture("../AncientArcher/res/texture/07-pixelized_gravel.png", shader);
   texBank.loadTexture("../AncientArcher/res/texture/08-pixelized_water.png", shader);
-  //texBank.loadTexture("../AncientArcher/res/texture/07-pixelized_gravel.png", shader);
+  texBank.loadTexture("../AncientArcher/res/texture/09-pixelized_player.png", shader);
+  texBank.loadTexture("../AncientArcher/res/texture/10-pixelized_mud.png", shader);
+  //texBank.loadTexture("../AncientArcher/res/texture/10-pixelized_mud.png", shader);  // room for 5 more
+  //texBank.loadTexture("../AncientArcher/res/texture/10-pixelized_mud.png", shader);
+  //texBank.loadTexture("../AncientArcher/res/texture/10-pixelized_mud.png", shader);
+  //texBank.loadTexture("../AncientArcher/res/texture/10-pixelized_mud.png", shader);
+  //texBank.loadTexture("../AncientArcher/res/texture/10-pixelized_mud.png", shader);
 
   /* update projection matrix  -  if changes, this needs to be moved to main loop or updated specifically when appropriate */
   glm::mat4 projection = glm::perspective(glm::radians(camera->FoV), (float)window_width / (float)window_height, 0.1f, 200.0f);
@@ -130,7 +136,7 @@ Game::Game() {
 
   // only render the objects not line of sight blocked by other objects 
   glEnable(GL_DEPTH_TEST);
-
+  //glEnable(GL_CULL_FACE);
 }
 
 Game::~Game() {

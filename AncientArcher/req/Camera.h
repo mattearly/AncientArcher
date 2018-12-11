@@ -16,7 +16,14 @@ public:
 
   float FoV;
 
+
   glm::mat4 getViewMatrix();
+
+  //return a reference to Position
+  glm::vec3* getPosition();
+
+  //return a reference to Front
+  glm::vec3* getFront();
 
 private:
 

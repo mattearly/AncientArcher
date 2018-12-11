@@ -180,4 +180,5 @@ void Controls::keyboardInput(GLFWwindow * window, Camera *cam, float dtime) {
     cam->Position.y = camstart[1];
   }
 
+
 }
