@@ -1,5 +1,6 @@
 #include "Player.h"
 #include <Constraints.h>
+#include <iostream>
 
 Player::Player() {
 
@@ -9,7 +10,7 @@ Player::Player() {
 
   weaponSelect = 0;  // no weapon
 
-  attackSpeed = 1500.0f;
+  attackSpeed = 1800.0f;
 
   lastAttackTime = 0.0f;
 
@@ -33,6 +34,15 @@ void Player::increaseLegPower(float add) {
     LegPower += add;
     if (LegPower > 100.00f) {
       LegPower = 100.00f;
+    }
+  }
+}
+
+void Player::increaseAttackSpeed(float sub) {
+  if (attackSpeed > 500.0f) {
+    attackSpeed -= sub;
+    if (attackSpeed < 500.0f) {
+      attackSpeed = 500.0f;  //max attack speed is .5s between attacks
     }
   }
 }

@@ -7,6 +7,9 @@ public:
   ~Pickups();
 
   bool speedBoostAvail;
-  glm::vec2 boostLoc;
+  glm::vec2 speedBoostLoc;
+
+  bool attackBoostAvail;
+  glm::vec2 attackBoostLoc;
 };
 

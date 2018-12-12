@@ -48,7 +48,7 @@ void Controls::keyboardInput(GLFWwindow * window, Camera *cam, Player *player, P
 
   if (glfwGetMouseButton(window, GLFW_MOUSE_BUTTON_LEFT) == GLFW_PRESS) {
     //swing sword  or shoot bow
-    if (player->getLastAttackTime() < gametime - player->getAttackSpeed()) {
+    if (player->getLastAttackTime() + player->getAttackSpeed() < gametime) {
       switch (player->getSelectedWeapon()) {
       case 0:
         playpunchsound();
@@ -212,12 +212,27 @@ void Controls::keyboardInput(GLFWwindow * window, Camera *cam, Player *player, P
     if (pickups->speedBoostAvail) {
       if (
         //y because boost loc is only x and y
-        cam->Position.z >= pickups->boostLoc.y - 1 &&
-        cam->Position.z <= pickups->boostLoc.y + 1 &&
-        cam->Position.x >= pickups->boostLoc.x - 1 &&
-        cam->Position.x <= pickups->boostLoc.x + 1) {
-        player->increaseLegPower(10.0f);
+        cam->Position.z >= pickups->speedBoostLoc.y - 1 &&
+        cam->Position.z <= pickups->speedBoostLoc.y + 1 &&
+        cam->Position.x >= pickups->speedBoostLoc.x - 1 &&
+        cam->Position.x <= pickups->speedBoostLoc.x + 1) {
+        player->increaseLegPower(15.0f);
         pickups->speedBoostAvail = false;
+        playsuccesssound();
+
+      }
+    }  
+    
+    // ATTACKSPEED PICKUP                       
+    if (pickups->attackBoostAvail) {
+      if (
+        //y because boost loc is only x and y
+        cam->Position.z >= pickups->attackBoostLoc.y - 1 &&
+        cam->Position.z <= pickups->attackBoostLoc.y + 1 &&
+        cam->Position.x >= pickups->attackBoostLoc.x - 1 &&
+        cam->Position.x <= pickups->attackBoostLoc.x + 1) {
+        player->increaseAttackSpeed(500.0f);  // subtract 500. off the ms timer
+        pickups->attackBoostAvail = false;
         playsuccesssound();
 
       }

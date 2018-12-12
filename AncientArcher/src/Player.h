@@ -13,9 +13,12 @@ public:
   // MUTATORS
   void increaseLegPower(float add);
 
+  void increaseAttackSpeed(float sub);
+
   void selectWeapon(int weapnum);
 
   void setTimeSinceLastAttack(float incr);
+
 
 
   // ACCESSORS
@@ -39,7 +42,7 @@ private:
   
   int weaponSelect;
 
-  float attackSpeed;  // greater is slower, time in between attacks needed
+  float attackSpeed;  // greater is slower, time in between attacks needed, starts at 1800 (1.8s between attacks)
 
   float lastAttackTime;  // gametime stamp
 

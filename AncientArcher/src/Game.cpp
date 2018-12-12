@@ -126,7 +126,7 @@ Game::Game() {
   texBank.loadTexture("../AncientArcher/res/texture/12-pickup_speedboost.png", shader);
   texBank.loadTexture("../AncientArcher/res/texture/13-pixelized_snow.png", shader);
   texBank.loadTexture("../AncientArcher/res/texture/14-maze_metal.png", shader);
-  //texBank.loadTexture("../AncientArcher/res/texture/10-pixelized_mud.png", shader);
+  texBank.loadTexture("../AncientArcher/res/texture/15-pickup_attackboost.png", shader);
 
   //glBindBuffer(GL_ARRAY_BUFFER, 0);   //unbind VBO
   //glBindVertexArray(0);  //unbind VAO
