@@ -124,6 +124,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="src\Pickups.cpp" />
     <ClCompile Include="req\mearly.cpp" />
     <ClCompile Include="req\Constraints.cpp" />
     <ClCompile Include="req\Sound.cpp" />
@@ -139,6 +140,7 @@
     <ClCompile Include="req\TextureBank.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="src\Pickups.h" />
     <ClInclude Include="req\mearly.h" />
     <ClInclude Include="req\Constraints.h" />
     <ClInclude Include="req\Sound.h" />

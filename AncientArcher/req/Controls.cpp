@@ -3,6 +3,8 @@
 #include "Constraints.h"
 #include "../src/Player.h"
 #include "Sound.h"
+#include "../src/Game.h"
+#include <iostream>
 
 Controls::Controls() {
   firstMouse = true;
@@ -40,7 +42,7 @@ void Controls::mouseMovement(double xpos, double ypos, Camera *cam) {
 
 }
 
-void Controls::keyboardInput(GLFWwindow * window, Camera *cam, float dtime) {
+void Controls::keyboardInput(GLFWwindow * window, Camera *cam, Player *player, Pickups *pickups, float dtime) {
 
   if (glfwGetKey(window, GLFW_KEY_ESCAPE) == GLFW_PRESS) {
     glfwSetWindowShouldClose(window, true);
@@ -87,13 +89,17 @@ void Controls::keyboardInput(GLFWwindow * window, Camera *cam, float dtime) {
     }
   }
 
-  //if (glfwGetKey(window, GLFW_KEY_1) == GLFW_PRESS) {
-  //  mainPlayer::weaponSelect = WEAPONSELECT::MELEE;
-  //}
+  if (glfwGetKey(window, GLFW_KEY_0) == GLFW_PRESS) {
+    player->selectWeapon(0);
+  }
 
-  //if (glfwGetKey(window, GLFW_KEY_2) == GLFW_PRESS) {
-  //  mainPlayer::weaponSelect = WEAPONSELECT::RANGED;
-  //}
+  if (glfwGetKey(window, GLFW_KEY_1) == GLFW_PRESS) {
+    player->selectWeapon(1);
+  }
+
+  if (glfwGetKey(window, GLFW_KEY_2) == GLFW_PRESS) {
+    player->selectWeapon(2);
+  }
 
   if (glfwGetKey(window, GLFW_KEY_W) == GLFW_RELEASE) {
     movedir.forward = false;
@@ -119,11 +125,9 @@ void Controls::keyboardInput(GLFWwindow * window, Camera *cam, float dtime) {
     movedir.canJumpAgain = true;
   }
 
-
-
   if (movedir.back || movedir.forward || movedir.left || movedir.right) {
 
-    float velocity = ((mainPlayer::LegPower / stat_divisor) + mainPlayer::BaseSpeed) * dtime;  // MOVEMENT SPEED CALC : based on player stats
+    float velocity = player->getRunSpeed() * dtime;  // MOVEMENT SPEED CALC : based on player stats
 
     if (movedir.boost && !movedir.back) {
       velocity += velocity;   //faster move forward while holding shift
@@ -149,7 +153,7 @@ void Controls::keyboardInput(GLFWwindow * window, Camera *cam, float dtime) {
       if (movedir.back)    cam->Position.x += cam->Front.x * velocity;
       if (movedir.right)   cam->Position.x -= cam->Right.x * velocity;
       if (movedir.left)    cam->Position.x += cam->Right.x * velocity;
-    } 
+    }
 
     /* clamp to level - z */
     if (cam->Position.z > world_width) {
@@ -164,8 +168,18 @@ void Controls::keyboardInput(GLFWwindow * window, Camera *cam, float dtime) {
       if (movedir.left)    cam->Position.z += cam->Right.z * velocity;
     }
 
-    if (cam->Position.z >= 34.0f && cam->Position.z <= 35.0f && cam->Position.x >= 24.0f && cam->Position.x <= 26.0f) {
-      mainPlayer::LegPower += 10.0f;
+
+    // LEGPOWER PICKUP                       
+    if (pickups->speedBoostAvail) {
+      if (
+                                             //y because boost loc is only x and y
+        cam->Position.z >= pickups->boostLoc.y - 1 &&
+        cam->Position.z <= pickups->boostLoc.y + 1 &&
+        cam->Position.x >= pickups->boostLoc.x - 1 &&
+        cam->Position.x <= pickups->boostLoc.x + 1) {
+        player->increaseLegPower(10.0f);
+        pickups->speedBoostAvail = false;
+      }
     }
 
   }
@@ -176,8 +190,8 @@ void Controls::keyboardInput(GLFWwindow * window, Camera *cam, float dtime) {
     movedir.jumped = false;
     playgruntsound();
   } else if (!movedir.onGround && !movedir.falling) {  // Jump Rising
-    cam->Position.y += cam->WorldUp.y * ((mainPlayer::LegPower / stat_divisor) + 4.0f) * dtime;  // RISING SPEED CALC: jump speed based on LegPower Player Stat
-    if (cam->Position.y > (mainPlayer::LegPower / stat_divisor) + 0.8f + camstart[1]) {  // MAX HEIGHT CALC: jump height based on LegPower Player Stat
+    cam->Position.y += cam->WorldUp.y * player->getRisingSpeed() * dtime;  // RISING SPEED CALC: jump speed based on LegPower Player Stat
+    if (cam->Position.y > player->getJumpHeight() + camstart[1]) {  // MAX HEIGHT CALC: jump height based on LegPower Player Stat
       movedir.falling = true;
       //todo: added gravity to falling y = 1/2at^2 + vt  
     }
@@ -188,7 +202,7 @@ void Controls::keyboardInput(GLFWwindow * window, Camera *cam, float dtime) {
       movedir.falling = false;
       playlandingsound();
     }
-  } 
+  }
 
   if (movedir.onGround) {
     cam->Position.y = camstart[1];

@@ -6,6 +6,8 @@
 #include <Camera.h>
 #include <Controls.h>
 #include "TextureBank.h"
+#include "Player.h"
+#include "Pickups.h"
 
 static float lastFrame = 0.0f;
 
@@ -16,6 +18,8 @@ public:
 
   Camera *camera;
   Controls *control;
+  Player *player;
+  Pickups pickups;
   TextureBank texBank;
 
   void mainLoop();

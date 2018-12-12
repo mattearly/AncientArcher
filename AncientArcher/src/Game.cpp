@@ -20,7 +20,7 @@ Game::Game() {
 #endif
 
   /* init window */
-  window = glfwCreateWindow(window_width, window_height, "TITLE", nullptr, nullptr);
+  window = glfwCreateWindow(window_width, window_height, "Oh Hi Mark", nullptr, nullptr);
   if (window == nullptr) {
     std::cout << "failed to create glfw window" << std::endl;
     glfwTerminate();
@@ -42,6 +42,7 @@ Game::Game() {
   control = new Controls();
   shader = new Shader("../AncientArcher/shaders/vertex.shader", "../AncientArcher/shaders/fragment.shader");
   camera = new Camera();
+  player = new Player(10.0f, 4.0f, 10.0f);   //default character
 
 
   glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
@@ -123,8 +124,8 @@ Game::Game() {
   texBank.loadTexture("../AncientArcher/res/texture/10-pixelized_mud.png", shader);
   texBank.loadTexture("../AncientArcher/res/texture/11-pixelized_darkwood.png", shader);
   texBank.loadTexture("../AncientArcher/res/texture/12-pickup_speedboost.png", shader);
-  //texBank.loadTexture("../AncientArcher/res/texture/10-pixelized_mud.png", shader);
-  //texBank.loadTexture("../AncientArcher/res/texture/10-pixelized_mud.png", shader);
+  texBank.loadTexture("../AncientArcher/res/texture/13-pixelized_snow.png", shader);
+  texBank.loadTexture("../AncientArcher/res/texture/14-maze_metal.png", shader);
   //texBank.loadTexture("../AncientArcher/res/texture/10-pixelized_mud.png", shader);
 
   /* update projection matrix  -  if changes, this needs to be moved to main loop or updated specifically when appropriate */
