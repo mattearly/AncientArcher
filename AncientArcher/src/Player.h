@@ -15,6 +15,8 @@ public:
 
   void selectWeapon(int weapnum);
 
+  void increaseTimeSinceLastAttack(float incr);
+
 
   // ACCESSORS
   int getSelectedWeapon();
@@ -25,12 +27,21 @@ public:
 
   float getJumpHeight();
 
+  float getAttackSpeed();
+
+  float getTimeSinceLastAttack();
 
 private:
+  
   float BaseSpeed;
   float BaseJump;
   float LegPower;
+  
   int weaponSelect;
+
+  float attackSpeed;  // greater is slower, time in between attacks needed
+
+  float timeSinceLastAttack;  // in deltatime
 
 };
 

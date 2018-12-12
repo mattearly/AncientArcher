@@ -9,6 +9,10 @@ Player::Player() {
 
   weaponSelect = 0;  // no weapon
 
+  attackSpeed = 1500.0f;
+
+  timeSinceLastAttack = 0.0f;
+
 }
 
 Player::Player(float base_speed, float base_jump, float leg_power) {
@@ -39,6 +43,10 @@ void Player::selectWeapon(int weapnum) {
   }
 }
 
+void Player::increaseTimeSinceLastAttack(float incr) {
+  timeSinceLastAttack += incr;
+}
+
 int Player::getSelectedWeapon() {
   return weaponSelect;
 }
@@ -55,4 +63,12 @@ float Player::getRisingSpeed() {
 
 float Player::getJumpHeight() {
   return (LegPower / stat_divisor) + 0.8f;   // at least .8f above the starting position
+}
+
+float Player::getAttackSpeed() {
+  return attackSpeed;
+}
+
+float Player::getTimeSinceLastAttack() {
+  return timeSinceLastAttack;
 }

@@ -77,7 +77,7 @@ void Game::mainLoop() {
     shader->setMat4("model", model);
     glDrawArrays(GL_TRIANGLES, 0, 36);
 
-    texBank.activate(shader, 3);  //shrubbery     grass area walls
+    texBank.activate(shader, 3);  //shrubbery  grass area walls
     for (unsigned int i = 0; i < 30; i++) {
       model = glm::mat4(1.0f);
       model = glm::translate(model, glm::vec3(1.0f + 2.0f * i, 1.0f, -1.0f));

@@ -44,6 +44,27 @@ void Controls::mouseMovement(double xpos, double ypos, Camera *cam) {
 
 void Controls::keyboardInput(GLFWwindow * window, Camera *cam, Player *player, Pickups *pickups, float dtime) {
 
+  movedir.positionChanged = true;  //for footsteps
+
+  if (glfwGetMouseButton(window, GLFW_MOUSE_BUTTON_LEFT) == GLFW_PRESS) {
+    //swing sword  or shoot bow
+    if (player->getTimeSinceLastAttack() > player->getAttackSpeed()) {
+      switch (player->getSelectedWeapon()) {
+      case 0:
+        //playpunchsound();
+        break;
+      case 1:
+        //playswordswingsound();
+        break;
+      case 2:
+        //playbowshootsound();
+        break;
+      }
+    } else {
+      player->increaseTimeSinceLastAttack(dtime);
+    }
+  }
+
   if (glfwGetKey(window, GLFW_KEY_ESCAPE) == GLFW_PRESS) {
     glfwSetWindowShouldClose(window, true);
   }
@@ -58,6 +79,7 @@ void Controls::keyboardInput(GLFWwindow * window, Camera *cam, Player *player, P
     if (movedir.onGround) {
       movedir.back = false;
       movedir.forward = true;
+      movedir.positionChanged = true;
     }
   }
 
@@ -65,6 +87,8 @@ void Controls::keyboardInput(GLFWwindow * window, Camera *cam, Player *player, P
     if (movedir.onGround) {
       movedir.forward = false;
       movedir.back = true;
+      movedir.positionChanged = true;
+
     }
   }
 
@@ -72,6 +96,8 @@ void Controls::keyboardInput(GLFWwindow * window, Camera *cam, Player *player, P
     if (movedir.onGround) {
       movedir.right = false;
       movedir.left = true;
+      movedir.positionChanged = true;
+
     }
   }
 
@@ -79,6 +105,8 @@ void Controls::keyboardInput(GLFWwindow * window, Camera *cam, Player *player, P
     if (movedir.onGround) {
       movedir.left = false;
       movedir.right = true;
+      movedir.positionChanged = true;
+
     }
   }
 
@@ -133,6 +161,8 @@ void Controls::keyboardInput(GLFWwindow * window, Camera *cam, Player *player, P
       velocity += velocity;   //faster move forward while holding shift
     }
 
+    //todo: half speed if moving sideways along with forward or back
+
     if (movedir.back || movedir.forward) {  // locks moving foward and backwards to the x and z axii. note that you can use the cam->Front instead of movefront to do a fly type thing while the y is unlocked or you are jumping
       glm::vec3 moveFront = { cam->Front.x, 0.0f, cam->Front.z };
       if (movedir.forward) cam->Position += moveFront * velocity;
@@ -169,10 +199,20 @@ void Controls::keyboardInput(GLFWwindow * window, Camera *cam, Player *player, P
     }
 
 
+    // FOOTSTEP SOUNDS
+    if (movedir.timeSinceLastStep > TIMEBETWEENFOOTSTEPS || (movedir.boost && !movedir.back && movedir.timeSinceLastStep > TIMEBETWEENFOOTSTEPS - 0.5f)) {
+      if (movedir.positionChanged && movedir.onGround) {
+        playfootstepsound();
+        movedir.timeSinceLastStep = 0;
+      }
+    } else {
+      movedir.timeSinceLastStep += dtime;
+    }
+
     // LEGPOWER PICKUP                       
     if (pickups->speedBoostAvail) {
       if (
-                                             //y because boost loc is only x and y
+        //y because boost loc is only x and y
         cam->Position.z >= pickups->boostLoc.y - 1 &&
         cam->Position.z <= pickups->boostLoc.y + 1 &&
         cam->Position.x >= pickups->boostLoc.x - 1 &&
@@ -198,7 +238,7 @@ void Controls::keyboardInput(GLFWwindow * window, Camera *cam, Player *player, P
       //todo: added gravity to falling y = 1/2at^2 + vt  
     }
   } else if (movedir.falling && !movedir.onGround) {   // currently going down
-    cam->Position.y -= cam->WorldUp.y * 5.0f * dtime;  // GRAVITY PULL DOWN CALC: static value, todo: make dynamic based on falling time
+    cam->Position.y -= cam->WorldUp.y * 5.2f * dtime;  // GRAVITY PULL DOWN CALC: static value, todo: make dynamic based on falling time
     if (cam->Position.y <= cam->camstart[1]) {
       movedir.onGround = true;
       movedir.falling = false;
