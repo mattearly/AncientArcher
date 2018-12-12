@@ -184,6 +184,8 @@
     <Image Include="res\texture\10-pixelized_mud.png" />
     <Image Include="res\texture\11-pixelized_darkwood.png" />
     <Image Include="res\texture\12-pickup_speedboost.png" />
+    <Image Include="res\texture\13-pixelized_snow.png" />
+    <Image Include="res\texture\14-maze_metal.png" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

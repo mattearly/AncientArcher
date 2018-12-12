@@ -179,6 +179,8 @@ void Controls::keyboardInput(GLFWwindow * window, Camera *cam, Player *player, P
         cam->Position.x <= pickups->boostLoc.x + 1) {
         player->increaseLegPower(10.0f);
         pickups->speedBoostAvail = false;
+        playsuccesssound();
+
       }
     }
 
@@ -191,13 +193,13 @@ void Controls::keyboardInput(GLFWwindow * window, Camera *cam, Player *player, P
     playgruntsound();
   } else if (!movedir.onGround && !movedir.falling) {  // Jump Rising
     cam->Position.y += cam->WorldUp.y * player->getRisingSpeed() * dtime;  // RISING SPEED CALC: jump speed based on LegPower Player Stat
-    if (cam->Position.y > player->getJumpHeight() + camstart[1]) {  // MAX HEIGHT CALC: jump height based on LegPower Player Stat
+    if (cam->Position.y > player->getJumpHeight() + cam->camstart[1]) {  // MAX HEIGHT CALC: jump height based on LegPower Player Stat
       movedir.falling = true;
       //todo: added gravity to falling y = 1/2at^2 + vt  
     }
   } else if (movedir.falling && !movedir.onGround) {   // currently going down
     cam->Position.y -= cam->WorldUp.y * 5.0f * dtime;  // GRAVITY PULL DOWN CALC: static value, todo: make dynamic based on falling time
-    if (cam->Position.y <= camstart[1]) {
+    if (cam->Position.y <= cam->camstart[1]) {
       movedir.onGround = true;
       movedir.falling = false;
       playlandingsound();
@@ -205,7 +207,7 @@ void Controls::keyboardInput(GLFWwindow * window, Camera *cam, Player *player, P
   }
 
   if (movedir.onGround) {
-    cam->Position.y = camstart[1];
+    cam->Position.y = cam->camstart[1];
   }
 
 

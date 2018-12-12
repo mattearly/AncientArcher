@@ -14,10 +14,14 @@ done
 
 - jump
 - sound effects
+- texture bank class
+- player models
+- more player stats
+- pickups
+
 
 by Wednesday
 
-- player models
 - archery firing
 - melee swing
 - basic lighting
@@ -25,10 +29,12 @@ by Wednesday
 
 bonus:
 - mesh varying level ground
-- more player stats
 - advanced lighting
 - hud
 
+later:
+- classes to handle drawing objects ready for lighting
+- and lighting class that allows emmiting light
 
 to run 
 

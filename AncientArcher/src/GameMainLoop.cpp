@@ -10,7 +10,6 @@
 
 
 void Game::mainLoop() {
-  playsuccesssound();
 
   glm::mat4 model = glm::mat4(1.0f);
 
@@ -26,6 +25,12 @@ void Game::mainLoop() {
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
     //shader->use();  //our only one, stays in use
+    
+      /* update projection matrix  -  if changes, this needs to be moved to main loop or updated specifically when appropriate */
+    glm::mat4 projection = glm::perspective(glm::radians(camera->FoV), (float)camera->window_width / (float)camera->window_height, 0.1f, 200.0f);
+    shader->setMat4("projection", projection);
+
+
 
     glm::mat4 view = camera->getViewMatrix();
     shader->setMat4("view", view);
@@ -48,8 +53,12 @@ void Game::mainLoop() {
 
       // player loc            // move out front              // move to right                //move down some               //move model                 // move based on pitch needed here - Quaternion?
       model = glm::translate(model, *camera->getPosition() + (*camera->getFront() * 0.4f) + (*camera->getRight() * 0.15f) - glm::vec3(0.0f, 0.05f, 0.0f) /*+ glm::vec3(0.0f, cos(glm::radians(camera->getPitch())), 0.0f)*/);
-
       model = glm::rotate(model, glm::radians(-camera->getYaw()), glm::vec3(0.0f, 1.0f, 0.0f));
+
+      if (player->getSelectedWeapon() == 1) {
+      } else {
+        model = glm::rotate(model, glm::radians(20.0f), glm::vec3(1.0f, 0.0f, 1.0f));
+      }
 
       model = glm::scale(model, glm::vec3(0.02f, 0.35f, 0.01f));
 
@@ -85,14 +94,14 @@ void Game::mainLoop() {
 
     //
 
-    texBank.activate(shader, 7);  // gravel : 60 x 60 floor
+    texBank.activate(shader, 1);  // stone : 60 x 60 floor
     model = glm::mat4(1.0f);
     model = glm::translate(model, glm::vec3(90.0f, 0.0f, 30.0f));
     model = glm::scale(model, glm::vec3(60.0f, 0.01f, 60.0f));
     shader->setMat4("model", model);
     glDrawArrays(GL_TRIANGLES, 0, 36);
 
-    texBank.activate(shader, 5);  //darkstone   gravel area wall
+    texBank.activate(shader, 4);  //
     for (unsigned int i = 0; i < 30; i++) {
       model = glm::mat4(1.0f);
       model = glm::translate(model, glm::vec3(61.0f + 2.0f * i, 1.0f, -1.0f));
@@ -168,8 +177,31 @@ void Game::mainLoop() {
       shader->setMat4("model", model);
       glDrawArrays(GL_TRIANGLES, 0, 36);
     }
+
     //
 
+    /* 
+
+    // update to ortho
+    glm::mat4 ortho = glm::ortho(0.0f, (float)camera->window_width, 0.0f, (float)camera->window_height, 0.1f, 200.0f);
+    shader->setMat4("projection", ortho);
+
+    glm::mat4 orthoview = glm::lookAt(*(camera->getPosition()), *(camera->getPosition()) + *(camera->getFront()), glm::vec3(0.0f, 1.0f, 0.0f));
+    shader->setMat4("view", orthoview);
+
+    // test hud
+    texBank.activate(shader, 20);  //should be grey box
+
+    model = glm::mat4(1.0f);
+    model = glm::translate(model, glm::vec3(100.0f, 200.0f,500.0f));
+    model = glm::scale(model, glm::vec3(200.0f, 2.0f, 200.0f));
+    shader->setMat4("model", model);
+    glDrawArrays(GL_TRIANGLES, 0, 36);
+
+    // hud drawing not not quite working -- relevant :  https://stackoverflow.com/questions/30338765/opengl-draw-hud-over-3d-game
+
+    */
+    
     //glBindVertexArray(0);  // unbind vertex array, our only one, stays in use
 
     glfwSwapBuffers(window);

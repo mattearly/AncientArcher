@@ -19,8 +19,10 @@ Game::Game() {
   glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);
 #endif
 
+  camera = new Camera();
+
   /* init window */
-  window = glfwCreateWindow(window_width, window_height, "Oh Hi Mark", nullptr, nullptr);
+  window = glfwCreateWindow(camera->window_width, camera->window_height, "Oh Hi Mark", nullptr, nullptr);
   if (window == nullptr) {
     std::cout << "failed to create glfw window" << std::endl;
     glfwTerminate();
@@ -41,9 +43,7 @@ Game::Game() {
 
   control = new Controls();
   shader = new Shader("../AncientArcher/shaders/vertex.shader", "../AncientArcher/shaders/fragment.shader");
-  camera = new Camera();
   player = new Player(10.0f, 4.0f, 10.0f);   //default character
-
 
   glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
 
@@ -128,10 +128,6 @@ Game::Game() {
   texBank.loadTexture("../AncientArcher/res/texture/14-maze_metal.png", shader);
   //texBank.loadTexture("../AncientArcher/res/texture/10-pixelized_mud.png", shader);
 
-  /* update projection matrix  -  if changes, this needs to be moved to main loop or updated specifically when appropriate */
-  glm::mat4 projection = glm::perspective(glm::radians(camera->FoV), (float)window_width / (float)window_height, 0.1f, 200.0f);
-  shader->setMat4("projection", projection);
-
   //glBindBuffer(GL_ARRAY_BUFFER, 0);   //unbind VBO
   //glBindVertexArray(0);  //unbind VAO
 
@@ -151,6 +147,8 @@ Game::~Game() {
 
 void Game::reshapeWindow(GLFWwindow * window, int w, int h) {
   glViewport(0, 0, w, h);
+  camera->window_width = w;
+  camera->window_height = h;
 }
 
 void Game::mouseHandler(GLFWwindow * window, double xpos, double ypos) {
@@ -160,8 +158,6 @@ void Game::mouseHandler(GLFWwindow * window, double xpos, double ypos) {
 static Game * g_CurrentInstance;
 
 extern "C" void reshapeCallback(GLFWwindow *window, int w, int h) {
-  window_width = w;
-  window_height = h;
   g_CurrentInstance->reshapeWindow(window, w, h);
 }
 

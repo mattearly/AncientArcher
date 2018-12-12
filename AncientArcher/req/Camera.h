@@ -2,10 +2,6 @@
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
 
-static int window_width = 1024;
-static int window_height = 800;
-static float camstart[] = { 5.0f, 2.5f, 5.0f };
-
 class Camera {
 public:
   Camera();
@@ -16,6 +12,9 @@ public:
 
   float FoV;
 
+  int window_width;
+  int window_height;
+  float camstart[3] = { 5.0f, 2.5f, 5.0f };
 
   glm::mat4 getViewMatrix();
 

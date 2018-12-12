@@ -12,6 +12,10 @@ Camera::Camera() {
   Pitch = 0.0f;
 
   updateCameraVectors();
+
+  window_width = 1024;
+  window_height = 800;
+
 }
 
 Camera::~Camera() {}
@@ -19,6 +23,7 @@ Camera::~Camera() {}
 glm::mat4 Camera::getViewMatrix() {
   return glm::lookAt(Position, Position + Front, Up);
 }
+
 
 glm::vec3* Camera::getPosition() {  
   return &Position;
