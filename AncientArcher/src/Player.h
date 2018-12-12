@@ -19,7 +19,7 @@ public:
 
   void setTimeSinceLastAttack(float incr);
 
-
+  bool swinging;
 
   // ACCESSORS
   int getSelectedWeapon();

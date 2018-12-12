@@ -58,11 +58,20 @@ void Game::mainLoop() {
       model = glm::rotate(model, glm::radians(-camera->getYaw()), glm::vec3(0.0f, 1.0f, 0.0f));
 
       if (player->getSelectedWeapon() == 1) {
+        if (player->swinging) {
+          model = glm::rotate(model, (float)cos(glfwGetTime()), glm::vec3(1.0f, 1.0f, 1.0f));
+          if (gameTime > player->getLastAttackTime() + player->getAttackSpeed()) {
+            player->swinging = false;
+          }
+        }
+
+        model = glm::scale(model, glm::vec3(0.02f, 0.38f, 0.01f));  //sword size
+
       } else {
         model = glm::rotate(model, glm::radians(20.0f), glm::vec3(1.0f, 0.0f, 1.0f));
-      }
+        model = glm::scale(model, glm::vec3(0.02f, 0.45f, 0.01f));  //longbow size
 
-      model = glm::scale(model, glm::vec3(0.02f, 0.35f, 0.01f));
+      }
 
       shader->setMat4("model", model);
       glDrawArrays(GL_TRIANGLES, 0, 36);
@@ -191,6 +200,9 @@ void Game::mainLoop() {
       glDrawArrays(GL_TRIANGLES, 0, 36);
     }
 
+    //if (!pickups.attackBoostAvail && !pickups.speedBoostAvail) {
+    //  pickups.respawn();
+    //}
     //
 
     /* 
