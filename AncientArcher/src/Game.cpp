@@ -122,7 +122,7 @@ Game::Game() {
   texBank.loadTexture("../AncientArcher/res/texture/09-pixelized_player.png", shader);
   texBank.loadTexture("../AncientArcher/res/texture/10-pixelized_mud.png", shader);
   texBank.loadTexture("../AncientArcher/res/texture/11-pixelized_darkwood.png", shader);
-  //texBank.loadTexture("../AncientArcher/res/texture/10-pixelized_mud.png", shader);// room for 4 more
+  texBank.loadTexture("../AncientArcher/res/texture/12-pickup_speedboost.png", shader);
   //texBank.loadTexture("../AncientArcher/res/texture/10-pixelized_mud.png", shader);
   //texBank.loadTexture("../AncientArcher/res/texture/10-pixelized_mud.png", shader);
   //texBank.loadTexture("../AncientArcher/res/texture/10-pixelized_mud.png", shader);

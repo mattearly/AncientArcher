@@ -87,6 +87,14 @@ void Controls::keyboardInput(GLFWwindow * window, Camera *cam, float dtime) {
     }
   }
 
+  //if (glfwGetKey(window, GLFW_KEY_1) == GLFW_PRESS) {
+  //  mainPlayer::weaponSelect = WEAPONSELECT::MELEE;
+  //}
+
+  //if (glfwGetKey(window, GLFW_KEY_2) == GLFW_PRESS) {
+  //  mainPlayer::weaponSelect = WEAPONSELECT::RANGED;
+  //}
+
   if (glfwGetKey(window, GLFW_KEY_W) == GLFW_RELEASE) {
     movedir.forward = false;
   }
@@ -111,13 +119,7 @@ void Controls::keyboardInput(GLFWwindow * window, Camera *cam, float dtime) {
     movedir.canJumpAgain = true;
   }
 
-  if (glfwGetKey(window, GLFW_KEY_1) == GLFW_RELEASE) {
-    mainPlayer::weaponSelect = MELEE;
-  }  
-  
-  if (glfwGetKey(window, GLFW_KEY_2) == GLFW_RELEASE) {
-    mainPlayer::weaponSelect = RANGED;
-  }
+
 
   if (movedir.back || movedir.forward || movedir.left || movedir.right) {
 
@@ -160,6 +162,10 @@ void Controls::keyboardInput(GLFWwindow * window, Camera *cam, float dtime) {
       if (movedir.back)    cam->Position.z += cam->Front.z * velocity;
       if (movedir.right)   cam->Position.z -= cam->Right.z * velocity;
       if (movedir.left)    cam->Position.z += cam->Right.z * velocity;
+    }
+
+    if (cam->Position.z >= 34.0f && cam->Position.z <= 35.0f && cam->Position.x >= 24.0f && cam->Position.x <= 26.0f) {
+      mainPlayer::LegPower += 10.0f;
     }
 
   }

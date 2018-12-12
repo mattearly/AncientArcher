@@ -5,6 +5,7 @@
 #include <Sound.h>
 #include <iostream>
 #include "Player.h"
+#include <cmath>
 
 void Game::mainLoop() {
   playsuccesssound();
@@ -30,28 +31,28 @@ void Game::mainLoop() {
     //glBindVertexArray(cubeVAO);  // bind vertex array, our only one, stays in use
 
     //PLAYER MODEL STUFF
-    switch (mainPlayer::weaponSelect) {
-    case MELEE:
+    //switch (mainPlayer::weaponSelect) {
+    //case MELEE:
       texBank.activate(shader, 1);  // stone
-      break;
-    case RANGED:
-      texBank.activate(shader, 2);  // wood
-      break;
-    }
+    //  break;
+    //case RANGED:
+    //  texBank.activate(shader, 2);  // wood
+    //  break;
+    //}
 
     // draw selected weapon
     model = glm::mat4(1.0f);
-                                  // player loc            // move out front              // move to right                //move down some
-    model = glm::translate(model, *camera->getPosition() + (*camera->getFront() * 0.4f) + (*camera->getRight() * 0.15f) - glm::vec3(0.0f, 0.05f, 0.0f));
+                                  // player loc            // move out front              // move to right                //move down some               //move model down based on pitch
+    model = glm::translate(model, *camera->getPosition() + (*camera->getFront() * 0.4f) + (*camera->getRight() * 0.15f) - glm::vec3(0.0f, 0.05f, 0.0f) /*+ glm::vec3(0.0f, cos(glm::radians(camera->getPitch())), 0.0f)*/);
+    //model = glm::translate(model, glm::vec3(0.0f, sin(camera->getPitch()), 0.0f));
     model = glm::rotate(model, glm::radians(-camera->getYaw()), glm::vec3(0.0f, 1.0f, 0.0f));
-    //model = glm::rotate(model, glm::radians(camera->getPitch()/3.0f), glm::vec3(1.0f, 0.0f, 0.0f));
+    //model = glm::rotate(model, glm::radians(-camera->getPitch()/3.0f), glm::vec3(1.0f, 1.0f, 0.0f));
     //model = glm::rotate(model, -glm::radians(camera->getPitch()/3.0f), glm::vec3(0.0f, 1.0f, 0.0f));
     model = glm::scale(model, glm::vec3(0.02f, 0.35f, 0.01f));
     shader->setMat4("model", model);
     glDrawArrays(GL_TRIANGLES, 0, 36);
 
     // WORLD MODEL STUFF
-
 
     texBank.activate(shader, 0);  // grass : 60 x 60 floor
     model = glm::mat4(1.0f);
@@ -60,7 +61,7 @@ void Game::mainLoop() {
     shader->setMat4("model", model);
     glDrawArrays(GL_TRIANGLES, 0, 36);
 
-    texBank.activate(shader, 3);  //shrubbery      // grass area walls
+    texBank.activate(shader, 3);  //shrubbery     grass area walls
     for (unsigned int i = 0; i < 30; i++) {
       model = glm::mat4(1.0f);
       model = glm::translate(model, glm::vec3(1.0f + 2.0f * i, 1.0f, -1.0f));
@@ -75,15 +76,16 @@ void Game::mainLoop() {
       glDrawArrays(GL_TRIANGLES, 0, 36);
     }
 
-    texBank.activate(shader, 7);  // gravel
+    //
+
+    texBank.activate(shader, 7);  // gravel : 60 x 60 floor
     model = glm::mat4(1.0f);
     model = glm::translate(model, glm::vec3(90.0f, 0.0f, 30.0f));
     model = glm::scale(model, glm::vec3(60.0f, 0.01f, 60.0f));
     shader->setMat4("model", model);
     glDrawArrays(GL_TRIANGLES, 0, 36);
 
-    texBank.activate(shader, 5);  //darkstone
-    // gravel area wall
+    texBank.activate(shader, 5);  //darkstone   gravel area wall
     for (unsigned int i = 0; i < 30; i++) {
       model = glm::mat4(1.0f);
       model = glm::translate(model, glm::vec3(61.0f + 2.0f * i, 1.0f, -1.0f));
@@ -98,15 +100,16 @@ void Game::mainLoop() {
       glDrawArrays(GL_TRIANGLES, 0, 36);
     }
 
-    texBank.activate(shader, 10);  //mud
+    //
+
+    texBank.activate(shader, 10);  //mud : 60 x 60 floor
     model = glm::mat4(1.0f);
     model = glm::translate(model, glm::vec3(90.0f, 0.0f, 90.0f));
     model = glm::scale(model, glm::vec3(60.0f, 0.01f, 60.0f));
     shader->setMat4("model", model);
     glDrawArrays(GL_TRIANGLES, 0, 36); 
 
-    texBank.activate(shader, 11);  // darkwood
-    // mud area wall
+    texBank.activate(shader, 11);  // darkwood   mud area wall
     for (unsigned int i = 0; i < 30; i++) {
       model = glm::mat4(1.0f);
       model = glm::translate(model, glm::vec3(61.0f + 2.0f * i, 1.0f, 121.0f));
@@ -120,17 +123,17 @@ void Game::mainLoop() {
       shader->setMat4("model", model);
       glDrawArrays(GL_TRIANGLES, 0, 36);
     }
-    
-    texBank.activate(shader, 8);  // water
 
+    //
+    
+    texBank.activate(shader, 8);  // water : 60 x 60 area
     model = glm::mat4(1.0f);
     model = glm::translate(model, glm::vec3(30.0f, 0.0f, 90.0f));
     model = glm::scale(model, glm::vec3(60.0f, 0.01f, 60.0f));
     shader->setMat4("model", model);
     glDrawArrays(GL_TRIANGLES, 0, 36);
 
-    texBank.activate(shader, 8);  //water
-    // water area wall
+    texBank.activate(shader, 8);  //water   water area wall
     for (unsigned int i = 0; i < 30; i++) {
       model = glm::mat4(1.0f);
       model = glm::translate(model, glm::vec3(1.0f + 2.0f * i, 1.0f, 121.0f));
@@ -146,33 +149,16 @@ void Game::mainLoop() {
 
     }
 
-
-
-
-    //// big wall 1
-    //model = glm::mat4(1.0f);
-    //model = glm::translate(model, glm::vec3(62.0f, 32.0f, 30.0f));
-    //model = glm::scale(model, glm::vec3(0.01f, 60.0f, 60.0f));
-    //model = glm::rotate(model, glm::radians(90.0f), glm::vec3(1.0f, 0.0f, 0.0f));
-    //shader->setMat4("model", model);
-    //glDrawArrays(GL_TRIANGLES, 0, 36);  
     //
-    //// big wall 2
-    //model = glm::mat4(1.0f);
-    //model = glm::translate(model, glm::vec3(-2.0f, 32.0f, 30.0f));
-    //model = glm::scale(model, glm::vec3(0.01f, 60.0f, 60.0f));
-    //model = glm::rotate(model, glm::radians(-90.0f), glm::vec3(1.0f, 0.0f, 0.0f));
-    //shader->setMat4("model", model);
-    //glDrawArrays(GL_TRIANGLES, 0, 36);
 
-    // middle box thing
-    //texBank.activate(shader, 6);
-    //model = glm::mat4(1.0f);
-    //model = glm::translate(model, glm::vec3(25.0f, 4.0f, 25.0f));
-    //model = glm::scale(model, glm::vec3(2.0f, 2.0f, 2.0f));
-    //shader->setMat4("model", model);
-    //glDrawArrays(GL_TRIANGLES, 0, 36);
-
+    // speedboost pickup
+    texBank.activate(shader, 12);
+    model = glm::mat4(1.0f);
+    model = glm::translate(model, glm::vec3(25.0f, 1.0f, 35.0f));
+    model = glm::rotate(model, glm::radians(180.0f), glm::vec3(1.0f, 0.0f, 0.0f));
+    model = glm::scale(model, glm::vec3(2.0f, 2.0f, 2.0f));
+    shader->setMat4("model", model);
+    glDrawArrays(GL_TRIANGLES, 0, 36);
     //glBindVertexArray(0);  // unbind vertex array, our only one, stays in use
 
     glfwSwapBuffers(window);
