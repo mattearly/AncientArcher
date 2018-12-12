@@ -17,6 +17,15 @@ void playlandingsound();
 static Mix_Chunk *successsoundeffect;
 void playsuccesssound();
 
+static Mix_Chunk *punchsoundeffect;
+void playpunchsound();
+
+static Mix_Chunk *swordswingsoundeffect;
+void playswordswingsound();
+
+static Mix_Chunk *bowsoundeffect;
+void playbowsound();
+
 //static Mix_Chunk *dooropensoundeffect;
 //void playdoorsound();
 //

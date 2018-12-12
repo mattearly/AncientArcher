@@ -42,26 +42,25 @@ void Controls::mouseMovement(double xpos, double ypos, Camera *cam) {
 
 }
 
-void Controls::keyboardInput(GLFWwindow * window, Camera *cam, Player *player, Pickups *pickups, float dtime) {
+void Controls::keyboardInput(GLFWwindow * window, Camera *cam, Player *player, Pickups *pickups, float dtime, float gametime) {
 
   movedir.positionChanged = true;  //for footsteps
 
   if (glfwGetMouseButton(window, GLFW_MOUSE_BUTTON_LEFT) == GLFW_PRESS) {
     //swing sword  or shoot bow
-    if (player->getTimeSinceLastAttack() > player->getAttackSpeed()) {
+    if (player->getLastAttackTime() < gametime - player->getAttackSpeed()) {
       switch (player->getSelectedWeapon()) {
       case 0:
-        //playpunchsound();
+        playpunchsound();
         break;
       case 1:
-        //playswordswingsound();
+        playswordswingsound();
         break;
       case 2:
-        //playbowshootsound();
+        playbowsound();
         break;
       }
-    } else {
-      player->increaseTimeSinceLastAttack(dtime);
+      player->setTimeSinceLastAttack(gametime);
     }
   }
 

@@ -15,7 +15,7 @@ public:
 
   void selectWeapon(int weapnum);
 
-  void increaseTimeSinceLastAttack(float incr);
+  void setTimeSinceLastAttack(float incr);
 
 
   // ACCESSORS
@@ -29,7 +29,7 @@ public:
 
   float getAttackSpeed();
 
-  float getTimeSinceLastAttack();
+  float getLastAttackTime();
 
 private:
   
@@ -41,7 +41,7 @@ private:
 
   float attackSpeed;  // greater is slower, time in between attacks needed
 
-  float timeSinceLastAttack;  // in deltatime
+  float lastAttackTime;  // gametime stamp
 
 };
 

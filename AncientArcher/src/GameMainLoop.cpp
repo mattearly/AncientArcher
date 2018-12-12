@@ -19,7 +19,9 @@ void Game::mainLoop() {
     deltaTime = currentFrame - lastFrame;
     lastFrame = currentFrame;
 
-    control->keyboardInput(window, camera, player, &pickups, deltaTime);
+    gameTime += deltaTime;
+
+    control->keyboardInput(window, camera, player, &pickups, deltaTime, gameTime);
 
     glClearColor(0.2f, 0.3f, 0.9f, 1.0f);
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);

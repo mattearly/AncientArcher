@@ -9,12 +9,15 @@
 #include "Player.h"
 #include "Pickups.h"
 
-static float lastFrame = 0.0f;
 
 class Game {
 public:
   Game();
   ~Game();
+
+  float lastFrame = 0.0f;
+
+  float gameTime = 0.0f;
 
   Camera *camera;
   Controls *control;

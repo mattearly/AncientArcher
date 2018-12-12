@@ -14,7 +14,7 @@ public:
 
   void mouseMovement(double xpos, double ypos, Camera *cam);
 
-  void keyboardInput(GLFWwindow *window, Camera *cam, Player *player, Pickups *pickups, float time);
+  void keyboardInput(GLFWwindow *window, Camera *cam, Player *player, Pickups *pickups, float dtime, float gametime);
 
 private:
 

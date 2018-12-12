@@ -11,7 +11,7 @@ Player::Player() {
 
   attackSpeed = 1500.0f;
 
-  timeSinceLastAttack = 0.0f;
+  lastAttackTime = 0.0f;
 
 }
 
@@ -43,8 +43,8 @@ void Player::selectWeapon(int weapnum) {
   }
 }
 
-void Player::increaseTimeSinceLastAttack(float incr) {
-  timeSinceLastAttack += incr;
+void Player::setTimeSinceLastAttack(float incr) {
+  lastAttackTime = incr;
 }
 
 int Player::getSelectedWeapon() {
@@ -69,6 +69,6 @@ float Player::getAttackSpeed() {
   return attackSpeed;
 }
 
-float Player::getTimeSinceLastAttack() {
-  return timeSinceLastAttack;
+float Player::getLastAttackTime() {
+  return lastAttackTime;
 }
