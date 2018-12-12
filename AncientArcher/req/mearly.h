@@ -25,9 +25,15 @@ namespace mearly {
 
   ///
   /// \brief NTKR N-To-K-Random
-  /// \return an random integer in the range N to K;
+  /// \return an random integer in the range N to K
   ///
   int NTKR(int n, int k);
+
+  ///
+  /// \brief NTKR N-To-K-Random
+  /// \return an random float in the range N to K
+  ///
+  float NTRK(float n, float k);
 
 }  //end namespace mearly
 
