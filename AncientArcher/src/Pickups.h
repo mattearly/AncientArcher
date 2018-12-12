@@ -11,5 +11,7 @@ public:
 
   bool attackBoostAvail;
   glm::vec2 attackBoostLoc;
+
+  void respawn();
 };
 

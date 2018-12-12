@@ -200,9 +200,9 @@ void Game::mainLoop() {
       glDrawArrays(GL_TRIANGLES, 0, 36);
     }
 
-    //if (!pickups.attackBoostAvail && !pickups.speedBoostAvail) {
-    //  pickups.respawn();
-    //}
+    if (!pickups.attackBoostAvail && !pickups.speedBoostAvail) {
+      pickups.respawn();
+    }
     //
 
     /* 
