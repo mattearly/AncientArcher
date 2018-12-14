@@ -9,6 +9,22 @@ due. While I was able to implement a good portion of these features that I desir
 my time abstracting out ways to handle the intended features. Essentially, I was building my own custom Game
 Engine, which is now known to me as the Ancient Archer Engine in this early form.
 
+Required to Run (all free stuff)
+- video card must support OpenGL 3.30 or later (check vender site)
+- open in latest version of Visual Studio
+	- dependencies should be included with project via the Libraries and Include folders, you'll just have
+           to point to them with Visual Studio.
+	- go to menu: Debug / Properties / VC++ Directories
+		- add Libraries to project Library path
+		- add Include to project Include path
+	- go to menu: Debug / Properties / Linker / Input / Additional Dependencies
+		- add opengl32.lib
+		- add glfw3.lib
+		- add SDL2_mixer.lib
+		- add SDL2.lib
+		- add SDL2main.lib
+	- should be everything but if anything is missing, address any missing dependencies as needed
+
 I was able to sift through my Git commits and take a look at the work I had done and the amount of time each
 feature ended up taking. I started out the project by first implementing the Shaders. I used a shader class from
 JoeyDeVries' tutorial on learnopengl.com. The shader file can be found at:
@@ -91,6 +107,8 @@ the faster you can Attack and this should be noticable as pickups are collected.
 sounds to go twice as fast when you run, so it feels more realistic.
 
 There were a lot of humps to overcome while programming this, and I'll try to cover some of them during my
-presentation.
-
+presentation. I learned a great deal during this class and this project just from the sheer amount of time I
+spent coding. I was able to sort out several things about C++ that I was rather rusty with, such as static
+variables in different situations and how they behave. I also feel much more comfortable tying a bunch of things
+together with different classess.
 
