@@ -79,11 +79,10 @@
       <Optimization>Disabled</Optimization>
       <SDLCheck>true</SDLCheck>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>$(SolutionDir)AncientArcher\req;$(SolutionDir)AncientArcher\Include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <AdditionalDependencies>opengl32.lib;glfw3.lib;SDL2.lib;SDL2main.lib;SDL2_mixer.lib;%(AdditionalDependencies)</AdditionalDependencies>
-      <AdditionalLibraryDirectories>$(SolutionDir)\AncientArcher\Libraries;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>C:\Users\m\source\repos\AncientArcher\AncientArcher\Libraries;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
@@ -125,68 +124,43 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="src\PrimativeManager.cpp" />
     <ClCompile Include="src\Pickups.cpp" />
-    <ClCompile Include="req\mearly.cpp" />
-    <ClCompile Include="req\Constraints.cpp" />
-    <ClCompile Include="req\Sound.cpp" />
+    <ClCompile Include="src\mearly.cpp" />
+    <ClCompile Include="src\Constraints.cpp" />
+    <ClCompile Include="src\Sound.cpp" />
     <ClCompile Include="src\Player.cpp" />
-    <ClCompile Include="req\Controls.cpp" />
-    <ClCompile Include="req\Camera.cpp" />
-    <ClCompile Include="req\glad.c" />
+    <ClCompile Include="src\Controls.cpp" />
+    <ClCompile Include="src\Camera.cpp" />
+    <ClCompile Include="src\glad.c" />
     <ClCompile Include="src\Game.cpp" />
-    <ClCompile Include="req\Shader.cpp" />
+    <ClCompile Include="src\Shader.cpp" />
     <ClCompile Include="src\GameMainLoop.cpp" />
     <ClCompile Include="src\main.cpp" />
-    <ClCompile Include="req\stb_image.cpp" />
-    <ClCompile Include="req\TextureBank.cpp" />
+    <ClCompile Include="src\stb_image.cpp" />
+    <ClCompile Include="src\TextureBank.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="src\PrimativeManager.h" />
     <ClInclude Include="src\Pickups.h" />
-    <ClInclude Include="req\mearly.h" />
-    <ClInclude Include="req\Constraints.h" />
-    <ClInclude Include="req\Sound.h" />
+    <ClInclude Include="src\mearly.h" />
+    <ClInclude Include="src\Constraints.h" />
+    <ClInclude Include="src\Sound.h" />
     <ClInclude Include="src\Player.h" />
-    <ClInclude Include="req\Controls.h" />
-    <ClInclude Include="req\Camera.h" />
+    <ClInclude Include="src\Controls.h" />
+    <ClInclude Include="src\Camera.h" />
     <ClInclude Include="src\Game.h" />
-    <ClInclude Include="req\Shader.h" />
-    <ClInclude Include="req\stb_image.h" />
-    <ClInclude Include="req\TextureBank.h" />
+    <ClInclude Include="src\Shader.h" />
+    <ClInclude Include="src\stb_image.h" />
+    <ClInclude Include="src\TextureBank.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="shaders\fragment.shader" />
+    <None Include="shaders\geometry.shader" />
     <None Include="shaders\vertex.shader" />
   </ItemGroup>
   <ItemGroup>
-    <Media Include="res\sfx\feetlanding.wav" />
-    <Media Include="res\sfx\footstep01.wav" />
-    <Media Include="res\sfx\footstep02.wav" />
-    <Media Include="res\sfx\footstep03.wav" />
-    <Media Include="res\sfx\footstep04.wav" />
-    <Media Include="res\sfx\footstep05.wav" />
-    <Media Include="res\sfx\footstep06.wav" />
-    <Media Include="res\sfx\grunt01.wav" />
-    <Media Include="res\sfx\grunt02.wav" />
-    <Media Include="res\sfx\grunt03.wav" />
-    <Media Include="res\sfx\grunt04.wav" />
-    <Media Include="res\sfx\success.wav" />
-  </ItemGroup>
-  <ItemGroup>
-    <Image Include="res\texture\00-pixelized_grass.png" />
-    <Image Include="res\texture\01-pixelized_stone.png" />
-    <Image Include="res\texture\02-pixelized_wood.png" />
-    <Image Include="res\texture\03-pixelized_shrub.png" />
-    <Image Include="res\texture\04-pixelized_portal.png" />
-    <Image Include="res\texture\05-pixelized_darkstone.png" />
-    <Image Include="res\texture\06-pixelized_water_droplet.png" />
-    <Image Include="res\texture\07-pixelized_gravel.png" />
-    <Image Include="res\texture\08-pixelized_water.png" />
-    <Image Include="res\texture\09-pixelized_player.png" />
-    <Image Include="res\texture\10-pixelized_mud.png" />
-    <Image Include="res\texture\11-pixelized_darkwood.png" />
-    <Image Include="res\texture\12-pickup_speedboost.png" />
-    <Image Include="res\texture\13-pixelized_snow.png" />
-    <Image Include="res\texture\14-maze_metal.png" />
+    <Text Include="res\primatives\unit_cube.txt" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

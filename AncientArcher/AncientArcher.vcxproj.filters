@@ -18,168 +18,93 @@
     <ClCompile Include="src\main.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="req\Shader.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="req\stb_image.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="src\Game.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="req\Camera.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="src\GameMainLoop.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="req\Controls.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="req\glad.c">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="src\Player.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="req\Constraints.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="req\Sound.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="req\mearly.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="req\TextureBank.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="src\Pickups.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="src\Camera.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Constraints.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Controls.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\glad.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\mearly.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\PrimativeManager.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Shader.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Sound.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\stb_image.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\TextureBank.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="req\Shader.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="req\stb_image.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="src\Game.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="req\Camera.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="req\Controls.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="src\Player.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="req\Constraints.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="req\Sound.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="req\mearly.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="req\TextureBank.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="src\Pickups.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Camera.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Constraints.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Controls.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\mearly.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\PrimativeManager.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Shader.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Sound.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\stb_image.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\TextureBank.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="shaders\vertex.shader" />
     <None Include="shaders\fragment.shader" />
+    <None Include="shaders\geometry.shader" />
   </ItemGroup>
   <ItemGroup>
-    <Media Include="res\sfx\feetlanding.wav">
-      <Filter>Resource Files</Filter>
-    </Media>
-    <Media Include="res\sfx\footstep01.wav">
-      <Filter>Resource Files</Filter>
-    </Media>
-    <Media Include="res\sfx\footstep02.wav">
-      <Filter>Resource Files</Filter>
-    </Media>
-    <Media Include="res\sfx\footstep03.wav">
-      <Filter>Resource Files</Filter>
-    </Media>
-    <Media Include="res\sfx\footstep04.wav">
-      <Filter>Resource Files</Filter>
-    </Media>
-    <Media Include="res\sfx\footstep05.wav">
-      <Filter>Resource Files</Filter>
-    </Media>
-    <Media Include="res\sfx\footstep06.wav">
-      <Filter>Resource Files</Filter>
-    </Media>
-    <Media Include="res\sfx\grunt01.wav">
-      <Filter>Resource Files</Filter>
-    </Media>
-    <Media Include="res\sfx\grunt02.wav">
-      <Filter>Resource Files</Filter>
-    </Media>
-    <Media Include="res\sfx\grunt03.wav">
-      <Filter>Resource Files</Filter>
-    </Media>
-    <Media Include="res\sfx\grunt04.wav">
-      <Filter>Resource Files</Filter>
-    </Media>
-    <Media Include="res\sfx\success.wav">
-      <Filter>Resource Files</Filter>
-    </Media>
-  </ItemGroup>
-  <ItemGroup>
-    <Image Include="res\texture\00-pixelized_grass.png">
-      <Filter>Resource Files</Filter>
-    </Image>
-    <Image Include="res\texture\01-pixelized_stone.png">
-      <Filter>Resource Files</Filter>
-    </Image>
-    <Image Include="res\texture\02-pixelized_wood.png">
-      <Filter>Resource Files</Filter>
-    </Image>
-    <Image Include="res\texture\03-pixelized_shrub.png">
-      <Filter>Resource Files</Filter>
-    </Image>
-    <Image Include="res\texture\04-pixelized_portal.png">
-      <Filter>Resource Files</Filter>
-    </Image>
-    <Image Include="res\texture\05-pixelized_darkstone.png">
-      <Filter>Resource Files</Filter>
-    </Image>
-    <Image Include="res\texture\06-pixelized_water_droplet.png">
-      <Filter>Resource Files</Filter>
-    </Image>
-    <Image Include="res\texture\07-pixelized_gravel.png">
-      <Filter>Resource Files</Filter>
-    </Image>
-    <Image Include="res\texture\08-pixelized_water.png">
-      <Filter>Resource Files</Filter>
-    </Image>
-    <Image Include="res\texture\09-pixelized_player.png">
-      <Filter>Resource Files</Filter>
-    </Image>
-    <Image Include="res\texture\10-pixelized_mud.png">
-      <Filter>Resource Files</Filter>
-    </Image>
-    <Image Include="res\texture\11-pixelized_darkwood.png">
-      <Filter>Resource Files</Filter>
-    </Image>
-    <Image Include="res\texture\12-pickup_speedboost.png">
-      <Filter>Resource Files</Filter>
-    </Image>
-    <Image Include="res\texture\13-pixelized_snow.png">
-      <Filter>Resource Files</Filter>
-    </Image>
-    <Image Include="res\texture\14-maze_metal.png">
-      <Filter>Resource Files</Filter>
-    </Image>
+    <Text Include="res\primatives\unit_cube.txt" />
   </ItemGroup>
 </Project>

@@ -2,9 +2,10 @@
 #include <glad/glad.h>
 
 #include <GLFW/glfw3.h>
-#include <Shader.h>
-#include <Camera.h>
-#include <Controls.h>
+#include "Shader.h"
+#include "Camera.h"
+#include "Controls.h"
+//#include <PrimativeManager.h>
 #include "TextureBank.h"
 #include "Player.h"
 #include "Pickups.h"
@@ -24,6 +25,7 @@ public:
   Player *player;
   Pickups pickups;
   TextureBank texBank;
+  //PrimativeManager primMan;
 
   void mainLoop();
 
@@ -36,8 +38,6 @@ private:
 
   GLFWwindow *window;
   Shader *shader;
-
-  unsigned int cubeVAO, cubeVBO;
  
   void setupReshapeWindow();
   void setupMouseHandler();
