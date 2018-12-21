@@ -86,9 +86,6 @@
     <ClInclude Include="src\mearly.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\PrimativeManager.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="src\Shader.h">
       <Filter>Header Files</Filter>
     </ClInclude>

@@ -7,6 +7,17 @@ Display::Display() {
   window_width = 1024;
   window_height = 768;
 
+  /* init glfw and opengl and game components */
+  glfwInit();
+  glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
+  glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
+  glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
+
+#ifdef __APPLE__
+  glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);
+#endif
+
+
   // init window
   window = glfwCreateWindow(window_width, window_height, "AA", nullptr, nullptr);
   if (window == nullptr) {
