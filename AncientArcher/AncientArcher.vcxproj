@@ -124,43 +124,39 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="src\displayManager\Display.cpp" />
     <ClCompile Include="src\PrimativeManager.cpp" />
     <ClCompile Include="src\Pickups.cpp" />
     <ClCompile Include="src\mearly.cpp" />
     <ClCompile Include="src\Constraints.cpp" />
+    <ClCompile Include="src\primatives\PrimativeManager.cpp" />
     <ClCompile Include="src\Sound.cpp" />
     <ClCompile Include="src\Player.cpp" />
     <ClCompile Include="src\Controls.cpp" />
     <ClCompile Include="src\Camera.cpp" />
-    <ClCompile Include="src\glad.c" />
+    <ClCompile Include="src\util\glad.c" />
     <ClCompile Include="src\Game.cpp" />
     <ClCompile Include="src\Shader.cpp" />
     <ClCompile Include="src\GameMainLoop.cpp" />
     <ClCompile Include="src\main.cpp" />
-    <ClCompile Include="src\stb_image.cpp" />
+    <ClCompile Include="src\util\stb_image.cpp" />
     <ClCompile Include="src\TextureBank.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="src\displayManager\Display.h" />
     <ClInclude Include="src\PrimativeManager.h" />
     <ClInclude Include="src\Pickups.h" />
     <ClInclude Include="src\mearly.h" />
     <ClInclude Include="src\Constraints.h" />
+    <ClInclude Include="src\primatives\PrimativeManager.h" />
     <ClInclude Include="src\Sound.h" />
     <ClInclude Include="src\Player.h" />
     <ClInclude Include="src\Controls.h" />
     <ClInclude Include="src\Camera.h" />
     <ClInclude Include="src\Game.h" />
     <ClInclude Include="src\Shader.h" />
-    <ClInclude Include="src\stb_image.h" />
+    <ClInclude Include="src\util\stb_image.h" />
     <ClInclude Include="src\TextureBank.h" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="shaders\fragment.shader" />
-    <None Include="shaders\geometry.shader" />
-    <None Include="shaders\vertex.shader" />
-  </ItemGroup>
-  <ItemGroup>
-    <Text Include="res\primatives\unit_cube.txt" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

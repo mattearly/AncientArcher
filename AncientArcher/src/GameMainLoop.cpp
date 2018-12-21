@@ -2,18 +2,18 @@
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtc/type_ptr.hpp>
-#include <Sound.h>
+#include "Sound.h"
 #include <iostream>
 #include "Player.h"
 #include <cmath>
-#include <mearly.h>
+#include "mearly.h"
 
 
 void Game::mainLoop() {
 
   glm::mat4 model = glm::mat4(1.0f);
 
-  while (!glfwWindowShouldClose(window)) {
+  while (!glfwWindowShouldClose(display.window)) {
 
     float currentFrame = glfwGetTime();
     deltaTime = currentFrame - lastFrame;
@@ -21,18 +21,17 @@ void Game::mainLoop() {
 
     gameTime += deltaTime;
 
-    control->keyboardInput(window, camera, player, &pickups, deltaTime, gameTime);
+    control->keyboardInput(display.window, camera, player, &pickups, deltaTime, gameTime);
 
     glClearColor(0.2f, 0.3f, 0.9f, 1.0f);
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
+    /*
     //shader->use();  //our only one, stays in use
-    
-      /* update projection matrix  -  if changes, this needs to be moved to main loop or updated specifically when appropriate */
+
+    // update projection matrix  -  if changes, this needs to be moved to main loop or updated specifically when appropriate
     glm::mat4 projection = glm::perspective(glm::radians(camera->FoV), (float)camera->window_width / (float)camera->window_height, 0.1f, 200.0f);
     shader->setMat4("projection", projection);
-
-
 
     glm::mat4 view = camera->getViewMatrix();
     shader->setMat4("view", view);
@@ -53,8 +52,8 @@ void Game::mainLoop() {
       // draw selected weapon
       model = glm::mat4(1.0f);
 
-      // player loc            // move out front              // move to right                //move down some               //move model                 // move based on pitch needed here - Quaternion?
-      model = glm::translate(model, *camera->getPosition() + (*camera->getFront() * 0.4f) + (*camera->getRight() * 0.15f) - glm::vec3(0.0f, 0.05f, 0.0f) /*+ glm::vec3(0.0f, cos(glm::radians(camera->getPitch())), 0.0f)*/);
+      // player loc            // move out front              // move to right                //move down some               //move model
+      model = glm::translate(model, *camera->getPosition() + (*camera->getFront() * 0.4f) + (*camera->getRight() * 0.15f) - glm::vec3(0.0f, 0.05f, 0.0f));
       model = glm::rotate(model, glm::radians(-camera->getYaw()), glm::vec3(0.0f, 1.0f, 0.0f));
 
       if (player->getSelectedWeapon() == 1) {
@@ -134,7 +133,7 @@ void Game::mainLoop() {
     model = glm::translate(model, glm::vec3(90.0f, 0.0f, 90.0f));
     model = glm::scale(model, glm::vec3(60.0f, 0.01f, 60.0f));
     shader->setMat4("model", model);
-    glDrawArrays(GL_TRIANGLES, 0, 36); 
+    glDrawArrays(GL_TRIANGLES, 0, 36);
 
     texBank.activate(shader, 11);  // darkwood   mud area wall
     for (unsigned int i = 0; i < 30; i++) {
@@ -152,7 +151,7 @@ void Game::mainLoop() {
     }
 
     //
-    
+
     texBank.activate(shader, 13);  // snow : 60 x 60 area
     model = glm::mat4(1.0f);
     model = glm::translate(model, glm::vec3(30.0f, 0.0f, 90.0f));
@@ -203,9 +202,16 @@ void Game::mainLoop() {
     if (!pickups.attackBoostAvail && !pickups.speedBoostAvail) {
       pickups.respawn();
     }
-    //
 
-    /* 
+
+
+    */
+
+
+
+
+
+    /*
 
     // update to ortho
     glm::mat4 ortho = glm::ortho(0.0f, (float)camera->window_width, 0.0f, (float)camera->window_height, 0.1f, 200.0f);
@@ -226,10 +232,16 @@ void Game::mainLoop() {
     // hud drawing not not quite working -- relevant :  https://stackoverflow.com/questions/30338765/opengl-draw-hud-over-3d-game
 
     */
-    
+
+
+
     //glBindVertexArray(0);  // unbind vertex array, our only one, stays in use
 
-    glfwSwapBuffers(window);
+
+
+
+    display.update();
+    //glfwSwapBuffers(window);
     glfwPollEvents();
 
   }

@@ -1,9 +1,9 @@
 #pragma once
 #include <glad/glad.h>
 #include <GLFW/glfw3.h>
-#include <Camera.h>
-#include "../src/Player.h"
-#include "../src/Pickups.h"
+#include "Camera.h"
+#include "Player.h"
+#include "Pickups.h"
 
 
 class Controls {

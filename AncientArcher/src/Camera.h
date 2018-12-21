@@ -12,8 +12,6 @@ public:
 
   float FoV;
 
-  int window_width;
-  int window_height;
   float camstart[3] = { 5.0f, 2.5f, 5.0f };
 
   glm::mat4 getViewMatrix();

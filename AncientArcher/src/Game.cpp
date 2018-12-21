@@ -21,31 +21,12 @@ Game::Game() {
 
   camera = new Camera();
 
-  /* init window */
-  window = glfwCreateWindow(camera->window_width, camera->window_height, "Oh Hi Mark", nullptr, nullptr);
-  if (window == nullptr) {
-    std::cout << "failed to create glfw window" << std::endl;
-    glfwTerminate();
-    char a;
-    std::cin >> a;
-    exit(-1);
-  }
-  glfwMakeContextCurrent(window);
-  setupReshapeWindow();
-  setupMouseHandler();
-
-  if (!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress)) {
-    std::cout << "failed to init GLAD" << std::endl;
-    char a;
-    std::cin >> a;
-    exit(-1);
-  }
-
   control = new Controls();   //default controls
+
   shader = new Shader("../AncientArcher/shaders/vertex.shader", "../AncientArcher/shaders/fragment.shader", "../AncientArcher/shaders/geometry.shader");
+
   player = new Player();   //default character
 
-  glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
 
   /* load 16 textures */
   texBank.loadTexture("../AncientArcher/res/texture/00-pixelized_grass.png", shader);
@@ -75,39 +56,9 @@ Game::Game() {
 
 Game::~Game() {
 
-  glDeleteVertexArrays(1, &cubeVAO);
-  glDeleteBuffers(1, &cubeVBO);
+  //glDeleteVertexArrays(1, &cubeVAO);
+  //glDeleteBuffers(1, &cubeVBO);
 
   glfwTerminate();
 
-}
-
-void Game::reshapeWindow(GLFWwindow * window, int w, int h) {
-  glViewport(0, 0, w, h);
-  camera->window_width = w;
-  camera->window_height = h;
-}
-
-void Game::mouseHandler(GLFWwindow * window, double xpos, double ypos) {
-  control->mouseMovement(xpos, ypos, camera);
-}
-
-static Game * g_CurrentInstance;
-
-extern "C" void reshapeCallback(GLFWwindow *window, int w, int h) {
-  g_CurrentInstance->reshapeWindow(window, w, h);
-}
-
-extern "C" void mouseCallback(GLFWwindow *window, double xpos, double ypos) {
-  g_CurrentInstance->mouseHandler(window, xpos, ypos);
-}
-
-void Game::setupReshapeWindow() {
-  ::g_CurrentInstance = this;
-  ::glfwSetFramebufferSizeCallback(window, ::reshapeCallback);
-}
-
-void Game::setupMouseHandler() {
-  ::g_CurrentInstance = this;
-  ::glfwSetCursorPosCallback(window, ::mouseCallback);
 }

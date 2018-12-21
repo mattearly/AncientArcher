@@ -1,9 +1,9 @@
 #include "Controls.h"
 #include <glm/glm.hpp>
 #include "Constraints.h"
-#include "../src/Player.h"
+#include "Player.h"
 #include "Sound.h"
-#include "../src/Game.h"
+#include "Game.h"
 #include <iostream>
 
 Controls::Controls() {

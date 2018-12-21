@@ -13,9 +13,6 @@ Camera::Camera() {
 
   updateCameraVectors();
 
-  window_width = 1024;
-  window_height = 800;
-
 }
 
 Camera::~Camera() {}
