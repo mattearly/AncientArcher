@@ -1,4 +1,10 @@
 #include "Camera.h"
+#include "Shader.h"
+#include "displayManager/Display.h"
+#include "Controls.h"
+
+extern Display display;
+extern Shader shader;
 
 Camera::Camera() {
   FoV = 45.0f;
@@ -17,19 +23,19 @@ Camera::Camera() {
 
 Camera::~Camera() {}
 
-void Camera::update(const Display *display, const Shader *shader) {
+void Camera::update() {
 
   glm::mat4 view = getViewMatrix();
-  shader->setMat4("view", view);
+  shader.setMat4("view", view);
 
 }
 
-void Camera::updateProjectionMatrix(const Display * display, const Shader * shader) {
+void Camera::updateProjectionMatrix() {
 
   // update projection matrix  -  if changes, this needs to be moved to main loop or updated specifically when appropriate
 
-  glm::mat4 projection = glm::perspective(glm::radians(FoV), (float)display->window_width / (float)display->window_height, 0.1f, 500.0f);
-  shader->setMat4("projection", projection);
+  glm::mat4 projection = glm::perspective(glm::radians(FoV), (float)display.window_width / (float)display.window_height, 0.1f, 500.0f);
+  shader.setMat4("projection", projection);
 
 
 }

@@ -1,9 +1,5 @@
 #pragma once
 
-namespace mainPlayer {
-
-}
-
 class Player {
 public:
   Player();

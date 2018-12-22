@@ -6,6 +6,10 @@
 #include<iostream>
 #include<sstream>
 
+#include "Shader.h"
+
+extern Shader shader;
+
 TextureBank::TextureBank() {
   num_loaded_textures = 0;
   active_tex = 0;
@@ -14,7 +18,7 @@ TextureBank::TextureBank() {
 
 TextureBank::~TextureBank() {}
 
-void TextureBank::loadTexture(std::string path, Shader *shader) {
+void TextureBank::loadTexture(std::string path) {
 
   // makes it so the use gets this message instead of loading more than MAXTEXTURES textures
   if (num_loaded_textures >= MAXTEXTURES) {
@@ -70,8 +74,8 @@ void TextureBank::loadTexture(std::string path, Shader *shader) {
   std::stringstream texture_shader_name("texture", std::ios_base::app | std::ios_base::out);
   texture_shader_name << num_loaded_textures;
   std::string n = texture_shader_name.str();
-  shader->use();
-  shader->setInt(n.c_str(), num_loaded_textures);
+  shader.use();
+  shader.setInt(n.c_str(), num_loaded_textures);
 
   // console notification of loaded texture
   if (num_loaded_textures == 0)
@@ -83,9 +87,9 @@ void TextureBank::loadTexture(std::string path, Shader *shader) {
 
 }
 
-void TextureBank::activate(Shader * shader, int n) {
+void TextureBank::activate(int n) {
   if (active_tex != n) {
-    shader->setInt("texnum", n);
+    shader.setInt("texnum", n);
     active_tex = n;
   }
 }

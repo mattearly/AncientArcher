@@ -4,6 +4,9 @@
 #include <iostream>
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
+#include "../Shader.h"
+
+extern Shader shader;
 
 PrimativeManager::PrimativeManager() {
   cubeLoaded = false;
@@ -89,7 +92,7 @@ void PrimativeManager::loadCube() {
 
 }
 
-void PrimativeManager::drawCube(const Shader *shader) {
+void PrimativeManager::drawCube() {
   if (!cubeLoaded) {
     loadCube();
   }
@@ -101,7 +104,7 @@ void PrimativeManager::drawCube(const Shader *shader) {
   glm::mat4 model = glm::mat4(1.0f);
   //model = glm::translate(model, glm::vec3(0.0f, 0.0f, 0.0f));
   //model = glm::scale(model, glm::vec3(1.0f, 1.0f, 1.0f));
-  shader->setMat4("model", model);
+  shader.setMat4("model", model);
 
   glDrawArrays(GL_TRIANGLES, 0, 36);
 

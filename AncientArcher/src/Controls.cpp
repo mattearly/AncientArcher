@@ -5,6 +5,9 @@
 #include "Sound.h"
 #include "Game.h"
 #include <iostream>
+#include "Camera.h"
+
+extern Camera camera;
 
 Controls::Controls() {
   firstMouse = true;
@@ -13,7 +16,7 @@ Controls::Controls() {
 
 Controls::~Controls() {}
 
-void Controls::mouseMovement(double xpos, double ypos, Camera *cam) {
+void Controls::mouseMovement(double xpos, double ypos) {
 
   if (firstMouse) {
     lastX = xpos;
@@ -29,20 +32,20 @@ void Controls::mouseMovement(double xpos, double ypos, Camera *cam) {
   xoffset *= mouseSensitivity;
   yoffset *= mouseSensitivity;
 
-  cam->Yaw += xoffset;
-  cam->Pitch += yoffset;
+  camera.Yaw += xoffset;
+  camera.Pitch += yoffset;
 
-  if (cam->Pitch > 89.0f) {
-    cam->Pitch = 89.0f;
-  } else if (cam->Pitch < -89.0f) {
-    cam->Pitch = -89.0f;
+  if (camera.Pitch > 89.0f) {
+    camera.Pitch = 89.0f;
+  } else if (camera.Pitch < -89.0f) {
+    camera.Pitch = -89.0f;
   }
 
-  cam->updateCameraVectors();
+  camera.updateCameraVectors();
 
 }
 
-void Controls::keyboardInput(GLFWwindow * window, Camera *cam, Player *player, Pickups *pickups, float dtime, float gametime) {
+void Controls::keyboardInput(GLFWwindow * window, Player *player, Pickups *pickups, float dtime, float gametime) {
 
   movedir.positionChanged = true;  //for footsteps
 
@@ -167,39 +170,39 @@ void Controls::keyboardInput(GLFWwindow * window, Camera *cam, Player *player, P
 
     //todo: half speed if moving sideways along with forward or back
 
-    if (movedir.back || movedir.forward) {  // locks moving foward and backwards to the x and z axii. note that you can use the cam->Front instead of movefront to do a fly type thing while the y is unlocked or you are jumping
-      glm::vec3 moveFront = { cam->Front.x, 0.0f, cam->Front.z };
-      if (movedir.forward) cam->Position += moveFront * velocity;
-      if (movedir.back) cam->Position -= moveFront * velocity;
+    if (movedir.back || movedir.forward) {  // locks moving foward and backwards to the x and z axii. note that you can use the camera.Front instead of movefront to do a fly type thing while the y is unlocked or you are jumping
+      glm::vec3 moveFront = { camera.Front.x, 0.0f, camera.Front.z };
+      if (movedir.forward) camera.Position += moveFront * velocity;
+      if (movedir.back) camera.Position -= moveFront * velocity;
     }
 
-    if (movedir.right) cam->Position += cam->Right * velocity;
-    if (movedir.left) cam->Position -= cam->Right * velocity;
+    if (movedir.right) camera.Position += camera.Right * velocity;
+    if (movedir.left) camera.Position -= camera.Right * velocity;
 
     /* clamp to level - x */
-    if (cam->Position.x > world_width) {
-      if (movedir.forward) cam->Position.x -= cam->Front.x * velocity;
-      if (movedir.back)    cam->Position.x += cam->Front.x * velocity;
-      if (movedir.right)   cam->Position.x -= cam->Right.x * velocity;
-      if (movedir.left)    cam->Position.x += cam->Right.x * velocity;
-    } else if (cam->Position.x < 0.0f) {
-      if (movedir.forward) cam->Position.x -= cam->Front.x * velocity;
-      if (movedir.back)    cam->Position.x += cam->Front.x * velocity;
-      if (movedir.right)   cam->Position.x -= cam->Right.x * velocity;
-      if (movedir.left)    cam->Position.x += cam->Right.x * velocity;
+    if (camera.Position.x > world_width) {
+      if (movedir.forward) camera.Position.x -= camera.Front.x * velocity;
+      if (movedir.back)    camera.Position.x += camera.Front.x * velocity;
+      if (movedir.right)   camera.Position.x -= camera.Right.x * velocity;
+      if (movedir.left)    camera.Position.x += camera.Right.x * velocity;
+    } else if (camera.Position.x < 0.0f) {
+      if (movedir.forward) camera.Position.x -= camera.Front.x * velocity;
+      if (movedir.back)    camera.Position.x += camera.Front.x * velocity;
+      if (movedir.right)   camera.Position.x -= camera.Right.x * velocity;
+      if (movedir.left)    camera.Position.x += camera.Right.x * velocity;
     }
 
     /* clamp to level - z */
-    if (cam->Position.z > world_width) {
-      if (movedir.forward) cam->Position.z -= cam->Front.z * velocity;
-      if (movedir.back)    cam->Position.z += cam->Front.z * velocity;
-      if (movedir.right)   cam->Position.z -= cam->Right.z * velocity;
-      if (movedir.left)    cam->Position.z += cam->Right.z * velocity;
-    } else if (cam->Position.z < 0.0f) {
-      if (movedir.forward) cam->Position.z -= cam->Front.z * velocity;
-      if (movedir.back)    cam->Position.z += cam->Front.z * velocity;
-      if (movedir.right)   cam->Position.z -= cam->Right.z * velocity;
-      if (movedir.left)    cam->Position.z += cam->Right.z * velocity;
+    if (camera.Position.z > world_width) {
+      if (movedir.forward) camera.Position.z -= camera.Front.z * velocity;
+      if (movedir.back)    camera.Position.z += camera.Front.z * velocity;
+      if (movedir.right)   camera.Position.z -= camera.Right.z * velocity;
+      if (movedir.left)    camera.Position.z += camera.Right.z * velocity;
+    } else if (camera.Position.z < 0.0f) {
+      if (movedir.forward) camera.Position.z -= camera.Front.z * velocity;
+      if (movedir.back)    camera.Position.z += camera.Front.z * velocity;
+      if (movedir.right)   camera.Position.z -= camera.Right.z * velocity;
+      if (movedir.left)    camera.Position.z += camera.Right.z * velocity;
     }
 
 
@@ -217,10 +220,10 @@ void Controls::keyboardInput(GLFWwindow * window, Camera *cam, Player *player, P
     if (pickups->speedBoostAvail) {
       if (
         //y because boost loc is only x and y
-        cam->Position.z >= pickups->speedBoostLoc.y - 1 &&
-        cam->Position.z <= pickups->speedBoostLoc.y + 1 &&
-        cam->Position.x >= pickups->speedBoostLoc.x - 1 &&
-        cam->Position.x <= pickups->speedBoostLoc.x + 1) {
+        camera.Position.z >= pickups->speedBoostLoc.y - 1 &&
+        camera.Position.z <= pickups->speedBoostLoc.y + 1 &&
+        camera.Position.x >= pickups->speedBoostLoc.x - 1 &&
+        camera.Position.x <= pickups->speedBoostLoc.x + 1) {
         player->increaseLegPower(15.0f);
         pickups->speedBoostAvail = false;
         playsuccesssound();
@@ -232,10 +235,10 @@ void Controls::keyboardInput(GLFWwindow * window, Camera *cam, Player *player, P
     if (pickups->attackBoostAvail) {
       if (
         //y because boost loc is only x and y
-        cam->Position.z >= pickups->attackBoostLoc.y - 1 &&
-        cam->Position.z <= pickups->attackBoostLoc.y + 1 &&
-        cam->Position.x >= pickups->attackBoostLoc.x - 1 &&
-        cam->Position.x <= pickups->attackBoostLoc.x + 1) {
+        camera.Position.z >= pickups->attackBoostLoc.y - 1 &&
+        camera.Position.z <= pickups->attackBoostLoc.y + 1 &&
+        camera.Position.x >= pickups->attackBoostLoc.x - 1 &&
+        camera.Position.x <= pickups->attackBoostLoc.x + 1) {
         player->increaseAttackSpeed(0.5f);  // subtract 500. off the ms timer
         pickups->attackBoostAvail = false;
         playsuccesssound();
@@ -251,14 +254,14 @@ void Controls::keyboardInput(GLFWwindow * window, Camera *cam, Player *player, P
     movedir.jumped = false;
     playgruntsound();
   } else if (!movedir.onGround && !movedir.falling) {  // Jump Rising
-    cam->Position.y += cam->WorldUp.y * player->getRisingSpeed() * dtime;  // RISING SPEED CALC: jump speed based on LegPower Player Stat
-    if (cam->Position.y > player->getJumpHeight() + cam->camstart[1]) {  // MAX HEIGHT CALC: jump height based on LegPower Player Stat
+    camera.Position.y += camera.WorldUp.y * player->getRisingSpeed() * dtime;  // RISING SPEED CALC: jump speed based on LegPower Player Stat
+    if (camera.Position.y > player->getJumpHeight() + camera.camstart[1]) {  // MAX HEIGHT CALC: jump height based on LegPower Player Stat
       movedir.falling = true;
       //todo: added gravity to falling y = 1/2at^2 + vt  
     }
   } else if (movedir.falling && !movedir.onGround) {   // currently going down
-    cam->Position.y -= cam->WorldUp.y * 5.2f * dtime;  // GRAVITY PULL DOWN CALC: static value, todo: make dynamic based on falling time
-    if (cam->Position.y <= cam->camstart[1]) {
+    camera.Position.y -= camera.WorldUp.y * 5.2f * dtime;  // GRAVITY PULL DOWN CALC: static value, todo: make dynamic based on falling time
+    if (camera.Position.y <= camera.camstart[1]) {
       movedir.onGround = true;
       movedir.falling = false;
       playlandingsound();
@@ -266,7 +269,7 @@ void Controls::keyboardInput(GLFWwindow * window, Camera *cam, Player *player, P
   }
 
   if (movedir.onGround) {
-    cam->Position.y = cam->camstart[1];
+    camera.Position.y = camera.camstart[1];
   }
 
 

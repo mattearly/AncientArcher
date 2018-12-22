@@ -1,8 +1,7 @@
 #pragma once
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
-#include "displayManager/Display.h"
-#include "Shader.h"
+
 class Camera {
 public:
   Camera();
@@ -15,10 +14,9 @@ public:
 
   float camstart[3] = { 0.0f, 0.0f, 0.0f };
 
-  void update(const Display *display, const Shader *shader);
+  void update();
 
-  void updateProjectionMatrix(const Display *display, const Shader *shader);
-
+  void updateProjectionMatrix();
 
   // GETTERS
   //return the calculated view matrix

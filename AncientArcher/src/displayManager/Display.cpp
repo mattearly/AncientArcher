@@ -1,6 +1,9 @@
 #include "Display.h"
 #include <utility>
 #include <iostream>
+#include "../Controls.h"
+
+extern Controls *controls;
 
 Display::Display() {
 
@@ -68,7 +71,7 @@ void Display::mouseHandler(GLFWwindow * window, double xpos, double ypos) {
 }
 
 void Display::clear() const {
-  glClearColor(0.2f, 0.3f, 0.9f, 1.0f);
+  glClearColor(0.2f, 0.3f, 0.9f, 1.0f);http://twitch.tv/Animal_104
   glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 }
 
