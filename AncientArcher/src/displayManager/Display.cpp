@@ -3,7 +3,7 @@
 #include <iostream>
 #include "../Controls.h"
 
-extern Controls *controls;
+extern Controls controls;
 
 Display::Display() {
 
@@ -61,12 +61,13 @@ void Display::reshapeWindow(GLFWwindow * window, int w, int h) {
 
 void Display::mouseHandler(GLFWwindow * window, double xpos, double ypos) {
 
-  //control->mouseMovement(xpos, ypos, camera);
+  controls.mouseMovement(xpos, ypos);
 
   //return std::pair<double, double>(xpos, ypos);
 
   //debug
   //std::cout << "mouse (x, y): " << xpos << ", " << ypos << "\n";
+
 
 }
 
