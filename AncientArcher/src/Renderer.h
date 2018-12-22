@@ -5,7 +5,7 @@ class Renderer {
 public:
   Renderer();
   ~Renderer();
-  void update(PrimativeManager *primativeManager);
+  void update(PrimativeManager *primativeManager, float deltaTime);
 
 };
 

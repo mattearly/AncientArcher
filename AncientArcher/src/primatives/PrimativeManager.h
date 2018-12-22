@@ -4,7 +4,7 @@ public:
   PrimativeManager();
   ~PrimativeManager();
   
-  void drawCube();
+  void drawCube(float deltaTime);
 
 private:
 

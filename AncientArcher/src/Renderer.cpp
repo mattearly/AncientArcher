@@ -9,10 +9,10 @@ Renderer::Renderer() {}
 
 Renderer::~Renderer() {}
 
-void Renderer::update(PrimativeManager *primativeManager) {
+void Renderer::update(PrimativeManager *primativeManager, float deltaTime) {
   display.clear();
 
-  primativeManager->drawCube();
+  primativeManager->drawCube(deltaTime);
 
   display.update();
 }

@@ -2,8 +2,10 @@
 #include <utility>
 #include <iostream>
 #include "../Controls.h"
+#include "../Camera.h"
 
 extern Controls controls;
+extern Camera camera;
 
 Display::Display() {
 
@@ -57,6 +59,7 @@ void Display::reshapeWindow(GLFWwindow * window, int w, int h) {
   glViewport(0, 0, w, h);
   window_width = w;
   window_height = h;
+  camera.updateProjectionMatrix();
 }
 
 void Display::mouseHandler(GLFWwindow * window, double xpos, double ypos) {

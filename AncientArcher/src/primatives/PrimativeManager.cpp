@@ -5,6 +5,7 @@
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
 #include "../Shader.h"
+#include <cmath>
 
 extern Shader shader;
 
@@ -92,7 +93,7 @@ void PrimativeManager::loadCube() {
 
 }
 
-void PrimativeManager::drawCube() {
+void PrimativeManager::drawCube(float deltaTime) {
   if (!cubeLoaded) {
     loadCube();
   }
@@ -102,6 +103,9 @@ void PrimativeManager::drawCube() {
   //glEnableVertexAttribArray(0);
   
   glm::mat4 model = glm::mat4(1.0f);
+
+  model = glm::rotate(model, glm::radians(50.0f) * (float)glfwGetTime(), glm::vec3(1.0f, 1.0f, 1.0f));
+
   //model = glm::translate(model, glm::vec3(0.0f, 0.0f, 0.0f));
   //model = glm::scale(model, glm::vec3(1.0f, 1.0f, 1.0f));
   shader.setMat4("model", model);

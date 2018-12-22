@@ -33,7 +33,7 @@ void Game::mainLoop() {
 
     texBank.activate(13);
 
-    renderer.update(&primativeManager);
+    renderer.update(&primativeManager, deltaTime);
     
     glfwPollEvents();
 
