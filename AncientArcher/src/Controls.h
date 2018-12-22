@@ -30,7 +30,7 @@ public:
 
   void mouseMovement(double xpos, double ypos);
 
-  void keyboardInput(GLFWwindow *window, Player *player, Pickups *pickups, float dtime, float gametime);
+  void keyboardInput(Player *player, Pickups *pickups, float dtime, float gametime);
 
 private:
 

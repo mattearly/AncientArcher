@@ -6,8 +6,10 @@
 #include "Game.h"
 #include <iostream>
 #include "Camera.h"
+#include "displayManager/Display.h"
 
 extern Camera camera;
+extern Display display;
 
 Controls::Controls() {
   firstMouse = true;
@@ -45,11 +47,11 @@ void Controls::mouseMovement(double xpos, double ypos) {
 
 }
 
-void Controls::keyboardInput(GLFWwindow * window, Player *player, Pickups *pickups, float dtime, float gametime) {
+void Controls::keyboardInput(Player *player, Pickups *pickups, float dtime, float gametime) {
 
   movedir.positionChanged = true;  //for footsteps
 
-  if (glfwGetMouseButton(window, GLFW_MOUSE_BUTTON_LEFT) == GLFW_PRESS) {
+  if (glfwGetMouseButton(display.window, GLFW_MOUSE_BUTTON_LEFT) == GLFW_PRESS) {
 
 
     //swing sword  or shoot bow
@@ -72,17 +74,17 @@ void Controls::keyboardInput(GLFWwindow * window, Player *player, Pickups *picku
     }
   }
 
-  if (glfwGetKey(window, GLFW_KEY_ESCAPE) == GLFW_PRESS) {
-    glfwSetWindowShouldClose(window, true);
+  if (glfwGetKey(display.window, GLFW_KEY_ESCAPE) == GLFW_PRESS) {
+    glfwSetWindowShouldClose(display.window, true);
   }
 
-  if (glfwGetKey(window, GLFW_KEY_LEFT_SHIFT) == GLFW_PRESS) {
+  if (glfwGetKey(display.window, GLFW_KEY_LEFT_SHIFT) == GLFW_PRESS) {
     if (movedir.onGround) {
       movedir.boost = true;
     }
   }
 
-  if (glfwGetKey(window, GLFW_KEY_W) == GLFW_PRESS) {
+  if (glfwGetKey(display.window, GLFW_KEY_W) == GLFW_PRESS) {
     if (movedir.onGround) {
       movedir.back = false;
       movedir.forward = true;
@@ -90,7 +92,7 @@ void Controls::keyboardInput(GLFWwindow * window, Player *player, Pickups *picku
     }
   }
 
-  if (glfwGetKey(window, GLFW_KEY_S) == GLFW_PRESS) {
+  if (glfwGetKey(display.window, GLFW_KEY_S) == GLFW_PRESS) {
     if (movedir.onGround) {
       movedir.forward = false;
       movedir.back = true;
@@ -99,7 +101,7 @@ void Controls::keyboardInput(GLFWwindow * window, Player *player, Pickups *picku
     }
   }
 
-  if (glfwGetKey(window, GLFW_KEY_A) == GLFW_PRESS) {
+  if (glfwGetKey(display.window, GLFW_KEY_A) == GLFW_PRESS) {
     if (movedir.onGround) {
       movedir.right = false;
       movedir.left = true;
@@ -108,7 +110,7 @@ void Controls::keyboardInput(GLFWwindow * window, Player *player, Pickups *picku
     }
   }
 
-  if (glfwGetKey(window, GLFW_KEY_D) == GLFW_PRESS) {
+  if (glfwGetKey(display.window, GLFW_KEY_D) == GLFW_PRESS) {
     if (movedir.onGround) {
       movedir.left = false;
       movedir.right = true;
@@ -117,46 +119,46 @@ void Controls::keyboardInput(GLFWwindow * window, Player *player, Pickups *picku
     }
   }
 
-  if (glfwGetKey(window, GLFW_KEY_SPACE) == GLFW_PRESS) {
+  if (glfwGetKey(display.window, GLFW_KEY_SPACE) == GLFW_PRESS) {
     if (movedir.onGround && movedir.canJumpAgain) {  //can jump again is to make the spacebar spam by holding it down not work
       movedir.jumped = true;
       movedir.canJumpAgain = false;
     }
   }
 
-  if (glfwGetKey(window, GLFW_KEY_0) == GLFW_PRESS) {
+  if (glfwGetKey(display.window, GLFW_KEY_0) == GLFW_PRESS) {
     player->selectWeapon(0);
   }
 
-  if (glfwGetKey(window, GLFW_KEY_1) == GLFW_PRESS) {
+  if (glfwGetKey(display.window, GLFW_KEY_1) == GLFW_PRESS) {
     player->selectWeapon(1);
   }
 
-  if (glfwGetKey(window, GLFW_KEY_2) == GLFW_PRESS) {
+  if (glfwGetKey(display.window, GLFW_KEY_2) == GLFW_PRESS) {
     player->selectWeapon(2);
   }
 
-  if (glfwGetKey(window, GLFW_KEY_W) == GLFW_RELEASE) {
+  if (glfwGetKey(display.window, GLFW_KEY_W) == GLFW_RELEASE) {
     movedir.forward = false;
   }
 
-  if (glfwGetKey(window, GLFW_KEY_S) == GLFW_RELEASE) {
+  if (glfwGetKey(display.window, GLFW_KEY_S) == GLFW_RELEASE) {
     movedir.back = false;
   }
 
-  if (glfwGetKey(window, GLFW_KEY_A) == GLFW_RELEASE) {
+  if (glfwGetKey(display.window, GLFW_KEY_A) == GLFW_RELEASE) {
     movedir.left = false;
   }
 
-  if (glfwGetKey(window, GLFW_KEY_D) == GLFW_RELEASE) {
+  if (glfwGetKey(display.window, GLFW_KEY_D) == GLFW_RELEASE) {
     movedir.right = false;
   }
 
-  if (glfwGetKey(window, GLFW_KEY_LEFT_SHIFT) == GLFW_RELEASE) {
+  if (glfwGetKey(display.window, GLFW_KEY_LEFT_SHIFT) == GLFW_RELEASE) {
     movedir.boost = false;
   }
 
-  if (glfwGetKey(window, GLFW_KEY_SPACE) == GLFW_RELEASE) {
+  if (glfwGetKey(display.window, GLFW_KEY_SPACE) == GLFW_RELEASE) {
     movedir.canJumpAgain = true;
   }
 

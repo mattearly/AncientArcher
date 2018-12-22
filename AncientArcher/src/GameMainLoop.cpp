@@ -9,9 +9,11 @@
 #include "mearly.h"
 #include "Camera.h"
 #include "displayManager/Display.h"
+#include "Controls.h"
 
 extern Camera camera;
 extern Display display;
+extern Controls controls;
 
 void Game::mainLoop() {
 
@@ -25,7 +27,7 @@ void Game::mainLoop() {
 
     gameTime += deltaTime;
 
-    //controls->keyboardInput(display->window, camera, player, &pickups, deltaTime, gameTime);
+    controls.keyboardInput(player, &pickups, deltaTime, gameTime);
     
     camera.update();
 
