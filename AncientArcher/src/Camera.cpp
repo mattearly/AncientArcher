@@ -34,7 +34,7 @@ void Camera::updateProjectionMatrix() {
 
   // update projection matrix  -  if changes, this needs to be moved to main loop or updated specifically when appropriate
 
-  glm::mat4 projection = glm::perspective(glm::radians(FoV), (float)display.window_width / (float)display.window_height, 0.1f, 500.0f);
+  glm::mat4 projection = glm::perspective(glm::radians(FoV), (float)display.window_width / (float)display.window_height, 0.1f, 1500.0f);
   shader.setMat4("projection", projection);
 
 

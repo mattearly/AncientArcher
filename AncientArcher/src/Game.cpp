@@ -10,11 +10,14 @@
 #include "displayManager/Display.h"
 #include "Controls.h"
 #include "Shader.h"
+#include "TextureBank.h"
 
 Camera camera;
 Display display;
 Controls controls;
 Shader shader("../AncientArcher/shaders/vertex.shader", "../AncientArcher/shaders/fragment.shader");
+TextureBank texBank;
+
 
 Game::Game() {
 

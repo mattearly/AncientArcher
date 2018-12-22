@@ -5,9 +5,11 @@
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
 #include "../Shader.h"
+#include "../TextureBank.h"
 #include <cmath>
 
 extern Shader shader;
+extern TextureBank texBank;
 
 PrimativeManager::PrimativeManager() {
   cubeLoaded = false;
@@ -104,12 +106,30 @@ void PrimativeManager::drawCube(float deltaTime) {
   
   glm::mat4 model = glm::mat4(1.0f);
 
-  model = glm::rotate(model, glm::radians(50.0f) * (float)glfwGetTime(), glm::vec3(1.0f, 1.0f, 1.0f));
-
+  //model = glm::rotate(model, glm::radians(50.0f) * (float)glfwGetTime(), glm::vec3(1.0f, 1.0f, 1.0f));
   //model = glm::translate(model, glm::vec3(0.0f, 0.0f, 0.0f));
   //model = glm::scale(model, glm::vec3(1.0f, 1.0f, 1.0f));
+
   shader.setMat4("model", model);
 
   glDrawArrays(GL_TRIANGLES, 0, 36);
 
+}
+
+void PrimativeManager::drawCube(glm::vec3 xyzlocation, glm::vec3 xyzsize) {
+  if (!cubeLoaded) {
+    loadCube();
+  }
+
+  glBindVertexArray(cubeVAO);
+
+  glm::mat4 model = glm::mat4(1.0f);
+
+  //model = glm::rotate(model, glm::radians(50.0f) * (float)glfwGetTime(), glm::vec3(1.0f, 1.0f, 1.0f));
+  model = glm::translate(model, glm::vec3(xyzlocation.x, xyzlocation.y, xyzlocation.z));
+  model = glm::scale(model, glm::vec3(xyzsize.x, xyzsize.y, xyzsize.z));
+
+  shader.setMat4("model", model);
+
+  glDrawArrays(GL_TRIANGLES, 0, 36);
 }

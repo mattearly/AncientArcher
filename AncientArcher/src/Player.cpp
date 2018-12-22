@@ -4,9 +4,11 @@
 
 Player::Player() {
 
-  BaseSpeed = 10.0f;  // base stats
+  BaseSpeed = 120.0f;  // base stats
   BaseJump = 4.0f;
   LegPower = 10.0f;
+
+  characterHeight = 2.5f;
 
   weaponSelect = 0;  // no weapon
 

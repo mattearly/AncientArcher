@@ -1,5 +1,4 @@
 #pragma once
-#include "TextureBank.h"
 #include "Player.h"
 #include "Pickups.h"
 #include "Renderer.h"
@@ -12,7 +11,6 @@ public:
 
   PrimativeManager primativeManager;
   Pickups pickups;
-  TextureBank texBank;
   Renderer renderer;
 
   Game();

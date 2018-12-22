@@ -31,8 +31,6 @@ void Game::mainLoop() {
     
     camera.update();
 
-    texBank.activate(13);
-
     renderer.update(&primativeManager, deltaTime);
     
     glfwPollEvents();

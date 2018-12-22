@@ -6,6 +6,8 @@ public:
   Player(float base_speed, float base_jump, float leg_power);
   ~Player();
 
+  float characterHeight;
+
   // MUTATORS
   void increaseLegPower(float add);
 
@@ -35,6 +37,7 @@ private:
   float BaseSpeed;
   float BaseJump;
   float LegPower;
+
   
   int weaponSelect;
 

@@ -207,7 +207,6 @@ void Controls::keyboardInput(Player *player, Pickups *pickups, float dtime, floa
       if (movedir.left)    camera.Position.z += camera.Right.z * velocity;
     }
 
-
     // FOOTSTEP SOUNDS
     if (movedir.timeSinceLastStep > TIMEBETWEENFOOTSTEPS || (movedir.boost && !movedir.back && movedir.timeSinceLastStep > TIMEBETWEENFOOTSTEPS - 0.5f)) {
       if (movedir.positionChanged && movedir.onGround) {
@@ -218,6 +217,7 @@ void Controls::keyboardInput(Player *player, Pickups *pickups, float dtime, floa
       movedir.timeSinceLastStep += dtime;
     }
 
+    /* not using right now
     // LEGPOWER PICKUP                       
     if (pickups->speedBoostAvail) {
       if (
@@ -247,7 +247,7 @@ void Controls::keyboardInput(Player *player, Pickups *pickups, float dtime, floa
 
       }
     }
-
+    */
   }
 
   /* Jump System */
