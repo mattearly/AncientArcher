@@ -9,6 +9,7 @@
 
 Game::Game() {
 
+  display = new Display();
 
   camera = new Camera();
 
@@ -17,7 +18,6 @@ Game::Game() {
   shader = new Shader("../AncientArcher/shaders/vertex.shader", "../AncientArcher/shaders/fragment.shader", "../AncientArcher/shaders/geometry.shader");
 
   player = new Player();   //default character
-
 
   /* load 16 textures */
   texBank.loadTexture("../AncientArcher/res/texture/00-pixelized_grass.png", shader);

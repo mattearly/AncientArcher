@@ -13,7 +13,7 @@ void Game::mainLoop() {
 
   glm::mat4 model = glm::mat4(1.0f);
 
-  while (!glfwWindowShouldClose(display.window)) {
+  while (!glfwWindowShouldClose(display->window)) {
 
     float currentFrame = glfwGetTime();
     deltaTime = currentFrame - lastFrame;
@@ -21,10 +21,8 @@ void Game::mainLoop() {
 
     gameTime += deltaTime;
 
-    control->keyboardInput(display.window, camera, player, &pickups, deltaTime, gameTime);
+    //control->keyboardInput(display.window, camera, player, &pickups, deltaTime, gameTime);
 
-    glClearColor(0.2f, 0.3f, 0.9f, 1.0f);
-    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
     /*
     //shader->use();  //our only one, stays in use
@@ -237,10 +235,14 @@ void Game::mainLoop() {
 
     //glBindVertexArray(0);  // unbind vertex array, our only one, stays in use
 
+    camera->update(display, shader);
 
+    display->clear();
 
+    renderer.update();
 
-    display.update();
+    display->update();
+
     //glfwSwapBuffers(window);
     glfwPollEvents();
 

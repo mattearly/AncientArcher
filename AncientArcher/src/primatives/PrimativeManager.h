@@ -16,5 +16,8 @@ private:
 
   bool cubeLoaded;
 
+  unsigned int cubeVAO, cubeVBO;
+
+
 };
 

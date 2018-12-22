@@ -58,7 +58,6 @@ void PrimativeManager::loadCube() {
 
 
   /* set up an area to store vertex data */
-  unsigned int cubeVAO, cubeVBO;
   glGenVertexArrays(1, &cubeVAO);
   glGenBuffers(1, &cubeVBO);
 
@@ -75,7 +74,7 @@ void PrimativeManager::loadCube() {
   glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void*)(3 * sizeof(float)));
   glEnableVertexAttribArray(1);
 
-  // texture coord attribute
+  // normal attribute
   glVertexAttribPointer(2, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void*)(5 * sizeof(float)));
   glEnableVertexAttribArray(2);
 
@@ -86,6 +85,12 @@ void PrimativeManager::loadCube() {
 }
 
 void PrimativeManager::drawCube() {
+  if (!cubeLoaded) {
+    loadCube();
+  }
+  
+  glBindVertexArray(cubeVAO);
 
+  glDrawArrays(GL_TRIANGLES, 0, 36);
 
 }

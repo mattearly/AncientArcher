@@ -17,6 +17,16 @@ Camera::Camera() {
 
 Camera::~Camera() {}
 
+void Camera::update(const Display *display, const Shader *shader) {
+  // update projection matrix  -  if changes, this needs to be moved to main loop or updated specifically when appropriate
+  glm::mat4 projection = glm::perspective(glm::radians(FoV), (float)display->window_width / (float)display->window_height, 0.1f, 200.0f);
+  shader->setMat4("projection", projection);
+
+  glm::mat4 view = getViewMatrix();
+  shader->setMat4("view", view);
+
+}
+
 glm::mat4 Camera::getViewMatrix() {
   return glm::lookAt(Position, Position + Front, Up);
 }

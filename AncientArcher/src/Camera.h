@@ -1,7 +1,8 @@
 #pragma once
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
-
+#include "displayManager/Display.h"
+#include "Shader.h"
 class Camera {
 public:
   Camera();
@@ -14,6 +15,9 @@ public:
 
   float camstart[3] = { 5.0f, 2.5f, 5.0f };
 
+  void update(const Display *display, const Shader *shader);
+
+  //return the calculated view matrix
   glm::mat4 getViewMatrix();
 
   //return a reference to Position

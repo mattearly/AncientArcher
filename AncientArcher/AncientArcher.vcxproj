@@ -124,6 +124,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="src\Renderer.cpp" />
     <ClCompile Include="src\displayManager\Display.cpp" />
     <ClCompile Include="src\Pickups.cpp" />
     <ClCompile Include="src\mearly.cpp" />
@@ -142,6 +143,7 @@
     <ClCompile Include="src\TextureBank.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="src\Renderer.h" />
     <ClInclude Include="src\displayManager\Display.h" />
     <ClInclude Include="src\Pickups.h" />
     <ClInclude Include="src\mearly.h" />
