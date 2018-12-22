@@ -1,7 +1,9 @@
 #include "PrimativeManager.h"
 #include <glad/glad.h>
 #include <GLFW/glfw3.h>
-
+#include <iostream>
+#include <glm/glm.hpp>
+#include <glm/gtc/matrix_transform.hpp>
 
 PrimativeManager::PrimativeManager() {
   cubeLoaded = false;
@@ -56,7 +58,6 @@ void PrimativeManager::loadCube() {
     -0.5f,  0.5f, -0.5f,   0.0f, 1.0f,        0.0f,  1.0f,  0.0f
   };                     
 
-
   /* set up an area to store vertex data */
   glGenVertexArrays(1, &cubeVAO);
   glGenBuffers(1, &cubeVBO);
@@ -81,16 +82,28 @@ void PrimativeManager::loadCube() {
   //glBindBuffer(GL_ARRAY_BUFFER, 0);
 
   glBindVertexArray(0);
+ 
+  cubeLoaded = true;
+
+  std::cout << "cube Loaded to Graphics Card \n";
 
 }
 
-void PrimativeManager::drawCube() {
+void PrimativeManager::drawCube(const Shader *shader) {
   if (!cubeLoaded) {
     loadCube();
   }
   
   glBindVertexArray(cubeVAO);
 
+  glm::mat4 model = glm::mat4(1.0f);
+  //model = glm::translate(model, glm::vec3(0.0f, 0.0f, 0.0f));
+  //model = glm::scale(model, glm::vec3(1.0f, 1.0f, 1.0f));
+  shader->setMat4("model", model);
+
   glDrawArrays(GL_TRIANGLES, 0, 36);
+
+  std::cout << "drawign cube \n";
+
 
 }

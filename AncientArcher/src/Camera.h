@@ -13,10 +13,14 @@ public:
 
   float FoV;
 
-  float camstart[3] = { 5.0f, 2.5f, 5.0f };
+  float camstart[3] = { 0.0f, 0.0f, 1.0f };
 
   void update(const Display *display, const Shader *shader);
 
+  void updateProjectionMatrix(const Display *display, const Shader *shader);
+
+
+  // GETTERS
   //return the calculated view matrix
   glm::mat4 getViewMatrix();
 

@@ -1,5 +1,4 @@
 #pragma once
-
 #include "Shader.h"
 #include "Camera.h"
 #include "Controls.h"
@@ -8,6 +7,7 @@
 #include "Pickups.h"
 #include "displayManager/Display.h"
 #include "Renderer.h"
+#include "primatives/PrimativeManager.h"
 class Game {
 public:
   Game();
@@ -18,6 +18,7 @@ public:
   Controls *control;
   Player *player;
 
+  PrimativeManager primativeManager;
   Pickups pickups;
   TextureBank texBank;
   Renderer renderer;

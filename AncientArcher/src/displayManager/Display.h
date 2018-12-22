@@ -8,16 +8,14 @@ public:
 
   GLFWwindow *window;
 
-  void reshapeWindow(GLFWwindow *window, int w, int h);
-  void mouseHandler(GLFWwindow *window, double xpos, double ypos);
-
-  void update();
-
-  void clear();
-
+  void clear() const;
+  void update() const;
 
   int window_width;
   int window_height;
+
+  void reshapeWindow(GLFWwindow *window, int w, int h);
+  void mouseHandler(GLFWwindow *window, double xpos, double ypos);
 
 private:
 

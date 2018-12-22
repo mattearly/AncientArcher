@@ -1,13 +1,16 @@
 #include "Renderer.h"
 
-
-
 Renderer::Renderer() {}
-
 
 Renderer::~Renderer() {}
 
-void Renderer::update() {
+void Renderer::update(const Display *display, const Shader *shader, PrimativeManager *primativeManager) {
+  display->clear();
 
 
+  primativeManager->drawCube(shader);
+  // draw logic
+
+
+  display->update();
 }

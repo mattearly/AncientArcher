@@ -63,17 +63,17 @@ void Display::mouseHandler(GLFWwindow * window, double xpos, double ypos) {
   //return std::pair<double, double>(xpos, ypos);
 
   //debug
-  std::cout << "mouse (x, y): " << xpos << ", " << ypos << "\n";
+  //std::cout << "mouse (x, y): " << xpos << ", " << ypos << "\n";
 
 }
 
-void Display::update() {
-  glfwSwapBuffers(window);
-}
-
-void Display::clear() {
+void Display::clear() const {
   glClearColor(0.2f, 0.3f, 0.9f, 1.0f);
   glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+}
+
+void Display::update() const {
+  glfwSwapBuffers(window);
 }
 
 static Display * g_CurrentInstance;

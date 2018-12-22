@@ -15,7 +15,9 @@ Game::Game() {
 
   control = new Controls();   //default controls
 
-  shader = new Shader("../AncientArcher/shaders/vertex.shader", "../AncientArcher/shaders/fragment.shader", "../AncientArcher/shaders/geometry.shader");
+  //shader = new Shader("../AncientArcher/shaders/vertex.shader", "../AncientArcher/shaders/fragment.shader", "../AncientArcher/shaders/geometry.shader");
+
+  shader = new Shader("../AncientArcher/shaders/vertex.shader", "../AncientArcher/shaders/fragment.shader");
 
   player = new Player();   //default character
 
@@ -43,6 +45,8 @@ Game::Game() {
   // only render the objects not line of sight blocked by other objects 
   glEnable(GL_DEPTH_TEST);
   //glEnable(GL_CULL_FACE);
+
+  camera->updateProjectionMatrix(display, shader);
 }
 
 Game::~Game() {

@@ -23,7 +23,6 @@ void Game::mainLoop() {
 
     //control->keyboardInput(display.window, camera, player, &pickups, deltaTime, gameTime);
 
-
     /*
     //shader->use();  //our only one, stays in use
 
@@ -231,19 +230,14 @@ void Game::mainLoop() {
 
     */
 
-
-
     //glBindVertexArray(0);  // unbind vertex array, our only one, stays in use
 
     camera->update(display, shader);
 
-    display->clear();
+    texBank.activate(shader, 13);
 
-    renderer.update();
-
-    display->update();
-
-    //glfwSwapBuffers(window);
+    renderer.update(display, shader, &primativeManager);
+    
     glfwPollEvents();
 
   }

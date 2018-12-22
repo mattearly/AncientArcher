@@ -1,12 +1,11 @@
 #pragma once
-//#include<map>
-//#include<string>
+#include "../Shader.h"
 class PrimativeManager {
 public:
   PrimativeManager();
   ~PrimativeManager();
   
-  void drawCube();
+  void drawCube(const Shader *shader);
 
 private:
 

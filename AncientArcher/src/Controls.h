@@ -5,7 +5,6 @@
 #include "Player.h"
 #include "Pickups.h"
 
-
 class Controls {
 
 public:
