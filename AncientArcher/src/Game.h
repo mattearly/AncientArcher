@@ -17,12 +17,12 @@ public:
   Camera *camera;
   Controls *control;
   Player *player;
+
   Pickups pickups;
   TextureBank texBank;
   Renderer renderer;
 
   void mainLoop();
-
 
 private:
 
