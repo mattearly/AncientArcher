@@ -9,7 +9,7 @@ void Renderer::update(const Display *display, const Shader *shader, PrimativeMan
 
 
   primativeManager->drawCube(shader);
-  // draw logic
+
 
 
   display->update();

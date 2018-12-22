@@ -95,15 +95,14 @@ void PrimativeManager::drawCube(const Shader *shader) {
   }
   
   glBindVertexArray(cubeVAO);
-
+  //glBindBuffer(GL_ARRAY_BUFFER, cubeVBO);
+  //glEnableVertexAttribArray(0);
+  
   glm::mat4 model = glm::mat4(1.0f);
   //model = glm::translate(model, glm::vec3(0.0f, 0.0f, 0.0f));
   //model = glm::scale(model, glm::vec3(1.0f, 1.0f, 1.0f));
   shader->setMat4("model", model);
 
   glDrawArrays(GL_TRIANGLES, 0, 36);
-
-  std::cout << "drawign cube \n";
-
 
 }

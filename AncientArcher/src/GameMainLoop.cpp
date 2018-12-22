@@ -200,13 +200,7 @@ void Game::mainLoop() {
       pickups.respawn();
     }
 
-
-
     */
-
-
-
-
 
     /*
 
