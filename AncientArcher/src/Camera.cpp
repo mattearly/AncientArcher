@@ -28,6 +28,7 @@ void Camera::update() {
   glm::mat4 view = getViewMatrix();
   shader.setMat4("view", view);
 
+  shader.setVec3("lightPosition", Position);
 }
 
 void Camera::updateProjectionMatrix() {
@@ -73,4 +74,7 @@ void Camera::updateCameraVectors() {
   Front = glm::normalize(front);
   Right = glm::normalize(glm::cross(Front, WorldUp));
   Up = glm::normalize(glm::cross(Right, Front));
+
+  shader.setVec3("viewPosition", Front);
+
 }

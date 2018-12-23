@@ -12,10 +12,10 @@
 #include "../shaders/Shader.h"
 #include "../util/TextureBank.h"
 
-Camera camera;
 Display display;
-Controls controls;
 Shader shader("../AncientArcher/src/shaders/vertex.shader", "../AncientArcher/src/shaders/fragment.shader");
+Camera camera;
+Controls controls;
 TextureBank texBank;
 
 
@@ -54,7 +54,8 @@ Game::Game() {
 
   // only render the objects not line of sight blocked by other objects 
   //glEnable(GL_CULL_FACE);
-  renderer->enableGLDepthTest();
+  renderer.enableGLDepthTest();
+
   camera.updateProjectionMatrix();
 }
 

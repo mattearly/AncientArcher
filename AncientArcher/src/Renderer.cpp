@@ -36,7 +36,6 @@ void Renderer::update(PrimativeManager *primativeManager, float deltaTime) {
   texBank.activate(0);    //floor
   primativeManager->drawCube(glm::vec3(world_width / 2.0f, 0.0f, world_width / 2.0f), glm::vec3(1000.0f, 0.01f, 1000.0f)); 
   
-
   //east/west  ??
   texBank.activate(11);    // WALLS 1
   primativeManager->drawCube(glm::vec3(world_width / 2.0f, world_width / 8.0f, 0.0f), glm::vec3(1000.0f, 250.0f, 0.01f));
