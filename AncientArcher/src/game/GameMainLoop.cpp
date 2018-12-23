@@ -2,14 +2,14 @@
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtc/type_ptr.hpp>
-#include "Sound.h"
+#include "../Sound.h"
 #include <iostream>
-#include "Player.h"
+#include "../Player.h"
 #include <cmath>
-#include "mearly.h"
-#include "Camera.h"
-#include "displayManager/Display.h"
-#include "Controls.h"
+#include "../util/mearly.h"
+#include "../Camera.h"
+#include "../displayManager/Display.h"
+#include "../Controls.h"
 
 extern Camera camera;
 extern Display display;

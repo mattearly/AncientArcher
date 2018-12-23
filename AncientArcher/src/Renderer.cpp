@@ -1,7 +1,7 @@
 #include "Renderer.h"
 #include "displayManager/Display.h"
-#include "Shader.h"
-#include "TextureBank.h"
+#include "shaders/Shader.h"
+#include "util/TextureBank.h"
 #include "Constraints.h"
 
 extern Display display;

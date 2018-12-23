@@ -3,7 +3,7 @@
 #include "Constraints.h"
 #include "Player.h"
 #include "Sound.h"
-#include "Game.h"
+#include "game/Game.h"
 #include <iostream>
 #include "Camera.h"
 #include "displayManager/Display.h"

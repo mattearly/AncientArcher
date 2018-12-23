@@ -4,8 +4,8 @@
 #include <iostream>
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
-#include "../Shader.h"
-#include "../TextureBank.h"
+#include "../shaders/Shader.h"
+#include "../util/TextureBank.h"
 #include <cmath>
 
 extern Shader shader;

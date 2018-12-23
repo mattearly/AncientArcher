@@ -6,16 +6,16 @@
 
 #include <iostream>
 
-#include "Camera.h"
-#include "displayManager/Display.h"
-#include "Controls.h"
-#include "Shader.h"
-#include "TextureBank.h"
+#include "../Camera.h"
+#include "../displayManager/Display.h"
+#include "../Controls.h"
+#include "../shaders/Shader.h"
+#include "../util/TextureBank.h"
 
 Camera camera;
 Display display;
 Controls controls;
-Shader shader("../AncientArcher/shaders/vertex.shader", "../AncientArcher/shaders/fragment.shader");
+Shader shader("../AncientArcher/src/shaders/vertex.shader", "../AncientArcher/src/shaders/fragment.shader");
 TextureBank texBank;
 
 

@@ -2,11 +2,11 @@
 #include <glad/glad.h>
 #include <GLFW/glfw3.h>
 
-#include"util/stb_image.h"
+#include"stb_image.h"
 #include<iostream>
 #include<sstream>
 
-#include "Shader.h"
+#include "../shaders/Shader.h"
 
 extern Shader shader;
 

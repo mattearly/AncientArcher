@@ -1,5 +1,5 @@
 #include "Camera.h"
-#include "Shader.h"
+#include "shaders/Shader.h"
 #include "displayManager/Display.h"
 #include "Controls.h"
 

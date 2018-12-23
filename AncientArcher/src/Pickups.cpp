@@ -1,5 +1,5 @@
 #include "Pickups.h"
-#include "mearly.h"
+#include "util/mearly.h"
 Pickups::Pickups() {
 
   speedBoostAvail = true;
