@@ -53,9 +53,8 @@ Game::Game() {
   //glBindVertexArray(0);  //unbind VAO
 
   // only render the objects not line of sight blocked by other objects 
-  glEnable(GL_DEPTH_TEST);
   //glEnable(GL_CULL_FACE);
-
+  renderer->enableGLDepthTest();
   camera.updateProjectionMatrix();
 }
 

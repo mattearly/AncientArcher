@@ -124,6 +124,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="src\lighting\Lighting.cpp" />
     <ClCompile Include="src\Renderer.cpp" />
     <ClCompile Include="src\displayManager\Display.cpp" />
     <ClCompile Include="src\Pickups.cpp" />
@@ -143,6 +144,7 @@
     <ClCompile Include="src\util\TextureBank.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="src\lighting\Lighting.h" />
     <ClInclude Include="src\Renderer.h" />
     <ClInclude Include="src\displayManager\Display.h" />
     <ClInclude Include="src\Pickups.h" />

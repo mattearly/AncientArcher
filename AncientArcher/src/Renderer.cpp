@@ -12,6 +12,24 @@ Renderer::Renderer() {}
 
 Renderer::~Renderer() {}
 
+void Renderer::enableGLBlend() {
+  glEnable(GL_BLEND);
+  glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+}
+
+void Renderer::disableGLBlend() {
+  glDisable(GL_BLEND);
+}
+
+void Renderer::enableGLDepthTest() {
+  glEnable(GL_DEPTH_TEST);
+}
+
+void Renderer::disableGLDepthTest() {
+  glDisable(GL_DEPTH_TEST);
+
+}
+
 void Renderer::update(PrimativeManager *primativeManager, float deltaTime) {
   display.clear();
 
