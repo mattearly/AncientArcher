@@ -7,6 +7,7 @@ extern Display display;
 extern Shader shader;
 
 Camera::Camera() {
+
   FoV = 45.0f;
 
   Front = glm::vec3(0.0f, 0.0f, -1.0f);
@@ -28,7 +29,6 @@ void Camera::update() {
   glm::mat4 view = getViewMatrix();
   shader.setMat4("view", view);
 
-  shader.setVec3("lightPosition", Position);
 }
 
 void Camera::updateProjectionMatrix() {
@@ -38,13 +38,11 @@ void Camera::updateProjectionMatrix() {
   glm::mat4 projection = glm::perspective(glm::radians(FoV), (float)display.window_width / (float)display.window_height, 0.1f, 1500.0f);
   shader.setMat4("projection", projection);
 
-
 }
 
 glm::mat4 Camera::getViewMatrix() {
   return glm::lookAt(Position, Position + Front, Up);
 }
-
 
 glm::vec3* Camera::getPosition() {  
   return &Position;
@@ -76,5 +74,7 @@ void Camera::updateCameraVectors() {
   Up = glm::normalize(glm::cross(Right, Front));
 
   shader.setVec3("viewPosition", Front);
+
+  shader.setVec3("lightPosition", Position);
 
 }

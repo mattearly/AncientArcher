@@ -11,9 +11,11 @@
 extern Shader shader;
 
 TextureBank::TextureBank() {
+
   num_loaded_textures = 0;
   active_tex = 0;
   initiated = false;
+
 }
 
 TextureBank::~TextureBank() {}

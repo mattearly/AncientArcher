@@ -51,6 +51,7 @@ void main() {
   //case 14: FragColor = texture(texture14, TexCoord); break; 
   //case 15: FragColor = texture(texture15, TexCoord); break; 
   //} 
+
   vec3 color;
 
   switch (texnum) {
@@ -75,7 +76,7 @@ void main() {
   //vec3 color = texture(floorTexture, fs_in.TexCoords).rgb;
 
   // ambient
-  vec3 ambient = 0.25 * color;
+  vec3 ambient = 0.05 * color;
   // diffuse
   vec3 lightDir = normalize(lightPosition - FragPosition);
   vec3 normal = normalize(Normal);
@@ -87,7 +88,7 @@ void main() {
   float spec = 0.0;
 
   vec3 halfwayDir = normalize(lightDir + viewDir);   //blinn
-  spec = pow(max(dot(normal, halfwayDir), 0.0), 32.0);
+  spec = pow(max(dot(normal, halfwayDir), 0.0), 16.0);
   
   vec3 specular = vec3(0.3) * spec; // assuming bright white light color
   FragColor = vec4(ambient + diffuse + specular, 1.0);

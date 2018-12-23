@@ -208,14 +208,14 @@ void Controls::keyboardInput(Player *player, Pickups *pickups, float dtime, floa
     }
 
     // FOOTSTEP SOUNDS
-    if (movedir.timeSinceLastStep > TIMEBETWEENFOOTSTEPS || (movedir.boost && !movedir.back && movedir.timeSinceLastStep > TIMEBETWEENFOOTSTEPS - 0.5f)) {
-      if (movedir.positionChanged && movedir.onGround) {
-        playfootstepsound();
-        movedir.timeSinceLastStep = 0;
-      }
-    } else {
-      movedir.timeSinceLastStep += dtime;
-    }
+    //if (movedir.timeSinceLastStep > TIMEBETWEENFOOTSTEPS || (movedir.boost && !movedir.back && movedir.timeSinceLastStep > TIMEBETWEENFOOTSTEPS - 0.5f)) {
+    //  if (movedir.positionChanged && movedir.onGround) {
+    //    playfootstepsound();
+    //    movedir.timeSinceLastStep = 0;
+    //  }
+    //} else {
+    //  movedir.timeSinceLastStep += dtime;
+    //}
 
     /* not using right now
     // LEGPOWER PICKUP                       
