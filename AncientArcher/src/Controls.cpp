@@ -7,9 +7,11 @@
 #include <iostream>
 #include "Camera.h"
 #include "displayManager/Display.h"
+#include "shaders/Shader.h"
 
 extern Camera camera;
 extern Display display;
+extern Shader shader;
 
 Controls::Controls() {
   firstMouse = true;
@@ -206,6 +208,8 @@ void Controls::keyboardInput(Player *player, Pickups *pickups, float dtime, floa
       if (movedir.right)   camera.Position.z -= camera.Right.z * velocity;
       if (movedir.left)    camera.Position.z += camera.Right.z * velocity;
     }
+
+	shader.setVec3("lightPosition", camera.Position);
 
     // FOOTSTEP SOUNDS
     //if (movedir.timeSinceLastStep > TIMEBETWEENFOOTSTEPS || (movedir.boost && !movedir.back && movedir.timeSinceLastStep > TIMEBETWEENFOOTSTEPS - 0.5f)) {

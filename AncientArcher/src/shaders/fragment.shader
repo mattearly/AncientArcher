@@ -76,7 +76,7 @@ void main() {
   //vec3 color = texture(floorTexture, fs_in.TexCoords).rgb;
 
   // ambient
-  vec3 ambient = 0.05 * color;
+  vec3 ambient = 0.25 * color;
   // diffuse
   vec3 lightDir = normalize(lightPosition - FragPosition);
   vec3 normal = normalize(Normal);
@@ -85,7 +85,7 @@ void main() {
   // specular
   vec3 viewDir = normalize(viewPosition - FragPosition);
   vec3 reflectDir = reflect(-lightDir, normal);
-  float spec = 0.0;
+  float spec = 0.5;
 
   vec3 halfwayDir = normalize(lightDir + viewDir);   //blinn
   spec = pow(max(dot(normal, halfwayDir), 0.0), 16.0);

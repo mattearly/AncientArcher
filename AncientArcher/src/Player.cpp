@@ -4,7 +4,7 @@
 
 Player::Player() {
 
-  BaseSpeed = 120.0f;  // base stats
+  BaseSpeed = 10.0f;  // base stats
   BaseJump = 4.0f;
   LegPower = 10.0f;
 

@@ -13,41 +13,52 @@ Renderer::Renderer() {}
 Renderer::~Renderer() {}
 
 void Renderer::enableGLBlend() {
-  glEnable(GL_BLEND);
-  glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+	glEnable(GL_BLEND);
+	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 }
 
 void Renderer::disableGLBlend() {
-  glDisable(GL_BLEND);
+	glDisable(GL_BLEND);
 }
 
 void Renderer::enableGLDepthTest() {
-  glEnable(GL_DEPTH_TEST);
+	glEnable(GL_DEPTH_TEST);
 }
 
 void Renderer::disableGLDepthTest() {
-  glDisable(GL_DEPTH_TEST);
+	glDisable(GL_DEPTH_TEST);
 
 }
 
 void Renderer::update(PrimativeManager *primativeManager, float deltaTime) {
-  display.clear();
+	//float worldcenter = world_width / 2.0f;
 
-  texBank.activate(0);    //floor
-  primativeManager->drawCube(glm::vec3(world_width / 2.0f, 0.0f, world_width / 2.0f), glm::vec3(1000.0f, 0.01f, 1000.0f)); 
-  
-  //east/west  ??
-  texBank.activate(11);    // WALLS 1
-  primativeManager->drawCube(glm::vec3(world_width / 2.0f, world_width / 8.0f, 0.0f), glm::vec3(1000.0f, 250.0f, 0.01f));
-  texBank.activate(10);    //2
-  primativeManager->drawCube(glm::vec3(world_width / 2.0f, world_width / 8.0f, world_width), glm::vec3(1000.0f, 250.0f, 0.01f));
-  
-  //north/south ??
-  texBank.activate(7);    //3
-  primativeManager->drawCube(glm::vec3(0.0f, world_width / 8.0f, world_width / 2.0f), glm::vec3(0.01f, 250.0f, 1000.0f));
-  texBank.activate(4);    //4
-  primativeManager->drawCube(glm::vec3(world_width, world_width / 8.0f, world_width / 2.0f), glm::vec3(0.01f, 250.0f, 1000.0f));
+	display.clear();
 
-  display.update();
+	texBank.activate(14);    //bounds
+	for (int i = 0; i < 101; i+=2) {
+		for (int j = 0; j < 40; j+=2) {
+			primativeManager->drawCube(glm::vec3(-2.0f,      1.0f + j,    0.0f + i),    glm::vec3(2.0f, 2.0f, 2.0f));
+			primativeManager->drawCube(glm::vec3(102.0f,     1.0f + j,    0.0f + i),    glm::vec3(2.0f, 2.0f, 2.0f));
+			primativeManager->drawCube(glm::vec3(0.0f + i,   1.0f + j,    -2.0f),       glm::vec3(2.0f, 2.0f, 2.0f));
+ 			primativeManager->drawCube(glm::vec3(0.0f + i,   1.0f + j,    102.0f),      glm::vec3(2.0f, 2.0f, 2.0f));
+		}
+	}
+
+	texBank.activate(10);    //floor
+	for (int i = 0; i < 101; i++) {
+		for (int j = 0; j < 101; j++) {
+			primativeManager->drawCube(glm::vec3(0.0f + i, 0.0f, 0.0f + j), glm::vec3(2.0f, 2.0f, 2.0f));
+		}
+	}
+	
+	texBank.activate(8);    //sky
+	for (int i = 0; i < 101; i+=2) {
+		for (int j = 0; j < 101; j+=2) {
+			primativeManager->drawCube(glm::vec3(0.0f + i, world_height, 0.0f + j), glm::vec3(2.0f, 2.0f, 2.0f));
+		}
+	}
+
+	display.update();
 
 }

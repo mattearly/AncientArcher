@@ -116,7 +116,7 @@ void PrimativeManager::drawCube(float deltaTime) {
 
 }
 
-void PrimativeManager::drawCube(glm::vec3 xyzlocation, glm::vec3 xyzsize) {
+void PrimativeManager::drawCube(glm::vec3 location, glm::vec3 scale) {
   if (!cubeLoaded) {
     loadCube();
   }
@@ -126,8 +126,10 @@ void PrimativeManager::drawCube(glm::vec3 xyzlocation, glm::vec3 xyzsize) {
   glm::mat4 model = glm::mat4(1.0f);
 
   //model = glm::rotate(model, glm::radians(50.0f) * (float)glfwGetTime(), glm::vec3(1.0f, 1.0f, 1.0f));
-  model = glm::translate(model, glm::vec3(xyzlocation.x, xyzlocation.y, xyzlocation.z));
-  model = glm::scale(model, glm::vec3(xyzsize.x, xyzsize.y, xyzsize.z));
+
+  model = glm::translate(model, location);
+
+  model = glm::scale(model, scale);
 
   shader.setMat4("model", model);
 

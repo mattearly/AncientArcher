@@ -70,8 +70,12 @@
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
-    <IncludePath>C:\Users\m\source\repos\AncientArcher\AncientArcher\req;C:\Users\m\source\repos\AncientArcher\AncientArcher\Include;$(IncludePath)</IncludePath>
-    <LibraryPath>C:\Users\m\source\repos\AncientArcher\AncientArcher\Libraries;$(LibraryPath)</LibraryPath>
+    <IncludePath>C:\Users\matt\source\repos\AncientArcher\AncientArcher\Include;$(IncludePath)</IncludePath>
+    <LibraryPath>C:\Users\matt\source\repos\AncientArcher\AncientArcher\Libraries;$(LibraryPath)</LibraryPath>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <IncludePath>C:\Users\matt\source\repos\AncientArcher\AncientArcher\Include;$(IncludePath)</IncludePath>
+    <LibraryPath>C:\Users\matt\source\repos\AncientArcher\AncientArcher\Libraries;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
