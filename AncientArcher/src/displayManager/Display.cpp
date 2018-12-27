@@ -2,7 +2,7 @@
 #include <utility>
 #include <iostream>
 #include "../Controls.h"
-#include "../Camera.h"
+#include "../camera/Camera.h"
 
 extern Controls controls;
 extern Camera camera;
@@ -50,7 +50,6 @@ Display::Display() {
 
   // make cursor hidden
   glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
-
 }
 
 Display::~Display() {}
@@ -63,15 +62,7 @@ void Display::reshapeWindow(GLFWwindow * window, int w, int h) {
 }
 
 void Display::mouseHandler(GLFWwindow * window, double xpos, double ypos) {
-
   controls.mouseMovement(xpos, ypos);
-
-  //return std::pair<double, double>(xpos, ypos);
-
-  //debug
-  //std::cout << "mouse (x, y): " << xpos << ", " << ypos << "\n";
-
-
 }
 
 void Display::clear() const {

@@ -70,11 +70,11 @@
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
-    <IncludePath>C:\Users\matt\source\repos\AncientArcher\AncientArcher\Include;$(IncludePath)</IncludePath>
+    <IncludePath>$(SolutionDir)\AncientArcher\Include;C:\Users\matt\source\repos\AncientArcher\AncientArcher\Include;$(IncludePath)</IncludePath>
     <LibraryPath>C:\Users\matt\source\repos\AncientArcher\AncientArcher\Libraries;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
-    <IncludePath>C:\Users\matt\source\repos\AncientArcher\AncientArcher\Include;$(IncludePath)</IncludePath>
+    <IncludePath>$(SolutionDir)\AncientArcher\Include;C:\Users\matt\source\repos\AncientArcher\AncientArcher\Include;$(IncludePath)</IncludePath>
     <LibraryPath>C:\Users\matt\source\repos\AncientArcher\AncientArcher\Libraries;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
@@ -138,7 +138,7 @@
     <ClCompile Include="src\Sound.cpp" />
     <ClCompile Include="src\Player.cpp" />
     <ClCompile Include="src\Controls.cpp" />
-    <ClCompile Include="src\Camera.cpp" />
+    <ClCompile Include="src\camera\Camera.cpp" />
     <ClCompile Include="src\util\glad.c" />
     <ClCompile Include="src\game\Game.cpp" />
     <ClCompile Include="src\shaders\Shader.cpp" />
@@ -158,7 +158,7 @@
     <ClInclude Include="src\Sound.h" />
     <ClInclude Include="src\Player.h" />
     <ClInclude Include="src\Controls.h" />
-    <ClInclude Include="src\Camera.h" />
+    <ClInclude Include="src\camera\Camera.h" />
     <ClInclude Include="src\game\Game.h" />
     <ClInclude Include="src\shaders\Shader.h" />
     <ClInclude Include="src\util\stb_image.h" />

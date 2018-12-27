@@ -6,7 +6,7 @@
 
 #include <iostream>
 
-#include "../Camera.h"
+#include "../camera/Camera.h"
 #include "../displayManager/Display.h"
 #include "../Controls.h"
 #include "../shaders/Shader.h"

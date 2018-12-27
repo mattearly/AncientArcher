@@ -7,7 +7,7 @@
 #include "../Player.h"
 #include <cmath>
 #include "../util/mearly.h"
-#include "../Camera.h"
+#include "../camera/Camera.h"
 #include "../displayManager/Display.h"
 #include "../Controls.h"
 

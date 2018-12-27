@@ -76,12 +76,14 @@ void main() {
   //vec3 color = texture(floorTexture, fs_in.TexCoords).rgb;
 
   // ambient
-  vec3 ambient = 0.25 * color;
+  vec3 ambient = 0.20 * color;
+  
   // diffuse
   vec3 lightDir = normalize(lightPosition - FragPosition);
   vec3 normal = normalize(Normal);
   float diff = max(dot(lightDir, normal), 0.0);
   vec3 diffuse = diff * color;
+
   // specular
   vec3 viewDir = normalize(viewPosition - FragPosition);
   vec3 reflectDir = reflect(-lightDir, normal);
@@ -94,6 +96,5 @@ void main() {
   FragColor = vec4(ambient + diffuse + specular, 1.0);
 
 }
-
 
 // lighting reference: https://learnopengl.com/code_viewer_gh.php?code=src/5.advanced_lighting/1.advanced_lighting/1.advanced_lighting.fs
