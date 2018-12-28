@@ -135,3 +135,24 @@ void PrimativeManager::drawCube(glm::vec3 location, glm::vec3 scale) {
 
   glDrawArrays(GL_TRIANGLES, 0, 36);
 }
+
+void PrimativeManager::drawPlane(glm::vec3 location, glm::vec3 scale) {
+  if (!cubeLoaded) {
+    loadCube();
+  }
+
+  glBindVertexArray(cubeVAO);
+
+  glm::mat4 model = glm::mat4(1.0f);
+
+  //model = glm::rotate(model, glm::radians(50.0f) * (float)glfwGetTime(), glm::vec3(1.0f, 1.0f, 1.0f));
+
+  model = glm::translate(model, location);
+
+  model = glm::scale(model, scale);
+
+  shader.setMat4("model", model);
+
+  glDrawArrays(GL_TRIANGLES, 0, 36);
+
+}

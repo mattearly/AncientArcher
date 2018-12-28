@@ -34,27 +34,31 @@ void Renderer::update(PrimativeManager *primativeManager, float deltaTime) {
 	//float worldcenter = world_width / 2.0f;
 
 	display.clear();
+  
+  texBank.activate(0);
+  //primativeManager->drawPlane(glm::vec3(1.0f, 1.0f, 1.0f), glm::vec3(1.0f, 1.0f, 1.0f));
+
 
 	texBank.activate(14);    //bounds
-	for (int i = 0; i < 101; i+=2) {
+	for (int i = 0; i < 21; i+=2) {
 		for (int j = 0; j < 40; j+=2) {
 			primativeManager->drawCube(glm::vec3(-2.0f,      1.0f + j,    0.0f + i),    glm::vec3(2.0f, 2.0f, 2.0f));
-			primativeManager->drawCube(glm::vec3(102.0f,     1.0f + j,    0.0f + i),    glm::vec3(2.0f, 2.0f, 2.0f));
-			primativeManager->drawCube(glm::vec3(0.0f + i,   1.0f + j,    -2.0f),       glm::vec3(2.0f, 2.0f, 2.0f));
- 			primativeManager->drawCube(glm::vec3(0.0f + i,   1.0f + j,    102.0f),      glm::vec3(2.0f, 2.0f, 2.0f));
+			primativeManager->drawCube(glm::vec3(22.0f,     1.0f + j,    0.0f + i),    glm::vec3(2.0f, 2.0f, 2.0f));
+			primativeManager->drawCube(glm::vec3(0.0f + i,   1.0f + j,    -2.0f   ),       glm::vec3(2.0f, 2.0f, 2.0f));
+ 			primativeManager->drawCube(glm::vec3(0.0f + i,   1.0f + j,    22.0f  ),      glm::vec3(2.0f, 2.0f, 2.0f));
 		}
 	}
 
 	texBank.activate(10);    //floor
-	for (int i = 0; i < 101; i++) {
-		for (int j = 0; j < 101; j++) {
+	for (int i = 0; i < 21; i++) {
+		for (int j = 0; j < 21; j++) {
 			primativeManager->drawCube(glm::vec3(0.0f + i, 0.0f, 0.0f + j), glm::vec3(2.0f, 2.0f, 2.0f));
 		}
 	}
 	
 	texBank.activate(8);    //sky
-	for (int i = 0; i < 101; i+=2) {
-		for (int j = 0; j < 101; j+=2) {
+	for (int i = 0; i < 21; i+=2) {
+		for (int j = 0; j < 21; j+=2) {
 			primativeManager->drawCube(glm::vec3(0.0f + i, world_height, 0.0f + j), glm::vec3(2.0f, 2.0f, 2.0f));
 		}
 	}

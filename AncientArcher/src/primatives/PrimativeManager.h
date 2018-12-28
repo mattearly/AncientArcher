@@ -9,6 +9,7 @@ public:
   void drawCube(float deltaTime);
   void drawCube(glm::vec3 xyzlocation, glm::vec3 xyzsize);
 
+  void drawPlane(glm::vec3 location, glm::vec3 scale);
 
 private:
 

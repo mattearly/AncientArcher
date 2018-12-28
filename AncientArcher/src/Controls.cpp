@@ -5,9 +5,10 @@
 #include "Sound.h"
 #include "game/Game.h"
 #include <iostream>
-#include "Camera.h"
+#include "camera/Camera.h"
 #include "displayManager/Display.h"
 #include "shaders/Shader.h"
+#include <math.h>
 
 extern Camera camera;
 extern Display display;
@@ -209,17 +210,16 @@ void Controls::keyboardInput(Player *player, Pickups *pickups, float dtime, floa
       if (movedir.left)    camera.Position.z += camera.Right.z * velocity;
     }
 
-	shader.setVec3("lightPosition", camera.Position);
-
     // FOOTSTEP SOUNDS
-    //if (movedir.timeSinceLastStep > TIMEBETWEENFOOTSTEPS || (movedir.boost && !movedir.back && movedir.timeSinceLastStep > TIMEBETWEENFOOTSTEPS - 0.5f)) {
-    //  if (movedir.positionChanged && movedir.onGround) {
-    //    playfootstepsound();
-    //    movedir.timeSinceLastStep = 0;
-    //  }
-    //} else {
-    //  movedir.timeSinceLastStep += dtime;
-    //}
+    if (movedir.timeSinceLastStep > TIMEBETWEENFOOTSTEPS - player->getRunSpeed()/100.0f || (movedir.boost && !movedir.back && movedir.timeSinceLastStep > TIMEBETWEENFOOTSTEPS - (player->getRunSpeed() / 100.0f) * 2)) {
+      if (movedir.positionChanged && movedir.onGround) {
+        playfootstepsound();
+        movedir.timeSinceLastStep = 0;
+      }
+    } else {
+      movedir.timeSinceLastStep += dtime;
+      movedir.timeSinceLastStep += dtime;
+    }
 
     /* not using right now
     // LEGPOWER PICKUP                       

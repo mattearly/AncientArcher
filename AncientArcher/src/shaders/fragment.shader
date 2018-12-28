@@ -26,7 +26,7 @@ uniform sampler2D texture15;
 uniform int texnum;
 
 uniform vec3 lightPosition;
-uniform vec3 viewPosition;
+uniform vec3 viewDirection;
 
 void main() {
 
@@ -85,7 +85,7 @@ void main() {
   vec3 diffuse = diff * color;
 
   // specular
-  vec3 viewDir = normalize(viewPosition - FragPosition);
+  vec3 viewDir = normalize(viewDirection - FragPosition);
   vec3 reflectDir = reflect(-lightDir, normal);
   float spec = 0.5;
 
