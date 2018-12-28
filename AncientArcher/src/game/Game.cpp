@@ -18,7 +18,6 @@ Camera camera;
 Controls controls;
 TextureBank texBank;
 
-
 Game::Game() {
 
   //display = new Display();
@@ -57,6 +56,9 @@ Game::Game() {
   renderer.enableGLDepthTest();
 
   camera.updateProjectionMatrix();
+
+  shader.setVec3("lightColor", 1.0f, 1.0f, 1.0f);
+  shader.setVec3("lightPos", 10.0f, 10.0f, 10.0f);
 }
 
 Game::~Game() {
