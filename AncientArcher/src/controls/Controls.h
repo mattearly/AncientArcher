@@ -1,8 +1,8 @@
 #pragma once
 #include <glad/glad.h>
 #include <GLFW/glfw3.h>
-#include "Player.h"
-#include "Pickups.h"
+#include "../Player.h"
+#include "../Pickups.h"
 
 static float TIMEBETWEENFOOTSTEPS = 1.0f;
 

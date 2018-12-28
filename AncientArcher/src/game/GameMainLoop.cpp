@@ -9,7 +9,7 @@
 #include "../util/mearly.h"
 #include "../camera/Camera.h"
 #include "../displayManager/Display.h"
-#include "../Controls.h"
+#include "../controls/Controls.h"
 
 extern Camera camera;
 extern Display display;

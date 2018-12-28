@@ -1,13 +1,13 @@
 #include "Controls.h"
 #include <glm/glm.hpp>
-#include "Constraints.h"
-#include "Player.h"
-#include "Sound.h"
-#include "game/Game.h"
+#include "../Constraints.h"
+#include "../Player.h"
+#include "../Sound.h"
+#include "../game/Game.h"
 #include <iostream>
-#include "camera/Camera.h"
-#include "displayManager/Display.h"
-#include "shaders/Shader.h"
+#include "../camera/Camera.h"
+#include "../displayManager/Display.h"
+#include "../shaders/Shader.h"
 #include <math.h>
 
 extern Camera camera;
@@ -16,7 +16,7 @@ extern Shader shader;
 
 Controls::Controls() {
   firstMouse = true;
-  mouseSensitivity = 0.08f;
+  mouseSensitivity = 0.12f;
 }
 
 Controls::~Controls() {}

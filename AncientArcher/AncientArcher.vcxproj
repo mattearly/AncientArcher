@@ -137,7 +137,7 @@
     <ClCompile Include="src\primatives\PrimativeManager.cpp" />
     <ClCompile Include="src\Sound.cpp" />
     <ClCompile Include="src\Player.cpp" />
-    <ClCompile Include="src\Controls.cpp" />
+    <ClCompile Include="src\controls\Controls.cpp" />
     <ClCompile Include="src\camera\Camera.cpp" />
     <ClCompile Include="src\util\glad.c" />
     <ClCompile Include="src\game\Game.cpp" />
@@ -157,7 +157,7 @@
     <ClInclude Include="src\primatives\PrimativeManager.h" />
     <ClInclude Include="src\Sound.h" />
     <ClInclude Include="src\Player.h" />
-    <ClInclude Include="src\Controls.h" />
+    <ClInclude Include="src\controls\Controls.h" />
     <ClInclude Include="src\camera\Camera.h" />
     <ClInclude Include="src\game\Game.h" />
     <ClInclude Include="src\shaders\Shader.h" />

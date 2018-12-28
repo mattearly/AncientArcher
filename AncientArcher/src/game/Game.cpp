@@ -8,7 +8,7 @@
 
 #include "../camera/Camera.h"
 #include "../displayManager/Display.h"
-#include "../Controls.h"
+#include "../controls/Controls.h"
 #include "../shaders/Shader.h"
 #include "../util/TextureBank.h"
 

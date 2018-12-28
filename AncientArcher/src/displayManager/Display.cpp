@@ -1,7 +1,7 @@
 #include "Display.h"
 #include <utility>
 #include <iostream>
-#include "../Controls.h"
+#include "../controls/Controls.h"
 #include "../camera/Camera.h"
 
 extern Controls controls;

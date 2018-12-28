@@ -1,7 +1,7 @@
 #include "Camera.h"
 #include "../shaders/Shader.h"
 #include "../displayManager/Display.h"
-#include "../Controls.h"
+#include "../controls/Controls.h"
 
 extern Display display;
 extern Shader shader;
@@ -28,7 +28,7 @@ void Camera::update() {
 
   glm::mat4 view = getViewMatrix();
   shader.setMat4("view", view);
-  shader.setVec3("lightPosition", Position);
+  //shader.setVec3("lightPosition", Position);
   //shader.setVec3("cameraDirection", Front);
 
 }
