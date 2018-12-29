@@ -57,8 +57,10 @@ Game::Game() {
 
   camera.updateProjectionMatrix();
 
-  shader.setVec3("lightColor", 1.0f, 1.0f, 1.0f);
-  shader.setVec3("lightPos", 10.0f, 10.0f, 10.0f);
+  //shader.setVec3("lightColor", 1.0f, 1.0f, 1.0f);  // white light
+  //shader.setVec3("lightColor", 1.0f, 0.2f, 0.2f);  // red light
+  shader.setVec3("lightColor", 0.6f, 0.4f, 0.4f);  // asdf light
+  shader.setVec3("lightPos", 20.5f, 20.0f, 20.5f);
 }
 
 Game::~Game() {

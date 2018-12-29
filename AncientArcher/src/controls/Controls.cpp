@@ -72,7 +72,7 @@ void Controls::keyboardInput(Player *player, Pickups *pickups, float dtime, floa
         playbowsound();
         break;
       }
-      
+
       player->setTimeSinceLastAttack(gametime);
     }
   }
@@ -118,7 +118,6 @@ void Controls::keyboardInput(Player *player, Pickups *pickups, float dtime, floa
       movedir.left = false;
       movedir.right = true;
       movedir.positionChanged = true;
-
     }
   }
 
@@ -169,11 +168,15 @@ void Controls::keyboardInput(Player *player, Pickups *pickups, float dtime, floa
 
     float velocity = player->getRunSpeed() * dtime;  // MOVEMENT SPEED CALC : based on player stats
 
-    if (movedir.boost && !movedir.back) {
-      velocity += velocity;   //faster move forward while holding shift
+    if (movedir.forward) {  // half speed if moving left or right while forward
+      if (movedir.left || movedir.right) {
+        velocity = player->getRunSpeed() / 2 * dtime;
+      }
     }
 
-    //todo: half speed if moving sideways along with forward or back
+    if (movedir.boost && movedir.forward) {  // boost while moving forward
+      velocity *= 2.3;  // velocity power
+    }
 
     if (movedir.back || movedir.forward) {  // locks moving foward and backwards to the x and z axii. note that you can use the camera.Front instead of movefront to do a fly type thing while the y is unlocked or you are jumping
       glm::vec3 moveFront = { camera.Front.x, 0.0f, camera.Front.z };
@@ -210,8 +213,11 @@ void Controls::keyboardInput(Player *player, Pickups *pickups, float dtime, floa
       if (movedir.left)    camera.Position.z += camera.Right.z * velocity;
     }
 
+    shader.setVec3("lightPos", camera.Position.x, camera.Position.y+10.f, camera.Position.z);
+
+
     // FOOTSTEP SOUNDS
-    if (movedir.timeSinceLastStep > TIMEBETWEENFOOTSTEPS - player->getRunSpeed()/100.0f || (movedir.boost && !movedir.back && movedir.timeSinceLastStep > TIMEBETWEENFOOTSTEPS - (player->getRunSpeed() / 100.0f) * 2)) {
+    if (movedir.timeSinceLastStep > TIMEBETWEENFOOTSTEPS - player->getRunSpeed() / 100.0f || (movedir.boost && !movedir.back && movedir.timeSinceLastStep > TIMEBETWEENFOOTSTEPS - (player->getRunSpeed() / 100.0f) * 2)) {
       if (movedir.positionChanged && movedir.onGround) {
         playfootstepsound();
         movedir.timeSinceLastStep = 0;
@@ -222,7 +228,7 @@ void Controls::keyboardInput(Player *player, Pickups *pickups, float dtime, floa
     }
 
     /* not using right now
-    // LEGPOWER PICKUP                       
+    // LEGPOWER PICKUP
     if (pickups->speedBoostAvail) {
       if (
         //y because boost loc is only x and y
@@ -235,9 +241,9 @@ void Controls::keyboardInput(Player *player, Pickups *pickups, float dtime, floa
         playsuccesssound();
 
       }
-    }  
-    
-    // ATTACKSPEED PICKUP                       
+    }
+
+    // ATTACKSPEED PICKUP
     if (pickups->attackBoostAvail) {
       if (
         //y because boost loc is only x and y
@@ -255,17 +261,17 @@ void Controls::keyboardInput(Player *player, Pickups *pickups, float dtime, floa
   }
 
   /* Jump System */
-  if (movedir.jumped) {   // Jump Start
+  if (movedir.jumped) {      // Jump Start
     movedir.onGround = false;
     movedir.jumped = false;
     playgruntsound();
-  } else if (!movedir.onGround && !movedir.falling) {  // Jump Rising
+  } else if (!movedir.onGround && !movedir.falling) {                          // Jump Rising
     camera.Position.y += camera.WorldUp.y * player->getRisingSpeed() * dtime;  // RISING SPEED CALC: jump speed based on LegPower Player Stat
-    if (camera.Position.y > player->getJumpHeight() + camera.camstart[1]) {  // MAX HEIGHT CALC: jump height based on LegPower Player Stat
+    if (camera.Position.y > player->getJumpHeight() + camera.camstart[1]) {    // MAX HEIGHT CALC: jump height based on LegPower Player Stat
       movedir.falling = true;
       //todo: added gravity to falling y = 1/2at^2 + vt  
     }
-  } else if (movedir.falling && !movedir.onGround) {   // currently going down
+  } else if (movedir.falling && !movedir.onGround) {       // currently going down
     camera.Position.y -= camera.WorldUp.y * 5.2f * dtime;  // GRAVITY PULL DOWN CALC: static value, todo: make dynamic based on falling time
     if (camera.Position.y <= camera.camstart[1]) {
       movedir.onGround = true;
