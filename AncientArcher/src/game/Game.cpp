@@ -48,26 +48,19 @@ Game::Game() {
   texBank.loadTexture("../AncientArcher/res/texture/14-maze_metal.png");
   texBank.loadTexture("../AncientArcher/res/texture/15-pickup_attackboost.png");
 
-  //glBindBuffer(GL_ARRAY_BUFFER, 0);   //unbind VBO
-  //glBindVertexArray(0);  //unbind VAO
-
   // only render the objects not line of sight blocked by other objects 
   //glEnable(GL_CULL_FACE);
+
   renderer.enableGLDepthTest();
 
   camera.updateProjectionMatrix();
 
   //shader.setVec3("lightColor", 1.0f, 1.0f, 1.0f);  // white light
   //shader.setVec3("lightColor", 1.0f, 0.2f, 0.2f);  // red light
-  shader.setVec3("lightColor", 0.6f, 0.4f, 0.4f);  // asdf light
+  shader.setVec3("lightColor", 0.5f, 0.5f, 0.5f);  // asdf light
   shader.setVec3("lightPos", 20.5f, 20.0f, 20.5f);
 }
 
 Game::~Game() {
-
-  //glDeleteVertexArrays(1, &cubeVAO);
-  //glDeleteBuffers(1, &cubeVBO);
-
-  glfwTerminate();
 
 }

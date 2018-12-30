@@ -52,7 +52,9 @@ Display::Display() {
   glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
 }
 
-Display::~Display() {}
+Display::~Display() {
+  glfwTerminate();
+}
 
 void Display::reshapeWindow(GLFWwindow * window, int w, int h) {
   glViewport(0, 0, w, h);

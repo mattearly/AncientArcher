@@ -50,8 +50,8 @@ void Renderer::update(PrimativeManager *primativeManager, float deltaTime) {
   }
 
   texBank.activate(0);    //floor
-  for (int i = 0; i < width; i++) {
-    for (int j = 0; j < width; j++) {
+  for (int i = 0; i < width; i+=2) {
+    for (int j = 0; j < width; j+=2) {
       primativeManager->drawCube(glm::vec3(0.0f + i, 0.0f, 0.0f + j), glm::vec3(2.0f, 2.0f, 2.0f));
     }
   }
