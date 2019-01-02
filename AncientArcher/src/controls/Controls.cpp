@@ -1,13 +1,16 @@
-#include "Controls.h"
 #include <glm/glm.hpp>
+
+#include "Controls.h"
+
 #include "../Constraints.h"
-#include "../Player.h"
-#include "../Sound.h"
+#include "../player/Player.h"
+#include "../sound/Sound.h"
 #include "../game/Game.h"
-#include <iostream>
 #include "../camera/Camera.h"
 #include "../displayManager/Display.h"
 #include "../shaders/Shader.h"
+
+#include <iostream>
 #include <math.h>
 
 extern Camera camera;

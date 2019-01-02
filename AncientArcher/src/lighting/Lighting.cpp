@@ -1,5 +1,5 @@
 #include "Lighting.h"
-#include "../Renderer.h"
+#include "../renderer/Renderer.h"
 
 Lighting::Lighting() {}
 

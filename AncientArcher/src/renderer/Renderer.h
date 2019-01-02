@@ -1,5 +1,6 @@
 #pragma once
-#include "primatives/PrimativeManager.h"
+
+class PrimativeManager;
 
 class Renderer {
 public:

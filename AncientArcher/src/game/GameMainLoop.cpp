@@ -2,9 +2,9 @@
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtc/type_ptr.hpp>
-#include "../Sound.h"
+#include "../sound/Sound.h"
 #include <iostream>
-#include "../Player.h"
+#include "../player/Player.h"
 #include <cmath>
 #include "../util/mearly.h"
 #include "../camera/Camera.h"

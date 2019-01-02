@@ -1,8 +1,9 @@
 #include "Renderer.h"
-#include "displayManager/Display.h"
-#include "shaders/Shader.h"
-#include "util/TextureBank.h"
-#include "Constraints.h"
+#include "../models/PrimativeManager.h"
+#include "../displayManager/Display.h"
+#include "../shaders/Shader.h"
+#include "../util/TextureBank.h"
+#include "../Constraints.h"
 
 extern Display display;
 extern Shader shader;

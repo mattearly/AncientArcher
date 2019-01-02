@@ -1,8 +1,8 @@
 #pragma once
-#include "../Player.h"
+#include "../player/Player.h"
 #include "../Pickups.h"
-#include "../Renderer.h"
-#include "../primatives/PrimativeManager.h"
+#include "../renderer/Renderer.h"
+#include "../models/PrimativeManager.h"
 
 class Game {
 public:

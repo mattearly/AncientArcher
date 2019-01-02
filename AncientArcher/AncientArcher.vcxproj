@@ -128,15 +128,16 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="src\models\Mesh.cpp" />
     <ClCompile Include="src\lighting\Lighting.cpp" />
-    <ClCompile Include="src\Renderer.cpp" />
+    <ClCompile Include="src\renderer\Renderer.cpp" />
     <ClCompile Include="src\displayManager\Display.cpp" />
     <ClCompile Include="src\Pickups.cpp" />
     <ClCompile Include="src\util\mearly.cpp" />
     <ClCompile Include="src\Constraints.cpp" />
-    <ClCompile Include="src\primatives\PrimativeManager.cpp" />
-    <ClCompile Include="src\Sound.cpp" />
-    <ClCompile Include="src\Player.cpp" />
+    <ClCompile Include="src\models\PrimativeManager.cpp" />
+    <ClCompile Include="src\sound\Sound.cpp" />
+    <ClCompile Include="src\player\Player.cpp" />
     <ClCompile Include="src\controls\Controls.cpp" />
     <ClCompile Include="src\camera\Camera.cpp" />
     <ClCompile Include="src\util\glad.c" />
@@ -148,15 +149,16 @@
     <ClCompile Include="src\util\TextureBank.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="src\models\Mesh.h" />
     <ClInclude Include="src\lighting\Lighting.h" />
-    <ClInclude Include="src\Renderer.h" />
+    <ClInclude Include="src\renderer\Renderer.h" />
     <ClInclude Include="src\displayManager\Display.h" />
     <ClInclude Include="src\Pickups.h" />
     <ClInclude Include="src\util\mearly.h" />
     <ClInclude Include="src\Constraints.h" />
-    <ClInclude Include="src\primatives\PrimativeManager.h" />
-    <ClInclude Include="src\Sound.h" />
-    <ClInclude Include="src\Player.h" />
+    <ClInclude Include="src\models\PrimativeManager.h" />
+    <ClInclude Include="src\sound\Sound.h" />
+    <ClInclude Include="src\player\Player.h" />
     <ClInclude Include="src\controls\Controls.h" />
     <ClInclude Include="src\camera\Camera.h" />
     <ClInclude Include="src\game\Game.h" />
