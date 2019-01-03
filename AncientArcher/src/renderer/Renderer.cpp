@@ -4,6 +4,8 @@
 #include "../shaders/Shader.h"
 #include "../util/TextureBank.h"
 #include "../Constraints.h"
+#include "../lighting/Lighting.h"
+
 
 extern Display display;
 extern Shader shader;
@@ -63,6 +65,7 @@ void Renderer::update(PrimativeManager *primativeManager, float deltaTime) {
   		primativeManager->drawCube(glm::vec3(0.0f + i, world_height, 0.0f + j), glm::vec3(2.0f, 2.0f, 2.0f));
   	}
   }
+
 
   display.update();
 

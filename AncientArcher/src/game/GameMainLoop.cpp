@@ -28,11 +28,11 @@ void Game::mainLoop() {
     gameTime += deltaTime;
 
     controls.keyboardInput(player, &pickups, deltaTime, gameTime);
-    
+
     camera.update();
 
     renderer.update(&primativeManager, deltaTime);
-    
+
     glfwPollEvents();
 
   }

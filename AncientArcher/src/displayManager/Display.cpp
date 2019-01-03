@@ -24,7 +24,7 @@ Display::Display() {
 
 
   // init window
-  window = glfwCreateWindow(window_width, window_height, "AA", nullptr, nullptr);
+  window = glfwCreateWindow(window_width, window_height, "AncientArcherEngine", nullptr, nullptr);
   if (window == nullptr) {
     std::cout << "failed to create glfw window" << std::endl;
     glfwTerminate();
@@ -68,7 +68,7 @@ void Display::mouseHandler(GLFWwindow * window, double xpos, double ypos) {
 }
 
 void Display::clear() const {
-  glClearColor(0.2f, 0.3f, 0.9f, 1.0f);
+  glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
   glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 }
 

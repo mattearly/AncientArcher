@@ -11,12 +11,16 @@
 #include "../controls/Controls.h"
 #include "../shaders/Shader.h"
 #include "../util/TextureBank.h"
+#include "../lighting/Lighting.h"
+#include "../Constraints.h"
+
 
 Display display;
 Shader shader("../AncientArcher/src/shaders/vertex.shader", "../AncientArcher/src/shaders/fragment.shader");
 Camera camera;
 Controls controls;
 TextureBank texBank;
+Lighting lights;
 
 Game::Game() {
 
@@ -55,10 +59,10 @@ Game::Game() {
 
   camera.updateProjectionMatrix();
 
-  //shader.setVec3("lightColor", 1.0f, 1.0f, 1.0f);  // white light
+  shader.setVec3("lightColor", 1.0f, 1.0f, 1.0f);  // white light
   //shader.setVec3("lightColor", 1.0f, 0.2f, 0.2f);  // red light
-  shader.setVec3("lightColor", 0.5f, 0.5f, 0.5f);  // asdf light
-  shader.setVec3("lightPos", 20.5f, 20.0f, 20.5f);
+  //shader.setVec3("lightColor", 0.35f, 0.35f, 0.5f);  // asdf light
+  //shader.setVec3("lightPos", world_width/2, world_height - 1.0f, world_width/2);  // top light
 }
 
 Game::~Game() {

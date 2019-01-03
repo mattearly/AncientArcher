@@ -216,7 +216,7 @@ void Controls::keyboardInput(Player *player, Pickups *pickups, float dtime, floa
       if (movedir.left)    camera.Position.z += camera.Right.z * velocity;
     }
 
-    shader.setVec3("lightPos", camera.Position.x, camera.Position.y+10.f, camera.Position.z);
+    //shader.setVec3("lightPos", camera.Position.x, camera.Position.y+0.4f, camera.Position.z);  // setting in game constructor
 
 
     // FOOTSTEP SOUNDS

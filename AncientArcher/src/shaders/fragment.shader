@@ -53,6 +53,7 @@ void main() {
   //} 
 
   vec3 color;
+   //texture bank switch
   switch (texnum) {
   case 0: color = texture(texture0, TexCoord).rgb; break;
   case 1: color = texture(texture1, TexCoord).rgb; break;
@@ -60,27 +61,51 @@ void main() {
   case 3: color = texture(texture3, TexCoord).rgb; break;
   case 4: color = texture(texture4, TexCoord).rgb; break;
   case 5: color = texture(texture5, TexCoord).rgb; break;
-  case 6: color = texture(texture6, TexCoord).rgb; break;
-  case 7: color = texture(texture7, TexCoord).rgb; break;
-  case 8: color = texture(texture8, TexCoord).rgb; break;
-  case 9: color = texture(texture9, TexCoord).rgb; break;
-  case 10: color = texture(texture10, TexCoord).rgb; break;
-  case 11: color = texture(texture11, TexCoord).rgb; break;
-  case 12: color = texture(texture12, TexCoord).rgb; break;
-  case 13: color = texture(texture13, TexCoord).rgb; break;
-  case 14: color = texture(texture14, TexCoord).rgb; break;
-  case 15: color = texture(texture15, TexCoord).rgb; break;
-  }
+  case 6: color = texture(texture6, TexCoord).rgb; break; 
+  case 7: color = texture(texture7, TexCoord).rgb; break; 
+  case 8: color = texture(texture8, TexCoord).rgb; break; 
+  case 9: color = texture(texture9, TexCoord).rgb; break; 
+  case 10: color = texture(texture10, TexCoord).rgb; break; 
+  case 11: color = texture(texture11, TexCoord).rgb; break; 
+  case 12: color = texture(texture12, TexCoord).rgb; break; 
+  case 13: color = texture(texture13, TexCoord).rgb; break; 
+  case 14: color = texture(texture14, TexCoord).rgb; break; 
+  case 15: color = texture(texture15, TexCoord).rgb; break; 
+  } 
 
-  vec3 ambient = 0.05 * lightColor;
+  vec3 ambient = 0.17 * lightColor * color;  // the darkest we ever want to get is 0.17
+  FragColor = vec4(ambient, 1.0);
 
-  vec3 normal = normalize(Normal);
-  vec3 lightDir = normalize(lightPos - FragPosition);
-  float diff = max(dot(normal, lightDir), 0.0);
-  vec3 diffuse = diff * lightColor;
+   
+  //vec3 color;
+  //switch (texnum) {
+  //case 0: color = texture(texture0, texcoord).rgb; break;
+  //case 1: color = texture(texture1, texcoord).rgb; break;
+  //case 2: color = texture(texture2, texcoord).rgb; break;
+  //case 3: color = texture(texture3, texcoord).rgb; break;
+  //case 4: color = texture(texture4, texcoord).rgb; break;
+  //case 5: color = texture(texture5, texcoord).rgb; break;
+  //case 6: color = texture(texture6, texcoord).rgb; break;
+  //case 7: color = texture(texture7, texcoord).rgb; break;
+  //case 8: color = texture(texture8, texcoord).rgb; break;
+  //case 9: color = texture(texture9, texcoord).rgb; break;
+  //case 10: color = texture(texture10, texcoord).rgb; break;
+  //case 11: color = texture(texture11, texcoord).rgb; break;
+  //case 12: color = texture(texture12, texcoord).rgb; break;
+  //case 13: color = texture(texture13, texcoord).rgb; break;
+  //case 14: color = texture(texture14, texcoord).rgb; break;
+  //case 15: color = texture(texture15, texcoord).rgb; break;
+  //}
 
-  vec3 result = (ambient + diffuse) * color;
-  FragColor = vec4(result, 1.0);
+  //vec3 ambient = 0.50 * lightcolor;
+
+  //vec3 normal = normalize(normal);
+  //vec3 lightdir = normalize(lightpos - fragposition);
+  //float diff = max(dot(normal, lightdir), 0.0);
+  //vec3 diffuse = diff * lightcolor;
+
+  //vec3 result = (ambient + diffuse) * color;
+  //fragcolor = vec4(result, 1.0);
 
 }
 

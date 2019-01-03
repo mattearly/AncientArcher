@@ -166,6 +166,10 @@
     <ClInclude Include="src\util\stb_image.h" />
     <ClInclude Include="src\util\TextureBank.h" />
   </ItemGroup>
+  <ItemGroup>
+    <None Include="src\shaders\fragment.shader" />
+    <None Include="src\shaders\vertex.shader" />
+  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>
