@@ -2,7 +2,7 @@
 #include <cmath>
 #include <iostream>
 #include <SDL2/SDL.h>
-#include "util/mearly.h"
+#include "../util/mearly.h"
 
 bool soundReady = false;
 
