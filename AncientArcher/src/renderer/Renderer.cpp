@@ -43,19 +43,16 @@ void Renderer::update(Pickups *pickups, PrimativeManager *primativeManager, floa
   //primativeManager->drawPlane(glm::vec3(1.0f, 1.0f, 1.0f), glm::vec3(1.0f, 1.0f, 1.0f));
   int width = round(world_width + 1);
 
-  //texBank.activate(14);    //bounds
-  //for (int i = 0; i < width; i += 2) {
-  //  for (int j = 0; j < 40; j += 2) {
-  //    primativeManager->drawCube(glm::vec3(-2.0f, 1.0f + j, 0.0f + i), glm::vec3(2.0f, 2.0f, 2.0f));
-  //    primativeManager->drawCube(glm::vec3(float(width + 1), 1.0f + j, 0.0f + i), glm::vec3(2.0f, 2.0f, 2.0f));
-  //    primativeManager->drawCube(glm::vec3(0.0f + i, 1.0f + j, -2.0f), glm::vec3(2.0f, 2.0f, 2.0f));
-  //    primativeManager->drawCube(glm::vec3(0.0f + i, 1.0f + j, float(width + 1)), glm::vec3(2.0f, 2.0f, 2.0f));
-  //  }
-  //}
 
-
-  //texBank.activate(0);    //0 = grass
-  texBank.activate(1);   //13 = stone
+  texBank.activate(1);
+  for (int i = 0; i < width; i += 2) {
+    for (int j = 0; j < 4; j += 2) {
+      primativeManager->drawCube(glm::vec3(-2.0f, 2.0f + j, 0.0f + i), glm::vec3(2.0f, 2.0f, 2.0f));
+      primativeManager->drawCube(glm::vec3(float(width + 1), 2.0f + j, 0.0f + i), glm::vec3(2.0f, 2.0f, 2.0f));
+      primativeManager->drawCube(glm::vec3(0.0f + i, 2.0f + j, -2.0f), glm::vec3(2.0f, 2.0f, 2.0f));
+      primativeManager->drawCube(glm::vec3(0.0f + i, 2.0f + j, float(width + 1)), glm::vec3(2.0f, 2.0f, 2.0f));
+    }
+  }
   for (int i = 0; i < width; i+=2) {
     for (int j = 0; j < width; j+=2) {
       primativeManager->drawCube(glm::vec3(0.0f + i, 0.0f, 0.0f + j), glm::vec3(2.0f, 2.0f, 2.0f));
