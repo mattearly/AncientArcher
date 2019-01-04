@@ -5,8 +5,7 @@
 #include "../util/TextureBank.h"
 #include "../Constraints.h"
 #include "../lighting/Lighting.h"
-#include "../Pickups.h"
-
+#include "../pickups/Pickups.h"
 
 extern Display display;
 extern Shader shader;

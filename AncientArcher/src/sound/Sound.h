@@ -26,6 +26,9 @@ void playswordswingsound();
 static Mix_Chunk *bowsoundeffect;
 void playbowsound();
 
+static Mix_Chunk *equipgearsoundeffect;
+void playequipgearsound();
+
 //static Mix_Chunk *dooropensoundeffect;
 //void playdoorsound();
 //

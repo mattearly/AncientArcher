@@ -1,6 +1,6 @@
 #pragma once
 #include "../player/Player.h"
-#include "../Pickups.h"
+#include "../pickups/Pickups.h"
 #include "../renderer/Renderer.h"
 #include "../models/PrimativeManager.h"
 

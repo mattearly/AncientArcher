@@ -240,7 +240,7 @@ void Controls::keyboardInput(Player *player, Pickups *pickups, float dtime, floa
         camera.Position.x <= pickups->speedBoostLoc.x + 1) {
         player->increaseLegPower(15.0f);
         pickups->speedBoostAvail = false;
-        playsuccesssound();
+        playequipgearsound();
 
       }
     }
@@ -255,7 +255,7 @@ void Controls::keyboardInput(Player *player, Pickups *pickups, float dtime, floa
         camera.Position.x <= pickups->attackBoostLoc.x + 1) {
         player->increaseAttackSpeed(0.1);
         pickups->attackBoostAvail = false;
-        playsuccesssound();
+        playequipgearsound();
 
       }
     }

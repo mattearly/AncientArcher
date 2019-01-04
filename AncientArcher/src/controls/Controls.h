@@ -2,7 +2,7 @@
 #include <glad/glad.h>
 #include <GLFW/glfw3.h>
 #include "../player/Player.h"
-#include "../Pickups.h"
+#include "../pickups/Pickups.h"
 
 static float TIMEBETWEENFOOTSTEPS = 1.0f;
 

@@ -59,6 +59,12 @@ void playbowsound() {
   Mix_PlayChannel(-1, bowsoundeffect, 0);
 }
 
+void playequipgearsound() {
+  if (!soundReady) initsound();
+
+  Mix_PlayChannel(-1, equipgearsoundeffect, 0);
+}
+
 //void playdoorsound() {
 //
 //  if (!soundReady) initsound();
@@ -170,7 +176,7 @@ void initsound() {
         Mix_GetError());
     }
   }
-  
+
   landingsoundeffect = Mix_LoadWAV("../AncientArcher/res/sfx/feetlanding.wav");
   if (landingsoundeffect == nullptr) {
     SDL_LogError(SDL_LOG_CATEGORY_APPLICATION,
@@ -178,28 +184,28 @@ void initsound() {
       Mix_GetError());
   }
 
-    
+
   successsoundeffect = Mix_LoadWAV("../AncientArcher/res/sfx/success.wav");
   if (successsoundeffect == nullptr) {
     SDL_LogError(SDL_LOG_CATEGORY_APPLICATION,
       "Couldn't load audio: %s",
       Mix_GetError());
   }
-      
+
   punchsoundeffect = Mix_LoadWAV("../AncientArcher/res/sfx/punch.wav");
   if (punchsoundeffect == nullptr) {
     SDL_LogError(SDL_LOG_CATEGORY_APPLICATION,
       "Couldn't load audio: %s",
       Mix_GetError());
   }
-      
+
   swordswingsoundeffect = Mix_LoadWAV("../AncientArcher/res/sfx/swordswing.wav");
   if (swordswingsoundeffect == nullptr) {
     SDL_LogError(SDL_LOG_CATEGORY_APPLICATION,
       "Couldn't load audio: %s",
       Mix_GetError());
   }
-      
+
   bowsoundeffect = Mix_LoadWAV("../AncientArcher/res/sfx/bowfire.wav");
   if (bowsoundeffect == nullptr) {
     SDL_LogError(SDL_LOG_CATEGORY_APPLICATION,
@@ -207,7 +213,12 @@ void initsound() {
       Mix_GetError());
   }
 
-
+  equipgearsoundeffect = Mix_LoadWAV("../AncientArcher/res/sfx/equip_gear.wav");
+  if (equipgearsoundeffect == nullptr) {
+    SDL_LogError(SDL_LOG_CATEGORY_APPLICATION,
+      "Couldn't load audio: %s",
+      Mix_GetError());
+  }
 
   //// load door sound effect
   //dooropensoundeffect = Mix_LoadWAV("dooropen.wav");

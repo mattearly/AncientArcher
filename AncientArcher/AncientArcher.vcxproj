@@ -133,7 +133,7 @@
     <ClCompile Include="src\lighting\Lighting.cpp" />
     <ClCompile Include="src\renderer\Renderer.cpp" />
     <ClCompile Include="src\displayManager\Display.cpp" />
-    <ClCompile Include="src\Pickups.cpp" />
+    <ClCompile Include="src\pickups\Pickups.cpp" />
     <ClCompile Include="src\util\mearly.cpp" />
     <ClCompile Include="src\Constraints.cpp" />
     <ClCompile Include="src\models\PrimativeManager.cpp" />
@@ -155,7 +155,7 @@
     <ClInclude Include="src\lighting\Lighting.h" />
     <ClInclude Include="src\renderer\Renderer.h" />
     <ClInclude Include="src\displayManager\Display.h" />
-    <ClInclude Include="src\Pickups.h" />
+    <ClInclude Include="src\pickups\Pickups.h" />
     <ClInclude Include="src\util\mearly.h" />
     <ClInclude Include="src\Constraints.h" />
     <ClInclude Include="src\models\PrimativeManager.h" />
@@ -171,6 +171,9 @@
   <ItemGroup>
     <None Include="src\shaders\fragment.shader" />
     <None Include="src\shaders\vertex.shader" />
+  </ItemGroup>
+  <ItemGroup>
+    <Media Include="res\sfx\equip_gear.wav" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
