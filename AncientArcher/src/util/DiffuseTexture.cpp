@@ -53,11 +53,10 @@ void DiffuseTexture::loadDiffuseTexture(std::string path) {
   std::string n = texture_shader_name.str();
   shader.use();
   shader.setInt(n.c_str(), num_loaded_diffuse+16);
-  //shader.setInt(n.c_str(), 16);
 
   // console notification of loaded texture
   if (num_loaded_diffuse == 0)
-    std::cout << "diffuse# | load path\n";
+    std::cout << "   # | load path\n";
   std::cout << num_loaded_diffuse << "    | " << path << "\n";
 
   // increment to be ready for the next texture

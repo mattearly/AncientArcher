@@ -42,15 +42,15 @@ void Renderer::update(PrimativeManager *primativeManager, float deltaTime) {
   //primativeManager->drawPlane(glm::vec3(1.0f, 1.0f, 1.0f), glm::vec3(1.0f, 1.0f, 1.0f));
   int width = round(world_width + 1);
 
-  texBank.activate(14);    //bounds
-  for (int i = 0; i < width; i += 2) {
-    for (int j = 0; j < 40; j += 2) {
-      primativeManager->drawCube(glm::vec3(-2.0f, 1.0f + j, 0.0f + i), glm::vec3(2.0f, 2.0f, 2.0f));
-      primativeManager->drawCube(glm::vec3(float(width + 1), 1.0f + j, 0.0f + i), glm::vec3(2.0f, 2.0f, 2.0f));
-      primativeManager->drawCube(glm::vec3(0.0f + i, 1.0f + j, -2.0f), glm::vec3(2.0f, 2.0f, 2.0f));
-      primativeManager->drawCube(glm::vec3(0.0f + i, 1.0f + j, float(width + 1)), glm::vec3(2.0f, 2.0f, 2.0f));
-    }
-  }
+  //texBank.activate(14);    //bounds
+  //for (int i = 0; i < width; i += 2) {
+  //  for (int j = 0; j < 40; j += 2) {
+  //    primativeManager->drawCube(glm::vec3(-2.0f, 1.0f + j, 0.0f + i), glm::vec3(2.0f, 2.0f, 2.0f));
+  //    primativeManager->drawCube(glm::vec3(float(width + 1), 1.0f + j, 0.0f + i), glm::vec3(2.0f, 2.0f, 2.0f));
+  //    primativeManager->drawCube(glm::vec3(0.0f + i, 1.0f + j, -2.0f), glm::vec3(2.0f, 2.0f, 2.0f));
+  //    primativeManager->drawCube(glm::vec3(0.0f + i, 1.0f + j, float(width + 1)), glm::vec3(2.0f, 2.0f, 2.0f));
+  //  }
+  //}
 
   texBank.activate(0);    //floor
   for (int i = 0; i < width; i+=2) {
@@ -59,12 +59,19 @@ void Renderer::update(PrimativeManager *primativeManager, float deltaTime) {
     }
   }
 
-  texBank.activate(8);    //sky
-  for (int i = 0; i < width; i+=2) {
-    for (int j = 0; j < width; j += 2) {
-  		primativeManager->drawCube(glm::vec3(0.0f + i, world_height, 0.0f + j), glm::vec3(2.0f, 2.0f, 2.0f));
-  	}
-  }
+  texBank.activate(6);   // thing near middle
+  //for (int i = 0; i < width; i += 2) {
+    //for (int j = 0; j < width; j += 2) {
+      primativeManager->drawCube(glm::vec3(10.0f, 2.0f, 10.0f), glm::vec3(2.0f, 2.0f, 2.0f));
+    //}
+  //}
+
+  //texBank.activate(8);    //sky
+  //for (int i = 0; i < width; i+=2) {
+  //  for (int j = 0; j < width; j += 2) {
+  //		primativeManager->drawCube(glm::vec3(0.0f + i, world_height, 0.0f + j), glm::vec3(2.0f, 2.0f, 2.0f));
+  //	}
+  //}
 
 
   display.update();

@@ -2,6 +2,7 @@
 #include<glm/glm.hpp>
 
 class Pickups {
+
 public:
   Pickups();
   ~Pickups();
@@ -13,5 +14,5 @@ public:
   glm::vec2 attackBoostLoc;
 
   void respawn();
-};
 
+};
