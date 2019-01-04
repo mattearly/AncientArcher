@@ -19,6 +19,7 @@ Display display;
 Shader shader("../AncientArcher/src/shaders/vertex.shader", "../AncientArcher/src/shaders/fragment.shader");
 Camera camera;
 Controls controls;
+Pickups pickups;
 TextureBank texBank;
 DiffuseTexture diffuseTex;
 
@@ -36,7 +37,7 @@ Game::Game() {
 
   /* load 16 textures */
   texBank.loadTexture("../AncientArcher/res/texture/00-pixelized_grass.png");
-  texBank.loadTexture("../AncientArcher/res/texture/01-pixelized_stone.png");
+  texBank.loadTexture("../AncientArcher/res/texture/01.png");
   texBank.loadTexture("../AncientArcher/res/texture/02-pixelized_wood.png");
   texBank.loadTexture("../AncientArcher/res/texture/03-pixelized_shrub.png");
   texBank.loadTexture("../AncientArcher/res/texture/04-pixelized_portal.png");
@@ -68,14 +69,14 @@ Game::Game() {
   shader.setVec3("dirLight.ambient", 0.05f, 0.05f, 0.05f);
   shader.setVec3("dirLight.diffuse", 0.4f, 0.4f, 0.4f);
   shader.setVec3("dirLight.specular", 0.5f, 0.5f, 0.5f);
-  //// point light 1
-  //shader.setVec3("pointLight.position", *(camera.getPosition()));
-  //shader.setVec3("pointLight.ambient", 0.05f, 0.05f, 0.05f);
-  //shader.setVec3("pointLight.diffuse", 0.8f, 0.8f, 0.8f);
-  //shader.setVec3("pointLight.specular", 1.0f, 1.0f, 1.0f);
-  //shader.setFloat("pointLight.constant", 1.0f);
-  //shader.setFloat("pointLight.linear", 0.09);
-  //shader.setFloat("pointLight.quadratic", 0.032);
+  // point light 1
+  shader.setVec3("pointLight.position", 2.0f, 3.0f, 10.0f);
+  shader.setVec3("pointLight.ambient", 0.05f, 0.05f, 0.05f);
+  shader.setVec3("pointLight.diffuse", 0.8f, 0.8f, 0.8f);
+  shader.setVec3("pointLight.specular", 1.0f, 1.0f, 1.0f);
+  shader.setFloat("pointLight.constant", 1.0f);
+  shader.setFloat("pointLight.linear", 0.09);
+  shader.setFloat("pointLight.quadratic", 0.032);
   // spotLight
 //  shader.setVec3("spotLight.position", *(camera.getPosition()));
 //  shader.setVec3("spotLight.direction", *(camera.getFront()));

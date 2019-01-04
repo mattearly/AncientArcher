@@ -1,5 +1,6 @@
 #pragma once
 
+class Pickups;
 class PrimativeManager;
 
 class Renderer {
@@ -13,7 +14,7 @@ public:
   void enableGLDepthTest();
   void disableGLDepthTest();
 
-  void update(PrimativeManager *primativeManager, float deltaTime);
+  void update(Pickups *pickups, PrimativeManager *primativeManager, float deltaTime);
 
 };
 

@@ -230,7 +230,6 @@ void Controls::keyboardInput(Player *player, Pickups *pickups, float dtime, floa
       movedir.timeSinceLastStep += dtime;
     }
 
-    /* not using right now
     // LEGPOWER PICKUP
     if (pickups->speedBoostAvail) {
       if (
@@ -254,13 +253,12 @@ void Controls::keyboardInput(Player *player, Pickups *pickups, float dtime, floa
         camera.Position.z <= pickups->attackBoostLoc.y + 1 &&
         camera.Position.x >= pickups->attackBoostLoc.x - 1 &&
         camera.Position.x <= pickups->attackBoostLoc.x + 1) {
-        player->increaseAttackSpeed(0.5f);  // subtract 500. off the ms timer
+        player->increaseAttackSpeed(0.1);
         pickups->attackBoostAvail = false;
         playsuccesssound();
 
       }
     }
-    */
   }
 
   /* Jump System */

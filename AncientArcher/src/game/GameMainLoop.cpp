@@ -2,18 +2,21 @@
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtc/type_ptr.hpp>
+
 #include "../sound/Sound.h"
-#include <iostream>
 #include "../player/Player.h"
-#include <cmath>
 #include "../util/mearly.h"
 #include "../camera/Camera.h"
 #include "../displayManager/Display.h"
 #include "../controls/Controls.h"
 
+#include <iostream>
+#include <cmath>
+
 extern Camera camera;
 extern Display display;
 extern Controls controls;
+extern Pickups pickups;
 
 void Game::mainLoop() {
 
@@ -31,7 +34,7 @@ void Game::mainLoop() {
 
     camera.update();
 
-    renderer.update(&primativeManager, deltaTime);
+    renderer.update(&pickups, &primativeManager, deltaTime);
 
     glfwPollEvents();
 

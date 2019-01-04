@@ -5,6 +5,7 @@
 #include "../util/TextureBank.h"
 #include "../Constraints.h"
 #include "../lighting/Lighting.h"
+#include "../Pickups.h"
 
 
 extern Display display;
@@ -33,7 +34,7 @@ void Renderer::disableGLDepthTest() {
 
 }
 
-void Renderer::update(PrimativeManager *primativeManager, float deltaTime) {
+void Renderer::update(Pickups *pickups, PrimativeManager *primativeManager, float deltaTime) {
   //float worldcenter = world_width / 2.0f;
 
   display.clear();
@@ -52,17 +53,22 @@ void Renderer::update(PrimativeManager *primativeManager, float deltaTime) {
   //  }
   //}
 
-  texBank.activate(0);    //floor
+
+  //texBank.activate(0);    //0 = grass
+  texBank.activate(1);   //13 = stone
   for (int i = 0; i < width; i+=2) {
     for (int j = 0; j < width; j+=2) {
       primativeManager->drawCube(glm::vec3(0.0f + i, 0.0f, 0.0f + j), glm::vec3(2.0f, 2.0f, 2.0f));
     }
   }
 
-  texBank.activate(6);   // thing near middle
+  pickups->draw(primativeManager);
+
+
+  //texBank.activate(15);   // thing near middle
   //for (int i = 0; i < width; i += 2) {
     //for (int j = 0; j < width; j += 2) {
-      primativeManager->drawCube(glm::vec3(10.0f, 2.0f, 10.0f), glm::vec3(2.0f, 2.0f, 2.0f));
+      //primativeManager->drawCube(glm::vec3(10.0f, 2.0f, 10.0f), glm::vec3(2.0f, 2.0f, 2.0f));
     //}
   //}
 
