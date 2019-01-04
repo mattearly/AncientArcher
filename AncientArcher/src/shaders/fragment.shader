@@ -75,13 +75,13 @@ uniform sampler2D specular0;  // no specular value | GLTexture16
 
 uniform vec3 viewPos;
 uniform DirLight dirLight;
-//uniform PointLight pointLight;
+uniform PointLight pointLight;
 //uniform SpotLight spotLight;
 uniform Material material;
 
 // function prototypes
 vec3 CalcDirLight(DirLight light, vec3 normal, vec3 viewDir);
-//vec3 CalcPointLight(PointLight light, vec3 normal, vec3 fragPos, vec3 viewDir);
+vec3 CalcPointLight(PointLight light, vec3 normal, vec3 fragPos, vec3 viewDir);
 //vec3 CalcSpotLight(SpotLight light, vec3 normal, vec3 fragPos, vec3 color);
 
 vec3 color;
@@ -120,7 +120,7 @@ void main() {
 
   // phase 2: point lights
   //for (int i = 0; i < NR_POINT_LIGHTS; i++)
-    //result += CalcPointLight(pointLight, norm, FragPos, viewDir);
+    result += CalcPointLight(pointLight, norm, FragPos, viewDir);
 
   // phase 3: spot light
   //vec3 result = CalcSpotLight(spotLight, norm, FragPos, color);
@@ -145,14 +145,14 @@ vec3 CalcDirLight(DirLight light, vec3 normal, vec3 viewDir) {
   vec3 ambient0 = light.ambient * color;
   vec3 diffuse0 = light.diffuse * diff * color;
 
-  vec3 specular;
-  switch (specnum) {
-  case 0:
-    specular = light.specular * spec * vec3(texture(specular0, TexCoords));
-    break;
-  }
+  //vec3 specular;
+  //switch (specnum) {
+  //case 0:
+  //  specular = light.specular * spec * vec3(texture(specular0, TexCoords));
+  //  break;
+  //}
 
-  return (ambient0 + diffuse0 + specular);
+  return (ambient0 + diffuse0 /* + specular*/);
 }
 
 // calculates the viewDir when using a point light.
@@ -175,18 +175,18 @@ vec3 CalcPointLight(PointLight light, vec3 normal, vec3 fragPos, vec3 viewDir) {
   vec3 ambient0 = light.ambient * color;
   vec3 diffuse0 = light.diffuse * diff * color;
 
-  vec3 specular;
-  switch (specnum) {
-  case 0:
-    specular = light.specular * spec * vec3(texture(specular0, TexCoords));
-    break;
-  } 
+  //vec3 specular;
+  //switch (specnum) {
+  //case 0:
+  //  specular = light.specular * spec * vec3(texture(specular0, TexCoords));
+  //  break;
+  //} 
   
   ambient0 *= attenuation;
   diffuse0 *= attenuation;
-  specular *= attenuation;
+  //specular *= attenuation;
 
-  return (ambient0 + diffuse0 + specular);
+  return (ambient0 + diffuse0 /*+ specular*/);
 }
 
 // calculates the viewDir when using a spot light.
