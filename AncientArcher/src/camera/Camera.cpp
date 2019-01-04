@@ -31,6 +31,9 @@ void Camera::update() {
   //shader.setVec3("lightPosition", Position);
   //shader.setVec3("cameraDirection", Front);
 
+  shader.setVec3("spotLight.position", Position);
+  shader.setVec3("spotLight.direction", Front);
+
 }
 
 void Camera::updateProjectionMatrix() {

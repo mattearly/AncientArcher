@@ -1,5 +1,5 @@
 #include "Player.h"
-#include "Constraints.h"
+#include "../Constraints.h"
 #include <iostream>
 
 Player::Player() {
