@@ -15,7 +15,7 @@ Camera::Camera() {
   Position = glm::vec3(camstart[0], camstart[1], camstart[2]); // starting position
 
   WorldUp = glm::vec3(0.0f, 1.0f, 0.0f);
-  Yaw = 45.0f;;
+  Yaw = 45.0f;
   Pitch = 0.0f;
 
   updateCameraVectors();
@@ -39,7 +39,7 @@ void Camera::updateProjectionMatrix() {
 
   glm::mat4 projection = glm::perspective(glm::radians(FoV), (float)display.window_width / (float)display.window_height, 0.1f, 1500.0f);
   shader.setMat4("projection", projection);
-
+ 
 }
 
 glm::mat4 Camera::getViewMatrix() {
