@@ -16,5 +16,9 @@ public:
 
   void update(Pickups *pickups, PrimativeManager *primativeManager, float deltaTime);
 
+private:
+
+  int width;
+
 };
 

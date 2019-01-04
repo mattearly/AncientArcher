@@ -19,5 +19,4 @@ public:
 
   void draw(PrimativeManager *primativeManager);
 
-
 };

@@ -12,7 +12,10 @@ extern Display display;
 extern Shader shader;
 extern TextureBank texBank;
 
-Renderer::Renderer() {}
+Renderer::Renderer() {
+  width = round(world_width + 1);
+
+}
 
 Renderer::~Renderer() {}
 
@@ -35,14 +38,8 @@ void Renderer::disableGLDepthTest() {
 }
 
 void Renderer::update(Pickups *pickups, PrimativeManager *primativeManager, float deltaTime) {
-  //float worldcenter = world_width / 2.0f;
 
   display.clear();
-
-  texBank.activate(0);
-  //primativeManager->drawPlane(glm::vec3(1.0f, 1.0f, 1.0f), glm::vec3(1.0f, 1.0f, 1.0f));
-  int width = round(world_width + 1);
-
 
   texBank.activate(1);
   for (int i = 0; i < width; i += 2) {
@@ -60,21 +57,6 @@ void Renderer::update(Pickups *pickups, PrimativeManager *primativeManager, floa
   }
 
   pickups->draw(primativeManager);
-
-
-  //texBank.activate(15);   // thing near middle
-  //for (int i = 0; i < width; i += 2) {
-    //for (int j = 0; j < width; j += 2) {
-      //primativeManager->drawCube(glm::vec3(10.0f, 2.0f, 10.0f), glm::vec3(2.0f, 2.0f, 2.0f));
-    //}
-  //}
-
-  //texBank.activate(8);    //sky
-  //for (int i = 0; i < width; i+=2) {
-  //  for (int j = 0; j < width; j += 2) {
-  //		primativeManager->drawCube(glm::vec3(0.0f + i, world_height, 0.0f + j), glm::vec3(2.0f, 2.0f, 2.0f));
-  //	}
-  //}
 
 
   display.update();

@@ -34,7 +34,7 @@ void Pickups::draw(PrimativeManager *primativeManager) {
 
 
   if (speedBoostAvail) {
-    texBank.activate(15);
+    texBank.activate(10);
     primativeManager->drawCube(glm::vec3( speedBoostLoc.x, 2.0f, speedBoostLoc.y), glm::vec3(2.0f, 2.0f, 2.0f));
   }
 
@@ -43,5 +43,8 @@ void Pickups::draw(PrimativeManager *primativeManager) {
     primativeManager->drawCube(glm::vec3(attackBoostLoc.x, 2.0f, attackBoostLoc.y), glm::vec3(2.0f, 2.0f, 2.0f));
   }
 
+  if (!(speedBoostAvail && attackBoostAvail)) {
+    respawn();
+  }
 }
 
