@@ -10,6 +10,7 @@
 extern Display display;
 extern Shader shader;
 extern TextureBank texBank;
+extern Lighting lighting;
 
 Renderer::Renderer() {
   width = round(world_width + 1);
@@ -36,10 +37,11 @@ void Renderer::disableGLDepthTest() {
 
 }
 
-void Renderer::update(Pickups *pickups, PrimativeManager *primativeManager, float deltaTime) {
+void Renderer::update(Pickups *pickups, PrimativeManager *primativeManager, Lighting *lighting, float deltaTime) {
 
   display.clear();
 
+  // FLOOR AND BOUNDRY CRATES
   texBank.activate(1);
   for (int i = 0; i < width; i += 2) {
     for (int j = 0; j < 4; j += 2) {
@@ -57,6 +59,7 @@ void Renderer::update(Pickups *pickups, PrimativeManager *primativeManager, floa
 
   pickups->draw(primativeManager);
 
+  //lighting->draw();
 
   display.update();
 

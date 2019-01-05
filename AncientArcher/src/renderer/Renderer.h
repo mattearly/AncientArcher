@@ -2,6 +2,7 @@
 
 class Pickups;
 class PrimativeManager;
+class Lighting;
 
 class Renderer {
 public:
@@ -14,7 +15,7 @@ public:
   void enableGLDepthTest();
   void disableGLDepthTest();
 
-  void update(Pickups *pickups, PrimativeManager *primativeManager, float deltaTime);
+  void update(Pickups *pickups, PrimativeManager *primativeManager, Lighting *lighting, float deltaTime);
 
 private:
 

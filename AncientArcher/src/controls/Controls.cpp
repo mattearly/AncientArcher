@@ -58,25 +58,9 @@ void Controls::keyboardInput(Player *player, Pickups *pickups, float dtime, floa
   movedir.positionChanged = true;  //for footsteps
 
   if (glfwGetMouseButton(display.window, GLFW_MOUSE_BUTTON_LEFT) == GLFW_PRESS) {
-
-
     //swing sword  or shoot bow
     if (player->getLastAttackTime() + player->getAttackSpeed() < gametime) {
-
-      switch (player->getSelectedWeapon()) {
-      case 0:
-        playpunchsound();
-        break;
-      case 1:
-        playswordswingsound();
-        player->swinging = true;
-        break;
-      case 2:
-        playbowsound();
-        break;
-      }
-
-      player->setTimeSinceLastAttack(gametime);
+      player->attack(gametime);
     }
   }
 

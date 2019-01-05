@@ -9,6 +9,7 @@
 #include "../camera/Camera.h"
 #include "../displayManager/Display.h"
 #include "../controls/Controls.h"
+#include "../lighting/Lighting.h"
 
 #include <iostream>
 #include <cmath>
@@ -17,6 +18,7 @@ extern Camera camera;
 extern Display display;
 extern Controls controls;
 extern Pickups pickups;
+extern Lighting lighting;
 
 void Game::mainLoop() {
 
@@ -27,14 +29,13 @@ void Game::mainLoop() {
     float currentFrame = glfwGetTime();
     deltaTime = currentFrame - lastFrame;
     lastFrame = currentFrame;
-
     gameTime += deltaTime;
 
     controls.keyboardInput(player, &pickups, deltaTime, gameTime);
 
     camera.update();
 
-    renderer.update(&pickups, &primativeManager, deltaTime);
+    renderer.update(&pickups, &primativeManager, &lighting, deltaTime);
 
     glfwPollEvents();
 

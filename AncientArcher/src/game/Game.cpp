@@ -13,7 +13,7 @@
 #include "../util/TextureBank.h"
 #include "../util/DiffuseTexture.h"
 #include "../Constraints.h"
-
+#include "../lighting/Lighting.h"
 
 Display display;
 Shader shader("../AncientArcher/src/shaders/vertex.shader", "../AncientArcher/src/shaders/fragment.shader");
@@ -22,6 +22,7 @@ Controls controls;
 Pickups pickups;
 TextureBank texBank;
 DiffuseTexture diffuseTex;
+Lighting lighting;
 
 Game::Game() {
 
@@ -58,26 +59,21 @@ Game::Game() {
   // only render the objects not line of sight blocked by other objects 
   //glEnable(GL_CULL_FACE);
 
+  lighting.setConstantLight();
+
+
+  // demo point lights
+  lighting.addPointLight(glm::vec3(1.5f, 4.0f, 1.5f));
+  lighting.addPointLight(glm::vec3(1.5f, 4.0f, 38.5f));
+  lighting.addPointLight(glm::vec3(38.5f, 4.0f, 1.5f));
+  lighting.addPointLight(glm::vec3(38.5f, 4.0f, 38.5f));
+  lighting.addPointLight(glm::vec3(20.0f, 4.0f, 20.0f));
+
   renderer.enableGLDepthTest();
 
   camera.updateProjectionMatrix();
 
   //shader.setInt("specnum", 0);
-
-  //// directional light
-  shader.setVec3("dirLight.direction", -0.2f, -1.0f, -0.3f);
-  shader.setVec3("dirLight.ambient", 0.05f, 0.05f, 0.05f);
-  shader.setVec3("dirLight.diffuse", 0.4f, 0.4f, 0.4f);
-  shader.setVec3("dirLight.specular", 0.5f, 0.5f, 0.5f);
-
-  // point light 1
-  //shader.setVec3("pointLight.position", 10.0f, 10.0f, 10.0f);  //currently on camera position
-  shader.setVec3("pointLight.ambient", 0.05f, 0.05f, 0.05f);
-  shader.setVec3("pointLight.diffuse", 0.8f, 0.8f, 0.8f);
-  shader.setVec3("pointLight.specular", 1.0f, 1.0f, 1.0f);
-  shader.setFloat("pointLight.constant", 1.0f);
-  shader.setFloat("pointLight.linear", 0.09);
-  shader.setFloat("pointLight.quadratic", 0.032);
 
   // spotLight
 //  shader.setVec3("spotLight.position", *(camera.getPosition()));

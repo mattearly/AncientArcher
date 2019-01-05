@@ -1,12 +1,18 @@
 #pragma once
+#include<glm/glm.hpp>
 
 class Player {
 public:
+
   Player();
   Player(float base_speed, float base_jump, float leg_power);
+
   ~Player();
 
   float characterHeight;
+
+  // ACTIONS
+  void attack(float gametime);
 
   // MUTATORS
   void increaseLegPower(float add);
@@ -17,10 +23,10 @@ public:
 
   void setTimeSinceLastAttack(float incr);
 
-  bool swinging;
+  void setPosition(glm::vec3 pos);
 
   // ACCESSORS
-  int getSelectedWeapon();
+  int getSelectedItem();
 
   float getRunSpeed();
 
@@ -32,18 +38,23 @@ public:
 
   float getLastAttackTime();
 
+  glm::vec3 getPosition();
+
 private:
   
-  float BaseSpeed;
-  float BaseJump;
-  float LegPower;
+  float baseSpeed;
+  float baseJump;
+  float legPower;
 
-  
+  glm::vec3 position;  // x y z
+
   int weaponSelect;
 
   float attackSpeed;  // greater is slower, time in between attacks needed, starts at 1800 (1.8s between attacks)
 
-  float lastAttackTime;  // gametime stamp
+  float lastAttackTimeStamp;  // gametime stamp
+
+  bool isAttacking;
 
 };
 

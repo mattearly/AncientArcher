@@ -1,12 +1,14 @@
 #include "Player.h"
+
 #include "../Constraints.h"
-#include <iostream>
+#include "../sound/Sound.h"
+#include "../lighting/Lighting.h"
 
 Player::Player() {
 
-  BaseSpeed = 10.0f;  // base stats
-  BaseJump = 4.0f;
-  LegPower = 10.0f;
+  baseSpeed = 10.0f;  // base stats
+  baseJump = 4.0f;
+  legPower = 10.0f;
 
   characterHeight = 2.5f;
 
@@ -14,36 +16,51 @@ Player::Player() {
 
   attackSpeed = 1.8f;
 
-  lastAttackTime = 0.0f;
+  lastAttackTimeStamp = 0.0f;
 
-  swinging = false;
+  isAttacking = false;
 
 }
 
 Player::Player(float base_speed, float base_jump, float leg_power) {
 
-  BaseSpeed = base_speed;
-  BaseJump = base_jump;
-  LegPower = leg_power;
+  baseSpeed = base_speed;
+  baseJump = base_jump;
+  legPower = leg_power;
 
   weaponSelect = 1;
 
   attackSpeed = 1.8f;
 
-  lastAttackTime = 0.0f;
+  lastAttackTimeStamp = 0.0f;
 
-  swinging = false;
+  isAttacking = false;
 
 }
 
-
 Player::~Player() {}
 
+void Player::attack(float gametime) {
+  switch (getSelectedItem()) {
+  case 0:
+    playpunchsound();
+    break;
+  case 1:
+    playswordswingsound();
+    isAttacking = true;
+    break;
+  case 2:
+    playbowsound();
+    break;
+  }
+  setTimeSinceLastAttack(gametime);
+}
+
 void Player::increaseLegPower(float add) {
-  if (LegPower < 100.00f) {
-    LegPower += add;
-    if (LegPower > 100.00f) {
-      LegPower = 100.00f;
+  if (legPower < 100.00f) {
+    legPower += add;
+    if (legPower > 100.00f) {
+      legPower = 100.00f;
     }
   }
 }
@@ -64,25 +81,28 @@ void Player::selectWeapon(int weapnum) {
 }
 
 void Player::setTimeSinceLastAttack(float incr) {
-  lastAttackTime = incr;
+  lastAttackTimeStamp = incr;
 }
 
-int Player::getSelectedWeapon() {
+void Player::setPosition(glm::vec3 pos) {
+}
+
+int Player::getSelectedItem() {
   return weaponSelect;
 }
 
 float Player::getRunSpeed() {
                        //stat_divisor is from Constraints
   // runspeed = BaseSpeed + (LegPower / 20.0f))
-  return ((LegPower / stat_divisor) + BaseSpeed);
+  return ((legPower / stat_divisor) + baseSpeed);
 }
 
 float Player::getRisingSpeed() {
-  return ((LegPower / stat_divisor) + BaseJump);
+  return ((legPower / stat_divisor) + baseJump);
 }
 
 float Player::getJumpHeight() {
-  return (LegPower / stat_divisor) + 0.8f;   // at least .8f above the starting position
+  return (legPower / stat_divisor) + 0.8f;   // at least .8f above the starting position
 }
 
 float Player::getAttackSpeed() {
@@ -90,5 +110,9 @@ float Player::getAttackSpeed() {
 }
 
 float Player::getLastAttackTime() {
-  return lastAttackTime;
+  return lastAttackTimeStamp;
+}
+
+glm::vec3 Player::getPosition() {
+  return position;
 }

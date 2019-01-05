@@ -67,15 +67,18 @@ uniform sampler2D texture13;
 uniform sampler2D texture14;
 uniform sampler2D texture15;  // GLTexture15
 
-uniform int specnum;
-uniform sampler2D specular0;  // no specular value | GLTexture16
+//uniform int specnum;
+//uniform sampler2D specular0;  // no specular value | GLTexture16
 
 //uniform vec3 lightviewDir;
 //uniform vec3 lightPos;
 
 uniform vec3 viewPos;
 uniform DirLight dirLight;
-uniform PointLight pointLight;
+
+uniform int numPointLights;
+uniform PointLight pointLight[4];
+//uniform PointLight pointLight;
 //uniform SpotLight spotLight;
 uniform Material material;
 
@@ -119,8 +122,8 @@ void main() {
   vec3 result = CalcDirLight(dirLight, norm, viewDir);
 
   // phase 2: point lights
-  //for (int i = 0; i < NR_POINT_LIGHTS; i++)
-    result += CalcPointLight(pointLight, norm, FragPos, viewDir);
+  for (int i = 0; i < numPointLights; i++)
+    result += CalcPointLight(pointLight[i], norm, FragPos, viewDir);
 
   // phase 3: spot light
   //vec3 result = CalcSpotLight(spotLight, norm, FragPos, color);

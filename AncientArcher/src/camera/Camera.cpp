@@ -25,18 +25,8 @@ Camera::Camera() {
 Camera::~Camera() {}
 
 void Camera::update() {
-
   glm::mat4 view = getViewMatrix();
   shader.setMat4("view", view);
-  //shader.setVec3("lightPosition", Position);
-  //shader.setVec3("cameraDirection", Front);
-
-  //shader.setVec3("spotLight.position", Position);
-  //shader.setVec3("spotLight.direction", Front);
-
-  shader.setVec3("pointLight.position", Position); //light on camera postion
-
-
 }
 
 void Camera::updateProjectionMatrix() {
@@ -46,7 +36,6 @@ void Camera::updateProjectionMatrix() {
   glm::mat4 projection = glm::perspective(glm::radians(FoV), (float)display.window_width / (float)display.window_height, 0.1f, 1500.0f);
   shader.setMat4("projection", projection);
 
- 
 }
 
 glm::mat4 Camera::getViewMatrix() {
