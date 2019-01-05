@@ -24,17 +24,10 @@ void Lighting::setConstantLight() {
   //// directional light
   shader.setVec3("dirLight.direction", -0.2f, -1.0f, -0.3f);
   shader.setVec3("dirLight.ambient", 0.05f, 0.05f, 0.05f);
-  shader.setVec3("dirLight.diffuse", 0.4f, 0.4f, 0.4f);
+  //shader.setVec3("dirLight.diffuse", 0.4f, 0.4f, 0.4f);
+  shader.setVec3("dirLight.diffuse", 0.5f, 0.5f, 0.5f);
   shader.setVec3("dirLight.specular", 0.5f, 0.5f, 0.5f);
 
-  // point light 1
-  //shader.setVec3("pointLight.position", 10.0f, 10.0f, 10.0f);  //currently on player position
-  //shader.setVec3("pointLight.ambient", 0.05f, 0.05f, 0.05f);
-  //shader.setVec3("pointLight.diffuse", 0.8f, 0.8f, 0.8f);
-  //shader.setVec3("pointLight.specular", 1.0f, 1.0f, 1.0f);
-  //shader.setFloat("pointLight.constant", 1.0f);
-  //shader.setFloat("pointLight.linear", 0.09);
-  //shader.setFloat("pointLight.quadratic", 0.032);
 }
 
 void Lighting::addPointLight(glm::vec3 pos) {
