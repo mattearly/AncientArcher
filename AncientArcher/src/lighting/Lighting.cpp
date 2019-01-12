@@ -67,4 +67,8 @@ void Lighting::addPointLight(glm::vec3 pos) {
 
 }
 
+void Lighting::movePointLight(int lightnum, glm::vec3 newpos) {
+  shader.setVec3("pointLight[0].position", newpos);
+}
+
 

@@ -59,15 +59,15 @@ Game::Game() {
   // only render the objects not line of sight blocked by other objects 
   //glEnable(GL_CULL_FACE);
 
-  lighting.setConstantLight();
+  //lighting.setConstantLight();
 
 
   // demo point lights
-  lighting.addPointLight(glm::vec3(1.5f, 4.0f, 1.5f));
-  lighting.addPointLight(glm::vec3(1.5f, 4.0f, 38.5f));
-  lighting.addPointLight(glm::vec3(38.5f, 4.0f, 1.5f));
-  lighting.addPointLight(glm::vec3(38.5f, 4.0f, 38.5f));
-  lighting.addPointLight(glm::vec3(20.0f, 4.0f, 20.0f));
+  //lighting.addPointLight(glm::vec3(1.5f, 4.0f, 1.5f));
+  //lighting.addPointLight(glm::vec3(1.5f, 4.0f, 38.5f));
+  //lighting.addPointLight(glm::vec3(38.5f, 4.0f, 1.5f));
+  //lighting.addPointLight(glm::vec3(38.5f, 4.0f, 38.5f));
+  lighting.addPointLight(*camera.getPosition());
 
   renderer.enableGLDepthTest();
 

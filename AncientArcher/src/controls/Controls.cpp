@@ -9,6 +9,7 @@
 #include "../camera/Camera.h"
 #include "../displayManager/Display.h"
 #include "../shaders/Shader.h"
+#include "../lighting/Lighting.h"
 
 #include <iostream>
 #include <math.h>
@@ -16,6 +17,7 @@
 extern Camera camera;
 extern Display display;
 extern Shader shader;
+extern Lighting lighting;
 
 Controls::Controls() {
   firstMouse = true;
@@ -201,7 +203,7 @@ void Controls::keyboardInput(Player *player, Pickups *pickups, float dtime, floa
     }
 
     //shader.setVec3("lightPos", camera.Position.x, camera.Position.y+0.4f, camera.Position.z);  // setting in game constructor
-
+    lighting.movePointLight(0, *camera.getPosition());
 
     // FOOTSTEP SOUNDS
     if (movedir.timeSinceLastStep > TIMEBETWEENFOOTSTEPS - player->getRunSpeed() / 100.0f || (movedir.boost && !movedir.back && movedir.timeSinceLastStep > TIMEBETWEENFOOTSTEPS - (player->getRunSpeed() / 100.0f) * 2)) {
