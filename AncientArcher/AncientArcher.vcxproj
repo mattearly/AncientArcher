@@ -129,7 +129,6 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="src\util\DiffuseTexture.cpp" />
-    <ClCompile Include="src\models\Mesh.cpp" />
     <ClCompile Include="src\lighting\Lighting.cpp" />
     <ClCompile Include="src\renderer\Renderer.cpp" />
     <ClCompile Include="src\displayManager\Display.cpp" />
@@ -151,7 +150,6 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\util\DiffuseTexture.h" />
-    <ClInclude Include="src\models\Mesh.h" />
     <ClInclude Include="src\lighting\Lighting.h" />
     <ClInclude Include="src\renderer\Renderer.h" />
     <ClInclude Include="src\displayManager\Display.h" />
