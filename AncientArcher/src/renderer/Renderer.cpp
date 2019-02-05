@@ -43,23 +43,36 @@ void Renderer::update(Pickups *pickups, PrimativeManager *primativeManager, Ligh
 
   // FLOOR AND BOUNDRY CRATES
   texBank.activate(1);
-  for (int i = 0; i < width; i += 2) {
-    for (int j = 0; j < 4; j += 2) {
-      primativeManager->drawCube(glm::vec3(-2.0f, 2.0f + j, 0.0f + i), glm::vec3(2.0f, 2.0f, 2.0f));
-      primativeManager->drawCube(glm::vec3(float(width + 1), 2.0f + j, 0.0f + i), glm::vec3(2.0f, 2.0f, 2.0f));
-      primativeManager->drawCube(glm::vec3(0.0f + i, 2.0f + j, -2.0f), glm::vec3(2.0f, 2.0f, 2.0f));
-      primativeManager->drawCube(glm::vec3(0.0f + i, 2.0f + j, float(width + 1)), glm::vec3(2.0f, 2.0f, 2.0f));
-    }
-  }
-  for (int i = 0; i < width; i+=2) {
-    for (int j = 0; j < width; j+=2) {
-      primativeManager->drawCube(glm::vec3(0.0f + i, 0.0f, 0.0f + j), glm::vec3(2.0f, 2.0f, 2.0f));
-    }
-  }
+
+  //for (int i = 0; i < width; i += 1) {
+  //  for (int j = 0; j < 4; j += 1) {
+
+      //primativeManager->drawPlane(glm::vec3(-2.0f, 2.0f + j, 0.0f + i), glm::vec3(2.0f, 2.0f, 2.0f), glm::vec3(0.0f, 0.0f, 0.0f));
+      //primativeManager->drawPlane(glm::vec3(float(width + 1), 2.0f + j, 0.0f + i), glm::vec3(2.0f, 2.0f, 2.0f), glm::vec3(0.0f, 0.0f, 0.0f));
+      //primativeManager->drawPlane(glm::vec3(0.0f + i, 2.0f + j, -2.0f), glm::vec3(2.0f, 2.0f, 2.0f), glm::vec3(0.0f, 0.0f, 0.0f));
+      //primativeManager->drawPlane(glm::vec3(0.0f + i, 2.0f + j, float(width + 1)), glm::vec3(2.0f, 2.0f, 2.0f), glm::vec3(0.0f, 0.0f, 0.0f));
+
+      //primativeManager->drawPlane(glm::vec3(2.0f, 2.0f, 2.0f), glm::vec3(2.0f, 2.0f, 2.0f));
+      //primativeManager->drawPlane(glm::vec3(2.0f, 2.0f, 2.0f), glm::vec3(2.0f, 2.0f, 2.0f));
+      //primativeManager->drawPlane(glm::vec3(2.0f, 2.0f, 2.0f), glm::vec3(2.0f, 2.0f, 2.0f));
+      //primativeManager->drawPlane(glm::vec3(2.0f, 2.0f, 2.0f), glm::vec3(2.0f, 2.0f, 2.0f));
+
+    //}
+  //}
+
+  //for (int i = 0; i < width; i += 1) {
+  //  for (int j = 0; j < width; j += 1) {
+  //    primativeManager->drawPlane(glm::vec3(0.0f + i, 0.0f, 0.0f + j));
+  //  }
+  //}
+
+  primativeManager->drawPlane(glm::vec3(width/2, 0.0f, width/2), glm::vec3(width, 0.001f, width));
+
+  texBank.activate(3);
+
+  primativeManager->drawCube(glm::vec3(0.f, 1.5f, 0.f));
 
   pickups->draw(primativeManager);
-
-  //lighting->draw();
 
   display.update();
 

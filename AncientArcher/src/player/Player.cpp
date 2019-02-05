@@ -6,7 +6,7 @@
 
 Player::Player() {
 
-  baseSpeed = 10.0f;  // base stats
+  baseSpeed = 3.0f;  // base stats
   baseJump = 4.0f;
   legPower = 10.0f;
 
@@ -98,7 +98,7 @@ float Player::getRunSpeed() {
 }
 
 float Player::getRisingSpeed() {
-  return ((legPower / stat_divisor) + baseJump);
+  return ((legPower / stat_divisor) + baseSpeed);
 }
 
 float Player::getJumpHeight() {

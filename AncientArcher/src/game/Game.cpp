@@ -59,7 +59,7 @@ Game::Game() {
   // only render the objects not line of sight blocked by other objects 
   //glEnable(GL_CULL_FACE);
 
-  //lighting.setConstantLight();
+  lighting.setConstantLight();
 
 
   // demo point lights

@@ -164,7 +164,8 @@ void Controls::keyboardInput(Player *player, Pickups *pickups, float dtime, floa
     }
 
     if (movedir.boost && movedir.forward) {  // boost while moving forward
-      velocity *= 2.3;  // velocity power
+      //velocity *= 2.3;  // velocity power
+      velocity *= 2.0;  // velocity power
     }
 
     if (movedir.back || movedir.forward) {  // locks moving foward and backwards to the x and z axii. note that you can use the camera.Front instead of movefront to do a fly type thing while the y is unlocked or you are jumping
