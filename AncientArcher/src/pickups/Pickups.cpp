@@ -2,9 +2,7 @@
 #include "../util/mearly.h"
 #include "../Constraints.h"
 #include "../models/PrimativeManager.h"
-#include "../util/TextureBank.h"
-
-extern TextureBank texBank;
+#include "../globals.h"
 
 Pickups::Pickups() {
   respawn();

@@ -1,5 +1,6 @@
 /* 
-   built based on a singleton pattern to check all collision in our world
+   to check all collision in our world
+   built based on a singleton pattern
    based off the data found at:
    https://stackoverflow.com/questions/86582/singleton-how-should-it-be-used
 */
@@ -15,12 +16,9 @@ private:
   };
   std::vector<impasse> blockings;
 
-  Collision() {};
-  Collision(Collision const& copy) {};             //not implemented
-  Collision& operator=(Collision const& copy) {};  //not implemented
-
 public:
-  static Collision& getInstance();
-  void addCollider(glm::vec3 loc, glm::vec3 sz);
+  Collision() {};
+
+  int addCollider(glm::vec3 loc, glm::vec3 sz);
   void removeCollider(int vec_pos);
 };

@@ -1,16 +1,8 @@
 #include "Renderer.h"
 #include "../models/PrimativeManager.h"
-#include "../displayManager/Display.h"
-#include "../shaders/Shader.h"
-#include "../util/TextureBank.h"
 #include "../Constraints.h"
-#include "../lighting/Lighting.h"
 #include "../pickups/Pickups.h"
-
-extern Display display;
-extern Shader shader;
-extern TextureBank texBank;
-extern Lighting lighting;
+#include "../globals.h"
 
 Renderer::Renderer() {
   width = round(world_width + 1);
@@ -37,7 +29,7 @@ void Renderer::disableGLDepthTest() {
 
 }
 
-void Renderer::update(Pickups *pickups, PrimativeManager *primativeManager, Lighting *lighting, float deltaTime) {
+void Renderer::update(Pickups *pickups, PrimativeManager *primativeManager, float deltaTime) {
 
   display.clear();
 
@@ -66,7 +58,8 @@ void Renderer::update(Pickups *pickups, PrimativeManager *primativeManager, Ligh
   //  }
   //}
 
-  primativeManager->drawPlane(glm::vec3(width/2, 0.0f, width/2), glm::vec3(width, 0.001f, width));
+
+  primativeManager->drawPlane(glm::vec3(width / 2, 0.0f, width / 2), glm::vec3(width, 0.001f, width));
 
   texBank.activate(3);
 

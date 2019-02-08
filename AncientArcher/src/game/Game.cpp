@@ -4,25 +4,20 @@
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtc/type_ptr.hpp>
 
-#include <iostream>
-
-#include "../camera/Camera.h"
-#include "../displayManager/Display.h"
+#include "../globals.h"
 #include "../controls/Controls.h"
-#include "../shaders/Shader.h"
-#include "../util/TextureBank.h"
-#include "../util/DiffuseTexture.h"
 #include "../Constraints.h"
-#include "../lighting/Lighting.h"
+#include <iostream>
 
 Display display;
 Shader shader("../AncientArcher/src/shaders/vertex.shader", "../AncientArcher/src/shaders/fragment.shader");
 Camera camera;
 Controls controls;
 Pickups pickups;
+Lighting lighting;
+Collision collision;
 TextureBank texBank;
 DiffuseTexture diffuseTex;
-Lighting lighting;
 
 Game::Game() {
 

@@ -1,15 +1,13 @@
 #include "PrimativeManager.h"
 #include <glad/glad.h>
 #include <GLFW/glfw3.h>
-#include <iostream>
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
-#include "../shaders/Shader.h"
-#include "../util/TextureBank.h"
-#include <cmath>
 
-extern Shader shader;
-extern TextureBank texBank;
+#include "../globals.h"
+
+#include <cmath>
+#include <iostream>
 
 PrimativeManager::PrimativeManager() {
   cubeLoaded = false;
@@ -98,13 +96,13 @@ void PrimativeManager::loadCube() {
 void PrimativeManager::loadPlane() {
   // plane with texture coords and normals
   float vertices[] = {
-    // positions           // texture coords  // normals
-    -0.5f, 0.0f, -0.5f, 0.0f, 1.0f, 0.0f, 1.0f, 0.0f,
-     0.5f, 0.0f, -0.5f, 1.0f, 1.0f, 0.0f, 1.0f, 0.0f,
-     0.5f, 0.0f, 0.5f, 1.0f, 0.0f, 0.0f, 1.0f, 0.0f,
-     0.5f, 0.0f, 0.5f, 1.0f, 0.0f, 0.0f, 1.0f, 0.0f,
-    -0.5f, 0.0f, 0.5f, 0.0f, 0.0f, 0.0f, 1.0f, 0.0f,
-    -0.5f, 0.0f, -0.5f, 0.0f, 1.0f, 0.0f, 1.0f, 0.0f
+    // positions         // texture coords    // normals
+    -0.5f, 0.0f, -0.5f,  0.0f, 1.0f, 0.0f,    1.0f, 0.0f,
+     0.5f, 0.0f, -0.5f,  1.0f, 1.0f, 0.0f,    1.0f, 0.0f,
+     0.5f, 0.0f, 0.5f,   1.0f, 0.0f, 0.0f,    1.0f, 0.0f,
+     0.5f, 0.0f, 0.5f,   1.0f, 0.0f, 0.0f,    1.0f, 0.0f,
+    -0.5f, 0.0f, 0.5f,   0.0f, 0.0f, 0.0f,    1.0f, 0.0f,
+    -0.5f, 0.0f, -0.5f,  0.0f, 1.0f, 0.0f,    1.0f, 0.0f
   };
 
   /* set up an area to store vertex data */

@@ -5,9 +5,7 @@
 #include<iostream>
 #include<sstream>
 
-#include "../shaders/Shader.h"
-
-extern Shader shader;
+#include "../globals.h"
 
 TextureBank::TextureBank() {
 

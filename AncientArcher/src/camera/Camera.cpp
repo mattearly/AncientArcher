@@ -1,10 +1,6 @@
 #include "Camera.h"
-#include "../shaders/Shader.h"
-#include "../displayManager/Display.h"
+#include "../globals.h"
 #include "../controls/Controls.h"
-
-extern Display display;
-extern Shader shader;
 
 Camera::Camera() {
 

@@ -27,6 +27,5 @@ private:
   unsigned int cubeVAO, cubeVBO;
   unsigned int planeVAO, planeVBO;
 
-
 };
 

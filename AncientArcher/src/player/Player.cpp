@@ -2,7 +2,6 @@
 
 #include "../Constraints.h"
 #include "../sound/Sound.h"
-#include "../lighting/Lighting.h"
 
 Player::Player() {
 

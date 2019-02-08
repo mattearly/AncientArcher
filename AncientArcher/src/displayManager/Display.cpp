@@ -1,11 +1,10 @@
 #include "Display.h"
 #include <utility>
 #include <iostream>
+#include "../globals.h"
 #include "../controls/Controls.h"
-#include "../camera/Camera.h"
 
 extern Controls controls;
-extern Camera camera;
 
 Display::Display() {
 

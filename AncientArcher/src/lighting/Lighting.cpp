@@ -1,13 +1,11 @@
 #include <glad/glad.h>
 
 #include "Lighting.h"
-#include "../shaders/Shader.h"
+#include "../globals.h"
 
 #include <string>
 #include <sstream>
 #include <iostream>
-
-extern Shader shader;
 
 Lighting::Lighting() {}
 

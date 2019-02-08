@@ -128,6 +128,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="src\game\Entity.cpp" />
     <ClCompile Include="src\models\Collision.cpp" />
     <ClCompile Include="src\util\DiffuseTexture.cpp" />
     <ClCompile Include="src\lighting\Lighting.cpp" />
@@ -150,6 +151,8 @@
     <ClCompile Include="src\util\TextureBank.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="src\game\Entity.h" />
+    <ClInclude Include="src\globals.h" />
     <ClInclude Include="src\models\Collision.h" />
     <ClInclude Include="src\util\DiffuseTexture.h" />
     <ClInclude Include="src\lighting\Lighting.h" />

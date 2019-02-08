@@ -1,23 +1,17 @@
 #include <glm/glm.hpp>
 
+
+#include "../globals.h"
 #include "Controls.h"
 
 #include "../Constraints.h"
 #include "../player/Player.h"
 #include "../sound/Sound.h"
 #include "../game/Game.h"
-#include "../camera/Camera.h"
-#include "../displayManager/Display.h"
-#include "../shaders/Shader.h"
-#include "../lighting/Lighting.h"
 
 #include <iostream>
 #include <math.h>
 
-extern Camera camera;
-extern Display display;
-extern Shader shader;
-extern Lighting lighting;
 
 Controls::Controls() {
   firstMouse = true;
