@@ -1,6 +1,5 @@
 #include <glm/glm.hpp>
 
-
 #include "../globals.h"
 #include "Controls.h"
 
@@ -15,7 +14,7 @@
 
 Controls::Controls() {
   firstMouse = true;
-  mouseSensitivity = 0.12f;
+  mouseSensitivity = 0.09f;
 }
 
 Controls::~Controls() {}
@@ -41,8 +40,7 @@ void Controls::mouseMovement(double xpos, double ypos) {
 
   if (camera.Pitch > 89.0f) {
     camera.Pitch = 89.0f;
-  }
-  else if (camera.Pitch < -89.0f) {
+  } else if (camera.Pitch < -89.0f) {
     camera.Pitch = -89.0f;
   }
 
@@ -163,7 +161,10 @@ void Controls::keyboardInput(Player *player, Pickups *pickups, float dtime, floa
       velocity *= 2.0;  // velocity power
     }
 
-    if (movedir.back || movedir.forward) {  // locks moving foward and backwards to the x and z axii. note that you can use the camera.Front instead of movefront to do a fly type thing while the y is unlocked or you are jumping
+    // locks moving foward and backwards to the x and z axii. 
+    // Note: you can use the camera.Front instead of movefront to do a fly type thing 
+    // while the Y is unlocked or you are jumping
+    if (movedir.back || movedir.forward) {
       glm::vec3 moveFront = { camera.Front.x, 0.0f, camera.Front.z };
       if (movedir.forward) camera.Position += moveFront * velocity;
       if (movedir.back) camera.Position -= moveFront * velocity;
@@ -198,36 +199,35 @@ void Controls::keyboardInput(Player *player, Pickups *pickups, float dtime, floa
     //  if (movedir.left)    camera.Position.z += camera.Right.z * velocity;
     //}
 
+    /* stop player from walking through impassable entities */
     for (auto e : entities) {
-      if (e.collider != nullptr) {    //collider is not null *(cannot pass through item)
-        //&& abs(e.collider->impasse.location[0] - camera.Position.x) < world_width
-        //&& abs(e.collider->impasse.location[2] - camera.Position.z) < world_width) {
+      if (e.collider != nullptr    //collider is not null (potentially a blocker)
+        && abs(e.collider->impasse.location[0] - camera.Position.x) < (world_width / 2)+1  // and is close enough
+        && abs(e.collider->impasse.location[2] - camera.Position.z) < (world_width / 2)+1) {  //to be worth checking
 
-        // if inside an impassable
-        if (camera.Position.x < e.collider->impasse.location[0] + e.collider->impasse.size[0] / 2 &&
-          camera.Position.x > e.collider->impasse.location[0] - e.collider->impasse.size[0] / 2 &&
-          camera.Position.z < e.collider->impasse.location[2] + e.collider->impasse.size[2] / 2 &&
-          camera.Position.z > e.collider->impasse.location[2] - e.collider->impasse.size[2] / 2
-          )
-        {
-          //if () {
-            if (movedir.forward) camera.Position.x -= camera.Front.x * velocity;
-            if (movedir.back)    camera.Position.x += camera.Front.x * velocity;
-            if (movedir.right)   camera.Position.x -= camera.Right.x * velocity;
-            if (movedir.left)    camera.Position.x += camera.Right.x * velocity;
-          //}
+        float xPosOverlapLT = e.collider->impasse.location[0] + e.collider->impasse.size[0] / 2;
+        float xPosOverlapGT = e.collider->impasse.location[0] - e.collider->impasse.size[0] / 2;
+        float yPosOverlapLT = e.collider->impasse.location[2] + e.collider->impasse.size[2] / 2;
+        float yPosOverlapGT = e.collider->impasse.location[2] - e.collider->impasse.size[2] / 2;
 
-          //if () {
-            if (movedir.forward) camera.Position.z -= camera.Front.z * velocity;
-            if (movedir.back)    camera.Position.z += camera.Front.z * velocity;
-            if (movedir.right)   camera.Position.z -= camera.Right.z * velocity;
-            if (movedir.left)    camera.Position.z += camera.Right.z * velocity;
-          //}
+        // if inside an impassable on the X and Z of a square
+        if (camera.Position.x < xPosOverlapLT && camera.Position.x > xPosOverlapGT &&
+          camera.Position.z < yPosOverlapLT && camera.Position.z > yPosOverlapGT) {
+          // X logic
+          if (movedir.forward) camera.Position.x -= camera.Front.x * velocity;
+          if (movedir.back)    camera.Position.x += camera.Front.x * velocity;
+          if (movedir.right)   camera.Position.x -= camera.Right.x * velocity;
+          if (movedir.left)    camera.Position.x += camera.Right.x * velocity;
+
+          // Z logic
+          if (movedir.forward) camera.Position.z -= camera.Front.z * velocity;
+          if (movedir.back)    camera.Position.z += camera.Front.z * velocity;
+          if (movedir.right)   camera.Position.z -= camera.Right.z * velocity;
+          if (movedir.left)    camera.Position.z += camera.Right.z * velocity;
         }
 
       }
     }
-
 
     //shader.setVec3("lightPos", camera.Position.x, camera.Position.y+0.4f, camera.Position.z);  // setting in game constructor
     lighting.movePointLight(0, *camera.getPosition());
@@ -238,8 +238,7 @@ void Controls::keyboardInput(Player *player, Pickups *pickups, float dtime, floa
         playfootstepsound();
         movedir.timeSinceLastStep = 0;
       }
-    }
-    else {
+    } else {
       movedir.timeSinceLastStep += dtime;
       //movedir.timeSinceLastStep += dtime;
     }
@@ -280,15 +279,13 @@ void Controls::keyboardInput(Player *player, Pickups *pickups, float dtime, floa
     movedir.onGround = false;
     movedir.jumped = false;
     playgruntsound();
-  }
-  else if (!movedir.onGround && !movedir.falling) {                          // Jump Rising
+  } else if (!movedir.onGround && !movedir.falling) {                          // Jump Rising
     camera.Position.y += camera.WorldUp.y * player->getRisingSpeed() * dtime;  // RISING SPEED CALC: jump speed based on LegPower Player Stat
     if (camera.Position.y > player->getJumpHeight() + camera.camstart[1]) {    // MAX HEIGHT CALC: jump height based on LegPower Player Stat
       movedir.falling = true;
       //todo: added gravity to falling y = 1/2at^2 + vt  
     }
-  }
-  else if (movedir.falling && !movedir.onGround) {       // currently going down
+  } else if (movedir.falling && !movedir.onGround) {       // currently going down
     camera.Position.y -= camera.WorldUp.y * 5.2f * dtime;  // GRAVITY PULL DOWN CALC: static value, todo: make dynamic based on falling time
     if (camera.Position.y <= camera.camstart[1]) {
       movedir.onGround = true;
