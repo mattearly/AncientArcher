@@ -7,6 +7,7 @@ private:
     float location[3];
     float size[3];
   };
+  const float COLLISION_EXPANDER = .3f;
 public:
   Impasse impasse;
   Collider();

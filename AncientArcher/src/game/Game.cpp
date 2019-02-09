@@ -21,7 +21,7 @@ std::vector<Entity> entities;
 
 
 Game::Game() {
-  
+
   player = new Player();   //default character
 
   /* load 16 textures */
@@ -79,21 +79,26 @@ Game::Game() {
   int width = round(world_width + 1);
 
   //floor
-  Entity ent(glm::vec3(width /2, 0.0f, width /2), glm::vec3(width, 0.001f, width), 1, true);
+  Entity ent(glm::vec3(width / 2, 0.0f, width / 2), glm::vec3(width, 0.001f, width), 1, false);
   entities.push_back(ent);
 
   //walls
   Entity ent1(glm::vec3(width / 2, 2.0f, -1.f), glm::vec3(width, 4.0f, 1.0), 10, true);
   entities.push_back(ent1);
 
-  Entity ent2(glm::vec3(-1.f, 2.0f, width / 2), glm::vec3(1, 4.0f, width), 2, true);
+  Entity ent2(glm::vec3(-1.f, 2.0f, width / 2), glm::vec3(1.0f, 4.0f, width), 2, true);
   entities.push_back(ent2);
 
-  Entity ent3(glm::vec3(width, 2.0f, width /2), glm::vec3(1, 4.0f, width), 10, true);
+  Entity ent3(glm::vec3(width, 2.0f, width / 2), glm::vec3(1.0f, 4.0f, width), 10, true);
   entities.push_back(ent3);
 
-  Entity ent4(glm::vec3(width/2, 2.0f, width), glm::vec3(width, 4.0f, 1), 2, true);
+  Entity ent4(glm::vec3(width / 2, 2.0f, width), glm::vec3(width, 4.0f, 1), 2, true);
   entities.push_back(ent4);
+
+  //collidable block
+
+  Entity ent5(glm::vec3(6.f, 1.0f, 6.f), glm::vec3(2.f, 2.f, 2.f), 6, true);
+  entities.push_back(ent5);
 
 }
 
