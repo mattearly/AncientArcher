@@ -34,7 +34,7 @@ void Renderer::update(Pickups *pickups, PrimativeManager *primativeManager, floa
   display.clear();
 
   // FLOOR AND BOUNDRY CRATES
-  texBank.activate(1);
+  //texBank.activate(1);
 
   //for (int i = 0; i < width; i += 1) {
   //  for (int j = 0; j < 4; j += 1) {
@@ -59,13 +59,29 @@ void Renderer::update(Pickups *pickups, PrimativeManager *primativeManager, floa
   //}
 
 
-  primativeManager->drawPlane(glm::vec3(width / 2, 0.0f, width / 2), glm::vec3(width, 0.001f, width));
+  //primativeManager->drawPlane(glm::vec3(width/2, 0.0f, width/2), glm::vec3(width, 1, width));
 
-  texBank.activate(3);
+  //texBank.activate(3);
 
-  primativeManager->drawCube(glm::vec3(0.f, 1.5f, 0.f));
+  //primativeManager->drawCube(glm::vec3(0.f, 1.5f, 0.f), glm::vec3(1.0f, 2.0f, 1.0f));  //should still draw at 0, 1.5, 0
+  //primativeManager->drawCube(glm::vec3(1.f, 1.5f, 1.f), glm::vec3(1.0f, 1.0f, 1.0f));  
+  //primativeManager->drawCube(glm::vec3(2.f, 2.0f, 2.0f), glm::vec3(1.2f, 1.2f, 1.2f), glm::vec3(30.0f, 30.0f, 30.0f));
+  //primativeManager->drawCube(glm::vec3(1.f, 1.5f, 1.f), glm::vec3(1.0f, 1.0f, 1.0f));  //should still draw at 1, 1.5, 1
+
+  for (auto e : entities) {
+
+    texBank.activate(e.squareItem.textureID);
+    
+    primativeManager->drawCube(
+      glm::vec3(e.squareItem.location[0], e.squareItem.location[1], e.squareItem.location[2]),
+      glm::vec3(e.squareItem.scale[0], e.squareItem.scale[1], e.squareItem.scale[2])
+    );
+
+  }
 
   pickups->draw(primativeManager);
+
+
 
   display.update();
 

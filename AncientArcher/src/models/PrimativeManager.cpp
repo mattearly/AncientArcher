@@ -183,11 +183,34 @@ void PrimativeManager::drawCube(glm::vec3 location, glm::vec3 scale) {
 
   glm::mat4 model = glm::mat4(1.0f);
 
+  model = glm::translate(model, location);
+
   model = glm::scale(model, scale);
 
   //model = glm::rotate(model, glm::radians(50.0f) * (float)glfwGetTime(), glm::vec3(1.0f, 1.0f, 1.0f));
 
+  shader.setMat4("model", model);
+
+  glDrawArrays(GL_TRIANGLES, 0, 36);
+}
+
+void PrimativeManager::drawCube(glm::vec3 location, glm::vec3 scale, glm::vec3 rotation)
+{
+  if (!cubeLoaded) {
+    loadCube();
+  }
+
+  glBindVertexArray(cubeVAO);
+
+  glm::mat4 model = glm::mat4(1.0f);
+
   model = glm::translate(model, location);
+
+  model = glm::rotate(model, glm::radians(rotation.x), glm::vec3(1.0f, 0.0f, 0.0f));
+  model = glm::rotate(model, glm::radians(rotation.y), glm::vec3(0.0f, 1.0f, 0.0f));
+  model = glm::rotate(model, glm::radians(rotation.z), glm::vec3(0.0f, 0.0f, 1.0f));
+
+  model = glm::scale(model, scale);
 
   shader.setMat4("model", model);
 
@@ -223,11 +246,11 @@ void PrimativeManager::drawPlane(glm::vec3 location, glm::vec3 scale) {
 
   glm::mat4 model = glm::mat4(1.0f);
 
-  //model = glm::rotate(model, glm::radians(50.0f) * (float)glfwGetTime(), glm::vec3(1.0f, 1.0f, 1.0f));
-
   model = glm::translate(model, location);
 
   model = glm::scale(model, scale);
+
+  //model = glm::rotate(model, glm::radians(50.0f) * (float)glfwGetTime(), glm::vec3(1.0f, 1.0f, 1.0f));
 
   shader.setMat4("model", model);
 
@@ -236,24 +259,24 @@ void PrimativeManager::drawPlane(glm::vec3 location, glm::vec3 scale) {
 }
 
 void PrimativeManager::drawPlane(glm::vec3 location, glm::vec3 scale, glm::vec3 rotation) {
-  if (!cubeLoaded) {
-    loadCube();
+  if (!planeLoaded) {
+    loadPlane();
   }
 
-  glBindVertexArray(cubeVAO);
+  glBindVertexArray(planeVAO);
 
   glm::mat4 model = glm::mat4(1.0f);
 
-  model = glm::scale(model, scale);
+  model = glm::translate(model, location);
 
   model = glm::rotate(model, glm::radians(rotation.x), glm::vec3(1.0f, 0.0f, 0.0f));
   model = glm::rotate(model, glm::radians(rotation.y), glm::vec3(0.0f, 1.0f, 0.0f));
   model = glm::rotate(model, glm::radians(rotation.z), glm::vec3(0.0f, 0.0f, 1.0f));
 
-  model = glm::translate(model, location);
+  model = glm::scale(model, scale);
 
   shader.setMat4("model", model);
 
-  glDrawArrays(GL_TRIANGLES, 30, 6);
+  glDrawArrays(GL_TRIANGLES, 0, 6);
 
 }

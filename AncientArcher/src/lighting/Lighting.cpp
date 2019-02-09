@@ -40,9 +40,9 @@ void Lighting::addPointLight(glm::vec3 pos) {
   shader.setVec3(pLightposition.c_str(), pos);
 
   std::string pLightambient = ss.str() + "ambient";   // pointLight[i].ambient
-  shader.setVec3(pLightambient.c_str(), 0.05f, 0.05f, 0.05f);
+  //shader.setVec3(pLightambient.c_str(), 0.05f, 0.05f, 0.05f);
   //shader.setVec3(pLightambient.c_str(), 0.9f, 0.9f, 0.9f);
-  //shader.setVec3(pLightambient.c_str(), 0.15f, 0.15f, 0.15f);
+  shader.setVec3(pLightambient.c_str(), 0.15f, 0.15f, 0.15f);
 
   std::string pLightdiffuse = ss.str() + "diffuse";
   //shader.setVec3(pLightdiffuse.c_str(), 0.8f, 0.8f, 0.8f);
@@ -58,9 +58,9 @@ void Lighting::addPointLight(glm::vec3 pos) {
   //shader.setFloat(pLightconstant, 0.5f);
 
   std::string pLightlinear = ss.str() + "linear";
-  shader.setFloat(pLightlinear, 0.36);
+  //shader.setFloat(pLightlinear, 0.36);
   //shader.setFloat(pLightlinear, 0.09);
-  //shader.setFloat(pLightlinear, 0.0002);
+  shader.setFloat(pLightlinear, 0.0002);
 
   std::string pLightquadratic = ss.str() + "quadratic";
   shader.setFloat(pLightquadratic, 0.032);

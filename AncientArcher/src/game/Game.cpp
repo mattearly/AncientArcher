@@ -15,20 +15,13 @@ Camera camera;
 Controls controls;
 Pickups pickups;
 Lighting lighting;
-Collision collision;
 TextureBank texBank;
 DiffuseTexture diffuseTex;
+std::vector<Entity> entities;
+
 
 Game::Game() {
-
-  //display = new Display();
-
-  //camera = new Camera();
-
-  //controls = new Controls();   //default controls
-
-  //shader = new Shader("../AncientArcher/shaders/vertex.shader", "../AncientArcher/shaders/fragment.shader", "../AncientArcher/shaders/geometry.shader");
-
+  
   player = new Player();   //default character
 
   /* load 16 textures */
@@ -81,6 +74,27 @@ Game::Game() {
 //  shader.setFloat("spotLight.quadratic", 0.032);
 //  shader.setFloat("spotLight.cutOff", glm::cos(glm::radians(12.5f)));
 //  shader.setFloat("spotLight.outerCutOff", glm::cos(glm::radians(15.0f)));
+
+
+  int width = round(world_width + 1);
+
+  //floor
+  Entity ent(glm::vec3(width /2, 0.0f, width /2), glm::vec3(width, 0.001f, width), 1, true);
+  entities.push_back(ent);
+
+  //walls
+  Entity ent1(glm::vec3(width / 2, 2.0f, -1.f), glm::vec3(width, 4.0f, 1.0), 10, true);
+  entities.push_back(ent1);
+
+  Entity ent2(glm::vec3(-1.f, 2.0f, width / 2), glm::vec3(1, 4.0f, width), 2, true);
+  entities.push_back(ent2);
+
+  Entity ent3(glm::vec3(width, 2.0f, width /2), glm::vec3(1, 4.0f, width), 10, true);
+  entities.push_back(ent3);
+
+  Entity ent4(glm::vec3(width/2, 2.0f, width), glm::vec3(width, 4.0f, 1), 2, true);
+  entities.push_back(ent4);
+
 }
 
 Game::~Game() {
