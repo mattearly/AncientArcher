@@ -79,6 +79,8 @@ Game::Game() {
 
   for (int i = 0; i < 3; i++) {
     Entity floor(
+      // TYPE
+      ENTITYTYPE::PLANE,
       // LOCATION 
       glm::vec3(i * width, 0.0f, width / 2),
       // SIZE
@@ -93,6 +95,8 @@ Game::Game() {
 
   for (int i = 0; i < 3; i++) {
     Entity floor(
+      // TYPE
+      ENTITYTYPE::PLANE,
       // LOCATION 
       glm::vec3(i * width, 0.0f, width * 1.5 - .5),
       // SIZE
@@ -107,10 +111,12 @@ Game::Game() {
 
   for (int i = 0; i < 3; i++) {
     Entity floor(
+      // TYPE
+      ENTITYTYPE::PLANE,
       // LOCATION 
       glm::vec3(i * width, 0.0f, width * 2.5 - .5f),
       // SIZE
-      glm::vec3(width, 0.5f, width),
+      glm::vec3(width, 1.0f, width),
       // TEXTURE ID
       i + 3,
       // COLLISION?
@@ -145,7 +151,7 @@ Game::Game() {
   //entities.push_back(ent4);
 
   // A test collidable block
-  Entity ent5(glm::vec3(6.f, 1.0f, 6.f), glm::vec3(2.f, 2.f, 2.f), 6, true);
+  Entity ent5(ENTITYTYPE::SQUARE, glm::vec3(6.f, 1.0f, 6.f), glm::vec3(2.f, 2.f, 2.f), 6, true);
   entities.push_back(ent5);
 
 }

@@ -4,6 +4,7 @@ Entity::Entity() {}
 
 Entity::Entity(glm::vec3 loc, glm::vec3 sc, int texID, bool isImpassable)
 {
+  gameItem.type = ENTITYTYPE::SQUARE;
   gameItem.location[0] = loc.x;
   gameItem.location[1] = loc.y;
   gameItem.location[2] = loc.z;

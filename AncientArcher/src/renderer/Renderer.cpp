@@ -33,50 +33,27 @@ void Renderer::update(Pickups *pickups, PrimativeManager *primativeManager, floa
 
   display.clear();
 
-  // FLOOR AND BOUNDRY CRATES
-  //texBank.activate(1);
-
-  //for (int i = 0; i < width; i += 1) {
-  //  for (int j = 0; j < 4; j += 1) {
-
-      //primativeManager->drawPlane(glm::vec3(-2.0f, 2.0f + j, 0.0f + i), glm::vec3(2.0f, 2.0f, 2.0f), glm::vec3(0.0f, 0.0f, 0.0f));
-      //primativeManager->drawPlane(glm::vec3(float(width + 1), 2.0f + j, 0.0f + i), glm::vec3(2.0f, 2.0f, 2.0f), glm::vec3(0.0f, 0.0f, 0.0f));
-      //primativeManager->drawPlane(glm::vec3(0.0f + i, 2.0f + j, -2.0f), glm::vec3(2.0f, 2.0f, 2.0f), glm::vec3(0.0f, 0.0f, 0.0f));
-      //primativeManager->drawPlane(glm::vec3(0.0f + i, 2.0f + j, float(width + 1)), glm::vec3(2.0f, 2.0f, 2.0f), glm::vec3(0.0f, 0.0f, 0.0f));
-
-      //primativeManager->drawPlane(glm::vec3(2.0f, 2.0f, 2.0f), glm::vec3(2.0f, 2.0f, 2.0f));
-      //primativeManager->drawPlane(glm::vec3(2.0f, 2.0f, 2.0f), glm::vec3(2.0f, 2.0f, 2.0f));
-      //primativeManager->drawPlane(glm::vec3(2.0f, 2.0f, 2.0f), glm::vec3(2.0f, 2.0f, 2.0f));
-      //primativeManager->drawPlane(glm::vec3(2.0f, 2.0f, 2.0f), glm::vec3(2.0f, 2.0f, 2.0f));
-
-    //}
-  //}
-
-  //for (int i = 0; i < width; i += 1) {
-  //  for (int j = 0; j < width; j += 1) {
-  //    primativeManager->drawPlane(glm::vec3(0.0f + i, 0.0f, 0.0f + j));
-  //  }
-  //}
-
-
-  //primativeManager->drawPlane(glm::vec3(width/2, 0.0f, width/2), glm::vec3(width, 1, width));
-
-  //texBank.activate(3);
-
-  //primativeManager->drawCube(glm::vec3(0.f, 1.5f, 0.f), glm::vec3(1.0f, 2.0f, 1.0f));  //should still draw at 0, 1.5, 0
-  //primativeManager->drawCube(glm::vec3(1.f, 1.5f, 1.f), glm::vec3(1.0f, 1.0f, 1.0f));  
-  //primativeManager->drawCube(glm::vec3(2.f, 2.0f, 2.0f), glm::vec3(1.2f, 1.2f, 1.2f), glm::vec3(30.0f, 30.0f, 30.0f));
-  //primativeManager->drawCube(glm::vec3(1.f, 1.5f, 1.f), glm::vec3(1.0f, 1.0f, 1.0f));  //should still draw at 1, 1.5, 1
-
   for (auto e : entities) {
 
     texBank.activate(e.gameItem.textureID);
-    
-    primativeManager->drawCube(
-      glm::vec3(e.gameItem.location[0], e.gameItem.location[1], e.gameItem.location[2]),
-      glm::vec3(e.gameItem.scale[0], e.gameItem.scale[1], e.gameItem.scale[2])
-    );
 
+    switch (e.gameItem.type) {
+    case ENTITYTYPE::SQUARE:
+      primativeManager->drawCube(
+        glm::vec3(e.gameItem.location[0], e.gameItem.location[1], e.gameItem.location[2]),
+        glm::vec3(e.gameItem.scale[0], e.gameItem.scale[1], e.gameItem.scale[2])
+      );
+      break;
+      
+    case ENTITYTYPE::PLANE:
+      primativeManager->drawPlane(
+        glm::vec3(e.gameItem.location[0], e.gameItem.location[1], e.gameItem.location[2]),
+        glm::vec3(e.gameItem.scale[0], e.gameItem.scale[1], e.gameItem.scale[2])
+      );
+      break;
+
+    default: break;
+    }
   }
 
   pickups->draw(primativeManager);
