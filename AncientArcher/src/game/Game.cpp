@@ -75,28 +75,76 @@ Game::Game() {
 //  shader.setFloat("spotLight.cutOff", glm::cos(glm::radians(12.5f)));
 //  shader.setFloat("spotLight.outerCutOff", glm::cos(glm::radians(15.0f)));
 
-
   int width = round(world_width + 1);
 
-  //floor
-  Entity ent(glm::vec3(width / 2, 0.0f, width / 2), glm::vec3(width, 0.001f, width), 1, false);
-  entities.push_back(ent);
+  for (int i = 0; i < 3; i++) {
+    Entity floor(
+      // LOCATION 
+      glm::vec3(i * width, 0.0f, width / 2),
+      // SIZE
+      glm::vec3(width, 0.5f, width),
+      // TEXTURE ID
+      i,
+      // COLLISION?
+      false
+    );
+    entities.push_back(floor);
+  }
+
+  for (int i = 0; i < 3; i++) {
+    Entity floor(
+      // LOCATION 
+      glm::vec3(i * width, 0.0f, width * 1.5 - .5),
+      // SIZE
+      glm::vec3(width, 0.5f, width),
+      // TEXTURE ID
+      i+2,
+      // COLLISION?
+      false
+    );
+    entities.push_back(floor);
+  }  
+
+  for (int i = 0; i < 3; i++) {
+    Entity floor(
+      // LOCATION 
+      glm::vec3(i * width, 0.0f, width * 2.5 - .5f),
+      // SIZE
+      glm::vec3(width, 0.5f, width),
+      // TEXTURE ID
+      i + 3,
+      // COLLISION?
+      false
+    );
+    entities.push_back(floor);
+  }
+  ////floor
+  //Entity entfloor1(glm::vec3(width / 2, 0.0f, width / 2), glm::vec3(width, 0.001f, width), 1, false);
+  //entities.push_back(entfloor1); //main floor
+
+  //Entity entfloor2(glm::vec3(-width / 2 - 1, 0.0f, width / 2 - 1), glm::vec3(width, 0.001f, width), 4, false);
+  //entities.push_back(entfloor2);        
+  //Entity entfloor3(glm::vec3(width / 2  - 1, 0.0f, -width / 2 - 1), glm::vec3(width, 0.001f, width), 3, false);
+  //entities.push_back(entfloor3);        
+  //Entity entfloor4(glm::vec3(-width / 2 - 1, 0.0f, -width / 2 - 1), glm::vec3(width, 0.001f, width), 11, false);
+  //entities.push_back(entfloor4);
+  //Entity entfloor5(glm::vec3(width / 2, 0.0f, width / 2), glm::vec3(width, 0.001f, width), 6, false);
+  //entities.push_back(entfloor5);
 
   //walls
-  Entity ent1(glm::vec3(width / 2, 2.0f, -1.f), glm::vec3(width, 4.0f, 1.0), 10, true);
-  entities.push_back(ent1);
+  //Entity ent1(glm::vec3(width / 2, 2.0f, -1.f), glm::vec3(width, 4.0f, 1.0), 10, true);
+  //entities.push_back(ent1);
 
-  Entity ent2(glm::vec3(-1.f, 2.0f, width / 2), glm::vec3(1.0f, 4.0f, width), 2, true);
-  entities.push_back(ent2);
+  //Entity ent2(glm::vec3(-1.f, 2.0f, width / 2), glm::vec3(1.0f, 4.0f, width), 2, true);
+  //entities.push_back(ent2);
 
-  Entity ent3(glm::vec3(width, 2.0f, width / 2), glm::vec3(1.0f, 4.0f, width), 10, true);
-  entities.push_back(ent3);
+  //Entity ent3(glm::vec3(width, 2.0f, width / 2), glm::vec3(1.0f, 4.0f, width), 10, true);
+  //entities.push_back(ent3);
 
-  Entity ent4(glm::vec3(width / 2, 2.0f, width), glm::vec3(width, 4.0f, 1), 2, true);
-  entities.push_back(ent4);
+  //Entity ent4(glm::vec3(width / 2, 2.0f, width), glm::vec3(width, 4.0f, 1), 2, true);
+  //entities.push_back(ent4);
 
-  //collidable block
-
+  // A test collidable block
   Entity ent5(glm::vec3(6.f, 1.0f, 6.f), glm::vec3(2.f, 2.f, 2.f), 6, true);
   entities.push_back(ent5);
 

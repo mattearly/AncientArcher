@@ -201,31 +201,29 @@ void Controls::keyboardInput(Player *player, Pickups *pickups, float dtime, floa
 
     /* stop player from walking through impassable entities */
     for (auto e : entities) {
-      if (e.collider != nullptr    //collider is not null (potentially a blocker)
-        && abs(e.collider->impasse.location[0] - camera.Position.x) < (world_width / 2)+1  // and is close enough
-        && abs(e.collider->impasse.location[2] - camera.Position.z) < (world_width / 2)+1) {  //to be worth checking
-
+      if (e.collider != nullptr &&                                                            //collider is not null (potentially a blocker)
+          abs(e.collider->impasse.location[0] - camera.Position.x) < (world_width / 2)+1  &&  // and is close enough to be worth checking
+          abs(e.collider->impasse.location[1] - camera.Position.y) < (world_width / 4)+1  &&
+          abs(e.collider->impasse.location[2] - camera.Position.z) < (world_width / 2)+1) 
+      {
         float xPosOverlapLT = e.collider->impasse.location[0] + e.collider->impasse.size[0] / 2;
         float xPosOverlapGT = e.collider->impasse.location[0] - e.collider->impasse.size[0] / 2;
         float yPosOverlapLT = e.collider->impasse.location[2] + e.collider->impasse.size[2] / 2;
         float yPosOverlapGT = e.collider->impasse.location[2] - e.collider->impasse.size[2] / 2;
-
-        // if inside an impassable on the X and Z of a square
-        if (camera.Position.x < xPosOverlapLT && camera.Position.x > xPosOverlapGT &&
-          camera.Position.z < yPosOverlapLT && camera.Position.z > yPosOverlapGT) {
-          // X logic
-          if (movedir.forward) camera.Position.x -= camera.Front.x * velocity;
+        float yTop = e.collider->impasse.location[1] + e.collider->impasse.size[1] / 2;
+        if (camera.Position.x < xPosOverlapLT && camera.Position.x > xPosOverlapGT &&         // if inside an impassable on the X and Z of a square
+          camera.Position.z < yPosOverlapLT && camera.Position.z > yPosOverlapGT &&
+          camera.Position.y < yTop) 
+        {
+          if (movedir.forward) camera.Position.x -= camera.Front.x * velocity;          // X logic
           if (movedir.back)    camera.Position.x += camera.Front.x * velocity;
           if (movedir.right)   camera.Position.x -= camera.Right.x * velocity;
           if (movedir.left)    camera.Position.x += camera.Right.x * velocity;
-
-          // Z logic
-          if (movedir.forward) camera.Position.z -= camera.Front.z * velocity;
+          if (movedir.forward) camera.Position.z -= camera.Front.z * velocity;          // Z logic
           if (movedir.back)    camera.Position.z += camera.Front.z * velocity;
           if (movedir.right)   camera.Position.z -= camera.Right.z * velocity;
           if (movedir.left)    camera.Position.z += camera.Right.z * velocity;
         }
-
       }
     }
 
@@ -254,7 +252,6 @@ void Controls::keyboardInput(Player *player, Pickups *pickups, float dtime, floa
         player->increaseLegPower(15.0f);
         pickups->speedBoostAvail = false;
         playequipgearsound();
-
       }
     }
 
@@ -269,7 +266,6 @@ void Controls::keyboardInput(Player *player, Pickups *pickups, float dtime, floa
         player->increaseAttackSpeed(0.1);
         pickups->attackBoostAvail = false;
         playequipgearsound();
-
       }
     }
   }
@@ -293,10 +289,7 @@ void Controls::keyboardInput(Player *player, Pickups *pickups, float dtime, floa
       playlandingsound();
     }
   }
-
   if (movedir.onGround) {
     camera.Position.y = camera.camstart[1];
   }
-
-
 }

@@ -8,7 +8,6 @@ public:
   ~Camera();
 
   friend class Controls;
-  friend class Constraints;
 
   float FoV;
 

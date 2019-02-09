@@ -70,18 +70,16 @@ void Renderer::update(Pickups *pickups, PrimativeManager *primativeManager, floa
 
   for (auto e : entities) {
 
-    texBank.activate(e.squareItem.textureID);
+    texBank.activate(e.gameItem.textureID);
     
     primativeManager->drawCube(
-      glm::vec3(e.squareItem.location[0], e.squareItem.location[1], e.squareItem.location[2]),
-      glm::vec3(e.squareItem.scale[0], e.squareItem.scale[1], e.squareItem.scale[2])
+      glm::vec3(e.gameItem.location[0], e.gameItem.location[1], e.gameItem.location[2]),
+      glm::vec3(e.gameItem.scale[0], e.gameItem.scale[1], e.gameItem.scale[2])
     );
 
   }
 
   pickups->draw(primativeManager);
-
-
 
   display.update();
 
