@@ -40,7 +40,8 @@ void Controls::mouseMovement(double xpos, double ypos) {
 
   if (camera.Pitch > 89.0f) {
     camera.Pitch = 89.0f;
-  } else if (camera.Pitch < -89.0f) {
+  }
+  else if (camera.Pitch < -89.0f) {
     camera.Pitch = -89.0f;
   }
 
@@ -194,7 +195,7 @@ void Controls::keyboardInput(Player *player, Pickups *pickups, float dtime, floa
     //  if (movedir.left)    camera.Position.z += camera.Right.z * velocity;
     //} else if (camera.Position.z < 0.0f) {
     //  if (movedir.forward) camera.Position.z -= camera.Front.z * velocity;
-    //  if (movedir.back)    camera.Position.z += camera.Front.z * velocity;
+    //  if (movedir.back)    camera.Position.z += camera.Front.z * velocity; 
     //  if (movedir.right)   camera.Position.z -= camera.Right.z * velocity;
     //  if (movedir.left)    camera.Position.z += camera.Right.z * velocity;
     //}
@@ -202,23 +203,25 @@ void Controls::keyboardInput(Player *player, Pickups *pickups, float dtime, floa
     /* stop player from walking through impassable entities */
     for (auto e : entities) {
       if (e.collider != nullptr &&                                                            //collider is not null (potentially a blocker)
-          abs(e.collider->impasse.location[0] - camera.Position.x) < (world_width / 2)+1  &&  // and is close enough to be worth checking
-          abs(e.collider->impasse.location[1] - camera.Position.y) < (world_width / 4)+1  &&
-          abs(e.collider->impasse.location[2] - camera.Position.z) < (world_width / 2)+1) 
+        abs(e.collider->impasse.location[0] - camera.Position.x) < (world_width / 2) + 1 &&  // and is close enough to be worth checking
+        abs(e.collider->impasse.location[1] - camera.Position.y) < (world_width / 4) + 1 &&
+        abs(e.collider->impasse.location[2] - camera.Position.z) < (world_width / 2) + 1)
       {
         float xPosOverlapLT = e.collider->impasse.location[0] + e.collider->impasse.size[0] / 2;
         float xPosOverlapGT = e.collider->impasse.location[0] - e.collider->impasse.size[0] / 2;
         float yPosOverlapLT = e.collider->impasse.location[2] + e.collider->impasse.size[2] / 2;
         float yPosOverlapGT = e.collider->impasse.location[2] - e.collider->impasse.size[2] / 2;
         float yTop = e.collider->impasse.location[1] + e.collider->impasse.size[1] / 2;
+        float yBot = e.collider->impasse.location[1] - e.collider->impasse.size[1] / 2;
         if (camera.Position.x < xPosOverlapLT && camera.Position.x > xPosOverlapGT &&         // if inside an impassable on the X and Z of a square
           camera.Position.z < yPosOverlapLT && camera.Position.z > yPosOverlapGT &&
-          camera.Position.y < yTop) 
+          (camera.Position.y < yTop && camera.Position.y > yBot))
         {
           if (movedir.forward) camera.Position.x -= camera.Front.x * velocity;          // X logic
           if (movedir.back)    camera.Position.x += camera.Front.x * velocity;
           if (movedir.right)   camera.Position.x -= camera.Right.x * velocity;
           if (movedir.left)    camera.Position.x += camera.Right.x * velocity;
+
           if (movedir.forward) camera.Position.z -= camera.Front.z * velocity;          // Z logic
           if (movedir.back)    camera.Position.z += camera.Front.z * velocity;
           if (movedir.right)   camera.Position.z -= camera.Right.z * velocity;
@@ -236,7 +239,8 @@ void Controls::keyboardInput(Player *player, Pickups *pickups, float dtime, floa
         playfootstepsound();
         movedir.timeSinceLastStep = 0;
       }
-    } else {
+    }
+    else {
       movedir.timeSinceLastStep += dtime;
       //movedir.timeSinceLastStep += dtime;
     }
@@ -275,13 +279,15 @@ void Controls::keyboardInput(Player *player, Pickups *pickups, float dtime, floa
     movedir.onGround = false;
     movedir.jumped = false;
     playgruntsound();
-  } else if (!movedir.onGround && !movedir.falling) {                          // Jump Rising
+  }
+  else if (!movedir.onGround && !movedir.falling) {                          // Jump Rising
     camera.Position.y += camera.WorldUp.y * player->getRisingSpeed() * dtime;  // RISING SPEED CALC: jump speed based on LegPower Player Stat
     if (camera.Position.y > player->getJumpHeight() + camera.camstart[1]) {    // MAX HEIGHT CALC: jump height based on LegPower Player Stat
       movedir.falling = true;
       //todo: added gravity to falling y = 1/2at^2 + vt  
     }
-  } else if (movedir.falling && !movedir.onGround) {       // currently going down
+  }
+  else if (movedir.falling && !movedir.onGround) {       // currently going down
     camera.Position.y -= camera.WorldUp.y * 5.2f * dtime;  // GRAVITY PULL DOWN CALC: static value, todo: make dynamic based on falling time
     if (camera.Position.y <= camera.camstart[1]) {
       movedir.onGround = true;
@@ -289,7 +295,7 @@ void Controls::keyboardInput(Player *player, Pickups *pickups, float dtime, floa
       playlandingsound();
     }
   }
-  if (movedir.onGround) {
-    camera.Position.y = camera.camstart[1];
-  }
+  //if (movedir.onGround) {
+  //  camera.Position.y = camera.camstart[1];
+  //}
 }
