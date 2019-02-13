@@ -1,8 +1,5 @@
 #include "Collider.h"
 
-Collider::Collider()
-{
-}
 
 Collider::Collider(glm::vec3 loc, glm::vec3 sz)
 {
@@ -12,9 +9,4 @@ Collider::Collider(glm::vec3 loc, glm::vec3 sz)
   impasse.size[0] = sz.x + COLLISION_EXPANDER;
   impasse.size[1] = sz.y + COLLISION_EXPANDER;
   impasse.size[2] = sz.z + COLLISION_EXPANDER;
-}
-
-
-Collider::~Collider()
-{
 }

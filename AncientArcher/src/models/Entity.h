@@ -14,9 +14,7 @@ private:
 public:
   GameItem gameItem;
   Collider *collider;
-  Entity();
   Entity(glm::vec3 loc, glm::vec3 sc, int texID, bool isImpassable);
   Entity(ENTITYTYPE t, glm::vec3 loc, glm::vec3 sc, int texID, bool isImpassable);
-  ~Entity();
 };
 

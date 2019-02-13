@@ -1,7 +1,5 @@
 #include "Entity.h"
 
-Entity::Entity() {}
-
 Entity::Entity(glm::vec3 loc, glm::vec3 sc, int texID, bool isImpassable)
 {
   gameItem.type = ENTITYTYPE::SQUARE;
@@ -37,5 +35,3 @@ Entity::Entity(ENTITYTYPE t, glm::vec3 loc, glm::vec3 sc, int texID, bool isImpa
     collider = nullptr;
   }
 }
-
-Entity::~Entity() {}

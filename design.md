@@ -1,6 +1,6 @@
 # Ancient Archer (TM)
 
-###### Author(s): Matthew Early; Reviewer(s): Matthew Early
+###### Author(s): Matthew Early;  Reviewer(s): Matthew Early
 
 #### Overview
 
