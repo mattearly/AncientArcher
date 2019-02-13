@@ -127,8 +127,14 @@ Game::Game() {
 	}
 
 	// many test blocks
-	for (int i = 0; i < 100; i++) {
-		Entity e(ENTITYTYPE::SQUARE, glm::vec3(mearly::NTRK(4.f, 100.f), 1.0f, mearly::NTRK(4.f, 120.f)), glm::vec3(2.f, 2.f, 2.f), mearly::NTKR(1, 15), true);
+	for (int i = 0; i < 300; i++) {
+		Entity e(
+			ENTITYTYPE::SQUARE, 
+			glm::vec3(mearly::NTRK(0.f, 100.f), 1.0f, mearly::NTRK(0.f, 120.f)), 
+			glm::vec3(2.f, 2.f, 2.f), 
+			mearly::NTKR(1, 15), 
+			true
+		);
 		entities.push_back(e);
 	}
 }
