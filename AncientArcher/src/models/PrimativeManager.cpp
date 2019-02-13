@@ -11,6 +11,7 @@
 
 PrimativeManager::PrimativeManager() {
   cubeLoaded = false;
+  planeLoaded = false;
 }
 
 PrimativeManager::~PrimativeManager() {}

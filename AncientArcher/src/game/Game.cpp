@@ -76,7 +76,7 @@ Game::Game() {
   //  shader.setFloat("spotLight.cutOff", glm::cos(glm::radians(12.5f)));
   //  shader.setFloat("spotLight.outerCutOff", glm::cos(glm::radians(15.0f)));
 
-	int width = round(world_width + 1);
+	int width = (int)world_width + 1;
 
 	for (int i = 0; i < 3; i++) {
 		Entity floor(

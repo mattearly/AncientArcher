@@ -7,7 +7,7 @@
 static float TIMEBETWEENFOOTSTEPS = 1.0f;
 
 static struct Movement {
-  bool positionChanged; // for footsteps
+  bool positionChanged = false; // for footsteps
 
   bool forward = false, back = false;
   bool left = false, right = false;
@@ -28,7 +28,7 @@ public:
   Controls();
   ~Controls();
 
-  void mouseMovement(double xpos, double ypos);
+  void mouseMovement(float xpos, float ypos);
 
   void keyboardInput(Player *player, Pickups *pickups, float dtime, float gametime);
 

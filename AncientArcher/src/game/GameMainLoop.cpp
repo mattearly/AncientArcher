@@ -20,7 +20,7 @@ void Game::mainLoop() {
 
   while (!glfwWindowShouldClose(display.window)) {
 
-    float currentFrame = glfwGetTime();
+    float currentFrame = (float)glfwGetTime();
     deltaTime = currentFrame - lastFrame;
     lastFrame = currentFrame;
 

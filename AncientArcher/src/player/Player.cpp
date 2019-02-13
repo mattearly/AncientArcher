@@ -19,6 +19,8 @@ Player::Player() {
 
   isAttacking = false;
 
+  position = { 0.f, 0.f, 0.f };
+
 }
 
 Player::Player(float base_speed, float base_jump, float leg_power) {
@@ -35,6 +37,9 @@ Player::Player(float base_speed, float base_jump, float leg_power) {
 
   isAttacking = false;
 
+  characterHeight = 0.5f;
+
+  position = { 0.f, 0.f, 0.f };
 }
 
 Player::~Player() {}

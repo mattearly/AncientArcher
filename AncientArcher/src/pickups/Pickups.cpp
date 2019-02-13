@@ -5,6 +5,7 @@
 #include "../globals.h"
 
 Pickups::Pickups() {
+  speedBoostAvail = false;
   respawn();
   //speedBoostAvail = true;
   //// seed to a random location
@@ -21,11 +22,11 @@ Pickups::~Pickups() {}
 void Pickups::respawn() {
   speedBoostAvail = true;
   // seed to a random location
-  speedBoostLoc = glm::vec2(mearly::NTKR(1.0f, world_width-2.0f), mearly::NTKR(1.0f, world_width-2.0f));
+  speedBoostLoc = glm::vec2(mearly::NTRK(1.0f, world_width-2.0f), mearly::NTRK(1.0f, world_width-2.0f));
 
   attackBoostAvail = true;
   // seed to a random location
-  attackBoostLoc = glm::vec2(mearly::NTKR(1.0f, world_width-2.0f), mearly::NTKR(1.0f, world_width-2.0f));
+  attackBoostLoc = glm::vec2(mearly::NTRK(1.0f, world_width-2.0f), mearly::NTRK(1.0f, world_width-2.0f));
 }
 
 void Pickups::draw(PrimativeManager *primativeManager) {

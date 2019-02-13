@@ -63,7 +63,7 @@ void Display::reshapeWindow(GLFWwindow * window, int w, int h) {
 }
 
 void Display::mouseHandler(GLFWwindow * window, double xpos, double ypos) {
-  controls.mouseMovement(xpos, ypos);
+  controls.mouseMovement((float)xpos, (float)ypos);
 }
 
 void Display::clear() const {

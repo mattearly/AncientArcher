@@ -15,11 +15,13 @@
 Controls::Controls() {
   firstMouse = true;
   mouseSensitivity = 0.09f;
+  lastX = 0.f;
+  lastY = 0.f;
 }
 
 Controls::~Controls() {}
 
-void Controls::mouseMovement(double xpos, double ypos) {
+void Controls::mouseMovement(float xpos, float ypos) {
 
   if (firstMouse) {
     lastX = xpos;
@@ -267,7 +269,7 @@ void Controls::keyboardInput(Player *player, Pickups *pickups, float dtime, floa
         camera.Position.z <= pickups->attackBoostLoc.y + 1 &&
         camera.Position.x >= pickups->attackBoostLoc.x - 1 &&
         camera.Position.x <= pickups->attackBoostLoc.x + 1) {
-        player->increaseAttackSpeed(0.1);
+        player->increaseAttackSpeed(0.1f);
         pickups->attackBoostAvail = false;
         playequipgearsound();
       }
