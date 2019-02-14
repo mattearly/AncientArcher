@@ -60,10 +60,10 @@ void Lighting::addPointLight(glm::vec3 pos) {
   std::string pLightlinear = ss.str() + "linear";
   //shader.setFloat(pLightlinear, 0.36);
   //shader.setFloat(pLightlinear, 0.09);
-  shader.setFloat(pLightlinear, 0.0002);
+  shader.setFloat(pLightlinear, 0.0002f);
 
   std::string pLightquadratic = ss.str() + "quadratic";
-  shader.setFloat(pLightquadratic, 0.032);
+  shader.setFloat(pLightquadratic, 0.032f);
   //shader.setFloat(pLightquadratic, 0.002);
 
   shader.setInt("numPointLights", i + 1);
