@@ -9,13 +9,6 @@
 #include <cmath>
 #include <iostream>
 
-PrimativeManager::PrimativeManager() {
-  cubeLoaded = false;
-  planeLoaded = false;
-}
-
-PrimativeManager::~PrimativeManager() {}
-
 void PrimativeManager::loadCube() {
   // cube with texture coords and normals
   float vertices[] = {
@@ -134,27 +127,6 @@ void PrimativeManager::loadPlane() {
   planeLoaded = true;
 }
 
-void PrimativeManager::drawCube(float deltaTime) {
-  if (!cubeLoaded) {
-    loadCube();
-  }
-
-  glBindVertexArray(cubeVAO);
-  //glBindBuffer(GL_ARRAY_BUFFER, cubeVBO);
-  //glEnableVertexAttribArray(0);
-
-  glm::mat4 model = glm::mat4(1.0f);
-
-  //model = glm::rotate(model, glm::radians(50.0f) * (float)glfwGetTime(), glm::vec3(1.0f, 1.0f, 1.0f));
-  //model = glm::translate(model, glm::vec3(0.0f, 0.0f, 0.0f));
-  //model = glm::scale(model, glm::vec3(1.0f, 1.0f, 1.0f));
-
-  shader.setMat4("model", model);
-
-  glDrawArrays(GL_TRIANGLES, 0, 36);
-
-}
-
 void PrimativeManager::drawCube(glm::vec3 location) {
   if (!cubeLoaded) {
     loadCube();
@@ -163,10 +135,6 @@ void PrimativeManager::drawCube(glm::vec3 location) {
   glBindVertexArray(cubeVAO);
 
   glm::mat4 model = glm::mat4(1.0f);
-
-  //model = glm::scale(model, scale);
-
-  //model = glm::rotate(model, glm::radians(50.0f) * (float)glfwGetTime(), glm::vec3(1.0f, 1.0f, 1.0f));
 
   model = glm::translate(model, location);
 
@@ -187,8 +155,6 @@ void PrimativeManager::drawCube(glm::vec3 location, glm::vec3 scale) {
   model = glm::translate(model, location);
 
   model = glm::scale(model, scale);
-
-  //model = glm::rotate(model, glm::radians(50.0f) * (float)glfwGetTime(), glm::vec3(1.0f, 1.0f, 1.0f));
 
   shader.setMat4("model", model);
 

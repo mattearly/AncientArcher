@@ -6,7 +6,6 @@
 
 Renderer::Renderer() {
   width = round(world_width + 1);
-
 }
 
 Renderer::~Renderer() {}

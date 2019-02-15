@@ -4,7 +4,6 @@
 
 Camera::Camera() {
 
-  //FoV = 45.0f;
   FoV = 90.0f;
 
   Front = glm::vec3(0.0f, 0.0f, -1.0f);
@@ -32,9 +31,8 @@ void Camera::update() {
   shader.setMat4("view", view);
 }
 
+// needs called to update the FoV and/or window_width window_height, and draw distances
 void Camera::updateProjectionMatrix() {
-
-  // update projection matrix  -  if changes, this needs to be moved to main loop or updated specifically when appropriate
 
   glm::mat4 projection = glm::perspective(glm::radians(FoV), (float)display.window_width / (float)display.window_height, 0.1f, 1500.0f);
   shader.setMat4("projection", projection);

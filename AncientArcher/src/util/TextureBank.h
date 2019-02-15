@@ -9,7 +9,6 @@
 class TextureBank {
 public:
   TextureBank();
-  ~TextureBank();
   
   /* loadTexture adds a new texture to the bank of usable textures */
   void loadTexture(std::string path);
@@ -19,13 +18,13 @@ public:
 
 private:
 
-  static constexpr int MAXTEXTURES = 16;  // 0 - 15
+  static constexpr int MAXTEXTURES = 32;  // 0 - 31
 
   int active_tex;
 
   int num_loaded_textures;
 
-  unsigned int texture[MAXTEXTURES]; // 16 array
+  unsigned int texture[MAXTEXTURES];
 
   int width, height, nrChannel;  
 

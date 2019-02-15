@@ -7,14 +7,6 @@
 Pickups::Pickups() {
   speedBoostAvail = false;
   respawn();
-  //speedBoostAvail = true;
-  //// seed to a random location
-  //speedBoostLoc = glm::vec2(mearly::NTKR(1.0f, world_width-2.0f), mearly::NTKR(1.0f, world_width-2.0f)); 
-  //
-  //attackBoostAvail = true;
-  //// seed to a random location
-  //attackBoostLoc = glm::vec2(mearly::NTKR(1.0f, world_width-2.0f), mearly::NTKR(1.0f, world_width-2.0f));
-
 }
 
 Pickups::~Pickups() {}
