@@ -24,12 +24,12 @@ void Pickups::respawn() {
 void Pickups::draw(PrimativeManager *primativeManager) {
   
   if (speedBoostAvail) {
-    texBank.activate(15);
+    texBank.activate(12);
     primativeManager->drawCube(glm::vec3(speedBoostLoc.x, 1.0f, speedBoostLoc.y));
   }
 
   if (attackBoostAvail) {
-    texBank.activate(4);
+    texBank.activate(15);
     primativeManager->drawCube(glm::vec3(attackBoostLoc.x, 1.0f, attackBoostLoc.y));
   }
 

@@ -34,7 +34,7 @@ void Camera::update() {
 // needs called to update the FoV and/or window_width window_height, and draw distances
 void Camera::updateProjectionMatrix() {
 
-  glm::mat4 projection = glm::perspective(glm::radians(FoV), (float)display.window_width / (float)display.window_height, 0.1f, 1500.0f);
+  glm::mat4 projection = glm::perspective(glm::radians(FoV), (float)display.window_width / (float)display.window_height, 0.01f, 1500.0f);
   shader.setMat4("projection", projection);
 
 }
