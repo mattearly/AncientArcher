@@ -139,8 +139,8 @@
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <None Include="src\shaders\fragment.shader" />
-    <None Include="src\shaders\vertex.shader" />
+    <None Include="res\shaders\fragment.shader" />
+    <None Include="res\shaders\vertex.shader" />
   </ItemGroup>
   <ItemGroup>
     <Media Include="res\sfx\equip_gear.wav">

@@ -11,7 +11,7 @@
 #include <iostream>
 
 Display display;
-Shader shader("../AncientArcher/src/shaders/vertex.shader", "../AncientArcher/src/shaders/fragment.shader");
+Shader shader("../AncientArcher/res/shaders/vertex.shader", "../AncientArcher/res/shaders/fragment.shader");
 Camera camera;
 Controls controls;
 Pickups pickups;
@@ -21,7 +21,6 @@ DiffuseTexture diffuseTex;
 std::vector<Entity> entities;
 
 
-Game::Game() {
 
 	player = new Player();   //default character
 
