@@ -9,6 +9,7 @@
 #include "util/TextureBank.h"
 #include "util/DiffuseTexture.h"
 #include "models/Entity.h"
+#include "models/Gravity.h"
 
 extern Display display;
 extern Shader shader;
@@ -17,3 +18,4 @@ extern Lighting lighting;
 extern TextureBank texBank;
 extern DiffuseTexture diffuseTex;
 extern std::vector<Entity> entities;
+extern Gravity gravity;

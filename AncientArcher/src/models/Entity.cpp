@@ -17,3 +17,10 @@ Entity::Entity(ENTITYTYPE t, glm::vec3 loc, glm::vec3 sc, int texID, bool isImpa
     collider = nullptr;
   }
 }
+
+void Entity::moveby(glm::vec3 amount)
+{
+  this->gameItem.location[0] += amount.x;
+  this->gameItem.location[1] += amount.y;
+  this->gameItem.location[2] += amount.z;
+}

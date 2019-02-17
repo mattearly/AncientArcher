@@ -19,6 +19,7 @@ Lighting lighting;
 TextureBank texBank;
 DiffuseTexture diffuseTex;
 std::vector<Entity> entities;
+Gravity gravity;
 
 Game::Game() {
 
