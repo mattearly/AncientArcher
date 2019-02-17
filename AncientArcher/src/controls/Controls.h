@@ -30,7 +30,7 @@ public:
 
   void mouseMovement(float xpos, float ypos);
 
-  void keyboardInput(Player *player, Pickups *pickups, float dtime, float gametime);
+  void keyboardInput(Player *player, Pickups *pickups, float dtime);
 
 private:
 
@@ -39,8 +39,6 @@ private:
   float lastX, lastY;
 
   float mouseSensitivity;
-
-
 
 };
 

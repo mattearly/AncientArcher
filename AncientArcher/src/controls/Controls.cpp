@@ -51,15 +51,15 @@ void Controls::mouseMovement(float xpos, float ypos) {
 
 }
 
-void Controls::keyboardInput(Player *player, Pickups *pickups, float dtime, float gametime) {
+void Controls::keyboardInput(Player *player, Pickups *pickups, float dtime) {
 
   movedir.positionChanged = true;  //for footsteps
 
   if (glfwGetMouseButton(display.window, GLFW_MOUSE_BUTTON_LEFT) == GLFW_PRESS) {
-    //swing sword  or shoot bow
-    if (player->getLastAttackTime() + player->getAttackSpeed() < gametime) {
-      player->attack(gametime);
-    }
+    // main left click action 
+    //if (player->getLastAttackTime() + player->getAttackSpeed() < gameTime) {
+      //player->attack(gametime);
+    //}
   }
 
   if (glfwGetKey(display.window, GLFW_KEY_ESCAPE) == GLFW_PRESS) {
@@ -204,7 +204,7 @@ void Controls::keyboardInput(Player *player, Pickups *pickups, float dtime, floa
 
     /* stop player from walking through impassable entities */
     for (auto e : entities) {
-      if (e.collider != nullptr &&                                                            //collider is not null (potentially a blocker)
+      if (e.collider != nullptr &&                                                           //collider is not null (potentially a blocker)
         abs(e.collider->impasse.location[0] - camera.Position.x) < (world_width / 2) + 1 &&  // and is close enough to be worth checking
         abs(e.collider->impasse.location[1] - camera.Position.y) < (world_width / 4) + 1 &&
         abs(e.collider->impasse.location[2] - camera.Position.z) < (world_width / 2) + 1)
@@ -277,27 +277,35 @@ void Controls::keyboardInput(Player *player, Pickups *pickups, float dtime, floa
   }
 
   /* Jump System */
-  if (movedir.jumped) {      // Jump Start
+
+  // PHASE 1: frame of liftoff
+  if (movedir.jumped) {
     movedir.onGround = false;
     movedir.jumped = false;
     playgruntsound();
   }
-  else if (!movedir.onGround && !movedir.falling) {                          // Jump Rising
-    camera.Position.y += camera.WorldUp.y * player->getRisingSpeed() * dtime;  // RISING SPEED CALC: jump speed based on LegPower Player Stat
-    if (camera.Position.y > player->getJumpHeight() + camera.camstart[1]) {    // MAX HEIGHT CALC: jump height based on LegPower Player Stat
+
+  // PHASE 2: rising velocity
+  else if (!movedir.onGround && !movedir.falling) {
+
+    camera.Position.y += camera.WorldUp.y * player->getRisingSpeed() * dtime; // RISING SPEED CALC: jump speed based on LegPower Player Stat
+    
+    if (camera.Position.y > player->getJumpHeight() + camera.camstart[1]) { // MAX HEIGHT CALC: jump height based on LegPower Player Stat
       movedir.falling = true;
-      //todo: added gravity to falling y = 1/2at^2 + vt  
     }
   }
-  else if (movedir.falling && !movedir.onGround) {       // currently going down
+
+  // PHASE 3: falling velocity
+  else if (movedir.falling && !movedir.onGround) {
+
     camera.Position.y -= camera.WorldUp.y * 5.2f * dtime;  // GRAVITY PULL DOWN CALC: static value, todo: make dynamic based on falling time
+    
     if (camera.Position.y <= camera.camstart[1]) {
       movedir.onGround = true;
       movedir.falling = false;
       playlandingsound();
     }
   }
-  //if (movedir.onGround) {
-  //  camera.Position.y = camera.camstart[1];
-  //}
+
+
 }

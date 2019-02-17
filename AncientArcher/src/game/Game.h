@@ -22,7 +22,7 @@ private:
 
   float lastFrame = 0.0f;
 
-  float gameTime = 0.0f;
+  //float gameTime = 0.0f;
 
   float deltaTime = 0.0f;
 
