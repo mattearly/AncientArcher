@@ -152,6 +152,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="src\models\Gravity.cpp" />
     <ClCompile Include="src\models\Collider.cpp" />
     <ClCompile Include="src\models\Entity.cpp" />
     <ClCompile Include="src\util\DiffuseTexture.cpp" />
@@ -175,6 +176,7 @@
     <ClCompile Include="src\util\TextureBank.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="src\models\Gravity.h" />
     <ClInclude Include="src\models\Collider.h" />
     <ClInclude Include="src\models\Entity.h" />
     <ClInclude Include="src\globals.h" />
