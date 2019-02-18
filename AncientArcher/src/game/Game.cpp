@@ -27,7 +27,8 @@ Game::Game() {
   glGetIntegerv(GL_MAX_TEXTURE_IMAGE_UNITS, &__textures_allowed);
   std::cout << "Your Graphics Card allows " << __textures_allowed << " textures at the same time\n";
 
-  player = new Player();   //default character
+  //player = new Player();   //default character
+  player = new Player(3.f, 4.f, 100.f);
 
   /* load 32 textures */
   texBank.loadTexture("../AncientArcher/res/texture/00-pixelized_grass.png");
@@ -148,17 +149,31 @@ Game::Game() {
 
   // many test blocks
   for (int i = 0; i < 500; i++) {
-    Entity e(
-      ENTITYTYPE::SQUARE,
-      glm::vec3(mearly::NTRK(3.f, 100.f), 1.0f, mearly::NTRK(3.f, 120.f)),
-      glm::vec3(2.f, 2.f, 2.f),
-      mearly::NTKR(0, 31),
-      true
-    );
-    entities.push_back(e);
+
+    if (i % 3 == 0) {
+      Entity e(
+        ENTITYTYPE::SQUARE,
+        glm::vec3(mearly::NTRK(3.f, 100.f), mearly::NTRK(0.0f, 4.0f), mearly::NTRK(3.f, 120.f)),
+        glm::vec3(2.f, 2.f, 2.f),
+        mearly::NTKR(0, 31),
+        true
+      );
+      entities.push_back(e);
+    }
+    else {
+      Entity e(
+        ENTITYTYPE::SQUARE,
+        glm::vec3(mearly::NTRK(3.f, 100.f), 1.0f, mearly::NTRK(3.f, 120.f)),
+        glm::vec3(2.f, 2.f, 2.f),
+        mearly::NTKR(0, 31),
+        true
+      );
+      entities.push_back(e);
+    }
+
   }
 }
 
-Game::~Game() {
+  Game::~Game() {
 
-}
+  }

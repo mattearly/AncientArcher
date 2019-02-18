@@ -9,8 +9,6 @@ Player::Player() {
   baseJump = 4.0f;
   legPower = 10.0f;
 
-  characterHeight = 2.5f;
-
   weaponSelect = 0;  // no weapon
 
   attackSpeed = 1.8f;
@@ -29,15 +27,13 @@ Player::Player(float base_speed, float base_jump, float leg_power) {
   baseJump = base_jump;
   legPower = leg_power;
 
-  weaponSelect = 1;
+  weaponSelect = 0;
 
   attackSpeed = 1.8f;
 
   //lastAttackTimeStamp = 0.0f;
 
   isAttacking = false;
-
-  characterHeight = 0.5f;
 
   position = { 0.f, 0.f, 0.f };
 }
