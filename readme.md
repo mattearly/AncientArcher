@@ -1,3 +1,3 @@
 # Ancient Archer (TM)
 
-_A game by Matthew Early_
+[Design Document](design.md)

@@ -66,6 +66,22 @@ uniform sampler2D texture12;
 uniform sampler2D texture13;
 uniform sampler2D texture14;
 uniform sampler2D texture15;  // GLTexture15
+uniform sampler2D texture16;  
+uniform sampler2D texture17;
+uniform sampler2D texture18;
+uniform sampler2D texture19;
+uniform sampler2D texture20;
+uniform sampler2D texture21;
+uniform sampler2D texture22;
+uniform sampler2D texture23;
+uniform sampler2D texture24;
+uniform sampler2D texture25;
+uniform sampler2D texture26;
+uniform sampler2D texture27;
+uniform sampler2D texture28;
+uniform sampler2D texture29;
+uniform sampler2D texture30;
+uniform sampler2D texture31;
 
 //uniform int specnum;
 //uniform sampler2D specular0;  // no specular value | GLTexture16
@@ -109,6 +125,22 @@ void main() {
   case 13: color = texture(texture13, TexCoords).rgb; break; 
   case 14: color = texture(texture14, TexCoords).rgb; break; 
   case 15: color = texture(texture15, TexCoords).rgb; break; 
+  case 16: color = texture(texture16, TexCoords).rgb; break; 
+  case 17: color = texture(texture17, TexCoords).rgb; break; 
+  case 18: color = texture(texture18, TexCoords).rgb; break; 
+  case 19: color = texture(texture19, TexCoords).rgb; break; 
+  case 20: color = texture(texture20, TexCoords).rgb; break; 
+  case 21: color = texture(texture21, TexCoords).rgb; break; 
+  case 22: color = texture(texture22, TexCoords).rgb; break; 
+  case 23: color = texture(texture23, TexCoords).rgb; break; 
+  case 24: color = texture(texture24, TexCoords).rgb; break; 
+  case 25: color = texture(texture25, TexCoords).rgb; break; 
+  case 26: color = texture(texture26, TexCoords).rgb; break; 
+  case 27: color = texture(texture27, TexCoords).rgb; break; 
+  case 28: color = texture(texture28, TexCoords).rgb; break; 
+  case 29: color = texture(texture29, TexCoords).rgb; break; 
+  case 30: color = texture(texture30, TexCoords).rgb; break; 
+  case 31: color = texture(texture31, TexCoords).rgb; break; 
   }
 
   //vec3 ambient = 0.17 * lightviewDir * color;  // the darkest we ever want to get is 0.17

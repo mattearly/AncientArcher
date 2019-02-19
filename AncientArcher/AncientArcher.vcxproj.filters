@@ -66,13 +66,19 @@
     <ClCompile Include="src\models\PrimativeManager.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\models\Mesh.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="src\util\DiffuseTexture.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="src\pickups\Pickups.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\models\Entity.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\models\Collider.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\models\Gravity.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -119,19 +125,28 @@
     <ClInclude Include="src\models\PrimativeManager.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\models\Mesh.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="src\util\DiffuseTexture.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="src\pickups\Pickups.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="src\globals.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\models\Entity.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\models\Collider.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\models\Gravity.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <None Include="src\shaders\fragment.shader" />
-    <None Include="src\shaders\vertex.shader" />
+    <None Include="res\shaders\fragment.shader" />
+    <None Include="res\shaders\vertex.shader" />
   </ItemGroup>
   <ItemGroup>
     <Media Include="res\sfx\equip_gear.wav">

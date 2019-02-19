@@ -2,23 +2,22 @@
 
 #include "../Constraints.h"
 #include "../sound/Sound.h"
-#include "../lighting/Lighting.h"
 
 Player::Player() {
 
-  baseSpeed = 10.0f;  // base stats
+  baseSpeed = 3.0f;  // base stats
   baseJump = 4.0f;
   legPower = 10.0f;
-
-  characterHeight = 2.5f;
 
   weaponSelect = 0;  // no weapon
 
   attackSpeed = 1.8f;
 
-  lastAttackTimeStamp = 0.0f;
+  //lastAttackTimeStamp = 0.0f;
 
   isAttacking = false;
+
+  position = { 0.f, 0.f, 0.f };
 
 }
 
@@ -28,33 +27,18 @@ Player::Player(float base_speed, float base_jump, float leg_power) {
   baseJump = base_jump;
   legPower = leg_power;
 
-  weaponSelect = 1;
+  weaponSelect = 0;
 
   attackSpeed = 1.8f;
 
-  lastAttackTimeStamp = 0.0f;
+  //lastAttackTimeStamp = 0.0f;
 
   isAttacking = false;
 
+  position = { 0.f, 0.f, 0.f };
 }
 
 Player::~Player() {}
-
-void Player::attack(float gametime) {
-  switch (getSelectedItem()) {
-  case 0:
-    playpunchsound();
-    break;
-  case 1:
-    playswordswingsound();
-    isAttacking = true;
-    break;
-  case 2:
-    playbowsound();
-    break;
-  }
-  setTimeSinceLastAttack(gametime);
-}
 
 void Player::increaseLegPower(float add) {
   if (legPower < 100.00f) {
@@ -80,12 +64,12 @@ void Player::selectWeapon(int weapnum) {
   }
 }
 
-void Player::setTimeSinceLastAttack(float incr) {
-  lastAttackTimeStamp = incr;
-}
+//void Player::setTimeSinceLastAttack(float incr) {
+//  lastAttackTimeStamp = incr;
+//}
 
-void Player::setPosition(glm::vec3 pos) {
-}
+//void Player::setPosition(glm::vec3 pos) {
+//}
 
 int Player::getSelectedItem() {
   return weaponSelect;
@@ -98,7 +82,7 @@ float Player::getRunSpeed() {
 }
 
 float Player::getRisingSpeed() {
-  return ((legPower / stat_divisor) + baseJump);
+  return ((legPower / stat_divisor) + baseSpeed);
 }
 
 float Player::getJumpHeight() {
@@ -108,11 +92,11 @@ float Player::getJumpHeight() {
 float Player::getAttackSpeed() {
   return attackSpeed;
 }
-
-float Player::getLastAttackTime() {
-  return lastAttackTimeStamp;
-}
-
-glm::vec3 Player::getPosition() {
-  return position;
-}
+//
+//float Player::getLastAttackTime() {
+//  return lastAttackTimeStamp;
+//}
+//
+//glm::vec3 Player::getPosition() {
+//  return position;
+//}

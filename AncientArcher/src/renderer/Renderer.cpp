@@ -1,20 +1,11 @@
 #include "Renderer.h"
 #include "../models/PrimativeManager.h"
-#include "../displayManager/Display.h"
-#include "../shaders/Shader.h"
-#include "../util/TextureBank.h"
 #include "../Constraints.h"
-#include "../lighting/Lighting.h"
 #include "../pickups/Pickups.h"
-
-extern Display display;
-extern Shader shader;
-extern TextureBank texBank;
-extern Lighting lighting;
+#include "../globals.h"
 
 Renderer::Renderer() {
   width = round(world_width + 1);
-
 }
 
 Renderer::~Renderer() {}
@@ -37,29 +28,34 @@ void Renderer::disableGLDepthTest() {
 
 }
 
-void Renderer::update(Pickups *pickups, PrimativeManager *primativeManager, Lighting *lighting, float deltaTime) {
+void Renderer::update(Pickups *pickups, PrimativeManager *primativeManager, float deltaTime) {
 
   display.clear();
 
-  // FLOOR AND BOUNDRY CRATES
-  texBank.activate(1);
-  for (int i = 0; i < width; i += 2) {
-    for (int j = 0; j < 4; j += 2) {
-      primativeManager->drawCube(glm::vec3(-2.0f, 2.0f + j, 0.0f + i), glm::vec3(2.0f, 2.0f, 2.0f));
-      primativeManager->drawCube(glm::vec3(float(width + 1), 2.0f + j, 0.0f + i), glm::vec3(2.0f, 2.0f, 2.0f));
-      primativeManager->drawCube(glm::vec3(0.0f + i, 2.0f + j, -2.0f), glm::vec3(2.0f, 2.0f, 2.0f));
-      primativeManager->drawCube(glm::vec3(0.0f + i, 2.0f + j, float(width + 1)), glm::vec3(2.0f, 2.0f, 2.0f));
-    }
-  }
-  for (int i = 0; i < width; i+=2) {
-    for (int j = 0; j < width; j+=2) {
-      primativeManager->drawCube(glm::vec3(0.0f + i, 0.0f, 0.0f + j), glm::vec3(2.0f, 2.0f, 2.0f));
+  for (auto e : entities) {
+
+    texBank.activate(e.gameItem.textureID);
+
+    switch (e.gameItem.type) {
+    case ENTITYTYPE::SQUARE:
+      primativeManager->drawCube(
+        glm::vec3(e.gameItem.location[0], e.gameItem.location[1], e.gameItem.location[2]),
+        glm::vec3(e.gameItem.scale[0], e.gameItem.scale[1], e.gameItem.scale[2])
+      );
+      break;
+      
+    case ENTITYTYPE::PLANE:
+      primativeManager->drawPlane(
+        glm::vec3(e.gameItem.location[0], e.gameItem.location[1], e.gameItem.location[2]),
+        glm::vec3(e.gameItem.scale[0], e.gameItem.scale[1], e.gameItem.scale[2])
+      );
+      break;
+
+    default: break;
     }
   }
 
   pickups->draw(primativeManager);
-
-  //lighting->draw();
 
   display.update();
 

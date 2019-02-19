@@ -11,8 +11,7 @@ public:
 
   float characterHeight;
 
-  // ACTIONS
-  void attack(float gametime);
+  // ACTIONS  void attack(float gametime);
 
   // MUTATORS
   void increaseLegPower(float add);
@@ -21,9 +20,9 @@ public:
 
   void selectWeapon(int weapnum);
 
-  void setTimeSinceLastAttack(float incr);
+  //void setTimeSinceLastAttack(float incr);
 
-  void setPosition(glm::vec3 pos);
+  //void setPosition(glm::vec3 pos);
 
   // ACCESSORS
   int getSelectedItem();
@@ -36,9 +35,9 @@ public:
 
   float getAttackSpeed();
 
-  float getLastAttackTime();
+  //float getLastAttackTime();
 
-  glm::vec3 getPosition();
+  //glm::vec3 getPosition();
 
 private:
   
@@ -52,7 +51,7 @@ private:
 
   float attackSpeed;  // greater is slower, time in between attacks needed, starts at 1800 (1.8s between attacks)
 
-  float lastAttackTimeStamp;  // gametime stamp
+  //float lastAttackTimeStamp;  // gametime stamp
 
   bool isAttacking;
 

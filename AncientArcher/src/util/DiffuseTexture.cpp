@@ -5,9 +5,7 @@
 #include<iostream>
 #include<sstream>
 
-#include "../shaders/Shader.h"
-
-extern Shader shader;
+#include "../globals.h"
 
 DiffuseTexture::DiffuseTexture() {
   num_loaded_diffuse = 0;

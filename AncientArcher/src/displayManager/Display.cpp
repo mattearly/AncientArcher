@@ -1,11 +1,10 @@
 #include "Display.h"
 #include <utility>
 #include <iostream>
+#include "../globals.h"
 #include "../controls/Controls.h"
-#include "../camera/Camera.h"
 
 extern Controls controls;
-extern Camera camera;
 
 Display::Display() {
 
@@ -64,7 +63,7 @@ void Display::reshapeWindow(GLFWwindow * window, int w, int h) {
 }
 
 void Display::mouseHandler(GLFWwindow * window, double xpos, double ypos) {
-  controls.mouseMovement(xpos, ypos);
+  controls.mouseMovement((float)xpos, (float)ypos);
 }
 
 void Display::clear() const {

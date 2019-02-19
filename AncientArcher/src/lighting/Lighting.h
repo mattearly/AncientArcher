@@ -11,6 +11,8 @@ public:
 
   void addPointLight(glm::vec3 pos);
 
+  void movePointLight(int lightnum, glm::vec3 newpos);
+
 private:
 
   std::vector<glm::vec3> pointLights;
