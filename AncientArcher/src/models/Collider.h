@@ -1,12 +1,12 @@
 #pragma once
 #include <glm/glm.hpp>
+struct Impasse {
+  float location[3];
+  float size[3];
+};
 class Collider
 {
 private:
-  struct Impasse {
-    float location[3];
-    float size[3];
-  };
   const float COLLISION_EXPANDER = .3f;
 public:
   Impasse impasse;

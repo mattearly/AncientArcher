@@ -2,11 +2,10 @@
 #include <glad/glad.h>
 #include <GLFW/glfw3.h>
 #include "../player/Player.h"
-#include "../pickups/Pickups.h"
 
 static float TIMEBETWEENFOOTSTEPS = 1.0f;
 
-static struct Movement {
+struct Movement {
   bool positionChanged = false; // for footsteps
 
   bool forward = false, back = false;
@@ -20,7 +19,7 @@ static struct Movement {
 
   float timeSinceLastStep = 0;
 
-} movedir;
+};
 
 class Controls {
 
@@ -30,7 +29,7 @@ public:
 
   void mouseMovement(float xpos, float ypos);
 
-  void keyboardInput(Player *player, Pickups *pickups, float dtime);
+  void keyboardInput(Player *player);
 
 private:
 
