@@ -17,7 +17,6 @@ Controls controls;
 Pickups pickups;
 Lighting lighting;
 TextureBank texBank;
-DiffuseTexture diffuseTex;
 std::vector<Entity> entities;
 Gravity gravity;
 
@@ -64,38 +63,14 @@ Game::Game() {
   texBank.loadTexture("../AncientArcher/res/texture/30-water_refractions.png");
   texBank.loadTexture("../AncientArcher/res/texture/31-water_top.png");
 
-  diffuseTex.loadDiffuseTexture("../AncientArcher/res/specular/none.png");
-
-  // only render the objects not line of sight blocked by other objects 
-  //glEnable(GL_CULL_FACE);
 
   lighting.setConstantLight();
 
-
-  // demo point lights
-  //lighting.addPointLight(glm::vec3(1.5f, 4.0f, 1.5f));
-  //lighting.addPointLight(glm::vec3(1.5f, 4.0f, 38.5f));
-  //lighting.addPointLight(glm::vec3(38.5f, 4.0f, 1.5f));
-  //lighting.addPointLight(glm::vec3(38.5f, 4.0f, 38.5f));
   lighting.addPointLight(*camera.getPosition());
 
   renderer.enableGLDepthTest();
 
   camera.updateProjectionMatrix();
-
-  //shader.setInt("specnum", 0);
-
-  // spotLight
-  //  shader.setVec3("spotLight.position", *(camera.getPosition()));
-  //  shader.setVec3("spotLight.direction", *(camera.getFront()));
-  //  shader.setVec3("spotLight.ambient", 0.0f, 0.0f, 0.0f);
-  //  shader.setVec3("spotLight.diffuse", 1.0f, 1.0f, 1.0f);
-  //  shader.setVec3("spotLight.specular", 1.0f, 1.0f, 1.0f);
-  //  shader.setFloat("spotLight.constant", 1.0f);
-  //  shader.setFloat("spotLight.linear", 0.09);
-  //  shader.setFloat("spotLight.quadratic", 0.032);
-  //  shader.setFloat("spotLight.cutOff", glm::cos(glm::radians(12.5f)));
-  //  shader.setFloat("spotLight.outerCutOff", glm::cos(glm::radians(15.0f)));
 
   float width = world_width + 1.f;
 

@@ -24,8 +24,6 @@ void Game::mainLoop() {
     deltaTime = currentFrame - lastFrame;
     lastFrame = currentFrame;
 
-    //gameTime += deltaTime;
-
     controls.keyboardInput(player, &pickups, deltaTime);
 
     camera.update();

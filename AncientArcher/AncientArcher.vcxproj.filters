@@ -66,9 +66,6 @@
     <ClCompile Include="src\models\PrimativeManager.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\util\DiffuseTexture.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="src\pickups\Pickups.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -123,9 +120,6 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="src\models\PrimativeManager.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="src\util\DiffuseTexture.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="src\pickups\Pickups.h">
