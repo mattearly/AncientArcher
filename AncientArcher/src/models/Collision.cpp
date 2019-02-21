@@ -73,8 +73,7 @@ void Collision::process(Player *player, float dtime) {
   }
 
   /* stop player from walking through impassable entities */
-  auto & entitygroup = entities;   // const by reference
-  for (auto&& e : entitygroup) {   // const by reference - entities should not be modified here
+  for (auto const & e : entities) {   // const by reference - entities should not be modified here
     if (e.collider != nullptr &&                                                           //collider is not null (potentially a blocker)
       abs(e.collider->impasse.location[0] - playerIntendedLocation.x) < (world_width / 2) + 1 &&  // and is close enough to be worth checking
       abs(e.collider->impasse.location[1] - playerIntendedLocation.y) < (world_width / 4) + 1 &&

@@ -30,7 +30,8 @@ void Renderer::disableGLDepthTest() {
 void Renderer::update(Pickups *pickups, PrimativeManager *primativeManager, float deltaTime) {
 
   display.clear();
-  for (auto&& e : entities) {
+
+  for (auto const & e : entities) {   // looping through as const reference for efficiency and this shouldn't be modified
 
     texBank.activate(e.gameItem.textureID);
 
