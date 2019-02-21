@@ -56,20 +56,20 @@ void Collision::process(Player *player, float dtime) {
     // PHASE 2: rising velocity
     else if (!movedir.onGround && !movedir.falling) {
       playerIntendedLocation.y += camera.WorldUp.y * player->getRisingSpeed() * dtime; // RISING SPEED CALC: jump speed based on LegPower Player Stat
-      if (playerIntendedLocation.y > player->getJumpHeight() + camera.camstart[1]) { // MAX HEIGHT CALC: jump height based on LegPower Player Stat
+      if (playerIntendedLocation.y > player->getJumpHeight() + movedir.lastOnGroundHeight) { // MAX HEIGHT CALC: jump height based on LegPower Player Stat
         movedir.falling = true;
       }
     }
     // PHASE 3: falling velocity
     else if (movedir.falling && !movedir.onGround) {
-      playerIntendedLocation.y += GRAVITY * dtime;  // GRAVITY PULL DOWN CALC: static value, todo: make dynamic based on falling time
-      if (playerIntendedLocation.y <= camera.camstart[1]) {
-        movedir.onGround = true;
-        movedir.falling = false;
-        playlandingsound();
-      }
+      playerIntendedLocation.y += GRAVITY * dtime;
+      //if (playerIntendedLocation.y <= camera.camstart[1]) {
+      //  movedir.onGround = true;
+      //  movedir.falling = false;
+      //  playlandingsound();
+      //}
     }
-    movedir.positionChanged = true; 
+    movedir.positionChanged = true;
   }
 
   /* stop player from walking through impassable entities */
@@ -92,9 +92,12 @@ void Collision::process(Player *player, float dtime) {
 
           if (playerIntendedLocation.z < yPosOverlapLT && playerIntendedLocation.z > yPosOverlapGT) {
             movedir.positionChanged = false;
-            if (playerIntendedLocation.y+0.5f > yTop) {
+            if (playerIntendedLocation.y + 0.5f > yTop) {
+              movedir.falling = false;
               movedir.onGround = true;
               camera.Position.y += 0.5f;
+              movedir.lastOnGroundHeight = camera.Position.y;
+              playlandingsound();
             }
           }
         }
@@ -102,7 +105,9 @@ void Collision::process(Player *player, float dtime) {
     }
   }
 
-  if (movedir.positionChanged) camera.Position = playerIntendedLocation;
+  if (movedir.positionChanged) {
+    camera.Position = playerIntendedLocation;
+  }
 
   lighting.movePointLight(0, *camera.getPosition());
 

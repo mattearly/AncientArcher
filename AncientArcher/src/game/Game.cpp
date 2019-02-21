@@ -83,7 +83,7 @@ Game::Game() {
       // TEXTURE ID
       mearly::NTKR(0, 31),
       // COLLISION?
-      false
+      true
     );
     entities.push_back(floor);
   }
@@ -99,7 +99,7 @@ Game::Game() {
       // TEXTURE ID
       mearly::NTKR(0, 31),
       // COLLISION?
-      false
+      true
     );
     entities.push_back(floor);
   }
@@ -115,7 +115,7 @@ Game::Game() {
       // TEXTURE ID
       mearly::NTKR(0, 31),
       // COLLISION?
-      false
+      true
     );
     entities.push_back(floor);
   }

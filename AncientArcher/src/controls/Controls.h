@@ -3,7 +3,7 @@
 #include <GLFW/glfw3.h>
 #include "../player/Player.h"
 
-static float TIMEBETWEENFOOTSTEPS = 1.0f;
+static float TIMEBETWEENFOOTSTEPS = 2.0f;
 
 struct Movement {
   bool positionChanged = false; // for footsteps
@@ -18,6 +18,9 @@ struct Movement {
   bool falling = false;
 
   float timeSinceLastStep = 0;
+
+  float lastOnGroundHeight = 0.5f;
+  float currentGroundHeight = 0.5f;
 
 };
 
