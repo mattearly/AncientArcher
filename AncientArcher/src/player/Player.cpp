@@ -1,6 +1,5 @@
 #include "Player.h"
-
-#include "../Constraints.h"
+#include "../globals.h"
 #include "../sound/Sound.h"
 
 Player::Player() {

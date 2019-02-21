@@ -3,7 +3,6 @@
 #include "../globals.h"
 #include "Controls.h"
 
-#include "../Constraints.h"
 #include "../player/Player.h"
 #include "../sound/Sound.h"
 #include "../game/Game.h"

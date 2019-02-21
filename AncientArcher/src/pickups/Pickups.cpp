@@ -1,6 +1,5 @@
 #include "Pickups.h"
 #include "../util/mearly.h"
-#include "../Constraints.h"
 #include "../models/PrimativeManager.h"
 #include "../globals.h"
 

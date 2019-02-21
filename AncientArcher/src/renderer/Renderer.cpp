@@ -1,6 +1,5 @@
 #include "Renderer.h"
 #include "../models/PrimativeManager.h"
-#include "../Constraints.h"
 #include "../pickups/Pickups.h"
 #include "../globals.h"
 
@@ -31,8 +30,7 @@ void Renderer::disableGLDepthTest() {
 void Renderer::update(Pickups *pickups, PrimativeManager *primativeManager, float deltaTime) {
 
   display.clear();
-
-  for (auto e : entities) {
+  for (auto&& e : entities) {
 
     texBank.activate(e.gameItem.textureID);
 

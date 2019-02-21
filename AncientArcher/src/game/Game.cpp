@@ -6,7 +6,6 @@
 
 #include "../globals.h"
 #include "../controls/Controls.h"
-#include "../Constraints.h"
 #include "../util/mearly.h"
 #include <iostream>
 
@@ -18,7 +17,6 @@ Pickups pickups;
 Lighting lighting;
 TextureBank texBank;
 std::vector<Entity> entities;
-Gravity gravity;
 
 Game::Game() {
 
