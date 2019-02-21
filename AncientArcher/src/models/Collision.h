@@ -8,6 +8,5 @@ public:
   ~Collision();
   void process(Player *player, float dtime);
 private:
-  void checkCollision(Impasse a, Impasse b);
 };
 
