@@ -2,7 +2,6 @@
 #include "../globals.h"
 
 Camera::Camera() {
-
   FoV = 85.0f;
   Front = glm::vec3(0.0f, 0.0f, -1.0f);
   Position = glm::vec3(camstart[0], camstart[1], camstart[2]); // starting position
@@ -12,7 +11,6 @@ Camera::Camera() {
   Yaw = 45.0f;  // looking direction
   Pitch = 0.0f;
   updateCameraVectors();
-
 }
 
 Camera::~Camera() {}
@@ -24,10 +22,8 @@ void Camera::update() {
 
 // needs called to update the FoV and/or window_width window_height, and draw distances
 void Camera::updateProjectionMatrix() {
-
   glm::mat4 projection = glm::perspective(glm::radians(FoV), (float)display.window_width / (float)display.window_height, 0.01f, 100.0f);
   shader.setMat4("projection", projection);
-
 }
 
 glm::mat4 Camera::getViewMatrix() {
