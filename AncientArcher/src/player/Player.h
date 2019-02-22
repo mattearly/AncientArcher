@@ -30,40 +30,32 @@ class Player {
 public:
 
   Player();
-  Player(float base_speed, float base_jump, float leg_power);
+  Player(float leg_power);
 
   ~Player();
 
   void update(float deltaTime);
 
-  // MUTATORS
-  void increaseLegPower(float add);
-  void selectWeapon(int weapnum);
-
-  /* accessors */
-  int getSelectedItem() const;
+    // accessors
   float getRunSpeed() const;
   float getRisingSpeed() const;
   float getJumpHeight() const;
-  float getAttackSpeed() const;
+
+    // mutators
+  void increaseLegPower(float add);
 
 private:
 
-  float baseSpeed;
-  float baseJump;
+  const float BASE_PLAYER_SPEED = 3.0f;
+  const float BASE_PLAYER_JUMP_HEIGHT = 0.8f;
+
+    // player stats
   float legPower;
-
-  float characterHeight;
-
-  int weaponSelect;
-
-  float attackSpeed;  // greater is slower, time in between attacks needed, starts at 1800 (1.8s between attacks)
-
-  bool isAttacking;
+  const float LEGPOWER_CAP = 100.0f;
 
   void processCommands(float deltaTime);
-  
-  static constexpr const float stat_divisor = 40.0f;
+
+  static constexpr const float STAT_DIVISOR = 40.0f; 
 
 };
 

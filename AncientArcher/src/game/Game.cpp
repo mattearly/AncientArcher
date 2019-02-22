@@ -22,7 +22,7 @@ Game::Game() {
   std::cout << "Your Graphics Card allows " << __textures_allowed << " textures at the same time\n";
 
   //player = new Player();   //default character
-  player = new Player(3.f, 4.f, 100.f);
+  player = new Player(100.f);
 
   /* load 32 textures */
   texBank.loadTexture("../AncientArcher/res/texture/00-pixelized_grass.png");
