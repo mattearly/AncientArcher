@@ -8,7 +8,7 @@
 extern Entity *entity;
 
 Renderer::Renderer() {
-  width = round(world_width + 1);
+  width = round(logic_checking_distance + 1);
   enableGLDepthTest();
 }
 

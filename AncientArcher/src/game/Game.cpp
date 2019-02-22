@@ -67,7 +67,7 @@ Game::Game() {
 
   //camera.updateProjectionMatrix();
 
-  float width = world_width + 1.f;
+  float width = logic_checking_distance + 1.f;
 
   for (int i = 0; i < 3; i++) {
     Entity floor(
