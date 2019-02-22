@@ -3,9 +3,7 @@
 #include <iostream>
 #include "../globals.h"
 #include "../player/Controls.h"
-#include "../player/Camera.h"
 extern Controls controls;
-extern Camera camera;
 Display::Display() {
 
   window_width = 1024;
@@ -58,7 +56,6 @@ void Display::reshapeWindow(GLFWwindow * window, int w, int h) {
   glViewport(0, 0, w, h);
   window_width = w;
   window_height = h;
-  camera.updateProjectionMatrix();
 }
 
 void Display::mouseHandler(GLFWwindow * window, double xpos, double ypos) {
