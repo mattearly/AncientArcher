@@ -1,6 +1,7 @@
 #include <glm/glm.hpp>
 
 #include "../globals.h"
+#include "Camera.h"
 #include "Controls.h"
 
 #include "../player/Player.h"
@@ -10,7 +11,8 @@
 #include <iostream>
 #include <math.h>
 
-Movement movedir;
+extern Camera camera;
+extern Movement movedir;
 
 Controls::Controls() {
   firstMouse = true;
@@ -19,10 +21,9 @@ Controls::Controls() {
   lastY = 0.f;
 }
 
-Controls::~Controls() {}
-
 void Controls::mouseMovement(float xpos, float ypos) {
 
+  /* START FIRST PERSON CONTROLS */
   if (firstMouse) {
     lastX = xpos;
     lastY = ypos;
@@ -48,16 +49,14 @@ void Controls::mouseMovement(float xpos, float ypos) {
   }
 
   camera.updateCameraVectors();
+  /* END FIRST PERSON CONTROLS */
 
 }
 
-void Controls::keyboardInput(Player *player) {
-
+void Controls::playerKeyboardInput()
+{
   if (glfwGetMouseButton(display.window, GLFW_MOUSE_BUTTON_LEFT) == GLFW_PRESS) {
-    // main left click action 
-    //if (player->getLastAttackTime() + player->getAttackSpeed() < gameTime) {
-      //player->attack(gametime);
-    //}
+     // left click
   }
 
   if (glfwGetKey(display.window, GLFW_KEY_ESCAPE) == GLFW_PRESS) {
@@ -112,15 +111,12 @@ void Controls::keyboardInput(Player *player) {
   }
 
   if (glfwGetKey(display.window, GLFW_KEY_0) == GLFW_PRESS) {
-    player->selectWeapon(0);
   }
 
   if (glfwGetKey(display.window, GLFW_KEY_1) == GLFW_PRESS) {
-    player->selectWeapon(1);
   }
 
   if (glfwGetKey(display.window, GLFW_KEY_2) == GLFW_PRESS) {
-    player->selectWeapon(2);
   }
 
   if (glfwGetKey(display.window, GLFW_KEY_W) == GLFW_RELEASE) {

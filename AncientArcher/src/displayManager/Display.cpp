@@ -2,10 +2,10 @@
 #include <utility>
 #include <iostream>
 #include "../globals.h"
-#include "../controls/Controls.h"
-
+#include "../player/Controls.h"
+#include "../player/Camera.h"
 extern Controls controls;
-
+extern Camera camera;
 Display::Display() {
 
   window_width = 1024;
@@ -20,8 +20,7 @@ Display::Display() {
 #ifdef __APPLE__
   glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);
 #endif
-
-
+  
   // init window
   window = glfwCreateWindow(window_width, window_height, "AncientArcherEngine", nullptr, nullptr);
   if (window == nullptr) {

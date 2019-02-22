@@ -5,15 +5,12 @@
 #include <glm/gtc/type_ptr.hpp>
 
 #include "../globals.h"
-#include "../controls/Controls.h"
+#include "../player/Controls.h"
 #include "../util/mearly.h"
 #include <iostream>
 
 Display display;
 Shader shader("../AncientArcher/res/shaders/vertex.shader", "../AncientArcher/res/shaders/fragment.shader");
-Camera camera;
-Controls controls;
-Pickups pickups;
 Lighting lighting;
 TextureBank texBank;
 std::vector<Entity> entities;
@@ -64,11 +61,11 @@ Game::Game() {
 
   lighting.setConstantLight();
 
-  lighting.addPointLight(*camera.getPosition());
+  //lighting.addPointLight(*camera.getPosition());
 
-  renderer.enableGLDepthTest();
+  //renderer.enableGLDepthTest();
 
-  camera.updateProjectionMatrix();
+  //camera.updateProjectionMatrix();
 
   float width = world_width + 1.f;
 
@@ -126,17 +123,28 @@ Game::Game() {
     if (i % 3 == 0) {
       Entity e(
         ENTITYTYPE::SQUARE,
-        glm::vec3(mearly::NTRK(3.f, 100.f), mearly::NTRK(0.0f, 4.0f), mearly::NTRK(3.f, 120.f)),
+        glm::vec3(mearly::NTRK(3.f, 100.f), mearly::NTRK(1.01f, 6.0f), mearly::NTRK(3.f, 120.f)),
         glm::vec3(2.f, 2.f, 2.f),
         mearly::NTKR(0, 31),
         true
       );
       entities.push_back(e);
     }
+    else if (i % 3 == 1) {
+      Entity e(
+        ENTITYTYPE::SQUARE,
+        glm::vec3(mearly::NTRK(3.f, 100.f), mearly::NTRK(1.01f, 8.0f), mearly::NTRK(3.f, 120.f)),
+        glm::vec3(mearly::NTRK(1.01f, 8.0f), mearly::NTRK(1.01f, 8.0f), mearly::NTRK(1.01f, 8.0f)),
+        mearly::NTKR(0, 31),
+        true
+      );
+      entities.push_back(e);
+    }
+
     else {
       Entity e(
         ENTITYTYPE::SQUARE,
-        glm::vec3(mearly::NTRK(3.f, 100.f), 1.0f, mearly::NTRK(3.f, 120.f)),
+        glm::vec3(mearly::NTRK(3.f, 100.f), 1.01f, mearly::NTRK(3.f, 120.f)),
         glm::vec3(2.f, 2.f, 2.f),
         mearly::NTKR(0, 31),
         true

@@ -23,4 +23,3 @@ private:
   unsigned int planeVAO, planeVBO;
 
 };
-

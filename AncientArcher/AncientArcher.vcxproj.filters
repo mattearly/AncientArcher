@@ -45,12 +45,6 @@
     <ClCompile Include="src\lighting\Lighting.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\camera\Camera.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="src\controls\Controls.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="src\player\Player.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -63,9 +57,6 @@
     <ClCompile Include="src\models\PrimativeManager.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\pickups\Pickups.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="src\models\Entity.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -73,6 +64,12 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="src\models\Collision.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\player\Controls.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\player\Camera.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -98,12 +95,6 @@
     <ClInclude Include="src\lighting\Lighting.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\camera\Camera.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="src\controls\Controls.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="src\player\Player.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -116,9 +107,6 @@
     <ClInclude Include="src\models\PrimativeManager.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\pickups\Pickups.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="src\globals.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -129,6 +117,12 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="src\models\Collision.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\player\Controls.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\player\Camera.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

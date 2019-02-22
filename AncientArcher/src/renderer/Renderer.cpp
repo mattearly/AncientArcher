@@ -1,10 +1,15 @@
 #include "Renderer.h"
 #include "../models/PrimativeManager.h"
-#include "../pickups/Pickups.h"
+#include "../player/Player.h"
 #include "../globals.h"
+
+#include <iostream>
+
+extern Entity *entity;
 
 Renderer::Renderer() {
   width = round(world_width + 1);
+  enableGLDepthTest();
 }
 
 Renderer::~Renderer() {}
@@ -27,35 +32,40 @@ void Renderer::disableGLDepthTest() {
 
 }
 
-void Renderer::update(Pickups *pickups, PrimativeManager *primativeManager, float deltaTime) {
+void Renderer::update(Player *player, PrimativeManager *primativeManager, float deltaTime) {
 
   display.clear();
 
-  for (auto const & e : entities) {   // looping through as const reference for efficiency and this shouldn't be modified
+  drawEntity(entity, primativeManager);
+
+  for (auto e : entities) {
 
     texBank.activate(e.gameItem.textureID);
 
-    switch (e.gameItem.type) {
-    case ENTITYTYPE::SQUARE:
-      primativeManager->drawCube(
-        glm::vec3(e.gameItem.location[0], e.gameItem.location[1], e.gameItem.location[2]),
-        glm::vec3(e.gameItem.scale[0], e.gameItem.scale[1], e.gameItem.scale[2])
-      );
-      break;
-      
-    case ENTITYTYPE::PLANE:
-      primativeManager->drawPlane(
-        glm::vec3(e.gameItem.location[0], e.gameItem.location[1], e.gameItem.location[2]),
-        glm::vec3(e.gameItem.scale[0], e.gameItem.scale[1], e.gameItem.scale[2])
-      );
-      break;
+    drawEntity(&e, primativeManager);
 
-    default: break;
-    }
   }
-
-  pickups->draw(primativeManager);
 
   display.update();
 
+}
+
+void Renderer::drawEntity(Entity *e, PrimativeManager *pm)
+{
+  texBank.activate(e->gameItem.textureID);
+  switch (e->gameItem.type) {
+  case ENTITYTYPE::SQUARE:
+    pm->drawCube(
+      glm::vec3(e->gameItem.location[0], e->gameItem.location[1], e->gameItem.location[2]),
+      glm::vec3(e->gameItem.scale[0], e->gameItem.scale[1], e->gameItem.scale[2])
+    );
+    break;
+  case ENTITYTYPE::PLANE:
+    pm->drawPlane(
+      glm::vec3(e->gameItem.location[0], e->gameItem.location[1], e->gameItem.location[2]),
+      glm::vec3(e->gameItem.scale[0], e->gameItem.scale[1], e->gameItem.scale[2])
+    );
+    break;
+  default: break;
+  }
 }

@@ -8,7 +8,7 @@ public:
   ~Camera();
 
   friend class Controls;
-  friend class Collision;
+  friend class Player;
 
   float FoV;
 

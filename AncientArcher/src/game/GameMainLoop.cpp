@@ -6,13 +6,14 @@
 #include "../globals.h"
 #include "../sound/Sound.h"
 #include "../player/Player.h"
+#include "../player/Controls.h"
 #include "../util/mearly.h"
-#include "../controls/Controls.h"
 
 #include <iostream>
 #include <cmath>
 
 extern Controls controls;
+extern Movement movedir;
 
 void Game::mainLoop() {
 
@@ -24,13 +25,15 @@ void Game::mainLoop() {
     deltaTime = currentFrame - lastFrame;
     lastFrame = currentFrame;
 
-    controls.keyboardInput(player);
+    //controls.keyboardInput(player);
 
-    collision.process(player, deltaTime);
+    player->update(deltaTime);
 
-    camera.update();
+    //collision.processPointCollision(player, deltaTime, glm::vec3(player->getEntity(), 0.0f, 0.0f), glm::vec3(.0f, .0f, .0f));
 
-    renderer.update(&pickups, &primativeManager, deltaTime);
+    //camera.update();
+
+    renderer.update(player, &primativeManager, deltaTime);
 
     glfwPollEvents();
 
