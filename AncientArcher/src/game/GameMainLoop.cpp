@@ -19,6 +19,8 @@ void Game::mainLoop() {
 
   glm::mat4 model = glm::mat4(1.0f);
 
+  toggleAmbientWindyNight();
+
   while (!glfwWindowShouldClose(display.window)) {
 
     float currentFrame = (float)glfwGetTime();

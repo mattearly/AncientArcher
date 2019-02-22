@@ -60,5 +60,8 @@ void playequipgearsound();
 //static Mix_Music *defaultmusic;
 //void playdefaultmusic();
 
+static Mix_Music *AMBIENT_windy_night;
+void toggleAmbientWindyNight();
+
 void initsound();
 

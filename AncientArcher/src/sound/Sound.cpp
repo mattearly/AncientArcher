@@ -135,6 +135,11 @@ void playequipgearsound() {
 //  Mix_PlayMusic(defaultmusic, -1);
 //}
 
+void toggleAmbientWindyNight() {
+  if (!soundReady) initsound();
+  Mix_PlayMusic(AMBIENT_windy_night, -1);
+}
+
 //--------------------init sound---------------
 void initsound() {
   SDL_Init(SDL_INIT_AUDIO);
@@ -306,6 +311,14 @@ void initsound() {
   //    "Couldn't load audio: %s",
   //    Mix_GetError());
   //}
+
+  // load ambient wind
+  AMBIENT_windy_night = Mix_LoadMUS("../AncientArcher/res/sfx/AMBIENT_windy_night.wav");
+  if (AMBIENT_windy_night == nullptr) {
+    SDL_LogError(SDL_LOG_CATEGORY_APPLICATION,
+      "Couldn't load audio: %s",
+      Mix_GetError());
+  }
 
   soundReady = true;  //kk sound is good to go
 
