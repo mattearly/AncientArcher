@@ -62,6 +62,8 @@ private:
   bool isAttacking;
 
   void processCommands(float deltaTime);
+  
+  static constexpr const float stat_divisor = 40.0f;
 
 };
 
