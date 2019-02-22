@@ -73,28 +73,40 @@ void Player::processCommands(float deltaTime)
   }
 
   /* stop player from walking through impassable entities */
-  for (auto const & e : entities) {   // const by reference - entities should not be modified here
-    if (e.collider != nullptr &&                                                           //collider is not null (potentially a blocker)
-      abs(e.collider->impasse.location[0] - playerIntendedLocation.x) < (logic_checking_distance / 2) + 1 &&  // and is close enough to be worth checking
-      abs(e.collider->impasse.location[1] - playerIntendedLocation.y) < (logic_checking_distance / 4) + 1 &&
-      abs(e.collider->impasse.location[2] - playerIntendedLocation.z) < (logic_checking_distance / 2) + 1)
-    {
-      float yTop = e.collider->impasse.location[1] + e.collider->impasse.size[1] / 2;
-      float yBot = e.collider->impasse.location[1] - e.collider->impasse.size[1] / 2;
-      if (playerIntendedLocation.y < yTop && playerIntendedLocation.y > yBot) {
-        float xPosOverlapLT = e.collider->impasse.location[0] + e.collider->impasse.size[0] / 2;
-        float xPosOverlapGT = e.collider->impasse.location[0] - e.collider->impasse.size[0] / 2;
-        if (playerIntendedLocation.x < xPosOverlapLT && playerIntendedLocation.x > xPosOverlapGT) {
-          float yPosOverlapLT = e.collider->impasse.location[2] + e.collider->impasse.size[2] / 2;
-          float yPosOverlapGT = e.collider->impasse.location[2] - e.collider->impasse.size[2] / 2;
-          if (playerIntendedLocation.z < yPosOverlapLT && playerIntendedLocation.z > yPosOverlapGT) {
-            movedir.positionChanged = false;
-            if (playerIntendedLocation.y + 0.5f > yTop) {
-              movedir.falling = false;
-              movedir.onGround = true;
-              camera.Position.y += 0.5f;
-              movedir.lastOnGroundHeight = camera.Position.y;
-              playlandingsound();
+  /*  - entities should not be modified here only checking and determining player location */
+  if (movedir.positionChanged) {        // only do this check if the player actually moved
+    for (auto const & e : entities) {   // const by reference
+      if (e.collider != nullptr &&      //collider is not null (potentially a blocker)
+        abs(e.collider->impasse.location[0] - playerIntendedLocation.x) < (logic_checking_distance / 2) + 1 &&
+        abs(e.collider->impasse.location[1] - playerIntendedLocation.y) < (logic_checking_distance / 4) + 1 &&
+        abs(e.collider->impasse.location[2] - playerIntendedLocation.z) < (logic_checking_distance / 2) + 1) {   //close enough to be worth checking
+        float yTop = e.collider->impasse.location[1] + e.collider->impasse.size[1] / 2;
+        float yBot = e.collider->impasse.location[1] - e.collider->impasse.size[1] / 2;
+        if (playerIntendedLocation.y < yTop && playerIntendedLocation.y > yBot) {  // inbetween the y
+          float xPosOverlapLT = e.collider->impasse.location[0] + e.collider->impasse.size[0] / 2;
+          float xPosOverlapGT = e.collider->impasse.location[0] - e.collider->impasse.size[0] / 2;
+          if (playerIntendedLocation.x < xPosOverlapLT && playerIntendedLocation.x > xPosOverlapGT) {  // inbetween the x & y
+            float yPosOverlapLT = e.collider->impasse.location[2] + e.collider->impasse.size[2] / 2;
+            float yPosOverlapGT = e.collider->impasse.location[2] - e.collider->impasse.size[2] / 2;
+            if (playerIntendedLocation.z < yPosOverlapLT && playerIntendedLocation.z > yPosOverlapGT) {  // in between the x & y & z
+              
+              if (!movedir.onGround) { 
+                playerIntendedLocation.x = camera.Position.x;
+                playerIntendedLocation.z = camera.Position.z;
+                //break; 
+              }
+              else {
+                movedir.positionChanged = false;
+
+              }
+
+              if (playerIntendedLocation.y + 0.5f > yTop) {
+                movedir.falling = false;
+                movedir.onGround = true;
+                camera.Position.y += 0.5f;
+                movedir.lastOnGroundHeight = camera.Position.y;
+                playlandingsound();
+              }
             }
           }
         }
