@@ -67,7 +67,23 @@ void playequipgearsound() {
 
 void toggleAmbientWindyNight() {
   if (!soundReady) initsound();
-  Mix_PlayMusic(AMBIENT_windy_night, -1);
+  static bool playing = false;
+  static bool paused = false;
+  if (!playing && !paused) {
+    Mix_PlayMusic(AMBIENT_windy_night, -1);
+    playing = true;
+  }
+  else if (playing && !paused) {
+    Mix_PauseMusic();
+    paused = true;
+  }
+  else if (playing && paused) {
+    Mix_ResumeMusic();
+    paused = false;
+  }
+  else {
+    std::cout << "error with toggleAmbientWindyNight function\n";
+  }
 }
 
 //--------------------init sound---------------
