@@ -78,17 +78,17 @@ void Player::processCommands(float deltaTime)
   if (movedir.positionChanged) {        // only do this check if the player actually moved
     for (auto const & e : entities) {   // const by reference
       if (e.collider != nullptr &&      //collider is not null (potentially a blocker)
-        abs(e.collider->impasse.location[0] - playerIntendedLocation.x) < (logic_checking_distance / 1.5) + 1 &&
-        abs(e.collider->impasse.location[1] - playerIntendedLocation.y) < (logic_checking_distance / 4) + 1 &&
-        abs(e.collider->impasse.location[2] - playerIntendedLocation.z) < (logic_checking_distance / 1.5) + 1) {   //close enough to be worth checking
-        float yTop = e.collider->impasse.location[1] + e.collider->impasse.size[1] / 2;
-        float yBot = e.collider->impasse.location[1] - e.collider->impasse.size[1] / 2;
+        abs(e.collider->impasse.loc[0] - playerIntendedLocation.x) < (logic_checking_distance / 1.5) + 1 &&
+        abs(e.collider->impasse.loc[1] - playerIntendedLocation.y) < (logic_checking_distance / 4) + 1 &&
+        abs(e.collider->impasse.loc[2] - playerIntendedLocation.z) < (logic_checking_distance / 1.5) + 1) {   //close enough to be worth checking
+        float yTop = e.collider->impasse.loc[1] + e.collider->impasse.sz[1] / 2;
+        float yBot = e.collider->impasse.loc[1] - e.collider->impasse.sz[1] / 2;
         if (playerIntendedLocation.y < yTop && playerIntendedLocation.y > yBot) {  // inbetween the y
-          float xPosOverlapLT = e.collider->impasse.location[0] + e.collider->impasse.size[0] / 2;
-          float xPosOverlapGT = e.collider->impasse.location[0] - e.collider->impasse.size[0] / 2;
+          float xPosOverlapLT = e.collider->impasse.loc[0] + e.collider->impasse.sz[0] / 2;
+          float xPosOverlapGT = e.collider->impasse.loc[0] - e.collider->impasse.sz[0] / 2;
           if (playerIntendedLocation.x < xPosOverlapLT && playerIntendedLocation.x > xPosOverlapGT) {  // inbetween the x & y
-            float yPosOverlapLT = e.collider->impasse.location[2] + e.collider->impasse.size[2] / 2;
-            float yPosOverlapGT = e.collider->impasse.location[2] - e.collider->impasse.size[2] / 2;
+            float yPosOverlapLT = e.collider->impasse.loc[2] + e.collider->impasse.sz[2] / 2;
+            float yPosOverlapGT = e.collider->impasse.loc[2] - e.collider->impasse.sz[2] / 2;
             if (playerIntendedLocation.z < yPosOverlapLT && playerIntendedLocation.z > yPosOverlapGT) {  // in between the x & y & z
 
               if (!movedir.onGround) {
