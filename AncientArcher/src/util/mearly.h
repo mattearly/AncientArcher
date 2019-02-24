@@ -45,7 +45,7 @@ namespace mearly {
   /// \brief BBC BoundingBoxCollision (Impasse, Impasse)
   /// \returns true if they collide, returns false if they do not
   ///
-  bool BBC(Impasse a, Impasse b);
+  bool BBC(const Impasse &a, const Impasse &b);
 
 }  //end namespace mearly
 

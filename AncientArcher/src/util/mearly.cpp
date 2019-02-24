@@ -43,19 +43,18 @@ namespace mearly {
     return ntkd(mgen);
   }
 
-  bool BBC(Impasse a, Impasse b)
+  bool BBC(const Impasse &a, const Impasse &b)
   {
-
     if (
-      a.location[0] + a.size[0] / 2.f > b.location[0] + b.size[0] / 2.f &&
-      a.location[1] + a.size[1] / 2.f > b.location[1] + b.size[0] / 2.f &&
-      a.location[0] + a.size[2] / 2.f > b.location[2] + b.size[2] / 2.f
+      a.location[0] + a.size[0] / 2.f /* right side of box a */  >  b.location[0] - b.size[0] / 2.f /* left side of box b */ &&  
+      a.location[0] - a.size[0] / 2.f /* left side of box a */   >  b.location[0] + b.size[0] / 2.f /* right side of box b */ &&
+      a.location[1] + a.size[1] / 2.f /* top side of box a */    >  b.location[1] - b.size[1] / 2.f /* bottom side of box b*/ &&
+      a.location[1] - a.size[1] / 2.f /* front side of box a */  >  b.location[1] + b.size[1] / 2.f /* top side of box b */ &&
+      a.location[2] + a.size[2] / 2.f /* back side of box a */   >  b.location[2] - b.size[2] / 2.f /* front side of box b */ &&
+      a.location[2] - a.size[2] / 2.f /* front side of box a */   >  b.location[2] + b.size[2] / 2.f /* back side of box b*/
       ) {
       return true;
     }
-
     return false;
   }
-
-
 }
