@@ -45,16 +45,30 @@ namespace mearly {
 
   bool BBC(const Impasse &a, const Impasse &b)
   {
-    if (
-      a.location[0] + a.size[0] / 2.f /* right side of box a */  >  b.location[0] - b.size[0] / 2.f /* left side of box b */ &&  
-      a.location[0] - a.size[0] / 2.f /* left side of box a */   >  b.location[0] + b.size[0] / 2.f /* right side of box b */ &&
-      a.location[1] + a.size[1] / 2.f /* top side of box a */    >  b.location[1] - b.size[1] / 2.f /* bottom side of box b*/ &&
-      a.location[1] - a.size[1] / 2.f /* front side of box a */  >  b.location[1] + b.size[1] / 2.f /* top side of box b */ &&
-      a.location[2] + a.size[2] / 2.f /* back side of box a */   >  b.location[2] - b.size[2] / 2.f /* front side of box b */ &&
-      a.location[2] - a.size[2] / 2.f /* front side of box a */   >  b.location[2] + b.size[2] / 2.f /* back side of box b*/
-      ) {
-      return true;
+    float box_a_righ = a.loc[0] + a.sz[0] / 2.f;
+    float box_a_left = a.loc[0] - a.sz[0] / 2.f;
+    float box_b_left = b.loc[0] - b.sz[0] / 2.f;
+    float box_b_righ = b.loc[0] + b.sz[0] / 2.f;
+    // right side of box A *could* collide with box B          // left side of box A *could* collide with box B
+    if (box_a_righ > box_b_left && box_a_righ < box_b_righ || box_a_left > box_b_left && box_a_left < box_b_righ) {
+      float box_a_top = a.loc[1] + a.sz[1] / 2.f;
+      float box_a_bot = a.loc[1] - a.sz[1] / 2.f;
+      float box_b_top = b.loc[1] + b.sz[1] / 2.f;
+      float box_b_bot = b.loc[1] - b.sz[1] / 2.f;
+      // top side of box could be inside box b            // bottom side of box could be inside box b
+      if (box_a_top > box_b_bot && box_a_top < box_b_top || box_a_bot > box_b_bot && box_a_bot < box_b_top) {
+        float box_a_back = a.loc[2] + a.sz[2] / 2.f;
+        float box_a_fron = a.loc[2] - a.sz[2] / 2.f;
+        float box_b_back = b.loc[2] + b.sz[2] / 2.f;
+        float box_b_fron = b.loc[2] - b.sz[2] / 2.f;
+        // back of box a could be inside box b                 // front of box a could be inside box b
+        if (box_a_back > box_b_fron && box_a_back < box_b_back || box_a_fron > box_b_fron && box_a_fron < box_b_back) {
+          return true;
+        }
+      }
     }
     return false;
   }
+
+  /* end namespace mearly */
 }

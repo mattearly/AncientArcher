@@ -37,8 +37,8 @@ namespace mearly {
 
 
   struct Impasse {
-    float location[3];
-    float size[3];
+    float loc[3];
+    float sz[3];
   };
 
   ///
