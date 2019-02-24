@@ -27,13 +27,7 @@ void Game::mainLoop() {
     deltaTime = currentFrame - lastFrame;
     lastFrame = currentFrame;
 
-    //controls.keyboardInput(player);
-
     player->update(deltaTime);
-
-    //collision.processPointCollision(player, deltaTime, glm::vec3(player->getEntity(), 0.0f, 0.0f), glm::vec3(.0f, .0f, .0f));
-
-    //camera.update();
 
     renderer.update(player, &primativeManager, deltaTime);
 
