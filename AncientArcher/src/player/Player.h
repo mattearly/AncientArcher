@@ -32,8 +32,6 @@ public:
   Player();
   Player(float leg_power);
 
-  ~Player();
-
   void update(float deltaTime);
 
     // accessors
