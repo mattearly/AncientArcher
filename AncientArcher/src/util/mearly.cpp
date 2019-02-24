@@ -23,7 +23,7 @@ namespace mearly {
     return dist2(mgen);
   }
 
-  // returns an interger between n and k randomly
+  // returns a interger between n and k randomly
   int NTKR(int n, int k) {
     static uint64_t timeSeed = std::chrono::high_resolution_clock::now().time_since_epoch().count();
     static std::seed_seq ss{ uint32_t(timeSeed & 0xffffffff), uint32_t(timeSeed >> 32) };
@@ -33,6 +33,7 @@ namespace mearly {
     return ntkd(mgen);
   }
 
+  // returns a float between n and k randomly
   float NTKR(float n, float k) {
     static uint64_t timeSeed = std::chrono::high_resolution_clock::now().time_since_epoch().count();
     static std::seed_seq ss{ uint32_t(timeSeed & 0xffffffff), uint32_t(timeSeed >> 32) };
@@ -40,6 +41,20 @@ namespace mearly {
 
     std::uniform_real_distribution<float> ntkd(n, k);
     return ntkd(mgen);
+  }
+
+  bool BBC(Impasse a, Impasse b)
+  {
+
+    if (
+      a.location[0] + a.size[0] / 2.f > b.location[0] + b.size[0] / 2.f &&
+      a.location[1] + a.size[1] / 2.f > b.location[1] + b.size[0] / 2.f &&
+      a.location[0] + a.size[2] / 2.f > b.location[2] + b.size[2] / 2.f
+      ) {
+      return true;
+    }
+
+    return false;
   }
 
 

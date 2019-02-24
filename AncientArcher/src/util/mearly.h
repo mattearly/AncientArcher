@@ -35,5 +35,17 @@ namespace mearly {
   ///
   float NTKR(float n, float k);
 
+
+  struct Impasse {
+    float location[3];
+    float size[3];
+  };
+
+  ///
+  /// \brief BBC BoundingBoxCollision (Impasse, Impasse)
+  /// \returns true if they collide, returns false if they do not
+  ///
+  bool BBC(Impasse a, Impasse b);
+
 }  //end namespace mearly
 
