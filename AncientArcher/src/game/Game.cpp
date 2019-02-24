@@ -24,7 +24,7 @@ Game::Game() {
   glGetIntegerv(GL_MAX_COMBINED_TEXTURE_IMAGE_UNITS, &__textures_allowed);
   std::cout << "Max combined textures:  " << __textures_allowed << "\n";
 
-  player = new Player(90.0f);
+  player = new Player(100.0f);
 
   /* load 32 textures */
   texBank.loadTexture("../AncientArcher/res/texture/00-pixelized_grass.png");
@@ -63,7 +63,7 @@ Game::Game() {
   lighting.setConstantLight();
 
   for (int i = 0; i < 4; i++) {
-    Entity floor(
+    Entity floor1(
       // TYPE
       ENTITYTYPE::PLANE,
       // LOCATION 
@@ -75,11 +75,9 @@ Game::Game() {
       // COLLISION?
       true
     );
-    entities.push_back(floor);
-  }
+    entities.push_back(floor1);
 
-  for (int i = 0; i < 4; i++) {
-    Entity floor(
+    Entity floor2(
       // TYPE
       ENTITYTYPE::PLANE,
       // LOCATION 
@@ -91,11 +89,9 @@ Game::Game() {
       // COLLISION?
       true
     );
-    entities.push_back(floor);
-  }
+    entities.push_back(floor2);
 
-  for (int i = 0; i < 4; i++) {
-    Entity floor(
+    Entity floor3(
       // TYPE
       ENTITYTYPE::PLANE,
       // LOCATION 
@@ -107,11 +103,9 @@ Game::Game() {
       // COLLISION?
       true
     );
-    entities.push_back(floor);
-  }
+    entities.push_back(floor3);
 
-  for (int i = 0; i < 4; i++) {
-    Entity floor(
+    Entity floor4(
       // TYPE
       ENTITYTYPE::PLANE,
       // LOCATION 
@@ -123,42 +117,61 @@ Game::Game() {
       // COLLISION?
       true
     );
-    entities.push_back(floor);
+    entities.push_back(floor4);
   }
 
+  bool collide = false;
+  int total_collisions = 0;
   // many test blocks
-  for (int i = 0; i < 500; i++) {
+  for (int i = 0; i < 2000; i++) {
+
+    Entity *e;
 
     if (i % 3 == 0) {
-      Entity e(
+      e = new Entity(
         ENTITYTYPE::SQUARE,
-        glm::vec3(mearly::NTKR(3.f, logic_checking_distance * 3), mearly::NTKR(6.01f, 10.0f), mearly::NTKR(3.f, logic_checking_distance * 3)),
-        glm::vec3(mearly::NTKR(2.5f, 4.5f), mearly::NTKR(2.5f, 4.5f), mearly::NTKR(2.5f, 4.5f)),
+        glm::vec3(mearly::NTKR(3.f, logic_checking_distance * 3.5), mearly::NTKR(7.01f, 15.0f), mearly::NTKR(3.f, logic_checking_distance * 3.5)),
+        glm::vec3(mearly::NTKR(2.5f, 4.5f), mearly::NTKR(0.3f, 10.5f), mearly::NTKR(2.5f, 4.5f)),
         mearly::NTKR(0, 31),
         true
       );
-      entities.push_back(e);
     }
     else if (i % 3 == 1) {
-      Entity e(
+      e = new Entity(
         ENTITYTYPE::SQUARE,
-        glm::vec3(mearly::NTKR(3.f, logic_checking_distance * 3), mearly::NTKR(2.01f, 8.0f), mearly::NTKR(3.f, logic_checking_distance * 3)),
-        glm::vec3(mearly::NTKR(0.5f, 10.0f), mearly::NTKR(0.5f, 5.0f), mearly::NTKR(0.5f, 10.0f)),
+        glm::vec3(mearly::NTKR(3.f, logic_checking_distance * 3.5), mearly::NTKR(2.01f, 8.0f), mearly::NTKR(3.f, logic_checking_distance * 3.5)),
+        glm::vec3(mearly::NTKR(0.5f, 8.0f), mearly::NTKR(0.5f, 5.0f), mearly::NTKR(0.5f, 8.0f)),
         mearly::NTKR(0, 31),
         true
       );
-      entities.push_back(e);
     }
     else {
-      Entity e(
+      e = new Entity(
         ENTITYTYPE::SQUARE,
-        glm::vec3(mearly::NTKR(3.f, logic_checking_distance * 3), 1.01f, mearly::NTKR(3.f, logic_checking_distance * 3)),
+        glm::vec3(mearly::NTKR(3.f, logic_checking_distance * 3.5), 1.56f, mearly::NTKR(3.f, logic_checking_distance * 3.5)),
         glm::vec3(2.f, 2.f, 2.f),
         mearly::NTKR(0, 31),
         true
       );
-      entities.push_back(e);
+    }
+
+    for (auto const & f : entities) {
+      if (mearly::BBC(e->collider->impasse, f.collider->impasse)) {
+        collide = true;
+        total_collisions++;
+        break;
+      }
+    }
+
+    if (!collide) {
+      entities.push_back(*e);
+    }
+    else {
+      i--;
+      collide = false; //reset for next run;
     }
 
   }
+
+  std::cout << "totol collisions: " << total_collisions << "\ntotal entities: " << entities.size() << "\n";
 }
