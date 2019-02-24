@@ -103,6 +103,10 @@ void Controls::playerKeyboardInput()
     }
   }
 
+  if (glfwGetKey(display.window, GLFW_KEY_M) == GLFW_PRESS) {
+    toggleAmbientWindyNight();
+  }
+
   if (glfwGetKey(display.window, GLFW_KEY_SPACE) == GLFW_PRESS) {
     if (movedir.onGround && movedir.canJumpAgain) {  //can jump again is to make the spacebar spam by holding it down not work
       movedir.jumped = true;
