@@ -60,7 +60,7 @@ void Player::processCommands(float deltaTime)
     }
     // PHASE 2: rising velocity
     else if (!movedir.onGround && !movedir.falling) {
-      playerIntendedLocation.y += camera.WorldUp.y * getRisingSpeed() * deltaTime; // RISING SPEED CALC: jump speed based on LegPower Player Stat
+      playerIntendedLocation.y += camera.WorldUp.y * getRisingSpeed() * deltaTime;   // RISING SPEED CALC: jump speed based on LegPower Player Stat
       if (playerIntendedLocation.y > getJumpHeight() + movedir.lastOnGroundHeight) { // MAX HEIGHT CALC: jump height based on LegPower Player Stat
         movedir.falling = true;
       }
@@ -68,18 +68,19 @@ void Player::processCommands(float deltaTime)
     // PHASE 3: falling velocity
     else if (movedir.falling && !movedir.onGround) {
       playerIntendedLocation.y += GRAVITY * deltaTime;
+      //playerIntendedLocation.y += (GRAVITY * accumulated_delta_time < TERMINAL_VELOCITY) ? GRAVITY * accumulated_delta_time : TERMINAL_VELOCITY;
     }
     movedir.positionChanged = true;
   }
 
   /* stop player from walking through impassable entities */
-  /*  - entities should not be modified here only checking and determining player location */
+  /*  - entities should not be modified here only checking and determining plafyer location */
   if (movedir.positionChanged) {        // only do this check if the player actually moved
     for (auto const & e : entities) {   // const by reference
       if (e.collider != nullptr &&      //collider is not null (potentially a blocker)
-        abs(e.collider->impasse.location[0] - playerIntendedLocation.x) < (logic_checking_distance / 2) + 1 &&
+        abs(e.collider->impasse.location[0] - playerIntendedLocation.x) < (logic_checking_distance / 1.5) + 1 &&
         abs(e.collider->impasse.location[1] - playerIntendedLocation.y) < (logic_checking_distance / 4) + 1 &&
-        abs(e.collider->impasse.location[2] - playerIntendedLocation.z) < (logic_checking_distance / 2) + 1) {   //close enough to be worth checking
+        abs(e.collider->impasse.location[2] - playerIntendedLocation.z) < (logic_checking_distance / 1.5) + 1) {   //close enough to be worth checking
         float yTop = e.collider->impasse.location[1] + e.collider->impasse.size[1] / 2;
         float yBot = e.collider->impasse.location[1] - e.collider->impasse.size[1] / 2;
         if (playerIntendedLocation.y < yTop && playerIntendedLocation.y > yBot) {  // inbetween the y
@@ -89,30 +90,57 @@ void Player::processCommands(float deltaTime)
             float yPosOverlapLT = e.collider->impasse.location[2] + e.collider->impasse.size[2] / 2;
             float yPosOverlapGT = e.collider->impasse.location[2] - e.collider->impasse.size[2] / 2;
             if (playerIntendedLocation.z < yPosOverlapLT && playerIntendedLocation.z > yPosOverlapGT) {  // in between the x & y & z
-              
-              if (!movedir.onGround) { 
-                playerIntendedLocation.x = camera.Position.x;
-                playerIntendedLocation.z = camera.Position.z;
-                //break; 
+
+              if (!movedir.onGround) {
+                /* just x and z */
+                //playerIntendedLocation.x = camera.Position.x;
+                //playerIntendedLocation.z = camera.Position.z;
+
+                /* all 3 */
+                playerIntendedLocation = camera.Position;
+                movedir.falling = true;
               }
               else {
                 movedir.positionChanged = false;
-
               }
 
-              if (playerIntendedLocation.y + 0.5f > yTop) {
+              if (playerIntendedLocation.y > yTop) {
                 movedir.falling = false;
                 movedir.onGround = true;
-                camera.Position.y += 0.5f;
                 movedir.lastOnGroundHeight = camera.Position.y;
                 playlandingsound();
               }
+
             }
           }
         }
       }
     }
   }
+
+  //if (!movedir.onGround || movedir.falling) {  // this loop is to stop the player from jumping through blocks
+  //  for (auto const & e : entities) {   // const by reference
+  //    if (e.collider != nullptr &&      // collider is not null (potentially a blocker)
+  //      abs(e.collider->impasse.location[0] - playerIntendedLocation.x) < (logic_checking_distance / 2) + 1 &&
+  //      abs(e.collider->impasse.location[1] - playerIntendedLocation.y) < (logic_checking_distance / 4) + 1 &&
+  //      abs(e.collider->impasse.location[2] - playerIntendedLocation.z) < (logic_checking_distance / 2) + 1) {   //close enough to be worth checking   
+  //      float xPosOverlapLT = e.collider->impasse.location[0] + e.collider->impasse.size[0] / 2;
+  //      float xPosOverlapGT = e.collider->impasse.location[0] - e.collider->impasse.size[0] / 2;
+  //      if (playerIntendedLocation.x < xPosOverlapLT && playerIntendedLocation.x > xPosOverlapGT) {  // inbetween the x
+  //        float yPosOverlapLT = e.collider->impasse.location[2] + e.collider->impasse.size[2] / 2;
+  //        float yPosOverlapGT = e.collider->impasse.location[2] - e.collider->impasse.size[2] / 2;
+  //        if (playerIntendedLocation.z < yPosOverlapLT && playerIntendedLocation.z > yPosOverlapGT) {  // in between the x & z
+  //          float yTop = e.collider->impasse.location[1] + e.collider->impasse.size[1] / 2;
+  //          float yBot = e.collider->impasse.location[1] - e.collider->impasse.size[1] / 2;
+  //          if (playerIntendedLocation.z < yPosOverlapLT && playerIntendedLocation.z > yPosOverlapGT) {  // in between the x & z & y
+
+  //          }
+  //        }
+  //      }
+  //    }
+  //  }
+  //}
+
 
   if (movedir.positionChanged) {
     camera.Position = playerIntendedLocation;
@@ -141,7 +169,6 @@ float Player::getJumpHeight() const {
   return (legPower / STAT_DIVISOR) + BASE_PLAYER_JUMP_HEIGHT;
 }
 
-
 Player::Player() {
 
   entity = new Entity(
@@ -167,5 +194,3 @@ Player::Player(float leg_power) {
   legPower = leg_power;
 
 }
-
-Player::~Player() {}
