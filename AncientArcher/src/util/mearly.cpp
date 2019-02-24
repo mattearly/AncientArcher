@@ -43,31 +43,25 @@ namespace mearly {
     return ntkd(mgen);
   }
 
-  bool BBC(const Impasse &a, const Impasse &b)
+  bool AABB_vs_AABB_3D(const Impasse &a, const Impasse &b)
   {
-    float box_a_righ = a.loc[0] + a.sz[0] / 2.f;
-    float box_a_left = a.loc[0] - a.sz[0] / 2.f;
-    float box_b_left = b.loc[0] - b.sz[0] / 2.f;
-    float box_b_righ = b.loc[0] + b.sz[0] / 2.f;
-    // right side of box A *could* collide with box B          // left side of box A *could* collide with box B
-    if (box_a_righ > box_b_left && box_a_righ < box_b_righ || box_a_left > box_b_left && box_a_left < box_b_righ) {
-      float box_a_top = a.loc[1] + a.sz[1] / 2.f;
-      float box_a_bot = a.loc[1] - a.sz[1] / 2.f;
-      float box_b_top = b.loc[1] + b.sz[1] / 2.f;
-      float box_b_bot = b.loc[1] - b.sz[1] / 2.f;
-      // top side of box could be inside box b            // bottom side of box could be inside box b
-      if (box_a_top > box_b_bot && box_a_top < box_b_top || box_a_bot > box_b_bot && box_a_bot < box_b_top) {
-        float box_a_back = a.loc[2] + a.sz[2] / 2.f;
-        float box_a_fron = a.loc[2] - a.sz[2] / 2.f;
-        float box_b_back = b.loc[2] + b.sz[2] / 2.f;
-        float box_b_fron = b.loc[2] - b.sz[2] / 2.f;
-        // back of box a could be inside box b                 // front of box a could be inside box b
-        if (box_a_back > box_b_fron && box_a_back < box_b_back || box_a_fron > box_b_fron && box_a_fron < box_b_back) {
-          return true;
-        }
-      }
-    }
-    return false;
+
+    float aMinX = a.loc[0] - a.sz[0] / 2.f;
+    float aMaxX = a.loc[0] + a.sz[0] / 2.f;
+    float aMinY = a.loc[1] - a.sz[1] / 2.f;
+    float aMaxY = a.loc[1] + a.sz[1] / 2.f;
+    float aMinZ = a.loc[2] - a.sz[2] / 2.f;
+    float aMaxZ = a.loc[2] + a.sz[2] / 2.f;
+
+    float bMinX = b.loc[0] - b.sz[0] / 2.f;
+    float bMaxX = b.loc[0] + b.sz[0] / 2.f;
+    float bMinY = b.loc[1] - b.sz[1] / 2.f;
+    float bMaxY = b.loc[1] + b.sz[1] / 2.f;
+    float bMinZ = b.loc[2] - b.sz[2] / 2.f;
+    float bMaxZ = b.loc[2] + b.sz[2] / 2.f;
+
+
+    return (aMinX <= bMaxX && aMaxX >= bMinX) && (aMinY <= bMaxY && aMaxY >= bMinY) && (aMinZ <= bMaxZ && aMaxZ >= bMinZ);
   }
 
   /* end namespace mearly */

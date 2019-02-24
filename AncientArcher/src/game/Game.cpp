@@ -62,14 +62,16 @@ Game::Game() {
 
   lighting.setConstantLight();
 
+  float ground_plane_thickness = 0.03f;
+  float ground_plane_level = -0.01f;
   for (int i = 0; i < 4; i++) {
     Entity floor1(
       // TYPE
       ENTITYTYPE::PLANE,
       // LOCATION 
-      glm::vec3(i * logic_checking_distance, 0.0f, logic_checking_distance / 2.f),
+      glm::vec3(i * logic_checking_distance, ground_plane_level, logic_checking_distance / 2.f),
       // SIZE
-      glm::vec3(logic_checking_distance, 0.5f, logic_checking_distance),
+      glm::vec3(logic_checking_distance, ground_plane_thickness, logic_checking_distance),
       // TEXTURE ID
       mearly::NTKR(0, 6),
       // COLLISION?
@@ -81,9 +83,9 @@ Game::Game() {
       // TYPE
       ENTITYTYPE::PLANE,
       // LOCATION 
-      glm::vec3(i * logic_checking_distance, 0.0f, logic_checking_distance * 1.5f),
+      glm::vec3(i * logic_checking_distance, ground_plane_level, logic_checking_distance * 1.5f),
       // SIZE
-      glm::vec3(logic_checking_distance, 0.5f, logic_checking_distance),
+      glm::vec3(logic_checking_distance, ground_plane_thickness, logic_checking_distance),
       // TEXTURE ID
       mearly::NTKR(0, 6),
       // COLLISION?
@@ -95,9 +97,9 @@ Game::Game() {
       // TYPE
       ENTITYTYPE::PLANE,
       // LOCATION 
-      glm::vec3(i * logic_checking_distance, 0.0f, logic_checking_distance * 2.5f),
+      glm::vec3(i * logic_checking_distance, ground_plane_level, logic_checking_distance * 2.5f),
       // SIZE
-      glm::vec3(logic_checking_distance, 0.5f, logic_checking_distance),
+      glm::vec3(logic_checking_distance, ground_plane_thickness, logic_checking_distance),
       // TEXTURE ID
       mearly::NTKR(0, 6),
       // COLLISION?
@@ -109,9 +111,9 @@ Game::Game() {
       // TYPE
       ENTITYTYPE::PLANE,
       // LOCATION 
-      glm::vec3(i * logic_checking_distance, 0.0f, logic_checking_distance * 3.5f),
+      glm::vec3(i * logic_checking_distance, ground_plane_level, logic_checking_distance * 3.5f),
       // SIZE
-      glm::vec3(logic_checking_distance, 0.5f, logic_checking_distance),
+      glm::vec3(logic_checking_distance, ground_plane_thickness, logic_checking_distance),
       // TEXTURE ID
       mearly::NTKR(0, 6),
       // COLLISION?
@@ -131,7 +133,7 @@ Game::Game() {
       e = new Entity(
         ENTITYTYPE::SQUARE,
         glm::vec3(mearly::NTKR(3.f, logic_checking_distance * 3.5), mearly::NTKR(7.01f, 15.0f), mearly::NTKR(3.f, logic_checking_distance * 3.5)),
-        glm::vec3(mearly::NTKR(2.5f, 4.5f), mearly::NTKR(0.3f, 10.5f), mearly::NTKR(2.5f, 4.5f)),
+        glm::vec3(mearly::NTKR(2.5f, 4.5f), mearly::NTKR(0.3f, 6.5f), mearly::NTKR(2.5f, 4.5f)),
         mearly::NTKR(0, 31),
         true
       );
@@ -148,7 +150,7 @@ Game::Game() {
     else {
       e = new Entity(
         ENTITYTYPE::SQUARE,
-        glm::vec3(mearly::NTKR(3.f, logic_checking_distance * 3.5), 1.56f, mearly::NTKR(3.f, logic_checking_distance * 3.5)),
+        glm::vec3(mearly::NTKR(3.f, logic_checking_distance * 3.5), 1.08f, mearly::NTKR(3.f, logic_checking_distance * 3.5)),
         glm::vec3(2.f, 2.f, 2.f),
         mearly::NTKR(0, 31),
         true
@@ -156,7 +158,7 @@ Game::Game() {
     }
 
     for (auto const & f : entities) {
-      if (mearly::BBC(e->collider->impasse, f.collider->impasse)) {
+      if (mearly::AABB_vs_AABB_3D(e->collider->impasse, f.collider->impasse)) {
         collide = true;
         total_collisions++;
         break;
