@@ -36,18 +36,25 @@ namespace mearly {
   float NTKR(float n, float k);
 
 
-  /// for BBC
+  /// for collision
+  /// considering this article for implementation: https://developer.mozilla.org/en-US/docs/Games/Techniques/3D_collision_detection
   struct Impasse {
     float loc[3];
     float sz[3];
   };
 
   ///
-  /// \brief BBC BoundingBoxCollision (Impasse, Impasse)
-  ///        considering this article for implementation: https://developer.mozilla.org/en-US/docs/Games/Techniques/3D_collision_detection
+  /// \brief AABB_vs_AABB_3D (Impasse, Impasse)
   /// \returns true if they collide, returns false if they do not
   ///
   bool AABB_vs_AABB_3D(const Impasse &a, const Impasse &b);
+
+  ///
+  /// \brief BBC BoundingBoxCollision (Impasse, Impasse)
+  /// \returns true if they collide, returns false if they do not
+  ///
+  bool point_vs_AABB_3D(const float &px, const float &py, const float &pz, const Impasse &b);
+
 
 }  //end namespace mearly
 

@@ -64,5 +64,17 @@ namespace mearly {
     return (aMinX <= bMaxX && aMaxX >= bMinX) && (aMinY <= bMaxY && aMaxY >= bMinY) && (aMinZ <= bMaxZ && aMaxZ >= bMinZ);
   }
 
+  bool point_vs_AABB_3D(const float & px, const float & py, const float & pz, const Impasse & b)
+  {
+    float bMinX = b.loc[0] - b.sz[0] / 2.f;
+    float bMaxX = b.loc[0] + b.sz[0] / 2.f;
+    float bMinY = b.loc[1] - b.sz[1] / 2.f;
+    float bMaxY = b.loc[1] + b.sz[1] / 2.f;
+    float bMinZ = b.loc[2] - b.sz[2] / 2.f;
+    float bMaxZ = b.loc[2] + b.sz[2] / 2.f;
+
+    return (px >= bMinX && px <= bMaxX) && (py >= bMinY && py <= bMaxY) && (pz >= bMinZ && pz <= bMaxZ);
+  }
+
   /* end namespace mearly */
 }
