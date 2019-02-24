@@ -24,16 +24,16 @@ namespace mearly {
   int ZOOR();
 
   ///
-  /// \brief NTKR N-To-K-Random
-  /// \return an random integer in the range N to K
+  /// \brief NTKR N-To-K-Random (int, int)
+  /// \return a random integer in the range N to K
   ///
   int NTKR(int n, int k);
 
   ///
-  /// \brief NTKR N-To-K-Random
-  /// \return an random float in the range N to K
+  /// \brief NTKR N-To-K-Random (float, float)
+  /// \return a random float in the range N to K
   ///
-  float NTRK(float n, float k);
+  float NTKR(float n, float k);
 
 }  //end namespace mearly
 
