@@ -4,7 +4,6 @@
 #include "Camera.h"
 #include "Controls.h"
 
-#include "../player/Player.h"
 #include "../sound/Sound.h"
 #include "../game/Game.h"
 
@@ -73,7 +72,6 @@ void Controls::playerKeyboardInput()
     if (movedir.onGround) {
       movedir.back = false;
       movedir.forward = true;
-      movedir.positionChanged = true;
     }
   }
 
@@ -81,7 +79,6 @@ void Controls::playerKeyboardInput()
     if (movedir.onGround) {
       movedir.forward = false;
       movedir.back = true;
-      movedir.positionChanged = true;
 
     }
   }
@@ -90,7 +87,6 @@ void Controls::playerKeyboardInput()
     if (movedir.onGround) {
       movedir.right = false;
       movedir.left = true;
-      movedir.positionChanged = true;
 
     }
   }
@@ -99,7 +95,6 @@ void Controls::playerKeyboardInput()
     if (movedir.onGround) {
       movedir.left = false;
       movedir.right = true;
-      movedir.positionChanged = true;
     }
   }
 

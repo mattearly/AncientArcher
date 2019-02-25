@@ -4,8 +4,6 @@
 
 class Player;
 
-static float TIMEBETWEENFOOTSTEPS = 2.0f;
-
 class Controls {
 
 public:
