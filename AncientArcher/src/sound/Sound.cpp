@@ -107,6 +107,8 @@ void initsound() {
   footstepsoundeffects[3] = Mix_LoadWAV("../AncientArcher/res/sfx/footstep04.wav");  // load footsteps
   footstepsoundeffects[4] = Mix_LoadWAV("../AncientArcher/res/sfx/footstep05.wav");  // load footsteps
   footstepsoundeffects[5] = Mix_LoadWAV("../AncientArcher/res/sfx/footstep06.wav");  // load footsteps
+  footstepsoundeffects[6] = Mix_LoadWAV("../AncientArcher/res/sfx/footstep07.wav");  // load footsteps
+  footstepsoundeffects[7] = Mix_LoadWAV("../AncientArcher/res/sfx/footstep08.wav");  // load footsteps
   for (auto &se : footstepsoundeffects) {  //test footstep load
     if (se == nullptr) {
       SDL_LogError(SDL_LOG_CATEGORY_APPLICATION,
