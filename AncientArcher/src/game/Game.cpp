@@ -175,5 +175,5 @@ Game::Game() {
 
   }
 
-  std::cout << "totol collisions: " << total_collisions << "\ntotal entities: " << entities.size() << "\n";
+  std::cout << "total collisions: " << total_collisions << "\ntotal entities: " << entities.size() << "\n";
 }
