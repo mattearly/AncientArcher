@@ -23,4 +23,24 @@ void Entity::moveby(glm::vec3 amount)
   this->gameItem.location[0] += amount.x;
   this->gameItem.location[1] += amount.y;
   this->gameItem.location[2] += amount.z;
+  if (collider != nullptr) {
+    this->collider->impasse.loc[0] += amount.x;
+    this->collider->impasse.loc[1] += amount.y;
+    this->collider->impasse.loc[2] += amount.z;
+  }
 }
+
+void Entity::moveto(glm::vec3 newLocation)
+{
+
+  this->gameItem.location[0] = newLocation.x;
+  this->gameItem.location[1] = newLocation.y;
+  this->gameItem.location[2] = newLocation.z;
+  if (collider != nullptr) {
+    this->collider->impasse.loc[0] = newLocation.x;
+    this->collider->impasse.loc[1] = newLocation.y;
+    this->collider->impasse.loc[2] = newLocation.z;
+  }
+}
+
+
