@@ -14,8 +14,6 @@ struct Movement {
   bool onGround = true;
   bool falling = false;
 
-  float timeSinceLastStep = 0.0f;
-
   float lastOnGroundHeight = 0.0f;
   float currentGroundHeight = 0.0f;
 
@@ -23,7 +21,7 @@ struct Movement {
 
   bool canJump() { return canJumpAgain && onGround && !falling; };
   bool canBoost() { return forward && !back; };
-
+  bool isBoosted() { return forward && boost; };
 };
 
 class Player {

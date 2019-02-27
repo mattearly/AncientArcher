@@ -117,34 +117,25 @@ void Player::processCommands(float deltaTime)
     }
   }
 
-  //if (!movedir.onGround || movedir.falling) {  // this loop is to stop the player from jumping through blocks
-  //  for (auto const & e : entities) {   // const by reference
-  //    if (e.collider != nullptr &&      // collider is not null (potentially a blocker)
-  //      abs(e.collider->impasse.location[0] - playerIntendedLocation.x) < (logic_checking_distance / 2) + 1 &&
-  //      abs(e.collider->impasse.location[1] - playerIntendedLocation.y) < (logic_checking_distance / 4) + 1 &&
-  //      abs(e.collider->impasse.location[2] - playerIntendedLocation.z) < (logic_checking_distance / 2) + 1) {   //close enough to be worth checking   
-  //      float xPosOverlapLT = e.collider->impasse.location[0] + e.collider->impasse.size[0] / 2;
-  //      float xPosOverlapGT = e.collider->impasse.location[0] - e.collider->impasse.size[0] / 2;
-  //      if (playerIntendedLocation.x < xPosOverlapLT && playerIntendedLocation.x > xPosOverlapGT) {  // inbetween the x
-  //        float yPosOverlapLT = e.collider->impasse.location[2] + e.collider->impasse.size[2] / 2;
-  //        float yPosOverlapGT = e.collider->impasse.location[2] - e.collider->impasse.size[2] / 2;
-  //        if (playerIntendedLocation.z < yPosOverlapLT && playerIntendedLocation.z > yPosOverlapGT) {  // in between the x & z
-  //          float yTop = e.collider->impasse.location[1] + e.collider->impasse.size[1] / 2;
-  //          float yBot = e.collider->impasse.location[1] - e.collider->impasse.size[1] / 2;
-  //          if (playerIntendedLocation.z < yPosOverlapLT && playerIntendedLocation.z > yPosOverlapGT) {  // in between the x & z & y
-
-  //          }
-  //        }
-  //      }
-  //    }
-  //  }
-  //}
-
-
   if (movedir.positionChanged) {
     camera.Position = playerIntendedLocation;
     lighting.movePointLight(0, playerIntendedLocation);
     entity->moveto(glm::vec3(playerIntendedLocation.x, playerIntendedLocation.y - .2f, playerIntendedLocation.z));
+
+    if (movedir.onGround) {
+      static const float TimeBetweenFootsteps = 0.7f;
+      static const float TimeBetweenFootstepsRunning = 0.5f;
+      static float accumulatedTime = 0.f;
+      accumulatedTime += deltaTime;
+      if (movedir.isBoosted() && accumulatedTime > TimeBetweenFootstepsRunning) {
+        playfootstepsound();
+        accumulatedTime = 0.f;
+      }
+      else if (accumulatedTime > TimeBetweenFootsteps) {
+        playfootstepsound();
+        accumulatedTime = 0.f;
+      }
+    }
   }
 }
 
