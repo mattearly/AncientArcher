@@ -62,8 +62,9 @@ Game::Game() {
 
   lighting.setConstantLight();
 
-  float ground_plane_thickness = 0.03f;
+  float ground_plane_thickness = 0.09f;
   float ground_plane_level = -0.01f;
+
   for (int i = 0; i < 4; i++) {
     Entity floor1(
       // TYPE
@@ -73,7 +74,7 @@ Game::Game() {
       // SIZE
       glm::vec3(logic_checking_distance, ground_plane_thickness, logic_checking_distance),
       // TEXTURE ID
-      mearly::NTKR(0, 6),
+      0,
       // COLLISION?
       true
     );
@@ -87,7 +88,7 @@ Game::Game() {
       // SIZE
       glm::vec3(logic_checking_distance, ground_plane_thickness, logic_checking_distance),
       // TEXTURE ID
-      mearly::NTKR(0, 6),
+      0,
       // COLLISION?
       true
     );
@@ -101,7 +102,7 @@ Game::Game() {
       // SIZE
       glm::vec3(logic_checking_distance, ground_plane_thickness, logic_checking_distance),
       // TEXTURE ID
-      mearly::NTKR(0, 6),
+      0,
       // COLLISION?
       true
     );
@@ -115,7 +116,7 @@ Game::Game() {
       // SIZE
       glm::vec3(logic_checking_distance, ground_plane_thickness, logic_checking_distance),
       // TEXTURE ID
-      mearly::NTKR(0, 6),
+      0,
       // COLLISION?
       true
     );
