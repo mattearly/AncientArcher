@@ -110,7 +110,6 @@ void Player::processCommands(float deltaTime)
                 movedir.lastOnGroundHeight = camera.Position.y;
                 playlandingsound();
               }
-
             }
           }
         }
@@ -145,6 +144,7 @@ void Player::processCommands(float deltaTime)
   if (movedir.positionChanged) {
     camera.Position = playerIntendedLocation;
     lighting.movePointLight(0, playerIntendedLocation);
+    entity->moveto(glm::vec3(playerIntendedLocation.x, playerIntendedLocation.y - .2f, playerIntendedLocation.z));
   }
 }
 
@@ -172,7 +172,7 @@ float Player::getJumpHeight() const {
 Player::Player() {
 
   entity = new Entity(
-    SQUARE, glm::vec3(0.f, 0.f, 0.f), glm::vec3(0.3f, 0.3f, 0.3f), 31, true
+    SQUARE, glm::vec3(1.5f, 0.26f, 1.5f), glm::vec3(0.2f, 0.3f, 0.2f), mearly::NTKR(0, 31), true
   );
 
   lighting.addPointLight(*camera.getPosition());
@@ -185,7 +185,7 @@ Player::Player() {
 Player::Player(float leg_power) {
 
   entity = new Entity(
-    SQUARE, glm::vec3(0.f, 0.f, 0.f), glm::vec3(0.3f, 0.3f, 0.3f), 31, true
+    SQUARE, glm::vec3(1.5f, 0.26f, 1.5f), glm::vec3(0.2f, 0.3f, 0.2f), mearly::NTKR(0, 31), true
   );
 
   lighting.addPointLight(camera.Position);
