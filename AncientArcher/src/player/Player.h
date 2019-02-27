@@ -22,6 +22,7 @@ struct Movement {
   bool canJump() { return canJumpAgain && onGround && !falling; };
   bool canBoost() { return forward && !back; };
   bool isBoosted() { return forward && boost; };
+
 };
 
 class Player {

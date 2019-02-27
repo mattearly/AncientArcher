@@ -27,6 +27,7 @@ void Player::processCommands(float deltaTime)
 {
   glm::vec3 playerIntendedLocation = camera.Position;
   float velocity;
+  movedir.positionChanged = false;
 
   if (movedir.back || movedir.forward || movedir.left || movedir.right || movedir.jumped || !movedir.onGround) {
     velocity = getRunSpeed() * deltaTime;  // MOVEMENT SPEED CALC : based on player stats
