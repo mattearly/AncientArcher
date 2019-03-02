@@ -29,7 +29,7 @@ void Player::processCommands(float deltaTime)
   float velocity;
   movedir.positionChanged = false;
 
-  if (movedir.back || movedir.forward || movedir.left || movedir.right || movedir.jumped || !movedir.onGround) {
+  if (movedir.isMoving()) {
     velocity = getRunSpeed() * deltaTime;  // MOVEMENT SPEED CALC : based on player stats
     if (movedir.forward) {  // half speed if moving left or right while forward
       if (movedir.left || movedir.right) {
