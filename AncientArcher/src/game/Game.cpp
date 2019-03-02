@@ -64,6 +64,7 @@ Game::Game() {
 
   float ground_plane_thickness = 0.09f;
   float ground_plane_level = -0.01f;
+  int floor_texture_id = 2;
 
   for (int i = 0; i < 4; i++) {
     Entity floor1(
@@ -74,7 +75,7 @@ Game::Game() {
       // SIZE
       glm::vec3(logic_checking_distance, ground_plane_thickness, logic_checking_distance),
       // TEXTURE ID
-      0,
+      floor_texture_id,
       // COLLISION?
       true
     );
@@ -88,7 +89,7 @@ Game::Game() {
       // SIZE
       glm::vec3(logic_checking_distance, ground_plane_thickness, logic_checking_distance),
       // TEXTURE ID
-      0,
+      floor_texture_id,
       // COLLISION?
       true
     );
@@ -102,7 +103,7 @@ Game::Game() {
       // SIZE
       glm::vec3(logic_checking_distance, ground_plane_thickness, logic_checking_distance),
       // TEXTURE ID
-      0,
+      floor_texture_id,
       // COLLISION?
       true
     );
@@ -116,7 +117,7 @@ Game::Game() {
       // SIZE
       glm::vec3(logic_checking_distance, ground_plane_thickness, logic_checking_distance),
       // TEXTURE ID
-      0,
+      floor_texture_id,
       // COLLISION?
       true
     );

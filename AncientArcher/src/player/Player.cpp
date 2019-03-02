@@ -122,8 +122,8 @@ void Player::processCommands(float deltaTime)
     playerEntity->moveto(glm::vec3(playerIntendedLocation.x, playerIntendedLocation.y - .2f, playerIntendedLocation.z));
 
     if (movedir.onGround) {
-      static const float TimeBetweenFootsteps = 0.7f;
-      static const float TimeBetweenFootstepsRunning = 0.5f;
+      static const float TimeBetweenFootsteps = 0.6f;
+      static const float TimeBetweenFootstepsRunning = 0.4f;
       static float accumulatedTime = 0.f;
       accumulatedTime += deltaTime;
       if (movedir.isBoosted() && accumulatedTime > TimeBetweenFootstepsRunning) {
