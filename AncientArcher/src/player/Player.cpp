@@ -4,7 +4,6 @@
 #include "../player/Camera.h"
 #include "../sound/Sound.h"
 
-Entity *entity;
 Controls controls;
 Camera camera;
 
@@ -120,7 +119,7 @@ void Player::processCommands(float deltaTime)
   if (movedir.positionChanged) {
     camera.Position = playerIntendedLocation;
     lighting.movePointLight(0, playerIntendedLocation);
-    entity->moveto(glm::vec3(playerIntendedLocation.x, playerIntendedLocation.y - .2f, playerIntendedLocation.z));
+    playerEntity->moveto(glm::vec3(playerIntendedLocation.x, playerIntendedLocation.y - .2f, playerIntendedLocation.z));
 
     if (movedir.onGround) {
       static const float TimeBetweenFootsteps = 0.7f;
@@ -148,6 +147,11 @@ void Player::increaseLegPower(float add) {
   }
 }
 
+Entity * Player::getEntity() const
+{
+  return playerEntity;
+}
+
 float Player::getRunSpeed() const {
   return (legPower / STAT_DIVISOR) + BASE_PLAYER_SPEED;
 }
@@ -162,8 +166,8 @@ float Player::getJumpHeight() const {
 
 Player::Player() {
 
-  entity = new Entity(
-    SQUARE, glm::vec3(1.5f, 0.26f, 1.5f), glm::vec3(0.2f, 0.3f, 0.2f), mearly::NTKR(0, 31), true
+  playerEntity = new Entity(
+    SQUARE, glm::vec3(1.5f, 0.26f, 1.5f), glm::vec3(0.05f, 0.1f, 0.05f), -1, true
   );
 
   lighting.addPointLight(*camera.getPosition());
@@ -175,8 +179,8 @@ Player::Player() {
 
 Player::Player(float leg_power) {
 
-  entity = new Entity(
-    SQUARE, glm::vec3(1.5f, 0.26f, 1.5f), glm::vec3(0.2f, 0.3f, 0.2f), mearly::NTKR(0, 31), true
+  playerEntity = new Entity(
+    SQUARE, glm::vec3(1.5f, 0.26f, 1.5f), glm::vec3(0.05f, 0.1f, 0.05f), -1, true
   );
 
   lighting.addPointLight(camera.Position);

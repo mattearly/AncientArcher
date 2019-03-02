@@ -5,8 +5,6 @@
 
 #include <iostream>
 
-extern Entity *entity;
-
 Renderer::Renderer() {
   width = round(logic_checking_distance + 1);
   enableGLDepthTest();
@@ -36,7 +34,7 @@ void Renderer::update(Player *player, PrimativeManager *primativeManager, float 
 
   display.clear();
 
-  drawEntity(entity, primativeManager);
+  drawEntity(player->getEntity(), primativeManager);
 
   for (auto e : entities) {
 

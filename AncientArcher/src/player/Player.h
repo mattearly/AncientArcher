@@ -1,6 +1,7 @@
 #pragma once
 #include<glm/glm.hpp>
-
+#include "../models/Entity.h"
+class Entity;
 struct Movement {
 
   bool positionChanged = false;
@@ -42,7 +43,11 @@ public:
     // mutators
   void increaseLegPower(float add);
 
+  Entity *getEntity() const;
+
 private:
+
+  Entity *playerEntity;
 
   const float BASE_PLAYER_SPEED = 3.0f;
   const float BASE_PLAYER_JUMP_HEIGHT = 0.8f;
