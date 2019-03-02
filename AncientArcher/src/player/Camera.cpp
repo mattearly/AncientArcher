@@ -10,7 +10,7 @@ Camera::Camera() {
   WorldUp = glm::vec3(0.0f, 1.0f, 0.0f);
   Yaw = 45.0f;  // looking direction
   Pitch = 0.0f;
-  //updateCameraVectors();
+  updateCameraVectors();
 }
 
 Camera::~Camera() {}
