@@ -16,7 +16,9 @@ void Player::update(float deltaTime)
   controls.playerKeyboardInput();
 
   /* process player actions + process collision */
-  processCommands(deltaTime);
+  if (movedir.isMoving()) {
+    processCommands(deltaTime);
+  }
 
   /* update camera */
   camera.update();
@@ -27,51 +29,48 @@ void Player::processCommands(float deltaTime)
 {
   glm::vec3 playerIntendedLocation = camera.Position;
   float velocity;
-  movedir.positionChanged = false;
+  movedir.positionChanged = true;
 
-  if (movedir.isMoving()) {
-    velocity = getRunSpeed() * deltaTime;  // MOVEMENT SPEED CALC : based on player stats
-    if (movedir.forward) {  // half speed if moving left or right while forward
-      if (movedir.left || movedir.right) {
-        velocity = getRunSpeed() / 2 * deltaTime;
-      }
+  velocity = getRunSpeed() * deltaTime;  // MOVEMENT SPEED CALC : based on player stats
+  if (movedir.forward) {  // half speed if moving left or right while forward
+    if (movedir.left || movedir.right) {
+      velocity = getRunSpeed() / 2 * deltaTime;
     }
+  }
 
-    if (movedir.boost && movedir.forward) {  // boost while moving forward
-      velocity *= 2.0;  // velocity power
-    }
+  if (movedir.boost && movedir.forward) {  // boost while moving forward
+    velocity *= 2.0;  // velocity power
+  }
 
-    // locks moving foward and backwards to the x and z axii. 
-    // Note: you can use the camera.Front instead of movefront to do a fly type thing 
-    // while the Y is unlocked or you are jumping
-    if (movedir.back || movedir.forward) {
-      glm::vec3 moveFront = { camera.Front.x, 0.0f, camera.Front.z };
-      if (movedir.forward) playerIntendedLocation += moveFront * velocity;
-      if (movedir.back) playerIntendedLocation -= moveFront * velocity;
-    }
-    if (movedir.right) playerIntendedLocation += camera.Right * velocity;
-    if (movedir.left) playerIntendedLocation -= camera.Right * velocity;
+  // locks moving foward and backwards to the x and z axii. 
+  // Note: you can use the camera.Front instead of movefront to do a fly type thing 
+  // while the Y is unlocked or you are jumping
+  if (movedir.back || movedir.forward) {
+    glm::vec3 moveFront = { camera.Front.x, 0.0f, camera.Front.z };
+    if (movedir.forward) playerIntendedLocation += moveFront * velocity;
+    if (movedir.back) playerIntendedLocation -= moveFront * velocity;
+  }
+  if (movedir.right) playerIntendedLocation += camera.Right * velocity;
+  if (movedir.left) playerIntendedLocation -= camera.Right * velocity;
 
-    /* Jump System */
-    // PHASE 1: frame of liftoff
-    if (movedir.jumped) {
-      movedir.onGround = false;
-      movedir.jumped = false;
-      playgruntsound();
+  /* Jump System */
+  // PHASE 1: frame of liftoff
+  if (movedir.jumped) {
+    movedir.onGround = false;
+    movedir.jumped = false;
+    playgruntsound();
+  }
+  // PHASE 2: rising velocity
+  else if (!movedir.onGround && !movedir.falling) {
+    playerIntendedLocation.y += camera.WorldUp.y * getRisingSpeed() * deltaTime;   // RISING SPEED CALC: jump speed based on LegPower Player Stat
+    if (playerIntendedLocation.y > getJumpHeight() + movedir.lastOnGroundHeight) { // MAX HEIGHT CALC: jump height based on LegPower Player Stat
+      movedir.falling = true;
     }
-    // PHASE 2: rising velocity
-    else if (!movedir.onGround && !movedir.falling) {
-      playerIntendedLocation.y += camera.WorldUp.y * getRisingSpeed() * deltaTime;   // RISING SPEED CALC: jump speed based on LegPower Player Stat
-      if (playerIntendedLocation.y > getJumpHeight() + movedir.lastOnGroundHeight) { // MAX HEIGHT CALC: jump height based on LegPower Player Stat
-        movedir.falling = true;
-      }
-    }
-    // PHASE 3: falling velocity
-    else if (movedir.falling && !movedir.onGround) {
-      playerIntendedLocation.y += GRAVITY * deltaTime;
-      //playerIntendedLocation.y += (GRAVITY * accumulated_delta_time < TERMINAL_VELOCITY) ? GRAVITY * accumulated_delta_time : TERMINAL_VELOCITY;
-    }
-    movedir.positionChanged = true;
+  }
+  // PHASE 3: falling velocity
+  else if (movedir.falling && !movedir.onGround) {
+    playerIntendedLocation.y += GRAVITY * deltaTime;
+    //playerIntendedLocation.y += (GRAVITY * accumulated_delta_time < TERMINAL_VELOCITY) ? GRAVITY * accumulated_delta_time : TERMINAL_VELOCITY;
   }
 
   /* stop player from walking through impassable entities */
