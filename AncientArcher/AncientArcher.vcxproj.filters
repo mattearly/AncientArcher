@@ -15,113 +15,277 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="src\main.cpp">
+    <None Include="resource\shader_vertex.glsl">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="resource\shader_fragment.glsl">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="resource\shader_geometry.glsl">
+      <Filter>Resource Files</Filter>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="resource\00-pixelized_grass.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="resource\01.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="resource\02-pixelized_wood.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="resource\03-footsteps.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="resource\04-pixelized_portal.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="resource\05-pixelized_darkstone.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="resource\06-pixelized_water_droplet.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="resource\07-pixelized_gravel.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="resource\08-pixelized_water.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="resource\09-bricks_light.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="resource\10-pixelized_mud.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="resource\11-pixelized_darkwood.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="resource\12-pickup_speedboost.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="resource\13-pixelized_snow.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="resource\14-maze_metal.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="resource\15-pickup_attackboost.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="resource\16-cracked_rock.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="resource\17-stone_texture.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="resource\18-black_schist_rock.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="resource\19-red_brick.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="resource\20-blue_paint.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="resource\21-cracked_mud.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="resource\22-fern_leaves.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="resource\23-cracked_mud_light.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="resource\24-hardwood_floor.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="resource\25-leather_dark.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="resource\26-rock_with_holes.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="resource\27-skull_mud.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="resource\28-plastic_grip.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="resource\29-colorful_window.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="resource\30-water_refractions.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="resource\31-water_top.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+  </ItemGroup>
+  <ItemGroup>
+    <Media Include="resource\AMBIENT_windy_night.wav">
+      <Filter>Resource Files</Filter>
+    </Media>
+    <Media Include="resource\bowfire.wav">
+      <Filter>Resource Files</Filter>
+    </Media>
+    <Media Include="resource\equip_gear.wav">
+      <Filter>Resource Files</Filter>
+    </Media>
+    <Media Include="resource\feetlanding.wav">
+      <Filter>Resource Files</Filter>
+    </Media>
+    <Media Include="resource\footstep01.wav">
+      <Filter>Resource Files</Filter>
+    </Media>
+    <Media Include="resource\footstep02.wav">
+      <Filter>Resource Files</Filter>
+    </Media>
+    <Media Include="resource\footstep03.wav">
+      <Filter>Resource Files</Filter>
+    </Media>
+    <Media Include="resource\footstep04.wav">
+      <Filter>Resource Files</Filter>
+    </Media>
+    <Media Include="resource\footstep05.wav">
+      <Filter>Resource Files</Filter>
+    </Media>
+    <Media Include="resource\footstep06.wav">
+      <Filter>Resource Files</Filter>
+    </Media>
+    <Media Include="resource\footstep07.wav">
+      <Filter>Resource Files</Filter>
+    </Media>
+    <Media Include="resource\footstep08.wav">
+      <Filter>Resource Files</Filter>
+    </Media>
+    <Media Include="resource\grunt01.wav">
+      <Filter>Resource Files</Filter>
+    </Media>
+    <Media Include="resource\grunt02.wav">
+      <Filter>Resource Files</Filter>
+    </Media>
+    <Media Include="resource\grunt03.wav">
+      <Filter>Resource Files</Filter>
+    </Media>
+    <Media Include="resource\grunt04.wav">
+      <Filter>Resource Files</Filter>
+    </Media>
+    <Media Include="resource\punch.wav">
+      <Filter>Resource Files</Filter>
+    </Media>
+    <Media Include="resource\success.wav">
+      <Filter>Resource Files</Filter>
+    </Media>
+    <Media Include="resource\swordswing.wav">
+      <Filter>Resource Files</Filter>
+    </Media>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="source\TextureBank.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\util\stb_image.cpp">
+    <ClCompile Include="source\stb_image.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\util\glad.c">
+    <ClCompile Include="source\Sound.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\displayManager\Display.cpp">
+    <ClCompile Include="source\Shader.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\util\mearly.cpp">
+    <ClCompile Include="source\Renderer.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\game\Game.cpp">
+    <ClCompile Include="source\PrimativeManager.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\game\GameMainLoop.cpp">
+    <ClCompile Include="source\Player.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\util\TextureBank.cpp">
+    <ClCompile Include="source\mearly.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\shaders\Shader.cpp">
+    <ClCompile Include="source\main.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\lighting\Lighting.cpp">
+    <ClCompile Include="source\Lighting.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\player\Player.cpp">
+    <ClCompile Include="source\GameMainLoop.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\renderer\Renderer.cpp">
+    <ClCompile Include="source\Game.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\sound\Sound.cpp">
+    <ClCompile Include="source\Entity.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\models\PrimativeManager.cpp">
+    <ClCompile Include="source\Display.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\models\Entity.cpp">
+    <ClCompile Include="source\Controls.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\models\Collider.cpp">
+    <ClCompile Include="source\Collider.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\player\Controls.cpp">
+    <ClCompile Include="source\Camera.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\player\Camera.cpp">
+    <ClCompile Include="source\glad.c">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="src\util\stb_image.h">
+    <ClInclude Include="source\TextureBank.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\displayManager\Display.h">
+    <ClInclude Include="source\stb_image.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\util\mearly.h">
+    <ClInclude Include="source\Sound.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\game\Game.h">
+    <ClInclude Include="source\Shader.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\util\TextureBank.h">
+    <ClInclude Include="source\Renderer.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\shaders\Shader.h">
+    <ClInclude Include="source\PrimativeManager.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\lighting\Lighting.h">
+    <ClInclude Include="source\Player.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\player\Player.h">
+    <ClInclude Include="source\mearly.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\renderer\Renderer.h">
+    <ClInclude Include="source\Lighting.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\sound\Sound.h">
+    <ClInclude Include="source\globals.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\models\PrimativeManager.h">
+    <ClInclude Include="source\Game.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\globals.h">
+    <ClInclude Include="source\Entity.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\models\Entity.h">
+    <ClInclude Include="source\Display.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\models\Collider.h">
+    <ClInclude Include="source\Controls.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\player\Controls.h">
+    <ClInclude Include="source\Collider.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\player\Camera.h">
+    <ClInclude Include="source\Camera.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="res\shaders\fragment.shader" />
-    <None Include="res\shaders\vertex.shader" />
   </ItemGroup>
 </Project>
