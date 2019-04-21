@@ -3,7 +3,7 @@
 
 //todo: improve sound, see https://youtu.be/Vjm--AqG04Y 
 
-static const int NUMFOOTSTEPS = 6;
+static const int NUMFOOTSTEPS = 8;
 static Mix_Chunk *footstepsoundeffects[NUMFOOTSTEPS];
 void playfootstepsound();
 
@@ -59,6 +59,9 @@ void playequipgearsound();
 //
 //static Mix_Music *defaultmusic;
 //void playdefaultmusic();
+
+static Mix_Music *AMBIENT_windy_night;
+void toggleAmbientWindyNight();
 
 void initsound();
 

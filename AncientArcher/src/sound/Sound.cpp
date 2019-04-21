@@ -65,75 +65,26 @@ void playequipgearsound() {
   Mix_PlayChannel(-1, equipgearsoundeffect, 0);
 }
 
-//void playdoorsound() {
-//
-//  if (!soundReady) initsound();
-//
-//  Mix_PlayChannel(-1, dooropensoundeffect, 0);
-//}
-//
-//void playdoorclosesound() {
-//
-//  if (!soundReady) initsound();
-//
-//  Mix_PlayChannel(-1, doorclosesoundeffect, 0);
-//}
-//
-//void playpickupsound() {
-//
-//  if (!soundReady) initsound();
-//
-//  Mix_PlayChannel(-1, pickupsoundeffect, 0);
-//}
-//
-//void playdestroysound() {
-//  if (!soundReady) initsound();
-//
-//  Mix_PlayChannel(-1, destroysoundeffect, 0);
-//}
-//
-//void playswitchsound() {
-//  if (!soundReady) initsound();
-//
-//  Mix_PlayChannel(-1, switchsoundeffect, 0);
-//}
-//
-//void playsmashsound() {
-//  if (!soundReady) initsound();
-//
-//  Mix_PlayChannel(-1, smashsoundeffect, 0);
-//}
-//
-//void playknocksound() {
-//  if (!soundReady) initsound();
-//
-//  Mix_PlayChannel(-1, knocksoundeffect, 0);
-//}
-//
-//void playdemolitionsound() {
-//  if (!soundReady) initsound();
-//
-//  Mix_PlayChannel(-1, demolitionsoundeffect, 0);
-//}
-//
-//void playdeadsound() {
-//  if (!soundReady) initsound();
-//
-//  Mix_PlayChannel(-1, deadsoundeffect, 0);
-//}
-//
-//
-//void playwinsound() {
-//  if (!soundReady) initsound();
-//
-//  Mix_PlayMusic(winsoundeffect, -1);
-//}
-//
-//void playdefaultmusic() {
-//  if (!soundReady) initsound();
-//
-//  Mix_PlayMusic(defaultmusic, -1);
-//}
+void toggleAmbientWindyNight() {
+  if (!soundReady) initsound();
+  static bool playing = false;
+  static bool paused = false;
+  if (!playing && !paused) {
+    Mix_PlayMusic(AMBIENT_windy_night, -1);
+    playing = true;
+  }
+  else if (playing && !paused) {
+    Mix_PauseMusic();
+    paused = true;
+  }
+  else if (playing && paused) {
+    Mix_ResumeMusic();
+    paused = false;
+  }
+  else {
+    std::cout << "error with toggleAmbientWindyNight function\n";
+  }
+}
 
 //--------------------init sound---------------
 void initsound() {
@@ -156,6 +107,8 @@ void initsound() {
   footstepsoundeffects[3] = Mix_LoadWAV("../AncientArcher/res/sfx/footstep04.wav");  // load footsteps
   footstepsoundeffects[4] = Mix_LoadWAV("../AncientArcher/res/sfx/footstep05.wav");  // load footsteps
   footstepsoundeffects[5] = Mix_LoadWAV("../AncientArcher/res/sfx/footstep06.wav");  // load footsteps
+  footstepsoundeffects[6] = Mix_LoadWAV("../AncientArcher/res/sfx/footstep07.wav");  // load footsteps
+  footstepsoundeffects[7] = Mix_LoadWAV("../AncientArcher/res/sfx/footstep08.wav");  // load footsteps
   for (auto &se : footstepsoundeffects) {  //test footstep load
     if (se == nullptr) {
       SDL_LogError(SDL_LOG_CATEGORY_APPLICATION,
@@ -220,92 +173,13 @@ void initsound() {
       Mix_GetError());
   }
 
-  //// load door sound effect
-  //dooropensoundeffect = Mix_LoadWAV("dooropen.wav");
-  //if (dooropensoundeffect == nullptr) {
-  //  SDL_LogError(SDL_LOG_CATEGORY_APPLICATION,
-  //    "Couldn't load audio: %s",
-  //    Mix_GetError());
-  //}
-  //doorclosesoundeffect = Mix_LoadWAV("doorclose.wav");
-  //if (doorclosesoundeffect == nullptr) {
-  //  SDL_LogError(SDL_LOG_CATEGORY_APPLICATION,
-  //    "Couldn't load audio: %s",
-  //    Mix_GetError());
-  //}
-
-  //// load pickup sound effect
-  //pickupsoundeffect = Mix_LoadWAV("pickup.wav");
-  //if (pickupsoundeffect == nullptr) {
-  //  SDL_LogError(SDL_LOG_CATEGORY_APPLICATION,
-  //    "Couldn't load audio: %s",
-  //    Mix_GetError());
-  //}
-
-
-  //// load destory sound effect
-  //destroysoundeffect = Mix_LoadWAV("explode.wav");
-  //if (destroysoundeffect == nullptr) {
-  //  SDL_LogError(SDL_LOG_CATEGORY_APPLICATION,
-  //    "Couldn't load audio: %s",
-  //    Mix_GetError());
-  //}
-
-  //// load switch sound effect
-  //switchsoundeffect = Mix_LoadWAV("crank.wav");
-  //if (switchsoundeffect == nullptr) {
-  //  SDL_LogError(SDL_LOG_CATEGORY_APPLICATION,
-  //    "Couldn't load audio: %s",
-  //    Mix_GetError());
-  //}
-
-  //// load smash sound effect
-  //smashsoundeffect = Mix_LoadWAV("chop.wav");
-  //if (smashsoundeffect == nullptr) {
-  //  SDL_LogError(SDL_LOG_CATEGORY_APPLICATION,
-  //    "Couldn't load audio: %s",
-  //    Mix_GetError());
-  //}
-
-  //// load knock sound effect
-  //knocksoundeffect = Mix_LoadWAV("knock.wav");
-  //if (knocksoundeffect == nullptr) {
-  //  SDL_LogError(SDL_LOG_CATEGORY_APPLICATION,
-  //    "Couldn't load audio: %s",
-  //    Mix_GetError());
-  //}
-
-  //// load demolition sound effect
-  //demolitionsoundeffect = Mix_LoadWAV("demo.wav");
-  //if (demolitionsoundeffect == nullptr) {
-  //  SDL_LogError(SDL_LOG_CATEGORY_APPLICATION,
-  //    "Couldn't load audio: %s",
-  //    Mix_GetError());
-  //}
-
-  //// load demolition sound effect
-  //deadsoundeffect = Mix_LoadWAV("dead.wav");
-  //if (deadsoundeffect == nullptr) {
-  //  SDL_LogError(SDL_LOG_CATEGORY_APPLICATION,
-  //    "Couldn't load audio: %s",
-  //    Mix_GetError());
-  //}
-
-  //// load win music
-  //winsoundeffect = Mix_LoadMUS("guiletheme.wav");
-  //if (winsoundeffect == nullptr) {
-  //  SDL_LogError(SDL_LOG_CATEGORY_APPLICATION,
-  //    "Couldn't load audio: %s",
-  //    Mix_GetError());
-  //}
-
-  //// load default music
-  //defaultmusic = Mix_LoadMUS("musicbox.wav");
-  //if (defaultmusic == nullptr) {
-  //  SDL_LogError(SDL_LOG_CATEGORY_APPLICATION,
-  //    "Couldn't load audio: %s",
-  //    Mix_GetError());
-  //}
+  // load ambient wind
+  AMBIENT_windy_night = Mix_LoadMUS("../AncientArcher/res/sfx/AMBIENT_windy_night.wav");
+  if (AMBIENT_windy_night == nullptr) {
+    SDL_LogError(SDL_LOG_CATEGORY_APPLICATION,
+      "Couldn't load audio: %s",
+      Mix_GetError());
+  }
 
   soundReady = true;  //kk sound is good to go
 

@@ -6,17 +6,20 @@
 #include "../globals.h"
 #include "../sound/Sound.h"
 #include "../player/Player.h"
+#include "../player/Controls.h"
 #include "../util/mearly.h"
-#include "../controls/Controls.h"
 
 #include <iostream>
 #include <cmath>
 
 extern Controls controls;
+extern Movement movedir;
 
 void Game::mainLoop() {
 
   glm::mat4 model = glm::mat4(1.0f);
+
+  toggleAmbientWindyNight();
 
   while (!glfwWindowShouldClose(display.window)) {
 
@@ -24,13 +27,9 @@ void Game::mainLoop() {
     deltaTime = currentFrame - lastFrame;
     lastFrame = currentFrame;
 
-    //gameTime += deltaTime;
+    player->update(deltaTime);
 
-    controls.keyboardInput(player, &pickups, deltaTime);
-
-    camera.update();
-
-    renderer.update(&pickups, &primativeManager, deltaTime);
+    renderer.update(player, &primativeManager, deltaTime);
 
     glfwPollEvents();
 

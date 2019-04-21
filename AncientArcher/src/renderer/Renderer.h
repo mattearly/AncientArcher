@@ -1,7 +1,8 @@
 #pragma once
 
-class Pickups;
+class Player;
 class PrimativeManager;
+class Entity;
 
 class Renderer {
 public:
@@ -14,11 +15,13 @@ public:
   void enableGLDepthTest();
   void disableGLDepthTest();
 
-  void update(Pickups *pickups, PrimativeManager *primativeManager, float deltaTime);
+  void update(Player *player, PrimativeManager *primativeManager, float deltaTime);
 
 private:
 
   float width;
+
+  void drawEntity(Entity *e, PrimativeManager *pm);
 
 };
 

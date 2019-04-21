@@ -18,9 +18,6 @@
     <ClCompile Include="src\main.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\Constraints.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="src\util\stb_image.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -48,12 +45,6 @@
     <ClCompile Include="src\lighting\Lighting.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\camera\Camera.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="src\controls\Controls.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="src\player\Player.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -66,26 +57,20 @@
     <ClCompile Include="src\models\PrimativeManager.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\util\DiffuseTexture.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="src\pickups\Pickups.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="src\models\Entity.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="src\models\Collider.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\models\Gravity.cpp">
+    <ClCompile Include="src\player\Controls.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\player\Camera.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="src\Constraints.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="src\util\stb_image.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -107,12 +92,6 @@
     <ClInclude Include="src\lighting\Lighting.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\camera\Camera.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="src\controls\Controls.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="src\player\Player.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -125,12 +104,6 @@
     <ClInclude Include="src\models\PrimativeManager.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\util\DiffuseTexture.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="src\pickups\Pickups.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="src\globals.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -140,17 +113,15 @@
     <ClInclude Include="src\models\Collider.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\models\Gravity.h">
+    <ClInclude Include="src\player\Controls.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\player\Camera.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="res\shaders\fragment.shader" />
     <None Include="res\shaders\vertex.shader" />
-  </ItemGroup>
-  <ItemGroup>
-    <Media Include="res\sfx\equip_gear.wav">
-      <Filter>Resource Files</Filter>
-    </Media>
   </ItemGroup>
 </Project>

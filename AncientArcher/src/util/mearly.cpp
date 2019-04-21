@@ -23,7 +23,7 @@ namespace mearly {
     return dist2(mgen);
   }
 
-  // returns an interger between n and k randomly
+  // returns a interger between n and k randomly
   int NTKR(int n, int k) {
     static uint64_t timeSeed = std::chrono::high_resolution_clock::now().time_since_epoch().count();
     static std::seed_seq ss{ uint32_t(timeSeed & 0xffffffff), uint32_t(timeSeed >> 32) };
@@ -33,7 +33,8 @@ namespace mearly {
     return ntkd(mgen);
   }
 
-  float NTRK(float n, float k) {
+  // returns a float between n and k randomly
+  float NTKR(float n, float k) {
     static uint64_t timeSeed = std::chrono::high_resolution_clock::now().time_since_epoch().count();
     static std::seed_seq ss{ uint32_t(timeSeed & 0xffffffff), uint32_t(timeSeed >> 32) };
     static std::mt19937 mgen(ss);
@@ -42,5 +43,38 @@ namespace mearly {
     return ntkd(mgen);
   }
 
+  bool AABB_vs_AABB_3D(const Impasse &a, const Impasse &b)
+  {
 
+    float aMinX = a.loc[0] - a.sz[0] / 2.f;
+    float aMaxX = a.loc[0] + a.sz[0] / 2.f;
+    float aMinY = a.loc[1] - a.sz[1] / 2.f;
+    float aMaxY = a.loc[1] + a.sz[1] / 2.f;
+    float aMinZ = a.loc[2] - a.sz[2] / 2.f;
+    float aMaxZ = a.loc[2] + a.sz[2] / 2.f;
+
+    float bMinX = b.loc[0] - b.sz[0] / 2.f;
+    float bMaxX = b.loc[0] + b.sz[0] / 2.f;
+    float bMinY = b.loc[1] - b.sz[1] / 2.f;
+    float bMaxY = b.loc[1] + b.sz[1] / 2.f;
+    float bMinZ = b.loc[2] - b.sz[2] / 2.f;
+    float bMaxZ = b.loc[2] + b.sz[2] / 2.f;
+
+
+    return (aMinX <= bMaxX && aMaxX >= bMinX) && (aMinY <= bMaxY && aMaxY >= bMinY) && (aMinZ <= bMaxZ && aMaxZ >= bMinZ);
+  }
+
+  bool point_vs_AABB_3D(const float & px, const float & py, const float & pz, const Impasse & b)
+  {
+    float bMinX = b.loc[0] - b.sz[0] / 2.f;
+    float bMaxX = b.loc[0] + b.sz[0] / 2.f;
+    float bMinY = b.loc[1] - b.sz[1] / 2.f;
+    float bMaxY = b.loc[1] + b.sz[1] / 2.f;
+    float bMinZ = b.loc[2] - b.sz[2] / 2.f;
+    float bMaxZ = b.loc[2] + b.sz[2] / 2.f;
+
+    return (px >= bMinX && px <= bMaxX) && (py >= bMinY && py <= bMaxY) && (pz >= bMinZ && pz <= bMaxZ);
+  }
+
+  /* end namespace mearly */
 }

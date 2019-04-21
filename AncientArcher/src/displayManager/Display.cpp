@@ -2,10 +2,8 @@
 #include <utility>
 #include <iostream>
 #include "../globals.h"
-#include "../controls/Controls.h"
-
+#include "../player/Controls.h"
 extern Controls controls;
-
 Display::Display() {
 
   window_width = 1024;
@@ -20,8 +18,7 @@ Display::Display() {
 #ifdef __APPLE__
   glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);
 #endif
-
-
+  
   // init window
   window = glfwCreateWindow(window_width, window_height, "AncientArcherEngine", nullptr, nullptr);
   if (window == nullptr) {
@@ -59,7 +56,6 @@ void Display::reshapeWindow(GLFWwindow * window, int w, int h) {
   glViewport(0, 0, w, h);
   window_width = w;
   window_height = h;
-  camera.updateProjectionMatrix();
 }
 
 void Display::mouseHandler(GLFWwindow * window, double xpos, double ypos) {

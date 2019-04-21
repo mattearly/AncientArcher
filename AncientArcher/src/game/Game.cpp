@@ -5,30 +5,26 @@
 #include <glm/gtc/type_ptr.hpp>
 
 #include "../globals.h"
-#include "../controls/Controls.h"
-#include "../Constraints.h"
+#include "../player/Controls.h"
 #include "../util/mearly.h"
 #include <iostream>
 
 Display display;
 Shader shader("../AncientArcher/res/shaders/vertex.shader", "../AncientArcher/res/shaders/fragment.shader");
-Camera camera;
-Controls controls;
-Pickups pickups;
 Lighting lighting;
 TextureBank texBank;
-DiffuseTexture diffuseTex;
 std::vector<Entity> entities;
-Gravity gravity;
 
 Game::Game() {
 
   int __textures_allowed = 0;
   glGetIntegerv(GL_MAX_TEXTURE_IMAGE_UNITS, &__textures_allowed);
-  std::cout << "Your Graphics Card allows " << __textures_allowed << " textures at the same time\n";
+  std::cout << "FYI:\nMax textures per shader:  " << __textures_allowed << "\n";
 
-  //player = new Player();   //default character
-  player = new Player(3.f, 4.f, 100.f);
+  glGetIntegerv(GL_MAX_COMBINED_TEXTURE_IMAGE_UNITS, &__textures_allowed);
+  std::cout << "Max combined textures:  " << __textures_allowed << "\n";
+
+  player = new Player(100.0f);
 
   /* load 32 textures */
   texBank.loadTexture("../AncientArcher/res/texture/00-pixelized_grass.png");
@@ -64,116 +60,121 @@ Game::Game() {
   texBank.loadTexture("../AncientArcher/res/texture/30-water_refractions.png");
   texBank.loadTexture("../AncientArcher/res/texture/31-water_top.png");
 
-  diffuseTex.loadDiffuseTexture("../AncientArcher/res/specular/none.png");
-
-  // only render the objects not line of sight blocked by other objects 
-  //glEnable(GL_CULL_FACE);
-
   lighting.setConstantLight();
 
+  float ground_plane_thickness = 0.09f;
+  float ground_plane_level = -0.01f;
+  int floor_texture_id = 2;
 
-  // demo point lights
-  //lighting.addPointLight(glm::vec3(1.5f, 4.0f, 1.5f));
-  //lighting.addPointLight(glm::vec3(1.5f, 4.0f, 38.5f));
-  //lighting.addPointLight(glm::vec3(38.5f, 4.0f, 1.5f));
-  //lighting.addPointLight(glm::vec3(38.5f, 4.0f, 38.5f));
-  lighting.addPointLight(*camera.getPosition());
-
-  renderer.enableGLDepthTest();
-
-  camera.updateProjectionMatrix();
-
-  //shader.setInt("specnum", 0);
-
-  // spotLight
-  //  shader.setVec3("spotLight.position", *(camera.getPosition()));
-  //  shader.setVec3("spotLight.direction", *(camera.getFront()));
-  //  shader.setVec3("spotLight.ambient", 0.0f, 0.0f, 0.0f);
-  //  shader.setVec3("spotLight.diffuse", 1.0f, 1.0f, 1.0f);
-  //  shader.setVec3("spotLight.specular", 1.0f, 1.0f, 1.0f);
-  //  shader.setFloat("spotLight.constant", 1.0f);
-  //  shader.setFloat("spotLight.linear", 0.09);
-  //  shader.setFloat("spotLight.quadratic", 0.032);
-  //  shader.setFloat("spotLight.cutOff", glm::cos(glm::radians(12.5f)));
-  //  shader.setFloat("spotLight.outerCutOff", glm::cos(glm::radians(15.0f)));
-
-  float width = world_width + 1.f;
-
-  for (int i = 0; i < 3; i++) {
-    Entity floor(
+  for (int i = 0; i < 4; i++) {
+    Entity floor1(
       // TYPE
       ENTITYTYPE::PLANE,
       // LOCATION 
-      glm::vec3(i * width, 0.0f, width / 2),
+      glm::vec3(i * logic_checking_distance, ground_plane_level, logic_checking_distance / 2.f),
       // SIZE
-      glm::vec3(width, 0.5f, width),
+      glm::vec3(logic_checking_distance, ground_plane_thickness, logic_checking_distance),
       // TEXTURE ID
-      mearly::NTKR(0, 31),
+      floor_texture_id,
       // COLLISION?
-      false
+      true
     );
-    entities.push_back(floor);
-  }
+    entities.push_back(floor1);
 
-  for (int i = 0; i < 3; i++) {
-    Entity floor(
+    Entity floor2(
       // TYPE
       ENTITYTYPE::PLANE,
       // LOCATION 
-      glm::vec3(i * width, -0.01f, width * 1.5 - .5),
+      glm::vec3(i * logic_checking_distance, ground_plane_level, logic_checking_distance * 1.5f),
       // SIZE
-      glm::vec3(width, 0.5f, width),
+      glm::vec3(logic_checking_distance, ground_plane_thickness, logic_checking_distance),
       // TEXTURE ID
-      mearly::NTKR(0, 31),
+      floor_texture_id,
       // COLLISION?
-      false
+      true
     );
-    entities.push_back(floor);
-  }
+    entities.push_back(floor2);
 
-  for (int i = 0; i < 3; i++) {
-    Entity floor(
+    Entity floor3(
       // TYPE
       ENTITYTYPE::PLANE,
       // LOCATION 
-      glm::vec3(i * width, 0.0f, width * 2.5 - .5f),
+      glm::vec3(i * logic_checking_distance, ground_plane_level, logic_checking_distance * 2.5f),
       // SIZE
-      glm::vec3(width, 1.0f, width),
+      glm::vec3(logic_checking_distance, ground_plane_thickness, logic_checking_distance),
       // TEXTURE ID
-      mearly::NTKR(0, 31),
+      floor_texture_id,
       // COLLISION?
-      false
+      true
     );
-    entities.push_back(floor);
+    entities.push_back(floor3);
+
+    Entity floor4(
+      // TYPE
+      ENTITYTYPE::PLANE,
+      // LOCATION 
+      glm::vec3(i * logic_checking_distance, ground_plane_level, logic_checking_distance * 3.5f),
+      // SIZE
+      glm::vec3(logic_checking_distance, ground_plane_thickness, logic_checking_distance),
+      // TEXTURE ID
+      floor_texture_id,
+      // COLLISION?
+      true
+    );
+    entities.push_back(floor4);
   }
 
+  bool collide = false;
+  int total_collisions = 0;
   // many test blocks
-  for (int i = 0; i < 500; i++) {
+  for (int i = 0; i < 2000; i++) {
+
+    Entity *e;
 
     if (i % 3 == 0) {
-      Entity e(
+      e = new Entity(
         ENTITYTYPE::SQUARE,
-        glm::vec3(mearly::NTRK(3.f, 100.f), mearly::NTRK(0.0f, 4.0f), mearly::NTRK(3.f, 120.f)),
-        glm::vec3(2.f, 2.f, 2.f),
+        glm::vec3(mearly::NTKR(3.f, logic_checking_distance * 3.5), mearly::NTKR(7.01f, 15.0f), mearly::NTKR(3.f, logic_checking_distance * 3.5)),
+        glm::vec3(mearly::NTKR(2.5f, 4.5f), mearly::NTKR(0.3f, 6.5f), mearly::NTKR(2.5f, 4.5f)),
         mearly::NTKR(0, 31),
         true
       );
-      entities.push_back(e);
+    }
+    else if (i % 3 == 1) {
+      e = new Entity(
+        ENTITYTYPE::SQUARE,
+        glm::vec3(mearly::NTKR(3.f, logic_checking_distance * 3.5), mearly::NTKR(2.01f, 8.0f), mearly::NTKR(3.f, logic_checking_distance * 3.5)),
+        glm::vec3(mearly::NTKR(0.5f, 8.0f), mearly::NTKR(0.5f, 5.0f), mearly::NTKR(0.5f, 8.0f)),
+        mearly::NTKR(0, 31),
+        true
+      );
     }
     else {
-      Entity e(
+      e = new Entity(
         ENTITYTYPE::SQUARE,
-        glm::vec3(mearly::NTRK(3.f, 100.f), 1.0f, mearly::NTRK(3.f, 120.f)),
+        glm::vec3(mearly::NTKR(3.f, logic_checking_distance * 3.5), 1.08f, mearly::NTKR(3.f, logic_checking_distance * 3.5)),
         glm::vec3(2.f, 2.f, 2.f),
         mearly::NTKR(0, 31),
         true
       );
-      entities.push_back(e);
+    }
+
+    for (auto const & f : entities) {
+      if (mearly::AABB_vs_AABB_3D(e->collider->impasse, f.collider->impasse)) {
+        collide = true;
+        total_collisions++;
+        break;
+      }
+    }
+
+    if (!collide) {
+      entities.push_back(*e);
+    }
+    else {
+      i--;
+      collide = false; //reset for next run;
     }
 
   }
+  std::cout << "total collisions: " << total_collisions << "\ntotal entities: " << entities.size() << "\n";
 }
-
-  Game::~Game() {
-
-  }

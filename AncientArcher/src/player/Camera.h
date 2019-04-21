@@ -8,6 +8,7 @@ public:
   ~Camera();
 
   friend class Controls;
+  friend class Player;
 
   float FoV;
 
