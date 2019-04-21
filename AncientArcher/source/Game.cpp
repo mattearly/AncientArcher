@@ -71,11 +71,11 @@ Game::Game() {
 	int groundTextureId = 2;
 	for (int i = 0; i < 4; i++) {
 		Entity floor1(
-			ENTITYTYPE::PLANE,                                                                          /* type */
-			glm::vec3(i * ENGINE_LOGIC_CHECKING_DISTANCE, currentGroundLevel, ENGINE_LOGIC_CHECKING_DISTANCE / 2.0f), /* location */
-			glm::vec3(ENGINE_LOGIC_CHECKING_DISTANCE, planeCollisionThickness, ENGINE_LOGIC_CHECKING_DISTANCE),       /* size */
-			groundTextureId,                                                                            /* texture id */
-			true               /* give collision */
+			/* type */ENTITYTYPE::PLANE,                                                                                        /* type */
+			/* location */glm::vec3(i * ENGINE_LOGIC_CHECKING_DISTANCE, currentGroundLevel, ENGINE_LOGIC_CHECKING_DISTANCE / 2.0f), /* location */
+			/* size */glm::vec3(ENGINE_LOGIC_CHECKING_DISTANCE, planeCollisionThickness, ENGINE_LOGIC_CHECKING_DISTANCE),       /* size */
+			/* texture id */groundTextureId,                                                                                          /* texture id */
+			/* give collision */true                                                                                                      /* give collision */
 		);
 		entities.push_back(floor1);
 
@@ -120,7 +120,7 @@ Game::Game() {
 	// ------------ PLACE RANDOMIZED BOXES ------------ //
 	bool allowRandomBoxesToOverlap = false; 
 	int countTotalCollisions = 0;
-	for (int i = 0; i < 2000; i++) {
+	for (int i = 0; i < 3000; i++) {
 
 		Entity* e;
 
