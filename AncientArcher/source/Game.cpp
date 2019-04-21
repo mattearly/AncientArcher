@@ -47,22 +47,22 @@ Game::Game() {
 	texBank.loadTexture("../AncientArcher/resource/13-pixelized_snow.png");
 	texBank.loadTexture("../AncientArcher/resource/14-maze_metal.png");
 	texBank.loadTexture("../AncientArcher/resource/15-pickup_attackboost.png");
-	texBank.loadTexture("../AncientArcher/resource/16-cracked_rock.png");
-	texBank.loadTexture("../AncientArcher/resource/17-stone_texture.png");
-	texBank.loadTexture("../AncientArcher/resource/18-black_schist_rock.png");
-	texBank.loadTexture("../AncientArcher/resource/19-red_brick.png");
-	texBank.loadTexture("../AncientArcher/resource/20-blue_paint.png");
-	texBank.loadTexture("../AncientArcher/resource/21-cracked_mud.png");
-	texBank.loadTexture("../AncientArcher/resource/22-fern_leaves.png");
-	texBank.loadTexture("../AncientArcher/resource/23-cracked_mud_light.png");
-	texBank.loadTexture("../AncientArcher/resource/24-hardwood_floor.png");
-	texBank.loadTexture("../AncientArcher/resource/25-leather_dark.png");
-	texBank.loadTexture("../AncientArcher/resource/26-rock_with_holes.png");
-	texBank.loadTexture("../AncientArcher/resource/27-skull_mud.png");
-	texBank.loadTexture("../AncientArcher/resource/28-plastic_grip.png");
-	texBank.loadTexture("../AncientArcher/resource/29-colorful_window.png");
-	texBank.loadTexture("../AncientArcher/resource/30-water_refractions.png");
-	texBank.loadTexture("../AncientArcher/resource/31-water_top.png");
+	texBank.loadTexture("../AncientArcher/resource/cliffrocks.png");
+	texBank.loadTexture("../AncientArcher/resource/cow.png");
+	texBank.loadTexture("../AncientArcher/resource/crumblingrocks.png");
+	texBank.loadTexture("../AncientArcher/resource/flower.png");
+	texBank.loadTexture("../AncientArcher/resource/flower2.png");
+	texBank.loadTexture("../AncientArcher/resource/flower3.png");
+	texBank.loadTexture("../AncientArcher/resource/deertailmushroom.png");
+	texBank.loadTexture("../AncientArcher/resource/leaf.png");
+	texBank.loadTexture("../AncientArcher/resource/mossrock.png");
+	texBank.loadTexture("../AncientArcher/resource/thisle.png");
+	texBank.loadTexture("../AncientArcher/resource/flowerbush.png");
+	texBank.loadTexture("../AncientArcher/resource/bark.png");
+	texBank.loadTexture("../AncientArcher/resource/greenbark.png");
+	texBank.loadTexture("../AncientArcher/resource/grass.png");
+	texBank.loadTexture("../AncientArcher/resource/water.png");
+	texBank.loadTexture("../AncientArcher/resource/sand.png");
 
 
 	// ------------ SET FLOOR ------------ //
