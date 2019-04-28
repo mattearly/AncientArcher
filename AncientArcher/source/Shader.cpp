@@ -213,8 +213,6 @@ Shader::Shader(const char * vertex_file, const char * fragment_file, const char 
 
 }
 
-Shader::~Shader() {}
-
 void Shader::use() const {
   glUseProgram(ID);
 }
