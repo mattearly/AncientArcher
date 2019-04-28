@@ -23,7 +23,7 @@ void Lighting::setConstantLight() {
 
 void Lighting::addPointLight(glm::vec3 pos) {
  
-  int i = pointLights.size();
+  std::size_t i = pointLights.size();
   
   if (i >= MAXPOINTLIGHTS) {   // make sure we are not going past what our shader allows
     std::cout << MAXPOINTLIGHTS << " reached, no more can be added.\n";
@@ -60,7 +60,7 @@ void Lighting::addPointLight(glm::vec3 pos) {
   std::string pLightlinear = ss.str() + "linear";
   //shader.setFloat(pLightlinear, 0.36);
   //shader.setFloat(pLightlinear, 0.09);
-  shader.setFloat(pLightlinear, 0.01);
+  shader.setFloat(pLightlinear, 0.01f);
   //shader.setFloat(pLightlinear, 0.0002f);
 
   std::string pLightquadratic = ss.str() + "quadratic";
