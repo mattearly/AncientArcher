@@ -2,7 +2,7 @@
 #include "globals.h"
 
 Camera::Camera() {
-  FoV = 85.0f;
+  FoV = 45.0f;
   Front = glm::vec3(0.0f, 0.0f, -1.0f);
   Position = glm::vec3(camstart[0], camstart[1], camstart[2]); // starting position
   Up = { 0.f, 1.f, 0.f };

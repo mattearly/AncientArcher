@@ -17,7 +17,7 @@ public:
   Entity(ENTITYTYPE t, glm::vec3 loc, glm::vec3 sc, int texID, bool isImpassable);
   
   /* modifiers */
-  void moveby(glm::vec3 amount);
-  void moveto(glm::vec3 newLocation);
+  void moveBy(glm::vec3 amount);
+  void moveTo(glm::vec3 newLocation);
 };
 

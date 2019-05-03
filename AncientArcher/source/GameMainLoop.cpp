@@ -21,9 +21,11 @@ void Game::mainLoop() {
 
   toggleAmbientWindyNight();
 
+  static float currentFrame;
+
   while (!glfwWindowShouldClose(display.window)) {
 
-    float currentFrame = (float)glfwGetTime();
+    currentFrame = (float)glfwGetTime();
     deltaTime = currentFrame - lastFrame;
     lastFrame = currentFrame;
 

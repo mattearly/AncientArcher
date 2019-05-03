@@ -18,7 +18,7 @@ Entity::Entity(ENTITYTYPE t, glm::vec3 loc, glm::vec3 sc, int texID, bool isImpa
   }
 }
 
-void Entity::moveby(glm::vec3 amount)
+void Entity::moveBy(glm::vec3 amount)
 {
   this->gameItem.location[0] += amount.x;
   this->gameItem.location[1] += amount.y;
@@ -30,7 +30,7 @@ void Entity::moveby(glm::vec3 amount)
   }
 }
 
-void Entity::moveto(glm::vec3 newLocation)
+void Entity::moveTo(glm::vec3 newLocation)
 {
 
   this->gameItem.location[0] = newLocation.x;

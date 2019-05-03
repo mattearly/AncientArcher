@@ -9,7 +9,7 @@
 class TextureBank {
 public:
   TextureBank();
-  
+
   /* loadTexture adds a new texture to the bank of usable textures */
   void loadTexture(std::string path);
 
@@ -26,7 +26,7 @@ private:
 
   unsigned int texture[MAXTEXTURES];
 
-  int width, height, nrChannel;  
+  int width, height, nrChannel;
 
   bool initiated;
 

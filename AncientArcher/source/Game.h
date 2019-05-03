@@ -6,7 +6,7 @@
 class Game {
 public:
 
-  Player *player;
+  Player* player;
   PrimativeManager primativeManager;
   Renderer renderer;
 

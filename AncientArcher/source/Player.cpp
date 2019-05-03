@@ -119,7 +119,7 @@ void Player::processCommands(float deltaTime)
   if (movedir.positionChanged) {
     camera.Position = playerIntendedLocation;
     lighting.movePointLight(0, playerIntendedLocation);
-    playerEntity->moveto(glm::vec3(playerIntendedLocation.x, playerIntendedLocation.y - .2f, playerIntendedLocation.z));
+    playerEntity->moveTo(glm::vec3(playerIntendedLocation.x, playerIntendedLocation.y - .2f, playerIntendedLocation.z));
 
     if (movedir.onGround) {
       static const float TimeBetweenFootsteps = 0.6f;
