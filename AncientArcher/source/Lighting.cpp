@@ -15,8 +15,9 @@ void Lighting::setConstantLight() {
 
   // directional light
   shader.setVec3("dirLight.direction", -0.2f, -1.0f, -0.3f);
-  shader.setVec3("dirLight.ambient", 0.15f, 0.15f, 0.15f);
-  shader.setVec3("dirLight.diffuse", 0.15f, 0.15f, 0.15f);    //shader.setVec3("dirLight.diffuse", 0.05f, 0.05f, 0.05f);
+  shader.setVec3("dirLight.ambient", 0.95f, 0.95f, 0.95f);
+  //shader.setVec3("dirLight.diffuse", 0.15f, 0.15f, 0.15f);    
+  shader.setVec3("dirLight.diffuse", 0.95f, 0.95f, 0.95f);
   shader.setVec3("dirLight.specular", 0.5f, 0.5f, 0.5f);
 
 }

@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <Project DefaultTargets="Build" ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup Label="ProjectConfigurations">
     <ProjectConfiguration Include="Debug|Win32">
@@ -152,6 +152,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <None Include="resource\shaderSkyboxFrag.glsl" />
     <None Include="resource\shader_fragment.glsl" />
     <None Include="resource\shader_geometry.glsl" />
     <None Include="resource\shader_vertex.glsl" />
@@ -187,6 +188,12 @@
     <Image Include="resource\leaf.png" />
     <Image Include="resource\mossrock.png" />
     <Image Include="resource\sand.png" />
+    <Image Include="resource\skybox_heresy_back.png" />
+    <Image Include="resource\skybox_heresy_down.png" />
+    <Image Include="resource\skybox_heresy_front.png" />
+    <Image Include="resource\skybox_heresy_left.png" />
+    <Image Include="resource\skybox_heresy_right.png" />
+    <Image Include="resource\skybox_heresy_up.png" />
     <Image Include="resource\thisle.png" />
     <Image Include="resource\water.png" />
   </ItemGroup>
@@ -212,6 +219,7 @@
     <Media Include="resource\swordswing.wav" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="source\Skybox.cpp" />
     <ClCompile Include="source\Camera.cpp" />
     <ClCompile Include="source\Collider.cpp" />
     <ClCompile Include="source\Controls.cpp" />
@@ -230,8 +238,10 @@
     <ClCompile Include="source\Sound.cpp" />
     <ClCompile Include="source\stb_image.cpp" />
     <ClCompile Include="source\TextureBank.cpp" />
+    <ClCompile Include="source\TextureData.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="source\Skybox.h" />
     <ClInclude Include="source\Camera.h" />
     <ClInclude Include="source\Collider.h" />
     <ClInclude Include="source\Controls.h" />
@@ -248,6 +258,15 @@
     <ClInclude Include="source\Sound.h" />
     <ClInclude Include="source\stb_image.h" />
     <ClInclude Include="source\TextureBank.h" />
+    <ClInclude Include="source\TextureData.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <FxCompile Include="resource\shaderSkyboxVert.glsl">
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Vertex</ShaderType>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Vertex</ShaderType>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Vertex</ShaderType>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Vertex</ShaderType>
+    </FxCompile>
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

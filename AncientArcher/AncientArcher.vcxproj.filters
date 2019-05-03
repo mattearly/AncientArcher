@@ -24,6 +24,7 @@
     <None Include="resource\shader_geometry.glsl">
       <Filter>Resource Files</Filter>
     </None>
+    <None Include="resource\shaderSkyboxFrag.glsl" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="resource\00-pixelized_grass.png">
@@ -287,5 +288,8 @@
     <ClInclude Include="source\TextureBank.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <FxCompile Include="resource\shaderSkyboxVert.glsl" />
   </ItemGroup>
 </Project>

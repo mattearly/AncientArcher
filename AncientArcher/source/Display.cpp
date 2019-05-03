@@ -6,8 +6,8 @@
 extern Controls controls;
 Display::Display() {
 
-  window_width = 1024;
-  window_height = 768;
+  window_width = 1280;
+  window_height = 720;
 
   /* init glfw and opengl and game components */
   glfwInit();
@@ -63,7 +63,7 @@ void Display::mouseHandler(GLFWwindow * window, double xpos, double ypos) {
 }
 
 void Display::clear() const {
-  glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
+  glClearColor(0.1f, 0.1f, 0.85f, 0.0f);
   glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 }
 
