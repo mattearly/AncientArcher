@@ -2,6 +2,8 @@
 
 ###### Author(s): Matthew Early;  Reviewer(s): Matthew Early
 
+###### Details Last Updated: Feb-13-2019
+
 #### Overview
 
 Ancient Archer is a 3D RPG Adventure Game.
