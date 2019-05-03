@@ -15,175 +15,6 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <None Include="resource\shader_vertex.glsl">
-      <Filter>Resource Files</Filter>
-    </None>
-    <None Include="resource\shader_fragment.glsl">
-      <Filter>Resource Files</Filter>
-    </None>
-    <None Include="resource\shader_geometry.glsl">
-      <Filter>Resource Files</Filter>
-    </None>
-    <None Include="resource\shaderSkyboxFrag.glsl" />
-  </ItemGroup>
-  <ItemGroup>
-    <Image Include="resource\00-pixelized_grass.png">
-      <Filter>Resource Files</Filter>
-    </Image>
-    <Image Include="resource\01.png">
-      <Filter>Resource Files</Filter>
-    </Image>
-    <Image Include="resource\02-pixelized_wood.png">
-      <Filter>Resource Files</Filter>
-    </Image>
-    <Image Include="resource\03-footsteps.png">
-      <Filter>Resource Files</Filter>
-    </Image>
-    <Image Include="resource\04-pixelized_portal.png">
-      <Filter>Resource Files</Filter>
-    </Image>
-    <Image Include="resource\05-pixelized_darkstone.png">
-      <Filter>Resource Files</Filter>
-    </Image>
-    <Image Include="resource\06-pixelized_water_droplet.png">
-      <Filter>Resource Files</Filter>
-    </Image>
-    <Image Include="resource\07-pixelized_gravel.png">
-      <Filter>Resource Files</Filter>
-    </Image>
-    <Image Include="resource\08-pixelized_water.png">
-      <Filter>Resource Files</Filter>
-    </Image>
-    <Image Include="resource\09-bricks_light.png">
-      <Filter>Resource Files</Filter>
-    </Image>
-    <Image Include="resource\10-pixelized_mud.png">
-      <Filter>Resource Files</Filter>
-    </Image>
-    <Image Include="resource\11-pixelized_darkwood.png">
-      <Filter>Resource Files</Filter>
-    </Image>
-    <Image Include="resource\12-pickup_speedboost.png">
-      <Filter>Resource Files</Filter>
-    </Image>
-    <Image Include="resource\13-pixelized_snow.png">
-      <Filter>Resource Files</Filter>
-    </Image>
-    <Image Include="resource\14-maze_metal.png">
-      <Filter>Resource Files</Filter>
-    </Image>
-    <Image Include="resource\15-pickup_attackboost.png">
-      <Filter>Resource Files</Filter>
-    </Image>
-    <Image Include="resource\cliffrocks.png">
-      <Filter>Resource Files</Filter>
-    </Image>
-    <Image Include="resource\cow.png">
-      <Filter>Resource Files</Filter>
-    </Image>
-    <Image Include="resource\crumblingrocks.png">
-      <Filter>Resource Files</Filter>
-    </Image>
-    <Image Include="resource\deertailmushroom.png">
-      <Filter>Resource Files</Filter>
-    </Image>
-    <Image Include="resource\flower.png">
-      <Filter>Resource Files</Filter>
-    </Image>
-    <Image Include="resource\flower2.png">
-      <Filter>Resource Files</Filter>
-    </Image>
-    <Image Include="resource\flower3.png">
-      <Filter>Resource Files</Filter>
-    </Image>
-    <Image Include="resource\leaf.png">
-      <Filter>Resource Files</Filter>
-    </Image>
-    <Image Include="resource\mossrock.png">
-      <Filter>Resource Files</Filter>
-    </Image>
-    <Image Include="resource\thisle.png">
-      <Filter>Resource Files</Filter>
-    </Image>
-    <Image Include="resource\bark.png">
-      <Filter>Resource Files</Filter>
-    </Image>
-    <Image Include="resource\flowerbush.png">
-      <Filter>Resource Files</Filter>
-    </Image>
-    <Image Include="resource\grass.png">
-      <Filter>Resource Files</Filter>
-    </Image>
-    <Image Include="resource\greenbark.png">
-      <Filter>Resource Files</Filter>
-    </Image>
-    <Image Include="resource\sand.png">
-      <Filter>Resource Files</Filter>
-    </Image>
-    <Image Include="resource\water.png">
-      <Filter>Resource Files</Filter>
-    </Image>
-  </ItemGroup>
-  <ItemGroup>
-    <Media Include="resource\AMBIENT_windy_night.wav">
-      <Filter>Resource Files</Filter>
-    </Media>
-    <Media Include="resource\bowfire.wav">
-      <Filter>Resource Files</Filter>
-    </Media>
-    <Media Include="resource\equip_gear.wav">
-      <Filter>Resource Files</Filter>
-    </Media>
-    <Media Include="resource\feetlanding.wav">
-      <Filter>Resource Files</Filter>
-    </Media>
-    <Media Include="resource\footstep01.wav">
-      <Filter>Resource Files</Filter>
-    </Media>
-    <Media Include="resource\footstep02.wav">
-      <Filter>Resource Files</Filter>
-    </Media>
-    <Media Include="resource\footstep03.wav">
-      <Filter>Resource Files</Filter>
-    </Media>
-    <Media Include="resource\footstep04.wav">
-      <Filter>Resource Files</Filter>
-    </Media>
-    <Media Include="resource\footstep05.wav">
-      <Filter>Resource Files</Filter>
-    </Media>
-    <Media Include="resource\footstep06.wav">
-      <Filter>Resource Files</Filter>
-    </Media>
-    <Media Include="resource\footstep07.wav">
-      <Filter>Resource Files</Filter>
-    </Media>
-    <Media Include="resource\footstep08.wav">
-      <Filter>Resource Files</Filter>
-    </Media>
-    <Media Include="resource\grunt01.wav">
-      <Filter>Resource Files</Filter>
-    </Media>
-    <Media Include="resource\grunt02.wav">
-      <Filter>Resource Files</Filter>
-    </Media>
-    <Media Include="resource\grunt03.wav">
-      <Filter>Resource Files</Filter>
-    </Media>
-    <Media Include="resource\grunt04.wav">
-      <Filter>Resource Files</Filter>
-    </Media>
-    <Media Include="resource\punch.wav">
-      <Filter>Resource Files</Filter>
-    </Media>
-    <Media Include="resource\success.wav">
-      <Filter>Resource Files</Filter>
-    </Media>
-    <Media Include="resource\swordswing.wav">
-      <Filter>Resource Files</Filter>
-    </Media>
-  </ItemGroup>
-  <ItemGroup>
     <ClCompile Include="source\Camera.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -238,6 +69,12 @@
     <ClCompile Include="source\TextureBank.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="source\Skybox.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="source\TextureData.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="source\Camera.h">
@@ -288,8 +125,11 @@
     <ClInclude Include="source\TextureBank.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-  </ItemGroup>
-  <ItemGroup>
-    <FxCompile Include="resource\shaderSkyboxVert.glsl" />
+    <ClInclude Include="source\Skybox.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="source\TextureData.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>
