@@ -8,16 +8,21 @@
 #include "globals.h"
 
 TextureBank::TextureBank() {
-  num_loaded_textures = 0;
-  active_tex = 0;
+  numberOfLoadedTextures = 0;
+  currentActiveTexture = 0;
   initiated = false;
 }
 
+
+/** Adds a new texture to the default shader: shader_vertex.glsl and iterates numberOfLoadedTextures.
+ * Maxes out at 32.
+ * @param[in] path  Path to the the texture.
+ */
 void TextureBank::loadTexture(std::string path) {
 
   // makes it so the use gets this message instead of loading more than MAXTEXTURES textures
-  if (num_loaded_textures >= MAXTEXTURES) {
-    std::cout << "Maximum number of textures have been loaded (" << num_loaded_textures << ") ... Aborting texture load for '" << path << "'\n";
+  if (numberOfLoadedTextures >= MAXTEXTURES) {
+    std::cout << "Maximum number of textures have been loaded (" << numberOfLoadedTextures << ") ... Aborting texture load for '" << path << "'\n";
     return;
   }
 
@@ -26,26 +31,30 @@ void TextureBank::loadTexture(std::string path) {
   if (!initiated) {
     glGenTextures(MAXTEXTURES, texture);
   }
-  glActiveTexture(GL_TEXTURE0 + num_loaded_textures);
+  glActiveTexture(GL_TEXTURE0 + numberOfLoadedTextures);
 
-  glBindTexture(GL_TEXTURE_2D, texture[num_loaded_textures]); // all upcoming GL_TEXTURE_2D operations now have effect on this texture object
+  glBindTexture(GL_TEXTURE_2D, texture[numberOfLoadedTextures]); // all upcoming GL_TEXTURE_2D operations now have effect on this texture object
 
- // set the texture wrapping parameters
+  // UNCOMMENT BELOW FOR GL_REPEAT
   //glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);	// set texture wrapping to GL_REPEAT (default wrapping method)
   //glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);	// set texture wrapping to GL_REPEAT (default wrapping method)
 
+  // UNCOMMENT BELOW FOR GL_MIRROR_REPEAT
   //glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_MIRRORED_REPEAT);
   //glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_MIRRORED_REPEAT);
 
+  // UNCOMMENT BELOW FOR GL_CLAMP_TO_EDGE
   //glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
   //glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
 
+  // UNCOMMENT BELOW FOR GL_CLAMP_TO_BORDER
   //glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_BORDER);
   //glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_BORDER);
   //float borderColor[] = { 1.0f, 1.0f, 0.0f, 1.0f };
   //glTexParameterfv(GL_TEXTURE_2D, GL_TEXTURE_BORDER_COLOR, borderColor);
 
-  // set texture filtering parameters
+  
+  //
   //glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
   //glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
   //glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
@@ -67,24 +76,24 @@ void TextureBank::loadTexture(std::string path) {
 
   // attach the texture number to the end of the texture name (for passing to the right one in the shader)
   std::stringstream texture_shader_name("texture", std::ios_base::app | std::ios_base::out);
-  texture_shader_name << num_loaded_textures;
+  texture_shader_name << numberOfLoadedTextures;
   std::string n = texture_shader_name.str();
   shader.use();
-  shader.setInt(n.c_str(), num_loaded_textures);
+  shader.setInt(n.c_str(), numberOfLoadedTextures);
 
   // console notification of loaded texture
-  if (num_loaded_textures == 0)
+  if (numberOfLoadedTextures == 0)
     std::cout << "tex# | load path\n";
-  std::cout << num_loaded_textures << "    | " << path << "\n";
+  std::cout << numberOfLoadedTextures << "    | " << path << "\n";
 
   // increment to be ready for the next texture
-  num_loaded_textures++;
+  numberOfLoadedTextures++;
 
 }
 
 void TextureBank::activate(int n) {
-  if (active_tex != n) {
+  if (currentActiveTexture != n) {
     shader.setInt("texnum", n);
-    active_tex = n;
+    currentActiveTexture = n;
   }
 }
