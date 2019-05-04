@@ -7,15 +7,8 @@
 
 #include "globals.h"
 
-TextureBank::TextureBank() {
-  numberOfLoadedTextures = 0;
-  currentActiveTexture = 0;
-  initiated = false;
-}
-
-
 /** Adds a new texture to the default shader: shader_vertex.glsl and iterates numberOfLoadedTextures.
- * Maxes out at 32.
+ * Maxes out at 32. Starts from 0 index (0 - 31)
  * @param[in] path  Path to the the texture.
  */
 void TextureBank::loadTexture(std::string path) {
@@ -36,8 +29,8 @@ void TextureBank::loadTexture(std::string path) {
   glBindTexture(GL_TEXTURE_2D, texture[numberOfLoadedTextures]); // all upcoming GL_TEXTURE_2D operations now have effect on this texture object
 
   // UNCOMMENT BELOW FOR GL_REPEAT
-  //glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);	// set texture wrapping to GL_REPEAT (default wrapping method)
-  //glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);	// set texture wrapping to GL_REPEAT (default wrapping method)
+  glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);	// set texture wrapping to GL_REPEAT (default wrapping method)
+  glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);	// set texture wrapping to GL_REPEAT (default wrapping method)
 
   // UNCOMMENT BELOW FOR GL_MIRROR_REPEAT
   //glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_MIRRORED_REPEAT);
@@ -54,7 +47,7 @@ void TextureBank::loadTexture(std::string path) {
   //glTexParameterfv(GL_TEXTURE_2D, GL_TEXTURE_BORDER_COLOR, borderColor);
 
   
-  //
+  // NEEDS TO HAVE A ONE MIN_FILTER AND ONE MAG_FILTER
   //glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
   //glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
   //glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
@@ -64,6 +57,7 @@ void TextureBank::loadTexture(std::string path) {
 
   // load image, create texture and generate mipmaps
   stbi_set_flip_vertically_on_load(true); // tell stb_image.h to flip loaded texture's on the y-axis.
+  int width, height, nrChannel;
 
   unsigned char *data = stbi_load(path.c_str(), &width, &height, &nrChannel, 0);
   if (data) {
@@ -91,7 +85,10 @@ void TextureBank::loadTexture(std::string path) {
 
 }
 
-void TextureBank::activate(int n) {
+/** Signals the renderer to use this texture ID. Update this before doing draw or render calls.
+ * @param[in] n   sets currentActiveTexture to n.
+ */
+void TextureBank::activateTexture(int n) {
   if (currentActiveTexture != n) {
     shader.setInt("texnum", n);
     currentActiveTexture = n;

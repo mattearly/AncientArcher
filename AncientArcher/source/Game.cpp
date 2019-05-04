@@ -1,18 +1,23 @@
 #include "Game.h"
+#include "globals.h"
+#include "Controls.h"
+#include "mearly.h"
+#include "Skybox.h"
 
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtc/type_ptr.hpp>
 
-#include "globals.h"
-#include "Controls.h"
-#include "mearly.h"
 #include <iostream>
 
 Display display;
+
 Shader shader("../AncientArcher/resource/shader_vertex.glsl", "../AncientArcher/resource/shader_fragment.glsl");
+
 Lighting lighting;
+
 TextureBank texBank;
+
 std::vector<Entity> entities;
 
 Game::Game() {
@@ -63,17 +68,17 @@ Game::Game() {
   texBank.loadTexture("../AncientArcher/resource/sand.png");
 
   // -------- LOAD WORLD --------- //
-  Entity *e;
+  Entity* e;
   for (int i = 0; i < 15; i++) {
     for (int j = 0; j < 15; j++) {
       e = new Entity(
         ENTITYTYPE::SQUARE,
-        glm::vec3(i, mearly::NTKR(-5.25f, -5.19f) , j),
+        glm::vec3(i, mearly::NTKR(-5.25f, -5.19f), j),
         glm::vec3(1.0, 5.4f, 1.0),
         9,
         true
       );
-     entities.push_back(*e);
+      entities.push_back(*e);
     }
   }
 

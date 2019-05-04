@@ -5,6 +5,7 @@
 #include "Sound.h"
 
 Controls controls;
+
 Camera camera;
 
 Movement movedir;

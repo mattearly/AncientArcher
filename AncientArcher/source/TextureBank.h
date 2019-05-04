@@ -9,27 +9,13 @@
  */
 class TextureBank {
 public:
-  TextureBank();
   void loadTexture(std::string path);
-
-  /** Signals the renderer to use this texture ID. Update this before doing draw or render calls.
-   * @param[in] n   sets currentActiveTexture to n.
-   */
-  void activate(int n);
-
+  void activateTexture(int n);
 private:
-
-  static constexpr int MAXTEXTURES = 32;  // 0 - 31
-
-  int currentActiveTexture;
-
-  int numberOfLoadedTextures;
-
+  static constexpr int MAXTEXTURES = 32;
   unsigned int texture[MAXTEXTURES];
-
-  int width, height, nrChannel;
-
-  bool initiated;
-
+  int currentActiveTexture = 0;
+  int numberOfLoadedTextures = 0;
+  bool initiated = false;
 };
 

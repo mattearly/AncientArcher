@@ -38,7 +38,7 @@ void Renderer::update(Player *player, PrimativeManager *primativeManager, float 
 
   for (auto e : entities) {
 
-    texBank.activate(e.gameItem.textureID);
+    texBank.activateTexture(e.gameItem.textureID);
 
     drawEntity(&e, primativeManager);
 
@@ -50,7 +50,7 @@ void Renderer::update(Player *player, PrimativeManager *primativeManager, float 
 
 void Renderer::drawEntity(Entity *e, PrimativeManager *pm)
 {
-  texBank.activate(e->gameItem.textureID);
+  texBank.activateTexture(e->gameItem.textureID);
   switch (e->gameItem.type) {
   case ENTITYTYPE::SQUARE:
     pm->drawCube(
