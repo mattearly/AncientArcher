@@ -12,7 +12,7 @@ public:
 
   float FoV;
 
-  const float camstart[3] = { 1.5f, 0.5f, 1.5f };
+  const float camstart[3] = { 0,0,0 };
 
   void update();
 
