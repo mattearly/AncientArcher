@@ -152,6 +152,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="source\SkyboxRenderer.cpp" />
     <ClCompile Include="source\Skybox.cpp" />
     <ClCompile Include="source\Camera.cpp" />
     <ClCompile Include="source\Collider.cpp" />
@@ -171,9 +172,10 @@
     <ClCompile Include="source\Sound.cpp" />
     <ClCompile Include="source\stb_image.cpp" />
     <ClCompile Include="source\TextureBank.cpp" />
-    <ClCompile Include="source\TextureData.cpp" />
+    <ClCompile Include="source\TextureLoader.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="source\SkyboxRenderer.h" />
     <ClInclude Include="source\Skybox.h" />
     <ClInclude Include="source\Camera.h" />
     <ClInclude Include="source\Collider.h" />
@@ -191,7 +193,7 @@
     <ClInclude Include="source\Sound.h" />
     <ClInclude Include="source\stb_image.h" />
     <ClInclude Include="source\TextureBank.h" />
-    <ClInclude Include="source\TextureData.h" />
+    <ClInclude Include="source\TextureLoader.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
