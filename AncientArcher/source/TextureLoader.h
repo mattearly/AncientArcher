@@ -1,9 +1,10 @@
 #pragma once
+#include "Shader.h"
 #include <vector>
 #include <string>
 class TextureLoader
 {
 public:
-  void loadCubeTexture(const std::vector<std::string> &files);
+  int loadCubeTexture(const std::vector<std::string> &files, Shader *skyShader);
 };
 

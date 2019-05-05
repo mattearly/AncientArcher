@@ -67,6 +67,8 @@ Game::Game() {
   texBank.loadTexture("../AncientArcher/resource/water.png");
   texBank.loadTexture("../AncientArcher/resource/sand.png");
 
+  skyboxRenderer = new SkyboxRenderer();
+
   // -------- LOAD WORLD --------- //
   Entity* e;
   for (int i = 0; i < 15; i++) {

@@ -2,12 +2,14 @@
 #include "Player.h"
 #include "Renderer.h"
 #include "PrimativeManager.h"
+#include "SkyboxRenderer.h"
 
 class Game {
 public:
 
   Player* player;
   PrimativeManager primativeManager;
+  SkyboxRenderer* skyboxRenderer;
   Renderer renderer;
 
   Game();

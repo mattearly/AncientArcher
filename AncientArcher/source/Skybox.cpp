@@ -2,24 +2,15 @@
 #include "Shader.h"
 #include "Camera.h"
 
-extern Camera camera;
+extern Camera camera;  // camera is instantiated as a global in Player.cpp
 
-Skybox::Skybox()
+void Skybox::loadProjectionMatrix(Shader *skyboxShader)
 {
-  skyboxShader = new Shader("../AncientArcher/resource/shadeSkyboxVert.glsl", "../AncientArcher/resource/shaderSkyboxFrag.glsl");
-}
-
-Skybox::~Skybox()
-{
-  delete skyboxShader;
-}
-
-void Skybox::loadProjectionMatrix(glm::mat4 projectionMatrix)
-{
+  glm::mat4 projectionMatrix = camera.getProjectionMatrix();
   skyboxShader->setMat4("projectionMatrix", projectionMatrix);
 }
 
-void Skybox::loadViewMatrix()
+void Skybox::loadViewMatrix(Shader *skyboxShader)
 {
   glm::mat4 viewMatrix = camera.getViewMatrix();
   skyboxShader->setMat4("viewMatrix", viewMatrix);

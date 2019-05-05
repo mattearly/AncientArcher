@@ -3,6 +3,7 @@
 class Player;
 class PrimativeManager;
 class Entity;
+class SkyboxRenderer;
 
 class Renderer {
 public:
@@ -15,7 +16,7 @@ public:
   void enableGLDepthTest();
   void disableGLDepthTest();
 
-  void update(Player *player, PrimativeManager *primativeManager, float deltaTime);
+  void update(Player *player, PrimativeManager *primativeManager, SkyboxRenderer* skybox, float deltaTime);
 
 private:
 

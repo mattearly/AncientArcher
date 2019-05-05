@@ -2,6 +2,7 @@
 #include "PrimativeManager.h"
 #include "Player.h"
 #include "globals.h"
+#include "SkyboxRenderer.h"
 
 #include <iostream>
 
@@ -30,19 +31,20 @@ void Renderer::disableGLDepthTest() {
 
 }
 
-void Renderer::update(Player *player, PrimativeManager *primativeManager, float deltaTime) {
+void Renderer::update(Player *player, PrimativeManager *primativeManager, SkyboxRenderer *skybox, float deltaTime) {
 
   display.clear();
-
-  drawEntity(player->getEntity(), primativeManager);
+  
+  // draws the player entity box
+  //drawEntity(player->getEntity(), primativeManager);
+  
 
   for (auto e : entities) {
-
     texBank.activateTexture(e.gameItem.textureID);
-
     drawEntity(&e, primativeManager);
-
   }
+
+  skybox->render();
 
   display.update();
 
