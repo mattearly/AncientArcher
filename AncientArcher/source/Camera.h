@@ -19,38 +19,36 @@ public:
   void updateProjectionMatrix();
 
   // GETTERS
-  //return the calculated view matrix
   glm::mat4 getViewMatrix();
-
-  //return a reference to Position
   glm::vec3* getPosition();
-
-  //return a reference to Front
   glm::vec3* getFront();
-
-  //return a reference to Right
   glm::vec3* getRight();
-
-  //return copy of Yaw
   float getYaw();
-
-  //return copy of Pitch
   float getPitch();
-
+  glm::mat4 getProjectionMatrix();
 
 private:
 
-  glm::vec3 Position;  // position of the camera
-  glm::vec3 Front;  // where the camera is facing
-  glm::vec3 Up;  // up relative to the camera's lean
-  glm::vec3 Right;  // 90degree right to the camera's front
+  glm::vec3 Position; 
 
-  glm::vec3 WorldUp;  // 0.0f, 1.0f, 0.0f
-
+  // left/right looking direction angle
   float Yaw;
+
+  // up/down looking direction angle
   float Pitch;
+
+  // where the camera is facing
+  glm::vec3 Front; 
+
+  // up relative to the camera's lean
+  glm::vec3 Up;  
+
+  // 90degree right to the camera's front
+  glm::vec3 Right;  
+
+  // world's up direction: 0.0f, 1.0f, 0.0f
+  glm::vec3 WorldUp;  
 
   void updateCameraVectors();
 
 };
-

@@ -26,6 +26,11 @@ void Camera::updateProjectionMatrix() {
   shader.setMat4("projection", projection);
 }
 
+glm::mat4 Camera::getProjectionMatrix()
+{
+  return glm::perspective(glm::radians(FoV), (float)display.window_width / (float)display.window_height, 0.01f, 100.0f);
+}
+
 glm::mat4 Camera::getViewMatrix() {
   return glm::lookAt(Position, Position + Front, Up);
 }
