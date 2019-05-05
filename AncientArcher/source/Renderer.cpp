@@ -38,13 +38,13 @@ void Renderer::update(Player *player, PrimativeManager *primativeManager, Skybox
   // draws the player entity box
   //drawEntity(player->getEntity(), primativeManager);
   
-
+  // these entities use the default texBankShader
   for (auto e : entities) {
-    texBank.activateTexture(e.gameItem.textureID);
     drawEntity(&e, primativeManager);
   }
 
-  skybox->render();
+  // uses its own shader
+  //skybox->render();
 
   display.update();
 
@@ -52,7 +52,9 @@ void Renderer::update(Player *player, PrimativeManager *primativeManager, Skybox
 
 void Renderer::drawEntity(Entity *e, PrimativeManager *pm)
 {
+  texBankShader.use();
   texBank.activateTexture(e->gameItem.textureID);
+
   switch (e->gameItem.type) {
   case ENTITYTYPE::SQUARE:
     pm->drawCube(
