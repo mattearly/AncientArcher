@@ -132,6 +132,8 @@ void PrimativeManager::drawCube(glm::vec3 location) {
     loadCube();
   }
 
+  shader.use();
+
   glBindVertexArray(cubeVAO);
 
   glm::mat4 model = glm::mat4(1.0f);
@@ -147,6 +149,8 @@ void PrimativeManager::drawCube(glm::vec3 location, glm::vec3 scale) {
   if (!cubeLoaded) {
     loadCube();
   }
+
+  shader.use();
 
   glBindVertexArray(cubeVAO);
 
@@ -166,6 +170,8 @@ void PrimativeManager::drawCube(glm::vec3 location, glm::vec3 scale, glm::vec3 r
   if (!cubeLoaded) {
     loadCube();
   }
+
+  shader.use();
 
   glBindVertexArray(cubeVAO);
 
@@ -189,6 +195,8 @@ void PrimativeManager::drawPlane(glm::vec3 location) {
     loadPlane();
   }
 
+  shader.use();
+
   glBindVertexArray(planeVAO);
 
   glm::mat4 model = glm::mat4(1.0f);
@@ -208,6 +216,8 @@ void PrimativeManager::drawPlane(glm::vec3 location, glm::vec3 scale) {
   if (!planeLoaded) {
     loadPlane();
   }
+
+  shader.use();
 
   glBindVertexArray(planeVAO);
 
@@ -229,6 +239,8 @@ void PrimativeManager::drawPlane(glm::vec3 location, glm::vec3 scale, glm::vec3 
   if (!planeLoaded) {
     loadPlane();
   }
+
+  shader.use();
 
   glBindVertexArray(planeVAO);
 
