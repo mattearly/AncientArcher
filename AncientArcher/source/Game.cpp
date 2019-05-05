@@ -10,16 +10,6 @@
 
 #include <iostream>
 
-Display display;
-
-Shader shader("../AncientArcher/resource/shader_vertex.glsl", "../AncientArcher/resource/shader_fragment.glsl");
-
-Lighting lighting;
-
-TextureBank texBank;
-
-std::vector<Entity> entities;
-
 Game::Game() {
 
   // ----------- GRAPHICS CARD INFORMATION --------- //
