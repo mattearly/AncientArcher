@@ -10,6 +10,7 @@ public:
 	Shader(const char* vertex_file, const char* fragment_file, const char* geometry_file);
 
 	void use() const;
+  void stop() const;
 	void setBool(const std::string& name, bool value) const;
 	void setInt(const std::string& name, int value) const;
 	void setUint(const std::string& name, unsigned int value) const;
