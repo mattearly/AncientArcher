@@ -8,7 +8,7 @@
 #include "Entity.h"
 
 extern Display display;
-extern Shader shader;
+extern Shader texBankShader;
 extern Lighting lighting;
 extern TextureBank texBank;
 extern std::vector<Entity> entities; 

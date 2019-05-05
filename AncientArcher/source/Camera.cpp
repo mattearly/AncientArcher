@@ -17,18 +17,21 @@ Camera::~Camera() {}
 
 void Camera::update() {
   glm::mat4 view = getViewMatrix();
-  shader.setMat4("view", view);
+  texBankShader.setMat4("view", view);
 }
 
 // needs called to update the FoV and/or window_width window_height, and draw distances
+// this is for the global texBankShader
 void Camera::updateProjectionMatrix() {
   glm::mat4 projection = glm::perspective(glm::radians(FoV), (float)display.window_width / (float)display.window_height, 0.01f, 100.0f);
-  shader.setMat4("projection", projection);
+  texBankShader.setMat4("projection", projection);
 }
 
 glm::mat4 Camera::getProjectionMatrix()
 {
-  return glm::perspective(glm::radians(FoV), (float)display.window_width / (float)display.window_height, 0.01f, 100.0f);
+  glm::mat4 projection = glm::perspective(glm::radians(FoV), (float)display.window_width / (float)display.window_height, 0.01f, 100.0f);
+
+  return projection;
 }
 
 glm::mat4 Camera::getViewMatrix() {

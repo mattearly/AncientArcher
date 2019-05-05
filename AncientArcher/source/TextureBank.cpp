@@ -1,11 +1,12 @@
 #include "TextureBank.h"
+#include "globals.h"
+#include "stb_image.h"
+
 #include <glad/glad.h>
 
-#include"stb_image.h"
-#include<iostream>
-#include<sstream>
+#include <iostream>
+#include <sstream>
 
-#include "globals.h"
 
 /** Adds a new texture to the default shader: shader_vertex.glsl and iterates numberOfLoadedTextures.
  * Maxes out at 32. Starts from 0 index (0 - 31)
@@ -20,6 +21,7 @@ void TextureBank::loadTexture(std::string path) {
   }
 
   //glGenTextures(1, &texture[num_textures]);
+  texBankShader.use();
 
   if (!initiated) {
     glGenTextures(MAXTEXTURES, texture);
@@ -46,7 +48,7 @@ void TextureBank::loadTexture(std::string path) {
   //float borderColor[] = { 1.0f, 1.0f, 0.0f, 1.0f };
   //glTexParameterfv(GL_TEXTURE_2D, GL_TEXTURE_BORDER_COLOR, borderColor);
 
-  
+
   // NEEDS TO HAVE A ONE MIN_FILTER AND ONE MAG_FILTER
   //glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
   //glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
@@ -59,11 +61,12 @@ void TextureBank::loadTexture(std::string path) {
   stbi_set_flip_vertically_on_load(true); // tell stb_image.h to flip loaded texture's on the y-axis.
   int width, height, nrChannel;
 
-  unsigned char *data = stbi_load(path.c_str(), &width, &height, &nrChannel, 0);
+  unsigned char* data = stbi_load(path.c_str(), &width, &height, &nrChannel, 0);
   if (data) {
     glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, width, height, 0, GL_RGBA, GL_UNSIGNED_BYTE, data);
     glGenerateMipmap(GL_TEXTURE_2D);
-  } else {
+  }
+  else {
     std::cout << "Failed to load texture" << std::endl;
   }
   stbi_image_free(data);
@@ -71,14 +74,19 @@ void TextureBank::loadTexture(std::string path) {
   // attach the texture number to the end of the texture name (for passing to the right one in the shader)
   std::stringstream texture_shader_name("texture", std::ios_base::app | std::ios_base::out);
   texture_shader_name << numberOfLoadedTextures;
-  std::string n = texture_shader_name.str();
-  shader.use();
-  shader.setInt(n.c_str(), numberOfLoadedTextures);
 
+  std::string n = texture_shader_name.str();
+  
+  texBankShader.use();
+  texBankShader.setInt(n.c_str(), numberOfLoadedTextures);
+
+
+  //texBankShader.stop();
   // console notification of loaded texture
   if (numberOfLoadedTextures == 0)
     std::cout << "tex# | load path\n";
   std::cout << numberOfLoadedTextures << "    | " << path << "\n";
+  std::cout << "texutre ID " << texture[0] + numberOfLoadedTextures << std::endl;
 
   // increment to be ready for the next texture
   numberOfLoadedTextures++;
@@ -89,8 +97,11 @@ void TextureBank::loadTexture(std::string path) {
  * @param[in] n   sets currentActiveTexture to n.
  */
 void TextureBank::activateTexture(int n) {
+  glActiveTexture(GL_TEXTURE0 + n);
+
   if (currentActiveTexture != n) {
-    shader.setInt("texnum", n);
+    texBankShader.use();
+    texBankShader.setInt("texnum", n);
     currentActiveTexture = n;
   }
 }
