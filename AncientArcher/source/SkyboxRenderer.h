@@ -15,20 +15,29 @@ public:
 
 private:
 
-  unsigned int skyboxVAO;
-  void loadSkybox();
-  Shader* skyboxShader;
-  TextureLoader loader;
-  int texture;
+  // vao to switch to during render
+  unsigned int skyboxVAO = 0;
+  // vbo to store the index
+  unsigned int skyVBO = 0;
 
-  std::vector<std::string> texture_files = { 
-    "skybox_heresy_right", 
-    "skybox_heresy_left", 
+  void loadSkybox();
+
+  Shader* skyboxShader;
+
+  TextureLoader loader;
+
+  // textureID to switch to during render
+  int cubeMapTextureID = 0;
+
+  std::vector<std::string> texture_files = {
+    "skybox_heresy_right",
+    "skybox_heresy_left",
     "skybox_heresy_up",
-    "skybox_heresy_down", 
+    "skybox_heresy_down",
     "skybox_heresy_back",
-    "skybox_heresy_front" 
+    "skybox_heresy_front"
   };
+
   Skybox skybox;
 };
 
