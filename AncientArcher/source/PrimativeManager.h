@@ -2,7 +2,9 @@
 #include <glm/glm.hpp>
 class PrimativeManager {
 public:
-  
+  PrimativeManager() = default;
+  ~PrimativeManager() = default;
+
   void drawCube(glm::vec3 location);
   void drawCube(glm::vec3 location, glm::vec3 scale);
   void drawCube(glm::vec3 location, glm::vec3 scale, glm::vec3 rotation);
