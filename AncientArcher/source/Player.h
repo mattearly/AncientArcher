@@ -43,11 +43,11 @@ public:
     // mutators
   void increaseLegPower(float add);
 
-  Entity *getEntity() const;
+  //Entity *getEntity() const;
 
 private:
 
-  Entity *playerEntity;
+  //Entity *playerEntity;
 
   const float BASE_PLAYER_SPEED = 3.0f;
   const float BASE_PLAYER_JUMP_HEIGHT = 0.8f;

@@ -120,7 +120,7 @@ void Player::processCommands(float deltaTime)
   if (movedir.positionChanged) {
     camera.Position = playerIntendedLocation;
     lighting.movePointLight(0, playerIntendedLocation);
-    playerEntity->moveTo(glm::vec3(playerIntendedLocation.x, playerIntendedLocation.y - .2f, playerIntendedLocation.z));
+    //playerEntity->moveTo(glm::vec3(playerIntendedLocation.x, playerIntendedLocation.y - .2f, playerIntendedLocation.z));
 
     if (movedir.onGround) {
       static const float TimeBetweenFootsteps = 0.6f;
@@ -147,11 +147,11 @@ void Player::increaseLegPower(float add) {
     }
   }
 }
-
-Entity * Player::getEntity() const
-{
-  return playerEntity;
-}
+//
+//Entity * Player::getEntity() const
+//{
+//  return playerEntity;
+//}
 
 float Player::getRunSpeed() const {
   return (legPower / STAT_DIVISOR) + BASE_PLAYER_SPEED;
@@ -166,10 +166,10 @@ float Player::getJumpHeight() const {
 }
 
 Player::Player() {
-
+/*
   playerEntity = new Entity(
     SQUARE, glm::vec3(1.5f, 0.26f, 1.5f), glm::vec3(0.05f, 0.1f, 0.05f), -1, true
-  );
+  );*/
 
   lighting.addPointLight(*camera.getPosition());
   camera.updateProjectionMatrix();
@@ -180,9 +180,9 @@ Player::Player() {
 
 Player::Player(float leg_power) {
 
-  playerEntity = new Entity(
-    SQUARE, glm::vec3(1.5f, 0.26f, 1.5f), glm::vec3(0.05f, 0.1f, 0.05f), -1, true
-  );
+  //playerEntity = new Entity(
+  //  SQUARE, glm::vec3(1.5f, 0.26f, 1.5f), glm::vec3(0.05f, 0.1f, 0.05f), -1, true
+  //);
 
   lighting.addPointLight(camera.Position);
   camera.updateProjectionMatrix();
