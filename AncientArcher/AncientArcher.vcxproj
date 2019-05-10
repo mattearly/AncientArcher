@@ -153,7 +153,6 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="source\SkyboxRenderer.cpp" />
-    <ClCompile Include="source\Skybox.cpp" />
     <ClCompile Include="source\Camera.cpp" />
     <ClCompile Include="source\Collider.cpp" />
     <ClCompile Include="source\Controls.cpp" />
@@ -176,14 +175,13 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="source\SkyboxRenderer.h" />
-    <ClInclude Include="source\Skybox.h" />
     <ClInclude Include="source\Camera.h" />
     <ClInclude Include="source\Collider.h" />
     <ClInclude Include="source\Controls.h" />
     <ClInclude Include="source\Display.h" />
     <ClInclude Include="source\Entity.h" />
     <ClInclude Include="source\Game.h" />
-    <ClInclude Include="source\globals.h" />
+    <ClInclude Include="source\Globals.h" />
     <ClInclude Include="source\Lighting.h" />
     <ClInclude Include="source\mearly.h" />
     <ClInclude Include="source\Player.h" />

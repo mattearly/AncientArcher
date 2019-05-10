@@ -1,52 +1,53 @@
 #include "TextureLoader.h"
 #include "stb_image.h"
 #include "Shader.h"
-
 #include <glad/glad.h>
 
 #include <iostream>
 
-/*
- * Loads a set of cube textures.
- * @param[in] cubeMapFiles   Set of cube files to load in.
- * @param[in] cubeMapShader  Shader that holds the cubeMap texture. Cube texture is set to this shader after this function has ran successfully.
- * @return                   Texture ID
+/**
+ * This code loads in a cube map texture.
+ * @param[in] files to the textures
+ * @return textureID
  */
-int TextureLoader::loadCubeTexture(const std::vector<std::string>& cubeMapFiles, Shader* cubeMapShader)
+unsigned int TextureLoader::loadCubeTexture(const std::vector<std::string>& files)
 {
-  GLuint textureID;
-  cubeMapShader->use();
-  glGenTextures(1, &textureID);
-  glActiveTexture(GL_TEXTURE0);
-  glBindTexture(GL_TEXTURE_CUBE_MAP, textureID);
+  if (files.size() != 6)
+  {
+    throw std::runtime_error("Not enough files for cube map. A cube map needs to include 6 textures.");
+  }
+
+  unsigned int texID;
+  glGenTextures(1, &texID);
+  glBindTexture(GL_TEXTURE_CUBE_MAP, texID);
 
   int width, height, nrChannel;
-  unsigned char* data;
-  //stbi_set_flip_vertically_on_load(true); // tell stb_image.h to flip loaded texture's on the y-axis.
-
-  for (auto f : cubeMapFiles)
+  for (auto f : files)
   {
-    static int i = 0;
-    std::string path = "../AncientArcher/resource/" + f + ".png";
-    data = stbi_load(path.c_str(), &width, &height, &nrChannel, 0);
+    static unsigned int i = 0;
+    std::string path = "../AncientArcher/resource/" + f;
+    unsigned char* data = stbi_load(path.c_str(), &width, &height, &nrChannel, 0);
     if (data)
     {
+      std::cout << "cube tex: " << i << std::endl;
       glTexImage2D(
         GL_TEXTURE_CUBE_MAP_POSITIVE_X + i,
-        0, GL_RGBA, width, height, 0, GL_RGBA,
-        GL_UNSIGNED_BYTE, data
+        0,
+        GL_RGB,
+        width,
+        height,
+        0,
+        GL_RGB,
+        GL_UNSIGNED_BYTE,
+        data
       );
       stbi_image_free(data);
     }
     else
     {
-      std::cout << "texture not loaded\n";
       stbi_image_free(data);
-
+      throw std::runtime_error("A cubemap texture was not able to be loaded.");
     }
-      // not sure if this is needed
-      //glGenerateMipmap(GL_TEXTURE_2D);
-
     i++;
   }
 
@@ -56,11 +57,6 @@ int TextureLoader::loadCubeTexture(const std::vector<std::string>& cubeMapFiles,
   glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
   glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_R, GL_CLAMP_TO_EDGE);
 
-  //cubeMapShader->use();
-  cubeMapShader->setInt("cubeMap", 0);
-  //cubeMapShader->stop();
-
-  std::cout << " cube map texture ID is " << textureID << std::endl;
-  return textureID;
-
+  std::cout << " cube map texture ID is " << texID << std::endl;
+  return texID;
 }

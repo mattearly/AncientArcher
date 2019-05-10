@@ -5,6 +5,8 @@ public:
   PrimativeManager() = default;
   ~PrimativeManager() = default;
 
+  void drawCube();
+  void drawPlane();
   void drawCube(glm::vec3 location);
   void drawCube(glm::vec3 location, glm::vec3 scale);
   void drawCube(glm::vec3 location, glm::vec3 scale, glm::vec3 rotation);

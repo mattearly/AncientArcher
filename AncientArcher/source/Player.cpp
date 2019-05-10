@@ -1,5 +1,5 @@
 #include "Player.h"
-#include "globals.h"  // for stat_divisor and Entity
+#include "Globals.h"  // for stat_divisor and Entity
 #include "Controls.h"
 #include "Camera.h"
 #include "Sound.h"
@@ -53,7 +53,9 @@ void Player::processCommands(float deltaTime)
   if (movedir.right) playerIntendedLocation += camera.Right * velocity;
   if (movedir.left) playerIntendedLocation -= camera.Right * velocity;
 
-  /* Jump System */
+  // ------------ JUMP SYSTEM -------------- //
+  // * 3 phase system
+
   // PHASE 1: frame of liftoff
   if (movedir.jumped) {
     movedir.onGround = false;
@@ -70,14 +72,16 @@ void Player::processCommands(float deltaTime)
   // PHASE 3: falling velocity
   else if (movedir.falling && !movedir.onGround) {
     playerIntendedLocation.y += GRAVITY * deltaTime;
-    //playerIntendedLocation.y += (GRAVITY * accumulated_delta_time < TERMINAL_VELOCITY) ? GRAVITY * accumulated_delta_time : TERMINAL_VELOCITY;
   }
 
-  /* stop player from walking through impassable entities */
-  /*  - entities should not be modified here only checking and determining plafyer location */
-  if (movedir.positionChanged) {        // only do this check if the player actually moved
-    for (auto const & e : entities) {   // const by reference
-      if (e.collider != nullptr &&      //collider is not null (potentially a blocker)
+  // ------------ GENERAL MOVEMENT COLLISION -------------- //
+  // * A point vs Boundry Boxes (any entity with collision on)
+
+  if (movedir.positionChanged)
+  {
+    for (auto const& e : entities)
+    {
+      if (e.collider != nullptr &&
         abs(e.collider->impasse.loc[0] - playerIntendedLocation.x) < (ENGINE_LOGIC_CHECKING_DISTANCE / 1.5) + 1 &&
         abs(e.collider->impasse.loc[1] - playerIntendedLocation.y) < (ENGINE_LOGIC_CHECKING_DISTANCE / 4) + 1 &&
         abs(e.collider->impasse.loc[2] - playerIntendedLocation.z) < (ENGINE_LOGIC_CHECKING_DISTANCE / 1.5) + 1) {   //close enough to be worth checking
@@ -90,21 +94,18 @@ void Player::processCommands(float deltaTime)
             float yPosOverlapLT = e.collider->impasse.loc[2] + e.collider->impasse.sz[2] / 2;
             float yPosOverlapGT = e.collider->impasse.loc[2] - e.collider->impasse.sz[2] / 2;
             if (playerIntendedLocation.z < yPosOverlapLT && playerIntendedLocation.z > yPosOverlapGT) {  // in between the x & y & z
-
-              if (!movedir.onGround) {
-                /* just x and z */
-                //playerIntendedLocation.x = camera.Position.x;
-                //playerIntendedLocation.z = camera.Position.z;
-
-                /* all 3 */
+              if (!movedir.onGround)
+              {
                 playerIntendedLocation = camera.Position;
                 movedir.falling = true;
               }
-              else {
+              else
+              {
                 movedir.positionChanged = false;
               }
 
-              if (playerIntendedLocation.y > yTop) {
+              if (playerIntendedLocation.y > yTop)
+              {
                 movedir.falling = false;
                 movedir.onGround = true;
                 movedir.lastOnGroundHeight = camera.Position.y;
@@ -166,10 +167,10 @@ float Player::getJumpHeight() const {
 }
 
 Player::Player() {
-/*
-  playerEntity = new Entity(
-    SQUARE, glm::vec3(1.5f, 0.26f, 1.5f), glm::vec3(0.05f, 0.1f, 0.05f), -1, true
-  );*/
+  /*
+    playerEntity = new Entity(
+      SQUARE, glm::vec3(1.5f, 0.26f, 1.5f), glm::vec3(0.05f, 0.1f, 0.05f), -1, true
+    );*/
 
   lighting.addPointLight(*camera.getPosition());
   camera.updateProjectionMatrix();

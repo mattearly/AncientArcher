@@ -69,9 +69,6 @@
     <ClCompile Include="source\TextureBank.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="source\Skybox.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="source\TextureLoader.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -96,9 +93,6 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="source\Game.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="source\globals.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="source\Lighting.h">
@@ -128,13 +122,13 @@
     <ClInclude Include="source\TextureBank.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="source\Skybox.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="source\TextureLoader.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="source\SkyboxRenderer.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="source\Globals.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

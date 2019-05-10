@@ -1,7 +1,7 @@
-#include <glad/glad.h>
-
 #include "Lighting.h"
-#include "globals.h"
+#include "Globals.h"
+
+#include <glad/glad.h>
 
 #include <string>
 #include <sstream>
@@ -82,5 +82,3 @@ void Lighting::addPointLight(glm::vec3 pos) {
 void Lighting::movePointLight(int lightnum, glm::vec3 newpos) {
   texBankShader.setVec3("pointLight[0].position", newpos);
 }
-
-

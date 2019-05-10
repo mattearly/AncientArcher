@@ -92,6 +92,7 @@ Shader::Shader(const char *vertex_file, const char *fragment_file) {
   glDeleteShader(vertexShader);
   glDeleteShader(fragmentShader);
 
+  std::cout << "debug: shader ID = " << ID << std::endl;
 }
 
 Shader::Shader(const char * vertex_file, const char * fragment_file, const char * geometry_file) {

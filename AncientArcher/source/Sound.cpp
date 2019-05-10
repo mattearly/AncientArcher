@@ -1,8 +1,10 @@
 #include "Sound.h"
+#include "mearly.h"
+
+#include <SDL2/SDL.h>
+
 #include <cmath>
 #include <iostream>
-#include <SDL2/SDL.h>
-#include "mearly.h"
 
 bool soundReady = false;
 

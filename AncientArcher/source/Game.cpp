@@ -1,8 +1,7 @@
 #include "Game.h"
-#include "globals.h"
+#include "Globals.h"
 #include "Controls.h"
 #include "mearly.h"
-#include "Skybox.h"
 
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
@@ -24,40 +23,47 @@ Game::Game() {
   // ---------- PRELOAD ENVIRORNMENT DETAILS ---------- //
   lighting.setConstantLight();
   player = new Player(100.0f);
-  texBank.loadTexture("../AncientArcher/resource/00-pixelized_grass.png");
-  texBank.loadTexture("../AncientArcher/resource/01.png");
-  texBank.loadTexture("../AncientArcher/resource/02-pixelized_wood.png");
-  texBank.loadTexture("../AncientArcher/resource/03-footsteps.png");
-  texBank.loadTexture("../AncientArcher/resource/04-pixelized_portal.png");
-  texBank.loadTexture("../AncientArcher/resource/05-pixelized_darkstone.png");
-  texBank.loadTexture("../AncientArcher/resource/06-pixelized_water_droplet.png");
-  texBank.loadTexture("../AncientArcher/resource/07-pixelized_gravel.png");
-  texBank.loadTexture("../AncientArcher/resource/08-pixelized_water.png");
+  //texBank.loadTexture("../AncientArcher/resource/00-pixelized_grass.png");
+  //texBank.loadTexture("../AncientArcher/resource/01.png");
+  //texBank.loadTexture("../AncientArcher/resource/02-pixelized_wood.png");
+  //texBank.loadTexture("../AncientArcher/resource/03-footsteps.png");
+  //texBank.loadTexture("../AncientArcher/resource/04-pixelized_portal.png");
+  //texBank.loadTexture("../AncientArcher/resource/05-pixelized_darkstone.png");
+  //texBank.loadTexture("../AncientArcher/resource/06-pixelized_water_droplet.png");
+  //texBank.loadTexture("../AncientArcher/resource/07-pixelized_gravel.png");
+  //texBank.loadTexture("../AncientArcher/resource/08-pixelized_water.png");
   texBank.loadTexture("../AncientArcher/resource/09-bricks_light.png");
-  texBank.loadTexture("../AncientArcher/resource/10-pixelized_mud.png");
-  texBank.loadTexture("../AncientArcher/resource/11-pixelized_darkwood.png");
-  texBank.loadTexture("../AncientArcher/resource/12-pickup_speedboost.png");
-  texBank.loadTexture("../AncientArcher/resource/13-pixelized_snow.png");
-  texBank.loadTexture("../AncientArcher/resource/14-maze_metal.png");
-  texBank.loadTexture("../AncientArcher/resource/15-pickup_attackboost.png");
-  texBank.loadTexture("../AncientArcher/resource/cliffrocks.png");
-  texBank.loadTexture("../AncientArcher/resource/cow.png");
-  texBank.loadTexture("../AncientArcher/resource/crumblingrocks.png");
-  texBank.loadTexture("../AncientArcher/resource/flower.png");
-  texBank.loadTexture("../AncientArcher/resource/flower2.png");
-  texBank.loadTexture("../AncientArcher/resource/flower3.png");
-  texBank.loadTexture("../AncientArcher/resource/deertailmushroom.png");
-  texBank.loadTexture("../AncientArcher/resource/leaf.png");
-  texBank.loadTexture("../AncientArcher/resource/mossrock.png");
-  texBank.loadTexture("../AncientArcher/resource/thisle.png");
-  texBank.loadTexture("../AncientArcher/resource/flowerbush.png");
-  texBank.loadTexture("../AncientArcher/resource/bark.png");
-  texBank.loadTexture("../AncientArcher/resource/greenbark.png");
-  texBank.loadTexture("../AncientArcher/resource/grass.png");
-  texBank.loadTexture("../AncientArcher/resource/water.png");
-  texBank.loadTexture("../AncientArcher/resource/sand.png");
+  //texBank.loadTexture("../AncientArcher/resource/10-pixelized_mud.png");
+  //texBank.loadTexture("../AncientArcher/resource/11-pixelized_darkwood.png");
+  //texBank.loadTexture("../AncientArcher/resource/12-pickup_speedboost.png");
+  //texBank.loadTexture("../AncientArcher/resource/13-pixelized_snow.png");
+  //texBank.loadTexture("../AncientArcher/resource/14-maze_metal.png");
+  //texBank.loadTexture("../AncientArcher/resource/15-pickup_attackboost.png");
+  //texBank.loadTexture("../AncientArcher/resource/cliffrocks.png");
+  //texBank.loadTexture("../AncientArcher/resource/cow.png");
+  //texBank.loadTexture("../AncientArcher/resource/crumblingrocks.png");
+  //texBank.loadTexture("../AncientArcher/resource/flower.png");
+  //texBank.loadTexture("../AncientArcher/resource/flower2.png");
+  //texBank.loadTexture("../AncientArcher/resource/flower3.png");
+  //texBank.loadTexture("../AncientArcher/resource/deertailmushroom.png");
+  //texBank.loadTexture("../AncientArcher/resource/leaf.png");
+  //texBank.loadTexture("../AncientArcher/resource/mossrock.png");
+  //texBank.loadTexture("../AncientArcher/resource/thisle.png");
+  //texBank.loadTexture("../AncientArcher/resource/flowerbush.png");
+  //texBank.loadTexture("../AncientArcher/resource/bark.png");
+  //texBank.loadTexture("../AncientArcher/resource/greenbark.png");
+  //texBank.loadTexture("../AncientArcher/resource/grass.png");
+  //texBank.loadTexture("../AncientArcher/resource/water.png");
+  //texBank.loadTexture("../AncientArcher/resource/sand.png");
+
+  //texBankShader.use();
+  //for (int i = 0; i < 32; ++i) 
+  //{
+    //texBankShader.setInt("texture" + std::to_string(i) , i);
+  //}
 
   skyboxRenderer = new SkyboxRenderer();
+
 
   // -------- LOAD WORLD --------- //
   Entity* e;
@@ -67,7 +73,7 @@ Game::Game() {
         ENTITYTYPE::SQUARE,
         glm::vec3(i, mearly::NTKR(-5.25f, -5.19f), j),
         glm::vec3(1.0, 5.4f, 1.0),
-        9,
+        0,
         true
       );
       entities.push_back(*e);

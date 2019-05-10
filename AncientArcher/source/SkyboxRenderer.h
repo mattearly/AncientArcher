@@ -1,43 +1,38 @@
 #pragma once
-#include "Skybox.h"
-#include "Shader.h"
 #include "TextureLoader.h"
-#include <glm/glm.hpp>
 #include <vector>
 #include <string>
 
 class SkyboxRenderer
 {
 public:
+  
+  void loadProjectionMatrix();
+  void loadViewMatrix();
+
   SkyboxRenderer();
   ~SkyboxRenderer();
+
   void render();
 
 private:
 
-  // vao to switch to during render
   unsigned int skyboxVAO = 0;
-  // vbo to store the index
-  unsigned int skyVBO = 0;
+  unsigned int skyboxVBO = 0;
 
   void loadSkybox();
 
-  Shader* skyboxShader;
-
   TextureLoader loader;
 
-  // textureID to switch to during render
-  int cubeMapTextureID = 0;
+  unsigned int cubemapTexture = 0;
 
-  std::vector<std::string> texture_files = {
-    "skybox_heresy_right",
-    "skybox_heresy_left",
-    "skybox_heresy_up",
-    "skybox_heresy_down",
-    "skybox_heresy_back",
-    "skybox_heresy_front"
+  std::vector<std::string> skymapFiles = {
+    "skybox/skybox_right.jpg",
+    "skybox/skybox_left.jpg",
+    "skybox/skybox_top.jpg",
+    "skybox/skybox_bottom.jpg",
+    "skybox/skybox_front.jpg",
+    "skybox/skybox_back.jpg"
   };
 
-  Skybox skybox;
 };
-

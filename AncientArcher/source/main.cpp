@@ -4,13 +4,20 @@
 #include "Lighting.h"
 #include "Shader.h"
 
-// globals, #include "globals.h" to use
+// Globals Variables
+//  To use a global:
+// #include "Globals.h"
+
 Display display;
+TextureBank texBank;
 Shader texBankShader(
   "../AncientArcher/resource/shaderTextureBank32Vert.glsl",
   "../AncientArcher/resource/shaderTextureBank32Frag.glsl"
 );
-TextureBank texBank;
+Shader skyboxShader(
+  "../AncientArcher/resource/shaderSkyboxVert.glsl", 
+  "../AncientArcher/resource/shaderSkyboxFrag.glsl"
+);
 Lighting lighting;
 std::vector<Entity> entities;
 
@@ -20,4 +27,3 @@ int main()
   game.mainLoop();
 	return 0;
 }
-

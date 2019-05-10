@@ -1,5 +1,4 @@
 #pragma once
-#include <vector>
 
 #include "Display.h"
 #include "Shader.h"
@@ -7,8 +6,12 @@
 #include "TextureBank.h"
 #include "Entity.h"
 
+#include <vector>
+
+
 extern Display display;
 extern Shader texBankShader;
+extern Shader skyboxShader;
 extern Lighting lighting;
 extern TextureBank texBank;
 extern std::vector<Entity> entities; 

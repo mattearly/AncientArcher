@@ -7,15 +7,24 @@
  *   2.  must have alpha channel
  *   3.  must have width divisable by 4
  */
+
 class TextureBank {
 public:
-  void loadTexture(std::string path);
-  void activateTexture(int n);
-private:
-  static constexpr int MAXTEXTURES = 32;
-  unsigned int texture[MAXTEXTURES];
-  int currentActiveTexture = 0;
-  int numberOfLoadedTextures = 0;
-  bool initiated = false;
-};
 
+  //static constexpr int MAXTEXTURES = 32;
+
+  void loadTexture(std::string path);
+
+  //unsigned int textureIDs[MAXTEXTURES];
+
+  //void activateTexture(int n);
+
+private:
+  
+  //int currentActiveTexture = 0;
+  
+  //int numberOfLoadedTextures = 0;
+  
+  //bool initiated = false;
+
+};

@@ -1,5 +1,5 @@
 #include "Camera.h"
-#include "globals.h"
+#include "Globals.h"
 
 Camera::Camera() {
   FoV = 45.0f;

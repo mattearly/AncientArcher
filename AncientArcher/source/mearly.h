@@ -59,5 +59,4 @@ namespace mearly {
   ///
   bool point_vs_AABB_3D(const float &px, const float &py, const float &pz, const Impasse &b);
 
-}  //end namespace mearly
-
+}

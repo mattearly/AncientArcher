@@ -1,5 +1,5 @@
 #include "PrimativeManager.h"
-#include "globals.h"
+#include "Globals.h"
 
 #include <glad/glad.h>
 #include <GLFW/glfw3.h>
@@ -8,6 +8,28 @@
 
 #include <cmath>
 #include <iostream>
+
+void PrimativeManager::drawCube()
+{
+  if (!cubeLoaded) {
+    loadCube();
+  }
+  glBindVertexArray(cubeVAO);
+  glEnableVertexAttribArray(0);
+  glDrawArrays(GL_TRIANGLES, 0, 36);
+  glBindVertexArray(0);
+}
+
+void PrimativeManager::drawPlane()
+{
+  if (!planeLoaded) {
+    loadPlane();
+  }
+  glBindVertexArray(planeVAO);
+  glEnableVertexAttribArray(0);
+  glDrawArrays(GL_TRIANGLES, 0, 6);
+  glBindVertexArray(0);
+}
 
 void PrimativeManager::loadCube() {
   // cube with texture coords and normals
@@ -150,6 +172,7 @@ void PrimativeManager::drawCube(glm::vec3 location) {
   //glDisableVertexAttribArray(0);
   glBindVertexArray(0);
 }
+
 
 void PrimativeManager::drawCube(glm::vec3 location, glm::vec3 scale) {
   if (!cubeLoaded) {

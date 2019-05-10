@@ -1,9 +1,12 @@
 #include "Display.h"
+#include "Globals.h"
+#include "Controls.h"
+
 #include <utility>
 #include <iostream>
-#include "globals.h"
-#include "Controls.h"
+
 extern Controls controls;
+
 Display::Display() {
 
   window_width = 1280;

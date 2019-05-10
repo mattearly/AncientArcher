@@ -1,9 +1,8 @@
 #include <glm/glm.hpp>
 
-#include "globals.h"
+#include "Globals.h"
 #include "Camera.h"
 #include "Controls.h"
-
 #include "Sound.h"
 #include "Game.h"
 

@@ -1,6 +1,9 @@
 #pragma once
-#include <vector>
+
 #include "Collider.h"
+
+#include <vector>
+
 class Collider;
 enum ENTITYTYPE { SQUARE, PLANE };
 class Entity {

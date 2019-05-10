@@ -1,109 +1,110 @@
 #include "SkyboxRenderer.h"
-#include "Skybox.h"
+#include "Shader.h"
+#include "Camera.h"
+#include "Globals.h"
+
 #include <glad/glad.h>
 
+extern Shader skyboxShader;
+extern Camera camera;  // camera is instantiated as a global in Player.cpp
+
+void SkyboxRenderer::loadProjectionMatrix()
+{
+  glm::mat4 projectionMatrix = camera.getProjectionMatrix();
+  skyboxShader.use();
+  skyboxShader.setMat4("projection", projectionMatrix);
+  skyboxShader.stop();
+}
+
+void SkyboxRenderer::loadViewMatrix()
+{
+  glm::mat4 viewMatrix = camera.getViewMatrix();
+  skyboxShader.use();
+  skyboxShader.setMat4("view", viewMatrix);
+}
 SkyboxRenderer::SkyboxRenderer()
 {
-  skyboxShader = new Shader(
-    "../AncientArcher/resource/shaderSkyboxVert.glsl",
-    "../AncientArcher/resource/shaderSkyboxFrag.glsl"
-  );
-
-  cubeMapTextureID = loader.loadCubeTexture(texture_files, skyboxShader);
-
   loadSkybox();
-
-  //skybox.loadProjectionMatrix(skyboxShader);
-
+  skyboxShader.use();
+  cubemapTexture = loader.loadCubeTexture(skymapFiles);
+  skyboxShader.setInt("skybox", 0);
 }
 
 SkyboxRenderer::~SkyboxRenderer()
 {
-  delete skyboxShader;
 }
 
 void SkyboxRenderer::render()
 {
-  //glDepthMask(GL_FALSE);
-  //glDepthRange(1.f, 1.f);
-  glDepthFunc(GL_LEQUAL);  // change depth function so depth test passes when values are equal to depth buffer's content
-
-  skyboxShader->use();
-  skybox.loadProjectionMatrix(skyboxShader);  // only needs called on screen size and fov changes
-  skybox.loadViewMatrix(skyboxShader);
-
+  glDepthFunc(GL_LEQUAL);  // change depth function so depth test passes when values are equal to depth buffer's content  skyboxShader.use();
+  skyboxShader.use();
+  glActiveTexture(0);
+  glBindTexture(GL_TEXTURE_CUBE_MAP, 32);
+  glm::mat4 view = glm::mat4(glm::mat3(camera.getViewMatrix()));
+  skyboxShader.setMat4("view", view);
+  glm::mat4 projection = camera.getProjectionMatrix();
+  skyboxShader.setMat4("projection", projection);
   glBindVertexArray(skyboxVAO);
-  //glEnableVertexAttribArray(0);
   glActiveTexture(GL_TEXTURE0);
-  glBindTexture(GL_TEXTURE_CUBE_MAP, cubeMapTextureID);
+  glBindTexture(GL_TEXTURE_CUBE_MAP, cubemapTexture);
   glDrawArrays(GL_TRIANGLES, 0, 36);
-
-  //skyboxShader->stop();
-  //glDisableVertexAttribArray(0);
   glBindVertexArray(0);
-  //glDepthRange(0.f, 1.f);
-  //glDepthMask(GL_TRUE);
   glDepthFunc(GL_LESS); // set depth function back to default
-
 }
 
 void SkyboxRenderer::loadSkybox() {
-  const float SIZE = 500.0f;
-  const float VERTICES[] = {
-      -SIZE,  SIZE, -SIZE,
-      -SIZE, -SIZE, -SIZE,
-       SIZE, -SIZE, -SIZE,
-       SIZE, -SIZE, -SIZE,
-       SIZE,  SIZE, -SIZE,
-      -SIZE,  SIZE, -SIZE,
+  float skyboxVertices[] = {
+    // positions          
+    -1.0f,  1.0f, -1.0f,
+    -1.0f, -1.0f, -1.0f,
+     1.0f, -1.0f, -1.0f,
+     1.0f, -1.0f, -1.0f,
+     1.0f,  1.0f, -1.0f,
+    -1.0f,  1.0f, -1.0f,
 
-      -SIZE, -SIZE,  SIZE,
-      -SIZE, -SIZE, -SIZE,
-      -SIZE,  SIZE, -SIZE,
-      -SIZE,  SIZE, -SIZE,
-      -SIZE,  SIZE,  SIZE,
-      -SIZE, -SIZE,  SIZE,
+    -1.0f, -1.0f,  1.0f,
+    -1.0f, -1.0f, -1.0f,
+    -1.0f,  1.0f, -1.0f,
+    -1.0f,  1.0f, -1.0f,
+    -1.0f,  1.0f,  1.0f,
+    -1.0f, -1.0f,  1.0f,
 
-       SIZE, -SIZE, -SIZE,
-       SIZE, -SIZE,  SIZE,
-       SIZE,  SIZE,  SIZE,
-       SIZE,  SIZE,  SIZE,
-       SIZE,  SIZE, -SIZE,
-       SIZE, -SIZE, -SIZE,
+     1.0f, -1.0f, -1.0f,
+     1.0f, -1.0f,  1.0f,
+     1.0f,  1.0f,  1.0f,
+     1.0f,  1.0f,  1.0f,
+     1.0f,  1.0f, -1.0f,
+     1.0f, -1.0f, -1.0f,
 
-      -SIZE, -SIZE,  SIZE,
-      -SIZE,  SIZE,  SIZE,
-       SIZE,  SIZE,  SIZE,
-       SIZE,  SIZE,  SIZE,
-       SIZE, -SIZE,  SIZE,
-      -SIZE, -SIZE,  SIZE,
+    -1.0f, -1.0f,  1.0f,
+    -1.0f,  1.0f,  1.0f,
+     1.0f,  1.0f,  1.0f,
+     1.0f,  1.0f,  1.0f,
+     1.0f, -1.0f,  1.0f,
+    -1.0f, -1.0f,  1.0f,
 
-      -SIZE,  SIZE, -SIZE,
-       SIZE,  SIZE, -SIZE,
-       SIZE,  SIZE,  SIZE,
-       SIZE,  SIZE,  SIZE,
-      -SIZE,  SIZE,  SIZE,
-      -SIZE,  SIZE, -SIZE,
+    -1.0f,  1.0f, -1.0f,
+     1.0f,  1.0f, -1.0f,
+     1.0f,  1.0f,  1.0f,
+     1.0f,  1.0f,  1.0f,
+    -1.0f,  1.0f,  1.0f,
+    -1.0f,  1.0f, -1.0f,
 
-      -SIZE, -SIZE, -SIZE,
-      -SIZE, -SIZE,  SIZE,
-       SIZE, -SIZE, -SIZE,
-       SIZE, -SIZE, -SIZE,
-      -SIZE, -SIZE,  SIZE,
-       SIZE, -SIZE,  SIZE
+    -1.0f, -1.0f, -1.0f,
+    -1.0f, -1.0f,  1.0f,
+     1.0f, -1.0f, -1.0f,
+     1.0f, -1.0f, -1.0f,
+    -1.0f, -1.0f,  1.0f,
+     1.0f, -1.0f,  1.0f
   };
 
   glGenVertexArrays(1, &skyboxVAO);
-  glGenBuffers(1, &skyVBO);
+  glGenBuffers(1, &skyboxVBO);
   glBindVertexArray(skyboxVAO);
-  glBindBuffer(GL_ARRAY_BUFFER, skyVBO);
-  glBufferData(GL_ARRAY_BUFFER, sizeof(VERTICES), VERTICES, GL_STATIC_DRAW);
+  glBindBuffer(GL_ARRAY_BUFFER, skyboxVBO);
+  glBufferData(GL_ARRAY_BUFFER, sizeof(skyboxVertices), &skyboxVertices, GL_STATIC_DRAW);
   glEnableVertexAttribArray(0);
   glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), (void*)0);
 
-  // unbind buffers
-  //glBindBuffer(GL_ARRAY_BUFFER, 0);
-
-  //glBindVertexArray(0);
 
 }
