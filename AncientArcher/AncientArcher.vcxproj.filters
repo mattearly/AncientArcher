@@ -15,120 +15,117 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="source\Camera.cpp">
+    <ClCompile Include="cpp\engine\source\Camera.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="source\Collider.cpp">
+    <ClCompile Include="cpp\engine\source\Collider.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="source\Controls.cpp">
+    <ClCompile Include="cpp\engine\source\Controls.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="source\Display.cpp">
+    <ClCompile Include="cpp\engine\source\Display.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="source\Entity.cpp">
+    <ClCompile Include="cpp\engine\source\Entity.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="source\Game.cpp">
+    <ClCompile Include="cpp\engine\source\glad.c">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="source\GameMainLoop.cpp">
+    <ClCompile Include="cpp\engine\source\Lighting.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="source\glad.c">
+    <ClCompile Include="cpp\engine\source\mearly.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="source\Lighting.cpp">
+    <ClCompile Include="cpp\engine\source\Player.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="source\main.cpp">
+    <ClCompile Include="cpp\engine\source\Shader.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="source\mearly.cpp">
+    <ClCompile Include="cpp\engine\source\Sound.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="source\Player.cpp">
+    <ClCompile Include="cpp\engine\source\stb_image.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="source\PrimativeManager.cpp">
+    <ClCompile Include="cpp\engine\source\TextureLoader.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="source\Renderer.cpp">
+    <ClCompile Include="cpp\packages\skybox\SkyboxRenderer.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="source\Shader.cpp">
+    <ClCompile Include="cpp\packages\masterRenderer\Renderer.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="source\Sound.cpp">
+    <ClCompile Include="cpp\game\main.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="source\stb_image.cpp">
+    <ClCompile Include="cpp\game\Game.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="source\TextureBank.cpp">
+    <ClCompile Include="cpp\game\GameMainLoop.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="source\TextureLoader.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="source\SkyboxRenderer.cpp">
+    <ClCompile Include="cpp\packages\primatives\PrimativeRenderer.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="source\Camera.h">
+    <ClInclude Include="cpp\engine\headers\Camera.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="source\Collider.h">
+    <ClInclude Include="cpp\engine\headers\Collider.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="source\Controls.h">
+    <ClInclude Include="cpp\engine\headers\Controls.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="source\Display.h">
+    <ClInclude Include="cpp\engine\headers\Display.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="source\Entity.h">
+    <ClInclude Include="cpp\engine\headers\Entity.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="source\Game.h">
+    <ClInclude Include="cpp\engine\headers\Lighting.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="source\Lighting.h">
+    <ClInclude Include="cpp\engine\headers\mearly.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="source\mearly.h">
+    <ClInclude Include="cpp\engine\headers\Player.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="source\Player.h">
+    <ClInclude Include="cpp\engine\headers\Shader.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="source\PrimativeManager.h">
+    <ClInclude Include="cpp\engine\headers\Sound.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="source\Renderer.h">
+    <ClInclude Include="cpp\engine\headers\stb_image.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="source\Shader.h">
+    <ClInclude Include="cpp\engine\headers\TextureLoader.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="source\Sound.h">
+    <ClInclude Include="cpp\packages\skybox\SkyboxRenderer.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="source\stb_image.h">
+    <ClInclude Include="cpp\packages\masterRenderer\Renderer.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="source\TextureBank.h">
+    <ClInclude Include="cpp\engine\headers\Global.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="source\TextureLoader.h">
+    <ClInclude Include="cpp\engine\headers\AAEngine.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="source\SkyboxRenderer.h">
+    <ClInclude Include="cpp\game\Game.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="source\Globals.h">
+    <ClInclude Include="cpp\packages\primatives\PrimativeRenderer.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

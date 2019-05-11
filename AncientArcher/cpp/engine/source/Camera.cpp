@@ -1,5 +1,5 @@
 #include "Camera.h"
-#include "Globals.h"
+#include <AAEngine.h>
 
 Camera::Camera() {
   FoV = 45.0f;
@@ -15,16 +15,18 @@ Camera::Camera() {
 
 Camera::~Camera() {}
 
-void Camera::update() {
+void Camera::update(Shader* shader) {
   glm::mat4 view = getViewMatrix();
-  texBankShader.setMat4("view", view);
+  shader->use();
+  shader->setMat4("view", view);
 }
 
 // needs called to update the FoV and/or window_width window_height, and draw distances
 // this is for the global texBankShader
-void Camera::updateProjectionMatrix() {
+void Camera::updateProjectionMatrix(Shader* shader) {
   glm::mat4 projection = glm::perspective(glm::radians(FoV), (float)display.window_width / (float)display.window_height, 0.01f, 100.0f);
-  texBankShader.setMat4("projection", projection);
+  shader->use();
+  shader->setMat4("projection", projection);
 }
 
 glm::mat4 Camera::getProjectionMatrix()

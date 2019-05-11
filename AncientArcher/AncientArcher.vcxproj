@@ -88,7 +88,7 @@
     <RunCodeAnalysis>true</RunCodeAnalysis>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
-    <IncludePath>$(SolutionDir)AncientArcher\include;$(IncludePath)</IncludePath>
+    <IncludePath>$(SolutionDir)AncientArcher\cpp\engine\headers;$(SolutionDir)AncientArcher\include;$(IncludePath)</IncludePath>
     <LibraryPath>$(SolutionDir)AncientArcher\library;$(LibraryPath)</LibraryPath>
     <CodeAnalysisRuleSet>NativeRecommendedRules.ruleset</CodeAnalysisRuleSet>
     <RunCodeAnalysis>true</RunCodeAnalysis>
@@ -152,46 +152,45 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="source\SkyboxRenderer.cpp" />
-    <ClCompile Include="source\Camera.cpp" />
-    <ClCompile Include="source\Collider.cpp" />
-    <ClCompile Include="source\Controls.cpp" />
-    <ClCompile Include="source\Display.cpp" />
-    <ClCompile Include="source\Entity.cpp" />
-    <ClCompile Include="source\Game.cpp" />
-    <ClCompile Include="source\GameMainLoop.cpp" />
-    <ClCompile Include="source\glad.c" />
-    <ClCompile Include="source\Lighting.cpp" />
-    <ClCompile Include="source\main.cpp" />
-    <ClCompile Include="source\mearly.cpp" />
-    <ClCompile Include="source\Player.cpp" />
-    <ClCompile Include="source\PrimativeManager.cpp" />
-    <ClCompile Include="source\Renderer.cpp" />
-    <ClCompile Include="source\Shader.cpp" />
-    <ClCompile Include="source\Sound.cpp" />
-    <ClCompile Include="source\stb_image.cpp" />
-    <ClCompile Include="source\TextureBank.cpp" />
-    <ClCompile Include="source\TextureLoader.cpp" />
+    <ClCompile Include="cpp\packages\skybox\SkyboxRenderer.cpp" />
+    <ClCompile Include="cpp\engine\source\Camera.cpp" />
+    <ClCompile Include="cpp\engine\source\Collider.cpp" />
+    <ClCompile Include="cpp\engine\source\Controls.cpp" />
+    <ClCompile Include="cpp\engine\source\Display.cpp" />
+    <ClCompile Include="cpp\engine\source\Entity.cpp" />
+    <ClCompile Include="cpp\game\Game.cpp" />
+    <ClCompile Include="cpp\game\GameMainLoop.cpp" />
+    <ClCompile Include="cpp\engine\source\glad.c" />
+    <ClCompile Include="cpp\engine\source\Lighting.cpp" />
+    <ClCompile Include="cpp\game\main.cpp" />
+    <ClCompile Include="cpp\engine\source\mearly.cpp" />
+    <ClCompile Include="cpp\engine\source\Player.cpp" />
+    <ClCompile Include="cpp\packages\primatives\PrimativeRenderer.cpp" />
+    <ClCompile Include="cpp\packages\masterRenderer\Renderer.cpp" />
+    <ClCompile Include="cpp\engine\source\Shader.cpp" />
+    <ClCompile Include="cpp\engine\source\Sound.cpp" />
+    <ClCompile Include="cpp\engine\source\stb_image.cpp" />
+    <ClCompile Include="cpp\engine\source\TextureLoader.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="source\SkyboxRenderer.h" />
-    <ClInclude Include="source\Camera.h" />
-    <ClInclude Include="source\Collider.h" />
-    <ClInclude Include="source\Controls.h" />
-    <ClInclude Include="source\Display.h" />
-    <ClInclude Include="source\Entity.h" />
-    <ClInclude Include="source\Game.h" />
-    <ClInclude Include="source\Globals.h" />
-    <ClInclude Include="source\Lighting.h" />
-    <ClInclude Include="source\mearly.h" />
-    <ClInclude Include="source\Player.h" />
-    <ClInclude Include="source\PrimativeManager.h" />
-    <ClInclude Include="source\Renderer.h" />
-    <ClInclude Include="source\Shader.h" />
-    <ClInclude Include="source\Sound.h" />
-    <ClInclude Include="source\stb_image.h" />
-    <ClInclude Include="source\TextureBank.h" />
-    <ClInclude Include="source\TextureLoader.h" />
+    <ClInclude Include="cpp\engine\headers\AAEngine.h" />
+    <ClInclude Include="cpp\packages\skybox\SkyboxRenderer.h" />
+    <ClInclude Include="cpp\engine\headers\Camera.h" />
+    <ClInclude Include="cpp\engine\headers\Collider.h" />
+    <ClInclude Include="cpp\engine\headers\Controls.h" />
+    <ClInclude Include="cpp\engine\headers\Display.h" />
+    <ClInclude Include="cpp\engine\headers\Entity.h" />
+    <ClInclude Include="cpp\game\Game.h" />
+    <ClInclude Include="cpp\engine\headers\Global.h" />
+    <ClInclude Include="cpp\engine\headers\Lighting.h" />
+    <ClInclude Include="cpp\engine\headers\mearly.h" />
+    <ClInclude Include="cpp\engine\headers\Player.h" />
+    <ClInclude Include="cpp\packages\primatives\PrimativeRenderer.h" />
+    <ClInclude Include="cpp\packages\masterRenderer\Renderer.h" />
+    <ClInclude Include="cpp\engine\headers\Shader.h" />
+    <ClInclude Include="cpp\engine\headers\Sound.h" />
+    <ClInclude Include="cpp\engine\headers\stb_image.h" />
+    <ClInclude Include="cpp\engine\headers\TextureLoader.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

@@ -1,4 +1,5 @@
 #pragma once
+#include <Shader.h>
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
 
@@ -14,9 +15,9 @@ public:
 
   const float camstart[3] = { 0,0,0 };
 
-  void update();
+  void update(Shader* shader);
 
-  void updateProjectionMatrix();
+  void updateProjectionMatrix(Shader* shader);
 
   // GETTERS
   glm::mat4 getViewMatrix();

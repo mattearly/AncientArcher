@@ -1,11 +1,5 @@
+#include <AAEngine.h>
 #include <glm/glm.hpp>
-
-#include "Globals.h"
-#include "Camera.h"
-#include "Controls.h"
-#include "Sound.h"
-#include "Game.h"
-
 #include <iostream>
 #include <math.h>
 

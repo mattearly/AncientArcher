@@ -1,9 +1,6 @@
+#include <AAEngine.h>
+
 #include "Game.h"
-#include "Globals.h"
-#include "Sound.h"
-#include "Player.h"
-#include "Controls.h"
-#include "mearly.h"
 
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
@@ -26,7 +23,7 @@ void Game::mainLoop() {
 
     player->update(deltaTime);
     
-    renderer.update(player, &primativeManager, skyboxRenderer, deltaTime);
+    renderer.update(player, primativeRenderer, skyboxRenderer, deltaTime);
     
     glfwPollEvents();
   }

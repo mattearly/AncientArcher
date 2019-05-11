@@ -1,20 +1,10 @@
 #pragma once
 
 #include "Display.h"
-#include "Shader.h"
-#include "Lighting.h"
-#include "TextureBank.h"
-#include "Entity.h"
 
 #include <vector>
 
-
 extern Display display;
-extern Shader texBankShader;
-extern Shader skyboxShader;
-extern Lighting lighting;
-extern TextureBank texBank;
-extern std::vector<Entity> entities; 
 
 static constexpr const float GRAVITY = -9.81f;                        // meters per second
 static constexpr const float TERMINAL_VELOCITY = -53.00f;             // meters per second

@@ -1,6 +1,4 @@
-#include "Display.h"
-#include "Globals.h"
-#include "Controls.h"
+#include <AAEngine.h>
 
 #include <utility>
 #include <iostream>

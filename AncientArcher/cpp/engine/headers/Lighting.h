@@ -1,4 +1,5 @@
 #pragma once
+#include <Shader.h>
 #include <glm/glm.hpp>
 #include <vector>
 
@@ -7,11 +8,11 @@ public:
   Lighting();
   ~Lighting();
 
-  void setConstantLight();
+  void setConstantLight(Shader* shader);
 
-  void addPointLight(glm::vec3 pos);
+  void addPointLight(glm::vec3 pos, Shader* shader);
 
-  void movePointLight(int lightnum, glm::vec3 newpos);
+  void movePointLight(int lightnum, glm::vec3 newpos, Shader* shader);
 
 private:
 

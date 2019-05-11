@@ -1,17 +1,75 @@
-#include "TextureBank.h"
-#include "Globals.h"
+#include <TextureLoader.h>
+#include <Shader.h>
 
-#include "stb_image.h"
+#include <stb_image.h>
 #include <glad/glad.h>
 
-#include <iostream>
 #include <sstream>
+#include <iostream>
 
-/** Adds a new texture to the default shader: shader_vertex.glsl and iterates numberOfLoadedTextures.
- * Maxes out at 32. Starts from 0 index (0 - 31)
- * @param[in] path  Path to the the texture.
+/**
+ * This code loads in a cube map texture.
+ * @param[in] files to the textures
+ * @return textureID
  */
-void TextureBank::loadTexture(std::string path) {
+unsigned int TextureLoader::loadCubeTexture(const std::vector<std::string>& files)
+{
+  if (files.size() != 6)
+  {
+    throw std::runtime_error("Not enough files for cube map. A cube map needs to include 6 textures.");
+  }
+
+  unsigned int texID;
+  glGenTextures(1, &texID);
+  glBindTexture(GL_TEXTURE_CUBE_MAP, texID);
+
+  int width, height, nrChannel;
+  for (auto f : files)
+  {
+    static unsigned int i = 0;
+    std::string path = f;
+    unsigned char* data = stbi_load(path.c_str(), &width, &height, &nrChannel, 0);
+    if (data)
+    {
+      std::cout << "cube tex: " << i << std::endl;
+      glTexImage2D(
+        GL_TEXTURE_CUBE_MAP_POSITIVE_X + i,
+        0,
+        GL_RGB,
+        width,
+        height,
+        0,
+        GL_RGB,
+        GL_UNSIGNED_BYTE,
+        data
+      );
+      stbi_image_free(data);
+    }
+    else
+    {
+      stbi_image_free(data);
+      throw std::runtime_error("A cubemap texture was not able to be loaded.");
+    }
+    i++;
+  }
+
+  glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+  glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+  glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
+  glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
+  glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_R, GL_CLAMP_TO_EDGE);
+
+  std::cout << " cube map texture ID is " << texID << std::endl;
+  return texID;
+}
+
+
+/**
+ * This code loads in a 2D map texture.
+ * @param[in] files to the textures
+ * @return    textureID
+ */
+unsigned int TextureLoader::load2DTexture(std::string path) {
 
   // makes it so the use gets this message instead of loading more than MAXTEXTURES textures
   //if (numberOfLoadedTextures >= MAXTEXTURES) {
@@ -77,7 +135,7 @@ void TextureBank::loadTexture(std::string path) {
   //texture_shader_name << numberOfLoadedTextures;
 
   //std::string n = texture_shader_name.str();
-  
+
   //texBankShader.use();
   //texBankShader.setInt(n.c_str(), numberOfLoadedTextures);
 
@@ -90,17 +148,5 @@ void TextureBank::loadTexture(std::string path) {
 
   // increment to be ready for the next texture
   //numberOfLoadedTextures++;
+  return texID;
 }
-
-/** Signals the renderer to use this texture ID. Update this before doing draw or render calls.
- * @param[in] n   sets currentActiveTexture to n.
- */
-//void TextureBank::activateTexture(int n) {
-//  //glActiveTexture(GL_TEXTURE0 + n);
-//
-//  if (currentActiveTexture != n) {
-//    //texBankShader.use();
-//    texBankShader.setInt("activeTex", n);
-//    currentActiveTexture = n;
-//  }
-//}

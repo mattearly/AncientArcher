@@ -1,7 +1,6 @@
+#include <AAEngine.h>
+
 #include "Game.h"
-#include "Globals.h"
-#include "Controls.h"
-#include "mearly.h"
 
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
@@ -20,65 +19,37 @@ Game::Game() {
   glGetIntegerv(GL_MAX_COMBINED_TEXTURE_IMAGE_UNITS, &__totalTexturesAllowed);
   std::cout << "Max total textures:  " << __totalTexturesAllowed << "\n";
 
+
+  // Player and Camera
+  player = new Player(100.0f);  // should be first to instantiate camera I think
+
+
   // ---------- PRELOAD ENVIRORNMENT DETAILS ---------- //
-  lighting.setConstantLight();
-  player = new Player(100.0f);
-  //texBank.loadTexture("../AncientArcher/resource/00-pixelized_grass.png");
-  //texBank.loadTexture("../AncientArcher/resource/01.png");
-  //texBank.loadTexture("../AncientArcher/resource/02-pixelized_wood.png");
-  //texBank.loadTexture("../AncientArcher/resource/03-footsteps.png");
-  //texBank.loadTexture("../AncientArcher/resource/04-pixelized_portal.png");
-  //texBank.loadTexture("../AncientArcher/resource/05-pixelized_darkstone.png");
-  //texBank.loadTexture("../AncientArcher/resource/06-pixelized_water_droplet.png");
-  //texBank.loadTexture("../AncientArcher/resource/07-pixelized_gravel.png");
-  //texBank.loadTexture("../AncientArcher/resource/08-pixelized_water.png");
-  texBank.loadTexture("../AncientArcher/resource/09-bricks_light.png");
-  //texBank.loadTexture("../AncientArcher/resource/10-pixelized_mud.png");
-  //texBank.loadTexture("../AncientArcher/resource/11-pixelized_darkwood.png");
-  //texBank.loadTexture("../AncientArcher/resource/12-pickup_speedboost.png");
-  //texBank.loadTexture("../AncientArcher/resource/13-pixelized_snow.png");
-  //texBank.loadTexture("../AncientArcher/resource/14-maze_metal.png");
-  //texBank.loadTexture("../AncientArcher/resource/15-pickup_attackboost.png");
-  //texBank.loadTexture("../AncientArcher/resource/cliffrocks.png");
-  //texBank.loadTexture("../AncientArcher/resource/cow.png");
-  //texBank.loadTexture("../AncientArcher/resource/crumblingrocks.png");
-  //texBank.loadTexture("../AncientArcher/resource/flower.png");
-  //texBank.loadTexture("../AncientArcher/resource/flower2.png");
-  //texBank.loadTexture("../AncientArcher/resource/flower3.png");
-  //texBank.loadTexture("../AncientArcher/resource/deertailmushroom.png");
-  //texBank.loadTexture("../AncientArcher/resource/leaf.png");
-  //texBank.loadTexture("../AncientArcher/resource/mossrock.png");
-  //texBank.loadTexture("../AncientArcher/resource/thisle.png");
-  //texBank.loadTexture("../AncientArcher/resource/flowerbush.png");
-  //texBank.loadTexture("../AncientArcher/resource/bark.png");
-  //texBank.loadTexture("../AncientArcher/resource/greenbark.png");
-  //texBank.loadTexture("../AncientArcher/resource/grass.png");
-  //texBank.loadTexture("../AncientArcher/resource/water.png");
-  //texBank.loadTexture("../AncientArcher/resource/sand.png");
+  primativeRenderer = new PrimativeRenderer();
 
-  //texBankShader.use();
-  //for (int i = 0; i < 32; ++i) 
-  //{
-    //texBankShader.setInt("texture" + std::to_string(i) , i);
-  //}
+  //lighting.setConstantLight();
 
-  skyboxRenderer = new SkyboxRenderer();
+  TextureLoader texLoader;
 
+  unsigned int lightBricksTexID = texLoader.load2DTexture("../AncientArcher/cpp/packages/primatives/light_bricks.png");
 
   // -------- LOAD WORLD --------- //
   Entity* e;
   for (int i = 0; i < 15; i++) {
     for (int j = 0; j < 15; j++) {
+    
       e = new Entity(
         ENTITYTYPE::SQUARE,
         glm::vec3(i, mearly::NTKR(-5.25f, -5.19f), j),
         glm::vec3(1.0, 5.4f, 1.0),
-        0,
+        lightBricksTexID,
         true
       );
-      entities.push_back(*e);
+      primativeRenderer->addToPrimativeEntities(*e);
     }
   }
+
+  skyboxRenderer = new SkyboxRenderer();
 
 
   // ------------ SET FLOOR ------------ //
