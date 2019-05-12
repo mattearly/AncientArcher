@@ -9,8 +9,8 @@
 
 /**
  * This code loads in a cube map texture.
- * @param[in] files to the textures
- * @return textureID
+ * @param[in] files       to the textures
+ * @return    textureID   id to reference the loaded texture
  */
 unsigned int TextureLoader::loadCubeTexture(const std::vector<std::string>& files)
 {
