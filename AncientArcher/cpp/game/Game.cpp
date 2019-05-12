@@ -1,16 +1,14 @@
 #include <AAEngine.h>
-
 #include "Game.h"
-
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtc/type_ptr.hpp>
-
 #include <iostream>
 
 Game::Game() {
 
   // ----------- GRAPHICS CARD INFORMATION --------- //
+
   int __textures_allowed = 0;
   glGetIntegerv(GL_MAX_TEXTURE_IMAGE_UNITS, &__textures_allowed);
   std::cout << "//--GRAPHIC CARD INFO--//\nMax textures per shader:  " << __textures_allowed << "\n";
@@ -26,8 +24,6 @@ Game::Game() {
 
   // ---------- PRELOAD ENVIRORNMENT DETAILS ---------- //
   primativeRenderer = new PrimativeRenderer();
-
-  //lighting.setConstantLight();
 
   TextureLoader texLoader;
 

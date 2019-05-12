@@ -7,7 +7,6 @@
 #include <Global.h>
 #include <Lighting.h>
 #include <mearly.h>
-#include <Player.h>
 #include <Shader.h>
 #include <Sound.h>
 #include <stb_image.h>

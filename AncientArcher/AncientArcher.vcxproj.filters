@@ -15,9 +15,6 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="cpp\engine\source\Camera.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="cpp\engine\source\Collider.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -39,9 +36,6 @@
     <ClCompile Include="cpp\engine\source\mearly.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="cpp\engine\source\Player.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="cpp\engine\source\Shader.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -57,9 +51,6 @@
     <ClCompile Include="cpp\packages\skybox\SkyboxRenderer.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="cpp\packages\masterRenderer\Renderer.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="cpp\game\main.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -72,11 +63,17 @@
     <ClCompile Include="cpp\packages\primatives\PrimativeRenderer.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="cpp\engine\source\Camera.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="cpp\packages\firstPersonPlayer\Player.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="cpp\packages\masterRenderer\MasterRenderer.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="cpp\engine\headers\Camera.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="cpp\engine\headers\Collider.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -95,9 +92,6 @@
     <ClInclude Include="cpp\engine\headers\mearly.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="cpp\engine\headers\Player.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="cpp\engine\headers\Shader.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -113,9 +107,6 @@
     <ClInclude Include="cpp\packages\skybox\SkyboxRenderer.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="cpp\packages\masterRenderer\Renderer.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="cpp\engine\headers\Global.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -126,6 +117,18 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="cpp\packages\primatives\PrimativeRenderer.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="cpp\engine\headers\Camera.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="cpp\packages\firstPersonPlayer\Player.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="cpp\packages\masterRenderer\MasterRenderer.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="cpp\packages\firstPersonPlayer\Movement.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

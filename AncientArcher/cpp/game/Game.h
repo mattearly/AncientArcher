@@ -1,9 +1,9 @@
 #pragma once
 
-#include "../../packages/masterRenderer/Renderer.h"
+#include "../../packages/masterRenderer/MasterRenderer.h"
 #include "../../packages/skybox/SkyboxRenderer.h"
 #include "../../packages/primatives/PrimativeRenderer.h"
-#include <Player.h>
+
 
 class Game {
 public:
@@ -11,7 +11,7 @@ public:
   Player* player;
   PrimativeRenderer* primativeRenderer;
   SkyboxRenderer* skyboxRenderer;
-  Renderer renderer;
+  MasterRenderer masterRenderer;
 
   Game();
 

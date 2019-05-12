@@ -1,9 +1,11 @@
 #include <AAEngine.h>
+#include "../../packages/firstPersonPlayer/Movement.h"
 #include <glm/glm.hpp>
 #include <iostream>
 #include <math.h>
 
-extern Camera camera;
+extern Camera camera;  // camera is global from Player class
+
 extern Movement movedir;
 
 Controls::Controls() {
@@ -15,7 +17,9 @@ Controls::Controls() {
 
 void Controls::mouseMovement(float xpos, float ypos) {
 
-  /* START FIRST PERSON CONTROLS */
+  /// This block is first person controls
+  /// Note: cursor visibility can be toggled in the Display class, it should be OFF for these controls
+  ///
   if (firstMouse) {
     lastX = xpos;
     lastY = ypos;
@@ -41,7 +45,11 @@ void Controls::mouseMovement(float xpos, float ypos) {
   }
 
   camera.updateCameraVectors();
-  /* END FIRST PERSON CONTROLS */
+  
+  ///
+  ///
+  ///
+
 
 }
 

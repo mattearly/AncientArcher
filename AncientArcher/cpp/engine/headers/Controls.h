@@ -2,8 +2,6 @@
 #include <glad/glad.h>
 #include <GLFW/glfw3.h>
 
-class Player;
-
 class Controls {
 
 public:
