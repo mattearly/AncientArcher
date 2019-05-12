@@ -23,12 +23,13 @@ unsigned int TextureLoader::loadCubeTexture(const std::vector<std::string>& file
   glGenTextures(1, &texID);
   glBindTexture(GL_TEXTURE_CUBE_MAP, texID);
 
+  stbi_set_flip_vertically_on_load(false); // tell stb_image.h to not flip loaded texture's on the y-axis.
+
   int width, height, nrChannel;
-  for (auto f : files)
+  unsigned int size = files.size();
+  for (unsigned int i = 0; i < size; ++i)
   {
-    static unsigned int i = 0;
-    std::string path = f;
-    unsigned char* data = stbi_load(path.c_str(), &width, &height, &nrChannel, 0);
+    unsigned char* data = stbi_load(files[i].c_str(), &width, &height, &nrChannel, 0);
     if (data)
     {
       std::cout << "cube tex: " << i << std::endl;
@@ -50,11 +51,10 @@ unsigned int TextureLoader::loadCubeTexture(const std::vector<std::string>& file
       stbi_image_free(data);
       throw std::runtime_error("A cubemap texture was not able to be loaded.");
     }
-    i++;
   }
 
-  glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-  glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+  glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+  glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
   glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
   glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
   glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_R, GL_CLAMP_TO_EDGE);
@@ -130,23 +130,5 @@ unsigned int TextureLoader::load2DTexture(std::string path) {
   }
   stbi_image_free(data);
 
-  // attach the texture number to the end of the texture name (for passing to the right one in the shader)
-  //std::stringstream texture_shader_name("texture", std::ios_base::app | std::ios_base::out);
-  //texture_shader_name << numberOfLoadedTextures;
-
-  //std::string n = texture_shader_name.str();
-
-  //texBankShader.use();
-  //texBankShader.setInt(n.c_str(), numberOfLoadedTextures);
-
-  //texBankShader.stop();
-  // console notification of loaded texture
-  //if (numberOfLoadedTextures == 0)
-    //std::cout << "tex# | load path\n";
-  //std::cout << numberOfLoadedTextures << "    | " << path << "\n";
-  //std::cout << "texutre ID " << textureIDs[0] + numberOfLoadedTextures << std::endl;
-
-  // increment to be ready for the next texture
-  //numberOfLoadedTextures++;
   return texID;
 }
