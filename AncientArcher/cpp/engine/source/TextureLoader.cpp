@@ -26,8 +26,8 @@ unsigned int TextureLoader::loadCubeTexture(const std::vector<std::string>& file
   stbi_set_flip_vertically_on_load(false); // tell stb_image.h to not flip loaded texture's on the y-axis.
 
   int width, height, nrChannel;
-  unsigned int size = files.size();
-  for (unsigned int i = 0; i < size; ++i)
+  std::size_t size = files.size();
+  for (auto i = 0; i < size; ++i)
   {
     unsigned char* data = stbi_load(files[i].c_str(), &width, &height, &nrChannel, 0);
     if (data)
