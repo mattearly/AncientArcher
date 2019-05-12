@@ -6,7 +6,7 @@
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtc/type_ptr.hpp>
 
-#include "../packages/firstPersonPlayer/Movement.h"
+#include "../pckgs/firstPersonPlayer/Movement.h"
 
 void Game::mainLoop() {
   

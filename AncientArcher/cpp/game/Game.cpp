@@ -27,7 +27,7 @@ Game::Game() {
 
   TextureLoader texLoader;
 
-  unsigned int lightBricksTexID = texLoader.load2DTexture("../AncientArcher/cpp/packages/primatives/light_bricks.png");
+  unsigned int lightBricksTexID = texLoader.load2DTexture("../AncientArcher/cpp/pckgs/primatives/light_bricks.png");
 
   // -------- LOAD WORLD --------- //
   Entity* e;
@@ -36,7 +36,7 @@ Game::Game() {
     for (int j = 0; j < 15; j++) 
     {
       e = new Entity(
-        ENTITYTYPE::SQUARE,
+        ENTITYTYPE::BOX,
         glm::vec3(i, mearly::NTKR(-5.25f, -5.19f), j),
         glm::vec3(1.0, 5.4f, 1.0),
         lightBricksTexID,
@@ -100,7 +100,7 @@ Game::Game() {
 
   //  if (i % 3 == 0) {
   //    e = new Entity(
-  //      ENTITYTYPE::SQUARE,
+  //      ENTITYTYPE::BOX,
   //      glm::vec3(mearly::NTKR(3.f, ENGINE_LOGIC_CHECKING_DISTANCE * 3.5),
   //        mearly::NTKR(7.01f, 15.0f), mearly::NTKR(3.f, ENGINE_LOGIC_CHECKING_DISTANCE * 3.5)),
   //      glm::vec3(mearly::NTKR(2.5f, 4.5f), mearly::NTKR(0.3f, 6.5f), mearly::NTKR(2.5f, 4.5f)),
@@ -110,7 +110,7 @@ Game::Game() {
   //  }
   //  else if (i % 3 == 1) {
   //    e = new Entity(
-  //      ENTITYTYPE::SQUARE,
+  //      ENTITYTYPE::BOX,
   //      glm::vec3(mearly::NTKR(3.f, ENGINE_LOGIC_CHECKING_DISTANCE * 3.5), mearly::NTKR(2.01f, 8.0f), mearly::NTKR(3.f, ENGINE_LOGIC_CHECKING_DISTANCE * 3.5)),
   //      glm::vec3(mearly::NTKR(0.5f, 8.0f), mearly::NTKR(0.5f, 5.0f), mearly::NTKR(0.5f, 8.0f)),
   //      mearly::NTKR(0, 31),
@@ -119,7 +119,7 @@ Game::Game() {
   //  }
   //  else {
   //    e = new Entity(
-  //      ENTITYTYPE::SQUARE,
+  //      ENTITYTYPE::BOX,
   //      glm::vec3(mearly::NTKR(3.f, ENGINE_LOGIC_CHECKING_DISTANCE * 3.5), 1.08f, mearly::NTKR(3.f, ENGINE_LOGIC_CHECKING_DISTANCE * 3.5)),
   //      glm::vec3(2.f, 2.f, 2.f),
   //      mearly::NTKR(0, 31),
@@ -145,6 +145,5 @@ Game::Game() {
 
   //}
   //std::cout << "total collisions: " << countTotalCollisions << "\ntotal entities: " << entities.size() << "\n";
-
 
 }

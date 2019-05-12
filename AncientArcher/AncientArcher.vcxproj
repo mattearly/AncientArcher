@@ -152,7 +152,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="cpp\packages\skybox\SkyboxRenderer.cpp" />
+    <ClCompile Include="cpp\pckgs\skybox\SkyboxRenderer.cpp" />
     <ClCompile Include="cpp\engine\source\Camera.cpp" />
     <ClCompile Include="cpp\engine\source\Collider.cpp" />
     <ClCompile Include="cpp\engine\source\Controls.cpp" />
@@ -164,9 +164,9 @@
     <ClCompile Include="cpp\engine\source\Lighting.cpp" />
     <ClCompile Include="cpp\game\main.cpp" />
     <ClCompile Include="cpp\engine\source\mearly.cpp" />
-    <ClCompile Include="cpp\packages\firstPersonPlayer\Player.cpp" />
-    <ClCompile Include="cpp\packages\primatives\PrimativeRenderer.cpp" />
-    <ClCompile Include="cpp\packages\masterRenderer\MasterRenderer.cpp" />
+    <ClCompile Include="cpp\pckgs\firstPersonPlayer\Player.cpp" />
+    <ClCompile Include="cpp\pckgs\primatives\PrimativeRenderer.cpp" />
+    <ClCompile Include="cpp\pckgs\masterRenderer\MasterRenderer.cpp" />
     <ClCompile Include="cpp\engine\source\Shader.cpp" />
     <ClCompile Include="cpp\engine\source\Sound.cpp" />
     <ClCompile Include="cpp\engine\source\stb_image.cpp" />
@@ -174,8 +174,8 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="cpp\engine\headers\AAEngine.h" />
-    <ClInclude Include="cpp\packages\firstPersonPlayer\Movement.h" />
-    <ClInclude Include="cpp\packages\skybox\SkyboxRenderer.h" />
+    <ClInclude Include="cpp\pckgs\firstPersonPlayer\Movement.h" />
+    <ClInclude Include="cpp\pckgs\skybox\SkyboxRenderer.h" />
     <ClInclude Include="cpp\engine\headers\Camera.h" />
     <ClInclude Include="cpp\engine\headers\Collider.h" />
     <ClInclude Include="cpp\engine\headers\Controls.h" />
@@ -185,9 +185,9 @@
     <ClInclude Include="cpp\engine\headers\Global.h" />
     <ClInclude Include="cpp\engine\headers\Lighting.h" />
     <ClInclude Include="cpp\engine\headers\mearly.h" />
-    <ClInclude Include="cpp\packages\firstPersonPlayer\Player.h" />
-    <ClInclude Include="cpp\packages\primatives\PrimativeRenderer.h" />
-    <ClInclude Include="cpp\packages\masterRenderer\MasterRenderer.h" />
+    <ClInclude Include="cpp\pckgs\firstPersonPlayer\Player.h" />
+    <ClInclude Include="cpp\pckgs\primatives\PrimativeRenderer.h" />
+    <ClInclude Include="cpp\pckgs\masterRenderer\MasterRenderer.h" />
     <ClInclude Include="cpp\engine\headers\Shader.h" />
     <ClInclude Include="cpp\engine\headers\Sound.h" />
     <ClInclude Include="cpp\engine\headers\stb_image.h" />

@@ -36,8 +36,8 @@ void PrimativeRenderer::drawPlane()
 PrimativeRenderer::PrimativeRenderer()
 {
   primShader = std::make_unique< Shader >(
-    "../AncientArcher/cpp/packages/primatives/primative.vert",
-    "../AncientArcher/cpp/packages/primatives/primative.frag"
+    "../AncientArcher/cpp/pckgs/primatives/primative.vert",
+    "../AncientArcher/cpp/pckgs/primatives/primative.frag"
     );
   lighting.setConstantLight(primShader.get());
   lighting.addPointLight(*camera.getPosition(), primShader.get());
@@ -68,7 +68,7 @@ void PrimativeRenderer::render()
     primShader.get()->setMat4("model", model);
 
     switch (e.gameItem.type) {
-    case ENTITYTYPE::SQUARE:
+    case ENTITYTYPE::BOX:
       drawCube();
       break;
     case ENTITYTYPE::PLANE:

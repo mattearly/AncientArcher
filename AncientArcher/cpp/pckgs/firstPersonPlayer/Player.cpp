@@ -168,7 +168,7 @@ float Player::getJumpHeight() const {
 Player::Player() {
   /*
     playerEntity = new Entity(
-      SQUARE, glm::vec3(1.5f, 0.26f, 1.5f), glm::vec3(0.05f, 0.1f, 0.05f), -1, true
+      BOX, glm::vec3(1.5f, 0.26f, 1.5f), glm::vec3(0.05f, 0.1f, 0.05f), -1, true
     );*/
 
   //lighting.addPointLight(*camera.getPosition());
@@ -181,7 +181,7 @@ Player::Player() {
 Player::Player(float leg_power) {
 
   //playerEntity = new Entity(
-  //  SQUARE, glm::vec3(1.5f, 0.26f, 1.5f), glm::vec3(0.05f, 0.1f, 0.05f), -1, true
+  //  BOX, glm::vec3(1.5f, 0.26f, 1.5f), glm::vec3(0.05f, 0.1f, 0.05f), -1, true
   //);
 
   //lighting.addPointLight(camera.Position);

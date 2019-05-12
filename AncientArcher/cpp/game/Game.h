@@ -1,8 +1,8 @@
 #pragma once
 
-#include "../../packages/masterRenderer/MasterRenderer.h"
-#include "../../packages/skybox/SkyboxRenderer.h"
-#include "../../packages/primatives/PrimativeRenderer.h"
+#include "../../pckgs/masterRenderer/MasterRenderer.h"
+#include "../../pckgs/skybox/SkyboxRenderer.h"
+#include "../../pckgs/primatives/PrimativeRenderer.h"
 
 
 class Game {

@@ -30,12 +30,12 @@ private:
   unsigned int cubemapTexture = 0;
 
   std::vector<std::string> skymapFiles = {
-    "../AncientArcher/cpp/packages/skybox/skybox_right.jpg",
-    "../AncientArcher/cpp/packages/skybox/skybox_left.jpg",
-    "../AncientArcher/cpp/packages/skybox/skybox_top.jpg",
-    "../AncientArcher/cpp/packages/skybox/skybox_bottom.jpg",
-    "../AncientArcher/cpp/packages/skybox/skybox_front.jpg",
-    "../AncientArcher/cpp/packages/skybox/skybox_back.jpg"
+    "../AncientArcher/cpp/pckgs/skybox/skybox_right.jpg",
+    "../AncientArcher/cpp/pckgs/skybox/skybox_left.jpg",
+    "../AncientArcher/cpp/pckgs/skybox/skybox_top.jpg",
+    "../AncientArcher/cpp/pckgs/skybox/skybox_bottom.jpg",
+    "../AncientArcher/cpp/pckgs/skybox/skybox_front.jpg",
+    "../AncientArcher/cpp/pckgs/skybox/skybox_back.jpg"
   };
 
 };

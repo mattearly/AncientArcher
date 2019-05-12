@@ -1,9 +1,8 @@
 #include <AAEngine.h>
-#include "../../packages/firstPersonPlayer/Movement.h"
 #include <glm/glm.hpp>
 #include <iostream>
 #include <math.h>
-
+#include "../../pckgs/firstPersonPlayer/Movement.h"
 extern Camera camera;  // camera is global from Player class
 
 extern Movement movedir;

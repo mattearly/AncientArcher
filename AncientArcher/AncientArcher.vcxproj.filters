@@ -48,9 +48,6 @@
     <ClCompile Include="cpp\engine\source\TextureLoader.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="cpp\packages\skybox\SkyboxRenderer.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="cpp\game\main.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -60,16 +57,19 @@
     <ClCompile Include="cpp\game\GameMainLoop.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="cpp\packages\primatives\PrimativeRenderer.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="cpp\engine\source\Camera.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="cpp\packages\firstPersonPlayer\Player.cpp">
+    <ClCompile Include="cpp\pckgs\firstPersonPlayer\Player.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="cpp\packages\masterRenderer\MasterRenderer.cpp">
+    <ClCompile Include="cpp\pckgs\masterRenderer\MasterRenderer.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="cpp\pckgs\primatives\PrimativeRenderer.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="cpp\pckgs\skybox\SkyboxRenderer.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -104,9 +104,6 @@
     <ClInclude Include="cpp\engine\headers\TextureLoader.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="cpp\packages\skybox\SkyboxRenderer.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="cpp\engine\headers\Global.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -116,19 +113,22 @@
     <ClInclude Include="cpp\game\Game.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="cpp\packages\primatives\PrimativeRenderer.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="cpp\engine\headers\Camera.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="cpp\packages\firstPersonPlayer\Player.h">
+    <ClInclude Include="cpp\pckgs\firstPersonPlayer\Movement.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="cpp\packages\masterRenderer\MasterRenderer.h">
+    <ClInclude Include="cpp\pckgs\firstPersonPlayer\Player.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="cpp\packages\firstPersonPlayer\Movement.h">
+    <ClInclude Include="cpp\pckgs\masterRenderer\MasterRenderer.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="cpp\pckgs\primatives\PrimativeRenderer.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="cpp\pckgs\skybox\SkyboxRenderer.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
