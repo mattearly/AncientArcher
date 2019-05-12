@@ -12,7 +12,6 @@ public:
   void loadViewMatrix();
 
   SkyboxRenderer();
-  ~SkyboxRenderer();
 
   void render();
 

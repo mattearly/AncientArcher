@@ -17,6 +17,7 @@ SkyboxRenderer::SkyboxRenderer()
   skyboxShader->use();
   skyboxShader->setInt("skybox", 0);
 }
+
 void SkyboxRenderer::loadProjectionMatrix()
 {
   glm::mat4 projectionMatrix = camera.getProjectionMatrix();
@@ -29,10 +30,6 @@ void SkyboxRenderer::loadViewMatrix()
   glm::mat4 viewMatrix = camera.getViewMatrix();
   skyboxShader->use();
   skyboxShader->setMat4("view", viewMatrix);
-}
-
-SkyboxRenderer::~SkyboxRenderer()
-{
 }
 
 void SkyboxRenderer::render()
