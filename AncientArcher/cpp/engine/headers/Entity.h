@@ -5,7 +5,8 @@
 #include <vector>
 
 class Collider;
-enum ENTITYTYPE { SQUARE, PLANE };
+
+enum ENTITYTYPE { BOX, PLANE };
 class Entity {
 private:
   struct GameItem {

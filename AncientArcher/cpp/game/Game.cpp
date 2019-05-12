@@ -31,9 +31,10 @@ Game::Game() {
 
   // -------- LOAD WORLD --------- //
   Entity* e;
-  for (int i = 0; i < 15; i++) {
-    for (int j = 0; j < 15; j++) {
-    
+  for (int i = 0; i < 15; i++)
+  {
+    for (int j = 0; j < 15; j++) 
+    {
       e = new Entity(
         ENTITYTYPE::SQUARE,
         glm::vec3(i, mearly::NTKR(-5.25f, -5.19f), j),
