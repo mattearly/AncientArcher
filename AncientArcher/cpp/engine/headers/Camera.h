@@ -9,7 +9,6 @@ public:
   ~Camera();
 
   friend class Controls;
-  friend class Player;
 
   float FoV;
 
@@ -27,6 +26,9 @@ public:
   float getYaw();
   float getPitch();
   glm::mat4 getProjectionMatrix();
+
+  // SETTERS
+  void setPosition(glm::vec3 pos);
 
 private:
 

@@ -2,7 +2,7 @@
 #include <Controls.h>
 #include "Movement.h"
 #include "Player.h"
-
+#include <glm/glm.hpp>
 Controls controls;
 
 Camera camera;
@@ -26,7 +26,8 @@ void Player::update(float deltaTime)
 
 void Player::processCommands(float deltaTime)
 {
-  glm::vec3 playerIntendedLocation = camera.Position;
+  
+  glm::vec3 playerIntendedLocation = *camera.getPosition();
   float velocity;
   movedir.positionChanged = true;
 
@@ -45,12 +46,12 @@ void Player::processCommands(float deltaTime)
   // Note: you can use the camera.Front instead of movefront to do a fly type thing 
   // while the Y is unlocked or you are jumping
   if (movedir.back || movedir.forward) {
-    glm::vec3 moveFront = { camera.Front.x, 0.0f, camera.Front.z };
+    glm::vec3 moveFront = { (float)camera.getFront()->x, 0.0f, (float)camera.getFront()->z };
     if (movedir.forward) playerIntendedLocation += moveFront * velocity;
     if (movedir.back) playerIntendedLocation -= moveFront * velocity;
   }
-  if (movedir.right) playerIntendedLocation += camera.Right * velocity;
-  if (movedir.left) playerIntendedLocation -= camera.Right * velocity;
+  if (movedir.right) playerIntendedLocation += *camera.getRight() * velocity;
+  if (movedir.left) playerIntendedLocation -= *camera.getRight() * velocity;
 
   // ------------ JUMP SYSTEM -------------- //
   // * 3 phase system
@@ -118,7 +119,7 @@ void Player::processCommands(float deltaTime)
   //}
 
   if (movedir.positionChanged) {
-    camera.Position = playerIntendedLocation;
+    camera.setPosition(playerIntendedLocation);
     //lighting.movePointLight(0, playerIntendedLocation, Shader *shader);
     //playerEntity->moveTo(glm::vec3(playerIntendedLocation.x, playerIntendedLocation.y - .2f, playerIntendedLocation.z));
 
