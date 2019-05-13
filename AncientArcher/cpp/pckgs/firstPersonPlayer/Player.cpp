@@ -15,17 +15,14 @@ void Player::update(float deltaTime)
   // process keys
   controls.playerKeyboardInput();
 
-  // process player movement and colliion
-  if (movedir.isMoving()) {
-    processCommands(deltaTime);
-  }
+
 
   // move the camera accordingly
   //camera.update();
 
 }
 
-void Player::processCommands(float deltaTime)
+void Player::processCommands(float deltaTime, std::vector<Entity>* entities)
 {
 
   glm::vec3 playerIntendedLocation = *camera.getPosition();
@@ -57,87 +54,87 @@ void Player::processCommands(float deltaTime)
   // ------------ JUMP SYSTEM -------------- //
   // * 3 phase system
 
-  //// PHASE 1: frame of liftoff
-  //if (movedir.jumped) {
-  //  movedir.onGround = false;
-  //  movedir.jumped = false;
-  //  playgruntsound();
-  //}
-  //// PHASE 2: rising velocity
-  //else if (!movedir.onGround && !movedir.falling) {
-  //  playerIntendedLocation.y += camera.WorldUp.y * getRisingSpeed() * deltaTime;   // RISING SPEED CALC: jump speed based on LegPower Player Stat
-  //  if (playerIntendedLocation.y > getJumpHeight() + movedir.lastOnGroundHeight) { // MAX HEIGHT CALC: jump height based on LegPower Player Stat
-  //    movedir.falling = true;
-  //  }
-  //}
-  //// PHASE 3: falling velocity
-  //else if (movedir.falling && !movedir.onGround) {
-  //  playerIntendedLocation.y += GRAVITY * deltaTime;
-  //}
+  // PHASE 1: frame of liftoff
+  if (movedir.jumped) {
+    movedir.onGround = false;
+    movedir.jumped = false;
+    playgruntsound();
+  }
+  // PHASE 2: rising velocity
+  else if (!movedir.onGround && !movedir.falling) {
+    playerIntendedLocation.y += camera.getWorldUp()->y * getRisingSpeed() * deltaTime;   // RISING SPEED CALC: jump speed based on LegPower Player Stat
+    if (playerIntendedLocation.y > getJumpHeight() + movedir.lastOnGroundHeight) { // MAX HEIGHT CALC: jump height based on LegPower Player Stat
+      movedir.falling = true;
+    }
+  }
+  // PHASE 3: falling velocity
+  else if (movedir.falling && !movedir.onGround) {
+    playerIntendedLocation.y += GRAVITY * deltaTime;
+  }
 
   // ------------ GENERAL MOVEMENT COLLISION -------------- //
   // * A point vs Boundry Boxes (any entity with collision on)
 
-  //if (movedir.positionchanged)
-  //{
-  //  for (auto const& e : entities)
-  //  {
-  //    if (e.collider != nullptr &&
-  //      abs(e.collider->impasse.loc[0] - playerintendedlocation.x) < (engine_logic_checking_distance / 1.5) + 1 &&
-  //      abs(e.collider->impasse.loc[1] - playerintendedlocation.y) < (engine_logic_checking_distance / 4) + 1 &&
-  //      abs(e.collider->impasse.loc[2] - playerintendedlocation.z) < (engine_logic_checking_distance / 1.5) + 1) {   //close enough to be worth checking
-  //      float ytop = e.collider->impasse.loc[1] + e.collider->impasse.sz[1] / 2;
-  //      float ybot = e.collider->impasse.loc[1] - e.collider->impasse.sz[1] / 2;
-  //      if (playerintendedlocation.y < ytop && playerintendedlocation.y > ybot) {  // inbetween the y
-  //        float xposoverlaplt = e.collider->impasse.loc[0] + e.collider->impasse.sz[0] / 2;
-  //        float xposoverlapgt = e.collider->impasse.loc[0] - e.collider->impasse.sz[0] / 2;
-  //        if (playerintendedlocation.x < xposoverlaplt && playerintendedlocation.x > xposoverlapgt) {  // inbetween the x & y
-  //          float yposoverlaplt = e.collider->impasse.loc[2] + e.collider->impasse.sz[2] / 2;
-  //          float yposoverlapgt = e.collider->impasse.loc[2] - e.collider->impasse.sz[2] / 2;
-  //          if (playerintendedlocation.z < yposoverlaplt && playerintendedlocation.z > yposoverlapgt) {  // in between the x & y & z
-  //            if (!movedir.onground)
-  //            {
-  //              playerintendedlocation = camera.position;
-  //              movedir.falling = true;
-  //            }
-  //            else
-  //            {
-  //              movedir.positionchanged = false;
-  //            }
+  if (movedir.positionChanged)
+  {
+    for (auto const& e : *entities)
+    {
+      if (e.collider != nullptr &&
+        abs(e.collider->impasse.loc[0] - playerIntendedLocation.x) < (ENGINE_LOGIC_CHECKING_DISTANCE / 1.5) + 1 &&
+        abs(e.collider->impasse.loc[1] - playerIntendedLocation.y) < (ENGINE_LOGIC_CHECKING_DISTANCE / 4) + 1 &&
+        abs(e.collider->impasse.loc[2] - playerIntendedLocation.z) < (ENGINE_LOGIC_CHECKING_DISTANCE / 1.5) + 1) {   //close enough to be worth checking
+        float ytop = e.collider->impasse.loc[1] + e.collider->impasse.sz[1] / 2;
+        float ybot = e.collider->impasse.loc[1] - e.collider->impasse.sz[1] / 2;
+        if (playerIntendedLocation.y < ytop && playerIntendedLocation.y > ybot) {  // inbetween the y
+          float xposoverlaplt = e.collider->impasse.loc[0] + e.collider->impasse.sz[0] / 2;
+          float xposoverlapgt = e.collider->impasse.loc[0] - e.collider->impasse.sz[0] / 2;
+          if (playerIntendedLocation.x < xposoverlaplt && playerIntendedLocation.x > xposoverlapgt) {  // inbetween the x & y
+            float yposoverlaplt = e.collider->impasse.loc[2] + e.collider->impasse.sz[2] / 2;
+            float yposoverlapgt = e.collider->impasse.loc[2] - e.collider->impasse.sz[2] / 2;
+            if (playerIntendedLocation.z < yposoverlaplt && playerIntendedLocation.z > yposoverlapgt) {  // in between the x & y & z
+              if (!movedir.onGround)
+              {
+                playerIntendedLocation = *camera.getPosition();
+                movedir.falling = true;
+              }
+              else
+              {
+                movedir.positionChanged = false;
+              }
 
-  //            if (playerintendedlocation.y > ytop)
-  //            {
-  //              movedir.falling = false;
-  //              movedir.onground = true;
-  //              movedir.lastongroundheight = camera.position.y;
-  //              playlandingsound();
-  //            }
-  //          }
-  //        }
-  //      }
-  //    }
-  //  }
-  //}
+              if (playerIntendedLocation.y > ytop)
+              {
+                movedir.falling = false;
+                movedir.onGround = true;
+                movedir.lastOnGroundHeight = camera.getPosition()->y;
+                playlandingsound();
+              }
+            }
+          }
+        }
+      }
+    }
+  }
 
   if (movedir.positionChanged) {
     camera.setPosition(playerIntendedLocation);
     //lighting.movePointLight(0, playerIntendedLocation, Shader *shader);
     //playerEntity->moveTo(glm::vec3(playerIntendedLocation.x, playerIntendedLocation.y - .2f, playerIntendedLocation.z));
 
-    //if (movedir.onGround) {
-    //  static const float TimeBetweenFootsteps = 0.6f;
-    //  static const float TimeBetweenFootstepsRunning = 0.4f;
-    //  static float accumulatedTime = 0.f;
-    //  accumulatedTime += deltaTime;
-    //  if (movedir.isBoosted() && accumulatedTime > TimeBetweenFootstepsRunning) {
-    //    playfootstepsound();
-    //    accumulatedTime = 0.f;
-    //  }
-    //  else if (accumulatedTime > TimeBetweenFootsteps) {
-    //    playfootstepsound();
-    //    accumulatedTime = 0.f;
-    //  }
-    //}
+    if (movedir.onGround) {
+      static const float TimeBetweenFootsteps = 0.6f;
+      static const float TimeBetweenFootstepsRunning = 0.4f;
+      static float accumulatedTime = 0.f;
+      accumulatedTime += deltaTime;
+      if (movedir.isBoosted() && accumulatedTime > TimeBetweenFootstepsRunning) {
+        playfootstepsound();
+        accumulatedTime = 0.f;
+      }
+      else if (accumulatedTime > TimeBetweenFootsteps) {
+        playfootstepsound();
+        accumulatedTime = 0.f;
+      }
+    }
   }
 }
 

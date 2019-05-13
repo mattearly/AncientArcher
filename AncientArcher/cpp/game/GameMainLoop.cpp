@@ -4,8 +4,9 @@
 
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
+#include "../pckgs/firstPersonPlayer/Movement.h"
 #include <glm/gtc/type_ptr.hpp>
-
+extern Movement movedir;
 void Game::mainLoop() {
 
   toggleAmbientWindyNight();
@@ -18,6 +19,11 @@ void Game::mainLoop() {
     lastFrame = currentFrame;
 
     player->update(deltaTime);
+
+    // process player movement and colliion
+    if (movedir.isMoving()) {
+      player->processCommands( deltaTime, primativeRenderer->getEntites() );
+    }
 
     masterRenderer.update(primativeRenderer, skyboxRenderer, deltaTime);
 

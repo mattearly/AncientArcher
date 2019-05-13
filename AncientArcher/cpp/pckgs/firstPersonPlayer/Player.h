@@ -1,7 +1,8 @@
 #pragma once
 #include "Entity.h"
 
-#include<glm/glm.hpp>
+#include <glm/glm.hpp>
+#include <vector>
 
 class Entity;
 
@@ -23,6 +24,9 @@ public:
 
   //Entity *getEntity() const;
 
+  void processCommands(float deltaTime, std::vector<Entity>* entities);
+
+
 private:
 
   //Entity *playerEntity;
@@ -34,7 +38,6 @@ private:
   float legPower;
   const float LEGPOWER_CAP = 100.0f;
 
-  void processCommands(float deltaTime);
 
   static constexpr const float STAT_DIVISOR = 40.0f;
 
