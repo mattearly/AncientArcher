@@ -2,7 +2,7 @@
 
 ###### Author(s): Matthew Early;  Reviewer(s): Matthew Early
 
-###### Details Last Updated: Feb-13-2019
+###### Details Last Updated: see timestamp on github
 
 #### Overview
 

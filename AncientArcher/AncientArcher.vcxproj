@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <Project DefaultTargets="Build" ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup Label="ProjectConfigurations">
     <ProjectConfiguration Include="Debug|Win32">
@@ -88,7 +88,7 @@
     <RunCodeAnalysis>true</RunCodeAnalysis>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
-    <IncludePath>$(SolutionDir)AncientArcher\include;$(IncludePath)</IncludePath>
+    <IncludePath>$(SolutionDir)AncientArcher\cpp\engine\headers;$(SolutionDir)AncientArcher\include;$(IncludePath)</IncludePath>
     <LibraryPath>$(SolutionDir)AncientArcher\library;$(LibraryPath)</LibraryPath>
     <CodeAnalysisRuleSet>NativeRecommendedRules.ruleset</CodeAnalysisRuleSet>
     <RunCodeAnalysis>true</RunCodeAnalysis>
@@ -152,102 +152,58 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <None Include="resource\shader_fragment.glsl" />
-    <None Include="resource\shader_geometry.glsl" />
-    <None Include="resource\shader_vertex.glsl" />
+    <ClCompile Include="cpp\pckgs\skybox\SkyboxRenderer.cpp" />
+    <ClCompile Include="cpp\engine\source\Camera.cpp" />
+    <ClCompile Include="cpp\engine\source\Collider.cpp" />
+    <ClCompile Include="cpp\engine\source\Controls.cpp" />
+    <ClCompile Include="cpp\engine\source\Display.cpp" />
+    <ClCompile Include="cpp\engine\source\Entity.cpp" />
+    <ClCompile Include="cpp\game\Game.cpp" />
+    <ClCompile Include="cpp\game\GameMainLoop.cpp" />
+    <ClCompile Include="cpp\engine\source\glad.c" />
+    <ClCompile Include="cpp\engine\source\Lighting.cpp" />
+    <ClCompile Include="cpp\game\main.cpp" />
+    <ClCompile Include="cpp\engine\source\mearly.cpp" />
+    <ClCompile Include="cpp\pckgs\firstPersonPlayer\Player.cpp" />
+    <ClCompile Include="cpp\pckgs\primatives\PrimativeRenderer.cpp" />
+    <ClCompile Include="cpp\pckgs\masterRenderer\MasterRenderer.cpp" />
+    <ClCompile Include="cpp\engine\source\Shader.cpp" />
+    <ClCompile Include="cpp\engine\source\Sound.cpp" />
+    <ClCompile Include="cpp\engine\source\stb_image.cpp" />
+    <ClCompile Include="cpp\engine\source\TextureLoader.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <Image Include="resource\00-pixelized_grass.png" />
-    <Image Include="resource\01.png" />
-    <Image Include="resource\02-pixelized_wood.png" />
-    <Image Include="resource\03-footsteps.png" />
-    <Image Include="resource\04-pixelized_portal.png" />
-    <Image Include="resource\05-pixelized_darkstone.png" />
-    <Image Include="resource\06-pixelized_water_droplet.png" />
-    <Image Include="resource\07-pixelized_gravel.png" />
-    <Image Include="resource\08-pixelized_water.png" />
-    <Image Include="resource\09-bricks_light.png" />
-    <Image Include="resource\10-pixelized_mud.png" />
-    <Image Include="resource\11-pixelized_darkwood.png" />
-    <Image Include="resource\12-pickup_speedboost.png" />
-    <Image Include="resource\13-pixelized_snow.png" />
-    <Image Include="resource\14-maze_metal.png" />
-    <Image Include="resource\15-pickup_attackboost.png" />
-    <Image Include="resource\bark.png" />
-    <Image Include="resource\cliffrocks.png" />
-    <Image Include="resource\cow.png" />
-    <Image Include="resource\crumblingrocks.png" />
-    <Image Include="resource\deertailmushroom.png" />
-    <Image Include="resource\flower.png" />
-    <Image Include="resource\flower2.png" />
-    <Image Include="resource\flower3.png" />
-    <Image Include="resource\flowerbush.png" />
-    <Image Include="resource\grass.png" />
-    <Image Include="resource\greenbark.png" />
-    <Image Include="resource\leaf.png" />
-    <Image Include="resource\mossrock.png" />
-    <Image Include="resource\sand.png" />
-    <Image Include="resource\thisle.png" />
-    <Image Include="resource\water.png" />
+    <ClInclude Include="cpp\engine\headers\AAEngine.h" />
+    <ClInclude Include="cpp\pckgs\firstPersonPlayer\Movement.h" />
+    <ClInclude Include="cpp\pckgs\skybox\SkyboxRenderer.h" />
+    <ClInclude Include="cpp\engine\headers\Camera.h" />
+    <ClInclude Include="cpp\engine\headers\Collider.h" />
+    <ClInclude Include="cpp\engine\headers\Controls.h" />
+    <ClInclude Include="cpp\engine\headers\Display.h" />
+    <ClInclude Include="cpp\engine\headers\Entity.h" />
+    <ClInclude Include="cpp\game\Game.h" />
+    <ClInclude Include="cpp\engine\headers\Global.h" />
+    <ClInclude Include="cpp\engine\headers\Lighting.h" />
+    <ClInclude Include="cpp\engine\headers\mearly.h" />
+    <ClInclude Include="cpp\pckgs\firstPersonPlayer\Player.h" />
+    <ClInclude Include="cpp\pckgs\primatives\PrimativeRenderer.h" />
+    <ClInclude Include="cpp\pckgs\masterRenderer\MasterRenderer.h" />
+    <ClInclude Include="cpp\engine\headers\Shader.h" />
+    <ClInclude Include="cpp\engine\headers\Sound.h" />
+    <ClInclude Include="cpp\engine\headers\stb_image.h" />
+    <ClInclude Include="cpp\engine\headers\TextureLoader.h" />
   </ItemGroup>
   <ItemGroup>
-    <Media Include="resource\AMBIENT_windy_night.wav" />
-    <Media Include="resource\bowfire.wav" />
-    <Media Include="resource\equip_gear.wav" />
-    <Media Include="resource\feetlanding.wav" />
-    <Media Include="resource\footstep01.wav" />
-    <Media Include="resource\footstep02.wav" />
-    <Media Include="resource\footstep03.wav" />
-    <Media Include="resource\footstep04.wav" />
-    <Media Include="resource\footstep05.wav" />
-    <Media Include="resource\footstep06.wav" />
-    <Media Include="resource\footstep07.wav" />
-    <Media Include="resource\footstep08.wav" />
-    <Media Include="resource\grunt01.wav" />
-    <Media Include="resource\grunt02.wav" />
-    <Media Include="resource\grunt03.wav" />
-    <Media Include="resource\grunt04.wav" />
-    <Media Include="resource\punch.wav" />
-    <Media Include="resource\success.wav" />
-    <Media Include="resource\swordswing.wav" />
+    <None Include="cpp\pckgs\skybox\skybox.frag" />
+    <None Include="cpp\pckgs\skybox\skybox.vert" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="source\Camera.cpp" />
-    <ClCompile Include="source\Collider.cpp" />
-    <ClCompile Include="source\Controls.cpp" />
-    <ClCompile Include="source\Display.cpp" />
-    <ClCompile Include="source\Entity.cpp" />
-    <ClCompile Include="source\Game.cpp" />
-    <ClCompile Include="source\GameMainLoop.cpp" />
-    <ClCompile Include="source\glad.c" />
-    <ClCompile Include="source\Lighting.cpp" />
-    <ClCompile Include="source\main.cpp" />
-    <ClCompile Include="source\mearly.cpp" />
-    <ClCompile Include="source\Player.cpp" />
-    <ClCompile Include="source\PrimativeManager.cpp" />
-    <ClCompile Include="source\Renderer.cpp" />
-    <ClCompile Include="source\Shader.cpp" />
-    <ClCompile Include="source\Sound.cpp" />
-    <ClCompile Include="source\stb_image.cpp" />
-    <ClCompile Include="source\TextureBank.cpp" />
-  </ItemGroup>
-  <ItemGroup>
-    <ClInclude Include="source\Camera.h" />
-    <ClInclude Include="source\Collider.h" />
-    <ClInclude Include="source\Controls.h" />
-    <ClInclude Include="source\Display.h" />
-    <ClInclude Include="source\Entity.h" />
-    <ClInclude Include="source\Game.h" />
-    <ClInclude Include="source\globals.h" />
-    <ClInclude Include="source\Lighting.h" />
-    <ClInclude Include="source\mearly.h" />
-    <ClInclude Include="source\Player.h" />
-    <ClInclude Include="source\PrimativeManager.h" />
-    <ClInclude Include="source\Renderer.h" />
-    <ClInclude Include="source\Shader.h" />
-    <ClInclude Include="source\Sound.h" />
-    <ClInclude Include="source\stb_image.h" />
-    <ClInclude Include="source\TextureBank.h" />
+    <Image Include="cpp\pckgs\skybox\default\skybox_back.jpg" />
+    <Image Include="cpp\pckgs\skybox\default\skybox_bottom.jpg" />
+    <Image Include="cpp\pckgs\skybox\default\skybox_front.jpg" />
+    <Image Include="cpp\pckgs\skybox\default\skybox_left.jpg" />
+    <Image Include="cpp\pckgs\skybox\default\skybox_right.jpg" />
+    <Image Include="cpp\pckgs\skybox\default\skybox_top.jpg" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
