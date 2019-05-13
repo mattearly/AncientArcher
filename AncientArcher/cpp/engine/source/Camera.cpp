@@ -1,5 +1,6 @@
 #include <Camera.h>
 #include <Display.h>
+#include <Global.h>
 #include <glm/glm.hpp>
 extern Display display;
 Camera::Camera() {
@@ -25,14 +26,14 @@ void Camera::update(Shader * shader) {
 // needs called to update the FoV and/or window_width window_height, and draw distances
 // this is for the global texBankShader
 void Camera::updateProjectionMatrix(Shader * shader) {
-  glm::mat4 projection = glm::perspective(glm::radians(FoV), (float)display.window_width / (float)display.window_height, 0.01f, 100.0f);
+  glm::mat4 projection = glm::perspective(glm::radians(FoV), (float)display.window_width / (float)display.window_height, 0.01f, RENDER_DISTANCE);
   shader->use();
   shader->setMat4("projection", projection);
 }
 
 glm::mat4 Camera::getProjectionMatrix()
 {
-  glm::mat4 projection = glm::perspective(glm::radians(FoV), (float)display.window_width / (float)display.window_height, 0.01f, 100.0f);
+  glm::mat4 projection = glm::perspective(glm::radians(FoV), (float)display.window_width / (float)display.window_height, 0.01f, RENDER_DISTANCE);
 
   return projection;
 }
