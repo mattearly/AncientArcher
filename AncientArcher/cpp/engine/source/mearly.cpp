@@ -1,5 +1,4 @@
-#include "mearly.h"
-
+#include <mearly.h>
 namespace mearly {
 
   // returns a double between zero and one randomly

@@ -1,7 +1,6 @@
 #pragma once
 
-#include "Display.h"
-
+#include <Display.h>
 #include <vector>
 
 extern Display display;

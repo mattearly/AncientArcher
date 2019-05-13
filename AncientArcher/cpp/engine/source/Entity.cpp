@@ -1,4 +1,4 @@
-#include "Entity.h"
+#include <Entity.h>
 
 Entity::Entity(ENTITYTYPE t, glm::vec3 loc, glm::vec3 sc, int texID, bool isImpassable)
 {

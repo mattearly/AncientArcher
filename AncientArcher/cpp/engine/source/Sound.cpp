@@ -1,5 +1,5 @@
-#include "Sound.h"
-#include "mearly.h"
+#include <Sound.h>
+#include <mearly.h>
 
 #include <SDL2/SDL.h>
 

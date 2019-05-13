@@ -1,11 +1,17 @@
-#include <AAEngine.h>
+#include <Camera.h>
+#include <Controls.h>
+#include <Display.h>
+#include <Sound.h>
 #include <glm/glm.hpp>
 #include <iostream>
 #include <math.h>
 #include "../../pckgs/firstPersonPlayer/Movement.h"
+
 extern Camera camera;  // camera is global from Player class
 
 extern Movement movedir;
+
+extern Display display;
 
 Controls::Controls() {
   firstMouse = true;

@@ -1,6 +1,7 @@
-#include "Camera.h"
-#include <AAEngine.h>
-
+#include <Camera.h>
+#include <Display.h>
+#include <glm/glm.hpp>
+extern Display display;
 Camera::Camera() {
   FoV = 45.0f;
   Front = glm::vec3(0.0f, 0.0f, -1.0f);

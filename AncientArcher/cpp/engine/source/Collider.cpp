@@ -1,4 +1,4 @@
-#include "Collider.h"
+#include <Collider.h>
 
 Collider::Collider(glm::vec3 loc, glm::vec3 sz)
 {

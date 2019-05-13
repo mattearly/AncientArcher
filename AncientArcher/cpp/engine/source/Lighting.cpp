@@ -1,6 +1,4 @@
-#include "Lighting.h"
-#include <AAEngine.h>
-
+#include <Lighting.h>
 #include <glad/glad.h>
 
 #include <string>
