@@ -31,67 +31,79 @@ Game::Game() {
 
   // -------- LOAD WORLD --------- //
   Entity* e;
-  for (int i = 0; i < 30; i++)
-  {
-    for (int j = 0; j < 30; j++)
-    {
-
-      if (i < 15 && j < 15)
-      {
-        e = new Entity(
-          ENTITYTYPE::BOX,
-          glm::vec3(i, mearly::NTKR(-5.25f, -5.19f), j),
-          glm::vec3(1.0f, 1.0f, 1.0f),
-          lightBricksTexID,
-          true
-        );
-      }
-      else if (i > 14 && j > 14)
-      {
-        e = new Entity(
-          ENTITYTYPE::BOX,
-          glm::vec3(i, -5.2f, j),
-          glm::vec3(1.0f, 1.0f, 1.0f),
-          lightBricksTexID,
-          true
-        );
-      }
-      else if (j < 15)
-      {
-        e = new Entity(
-          ENTITYTYPE::PLANE,
-          glm::vec3(i, -5.2f, j),
-          glm::vec3(1.0f, 1.0f, 1.0f),
-          lightBricksTexID,
-          true
-        );
-      }
-      else
-      {
-        e = new Entity(
-          ENTITYTYPE::SPHERE,
-          glm::vec3(i, -5.2f, j),
-          glm::vec3(1.0f, 1.0f, 1.0f),
-          lightBricksTexID,
-          true
-        );
-      }
-
+  for (int i = 0; i < 30; i++) {
+    //for (int j = 0; j < 500; j++) {
+      e = new Entity(
+        ENTITYTYPE::BOX,
+        glm::vec3(i, mearly::NTKR(-5.50f, -5.20f), i),
+        glm::vec3(1.0f, 1.0f, 1.0f),
+        lightBricksTexID,
+        true
+      );
       primativeRenderer->addToPrimativeEntities(*e);
-    }
-  }
-  delete e;
 
-  //skyboxRenderer = new SkyboxRenderer();
+    //}
+  }
+
+  //for (int i = 0; i < 30; i++)
+  //{
+  //  for (int j = 0; j < 30; j++)
+  //  {
+
+  //    if (i < 15 && j < 15)
+  //    {
+  //      e = new Entity(
+  //        ENTITYTYPE::BOX,
+  //        glm::vec3(i, mearly::NTKR(-5.25f, -5.19f), j),
+  //        glm::vec3(1.0f, 1.0f, 1.0f),
+  //        lightBricksTexID,
+  //        true
+  //      );
+  //    }
+  //    else if (i > 14 && j > 14)
+  //    {
+  //      e = new Entity(
+  //        ENTITYTYPE::BOX,
+  //        glm::vec3(i, -5.2f, j),
+  //        glm::vec3(1.0f, 1.0f, 1.0f),
+  //        lightBricksTexID,
+  //        true
+  //      );
+  //    }
+  //    else if (j < 15)
+  //    {
+  //      e = new Entity(
+  //        ENTITYTYPE::PLANE,
+  //        glm::vec3(i, -5.2f, j),
+  //        glm::vec3(1.0f, 1.0f, 1.0f),
+  //        lightBricksTexID,
+  //        true
+  //      );
+  //    }
+  //    else
+  //    {
+  //      e = new Entity(
+  //        ENTITYTYPE::SPHERE,
+  //        glm::vec3(i, -5.2f, j),
+  //        glm::vec3(1.0f, 1.0f, 1.0f),
+  //        lightBricksTexID,
+  //        true
+  //      );
+  //    }
+
+  //    primativeRenderer->addToPrimativeEntities(*e);
+  //  }
+  //}
+  //delete e;
 
   std::vector<std::string> skyboxFiles =
   {
-	"../AncientArcher/cpp/pckgs/skybox/dark/skybox_right.png",
-	"../AncientArcher/cpp/pckgs/skybox/dark/skybox_left.png",
-	"../AncientArcher/cpp/pckgs/skybox/dark/skybox_top.png",
-	"../AncientArcher/cpp/pckgs/skybox/dark/skybox_bottom.png",
-	"../AncientArcher/cpp/pckgs/skybox/dark/skybox_front.png",
-	"../AncientArcher/cpp/pckgs/skybox/dark/skybox_back.png"
+  "../AncientArcher/cpp/pckgs/skybox/dark/skybox_right.png",
+  "../AncientArcher/cpp/pckgs/skybox/dark/skybox_left.png",
+  "../AncientArcher/cpp/pckgs/skybox/dark/skybox_top.png",
+  "../AncientArcher/cpp/pckgs/skybox/dark/skybox_bottom.png",
+  "../AncientArcher/cpp/pckgs/skybox/dark/skybox_front.png",
+  "../AncientArcher/cpp/pckgs/skybox/dark/skybox_back.png"
   };
 
   skyboxRenderer = new SkyboxRenderer(skyboxFiles);
