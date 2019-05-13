@@ -193,6 +193,18 @@
     <ClInclude Include="cpp\engine\headers\stb_image.h" />
     <ClInclude Include="cpp\engine\headers\TextureLoader.h" />
   </ItemGroup>
+  <ItemGroup>
+    <None Include="cpp\pckgs\skybox\skybox.frag" />
+    <None Include="cpp\pckgs\skybox\skybox.vert" />
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="cpp\pckgs\skybox\default\skybox_back.jpg" />
+    <Image Include="cpp\pckgs\skybox\default\skybox_bottom.jpg" />
+    <Image Include="cpp\pckgs\skybox\default\skybox_front.jpg" />
+    <Image Include="cpp\pckgs\skybox\default\skybox_left.jpg" />
+    <Image Include="cpp\pckgs\skybox\default\skybox_right.jpg" />
+    <Image Include="cpp\pckgs\skybox\default\skybox_top.jpg" />
+  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>

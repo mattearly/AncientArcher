@@ -81,8 +81,20 @@ Game::Game() {
     }
   }
   delete e;
-  skyboxRenderer = new SkyboxRenderer();
 
+  //skyboxRenderer = new SkyboxRenderer();
+
+  std::vector<std::string> skyboxFiles =
+  {
+	"../AncientArcher/cpp/pckgs/skybox/dark/skybox_right.png",
+	"../AncientArcher/cpp/pckgs/skybox/dark/skybox_left.png",
+	"../AncientArcher/cpp/pckgs/skybox/dark/skybox_top.png",
+	"../AncientArcher/cpp/pckgs/skybox/dark/skybox_bottom.png",
+	"../AncientArcher/cpp/pckgs/skybox/dark/skybox_front.png",
+	"../AncientArcher/cpp/pckgs/skybox/dark/skybox_back.png"
+  };
+
+  skyboxRenderer = new SkyboxRenderer(skyboxFiles);
 
   // ------------ SET FLOOR ------------ //
   //float planeCollisionThickness = 0.18f;
