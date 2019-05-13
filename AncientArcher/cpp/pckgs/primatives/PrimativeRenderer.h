@@ -13,6 +13,7 @@ public:
   void addToPrimativeEntities(Entity entity);
 
   std::vector<Entity>* getEntites();
+  Shader* getShader();
 
 private:
 
@@ -36,6 +37,6 @@ private:
 
   std::unique_ptr< Shader > primShader;
 
-  Lighting lighting;
+  //Lighting lighting;
 
 };

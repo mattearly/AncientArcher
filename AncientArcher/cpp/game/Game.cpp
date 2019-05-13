@@ -5,6 +5,8 @@
 #include <glm/gtc/type_ptr.hpp>
 #include <iostream>
 
+extern Camera camera;
+
 Game::Game() {
 
   // ----------- GRAPHICS CARD INFORMATION --------- //
@@ -24,6 +26,8 @@ Game::Game() {
 
   // ---------- PRELOAD ENVIRORNMENT DETAILS ---------- //
   primativeRenderer = new PrimativeRenderer();
+
+  player->addPointLight(*camera.getPosition(), primativeRenderer->getShader());
 
   TextureLoader texLoader;
 

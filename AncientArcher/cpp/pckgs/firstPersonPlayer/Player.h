@@ -22,14 +22,13 @@ public:
   // mutators
   void increaseLegPower(float add);
 
-  //Entity *getEntity() const;
-
   void processCommands(float deltaTime, std::vector<Entity>* entities);
 
+  void addPointLight(glm::vec3 pos, Shader* shader);
+  void movePlayerLight(glm::vec3 newpos, Shader* shader);
+  Lighting playerLight;
 
 private:
-
-  //Entity *playerEntity;
 
   const float BASE_PLAYER_SPEED = 3.0f;
   const float BASE_PLAYER_JUMP_HEIGHT = 0.8f;
