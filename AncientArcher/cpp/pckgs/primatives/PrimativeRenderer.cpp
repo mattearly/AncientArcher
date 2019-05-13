@@ -116,9 +116,15 @@ void PrimativeRenderer::drawSphere()
     loadSphere();
   }
   glBindVertexArray(sphereVAO);
-  glEnableVertexAttribArray(0);
-  glDrawArrays(GL_TRIANGLES, 0, sphereSize);
-  glBindVertexArray(0);
+
+  //glEnableVertexAttribArray(0);
+
+  glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, sphereIBO);
+
+  glDrawElements(GL_TRIANGLES, sphereIndexSize, GL_UNSIGNED_INT, (void*)0);
+
+  //glBindVertexArray(0);
+
 }
 
 void PrimativeRenderer::loadCube() {
@@ -360,10 +366,19 @@ void PrimativeRenderer::loadSphere()
   // unbind buffers
   //glBindBuffer(GL_ARRAY_BUFFER, 0);
 
-  glBindVertexArray(0);
+  //glBindVertexArray(0);
+
+  glGenBuffers(1, &sphereIBO);
+
+  glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, sphereIBO);
+
+  glBufferData(GL_ELEMENT_ARRAY_BUFFER, (unsigned int)indices.size() * sizeof(unsigned int), indices.data(), GL_STATIC_DRAW);
+
+  //glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
+
+  sphereIndexSize = indices.size();
 
   sphereLoaded = true;
-  sphereSize = vertices.size();
 
   std::cout << "sphere Loaded to Graphics Card \n";
 
