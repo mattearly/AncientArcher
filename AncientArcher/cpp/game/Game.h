@@ -4,7 +4,6 @@
 #include "../../pckgs/skybox/SkyboxRenderer.h"
 #include "../../pckgs/primatives/PrimativeRenderer.h"
 
-
 class Game {
 public:
 

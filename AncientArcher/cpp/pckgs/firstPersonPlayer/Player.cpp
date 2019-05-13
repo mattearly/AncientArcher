@@ -6,7 +6,7 @@
 
 extern Controls controls;
 
-Camera camera;
+extern Camera camera;
 
 Movement movedir;
 

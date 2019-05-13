@@ -14,7 +14,7 @@ public:
   void enableGLDepthTest();
   void disableGLDepthTest();
 
-  void update(Player* player, PrimativeRenderer* primRen, SkyboxRenderer* skyRen, float deltaTime);
+  void update(PrimativeRenderer* primRen, SkyboxRenderer* skyRen, float deltaTime);
 
 private:
 

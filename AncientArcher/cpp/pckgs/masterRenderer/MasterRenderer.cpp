@@ -35,11 +35,9 @@ void MasterRenderer::disableGLDepthTest() {
   glDisable(GL_DEPTH_TEST);
 }
 
-void MasterRenderer::update(Player* player, PrimativeRenderer* primRen, SkyboxRenderer* skyRen, float deltaTime)
+void MasterRenderer::update(PrimativeRenderer* primRen, SkyboxRenderer* skyRen, float deltaTime)
 {
   display.clear();
-
-  //drawEntity(player->getEntity(), PrimativeRenderer);
 
   primRen->render();
 

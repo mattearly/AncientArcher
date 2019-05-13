@@ -19,7 +19,7 @@ void Game::mainLoop() {
 
     player->update(deltaTime);
 
-    masterRenderer.update(player, primativeRenderer, skyboxRenderer, deltaTime);
+    masterRenderer.update(primativeRenderer, skyboxRenderer, deltaTime);
 
     glfwPollEvents();
   }

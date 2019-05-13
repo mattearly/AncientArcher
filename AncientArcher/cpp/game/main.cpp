@@ -2,7 +2,7 @@
 #include "Controls.h"
 #include "Display.h"
 
-Controls controls;
+Camera camera;
 
 Display display;
 
