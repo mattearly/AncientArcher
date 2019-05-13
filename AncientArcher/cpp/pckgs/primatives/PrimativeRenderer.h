@@ -28,7 +28,7 @@ private:
 
   unsigned int cubeVAO, cubeVBO;
   unsigned int planeVAO, planeVBO;
-  unsigned int sphereVAO, sphereVBO, sphereSize;
+  unsigned int sphereVAO, sphereVBO, sphereIBO, sphereIndexSize;
 
   std::vector<Entity> entities;
 
