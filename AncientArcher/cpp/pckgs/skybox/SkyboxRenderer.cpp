@@ -18,12 +18,12 @@ SkyboxRenderer::SkyboxRenderer()
 
   std::vector<std::string> skymapFiles =
   {
-    "../AncientArcher/cpp/pckgs/skybox/skybox_right.jpg",
-    "../AncientArcher/cpp/pckgs/skybox/skybox_left.jpg",
-    "../AncientArcher/cpp/pckgs/skybox/skybox_top.jpg",
-    "../AncientArcher/cpp/pckgs/skybox/skybox_bottom.jpg",
-    "../AncientArcher/cpp/pckgs/skybox/skybox_front.jpg",
-    "../AncientArcher/cpp/pckgs/skybox/skybox_back.jpg"
+    "../AncientArcher/cpp/pckgs/skybox/default/skybox_right.jpg",
+    "../AncientArcher/cpp/pckgs/skybox/default/skybox_left.jpg",
+    "../AncientArcher/cpp/pckgs/skybox/default/skybox_top.jpg",
+    "../AncientArcher/cpp/pckgs/skybox/default/skybox_bottom.jpg",
+    "../AncientArcher/cpp/pckgs/skybox/default/skybox_front.jpg",
+    "../AncientArcher/cpp/pckgs/skybox/default/skybox_back.jpg"
   };
 
   cubemapTexture = loader.loadCubeTexture(skymapFiles);
@@ -31,6 +31,23 @@ SkyboxRenderer::SkyboxRenderer()
 
   skyboxShader->use();
   skyboxShader->setInt("skybox", 0);
+}
+
+SkyboxRenderer::SkyboxRenderer(std::vector<std::string> incomingSkymapFiles)
+{
+	skyboxShader = std::make_unique< Shader >(
+		"../AncientArcher/cpp/pckgs/skybox/skybox.vert",
+		"../AncientArcher/cpp/pckgs/skybox/skybox.frag"
+		);
+	loadSkybox();
+
+	TextureLoader loader;
+
+	cubemapTexture = loader.loadCubeTexture(incomingSkymapFiles);
+
+
+	skyboxShader->use();
+	skyboxShader->setInt("skybox", 0);
 }
 
 void SkyboxRenderer::render()

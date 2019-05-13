@@ -132,4 +132,28 @@
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
+  <ItemGroup>
+    <None Include="cpp\pckgs\skybox\skybox.frag" />
+    <None Include="cpp\pckgs\skybox\skybox.vert" />
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="cpp\pckgs\skybox\default\skybox_back.jpg">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="cpp\pckgs\skybox\default\skybox_bottom.jpg">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="cpp\pckgs\skybox\default\skybox_front.jpg">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="cpp\pckgs\skybox\default\skybox_left.jpg">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="cpp\pckgs\skybox\default\skybox_right.jpg">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="cpp\pckgs\skybox\default\skybox_top.jpg">
+      <Filter>Resource Files</Filter>
+    </Image>
+  </ItemGroup>
 </Project>

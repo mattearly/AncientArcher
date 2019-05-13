@@ -9,6 +9,7 @@ class SkyboxRenderer
 public:
   
   SkyboxRenderer();
+  SkyboxRenderer(std::vector<std::string> incomingSkymapFiles);
 
   void render();
 
