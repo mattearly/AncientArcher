@@ -6,38 +6,42 @@
 
 #### Overview
 
-Ancient Archer is a 3D RPG Adventure Game.
+Ancient Archer is Custom Closed Source Game Engine in development.
 
 #### Context
 
-To build Ancient Archer, we need to implement a main player with stats, a efficient dynamic 3D object system, and a world layout that has a progression-based design, and UI system.
-
-The game should tell a unique story while going through the world, and scale from low level to high level as a typical RPG would.  
+Inlcudes 3D/2D, Renderering, Math, Controls, Displays, Cameras, Lighting, and a Packaging system to build in custom modules.
 
 #### Goals
 
-Ancient Archer should be considered (nearly) complete when the entire world area is playable, the leveling system works, the story makes sense, difficulty is appropriate.
+Ancient Archer is a work in progress. 
 
-Metrics: playtime, player move distance, levels, kills, items obtained, time in each area, npcs talked to
-
-non-goals: multiplayer, moddability
+Metrics: How many games have been built with it. How much functionality does it encompass.  
 
 #### Milestones
 
-* Start Date: Feb-13-2019
-* Milestone 1 - 3D object system works: Feb-20-2019
-* Milestone 2 - player and items work: Feb-27-2019
-* Milestone 3 - world built: March-06-2019
-* Milestone 4 - interactables work (monsters, items, drops): March-13-2019
-* Milestone 5 - story links are built: March-20-2019
-* Milestone 6 - experience and leveling system work: March-27-2019
-* End Date: March-27-209
+Ancient Archer is being used for a sequence of custom games to built. It should be a new animal by the end of this 10 game project.
+
+Start Date: April 28, 2019
+
+1. tactics
+2. rats scavaging
+3. ENDLESS RUNNER
+4. sidescroller fighter
+5. battle royale
+6. mmo
+7. plant growing
+8. space shooter bullet hell
+9. museum, how many effects
+10. acid frog
+
+End Date: July 7, 2019
 
 #### Existing Solutions
 
 My partially built engine AncientArcher
 
-* Programming Language: C++ std11
+* Programming Language: C++ std14
 * Additional Libraries: 
     * glad for OpenGL 3.30 graphics pipeline
     * glfw3 for windowing and input
@@ -48,25 +52,18 @@ My partially built engine AncientArcher
 
 #### Proposed Solution
 
-We'll be building our own in house solution, continuing on the current Ancient Archer project.
+Build our own in house solution, continuing on the current Ancient Archer project.
 
-Program should flow something like this on run:
-
-* run: init systems -> intro -> main menu {new game, continue, options}
-    * new game: starts a new game from the beginning
-    * continue: continue your playthough
-    * options: adjust game settings
-
-In game, 3D areas should load based on distance from the player. Worlds will be predrawn.
+Ancient Archer should allow for games to be built on it.
 
 #### Alternative Solutions
 
-* Random level gautlet-esque play
+* Unity, Unreal Engine, Godot Engine, Game Maker, ... you name it.
 
 #### Testability, Monitoring and Alerting
 
-* A logging system in place that writes to a log file stamped with run date and time
+* ToDo
 
 #### Detailed Scoping and Timeline
 
-[TASK TRACKER](https://github.com/mattearly/AncientArcher/projects)
+* ToDo
