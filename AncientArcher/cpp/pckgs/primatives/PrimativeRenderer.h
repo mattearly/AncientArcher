@@ -8,29 +8,31 @@ class Entity;
 class PrimativeRenderer {
 public:
   PrimativeRenderer();
-  ~PrimativeRenderer() = default;
 
   void render();
-
   void addToPrimativeEntities(Entity entity);
 
 private:
 
+  void drawCube();
+  void drawPlane();
+  void drawSphere();
+
   void loadCube();
   void loadPlane();
+  void loadSphere();
 
   bool cubeLoaded;
   bool planeLoaded;
+  bool sphereLoaded;
 
   unsigned int cubeVAO, cubeVBO;
   unsigned int planeVAO, planeVBO;
+  unsigned int sphereVAO, sphereVBO, sphereSize;
 
   std::vector<Entity> entities;
 
   std::unique_ptr< Shader > primShader;
-
-  void drawCube();
-  void drawPlane();
 
   Lighting lighting;
 
