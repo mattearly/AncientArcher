@@ -4,25 +4,19 @@
 #include <string>
 #include <sstream>
 #include <iostream>
-
-Lighting::Lighting() {}
-
-Lighting::~Lighting() {}
+#include <stdexcept>
 
 void Lighting::setConstantLight(Shader* shader) {
 
   shader->use();
   // directional light
   shader->setVec3("dirLight.direction", -0.2f, -1.0f, -0.3f);
-
-  //shader->setVec3("dirLight.ambient", 0.95f, 0.95f, 0.95f);
-  shader->setVec3("dirLight.ambient", 0.15f, 0.15f, 0.15f);
-
-  shader->setVec3("dirLight.diffuse", 0.15f, 0.15f, 0.15f);
-  //shader->setVec3("dirLight.diffuse", 0.95f, 0.95f, 0.95f);
+  //shader->setVec3("dirLight.ambient", 0.15f, 0.15f, 0.15f);
+  shader->setVec3("dirLight.ambient", 0.005f, 0.005f, 0.005f);
+  //shader->setVec3("dirLight.diffuse", 0.15f, 0.15f, 0.15f);
+  shader->setVec3("dirLight.diffuse", 0.005f, 0.005f, 0.005f);
 
   shader->setVec3("dirLight.specular", 0.5f, 0.5f, 0.5f);
-
 }
 
 void Lighting::addPointLight(glm::vec3 pos, Shader * shader) {
@@ -63,15 +57,14 @@ void Lighting::addPointLight(glm::vec3 pos, Shader * shader) {
 
   std::string pLightlinear = ss.str() + "linear";
   //shader->setFloat(pLightlinear, 0.36);
-  //shader->setFloat(pLightlinear, 0.09);
-  shader->setFloat(pLightlinear, 0.01f);
+  shader->setFloat(pLightlinear, 0.09f);
+  //shader->setFloat(pLightlinear, 0.01f);
   //shader->setFloat(pLightlinear, 0.0002f);
 
   std::string pLightquadratic = ss.str() + "quadratic";
   //shader->setFloat(pLightquadratic, 0.064f);
-
-  //shader->setFloat(pLightquadratic, 0.032f);
-  shader->setFloat(pLightquadratic, 0.016f);
+  shader->setFloat(pLightquadratic, 0.032f);
+  //shader->setFloat(pLightquadratic, 0.016f);
   //shader->setFloat(pLightquadratic, 0.002);
 
   shader->setInt("numPointLights", (int)i + 1);
@@ -80,9 +73,32 @@ void Lighting::addPointLight(glm::vec3 pos, Shader * shader) {
 
   std::cout << "point Light " << ss.str() << " added!\n";
 
+  _currentPointLights = i + 1;
+
 }
 
 void Lighting::movePointLight(int lightnum, glm::vec3 newpos, Shader * shader) {
-  shader->use();
-  shader->setVec3("pointLight[0].position", newpos);
+  if (lightnum < _currentPointLights)
+  {
+    shader->use();
+    switch (lightnum) {
+    case 0:
+      shader->setVec3("pointLight[0].position", newpos);
+      break;
+    case 1:
+      shader->setVec3("pointLight[1].position", newpos);
+      break;
+    case 2:
+      shader->setVec3("pointLight[2].position", newpos);
+      break;
+    case 3:
+      shader->setVec3("pointLight[3].position", newpos);
+      break;
+    }
+  }
+  else
+  {
+    throw std::runtime_error("Attempting to move point light that does not exist");
+  }
+
 }
