@@ -3,6 +3,7 @@
 #include "Movement.h"
 #include "Player.h"
 #include <glm/glm.hpp>
+#include <iostream>
 
 extern Controls controls;
 
@@ -61,16 +62,24 @@ void Player::processCommands(float deltaTime, std::vector<Entity>* entities)
     playgruntsound();
   }
   // PHASE 2: rising velocity
-  else if (!movedir.onGround && !movedir.falling) {
-    playerIntendedLocation.y += camera.getWorldUp()->y * getRisingSpeed() * deltaTime;   // RISING SPEED CALC: jump speed based on LegPower Player Stat
-    if (playerIntendedLocation.y > getJumpHeight() + movedir.lastOnGroundHeight) { // MAX HEIGHT CALC: jump height based on LegPower Player Stat
-      movedir.falling = true;
-    }
+  else if (!movedir.onGround) { // && !movedir.falling) {
+
+	float jumpMult = 0.025f;
+
+	jumpTimer += (deltaTime * 85.0f * jumpMult);
+
+	//std::cout << "Delta: " << deltaTime << " Jump: " << jumpTimer << "\n";
+	//std::cout << jumpMult * 1.0f << " + " << jumpMult * getRisingSpeed() * jumpTimer << " + " << jumpMult * -32.1522 * pow(jumpTimer, 2.0) << " = " << (camera.getWorldUp()->y + getRisingSpeed() * jumpTimer + -0.98 * pow(jumpTimer, 2.0)) << "\n";
+
+    playerIntendedLocation.y += jumpMult * (1.0f + jumpMult * getRisingSpeed() * jumpTimer + jumpMult * -32.21522 * pow(jumpTimer, 2.0) );   // RISING SPEED CALC: jump speed based on LegPower Player Stat
+    //if (playerIntendedLocation.y > getJumpHeight() + movedir.lastOnGroundHeight) { // MAX HEIGHT CALC: jump height based on LegPower Player Stat
+    //  movedir.falling = true;
+    //}
   }
   // PHASE 3: falling velocity
-  else if (movedir.falling && !movedir.onGround) {
-    playerIntendedLocation.y += GRAVITY * deltaTime;
-  }
+  //else if (movedir.falling && !movedir.onGround) {
+  //  playerIntendedLocation.y += GRAVITY * deltaTime;
+  //}
 
   // ------------ GENERAL MOVEMENT COLLISION -------------- //
   // * A point vs Boundry Boxes (any entity with collision on)
@@ -95,7 +104,7 @@ void Player::processCommands(float deltaTime, std::vector<Entity>* entities)
               if (!movedir.onGround)
               {
                 playerIntendedLocation = *camera.getPosition();
-                movedir.falling = true;
+                // movedir.falling = true;
               }
               else
               {
@@ -104,8 +113,9 @@ void Player::processCommands(float deltaTime, std::vector<Entity>* entities)
 
               if (playerIntendedLocation.y > ytop)
               {
-                movedir.falling = false;
+                // movedir.falling = false;
                 movedir.onGround = true;
+				jumpTimer = 0.0f;
                 movedir.lastOnGroundHeight = camera.getPosition()->y;
                 playlandingsound();
               }
@@ -157,7 +167,7 @@ float Player::getRunSpeed() const {
 }
 
 float Player::getRisingSpeed() const {
-  return (legPower / STAT_DIVISOR) + BASE_PLAYER_SPEED;
+  return (legPower / STAT_DIVISOR) + BASE_PLAYER_JUMP_SPEED;
 }
 
 float Player::getJumpHeight() const {
@@ -174,6 +184,7 @@ Player::Player() {
     //camera.updateProjectionMatrix();
 
   legPower = 10.0f;
+  jumpTimer = 0.0f;
 
 }
 
@@ -187,5 +198,6 @@ Player::Player(float leg_power) {
   //camera.updateProjectionMatrix();
 
   legPower = leg_power;
+  jumpTimer = 0.0f;
 
 }
