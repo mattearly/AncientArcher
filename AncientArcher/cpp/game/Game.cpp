@@ -33,7 +33,7 @@ Game::Game() {
   Entity* e;
   for (int i = 0; i < 30; i++)
   {
-    for (int j = 0; j < 30; j++) 
+    for (int j = 0; j < 30; j++)
     {
 
       if (i < 15 && j < 15)
@@ -58,13 +58,13 @@ Game::Game() {
       }
       else if (j < 15)
       {
-          e = new Entity(
-            ENTITYTYPE::PLANE,
-            glm::vec3(i, -5.2f, j),
-            glm::vec3(1.0f, 1.0f, 1.0f),
-            lightBricksTexID,
-            true
-          );
+        e = new Entity(
+          ENTITYTYPE::PLANE,
+          glm::vec3(i, -5.2f, j),
+          glm::vec3(1.0f, 1.0f, 1.0f),
+          lightBricksTexID,
+          true
+        );
       }
       else
       {

@@ -4,29 +4,29 @@
 //todo: improve sound, see https://youtu.be/Vjm--AqG04Y 
 
 static const int NUMFOOTSTEPS = 8;
-static Mix_Chunk *footstepsoundeffects[NUMFOOTSTEPS];
+static Mix_Chunk* footstepsoundeffects[NUMFOOTSTEPS];
 void playfootstepsound();
 
 static const int NUMGRUNTS = 4;
-static Mix_Chunk *gruntsoundeffects[NUMGRUNTS];
+static Mix_Chunk* gruntsoundeffects[NUMGRUNTS];
 void playgruntsound();
 
-static Mix_Chunk *landingsoundeffect;
+static Mix_Chunk* landingsoundeffect;
 void playlandingsound();
 
-static Mix_Chunk *successsoundeffect;
+static Mix_Chunk* successsoundeffect;
 void playsuccesssound();
 
-static Mix_Chunk *punchsoundeffect;
+static Mix_Chunk* punchsoundeffect;
 void playpunchsound();
 
-static Mix_Chunk *swordswingsoundeffect;
+static Mix_Chunk* swordswingsoundeffect;
 void playswordswingsound();
 
-static Mix_Chunk *bowsoundeffect;
+static Mix_Chunk* bowsoundeffect;
 void playbowsound();
 
-static Mix_Chunk *equipgearsoundeffect;
+static Mix_Chunk* equipgearsoundeffect;
 void playequipgearsound();
 
 //static Mix_Chunk *dooropensoundeffect;
@@ -60,7 +60,7 @@ void playequipgearsound();
 //static Mix_Music *defaultmusic;
 //void playdefaultmusic();
 
-static Mix_Music *AMBIENT_windy_night;
+static Mix_Music* AMBIENT_windy_night;
 void toggleAmbientWindyNight();
 
 void initsound();

@@ -16,7 +16,7 @@ Camera::Camera() {
 
 Camera::~Camera() {}
 
-void Camera::update(Shader* shader) {
+void Camera::update(Shader * shader) {
   glm::mat4 view = getViewMatrix();
   shader->use();
   shader->setMat4("view", view);
@@ -24,7 +24,7 @@ void Camera::update(Shader* shader) {
 
 // needs called to update the FoV and/or window_width window_height, and draw distances
 // this is for the global texBankShader
-void Camera::updateProjectionMatrix(Shader* shader) {
+void Camera::updateProjectionMatrix(Shader * shader) {
   glm::mat4 projection = glm::perspective(glm::radians(FoV), (float)display.window_width / (float)display.window_height, 0.01f, 100.0f);
   shader->use();
   shader->setMat4("projection", projection);
@@ -46,15 +46,15 @@ glm::mat4 Camera::getViewMatrix() {
   return glm::lookAt(Position, Position + Front, Up);
 }
 
-glm::vec3* Camera::getPosition() {  
+glm::vec3* Camera::getPosition() {
   return &Position;
 }
 
-glm::vec3 * Camera::getFront() {
+glm::vec3* Camera::getFront() {
   return &Front;
 }
 
-glm::vec3 * Camera::getRight() {
+glm::vec3* Camera::getRight() {
   return &Right;
 }
 

@@ -7,18 +7,13 @@ class Controls {
 
 public:
 
-  struct KBKeys {
-    bool keys[256] = keyDown;
-  };
-
-
   enum class ControlType { FPS, TOP_DOWN };
 
   Controls();
 
-  void mouseMovement(float xpos, float ypos, Camera *camera, ControlType type = ControlType::FPS);
+  void mouseMovement(float xpos, float ypos);
 
-  void playerKeyboardInput(ControlType type = ControlType::FPS);
+  void playerKeyboardInput();
 
 private:
 

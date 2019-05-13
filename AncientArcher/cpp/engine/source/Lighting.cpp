@@ -18,22 +18,22 @@ void Lighting::setConstantLight(Shader* shader) {
   //shader->setVec3("dirLight.ambient", 0.95f, 0.95f, 0.95f);
   shader->setVec3("dirLight.ambient", 0.15f, 0.15f, 0.15f);
 
-  shader->setVec3("dirLight.diffuse", 0.15f, 0.15f, 0.15f);    
+  shader->setVec3("dirLight.diffuse", 0.15f, 0.15f, 0.15f);
   //shader->setVec3("dirLight.diffuse", 0.95f, 0.95f, 0.95f);
 
   shader->setVec3("dirLight.specular", 0.5f, 0.5f, 0.5f);
 
 }
 
-void Lighting::addPointLight(glm::vec3 pos, Shader* shader) {
- 
+void Lighting::addPointLight(glm::vec3 pos, Shader * shader) {
+
   std::size_t i = pointLights.size();
-  
+
   if (i >= MAXPOINTLIGHTS) {   // make sure we are not going past what our texBankShader allows
     std::cout << MAXPOINTLIGHTS << " reached, no more can be added.\n";
     return;
   }
-  
+
   std::stringstream ss("pointLight[", std::ios_base::app | std::ios_base::out);
   ss << i << "].";
 
@@ -82,7 +82,7 @@ void Lighting::addPointLight(glm::vec3 pos, Shader* shader) {
 
 }
 
-void Lighting::movePointLight(int lightnum, glm::vec3 newpos, Shader* shader) {
+void Lighting::movePointLight(int lightnum, glm::vec3 newpos, Shader * shader) {
   shader->use();
   shader->setVec3("pointLight[0].position", newpos);
 }

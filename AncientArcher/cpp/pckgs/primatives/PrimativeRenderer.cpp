@@ -335,14 +335,14 @@ void PrimativeRenderer::loadSphere()
       }
     }
   }
-  
+
   /*unsigned int getVertexCount() const { return (unsigned int)vertices.size() / 3; }
   unsigned int getNormalCount() const { return (unsigned int)normals.size() / 3; }
   unsigned int getTexCoordCount() const { return (unsigned int)texCoords.size() / 2; }
   unsigned int getIndexCount() const { return (unsigned int)indices.size(); }
 */
 
-  // --- LOAD TO GRAPHICS CARD --- //
+// --- LOAD TO GRAPHICS CARD --- //
   glGenVertexArrays(1, &sphereVAO);
   glGenBuffers(1, &sphereVBO);
 

@@ -9,8 +9,8 @@ extern Camera camera;  // camera is instantiated as a global in Player.cpp
 SkyboxRenderer::SkyboxRenderer()
 {
   skyboxShader = std::make_unique< Shader >(
-      "../AncientArcher/cpp/pckgs/skybox/skybox.vert",
-      "../AncientArcher/cpp/pckgs/skybox/skybox.frag"
+    "../AncientArcher/cpp/pckgs/skybox/skybox.vert",
+    "../AncientArcher/cpp/pckgs/skybox/skybox.frag"
     );
   loadSkybox();
 
@@ -27,7 +27,6 @@ SkyboxRenderer::SkyboxRenderer()
   };
 
   cubemapTexture = loader.loadCubeTexture(skymapFiles);
-
 
   skyboxShader->use();
   skyboxShader->setInt("skybox", 0);

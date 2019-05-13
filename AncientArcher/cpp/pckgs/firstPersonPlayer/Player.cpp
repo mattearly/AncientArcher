@@ -27,7 +27,7 @@ void Player::update(float deltaTime)
 
 void Player::processCommands(float deltaTime)
 {
-  
+
   glm::vec3 playerIntendedLocation = *camera.getPosition();
   float velocity;
   movedir.positionChanged = true;
@@ -173,8 +173,8 @@ Player::Player() {
       BOX, glm::vec3(1.5f, 0.26f, 1.5f), glm::vec3(0.05f, 0.1f, 0.05f), -1, true
     );*/
 
-  //lighting.addPointLight(*camera.getPosition());
-  //camera.updateProjectionMatrix();
+    //lighting.addPointLight(*camera.getPosition());
+    //camera.updateProjectionMatrix();
 
   legPower = 10.0f;
 

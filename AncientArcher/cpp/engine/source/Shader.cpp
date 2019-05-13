@@ -4,7 +4,7 @@
 #include <sstream>
 #include <iostream>
 
-Shader::Shader(const char *vertex_file, const char *fragment_file) {
+Shader::Shader(const char* vertex_file, const char* fragment_file) {
 
   std::string vertexCode;
   std::string fragmentCode;
@@ -29,12 +29,13 @@ Shader::Shader(const char *vertex_file, const char *fragment_file) {
     vertexCode = vShaderStream.str();
     fragmentCode = fShaderStream.str();
 
-  } catch (std::ifstream::failure e) {
+  }
+  catch (std::ifstream::failure e) {
     std::cout << "ERROR::SHADER::FILE_NOT_SUCCESFULLY_READ" << std::endl;
   }
 
-  const char *vertexShaderSource = vertexCode.c_str();
-  const char *fragmentShaderSource = fragmentCode.c_str();
+  const char* vertexShaderSource = vertexCode.c_str();
+  const char* fragmentShaderSource = fragmentCode.c_str();
 
   /* compile vertex (points) shader */
   int vertexShader = glCreateShader(GL_VERTEX_SHADER);
@@ -95,7 +96,7 @@ Shader::Shader(const char *vertex_file, const char *fragment_file) {
   std::cout << "debug: shader ID = " << ID << std::endl;
 }
 
-Shader::Shader(const char * vertex_file, const char * fragment_file, const char * geometry_file) {
+Shader::Shader(const char* vertex_file, const char* fragment_file, const char* geometry_file) {
 
   std::string vertexCode;
   std::string fragmentCode;
@@ -128,13 +129,14 @@ Shader::Shader(const char * vertex_file, const char * fragment_file, const char 
     fragmentCode = fShaderStream.str();
     geometryCode = gShaderStream.str();
 
-  } catch (std::ifstream::failure e) {
+  }
+  catch (std::ifstream::failure e) {
     std::cout << "ERROR::SHADER::FILE_NOT_SUCCESFULLY_READ" << std::endl;
   }
 
-  const char *vertexShaderSource = vertexCode.c_str();
-  const char *fragmentShaderSource = fragmentCode.c_str();
-  const char *geometryShaderSource = geometryCode.c_str();
+  const char* vertexShaderSource = vertexCode.c_str();
+  const char* fragmentShaderSource = fragmentCode.c_str();
+  const char* geometryShaderSource = geometryCode.c_str();
 
   /* compile vertex (points) shader */
   int vertexShader = glCreateShader(GL_VERTEX_SHADER);
@@ -249,7 +251,7 @@ void Shader::setVec3(const std::string & name, glm::vec3 & value) const {
   glUniform3fv(glGetUniformLocation(ID, name.c_str()), 1, &value[0]);
 }
 
-void Shader::setVec3(const std::string & name, float x, float y, float z) const { 
+void Shader::setVec3(const std::string & name, float x, float y, float z) const {
   glUniform3f(glGetUniformLocation(ID, name.c_str()), x, y, z);
 }
 

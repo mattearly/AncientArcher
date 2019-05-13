@@ -16,9 +16,9 @@ private:
   };
 public:
   GameItem gameItem;
-  Collider *collider;
+  Collider* collider;
   Entity(ENTITYTYPE t, glm::vec3 loc, glm::vec3 sc, int texID, bool isImpassable);
-  
+
   // MODIFIERS
   void moveBy(glm::vec3 amount);
   void moveTo(glm::vec3 newLocation);

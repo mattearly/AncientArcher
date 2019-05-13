@@ -32,7 +32,7 @@ public:
 
 private:
 
-  glm::vec3 Position; 
+  glm::vec3 Position;
 
   // left/right looking direction angle
   float Yaw;
@@ -41,16 +41,16 @@ private:
   float Pitch;
 
   // where the camera is facing
-  glm::vec3 Front; 
+  glm::vec3 Front;
 
   // up relative to the camera's lean
-  glm::vec3 Up;  
+  glm::vec3 Up;
 
   // 90degree right to the camera's front
-  glm::vec3 Right;  
+  glm::vec3 Right;
 
   // world's up direction: 0.0f, 1.0f, 0.0f
-  glm::vec3 WorldUp;  
+  glm::vec3 WorldUp;
 
   void updateCameraVectors();
 

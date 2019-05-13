@@ -3,7 +3,7 @@
 #include <utility>
 #include <iostream>
 
-extern Controls controls;
+Controls controls;
 
 Display::Display() {
 
@@ -19,7 +19,7 @@ Display::Display() {
 #ifdef __APPLE__
   glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);
 #endif
-  
+
   // init window
   window = glfwCreateWindow(window_width, window_height, "AncientArcherEngine", nullptr, nullptr);
   if (window == nullptr) {
@@ -72,13 +72,13 @@ void Display::update() const {
   glfwSwapBuffers(window);
 }
 
-static Display * g_CurrentInstance;
+static Display* g_CurrentInstance;
 
-extern "C" void reshapeCallback(GLFWwindow *window, int w, int h) {
+extern "C" void reshapeCallback(GLFWwindow * window, int w, int h) {
   g_CurrentInstance->reshapeWindow(window, w, h);
 }
 
-extern "C" void mouseCallback(GLFWwindow *window, double xpos, double ypos) {
+extern "C" void mouseCallback(GLFWwindow * window, double xpos, double ypos) {
   g_CurrentInstance->mouseHandler(window, xpos, ypos);
 }
 

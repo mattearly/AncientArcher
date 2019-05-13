@@ -111,7 +111,7 @@ void initsound() {
   footstepsoundeffects[5] = Mix_LoadWAV("../AncientArcher/resource/footstep06.wav");  // load footsteps
   footstepsoundeffects[6] = Mix_LoadWAV("../AncientArcher/resource/footstep07.wav");  // load footsteps
   footstepsoundeffects[7] = Mix_LoadWAV("../AncientArcher/resource/footstep08.wav");  // load footsteps
-  for (auto &se : footstepsoundeffects) {  //test footstep load
+  for (auto& se : footstepsoundeffects) {  //test footstep load
     if (se == nullptr) {
       SDL_LogError(SDL_LOG_CATEGORY_APPLICATION,
         "Couldn't load audio: %s",
@@ -124,7 +124,7 @@ void initsound() {
   gruntsoundeffects[1] = Mix_LoadWAV("../AncientArcher/resource/grunt02.wav");
   gruntsoundeffects[2] = Mix_LoadWAV("../AncientArcher/resource/grunt03.wav");
   gruntsoundeffects[3] = Mix_LoadWAV("../AncientArcher/resource/grunt04.wav");
-  for (auto &se : gruntsoundeffects) {  //test grunt load
+  for (auto& se : gruntsoundeffects) {  //test grunt load
     if (se == nullptr) {
       SDL_LogError(SDL_LOG_CATEGORY_APPLICATION,
         "Couldn't load audio: %s",

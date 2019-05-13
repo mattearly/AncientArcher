@@ -7,20 +7,20 @@
 #include <glm/gtc/type_ptr.hpp>
 
 void Game::mainLoop() {
-  
+
   toggleAmbientWindyNight();
-  
+
   static float currentFrame;
-  
+
   while (!glfwWindowShouldClose(display.window)) {
     currentFrame = (float)glfwGetTime();
     deltaTime = currentFrame - lastFrame;
     lastFrame = currentFrame;
 
     player->update(deltaTime);
-    
+
     masterRenderer.update(player, primativeRenderer, skyboxRenderer, deltaTime);
-    
+
     glfwPollEvents();
   }
 }

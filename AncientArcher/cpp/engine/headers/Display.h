@@ -7,7 +7,7 @@ public:
   Display();
   ~Display();
 
-  GLFWwindow *window;
+  GLFWwindow* window;
 
   void clear() const;
   void update() const;
@@ -15,8 +15,8 @@ public:
   int window_width;
   int window_height;
 
-  void reshapeWindow(GLFWwindow *window, int w, int h);
-  void mouseHandler(GLFWwindow *window, double xpos, double ypos);
+  void reshapeWindow(GLFWwindow* window, int w, int h);
+  void mouseHandler(GLFWwindow* window, double xpos, double ypos);
 
 private:
 

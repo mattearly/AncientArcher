@@ -3,15 +3,16 @@
 #include "Display.h"
 
 Controls controls;
+
 Display display;
 
-int main() 
+int main()
 {
 
   Game game;
 
   game.mainLoop();
 
-	return 0;
+  return 0;
 
 }

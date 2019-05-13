@@ -7,7 +7,7 @@
 class SkyboxRenderer
 {
 public:
-  
+
   SkyboxRenderer();
 
   void render();
