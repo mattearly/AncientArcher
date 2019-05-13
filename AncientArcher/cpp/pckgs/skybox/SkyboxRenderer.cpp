@@ -1,6 +1,6 @@
 #include "SkyboxRenderer.h"
-#include "Shader.h"
-#include "Camera.h"
+#include <Camera.h>
+#include <TextureLoader.h>
 
 #include <glad/glad.h>
 
@@ -13,37 +13,38 @@ SkyboxRenderer::SkyboxRenderer()
       "../AncientArcher/cpp/pckgs/skybox/skybox.frag"
     );
   loadSkybox();
+
+  TextureLoader loader;
+
+  std::vector<std::string> skymapFiles =
+  {
+    "../AncientArcher/cpp/pckgs/skybox/skybox_right.jpg",
+    "../AncientArcher/cpp/pckgs/skybox/skybox_left.jpg",
+    "../AncientArcher/cpp/pckgs/skybox/skybox_top.jpg",
+    "../AncientArcher/cpp/pckgs/skybox/skybox_bottom.jpg",
+    "../AncientArcher/cpp/pckgs/skybox/skybox_front.jpg",
+    "../AncientArcher/cpp/pckgs/skybox/skybox_back.jpg"
+  };
+
   cubemapTexture = loader.loadCubeTexture(skymapFiles);
+
+
   skyboxShader->use();
   skyboxShader->setInt("skybox", 0);
-}
-
-void SkyboxRenderer::loadProjectionMatrix()
-{
-  glm::mat4 projectionMatrix = camera.getProjectionMatrix();
-  skyboxShader->use();
-  skyboxShader->setMat4("projection", projectionMatrix);
-}
-
-void SkyboxRenderer::loadViewMatrix()
-{
-  glm::mat4 viewMatrix = camera.getViewMatrix();
-  skyboxShader->use();
-  skyboxShader->setMat4("view", viewMatrix);
 }
 
 void SkyboxRenderer::render()
 {
   glDepthFunc(GL_LEQUAL);  // change depth function so depth test passes when values are equal to depth buffer's content  skyboxShader.use();
-  
+
   loadProjectionMatrix();
   loadViewMatrix();
-/*
-  skyboxShader->use();
-  camera.update(skyboxShader.get());
-  glm::mat4 projection = camera.getProjectionMatrix();
-  skyboxShader->setMat4("projection", projection);
-*/
+  /*
+    skyboxShader->use();
+    camera.update(skyboxShader.get());
+    glm::mat4 projection = camera.getProjectionMatrix();
+    skyboxShader->setMat4("projection", projection);
+  */
   glBindVertexArray(skyboxVAO);
   glActiveTexture(GL_TEXTURE0);
   glBindTexture(GL_TEXTURE_CUBE_MAP, cubemapTexture);
@@ -110,4 +111,18 @@ void SkyboxRenderer::loadSkybox() {
   glEnableVertexAttribArray(0);
   glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), (void*)0);
 
+}
+
+void SkyboxRenderer::loadProjectionMatrix()
+{
+  glm::mat4 projectionMatrix = camera.getProjectionMatrix();
+  skyboxShader->use();
+  skyboxShader->setMat4("projection", projectionMatrix);
+}
+
+void SkyboxRenderer::loadViewMatrix()
+{
+  glm::mat4 viewMatrix = camera.getViewMatrix();
+  skyboxShader->use();
+  skyboxShader->setMat4("view", viewMatrix);
 }
