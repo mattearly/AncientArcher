@@ -12,6 +12,11 @@
 
 extern Camera camera;
 
+// --- PUBLIC FUNCTIONS --- // 
+
+/**
+ * Loads up a primative renderer with the default settings and shader.
+ */
 PrimativeRenderer::PrimativeRenderer()
 {
   primShader = std::make_unique< Shader >(
@@ -25,6 +30,9 @@ PrimativeRenderer::PrimativeRenderer()
   primShader->setMat4("projection", proj);
 }
 
+/**
+ * Renders all the objects on the std::vector<Entity> entities array.
+ */
 void PrimativeRenderer::render()
 {
   primShader->use();
@@ -61,11 +69,19 @@ void PrimativeRenderer::render()
   }
 }
 
+/**
+ * Adds a built entity to the std::vector<Entity> entities array.
+ */
 void PrimativeRenderer::addToPrimativeEntities(Entity entity)
 {
   entities.push_back(entity);
 }
 
+// --- PRIVATE FUNCTIONS --- //
+
+/**
+ * Draws a cube. Loads up the cube primative if it isn't already loaded. Instantiate Entities and call render() to draw them.
+ */
 void PrimativeRenderer::drawCube()
 {
   if (!cubeLoaded) {
@@ -77,6 +93,9 @@ void PrimativeRenderer::drawCube()
   glBindVertexArray(0);
 }
 
+/**
+ * Draws a plane. Loads up the plane primative if it isn't already loaded. Instantiate Entities and call render() to draw them.
+ */
 void PrimativeRenderer::drawPlane()
 {
   if (!planeLoaded) {
@@ -88,6 +107,9 @@ void PrimativeRenderer::drawPlane()
   glBindVertexArray(0);
 }
 
+/**
+ * Draws a sphere. Loads up the sphere primative if it isn't already loaded. Instantiate Entities and call render() to draw them.
+ */
 void PrimativeRenderer::drawSphere()
 {
   if (!sphereLoaded) {

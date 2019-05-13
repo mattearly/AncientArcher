@@ -31,7 +31,6 @@ Game::Game() {
 
   // -------- LOAD WORLD --------- //
   Entity* e;
-
   for (int i = 0; i < 30; i++)
   {
     for (int j = 0; j < 30; j++) 
@@ -71,6 +70,7 @@ Game::Game() {
       primativeRenderer->addToPrimativeEntities(*e);
     }
   }
+  delete e;
   skyboxRenderer = new SkyboxRenderer();
 
 
