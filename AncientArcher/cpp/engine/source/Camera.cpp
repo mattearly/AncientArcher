@@ -58,6 +58,11 @@ glm::vec3* Camera::getRight() {
   return &Right;
 }
 
+glm::vec3* Camera::getWorldUp()
+{
+  return &WorldUp;
+}
+
 float Camera::getYaw() {
   return Yaw;
 }
