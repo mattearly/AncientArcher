@@ -12,6 +12,8 @@ public:
   void render();
   void addToPrimativeEntities(Entity entity);
 
+  std::vector<Entity>* getEntites();
+
 private:
 
   void drawCube();

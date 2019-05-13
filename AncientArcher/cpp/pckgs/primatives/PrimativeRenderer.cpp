@@ -77,6 +77,11 @@ void PrimativeRenderer::addToPrimativeEntities(Entity entity)
   entities.push_back(entity);
 }
 
+std::vector<Entity>* PrimativeRenderer::getEntites()
+{
+  return &entities;
+}
+
 // --- PRIVATE FUNCTIONS --- //
 
 /**
