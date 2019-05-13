@@ -3,7 +3,8 @@
 #include "Movement.h"
 #include "Player.h"
 #include <glm/glm.hpp>
-Controls controls;
+
+extern Controls controls;
 
 Camera camera;
 

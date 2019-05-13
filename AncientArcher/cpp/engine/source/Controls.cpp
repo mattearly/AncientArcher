@@ -7,8 +7,6 @@
 #include <math.h>
 #include "../../pckgs/firstPersonPlayer/Movement.h"
 
-extern Camera camera;  // camera is global from Player class
-
 extern Movement movedir;
 
 extern Display display;
@@ -20,7 +18,7 @@ Controls::Controls() {
   lastY = 0.f;
 }
 
-void Controls::mouseMovement(float xpos, float ypos) {
+void Controls::mouseMovement(float xpos, float ypos, Camera *cam, ) {
 
   /// This block is first person controls
   /// Note: cursor visibility can be toggled in the Display class, it should be OFF for these controls
@@ -39,17 +37,17 @@ void Controls::mouseMovement(float xpos, float ypos) {
   xoffset *= mouseSensitivity;
   yoffset *= mouseSensitivity;
 
-  camera.Yaw += xoffset;
-  camera.Pitch += yoffset;
+  cam->Yaw += xoffset;
+  cam->Pitch += yoffset;
 
-  if (camera.Pitch > 89.0f) {
-    camera.Pitch = 89.0f;
+  if (cam->Pitch > 89.0f) {
+    cam->Pitch = 89.0f;
   }
-  else if (camera.Pitch < -89.0f) {
-    camera.Pitch = -89.0f;
+  else if (cam->Pitch < -89.0f) {
+    cam->Pitch = -89.0f;
   }
 
-  camera.updateCameraVectors();
+  cam->updateCameraVectors();
   
   ///
   ///
