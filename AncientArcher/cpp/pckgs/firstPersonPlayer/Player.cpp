@@ -26,6 +26,7 @@ void Player::update(float deltaTime)
 void Player::processCommands(float deltaTime, std::vector<Entity>* entities)
 {
 
+  //glm::vec3 previousPlayerLocation = playerIntendedLocation
   glm::vec3 playerIntendedLocation = *camera.getPosition();
   float velocity;
   movedir.positionChanged = true;
@@ -55,18 +56,23 @@ void Player::processCommands(float deltaTime, std::vector<Entity>* entities)
   // ------------ JUMP SYSTEM -------------- //
   // * 3 phase system
 
-  // PHASE 1: frame of liftoff
+  // PHASE 1: Liftoff
+  // Liftoff is where the jump flags are triggered and sounds are played.
+  // Animations could also be put here
   if (movedir.jumped) {
     movedir.onGround = false;
     movedir.jumped = false;
     playgruntsound();
   }
-  // PHASE 2: rising velocity
+
+  // PHASE 2: Rising and Falling
+  // Rising and falling are now combined into one function which is
+  // just a quadratic equation based on the length of the jump action
   else if (!movedir.onGround) { // && !movedir.falling) {
 
-	float jumpMod = BASE_PLAYER_WEIGHT * (1.0f / 50000.0f);
+	float jumpMod = 0.5f / BASE_PLAYER_WEIGHT; // Modifier based on the user weight in 'kg' (probably needs rework)
 
-	jumpTimer += deltaTime;
+	jumpTimer += deltaTime; // Elapsed time of the jump action
 
 	float jumpPos = 8.0f; // Initial Y intercept of jump, I think.. not sure why its 8.0f ('c' term in equation below)
 	float jumpVel = getRisingSpeed() * jumpTimer; // Velocity of jump ('bt' term in equation below) // RISING SPEED CALC: jump speed based on LegPower Player Stat
@@ -74,15 +80,18 @@ void Player::processCommands(float deltaTime, std::vector<Entity>* entities)
 
 					 // weight modifier * (	  c	   +	bt	 +	 at^2	) 
     playerIntendedLocation.y += jumpMod * (jumpPos + jumpVel + jumpAccel); // Parabolic equation based on time
-    
-	//if (playerIntendedLocation.y > getJumpHeight() + movedir.lastOnGroundHeight) { // MAX HEIGHT CALC: jump height based on LegPower Player Stat
+
+	//if (playerIntendedLocation.y > getJumpHeight() + movedir.lastOnGroundHeight)
+	//if (previousPlayerPosition.y - playerIntendedPosition.y > 0) { // MAX HEIGHT CALC: jump height based on LegPower Player Stat
     //  movedir.falling = true;
     //}
+
   }
-  // PHASE 3: falling velocity
-  //else if (movedir.falling && !movedir.onGround) {
-  //  playerIntendedLocation.y += GRAVITY * deltaTime;
-  //}
+
+  // PHASE 3: Landing
+  // Landing will now just be triggered by the general collision
+  // checking but it may make sense to put animations or sounds
+  // here for landing
 
   // ------------ GENERAL MOVEMENT COLLISION -------------- //
   // * A point vs Boundry Boxes (any entity with collision on)

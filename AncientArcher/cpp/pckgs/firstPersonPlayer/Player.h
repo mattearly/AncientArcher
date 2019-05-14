@@ -34,7 +34,7 @@ private:
   const float BASE_PLAYER_SPEED = 3.0f;
   const float BASE_PLAYER_JUMP_SPEED = 1.5f;
   const float BASE_PLAYER_JUMP_HEIGHT = 0.8f;
-  const float BASE_PLAYER_WEIGHT = 156.25f;
+  const float BASE_PLAYER_WEIGHT = 160.0f;
 
   float jumpTimer;
 
