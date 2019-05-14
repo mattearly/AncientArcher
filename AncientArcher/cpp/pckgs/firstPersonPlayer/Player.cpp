@@ -64,15 +64,18 @@ void Player::processCommands(float deltaTime, std::vector<Entity>* entities)
   // PHASE 2: rising velocity
   else if (!movedir.onGround) { // && !movedir.falling) {
 
-	float jumpMult = 0.025f;
+	float jumpMod = BASE_PLAYER_WEIGHT * (1.0f / 50000.0f);
 
-	jumpTimer += (deltaTime * 85.0f * jumpMult);
+	jumpTimer += deltaTime;
 
-	//std::cout << "Delta: " << deltaTime << " Jump: " << jumpTimer << "\n";
-	//std::cout << jumpMult * 1.0f << " + " << jumpMult * getRisingSpeed() * jumpTimer << " + " << jumpMult * -32.1522 * pow(jumpTimer, 2.0) << " = " << (camera.getWorldUp()->y + getRisingSpeed() * jumpTimer + -0.98 * pow(jumpTimer, 2.0)) << "\n";
+	float jumpPos = 8.0f; // Initial Y intercept of jump, I think.. not sure why its 8.0f ('c' term in equation below)
+	float jumpVel = getRisingSpeed() * jumpTimer; // Velocity of jump ('bt' term in equation below) // RISING SPEED CALC: jump speed based on LegPower Player Stat
+	float jumpAccel = -32.1522f * pow(jumpTimer, 2.0); // Accelaration of jump due top gravity in 'feet' (at^2 term in equation below)
 
-    playerIntendedLocation.y += jumpMult * (1.0f + jumpMult * getRisingSpeed() * jumpTimer + jumpMult * -32.21522 * pow(jumpTimer, 2.0) );   // RISING SPEED CALC: jump speed based on LegPower Player Stat
-    //if (playerIntendedLocation.y > getJumpHeight() + movedir.lastOnGroundHeight) { // MAX HEIGHT CALC: jump height based on LegPower Player Stat
+					 // weight modifier * (	  c	   +	bt	 +	 at^2	) 
+    playerIntendedLocation.y += jumpMod * (jumpPos + jumpVel + jumpAccel); // Parabolic equation based on time
+    
+	//if (playerIntendedLocation.y > getJumpHeight() + movedir.lastOnGroundHeight) { // MAX HEIGHT CALC: jump height based on LegPower Player Stat
     //  movedir.falling = true;
     //}
   }
