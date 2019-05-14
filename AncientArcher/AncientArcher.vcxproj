@@ -194,10 +194,13 @@
     <ClInclude Include="cpp\engine\headers\TextureLoader.h" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="cpp\pckgs\primatives\primative.frag" />
+    <None Include="cpp\pckgs\primatives\primative.vert" />
     <None Include="cpp\pckgs\skybox\skybox.frag" />
     <None Include="cpp\pckgs\skybox\skybox.vert" />
   </ItemGroup>
   <ItemGroup>
+    <Image Include="cpp\pckgs\primatives\light_bricks.png" />
     <Image Include="cpp\pckgs\skybox\default\skybox_back.jpg" />
     <Image Include="cpp\pckgs\skybox\default\skybox_bottom.jpg" />
     <Image Include="cpp\pckgs\skybox\default\skybox_front.jpg" />

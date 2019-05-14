@@ -18,6 +18,9 @@
     <ClCompile Include="cpp\engine\source\Collider.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="cpp\engine\source\Controls.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
     <ClCompile Include="cpp\engine\source\Display.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -69,12 +72,12 @@
     <ClCompile Include="cpp\pckgs\skybox\SkyboxRenderer.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="cpp\engine\source\Controls.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="cpp\engine\headers\Collider.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="cpp\engine\headers\Controls.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="cpp\engine\headers\Display.h">
@@ -128,13 +131,12 @@
     <ClInclude Include="cpp\pckgs\skybox\SkyboxRenderer.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="cpp\engine\headers\Controls.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="cpp\pckgs\skybox\skybox.frag" />
     <None Include="cpp\pckgs\skybox\skybox.vert" />
+    <None Include="cpp\pckgs\primatives\primative.frag" />
+    <None Include="cpp\pckgs\primatives\primative.vert" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="cpp\pckgs\skybox\default\skybox_back.jpg">
@@ -153,6 +155,9 @@
       <Filter>Resource Files</Filter>
     </Image>
     <Image Include="cpp\pckgs\skybox\default\skybox_top.jpg">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="cpp\pckgs\primatives\light_bricks.png">
       <Filter>Resource Files</Filter>
     </Image>
   </ItemGroup>
