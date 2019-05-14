@@ -36,17 +36,20 @@ Game::Game() {
   // -------- LOAD WORLD --------- //
 
   Entity* e;
-  for (int i = 0; i < 500; i++) {
+  for (int i = 0; i < 1000; i += 2)
+  {
     e = new Entity(
       ENTITYTYPE::BOX,
-      glm::vec3(i + 3, mearly::NTKR(-0.50f, 0.20f), i + 3),
+      glm::vec3(i, -0.8f, 0),
       glm::vec3(2.0f, 1.0f, 2.0f),
       lightBricksTexID,
       true
     );
+
     primativeRenderer->addToPrimativeEntities(*e);
+    delete e;
+    e = nullptr;
   }
-  delete e;
 
   // ---- LOAD SKYBOX ---- //s
   std::vector<std::string> skyboxFiles =
