@@ -5,6 +5,8 @@
 #include <glm/gtc/type_ptr.hpp>
 #include <iostream>
 
+extern Camera camera;
+
 Game::Game() {
 
   // ----------- GRAPHICS CARD INFORMATION --------- //
@@ -25,172 +27,41 @@ Game::Game() {
   // ---------- PRELOAD ENVIRORNMENT DETAILS ---------- //
   primativeRenderer = new PrimativeRenderer();
 
+  player->addPointLight(*camera.getPosition(), primativeRenderer->getShader());
+
   TextureLoader texLoader;
 
   unsigned int lightBricksTexID = texLoader.load2DTexture("../AncientArcher/cpp/pckgs/primatives/light_bricks.png");
 
   // -------- LOAD WORLD --------- //
+
   Entity* e;
-  for (int i = 0; i < 30; i++)
+  for (int i = 0; i < 1000; i += 2)
   {
-    for (int j = 0; j < 30; j++)
-    {
+    e = new Entity(
+      ENTITYTYPE::BOX,
+      glm::vec3(i, -0.8f, 0),
+      glm::vec3(2.0f, 1.0f, 2.0f),
+      lightBricksTexID,
+      true
+    );
 
-      if (i < 15 && j < 15)
-      {
-        e = new Entity(
-          ENTITYTYPE::BOX,
-          glm::vec3(i, mearly::NTKR(-5.25f, -5.19f), j),
-          glm::vec3(1.0f, 1.0f, 1.0f),
-          lightBricksTexID,
-          true
-        );
-      }
-      else if (i > 14 && j > 14)
-      {
-        e = new Entity(
-          ENTITYTYPE::BOX,
-          glm::vec3(i, -5.2f, j),
-          glm::vec3(1.0f, 1.0f, 1.0f),
-          lightBricksTexID,
-          true
-        );
-      }
-      else if (j < 15)
-      {
-        e = new Entity(
-          ENTITYTYPE::PLANE,
-          glm::vec3(i, -5.2f, j),
-          glm::vec3(1.0f, 1.0f, 1.0f),
-          lightBricksTexID,
-          true
-        );
-      }
-      else
-      {
-        e = new Entity(
-          ENTITYTYPE::SPHERE,
-          glm::vec3(i, -5.2f, j),
-          glm::vec3(1.0f, 1.0f, 1.0f),
-          lightBricksTexID,
-          true
-        );
-      }
-
-      primativeRenderer->addToPrimativeEntities(*e);
-    }
+    primativeRenderer->addToPrimativeEntities(*e);
+    delete e;
+    e = nullptr;
   }
-  delete e;
 
-  //skyboxRenderer = new SkyboxRenderer();
-
+  // ---- LOAD SKYBOX ---- //s
   std::vector<std::string> skyboxFiles =
   {
-	"../AncientArcher/cpp/pckgs/skybox/dark/skybox_right.png",
-	"../AncientArcher/cpp/pckgs/skybox/dark/skybox_left.png",
-	"../AncientArcher/cpp/pckgs/skybox/dark/skybox_top.png",
-	"../AncientArcher/cpp/pckgs/skybox/dark/skybox_bottom.png",
-	"../AncientArcher/cpp/pckgs/skybox/dark/skybox_front.png",
-	"../AncientArcher/cpp/pckgs/skybox/dark/skybox_back.png"
+  "../AncientArcher/cpp/pckgs/skybox/dark/skybox_right.png",
+  "../AncientArcher/cpp/pckgs/skybox/dark/skybox_left.png",
+  "../AncientArcher/cpp/pckgs/skybox/dark/skybox_top.png",
+  "../AncientArcher/cpp/pckgs/skybox/dark/skybox_bottom.png",
+  "../AncientArcher/cpp/pckgs/skybox/dark/skybox_front.png",
+  "../AncientArcher/cpp/pckgs/skybox/dark/skybox_back.png"
   };
 
   skyboxRenderer = new SkyboxRenderer(skyboxFiles);
-
-  // ------------ SET FLOOR ------------ //
-  //float planeCollisionThickness = 0.18f;
-  //float currentGroundLevel = -0.02f;
-  //int groundTextureId = 2;
-  //for (int i = 0; i < 4; i++) {
-  //  Entity floor1(
-  //    ENTITYTYPE::PLANE,
-  //    glm::vec3(i * ENGINE_LOGIC_CHECKING_DISTANCE, currentGroundLevel, ENGINE_LOGIC_CHECKING_DISTANCE / 2.0f),
-  //    glm::vec3(ENGINE_LOGIC_CHECKING_DISTANCE, planeCollisionThickness, ENGINE_LOGIC_CHECKING_DISTANCE),
-  //    groundTextureId,
-  //    true
-  //  );
-  //  entities.push_back(floor1);
-
-  //  Entity floor2(
-  //    ENTITYTYPE::PLANE,
-  //    glm::vec3(i * ENGINE_LOGIC_CHECKING_DISTANCE, currentGroundLevel, ENGINE_LOGIC_CHECKING_DISTANCE * 1.5f),
-  //    glm::vec3(ENGINE_LOGIC_CHECKING_DISTANCE, planeCollisionThickness, ENGINE_LOGIC_CHECKING_DISTANCE),
-  //    groundTextureId,
-  //    true
-  //  );
-  //  entities.push_back(floor2);
-
-  //  Entity floor3(
-  //    ENTITYTYPE::PLANE,
-  //    glm::vec3(i * ENGINE_LOGIC_CHECKING_DISTANCE, currentGroundLevel, ENGINE_LOGIC_CHECKING_DISTANCE * 2.5f),
-  //    glm::vec3(ENGINE_LOGIC_CHECKING_DISTANCE, planeCollisionThickness, ENGINE_LOGIC_CHECKING_DISTANCE),
-  //    groundTextureId,
-  //    true
-  //  );
-  //  entities.push_back(floor3);
-
-  //  Entity floor4(
-  //    ENTITYTYPE::PLANE,
-  //    glm::vec3(i * ENGINE_LOGIC_CHECKING_DISTANCE, currentGroundLevel, ENGINE_LOGIC_CHECKING_DISTANCE * 3.5f),
-  //    glm::vec3(ENGINE_LOGIC_CHECKING_DISTANCE, planeCollisionThickness, ENGINE_LOGIC_CHECKING_DISTANCE),
-  //    groundTextureId,
-  //    true
-  //  );
-  //  entities.push_back(floor4);
-  //}
-
-  //// ------------ PLACE RANDOMIZED BOXES ------------ //
-  //bool allowRandomBoxesToOverlap = false;
-  //int countTotalCollisions = 0;
-  //for (int i = 0; i < 3000; i++) {
-
-  //  Entity* e;
-
-  //  if (i % 3 == 0) {
-  //    e = new Entity(
-  //      ENTITYTYPE::BOX,
-  //      glm::vec3(mearly::NTKR(3.f, ENGINE_LOGIC_CHECKING_DISTANCE * 3.5),
-  //        mearly::NTKR(7.01f, 15.0f), mearly::NTKR(3.f, ENGINE_LOGIC_CHECKING_DISTANCE * 3.5)),
-  //      glm::vec3(mearly::NTKR(2.5f, 4.5f), mearly::NTKR(0.3f, 6.5f), mearly::NTKR(2.5f, 4.5f)),
-  //      mearly::NTKR(0, 31),
-  //      true
-  //    );
-  //  }
-  //  else if (i % 3 == 1) {
-  //    e = new Entity(
-  //      ENTITYTYPE::BOX,
-  //      glm::vec3(mearly::NTKR(3.f, ENGINE_LOGIC_CHECKING_DISTANCE * 3.5), mearly::NTKR(2.01f, 8.0f), mearly::NTKR(3.f, ENGINE_LOGIC_CHECKING_DISTANCE * 3.5)),
-  //      glm::vec3(mearly::NTKR(0.5f, 8.0f), mearly::NTKR(0.5f, 5.0f), mearly::NTKR(0.5f, 8.0f)),
-  //      mearly::NTKR(0, 31),
-  //      true
-  //    );
-  //  }
-  //  else {
-  //    e = new Entity(
-  //      ENTITYTYPE::BOX,
-  //      glm::vec3(mearly::NTKR(3.f, ENGINE_LOGIC_CHECKING_DISTANCE * 3.5), 1.08f, mearly::NTKR(3.f, ENGINE_LOGIC_CHECKING_DISTANCE * 3.5)),
-  //      glm::vec3(2.f, 2.f, 2.f),
-  //      mearly::NTKR(0, 31),
-  //      true
-  //    );
-  //  }
-
-  //  for (auto const& f : entities) {
-  //    if (mearly::AABB_vs_AABB_3D(e->collider->impasse, f.collider->impasse)) {
-  //      allowRandomBoxesToOverlap = true;
-  //      countTotalCollisions++;
-  //      break;
-  //    }
-  //  }
-
-  //  if (!allowRandomBoxesToOverlap) {
-  //    entities.push_back(*e);
-  //  }
-  //  else {
-  //    i--;
-  //    allowRandomBoxesToOverlap = false; //reset for next run;
-  //  }
-
-  //}
-  //std::cout << "total collisions: " << countTotalCollisions << "\ntotal entities: " << entities.size() << "\n";
 
 }

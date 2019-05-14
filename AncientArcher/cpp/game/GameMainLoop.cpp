@@ -7,6 +7,7 @@
 #include "../pckgs/firstPersonPlayer/Movement.h"
 #include <glm/gtc/type_ptr.hpp>
 extern Movement movedir;
+extern Camera camera;
 void Game::mainLoop() {
 
   toggleAmbientWindyNight();
@@ -23,6 +24,7 @@ void Game::mainLoop() {
     // process player movement and colliion
     if (movedir.isMoving()) {
       player->processCommands( deltaTime, primativeRenderer->getEntites() );
+      player->movePlayerLight(*camera.getPosition(), primativeRenderer->getShader());
     }
 
     masterRenderer.update(primativeRenderer, skyboxRenderer, deltaTime);

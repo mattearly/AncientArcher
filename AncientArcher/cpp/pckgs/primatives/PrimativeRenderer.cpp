@@ -23,8 +23,6 @@ PrimativeRenderer::PrimativeRenderer()
     "../AncientArcher/cpp/pckgs/primatives/primative.vert",
     "../AncientArcher/cpp/pckgs/primatives/primative.frag"
     );
-  lighting.setConstantLight(primShader.get());
-  lighting.addPointLight(*camera.getPosition(), primShader.get());
   primShader->use();
   glm::mat4 proj = camera.getProjectionMatrix();
   primShader->setMat4("projection", proj);
@@ -80,6 +78,11 @@ void PrimativeRenderer::addToPrimativeEntities(Entity entity)
 std::vector<Entity>* PrimativeRenderer::getEntites()
 {
   return &entities;
+}
+
+Shader* PrimativeRenderer::getShader()
+{
+  return primShader.get();
 }
 
 // --- PRIVATE FUNCTIONS --- //

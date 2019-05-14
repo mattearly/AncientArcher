@@ -18,6 +18,7 @@ void Player::update(float deltaTime)
 
 
 
+
   // move the camera accordingly
   //camera.update();
 
@@ -140,6 +141,7 @@ void Player::processCommands(float deltaTime, std::vector<Entity>* entities)
 
   if (movedir.positionChanged) {
     camera.setPosition(playerIntendedLocation);
+
     //lighting.movePointLight(0, playerIntendedLocation, Shader *shader);
     //playerEntity->moveTo(glm::vec3(playerIntendedLocation.x, playerIntendedLocation.y - .2f, playerIntendedLocation.z));
 
@@ -160,6 +162,22 @@ void Player::processCommands(float deltaTime, std::vector<Entity>* entities)
   }
 }
 
+/**
+ * Adds a point light at the player location specified.
+ */
+void Player::addPointLight(glm::vec3 pos, Shader* shader)
+{
+  playerLight.addPointLight(pos, shader);
+}
+
+/**
+ * Moves the first point light to the newpos.
+ */
+void Player::movePlayerLight(glm::vec3 newpos, Shader* shader)
+{
+  playerLight.movePointLight(0, newpos, shader);
+}
+
 void Player::increaseLegPower(float add) {
   if (legPower < 100.00f) {
     legPower += add;
@@ -168,11 +186,6 @@ void Player::increaseLegPower(float add) {
     }
   }
 }
-//
-//Entity * Player::getEntity() const
-//{
-//  return playerEntity;
-//}
 
 float Player::getRunSpeed() const {
   return (legPower / STAT_DIVISOR) + BASE_PLAYER_SPEED;
@@ -198,6 +211,8 @@ Player::Player() {
   legPower = 10.0f;
   jumpTimer = 0.0f;
 
+
+
 }
 
 Player::Player(float leg_power) {
@@ -211,5 +226,6 @@ Player::Player(float leg_power) {
 
   legPower = leg_power;
   jumpTimer = 0.0f;
+
 
 }

@@ -5,8 +5,6 @@
 
 class Lighting {
 public:
-  Lighting();
-  ~Lighting();
 
   void setConstantLight(Shader* shader);
 
@@ -17,6 +15,8 @@ public:
 private:
 
   std::vector<glm::vec3> pointLights;
+
+  int _currentPointLights = 0;
 
   const int MAXPOINTLIGHTS = 4;
 
