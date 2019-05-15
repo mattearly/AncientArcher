@@ -267,7 +267,7 @@ float Player::getJumpHeight() const {
 
 Player::Player() {
 
-	collider = new Collider(glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(0.5f, 4.0f, 0.5f));
+	collider = new Collider(glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(0.5f, 3.0f, 0.5f));
 
 	previousPlayerLocation = glm::vec3(0.0, 0.0, 0.0);
 	playerIntendedLocation = glm::vec3(0.0, 0.0, 0.0);
@@ -288,7 +288,7 @@ Player::Player() {
 
 Player::Player(float leg_power) {
 
-	collider = new Collider(glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(0.5f, 4.0f, 0.5f));
+	collider = new Collider(glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(0.5f, 3.0f, 0.5f));
 
 	previousPlayerLocation = glm::vec3(0.0, 0.0, 0.0);
 	playerIntendedLocation = glm::vec3(0.0, 0.0, 0.0);
