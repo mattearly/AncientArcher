@@ -4,8 +4,11 @@
 
 #include <glad/glad.h>
 
-extern Camera camera;  // camera is instantiated as a global in Player.cpp
+extern Camera camera;  // camera is instantiated as a global in main.cpp
 
+/**
+ * Default Constructor. Load a cube map texture the default skybox and skymap shader.
+ */
 SkyboxRenderer::SkyboxRenderer()
 {
   skyboxShader = std::make_unique< Shader >(
@@ -32,6 +35,11 @@ SkyboxRenderer::SkyboxRenderer()
   skyboxShader->setInt("skybox", 0);
 }
 
+/**
+ * Custom skymap constructor. Loads up the files in the path and skymap shader.
+ *
+ * @param incomingSkymapFiles  A six image cube map texture.
+ */
 SkyboxRenderer::SkyboxRenderer(std::vector<std::string> incomingSkymapFiles)
 {
 	skyboxShader = std::make_unique< Shader >(
@@ -44,14 +52,16 @@ SkyboxRenderer::SkyboxRenderer(std::vector<std::string> incomingSkymapFiles)
 
 	cubemapTexture = loader.loadCubeTexture(incomingSkymapFiles);
 
-
 	skyboxShader->use();
 	skyboxShader->setInt("skybox", 0);
 }
 
+/**
+ * Renders the skybox behind all other visable objects.
+ */
 void SkyboxRenderer::render()
 {
-  glDepthFunc(GL_LEQUAL);  // change depth function so depth test passes when values are equal to depth buffer's content  skyboxShader.use();
+  glDepthFunc(GL_LEQUAL);  // change depth function so depth test passes when values are equal to depth buffer's content
 
   loadProjectionMatrix();
   loadViewMatrix();
@@ -69,6 +79,18 @@ void SkyboxRenderer::render()
   glDepthFunc(GL_LESS); // set depth function back to default
 }
 
+/**
+ * Moves the skybox to a new location centered on newLoc.
+ * @param newLoc  Location to center the skybox on.
+ */
+void SkyboxRenderer::moveTo(glm::vec3 newLoc)
+{
+  position = newLoc;
+}
+
+/**
+ * Loads up a cube that is pushed to the graphics card. skyboxVAO and skyboxVBO are populated with IDs.
+ */
 void SkyboxRenderer::loadSkybox() {
 
   // size should be larger than the explorable world, as the skybox doesn't move with the player currently
@@ -129,6 +151,10 @@ void SkyboxRenderer::loadSkybox() {
 
 }
 
+/**
+ * Sets the projection matrix value on the skyboxShader from the getProjectionMatrix() function in Camera.
+ * skyboxShader is in use after this call completes.
+ */
 void SkyboxRenderer::loadProjectionMatrix()
 {
   glm::mat4 projectionMatrix = camera.getProjectionMatrix();
@@ -136,6 +162,10 @@ void SkyboxRenderer::loadProjectionMatrix()
   skyboxShader->setMat4("projection", projectionMatrix);
 }
 
+/**
+ * Sets the view matrix value on the skyboxShader from the getViewMatrix() function in Camera.
+ * skyboxShader is in use after this call completes.
+ */
 void SkyboxRenderer::loadViewMatrix()
 {
   glm::mat4 viewMatrix = camera.getViewMatrix();

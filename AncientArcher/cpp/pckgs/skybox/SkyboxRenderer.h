@@ -3,6 +3,7 @@
 #include <vector>
 #include <string>
 #include <memory>
+#include <glm/glm.hpp>
 
 class SkyboxRenderer
 {
@@ -12,6 +13,8 @@ public:
   SkyboxRenderer(std::vector<std::string> incomingSkymapFiles);
 
   void render();
+
+  void moveTo(glm::vec3 newLoc);
 
 private:
 
@@ -24,4 +27,5 @@ private:
   void loadProjectionMatrix();
   void loadViewMatrix();
 
+  glm::vec3 position;
 };
