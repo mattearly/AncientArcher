@@ -3,6 +3,7 @@
 #include <TextureLoader.h>
 
 #include <glad/glad.h>
+#include <glm/glm.hpp>
 
 extern Camera camera;  // camera is instantiated as a global in main.cpp
 
@@ -80,21 +81,12 @@ void SkyboxRenderer::render()
 }
 
 /**
- * Moves the skybox to a new location centered on newLoc.
- * @param newLoc  Location to center the skybox on.
- */
-void SkyboxRenderer::moveTo(glm::vec3 newLoc)
-{
-  position = newLoc;
-}
-
-/**
  * Loads up a cube that is pushed to the graphics card. skyboxVAO and skyboxVBO are populated with IDs.
  */
 void SkyboxRenderer::loadSkybox() {
 
   // size should be larger than the explorable world, as the skybox doesn't move with the player currently
-  const float SIZE = 500.0f;
+  const auto SIZE = 1.f;
 
   float skyboxVertices[] = {
     // positions          
@@ -168,7 +160,7 @@ void SkyboxRenderer::loadProjectionMatrix()
  */
 void SkyboxRenderer::loadViewMatrix()
 {
-  glm::mat4 viewMatrix = camera.getViewMatrix();
+  glm::mat4 viewMatrix = glm::mat4(glm::mat3(camera.getViewMatrix())); // skybox never appears to move https://learnopengl.com/Advanced-OpenGL/Cubemaps
   skyboxShader->use();
   skyboxShader->setMat4("view", viewMatrix);
 }

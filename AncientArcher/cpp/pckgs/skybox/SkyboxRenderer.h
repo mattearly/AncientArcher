@@ -14,8 +14,6 @@ public:
 
   void render();
 
-  void moveTo(glm::vec3 newLoc);
-
 private:
 
   unsigned int skyboxVAO = 0;
@@ -27,5 +25,4 @@ private:
   void loadProjectionMatrix();
   void loadViewMatrix();
 
-  glm::vec3 position;
 };
