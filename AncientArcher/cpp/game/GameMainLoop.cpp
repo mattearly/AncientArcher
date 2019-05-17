@@ -21,7 +21,7 @@ void Game::mainLoop() {
 
     player->update(deltaTime);
 
-    // process player movement and colliion
+    // process player movement and collision
     if (movedir.isMoving()) {
       player->processCommands( deltaTime, primativeRenderer->getEntites() );
       player->movePlayerLight(*camera.getPosition(), primativeRenderer->getShader());

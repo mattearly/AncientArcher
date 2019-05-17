@@ -53,7 +53,7 @@ void PrimativeRenderer::render()
     primShader.get()->setMat4("model", model);
 
     switch (e.gameItem.type) {
-    case ENTITYTYPE::BOX:
+    case ENTITYTYPE::CUBE:
       drawCube();
       break;
     case ENTITYTYPE::PLANE:
@@ -131,7 +131,7 @@ void PrimativeRenderer::drawSphere()
 
   glDrawElements(GL_TRIANGLES, sphereIndexSize, GL_UNSIGNED_INT, (void*)0);
 
-  //glBindVertexArray(0);
+  glBindVertexArray(0);
 
 }
 

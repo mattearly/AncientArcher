@@ -37,6 +37,4 @@ private:
 
   std::unique_ptr< Shader > primShader;
 
-  //Lighting lighting;
-
 };

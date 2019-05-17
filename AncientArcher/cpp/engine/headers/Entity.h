@@ -5,7 +5,7 @@
 
 class Collider;
 
-enum ENTITYTYPE { BOX, PLANE, SPHERE };
+enum ENTITYTYPE { CUBE, PLANE, SPHERE };
 class Entity {
 private:
   struct GameItem {
