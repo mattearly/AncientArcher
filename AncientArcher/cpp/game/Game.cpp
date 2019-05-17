@@ -39,7 +39,7 @@ Game::Game() {
   for (int i = 0; i < 1000; i += 2)
   {
     e = new Entity(
-      ENTITYTYPE::BOX,
+      ENTITYTYPE::CUBE,
       glm::vec3(i, -0.8f, 0),
       glm::vec3(2.0f, 1.0f, 2.0f),
       lightBricksTexID,
