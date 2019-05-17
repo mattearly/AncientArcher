@@ -1,4 +1,5 @@
 #pragma once
+#include <Collider.h>
 #include "Entity.h"
 
 #include <glm/glm.hpp>
@@ -24,6 +25,9 @@ public:
 
   void processCommands(float deltaTime, std::vector<Entity>* entities);
 
+  bool checkBoundCollisionWithEntity(Entity e, Collider *playerCollider, glm::vec3 playerPosition);
+  bool checkPointCollisionWithEntity(Entity e, glm::vec3 playerPosition);
+
   void addPointLight(glm::vec3 pos, Shader* shader);
   void movePlayerLight(glm::vec3 newpos, Shader* shader);
   Lighting playerLight;
@@ -31,7 +35,16 @@ public:
 private:
 
   const float BASE_PLAYER_SPEED = 3.0f;
+  const float BASE_PLAYER_JUMP_SPEED = 1.5f;
   const float BASE_PLAYER_JUMP_HEIGHT = 0.8f;
+  const float BASE_PLAYER_WEIGHT = 160.0f;
+
+  Collider *collider;
+
+  glm::vec3 previousPlayerLocation;
+  glm::vec3 playerIntendedLocation;
+
+  float jumpTimer;
 
   // player stats
   float legPower;
