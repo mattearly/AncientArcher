@@ -12,7 +12,7 @@ public:
 
   float FoV;
 
-  const float camstart[3] = { 0,0,0 };
+  const float camstart[3] = { 0, 3, 0 };
 
   void update(Shader* shader);
 

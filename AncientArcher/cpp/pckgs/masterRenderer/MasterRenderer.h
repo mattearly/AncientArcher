@@ -18,7 +18,5 @@ public:
 
 private:
 
-  float width;
-
 };
 

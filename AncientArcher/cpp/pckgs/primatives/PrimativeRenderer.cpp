@@ -23,8 +23,6 @@ PrimativeRenderer::PrimativeRenderer()
     "../AncientArcher/cpp/pckgs/primatives/primative.vert",
     "../AncientArcher/cpp/pckgs/primatives/primative.frag"
     );
-  lighting.setConstantLight(primShader.get());
-  lighting.addPointLight(*camera.getPosition(), primShader.get());
   primShader->use();
   glm::mat4 proj = camera.getProjectionMatrix();
   primShader->setMat4("projection", proj);
@@ -55,7 +53,7 @@ void PrimativeRenderer::render()
     primShader.get()->setMat4("model", model);
 
     switch (e.gameItem.type) {
-    case ENTITYTYPE::BOX:
+    case ENTITYTYPE::CUBE:
       drawCube();
       break;
     case ENTITYTYPE::PLANE:
@@ -80,6 +78,11 @@ void PrimativeRenderer::addToPrimativeEntities(Entity entity)
 std::vector<Entity>* PrimativeRenderer::getEntites()
 {
   return &entities;
+}
+
+Shader* PrimativeRenderer::getShader()
+{
+  return primShader.get();
 }
 
 // --- PRIVATE FUNCTIONS --- //
@@ -128,7 +131,7 @@ void PrimativeRenderer::drawSphere()
 
   glDrawElements(GL_TRIANGLES, sphereIndexSize, GL_UNSIGNED_INT, (void*)0);
 
-  //glBindVertexArray(0);
+  glBindVertexArray(0);
 
 }
 

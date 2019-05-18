@@ -9,8 +9,11 @@ struct Movement {
 
   bool jumped = false;
   bool canJumpAgain = true;
-  bool onGround = true;
-  bool falling = false;
+  bool onGround = false;
+  bool falling = true;
+
+  float lastPlayerIntendedLocation = 0.0f;
+  float currentPlayerIntendedLocation = 0.0f;
 
   float lastOnGroundHeight = 0.0f;
   float currentGroundHeight = 0.0f;
