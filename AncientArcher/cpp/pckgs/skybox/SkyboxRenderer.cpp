@@ -43,18 +43,18 @@ SkyboxRenderer::SkyboxRenderer()
  */
 SkyboxRenderer::SkyboxRenderer(std::vector<std::string> incomingSkymapFiles)
 {
-	skyboxShader = std::make_unique< Shader >(
-		"../AncientArcher/cpp/pckgs/skybox/skybox.vert",
-		"../AncientArcher/cpp/pckgs/skybox/skybox.frag"
-		);
-	loadSkybox();
+  skyboxShader = std::make_unique< Shader >(
+    "../AncientArcher/cpp/pckgs/skybox/skybox.vert",
+    "../AncientArcher/cpp/pckgs/skybox/skybox.frag"
+    );
+  loadSkybox();
 
-	TextureLoader loader;
+  TextureLoader loader;
 
-	cubemapTexture = loader.loadCubeTexture(incomingSkymapFiles);
+  cubemapTexture = loader.loadCubeTexture(incomingSkymapFiles);
 
-	skyboxShader->use();
-	skyboxShader->setInt("skybox", 0);
+  skyboxShader->use();
+  skyboxShader->setInt("skybox", 0);
 }
 
 /**
