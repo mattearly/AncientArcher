@@ -37,8 +37,8 @@ void PrimativeRenderer::render()
   camera.update(primShader.get());
   for (auto e : entities)
   {
+
     glActiveTexture(GL_TEXTURE0);
-    //glBindTexture(GL_TEXTURE_2D, texBank.textureIDs[e->gameItem.textureID]);
     glBindTexture(GL_TEXTURE_2D, e.gameItem.textureID);
 
     glm::mat4 model = glm::mat4(1.0f);
@@ -179,7 +179,7 @@ void PrimativeRenderer::loadCube() {
      0.5f,  0.5f,  0.5f,    0.0f,  1.0f,  0.0f,    1.0f, 0.0f,
      0.5f,  0.5f,  0.5f,    0.0f,  1.0f,  0.0f,    1.0f, 0.0f,
     -0.5f,  0.5f,  0.5f,    0.0f,  1.0f,  0.0f,    0.0f, 0.0f,
-    -0.5f,  0.5f, -0.5f,    0.0f,  1.0f,  0.0f,     0.0f, 1.0f
+    -0.5f,  0.5f, -0.5f,    0.0f,  1.0f,  0.0f,    0.0f, 1.0f
   };
 
   /* set up an area to store vertex data */
@@ -264,8 +264,8 @@ void PrimativeRenderer::loadSphere()
   // --- PREPARE SPHERE VERTICES --- //
   const float radius = 0.5f;
   const float PI = 3.141592f;
-  const float sectorCount = 36;
-  const float stackCount = 18;
+  const int sectorCount = 36;
+  const int stackCount = 18;
 
   std::vector<float> vertices;
   std::vector<float> normals;
@@ -384,7 +384,7 @@ void PrimativeRenderer::loadSphere()
 
   //glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
 
-  sphereIndexSize = indices.size();
+  sphereIndexSize = (unsigned int) indices.size();
 
   sphereLoaded = true;
 

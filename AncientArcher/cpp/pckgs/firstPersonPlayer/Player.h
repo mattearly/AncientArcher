@@ -1,12 +1,10 @@
 #pragma once
 #include <Collider.h>
-#include "Entity.h"
-
+#include <Entity.h>
+#include <Shader.h>
+#include <Lighting.h>
 #include <glm/glm.hpp>
 #include <vector>
-
-class Entity;
-
 class Player {
 public:
 

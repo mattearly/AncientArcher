@@ -1,5 +1,5 @@
 #pragma once
-
+#include "../monospaceFont/TextRenderer.h"
 #include "../primatives/PrimativeRenderer.h"
 #include "../skybox/SkyboxRenderer.h"
 #include "../firstPersonPlayer/Player.h"
@@ -14,7 +14,7 @@ public:
   void enableGLDepthTest();
   void disableGLDepthTest();
 
-  void update(PrimativeRenderer* primRen, SkyboxRenderer* skyRen, float deltaTime);
+  void update(PrimativeRenderer* primRen, TextRenderer* textRen, SkyboxRenderer* skyRen, float deltaTime);
 
 private:
 

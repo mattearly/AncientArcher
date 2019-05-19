@@ -72,6 +72,12 @@
     <ClCompile Include="cpp\pckgs\skybox\SkyboxRenderer.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="cpp\pckgs\monospaceFont\TextRenderer.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="cpp\engine\source\GlyphLoader.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="cpp\engine\headers\Collider.h">
@@ -131,34 +137,17 @@
     <ClInclude Include="cpp\pckgs\skybox\SkyboxRenderer.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="cpp\pckgs\skybox\skybox.frag" />
-    <None Include="cpp\pckgs\skybox\skybox.vert" />
-    <None Include="cpp\pckgs\primatives\primative.frag" />
-    <None Include="cpp\pckgs\primatives\primative.vert" />
-  </ItemGroup>
-  <ItemGroup>
-    <Image Include="cpp\pckgs\skybox\default\skybox_back.jpg">
-      <Filter>Resource Files</Filter>
-    </Image>
-    <Image Include="cpp\pckgs\skybox\default\skybox_bottom.jpg">
-      <Filter>Resource Files</Filter>
-    </Image>
-    <Image Include="cpp\pckgs\skybox\default\skybox_front.jpg">
-      <Filter>Resource Files</Filter>
-    </Image>
-    <Image Include="cpp\pckgs\skybox\default\skybox_left.jpg">
-      <Filter>Resource Files</Filter>
-    </Image>
-    <Image Include="cpp\pckgs\skybox\default\skybox_right.jpg">
-      <Filter>Resource Files</Filter>
-    </Image>
-    <Image Include="cpp\pckgs\skybox\default\skybox_top.jpg">
-      <Filter>Resource Files</Filter>
-    </Image>
-    <Image Include="cpp\pckgs\primatives\light_bricks.png">
-      <Filter>Resource Files</Filter>
-    </Image>
+    <ClInclude Include="cpp\pckgs\text\Text.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="cpp\pckgs\monospaceFont\TextRenderer.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="cpp\engine\headers\GlyphLoader.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="cpp\engine\headers\Glyph.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

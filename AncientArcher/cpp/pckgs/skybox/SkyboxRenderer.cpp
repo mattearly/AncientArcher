@@ -53,6 +53,7 @@ SkyboxRenderer::SkyboxRenderer(std::vector<std::string> incomingSkymapFiles)
 
   cubemapTexture = loader.loadCubeTexture(incomingSkymapFiles);
 
+  // not sure if this is neccessary when only one texture
   skyboxShader->use();
   skyboxShader->setInt("skybox", 0);
 }
@@ -73,8 +74,10 @@ void SkyboxRenderer::render()
     skyboxShader->setMat4("projection", projection);
   */
   glBindVertexArray(skyboxVAO);
+
   glActiveTexture(GL_TEXTURE0);
   glBindTexture(GL_TEXTURE_CUBE_MAP, cubemapTexture);
+
   glDrawArrays(GL_TRIANGLES, 0, 36);
   glBindVertexArray(0);
   glDepthFunc(GL_LESS); // set depth function back to default

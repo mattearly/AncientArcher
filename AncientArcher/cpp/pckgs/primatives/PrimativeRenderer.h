@@ -25,13 +25,18 @@ private:
   void loadPlane();
   void loadSphere();
 
-  bool cubeLoaded;
-  bool planeLoaded;
-  bool sphereLoaded;
+  bool cubeLoaded = false;
+  bool planeLoaded = false;
+  bool sphereLoaded = false;
 
-  unsigned int cubeVAO, cubeVBO;
-  unsigned int planeVAO, planeVBO;
-  unsigned int sphereVAO, sphereVBO, sphereIBO, sphereIndexSize;
+  unsigned int cubeVAO = 0;
+  unsigned int cubeVBO = 0;
+  unsigned int planeVAO = 0;
+  unsigned int planeVBO = 0;
+  unsigned int sphereVAO = 0;
+  unsigned int sphereVBO = 0;
+  unsigned int sphereIBO = 0;
+  unsigned int sphereIndexSize = 0;
 
   std::vector<Entity> entities;
 
