@@ -3,15 +3,21 @@
 #include <Global.h>
 #include <glm/glm.hpp>
 extern Display display;
-Camera::Camera() {
+
+Camera::Camera(
+  const glm::vec3 startingPosition, 
+  const float lookingDir,
+  const float pitch
+)
+{
   FoV = 45.f;
-  Front = glm::vec3(0.0f, 0.0f, -1.0f);
-  Position = glm::vec3(camstart[0], camstart[1], camstart[2]); // starting position
-  Up = { 0.f, 1.f, 0.f };
-  Right = { 0.f, 0.f, 0.f };
+  //Front = glm::vec3(0.0f, 0.0f, -1.0f);
+  Position = startingPosition;
+  //Up = { 0.f, 1.f, 0.f };
+  //Right = { 0.f, 0.f, 0.f };
   WorldUp = glm::vec3(0.0f, 1.0f, 0.0f);
-  Yaw = 0.f;  // looking direction
-  Pitch = 0.0f;
+  Yaw = lookingDir;
+  Pitch = pitch;
   updateCameraVectors();
 }
 

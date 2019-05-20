@@ -5,7 +5,11 @@
 
 class Camera {
 public:
-  Camera();
+  Camera(
+    const glm::vec3 startingPosition = { 0, 3, 0 },
+    const float lookingDir = 0.f,
+    const float pitch = 0.f
+  );
   ~Camera();
 
   friend class Controls;
@@ -54,5 +58,7 @@ private:
   glm::vec3 WorldUp;
 
   void updateCameraVectors();
+
+  Camera() = delete;  // no default constructor
 
 };
