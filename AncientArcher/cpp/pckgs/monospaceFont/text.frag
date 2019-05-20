@@ -1,13 +1,14 @@
-#version 330 core
-
-out vec4 FragColor;
+#version 330
 
 in vec2 texCoords;
 
-uniform sampler2D texture0;  // GLTexture0
+out vec4 fragColor;
 
-void main() {
+uniform vec3 colour;
+uniform sampler2D fontAtlas;
 
-  FragColor = vec4(texture(texture0, texCoords).rgba);
+void main(void){
+
+	fragColor = vec4(colour, texture(fontAtlas, texCoords).a);
 
 }

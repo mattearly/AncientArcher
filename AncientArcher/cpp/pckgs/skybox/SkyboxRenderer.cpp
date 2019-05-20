@@ -67,12 +67,7 @@ void SkyboxRenderer::render()
 
   loadProjectionMatrix();
   loadViewMatrix();
-  /*
-    skyboxShader->use();
-    camera.update(skyboxShader.get());
-    glm::mat4 projection = camera.getProjectionMatrix();
-    skyboxShader->setMat4("projection", projection);
-  */
+
   glBindVertexArray(skyboxVAO);
 
   glActiveTexture(GL_TEXTURE0);
@@ -86,9 +81,8 @@ void SkyboxRenderer::render()
 /**
  * Loads up a cube that is pushed to the graphics card. skyboxVAO and skyboxVBO are populated with IDs.
  */
-void SkyboxRenderer::loadSkybox() {
-
-  // size should be larger than the explorable world, as the skybox doesn't move with the player currently
+void SkyboxRenderer::loadSkybox() 
+{
   const auto SIZE = 1.f;
 
   float skyboxVertices[] = {

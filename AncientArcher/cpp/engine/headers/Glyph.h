@@ -32,6 +32,6 @@ struct GlyphMap {
   ///< Width of each glyph.
   unsigned int _w = 0;
 
-  ///< Heigh tof each glyph.
+  ///< Height of each glyph.
   unsigned int _h = 0;
 };

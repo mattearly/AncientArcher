@@ -65,12 +65,12 @@ Game::Game() {
   // ---- LOAD SKYBOX ---- //
   std::vector<std::string> skyboxFiles =
   {
-  "../AncientArcher/cpp/pckgs/skybox/dark/skybox_right.png",
-  "../AncientArcher/cpp/pckgs/skybox/dark/skybox_left.png",
-  "../AncientArcher/cpp/pckgs/skybox/dark/skybox_top.png",
-  "../AncientArcher/cpp/pckgs/skybox/dark/skybox_bottom.png",
-  "../AncientArcher/cpp/pckgs/skybox/dark/skybox_front.png",
-  "../AncientArcher/cpp/pckgs/skybox/dark/skybox_back.png"
+  "../AncientArcher/cpp/pckgs/skybox/heresy/skybox_heresy_right.png",
+  "../AncientArcher/cpp/pckgs/skybox/heresy/skybox_heresy_left.png",
+  "../AncientArcher/cpp/pckgs/skybox/heresy/skybox_heresy_top.png",
+  "../AncientArcher/cpp/pckgs/skybox/heresy/skybox_heresy_bottom.png",
+  "../AncientArcher/cpp/pckgs/skybox/heresy/skybox_heresy_front.png",
+  "../AncientArcher/cpp/pckgs/skybox/heresy/skybox_heresy_back.png"
   };
 
   skyboxRenderer = new SkyboxRenderer(skyboxFiles);

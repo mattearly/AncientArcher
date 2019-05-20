@@ -38,7 +38,7 @@ void MasterRenderer::update(PrimativeRenderer* primRen, TextRenderer* textRen, S
 
   skyRen->render();
 
-  textRen->renderAt(50, 50, "this is a test");
+  //textRen->renderText(0, 0, "this is a test");
 
   display.update();
 }

@@ -9,8 +9,9 @@ class TextRenderer
 public:
   TextRenderer();
   void init(std::string path, unsigned int width, unsigned int height, std::string chars, unsigned int glyphsPerLine);
-  void renderAt(unsigned int x, unsigned int y, std::string text);
+  void render(std::string text);
 private:
+  void renderText(Glyph g);
   GlyphMap glyphMap;
   std::unique_ptr< Shader > textShader;
   unsigned int textVAO = 0;

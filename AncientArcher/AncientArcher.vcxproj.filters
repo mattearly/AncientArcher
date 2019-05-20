@@ -149,5 +149,8 @@
     <ClInclude Include="cpp\engine\headers\Glyph.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="cpp\engine\headers\Character.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

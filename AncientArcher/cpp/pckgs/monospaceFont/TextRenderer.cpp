@@ -1,6 +1,9 @@
 #include "TextRenderer.h"
 #include <GlyphLoader.h>
+#include <AAEngine.h>
 #include <glad/glad.h>
+#include <glm/glm.hpp>
+#include <glm/gtc/matrix_transform.hpp>
 TextRenderer::TextRenderer()
 {
   textShader = std::make_unique<Shader>(
@@ -8,31 +11,25 @@ TextRenderer::TextRenderer()
     "../AncientArcher/cpp/pckgs/monospaceFont/text.frag"
     );
 
-  // not sure if this is necessary when only one texture
   textShader->use();
-  textShader->setInt("texture0", 0);
+
+  // not sure if this is necessary when only one texture
+  textShader->setInt("textBitmap", 0);
+  
+  glm::mat4 projection = glm::ortho(0.0f, static_cast<GLfloat>(display.window_width), 0.0f, static_cast<GLfloat>(display.window_width));
+  textShader->setMat4("projection", projection);
 }
 
 void TextRenderer::init(std::string path, unsigned int width, unsigned int height, std::string chars, unsigned int glyphsPerLine)
 {
-  //load up a front facing rect
-  float vertices[] =
-  {  // verticies            //texture coords
-    -0.5f, -0.5f,      0.0f, 0.0f,
-     0.5f, -0.5f,      1.0f, 0.0f,
-     0.5f,  0.5f,      1.0f, 1.0f,
-     0.5f,  0.5f,      1.0f, 1.0f,
-    -0.5f,  0.5f,      0.0f, 1.0f,
-    -0.5f, -0.5f,      0.0f, 0.0f
-  };
-
+  glyphMap = loadGlyphMap(path, width, height, chars, glyphsPerLine);
 
   /* set up an area to store vertex data */
   glGenVertexArrays(1, &textVAO);
   glGenBuffers(1, &textVBO);
 
   glBindBuffer(GL_ARRAY_BUFFER, textVBO);
-  glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), &vertices, GL_STATIC_DRAW);
+  //glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), &vertices, GL_STATIC_DRAW);
 
   glBindVertexArray(textVAO);
 
@@ -48,29 +45,45 @@ void TextRenderer::init(std::string path, unsigned int width, unsigned int heigh
   //glBindBuffer(GL_ARRAY_BUFFER, 0);
 
   glBindVertexArray(0);
-
-  glyphMap = loadGlyphMap(path, width, height, chars, glyphsPerLine);
-
 }
 
-void TextRenderer::renderAt(unsigned int x, unsigned int y, std::string text)
+void TextRenderer::render(std::string text)
 {
+  glEnable(GL_BLEND);
+  glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+  glDisable(GL_DEPTH_TEST);
   textShader->use();
 
-  glBindVertexArray(textVAO);
-  glEnableVertexAttribArray(0);
+  glActiveTexture(GL_TEXTURE0);
+  glBindTexture(GL_TEXTURE_2D, glyphMap._texID);
 
-  //set position of text and render per char
   for (auto t : text)
   {
     for (auto g : glyphMap._glyph)
     {
       if (g._char == t)
       {
-        //textShader->setVec2("position", g._x, g._y);
-        glDrawArrays(GL_TRIANGLES, 0, 6);
+        renderText(g);
       }
     }
   }
+
+}
+
+void TextRenderer::renderText(Glyph g)
+{
+  glBindVertexArray(textVAO);
+  glEnableVertexAttribArray(0); 
+  glEnableVertexAttribArray(1); 
+  //textShader->setVec3("colour", glm::vec3(1.f, 0.f, 0.f));
+  //textShader->setVec2("translation", glm::vec2((float)g._x, (float)g._y));
+  glDrawArrays(GL_TRIANGLES, 0, 6);
+  glDisableVertexAttribArray(0);
+  glDisableVertexAttribArray(1);
   glBindVertexArray(0);
+  
+  
+  textShader->stop();
+  glDisable(GL_BLEND);
+  glEnable(GL_DEPTH_TEST);
 }
