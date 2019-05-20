@@ -22,13 +22,15 @@ Game::Game() {
 
 
   // ---------- FIRST PERSON PLAYER ---------- //
-  player = new Player(100.0f);
+  //player = new Player(100.0f);
 
+  // ---- SIDESCROLLER PLAYER ---- //
+  //SSPlayer = new s
 
   // ---------- PRELOAD ENVIRORNMENT DETAILS ---------- //
   primativeRenderer = new PrimativeRenderer();
 
-  player->addPointLight(*camera.getPosition(), primativeRenderer->getShader());
+  //player->addPointLight(*camera.getPosition(), primativeRenderer->getShader());
 
   TextureLoader texLoader;
 
@@ -52,14 +54,14 @@ Game::Game() {
   }
 
   // --- TEXT --- //
-  textRenderer = new TextRenderer();
-  textRenderer->init(
-    "../AncientArcher/cpp/pckgs/monospaceFont/bitmaps/monospace_bitmap_font_green.png",                   // path
-    48,                                                                                                   // ea glyph width
-    94,                                                                                                   // each glyph height
-    R"(abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890.@!#$%&*()_+=<>|[]{}/\`^;:'"-~ )",   // list of all chars in order
-    16                                                                                                    // glyphs per line
-    );
+  //textRenderer = new TextRenderer();
+  //textRenderer->init(
+  //  "../AncientArcher/cpp/pckgs/monospaceFont/bitmaps/monospace_bitmap_font_green.png",                   // path
+  //  48,                                                                                                   // ea glyph width
+  //  94,                                                                                                   // each glyph height
+  //  R"(abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890.@!#$%&*()_+=<>|[]{}/\`^;:'"-~ )",   // list of all chars in order
+  //  16                                                                                                    // glyphs per line
+  //  );
   
 
   // ---- LOAD SKYBOX ---- //
@@ -72,7 +74,6 @@ Game::Game() {
   "../AncientArcher/cpp/pckgs/skybox/heresy/skybox_heresy_front.png",
   "../AncientArcher/cpp/pckgs/skybox/heresy/skybox_heresy_back.png"
   };
-
   skyboxRenderer = new SkyboxRenderer(skyboxFiles);
 
 }
