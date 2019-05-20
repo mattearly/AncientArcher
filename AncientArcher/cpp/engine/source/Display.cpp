@@ -5,8 +5,9 @@
 
 Controls controls;
 
-Display::Display() {
-
+Display::Display(std::string windowName, MouseControlType mouseType) 
+{
+  
   window_width = 1280;
   window_height = 720;
 
@@ -21,7 +22,7 @@ Display::Display() {
 #endif
 
   // init window
-  window = glfwCreateWindow(window_width, window_height, "AncientArcherEngine", nullptr, nullptr);
+  window = glfwCreateWindow(window_width, window_height, windowName.c_str(), nullptr, nullptr);
   if (window == nullptr) {
     std::cout << "failed to create glfw window" << std::endl;
     glfwTerminate();
@@ -35,7 +36,16 @@ Display::Display() {
   setupReshapeWindow();
 
   // setup mouse handler
-  setupMouseHandler();
+  if (mouseType == MouseControlType::FPP)
+  {
+    setupMouseHandlerToFPPMode();
+    disableCursor();
+  }
+  else  // SIDESCROLLER MOUSE
+  {
+    setupMouseHanderToSideScrollerMode();
+    enableCursor();
+  }
 
   // init glad
   if (!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress)) {
@@ -45,8 +55,6 @@ Display::Display() {
     exit(-1);
   }
 
-  // make cursor hidden
-  glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
 }
 
 Display::~Display() {
@@ -59,8 +67,25 @@ void Display::reshapeWindow(GLFWwindow * window, int w, int h) {
   window_height = h;
 }
 
-void Display::mouseHandler(GLFWwindow * window, double xpos, double ypos) {
-  controls.mouseMovement((float)xpos, (float)ypos);
+void Display::FPPmouseHandler(GLFWwindow * window, double xpos, double ypos) {
+  controls.FPPmouseMovement((float)xpos, (float)ypos);
+}
+
+/**
+ * GLFW_CURSOR_NORMAL makes the cursor visible and behaving normally.
+ */
+void Display::enableCursor()
+{
+  glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_NORMAL);
+}
+
+/**
+ * GLFW_CURSOR_DISABLED hides and grabs the cursor, providing virtual and unlimited cursor movement. 
+ * This is useful for implementing for example 3D camera controls.
+ */
+void Display::disableCursor()
+{
+  glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
 }
 
 void Display::clear() const {
@@ -78,8 +103,18 @@ extern "C" void reshapeCallback(GLFWwindow * window, int w, int h) {
   g_CurrentInstance->reshapeWindow(window, w, h);
 }
 
-extern "C" void mouseCallback(GLFWwindow * window, double xpos, double ypos) {
-  g_CurrentInstance->mouseHandler(window, xpos, ypos);
+/**
+ * First Person mouse.
+ */
+extern "C" void mouseCallbackFPP(GLFWwindow * window, double xpos, double ypos) {
+  g_CurrentInstance->FPPmouseHandler(window, xpos, ypos);
+}
+
+/**
+ * Sidescroller mouse.
+ */
+extern "C" void SSmouseCallback(GLFWwindow * window, double xpos, double ypos) {
+  g_CurrentInstance->FPPmouseHandler(window, xpos, ypos);
 }
 
 void Display::setupReshapeWindow() {
@@ -87,7 +122,13 @@ void Display::setupReshapeWindow() {
   ::glfwSetFramebufferSizeCallback(window, ::reshapeCallback);
 }
 
-void Display::setupMouseHandler() {
+void Display::setupMouseHandlerToFPPMode() {
   ::g_CurrentInstance = this;
-  ::glfwSetCursorPosCallback(window, ::mouseCallback);
+  ::glfwSetCursorPosCallback(window, ::mouseCallbackFPP);
+}
+
+void Display::setupMouseHanderToSideScrollerMode()
+{
+  ::g_CurrentInstance = this;
+  ::glfwSetCursorPosCallback(window, ::SSmouseCallback);
 }
