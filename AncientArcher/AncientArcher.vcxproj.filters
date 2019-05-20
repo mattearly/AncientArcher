@@ -78,6 +78,9 @@
     <ClCompile Include="cpp\engine\source\GlyphLoader.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="cpp\pckgs\sideScrollerPlayer\SideScrollPlayer.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="cpp\engine\headers\Collider.h">
@@ -150,6 +153,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="cpp\engine\headers\Character.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="cpp\pckgs\sideScrollerPlayer\SideScrollPlayer.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
