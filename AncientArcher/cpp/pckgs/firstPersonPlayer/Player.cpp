@@ -72,7 +72,7 @@ void Player::processCommands(float deltaTime, std::vector<Entity>* entities)
     float jumpMod = 0.5f / BASE_PLAYER_WEIGHT; // Modifier based on the user weight in 'kg' (probably needs rework)
     float jumpPos = 8.0f; // Initial Y intercept of jump, I think.. not sure why its 8.0f ('c' term in equation below)
     float jumpVel = getRisingSpeed() * jumpTimer; // Velocity of jump ('bt' term in equation below) // RISING SPEED CALC: jump speed based on LegPower Player Stat
-    float jumpAccel = -32.1522f * pow(jumpTimer, 2.0); // Accelaration of jump due top gravity in 'feet' (at^2 term in equation below)
+    float jumpAccel = -32.1522f * pow(jumpTimer, 2.f); // Accelaration of jump due top gravity in 'feet' (at^2 term in equation below)
                 // modifier * (	  c	   +	bt	 +	 at^2	) 
     playerIntendedLocation.y += jumpMod * (jumpPos + jumpVel + jumpAccel); // Parabolic equation based on time
     //std::cout << previousPlayerLocation.y - playerIntendedLocation.y << "\n";

@@ -11,3 +11,4 @@
 #include <Sound.h>
 #include <stb_image.h>
 #include <TextureLoader.h>
+#include <GlyphLoader.h>
