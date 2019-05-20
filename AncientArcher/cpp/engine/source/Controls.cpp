@@ -7,11 +7,11 @@
 #include <math.h>
 #include "../../pckgs/firstPersonPlayer/Movement.h"
 
-extern Movement movedir;
+extern Movement movedir;  // from firstPersonPlayer/Player.cpp
 
-extern Display display;
+extern Display display;  // from game/main.cpp
 
-extern Camera camera;
+extern Camera camera;  // from game/main.cpp
 
 Controls::Controls() {
   firstMouse = true;
@@ -20,7 +20,8 @@ Controls::Controls() {
   lastY = 0.f;
 }
 
-void Controls::mouseMovement(float xpos, float ypos)
+// ---- FIRST PERSON ---- //
+void Controls::FPPmouseMovement(float xpos, float ypos)
 {
   /// This block is first person controls
   /// Note: cursor visibility can be toggled in the Display class, it should be OFF for these controls
@@ -53,7 +54,7 @@ void Controls::mouseMovement(float xpos, float ypos)
   camera.updateCameraVectors();
 }
 
-void Controls::playerKeyboardInput()
+void Controls::FPPplayerKeyboardInput()
 {
   if (glfwGetMouseButton(display.window, GLFW_MOUSE_BUTTON_LEFT) == GLFW_PRESS) {
     // left click
@@ -141,6 +142,110 @@ void Controls::playerKeyboardInput()
 
   if (glfwGetKey(display.window, GLFW_KEY_SPACE) == GLFW_RELEASE) {
     movedir.canJumpAgain = true;
+  }
+
+}
+
+// ---- SIDESCROLLER ---- //
+void Controls::SSmouseMovement(float xpos, float ypos)
+{
+
+  if (firstMouse) {
+    lastX = xpos;
+    lastY = ypos;
+    firstMouse = false;
+  }
+
+  float xoffset = xpos - lastX;
+  float yoffset = lastY - ypos;
+
+  lastX = xpos;
+  lastY = ypos;
+
+  xoffset *= mouseSensitivity;
+  yoffset *= mouseSensitivity;
+
+  // TODO HANDLE NEW MOUSE POSITION 
+  // OR WAIT FOR CLICK TO HANDLE NEW MOUSE POSITION in sideScrollPlayerKeyboardInput()
+
+}
+
+void Controls::sideScrollPlayerKeyboardInput()
+{
+
+  if (glfwGetMouseButton(display.window, GLFW_MOUSE_BUTTON_LEFT) == GLFW_PRESS) 
+  {
+    // left click
+  }
+
+  if (glfwGetKey(display.window, GLFW_KEY_ESCAPE) == GLFW_PRESS) 
+  {
+    glfwSetWindowShouldClose(display.window, true);  // closes app
+  }
+
+  if (glfwGetKey(display.window, GLFW_KEY_LEFT_SHIFT) == GLFW_PRESS) 
+  {
+  }
+
+  if (glfwGetKey(display.window, GLFW_KEY_W) == GLFW_PRESS) 
+  {
+  }
+
+  if (glfwGetKey(display.window, GLFW_KEY_S) == GLFW_PRESS) 
+  {
+  }
+
+  if (glfwGetKey(display.window, GLFW_KEY_A) == GLFW_PRESS) 
+  {
+  }
+
+  if (glfwGetKey(display.window, GLFW_KEY_D) == GLFW_PRESS) 
+  {
+  }
+
+  if (glfwGetKey(display.window, GLFW_KEY_M) == GLFW_PRESS) 
+  {
+    toggleAmbientWindyNight();
+  }
+
+  if (glfwGetKey(display.window, GLFW_KEY_SPACE) == GLFW_PRESS) 
+  {
+  }
+
+  if (glfwGetKey(display.window, GLFW_KEY_0) == GLFW_PRESS) 
+  {
+  }
+
+  if (glfwGetKey(display.window, GLFW_KEY_1) == GLFW_PRESS) 
+  {
+  }
+
+  if (glfwGetKey(display.window, GLFW_KEY_2) == GLFW_PRESS) 
+  {
+  }
+
+  if (glfwGetKey(display.window, GLFW_KEY_W) == GLFW_RELEASE) 
+  {
+  }
+
+  if (glfwGetKey(display.window, GLFW_KEY_S) == GLFW_RELEASE) 
+  {
+  }
+
+  if (glfwGetKey(display.window, GLFW_KEY_A) == GLFW_RELEASE) 
+  {
+  }
+
+  if (glfwGetKey(display.window, GLFW_KEY_D) == GLFW_RELEASE) 
+  {
+  }
+
+  if (glfwGetKey(display.window, GLFW_KEY_LEFT_SHIFT) == GLFW_RELEASE) 
+  {
+  }
+
+  if (glfwGetKey(display.window, GLFW_KEY_SPACE) == GLFW_RELEASE) 
+  {
   }
 
 }

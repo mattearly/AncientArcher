@@ -24,6 +24,7 @@ public:
 
   void reshapeWindow(GLFWwindow* window, int w, int h);
   void FPPmouseHandler(GLFWwindow* window, double xpos, double ypos);
+  void SSmouseHandler(GLFWwindow* window, double xpos, double ypos);
 
   void enableCursor();
   void disableCursor();
@@ -31,6 +32,7 @@ public:
 private:
 
   void setupReshapeWindow();
+
   void setupMouseHandlerToFPPMode();
 
   void setupMouseHanderToSideScrollerMode();

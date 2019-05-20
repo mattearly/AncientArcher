@@ -71,6 +71,10 @@ void Display::FPPmouseHandler(GLFWwindow * window, double xpos, double ypos) {
   controls.FPPmouseMovement((float)xpos, (float)ypos);
 }
 
+void Display::SSmouseHandler(GLFWwindow * window, double xpos, double ypos) {
+  controls.SSmouseMovement((float)xpos, (float)ypos);
+}
+
 /**
  * GLFW_CURSOR_NORMAL makes the cursor visible and behaving normally.
  */
@@ -114,7 +118,7 @@ extern "C" void mouseCallbackFPP(GLFWwindow * window, double xpos, double ypos) 
  * Sidescroller mouse.
  */
 extern "C" void SSmouseCallback(GLFWwindow * window, double xpos, double ypos) {
-  g_CurrentInstance->FPPmouseHandler(window, xpos, ypos);
+  g_CurrentInstance->SSmouseHandler(window, xpos, ypos);
 }
 
 void Display::setupReshapeWindow() {

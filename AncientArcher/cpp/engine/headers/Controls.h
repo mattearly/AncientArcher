@@ -7,13 +7,15 @@ class Controls {
 
 public:
 
-  enum class ControlType { FPS, TOP_DOWN };
-
   Controls();
 
-  void mouseMovement(float xpos, float ypos);
+  void FPPmouseMovement(float xpos, float ypos);
 
-  void playerKeyboardInput();
+  void SSmouseMovement(float xpos, float ypos);
+
+  void FPPplayerKeyboardInput();
+
+  void sideScrollPlayerKeyboardInput();
 
 private:
 
