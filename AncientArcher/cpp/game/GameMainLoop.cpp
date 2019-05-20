@@ -18,13 +18,13 @@ void Game::mainLoop() {
     deltaTime = currentFrame - lastFrame;
     lastFrame = currentFrame;
 
-    player->update(deltaTime);
+    //player->update(deltaTime);
 
     // process player movement and collision
-    if (movedir.isMoving()) {
-      player->processCommands(deltaTime, primativeRenderer->getEntites());
-      player->movePlayerLight(*camera.getPosition(), primativeRenderer->getShader());
-    }
+    //if (movedir.isMoving()) {
+      //player->processCommands(deltaTime, primativeRenderer->getEntites());
+      //player->movePlayerLight(*camera.getPosition(), primativeRenderer->getShader());
+    //}
 
     masterRenderer.update(primativeRenderer, textRenderer, skyboxRenderer, deltaTime);
 
