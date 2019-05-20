@@ -66,7 +66,7 @@ void Lighting::addPointLight(glm::vec3 pos, Shader * shader) {
   //shader->setFloat(pLightquadratic, 0.032f);
   //shader->setFloat(pLightquadratic, 0.016f);
   //shader->setFloat(pLightquadratic, 0.01f);
-  shader->setFloat(pLightquadratic, 0.002);
+  shader->setFloat(pLightquadratic, 0.002f);
 
   shader->setInt("numPointLights", (int)i + 1);
 
