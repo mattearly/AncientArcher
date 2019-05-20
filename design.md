@@ -6,7 +6,7 @@
 
 #### Overview
 
-Ancient Archer is Custom Closed Source Game Engine in development.
+Ancient Archer is Closed Source Game Engine in development.
 
 #### Context
 
@@ -16,11 +16,11 @@ Inlcudes 3D/2D, Renderering, Math, Controls, Displays, Cameras, Lighting, and a 
 
 Ancient Archer is a work in progress. 
 
-Metrics: How many games have been built with it. How much functionality does it encompass.  
+Metrics: How many games have been built with it? How much functionality does it encompass? How stable is it? Does it have tests? Is it ready for use? Is it properly licensed? Is it properly accredited?
 
 #### Milestones
 
-Ancient Archer is being used for a sequence of custom games to built. It should be a new animal by the end of this 10 game project.
+Ancient Archer is being used for a sequence of custom games to be built. It should be a new animal by the end of this 10 game project. One game is being worked on per week.
 
 Start Date: April 28, 2019
 
@@ -52,9 +52,9 @@ My partially built engine AncientArcher
 
 #### Proposed Solution
 
-Build our own in house solution, continuing on the current Ancient Archer project.
+Countine on Ancient Archer OpenGL project.
 
-Ancient Archer should allow for games to be built on it.
+Ancient Archer should allow for games to be built on it with relative ease.
 
 #### Alternative Solutions
 
