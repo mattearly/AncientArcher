@@ -5,16 +5,16 @@
 #include <glm/glm.hpp>
 #include <iostream>
 
-extern Controls controls;
+extern Controls controls;  // originally declared in Display.cpp
 
-extern Camera camera;
+extern Camera camera;  // originally declared in main.cpp
 
 Movement movedir;
 
 void Player::update(float deltaTime)
 {
   // process keys
-  controls.playerKeyboardInput();
+  controls.FPPplayerKeyboardInput();
 
   // move the camera accordingly
   //camera.update();
