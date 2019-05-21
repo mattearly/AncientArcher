@@ -32,6 +32,7 @@ private:
 
   // --- helper functions --- //
   void clampVec3Between0and1(glm::vec3& changedVar);
+  void clampVec3BetweenNeg1and1(glm::vec3& changedVar);
 
 };
 

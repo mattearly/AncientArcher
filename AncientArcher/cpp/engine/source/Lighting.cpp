@@ -22,7 +22,7 @@ void Lighting::setConstantLight(Shader* shader) {
 
 void Lighting::updateConstantLightDirection(glm::vec3 changedVar)
 {
-  clampVec3Between0and1(changedVar);
+  clampVec3BetweenNeg1and1(changedVar);
   direction = changedVar;
 }
 
@@ -134,7 +134,17 @@ void Lighting::clampVec3Between0and1(glm::vec3& changedVar)
   if (changedVar.x > 1.f) changedVar.x = 1.f;
   else if (changedVar.x < 0.f) changedVar.x = 0.f;
   if (changedVar.y > 1.f) changedVar.y = 1.f;
-  else if (changedVar.z < 0.f) changedVar.y = 0.f;
+  else if (changedVar.y < 0.f) changedVar.y = 0.f;
   if (changedVar.z > 1.f) changedVar.z = 1.f;
   else if (changedVar.z < 0.f) changedVar.z = 0.f;
+}
+
+void Lighting::clampVec3BetweenNeg1and1(glm::vec3& changedVar)
+{
+  if (changedVar.x > 1.f) changedVar.x = 1.f;
+  else if (changedVar.x < -1.f) changedVar.x = -1.f;
+  if (changedVar.y > 1.f) changedVar.y = 1.f;
+  else if (changedVar.y < -1.f) changedVar.y = -1.f;
+  if (changedVar.z > 1.f) changedVar.z = 1.f;
+  else if (changedVar.z < -1.f) changedVar.z = -1.f;
 }
