@@ -29,7 +29,10 @@ Game::Game() {
 
   // ---------- PRELOAD ENVIRORNMENT DETAILS ---------- //
   primativeRenderer = new PrimativeRenderer();
+  Lighting lighting;
+  lighting.setConstantLight(primativeRenderer->getShader());
 
+  
   //player->addPointLight(*camera.getPosition(), primativeRenderer->getShader());
 
   TextureLoader texLoader;
@@ -43,7 +46,7 @@ Game::Game() {
     e = new Entity(
       ENTITYTYPE::CUBE,
       glm::vec3(i, -0.8f, 0.f),
-      glm::vec3(2.0f, 1.0f, 2.0f),
+      glm::vec3(2.0f, 3.0f, 3.0f),
       lightBricksTexID,
       true
     );
