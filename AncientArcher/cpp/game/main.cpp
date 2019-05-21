@@ -5,7 +5,12 @@
 
 //Camera camera;  // default
 
-Camera camera(glm::vec3(13.f, 3.f, -10.f), 10.f, 16.f);
+Camera camera(
+  glm::vec3(10.f, 9.f, 11.f),   // starting Position
+  -90.f,                          // YAW
+  -7.5f,                          // PITCH
+  80.f                           // FoV
+);
 
 //Display display; // default - fpp
 
