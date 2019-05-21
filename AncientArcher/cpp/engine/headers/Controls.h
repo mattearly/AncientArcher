@@ -2,6 +2,7 @@
 #include <Camera.h>
 #include <glad/glad.h>
 #include <GLFW/glfw3.h>
+#include <Entity.h>
 
 class Controls {
 
@@ -15,7 +16,7 @@ public:
 
   void FPPplayerKeyboardInput();
 
-  void sideScrollPlayerKeyboardInput();
+  void sideScrollPlayerKeyboardInput(Entity* entity);
 
 private:
 

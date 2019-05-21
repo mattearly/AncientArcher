@@ -2,11 +2,13 @@
 #include "../../pckgs/skybox/SkyboxRenderer.h"
 #include "../../pckgs/primatives/PrimativeRenderer.h"
 #include "../../pckgs/monospaceFont/TextRenderer.h"
-#include "../../pckgs/masterRenderer/MasterRenderer.h"
+#include "../pckgs/sideScrollerPlayer/SideScrollPlayer.h"
+#include "../pckgs/masterRenderer/MasterRenderer.h"
 
 class Game {
 public:
 
+  SideScrollPlayer* sideScrollPlayer;
   PrimativeRenderer* primativeRenderer;
   SkyboxRenderer* skyboxRenderer;
   TextRenderer* textRenderer;

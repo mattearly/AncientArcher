@@ -3,6 +3,8 @@
 #include "../primatives/PrimativeRenderer.h"
 #include "../skybox/SkyboxRenderer.h"
 #include "../firstPersonPlayer/Player.h"
+#include <vector>
+#include "../sideScrollerPlayer/SideScrollPlayer.h"
 class MasterRenderer {
 public:
   MasterRenderer();
@@ -14,7 +16,7 @@ public:
   void enableGLDepthTest();
   void disableGLDepthTest();
 
-  void update(PrimativeRenderer* primRen, TextRenderer* textRen, SkyboxRenderer* skyRen, float deltaTime);
+  void update(PrimativeRenderer* primRen, SideScrollPlayer* playerRen, TextRenderer* textRen, SkyboxRenderer* skyRen, float deltaTime);
 
 private:
 

@@ -18,7 +18,7 @@ void Game::mainLoop() {
     deltaTime = currentFrame - lastFrame;
     lastFrame = currentFrame;
 
-    //player->update(deltaTime);
+    sideScrollPlayer->processControls();
 
     // process player movement and collision
     //if (movedir.isMoving()) {
@@ -26,7 +26,7 @@ void Game::mainLoop() {
       //player->movePlayerLight(*camera.getPosition(), primativeRenderer->getShader());
     //}
 
-    masterRenderer.update(primativeRenderer, textRenderer, skyboxRenderer, deltaTime);
+    masterRenderer.update(primativeRenderer, sideScrollPlayer, textRenderer, skyboxRenderer, deltaTime);
 
     glfwPollEvents();
   }

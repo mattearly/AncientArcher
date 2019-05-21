@@ -25,14 +25,15 @@ Game::Game() {
   //player = new Player(100.0f);
 
   // ---- SIDESCROLLER PLAYER ---- //
-  //SSPlayer = new s
+  sideScrollPlayer = new SideScrollPlayer();
 
   // ---------- PRELOAD ENVIRORNMENT DETAILS ---------- //
   primativeRenderer = new PrimativeRenderer();
   Lighting lighting;
   lighting.setConstantLight(primativeRenderer->getShader());
 
-  
+  //camera.setToOrtho(primativeRenderer->getShader());
+
   //player->addPointLight(*camera.getPosition(), primativeRenderer->getShader());
 
   TextureLoader texLoader;

@@ -1,11 +1,8 @@
 #include "MasterRenderer.h"
-#include <AAEngine.h>
 #include "../primatives/PrimativeRenderer.h"
 #include "../skybox/SkyboxRenderer.h"
+#include <Display.h>
 #include <glad/glad.h>
-#include <glm/glm.hpp>
-#include <glm/gtc/matrix_transform.hpp>
-#include <iostream>
 extern Display display;
 MasterRenderer::MasterRenderer() {
   enableGLDepthTest();
@@ -30,11 +27,13 @@ void MasterRenderer::disableGLDepthTest() {
   glDisable(GL_DEPTH_TEST);
 }
 
-void MasterRenderer::update(PrimativeRenderer* primRen, TextRenderer* textRen, SkyboxRenderer* skyRen, float deltaTime)
+void MasterRenderer::update(PrimativeRenderer* primRen, SideScrollPlayer* playerRen, TextRenderer* textRen, SkyboxRenderer* skyRen, float deltaTime)
 {
   display.clear();
 
   primRen->render();
+
+  playerRen->render();
 
   skyRen->render();
 
@@ -42,3 +41,4 @@ void MasterRenderer::update(PrimativeRenderer* primRen, TextRenderer* textRen, S
 
   display.update();
 }
+

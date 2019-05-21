@@ -80,6 +80,11 @@ std::vector<Entity>* PrimativeRenderer::getEntites()
   return &entities;
 }
 
+Entity* PrimativeRenderer::getEntityPtr()
+{
+  return &entities[0];
+}
+
 Shader* PrimativeRenderer::getShader()
 {
   return primShader.get();
