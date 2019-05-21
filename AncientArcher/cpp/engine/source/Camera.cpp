@@ -2,6 +2,8 @@
 #include <Display.h>
 #include <Global.h>
 #include <glm/glm.hpp>
+#include <glm/gtc/matrix_transform.hpp>
+#include <glad/glad.h>  
 extern Display display;
 
 Camera::Camera(const glm::vec3 startingPos, const float lookDir, const float pitch, const float fov)
@@ -39,6 +41,22 @@ glm::mat4 Camera::getProjectionMatrix()
 void Camera::setPosition(glm::vec3 pos)
 {
   Position = pos;
+}
+
+void Camera::setToOrtho(Shader* shader)
+{
+  //ortho(T const& left, T const& right, T const& bottom, T const& top, T const& zNear, T const& zFar)
+
+  glm::mat4 projection = glm::ortho(0.f, (float)display.window_width, 0.f, (float)display.window_height, 0.01f, RENDER_DISTANCE);
+  shader->use();
+  shader->setMat4("projection", projection);
+}
+
+void Camera::setToPerspective(Shader* shader, float fov)
+{
+  glm::mat4 projection = glm::perspective(glm::radians(FoV), (float)display.window_width / (float)display.window_height, 0.01f, RENDER_DISTANCE);
+  shader->use();
+  shader->setMat4("projection", projection);
 }
 
 glm::mat4 Camera::getViewMatrix() {

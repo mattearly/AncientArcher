@@ -32,6 +32,9 @@ public:
   // SETTERS
   void setPosition(glm::vec3 pos);
 
+  void setToOrtho(Shader* shader);
+  void setToPerspective(Shader* shader, float fov);
+
 private:
 
   glm::vec3 Position;
