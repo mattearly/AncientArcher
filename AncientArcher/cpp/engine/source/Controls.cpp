@@ -148,6 +148,7 @@ void Controls::FPPplayerKeyboardInput()
 
 void Controls::sideScrollPlayerKeyboardInput(Entity* entity)
 {
+  // todo: need bools to go with, this just keep repeating if held
 
   if (glfwGetMouseButton(display.window, GLFW_MOUSE_BUTTON_LEFT) == GLFW_PRESS)
   {
@@ -190,6 +191,7 @@ void Controls::sideScrollPlayerKeyboardInput(Entity* entity)
 
   if (glfwGetKey(display.window, GLFW_KEY_SPACE) == GLFW_PRESS)
   {
+    entity->moveTo(glm::vec3(entity->gameItem.location[0], 3.2f, 0.f));  // needs delta time just testing
   }
 
   if (glfwGetKey(display.window, GLFW_KEY_0) == GLFW_PRESS)
@@ -226,6 +228,7 @@ void Controls::sideScrollPlayerKeyboardInput(Entity* entity)
 
   if (glfwGetKey(display.window, GLFW_KEY_SPACE) == GLFW_RELEASE)
   {
+    entity->moveTo(glm::vec3(entity->gameItem.location[0], 2.2f, 0.f));  // needs delta time just testing
   }
 
 }
