@@ -6,19 +6,32 @@
 class Lighting {
 public:
 
+  // --- directional constant lights --- //
   void setConstantLight(Shader* shader);
+  void updateConstantLightDirection(glm::vec3 changedVar);
+  void updateConstantLightAmbient(glm::vec3 changedVar);
+  void updateConstantLightDiffuse(glm::vec3 changedVar);
+  void updateConstantLightSpecular(glm::vec3 changedVar);
 
+  // --- point lights --- //
   void addPointLight(glm::vec3 pos, Shader* shader);
-
   void movePointLight(int lightnum, glm::vec3 newpos, Shader* shader);
 
 private:
 
+  // Directional Lights defaults
+  glm::vec3 direction = { -0.2f, -1.0f, -0.3f };
+  glm::vec3 ambient = { 0.15f, 0.15f, 0.15f };
+  glm::vec3 diffuse = { 0.15f, 0.15f, 0.15f };
+  glm::vec3 specular = { 0.5f, 0.5f, 0.5f };
+
+  // --- point lights --- //
   std::vector<glm::vec3> pointLights;
-
   int _currentPointLights = 0;
-
   const int MAXPOINTLIGHTS = 4;
+
+  // --- helper functions --- //
+  void clampVec3Between0and1(glm::vec3& changedVar);
 
 };
 

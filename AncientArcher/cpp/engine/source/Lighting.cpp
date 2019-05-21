@@ -6,17 +6,42 @@
 #include <iostream>
 #include <stdexcept>
 
+/**
+ * Constant Directional Light. Sets it on the shader with the Variables as in code.
+ * Call this again after making updates to the lighting to apply the changes.
+ * @param shader   Shader to have the variables set in.
+ */
 void Lighting::setConstantLight(Shader* shader) {
 
   shader->use();
-  // directional light
-  shader->setVec3("dirLight.direction", -0.2f, -1.0f, -0.3f);
-  shader->setVec3("dirLight.ambient", 0.15f, 0.15f, 0.15f);
-  //shader->setVec3("dirLight.ambient", 0.005f, 0.005f, 0.005f);
-  shader->setVec3("dirLight.diffuse", 0.15f, 0.15f, 0.15f);
-  //shader->setVec3("dirLight.diffuse", 0.005f, 0.005f, 0.005f);
+  shader->setVec3("dirLight.direction", direction);
+  shader->setVec3("dirLight.ambient", ambient);
+  shader->setVec3("dirLight.diffuse", diffuse);
+  shader->setVec3("dirLight.specular", specular);
+}
 
-  shader->setVec3("dirLight.specular", 0.5f, 0.5f, 0.5f);
+void Lighting::updateConstantLightDirection(glm::vec3 changedVar)
+{
+  clampVec3Between0and1(changedVar);
+  direction = changedVar;
+}
+
+void Lighting::updateConstantLightAmbient(glm::vec3 changedVar)
+{
+  clampVec3Between0and1(changedVar);
+  ambient = changedVar;
+}
+
+void Lighting::updateConstantLightDiffuse(glm::vec3 changedVar)
+{
+  clampVec3Between0and1(changedVar);
+  diffuse = changedVar;
+}
+
+void Lighting::updateConstantLightSpecular(glm::vec3 changedVar)
+{
+  clampVec3Between0and1(changedVar);
+  specular = changedVar;
 }
 
 void Lighting::addPointLight(glm::vec3 pos, Shader * shader) {
@@ -102,4 +127,14 @@ void Lighting::movePointLight(int lightnum, glm::vec3 newpos, Shader * shader) {
     throw std::runtime_error("Attempting to move point light that does not exist");
   }
 
+}
+
+void Lighting::clampVec3Between0and1(glm::vec3& changedVar)
+{
+  if (changedVar.x > 1.f) changedVar.x = 1.f;
+  else if (changedVar.x < 0.f) changedVar.x = 0.f;
+  if (changedVar.y > 1.f) changedVar.y = 1.f;
+  else if (changedVar.z < 0.f) changedVar.y = 0.f;
+  if (changedVar.z > 1.f) changedVar.z = 1.f;
+  else if (changedVar.z < 0.f) changedVar.z = 0.f;
 }
