@@ -176,12 +176,15 @@ void Controls::sideScrollPlayerKeyboardInput(Entity* entity)
   if (glfwGetKey(display.window, GLFW_KEY_A) == GLFW_PRESS)
   {
     entity->moveBy(glm::vec3(-0.1f, 0.0f, 0.0f));  // needs delta time just testing
+    camera.Position.x -= 0.1f;   // hack to keep the cam in place with the player
 
   }
 
   if (glfwGetKey(display.window, GLFW_KEY_D) == GLFW_PRESS)
   {
     entity->moveBy(glm::vec3(0.1f, 0.0f, 0.0f));  // needs delta time just testing
+    camera.Position.x += 0.1f;   // hack to keep the cam in place with the player
+
   }
 
   if (glfwGetKey(display.window, GLFW_KEY_M) == GLFW_PRESS)
