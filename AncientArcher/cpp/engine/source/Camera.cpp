@@ -4,24 +4,16 @@
 #include <glm/glm.hpp>
 extern Display display;
 
-Camera::Camera(
-  const glm::vec3 startingPosition, 
-  const float lookingDir,
-  const float pitch
-)
+Camera::Camera(const glm::vec3 startingPos, const float lookDir, const float pitch, const float fov)
 {
-  FoV = 45.f;
-  //Front = glm::vec3(0.0f, 0.0f, -1.0f);
-  Position = startingPosition;
-  //Up = { 0.f, 1.f, 0.f };
-  //Right = { 0.f, 0.f, 0.f };
-  WorldUp = glm::vec3(0.0f, 1.0f, 0.0f);
-  Yaw = lookingDir;
+  Position = startingPos;
+  Yaw = lookDir;
   Pitch = pitch;
-  updateCameraVectors();
-}
+  FoV = fov;
 
-Camera::~Camera() {}
+  WorldUp = glm::vec3(0.0f, 1.0f, 0.0f);
+  updateCameraVectors();  // set Front, Up, & Right
+}
 
 void Camera::update(Shader * shader) {
   glm::mat4 view = getViewMatrix();

@@ -8,15 +8,12 @@ public:
   Camera(
     const glm::vec3 startingPosition = { 0, 3, 0 },
     const float lookingDir = 0.f,
-    const float pitch = 0.f
+    const float pitch = 0.f,
+    const float fov = 45.f
   );
-  ~Camera();
 
   friend class Controls;
 
-  float FoV;
-
-  const float camstart[3] = { 0, 3, 0 };
 
   void update(Shader* shader);
 
@@ -38,6 +35,8 @@ public:
 private:
 
   glm::vec3 Position;
+
+  float FoV;
 
   // left/right looking direction angle
   float Yaw;
