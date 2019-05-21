@@ -47,7 +47,7 @@ void Camera::setToOrtho(Shader* shader)
 {
   //ortho(T const& left, T const& right, T const& bottom, T const& top, T const& zNear, T const& zFar)
 
-  glm::mat4 projection = glm::ortho(0.f, (float)display.window_width, 0.f, (float)display.window_height, 0.01f, RENDER_DISTANCE);
+  glm::mat4 projection = glm::ortho( -(float)display.window_width/2.f, (float)display.window_width / 2.f, -(float)display.window_height / 2.f, (float)display.window_height/2.f, -1.f, 1.f);
   shader->use();
   shader->setMat4("projection", projection);
 }
