@@ -26,6 +26,7 @@ SideScrollPlayer::SideScrollPlayer()
   delete e;
 
   Lighting lighting;
+  lighting.updateConstantLightAmbient(glm::vec3(0.6f, 0.6f, 0.6f));
   lighting.setConstantLight(playerModel->getShader());
 }
 
