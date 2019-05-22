@@ -174,6 +174,7 @@
     <ClCompile Include="cpp\engine\source\Sound.cpp" />
     <ClCompile Include="cpp\engine\source\stb_image.cpp" />
     <ClCompile Include="cpp\engine\source\TextureLoader.cpp" />
+    <ClCompile Include="cpp\pckgs\spawner\Spawner.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="cpp\engine\headers\AAEngine.h" />
@@ -200,6 +201,7 @@
     <ClInclude Include="cpp\engine\headers\Sound.h" />
     <ClInclude Include="cpp\engine\headers\stb_image.h" />
     <ClInclude Include="cpp\engine\headers\TextureLoader.h" />
+    <ClInclude Include="cpp\pckgs\spawner\Spawner.h" />
     <ClInclude Include="cpp\pckgs\text\Text.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

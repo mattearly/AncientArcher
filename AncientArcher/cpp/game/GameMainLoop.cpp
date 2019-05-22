@@ -20,13 +20,15 @@ void Game::mainLoop() {
 
     sideScrollPlayer->processControls();
 
+    spawnedEnemies->checkAndSpawn(deltaTime);
+
     // process player movement and collision
     //if (movedir.isMoving()) {
       //player->processCommands(deltaTime, primativeRenderer->getEntites());
       //player->movePlayerLight(*camera.getPosition(), primativeRenderer->getShader());
     //}
 
-    masterRenderer.update(primativeRenderer, sideScrollPlayer, textRenderer, skyboxRenderer, deltaTime);
+    masterRenderer.update(primativeRenderer, sideScrollPlayer, spawnedEnemies, textRenderer, skyboxRenderer, deltaTime);
 
     glfwPollEvents();
   }

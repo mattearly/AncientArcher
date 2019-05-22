@@ -4,11 +4,13 @@
 #include "../../pckgs/monospaceFont/TextRenderer.h"
 #include "../pckgs/sideScrollerPlayer/SideScrollPlayer.h"
 #include "../pckgs/masterRenderer/MasterRenderer.h"
+#include "../pckgs/spawner/Spawner.h"
 
 class Game {
 public:
 
   SideScrollPlayer* sideScrollPlayer;
+  Spawner* spawnedEnemies;
   PrimativeRenderer* primativeRenderer;
   SkyboxRenderer* skyboxRenderer;
   TextRenderer* textRenderer;
