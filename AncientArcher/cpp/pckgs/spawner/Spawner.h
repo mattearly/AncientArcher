@@ -1,5 +1,7 @@
 #pragma once
 #include "../primatives/PrimativeRenderer.h"
+#include <Collider.h>
+#include <Entity.h>
 #include <memory>
 class Spawner
 {
@@ -13,6 +15,9 @@ public:
 
   void render();
 
+  Collider* getCollider();
+  Entity* getEntity();
+  unsigned int getAliveCount();
   void init();
 
 private:

@@ -73,3 +73,25 @@ void Spawner::render()
 {
   enemyModel->render();
 }
+
+/**
+ * Returns the first Entity Collider
+ */
+Collider* Spawner::getCollider()
+{
+  return enemyModel->getEntityPtr()->collider;
+}
+
+/**
+ * Returns the first Entity
+ */
+Entity* Spawner::getEntity()
+{
+  return  enemyModel->getEntityPtr();
+}
+
+unsigned int Spawner::getAliveCount()
+{
+  return _numberAlive;
+}
+
