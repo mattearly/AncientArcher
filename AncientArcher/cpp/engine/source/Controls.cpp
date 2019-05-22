@@ -9,9 +9,9 @@
 
 extern Movement movedir;  // from firstPersonPlayer/Player.cpp
 
-extern Display display;  // from game/main.cpp
+extern Display display;   // from game/main.cpp
 
-extern Camera camera;  // from game/main.cpp
+extern Camera camera;     // from game/main.cpp
 
 Controls::Controls() {
   firstMouse = true;
@@ -177,7 +177,6 @@ void Controls::sideScrollPlayerKeyboardInput(Entity* entity)
   {
     entity->moveBy(glm::vec3(-0.1f, 0.0f, 0.0f));  // needs delta time just testing
     camera.Position.x -= 0.1f;   // hack to keep the cam in place with the player
-
   }
 
   if (glfwGetKey(display.window, GLFW_KEY_D) == GLFW_PRESS)
