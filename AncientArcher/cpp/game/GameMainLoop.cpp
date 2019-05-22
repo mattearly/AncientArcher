@@ -22,11 +22,23 @@ void Game::mainLoop() {
 
     spawnedEnemies->checkAndSpawn(deltaTime);
 
-    // process player movement and collision
-    //if (movedir.isMoving()) {
-      //player->processCommands(deltaTime, primativeRenderer->getEntites());
-      //player->movePlayerLight(*camera.getPosition(), primativeRenderer->getShader());
-    //}
+
+    // this collision is all a hack, don't take it too seriously hahahaha
+    static float collisionCheckTime = 0.f;
+    collisionCheckTime += deltaTime;
+    if (spawnedEnemies->getAliveCount() > 0 && collisionCheckTime > 0.2f)
+    {
+      if ( mearly::AABB_vs_AABB_3D( sideScrollPlayer->getCollider()->impasse, 
+                                    spawnedEnemies->getCollider()->impasse ) )
+      {
+        // push both back
+        sideScrollPlayer->getEntity()->moveBy(glm::vec3(-2.5f, 0.f, 0.f));
+        camera.Position.x -= 2.5f;   // hack to keep the cam in place with the player
+        spawnedEnemies->getEntity()->moveBy(glm::vec3(2.5f, 0.f, 0.f));
+        playlandingsound();
+      }
+      collisionCheckTime = 0.f;
+    }
 
     masterRenderer.update(primativeRenderer, sideScrollPlayer, spawnedEnemies, textRenderer, skyboxRenderer, deltaTime);
 
