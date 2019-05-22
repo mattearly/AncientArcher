@@ -19,35 +19,42 @@ void Spawner::init()
 void Spawner::checkAndSpawn(float deltaTime)
 {
   static float timeAccumulator = 0;
-  timeAccumulator += deltaTime;
 
-  if (timeAccumulator > _timeBetweenSpawns)
+  if (_numberAlive < _popCap)
   {
+    timeAccumulator += deltaTime;
 
-    // spawn enemy thing
-    Entity* e = new Entity(
-      ENTITYTYPE::CUBE,
-      glm::vec3(30.f, 2.2f, 0.f),
-      glm::vec3(1.7f, 2.7f, 0.03f),
-      enemyTexID,
-      true
-    );
+    if (timeAccumulator > _timeBetweenSpawns)
+    {
 
-    // add to render list
-    enemyModel->addToPrimativeEntities(*e);
+      // spawn enemy thing
+      Entity* e = new Entity(
+        ENTITYTYPE::CUBE,
+        glm::vec3(30.f, 2.2f, 0.f),
+        glm::vec3(1.7f, 2.7f, 0.03f),
+        enemyTexID,
+        true
+      );
 
-    // yeah we're done lets not leak 
-    delete e;
+      // add to render list
+      enemyModel->addToPrimativeEntities(*e);
 
-    _numberAlive++;
+      // yeah we're done lets not leak 
+      delete e;
+
+      _numberAlive++;
+      timeAccumulator = 0.f;
+    }
+  }
+  else
+  {
     timeAccumulator = 0.f;
-
   }
 }
 
 void Spawner::setTimeBetweenSpawns(float time)
 {
-  if (time > 0.f) 
+  if (time > 0.f)
   {
     _timeBetweenSpawns = time;
   }
