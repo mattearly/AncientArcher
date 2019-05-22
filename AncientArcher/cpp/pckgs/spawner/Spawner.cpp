@@ -27,8 +27,8 @@ void Spawner::checkAndSpawn(float deltaTime)
     // spawn enemy thing
     Entity* e = new Entity(
       ENTITYTYPE::CUBE,
-      glm::vec3(15.f, 2.2f, 0.f),
-      glm::vec3(1.5f, 2.5f, 0.03f),
+      glm::vec3(30.f, 2.2f, 0.f),
+      glm::vec3(1.7f, 2.7f, 0.03f),
       enemyTexID,
       true
     );
