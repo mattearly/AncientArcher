@@ -1,6 +1,4 @@
 #include "MasterRenderer.h"
-#include "../primatives/PrimativeRenderer.h"
-#include "../skybox/SkyboxRenderer.h"
 #include <Display.h>
 #include <glad/glad.h>
 extern Display display;
@@ -27,13 +25,15 @@ void MasterRenderer::disableGLDepthTest() {
   glDisable(GL_DEPTH_TEST);
 }
 
-void MasterRenderer::update(PrimativeRenderer* primRen, SideScrollPlayer* playerRen, TextRenderer* textRen, SkyboxRenderer* skyRen, float deltaTime)
+void MasterRenderer::update(PrimativeRenderer* primRen, SideScrollPlayer* playerRen, Spawner* enemyRen, TextRenderer* textRen, SkyboxRenderer* skyRen, float deltaTime)
 {
   display.clear();
 
   primRen->render();
 
   playerRen->render();
+
+  enemyRen->render();
 
   skyRen->render();
 

@@ -27,6 +27,12 @@ Game::Game() {
   // ---- SIDESCROLLER PLAYER ---- //
   sideScrollPlayer = new SideScrollPlayer();
 
+  spawnedEnemies = new Spawner();
+  spawnedEnemies->init();
+  spawnedEnemies->setPopulationCap(1);
+  spawnedEnemies->setTimeBetweenSpawns(5.f);
+
+
   // ---------- PRELOAD ENVIRORNMENT DETAILS ---------- //
   primativeRenderer = new PrimativeRenderer();
   Lighting lighting;

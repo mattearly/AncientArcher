@@ -5,6 +5,7 @@
 #include "../firstPersonPlayer/Player.h"
 #include <vector>
 #include "../sideScrollerPlayer/SideScrollPlayer.h"
+#include "../spawner/Spawner.h"
 class MasterRenderer {
 public:
   MasterRenderer();
@@ -16,7 +17,9 @@ public:
   void enableGLDepthTest();
   void disableGLDepthTest();
 
-  void update(PrimativeRenderer* primRen, SideScrollPlayer* playerRen, TextRenderer* textRen, SkyboxRenderer* skyRen, float deltaTime);
+  void update(PrimativeRenderer* primRen, SideScrollPlayer* playerRen, 
+    Spawner* enemyRen, TextRenderer* textRen, SkyboxRenderer* skyRen, 
+    float deltaTime);
 
 private:
 
