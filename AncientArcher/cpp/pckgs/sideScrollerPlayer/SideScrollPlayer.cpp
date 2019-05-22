@@ -27,6 +27,7 @@ SideScrollPlayer::SideScrollPlayer()
 
   Lighting lighting;
   lighting.updateConstantLightAmbient(glm::vec3(0.6f, 0.6f, 0.6f));
+  lighting.updateConstantLightDirection(glm::vec3(0.6f, 0.6f, 0.6f));
   lighting.setConstantLight(playerModel->getShader());
 }
 
@@ -53,3 +54,20 @@ void SideScrollPlayer::render()
   glDisable(GL_BLEND);
 
 }
+
+/**
+ * Returns the first Entity collider
+ */
+Collider* SideScrollPlayer::getCollider()
+{
+  return playerModel->getEntityPtr()->collider;
+}
+
+/**
+ * Returns the first Entity
+ */
+Entity* SideScrollPlayer::getEntity()
+{
+  return playerModel->getEntityPtr();
+}
+
