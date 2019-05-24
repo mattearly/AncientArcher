@@ -26,7 +26,6 @@ Game::Game() {
 
   // ---- SIDESCROLLER PLAYER ---- //
   sideScrollPlayer = new SideScrollPlayer();
-  sideScrollPlayer->attack();
 
   spawnedEnemies = new Spawner();
   spawnedEnemies->init();

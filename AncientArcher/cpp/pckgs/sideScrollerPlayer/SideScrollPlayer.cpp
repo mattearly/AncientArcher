@@ -12,18 +12,17 @@ SideScrollPlayer::SideScrollPlayer()
   TextureLoader texLoader;
   unsigned int playertexID = texLoader.load2DTexture("../AncientArcher/cpp/pckgs/sideScrollerPlayer/plzno.png");
   weaponTexID = texLoader.load2DTexture("../AncientArcher/cpp/pckgs/sideScrollerPlayer/weapon.png");
-  
+
   playerModel = std::make_unique<PrimativeRenderer>();
   Entity* e = new Entity(
-      ENTITYTYPE::CUBE,
-      glm::vec3(0.f, 2.2f, 0.f),
-      glm::vec3(1.5f, 2.5f, 0.03f),
-      playertexID,
-      true
-    );
+    ENTITYTYPE::CUBE,
+    glm::vec3(0.f, 2.2f, 0.f),
+    glm::vec3(1.5f, 2.5f, 0.03f),
+    playertexID,
+    true
+  );
 
   playerModel->addToPrimativeEntities(*e);
-
   delete e;
 
   Lighting lighting;
@@ -38,24 +37,28 @@ SideScrollPlayer::SideScrollPlayer()
 void SideScrollPlayer::processControls()
 {
   // pass the first entity to the controls
-  controls.sideScrollPlayerKeyboardInput(playerModel->getEntityPtr(), 2);
+  //controls.sideScrollPlayerKeyboardInput(playerModel->getEntityPtr(), playerModel->size());
+  controls.sideScrollPlayerKeyboardInput(this);
 }
 
 void SideScrollPlayer::attack()
 {
-  _isAttacking = true;
+  if (!_isAttacking && playerModel->size() == 1)
+  {
+    _isAttacking = true;
 
-  Entity* e = new Entity(
-    ENTITYTYPE::CUBE,
-    *playerModel->getEntityPtr()->gameItem.location + glm::vec3(1.5f, 2.3f, 0.f),
-    glm::vec3(1.5f, 1.0f, 0.03f),
-    weaponTexID,
-    true
-  );
+    Entity* e = new Entity(
+      ENTITYTYPE::CUBE,
+      *playerModel->getEntityPtr()->gameItem.location + glm::vec3(1.5f, 2.3f, 0.f),
+      glm::vec3(1.5f, 1.0f, 0.03f),
+      weaponTexID,
+      true
+    );
 
-  playerModel->addToPrimativeEntities(*e);
+    playerModel->addToPrimativeEntities(*e);
 
-  _timeSinceLastAttack = 0.f;
+    _timeSinceLastAttack = 0.f;
+  }
 }
 
 /**
@@ -83,7 +86,14 @@ Collider* SideScrollPlayer::getCollider()
 
 Collider* SideScrollPlayer::getSwordCollider()
 {
-  return (playerModel->getEntityPtr() + 1)->collider;
+  if (_isAttacking)
+  { 
+   return (playerModel->getEntityPtr() + 1)->collider;
+  }
+  else
+  {
+    return NULL;
+  }
 }
 
 /**
@@ -92,5 +102,28 @@ Collider* SideScrollPlayer::getSwordCollider()
 Entity* SideScrollPlayer::getEntity()
 {
   return playerModel->getEntityPtr();
+}
+
+void SideScrollPlayer::attackTimer(float deltaTime)
+{
+  if (_isAttacking)
+  {
+    _timeSinceLastAttack += deltaTime;
+    if (_timeSinceLastAttack > _timeBetweenAttacks)
+    {
+      _isAttacking = false;
+      stopAttacking();
+    }
+  }
+}
+
+bool SideScrollPlayer::isAttacking()
+{
+  return _isAttacking;
+}
+
+void SideScrollPlayer::stopAttacking()
+{
+  playerModel->entityPopBack();
 }
 

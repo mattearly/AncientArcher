@@ -26,7 +26,7 @@ void Game::mainLoop() {
     // this collision is all a hack, don't take it too seriously hahahaha
     static float collisionCheckTime = 0.f;
     collisionCheckTime += deltaTime;
-    if (spawnedEnemies->getAliveCount() > 0 && collisionCheckTime > 0.2f)
+    if (spawnedEnemies->getAliveCount() > 0 && sideScrollPlayer->getSwordCollider() && collisionCheckTime > 0.2f)
     {
       if ( mearly::AABB_vs_AABB_3D( sideScrollPlayer->getSwordCollider()->impasse, 
                                     spawnedEnemies->getCollider()->impasse ) )
@@ -39,6 +39,8 @@ void Game::mainLoop() {
       }
       collisionCheckTime = 0.f;
     }
+
+    sideScrollPlayer->attackTimer(deltaTime);
 
     masterRenderer.update(primativeRenderer, sideScrollPlayer, spawnedEnemies, textRenderer, skyboxRenderer, deltaTime);
 

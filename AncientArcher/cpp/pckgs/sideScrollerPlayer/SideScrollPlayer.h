@@ -20,6 +20,10 @@ public:
 
   Entity* getEntity();
 
+  void attackTimer(float deltaTime);
+
+  bool isAttacking();
+
 private:
   
   std::unique_ptr<PrimativeRenderer> playerModel;
@@ -28,8 +32,13 @@ private:
   
   bool _isAttacking = false;
 
-  float _timeBetweenAttacks = 0.9f;
+  float _timeBetweenAttacks = 0.7f;
 
   float _timeSinceLastAttack = 0.f;
+
+  float _attackDamage = 1.f;
+
+  void stopAttacking();
+
 
 };
