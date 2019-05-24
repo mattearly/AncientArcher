@@ -11,7 +11,8 @@ SideScrollPlayer::SideScrollPlayer()
 
   TextureLoader texLoader;
   unsigned int playertexID = texLoader.load2DTexture("../AncientArcher/cpp/pckgs/sideScrollerPlayer/plzno.png");
-
+  weaponTexID = texLoader.load2DTexture("../AncientArcher/cpp/pckgs/sideScrollerPlayer/weapon.png");
+  
   playerModel = std::make_unique<PrimativeRenderer>();
   Entity* e = new Entity(
       ENTITYTYPE::CUBE,
@@ -38,6 +39,23 @@ void SideScrollPlayer::processControls()
 {
   // pass the first entity to the controls
   controls.sideScrollPlayerKeyboardInput(playerModel->getEntityPtr());
+}
+
+void SideScrollPlayer::attack()
+{
+  _isAttacking = true;
+
+  Entity* e = new Entity(
+    ENTITYTYPE::CUBE,
+    *playerModel->getEntityPtr()->gameItem.location + glm::vec3(1.0f, 0.3f, 0.1f),
+    glm::vec3(1.0f, 1.0f, 1.0f),
+    weaponTexID,
+    true
+  );
+
+  playerModel->addToPrimativeEntities(*e);
+
+  _timeSinceLastAttack = 0.f;
 }
 
 /**
