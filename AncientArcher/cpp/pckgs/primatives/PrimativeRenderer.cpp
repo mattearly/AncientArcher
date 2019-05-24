@@ -90,6 +90,14 @@ Shader* PrimativeRenderer::getShader()
   return primShader.get();
 }
 
+void PrimativeRenderer::entityPopBack()
+{
+  if (entities.size() > 0)
+  {
+    entities.pop_back();
+  }
+}
+
 // --- PRIVATE FUNCTIONS --- //
 
 /**

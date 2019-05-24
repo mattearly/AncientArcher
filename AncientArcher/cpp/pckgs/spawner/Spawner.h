@@ -15,6 +15,8 @@ public:
 
   void render();
 
+  void despawn();
+
   Collider* getCollider();
   Entity* getEntity();
   unsigned int getAliveCount();

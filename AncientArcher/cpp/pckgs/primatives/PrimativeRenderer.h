@@ -16,6 +16,8 @@ public:
   Entity* getEntityPtr();  // returns ptr to first entity
   Shader* getShader();
 
+  void entityPopBack();
+
 private:
 
   void drawCube();

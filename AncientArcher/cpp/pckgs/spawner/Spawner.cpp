@@ -20,6 +20,8 @@ void Spawner::checkAndSpawn(float deltaTime)
 {
   static float timeAccumulator = 0;
 
+  static float totalNumberSpawned = 0;
+
   if (_numberAlive < _popCap)
   {
     timeAccumulator += deltaTime;
@@ -27,10 +29,12 @@ void Spawner::checkAndSpawn(float deltaTime)
     if (timeAccumulator > _timeBetweenSpawns)
     {
 
+      totalNumberSpawned += 1.f;
+
       // spawn enemy thing
       Entity* e = new Entity(
         ENTITYTYPE::CUBE,
-        glm::vec3(30.f, 2.2f, 0.f),
+        glm::vec3(20.f * totalNumberSpawned, 2.2f, 0.f),
         glm::vec3(1.7f, 2.7f, 0.03f),
         enemyTexID,
         true
@@ -44,6 +48,9 @@ void Spawner::checkAndSpawn(float deltaTime)
 
       _numberAlive++;
       timeAccumulator = 0.f;
+
+      playgruntsound();
+
     }
   }
   else
@@ -72,6 +79,12 @@ void Spawner::setPopulationCap(unsigned int max)
 void Spawner::render()
 {
   enemyModel->render();
+}
+
+void Spawner::despawn()
+{
+  enemyModel->entityPopBack();
+  _numberAlive--;
 }
 
 /**

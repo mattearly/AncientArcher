@@ -33,8 +33,9 @@ void Game::mainLoop() {
       {
         //sideScrollPlayer->getEntity()->moveBy(glm::vec3(-2.5f, 0.f, 0.f));
         //camera.Position.x -= 2.5f;   // hack to keep the cam in place with the player
-        spawnedEnemies->getEntity()->moveBy(glm::vec3(2.5f, 0.f, 0.f));
-        playlandingsound();
+        //spawnedEnemies->getEntity()->moveBy(glm::vec3(2.5f, 0.f, 0.f));
+        spawnedEnemies->despawn();
+        playswordswingsound();
       }
       collisionCheckTime = 0.f;
     }
