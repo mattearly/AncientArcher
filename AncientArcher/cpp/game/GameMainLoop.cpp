@@ -28,12 +28,11 @@ void Game::mainLoop() {
     collisionCheckTime += deltaTime;
     if (spawnedEnemies->getAliveCount() > 0 && collisionCheckTime > 0.2f)
     {
-      if ( mearly::AABB_vs_AABB_3D( sideScrollPlayer->getCollider()->impasse, 
+      if ( mearly::AABB_vs_AABB_3D( sideScrollPlayer->getSwordCollider()->impasse, 
                                     spawnedEnemies->getCollider()->impasse ) )
       {
-        // push both back
-        sideScrollPlayer->getEntity()->moveBy(glm::vec3(-2.5f, 0.f, 0.f));
-        camera.Position.x -= 2.5f;   // hack to keep the cam in place with the player
+        //sideScrollPlayer->getEntity()->moveBy(glm::vec3(-2.5f, 0.f, 0.f));
+        //camera.Position.x -= 2.5f;   // hack to keep the cam in place with the player
         spawnedEnemies->getEntity()->moveBy(glm::vec3(2.5f, 0.f, 0.f));
         playlandingsound();
       }

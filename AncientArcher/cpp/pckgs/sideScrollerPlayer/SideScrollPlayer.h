@@ -16,6 +16,8 @@ public:
 
   Collider* getCollider();
 
+  Collider* getSwordCollider();
+
   Entity* getEntity();
 
 private:

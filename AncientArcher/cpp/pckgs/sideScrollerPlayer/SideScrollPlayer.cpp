@@ -38,7 +38,7 @@ SideScrollPlayer::SideScrollPlayer()
 void SideScrollPlayer::processControls()
 {
   // pass the first entity to the controls
-  controls.sideScrollPlayerKeyboardInput(playerModel->getEntityPtr());
+  controls.sideScrollPlayerKeyboardInput(playerModel->getEntityPtr(), 2);
 }
 
 void SideScrollPlayer::attack()
@@ -47,8 +47,8 @@ void SideScrollPlayer::attack()
 
   Entity* e = new Entity(
     ENTITYTYPE::CUBE,
-    *playerModel->getEntityPtr()->gameItem.location + glm::vec3(1.0f, 0.3f, 0.1f),
-    glm::vec3(1.0f, 1.0f, 1.0f),
+    *playerModel->getEntityPtr()->gameItem.location + glm::vec3(1.5f, 2.3f, 0.f),
+    glm::vec3(1.5f, 1.0f, 0.03f),
     weaponTexID,
     true
   );
@@ -79,6 +79,11 @@ void SideScrollPlayer::render()
 Collider* SideScrollPlayer::getCollider()
 {
   return playerModel->getEntityPtr()->collider;
+}
+
+Collider* SideScrollPlayer::getSwordCollider()
+{
+  return (playerModel->getEntityPtr() + 1)->collider;
 }
 
 /**
