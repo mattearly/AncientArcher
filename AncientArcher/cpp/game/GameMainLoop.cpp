@@ -26,17 +26,27 @@ void Game::mainLoop() {
     // this collision is all a hack, don't take it too seriously hahahaha
     static float collisionCheckTime = 0.f;
     collisionCheckTime += deltaTime;
-    if (spawnedEnemies->getAliveCount() > 0 && sideScrollPlayer->getSwordCollider() && collisionCheckTime > 0.2f)
+    if (spawnedEnemies->getAliveCount() > 0 && collisionCheckTime > 0.2f)
     {
-      if ( mearly::AABB_vs_AABB_3D( sideScrollPlayer->getSwordCollider()->impasse, 
-                                    spawnedEnemies->getCollider()->impasse ) )
+
+      if (sideScrollPlayer->getSwordCollider() &&
+        mearly::AABB_vs_AABB_3D(sideScrollPlayer->getSwordCollider()->impasse,
+          spawnedEnemies->getCollider()->impasse))
       {
-        //sideScrollPlayer->getEntity()->moveBy(glm::vec3(-2.5f, 0.f, 0.f));
-        //camera.Position.x -= 2.5f;   // hack to keep the cam in place with the player
-        //spawnedEnemies->getEntity()->moveBy(glm::vec3(2.5f, 0.f, 0.f));
-        spawnedEnemies->despawn();
+        spawnedEnemies->takeHit(sideScrollPlayer->getAttackDamage());
         playswordswingsound();
       }
+      else if (mearly::AABB_vs_AABB_3D(sideScrollPlayer->getCollider()->impasse,
+        spawnedEnemies->getCollider()->impasse))
+      {
+        sideScrollPlayer->takeHit(spawnedEnemies->getDamage());
+        sideScrollPlayer->getEntity()->moveBy(glm::vec3(-3.5f, 0.f, 0.f));  //knock player back
+        camera.Position.x -= 3.5f;   // hack to keep the cam in place with the player
+        playpunchsound();
+      }
+
+
+//spawnedEnemies->getEntity()->moveBy(glm::vec3(2.5f, 0.f, 0.f));
       collisionCheckTime = 0.f;
     }
 
