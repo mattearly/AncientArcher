@@ -31,7 +31,7 @@ Game::Game() {
   spawnedEnemies = new Spawner();
   spawnedEnemies->init();
   spawnedEnemies->setPopulationCap(1);
-  spawnedEnemies->setTimeBetweenSpawns(5.f);
+  spawnedEnemies->setTimeBetweenSpawns(1.2f);
 
 
   // ---------- PRELOAD ENVIRORNMENT DETAILS ---------- //
