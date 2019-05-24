@@ -34,8 +34,8 @@ void Spawner::checkAndSpawn(float deltaTime)
       // spawn enemy thing
       Entity* e = new Entity(
         ENTITYTYPE::CUBE,
-        glm::vec3(20.f * totalNumberSpawned, 2.2f, 0.f),
-        glm::vec3(1.7f, 2.7f, 0.03f),
+        glm::vec3(21.f * totalNumberSpawned, 2.79f, 0.f),
+        glm::vec3(2.5f, 4.1f, 0.03f),
         enemyTexID,
         true
       );
@@ -50,6 +50,8 @@ void Spawner::checkAndSpawn(float deltaTime)
       timeAccumulator = 0.f;
 
       playgruntsound();
+
+      _currentHP = _defaultHP;
 
     }
   }
@@ -81,10 +83,24 @@ void Spawner::render()
   enemyModel->render();
 }
 
+void Spawner::takeHit(float damage)
+{
+  _currentHP -= damage;
+  if (_currentHP < 0.f)
+  {
+    despawn();
+  }
+}
+
 void Spawner::despawn()
 {
   enemyModel->entityPopBack();
   _numberAlive--;
+}
+
+float Spawner::getDamage()
+{
+  return _minionAttackDamage;
 }
 
 /**

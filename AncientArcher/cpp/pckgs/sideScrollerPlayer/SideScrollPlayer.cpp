@@ -3,6 +3,7 @@
 #include <Entity.h>
 #include <TextureLoader.h>
 #include <glad/glad.h>
+#include <Sound.h>
 
 extern Controls controls;  // originally declared in Display.cpp
 
@@ -16,12 +17,11 @@ SideScrollPlayer::SideScrollPlayer()
   playerModel = std::make_unique<PrimativeRenderer>();
   Entity* e = new Entity(
     ENTITYTYPE::CUBE,
-    glm::vec3(0.f, 2.2f, 0.f),
-    glm::vec3(1.5f, 2.5f, 0.03f),
+    glm::vec3(0.f, 2.5f, 0.f),
+    glm::vec3(2.3f, 3.5f, 0.03f),
     playertexID,
     true
   );
-
   playerModel->addToPrimativeEntities(*e);
   delete e;
 
@@ -49,8 +49,8 @@ void SideScrollPlayer::attack()
 
     Entity* e = new Entity(
       ENTITYTYPE::CUBE,
-      *playerModel->getEntityPtr()->gameItem.location + glm::vec3(1.5f, 2.3f, 0.f),
-      glm::vec3(1.5f, 1.0f, 0.03f),
+      *playerModel->getEntityPtr()->gameItem.location + glm::vec3(2.15f, 2.8f, 0.f),
+      glm::vec3(2.0f, 1.5f, 0.03f),
       weaponTexID,
       true
     );
@@ -122,8 +122,28 @@ bool SideScrollPlayer::isAttacking()
   return _isAttacking;
 }
 
+float SideScrollPlayer::getAttackDamage()
+{
+  return _attackDamage;
+}
+
+void SideScrollPlayer::takeHit(float damage)
+{
+  _currentHP -= damage;
+  if (_currentHP < 0.f)
+  {
+    // dead
+    playsuccesssound();
+  }
+}
+
+/**
+ * This despawns the sword ( entity 2 ) 
+ */
 void SideScrollPlayer::stopAttacking()
 {
-  playerModel->entityPopBack();
+  if (playerModel->size() > 1) {
+    playerModel->entityPopBack();
+  }
 }
 

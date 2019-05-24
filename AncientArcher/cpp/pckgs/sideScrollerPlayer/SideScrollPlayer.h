@@ -24,6 +24,10 @@ public:
 
   bool isAttacking();
 
+  float getAttackDamage();
+
+  void takeHit(float damage);
+
 private:
   
   std::unique_ptr<PrimativeRenderer> playerModel;
@@ -37,6 +41,10 @@ private:
   float _timeSinceLastAttack = 0.f;
 
   float _attackDamage = 1.f;
+
+  float _maxHP = 2.9999f;
+
+  float _currentHP = _maxHP;
 
   void stopAttacking();
 

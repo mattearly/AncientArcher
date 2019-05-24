@@ -15,7 +15,11 @@ public:
 
   void render();
 
+  void takeHit(float damage);
+
   void despawn();
+
+  float getDamage();
 
   Collider* getCollider();
   Entity* getEntity();
@@ -33,5 +37,11 @@ private:
   float _timeBetweenSpawns = 0.f;
 
   unsigned int enemyTexID = 0;
+
+  float _defaultHP = 2.1f;
+
+  float _currentHP = _defaultHP;
+
+  float _minionAttackDamage = 1.0f;
 
 };
