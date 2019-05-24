@@ -289,7 +289,7 @@ void Controls::sideScrollPlayerKeyboardInput(Entity* entity, unsigned int numEnt
   {
     for (int i = 0; i < numEntities; ++i)
     {
-      (entity + i)->moveTo(glm::vec3((entity+i)->gameItem.location[0], 3.2f, 0.f));  // needs delta time just testing
+      (entity + i)->moveTo(glm::vec3((entity+i)->gameItem.location[0], 4.3f, 0.f));  // needs delta time just testing
     }
   }
 
@@ -329,7 +329,7 @@ void Controls::sideScrollPlayerKeyboardInput(Entity* entity, unsigned int numEnt
   {
     for (int i = 0; i < numEntities; ++i)
     {
-      (entity + i)->moveTo(glm::vec3((entity + i)->gameItem.location[0], 2.2f, 0.f));  // needs delta time just testing
+      (entity + i)->moveTo(glm::vec3((entity + i)->gameItem.location[0], 5.f, 0.f));  // needs delta time just testing
     }
   }
 
@@ -396,7 +396,7 @@ void Controls::sideScrollPlayerKeyboardInput(SideScrollPlayer* ssp)
     if (ssp->isAttacking()) count++;
     for (int i = 0; i < count; ++i)
     {
-      (ssp->getEntity() + i)->moveTo(glm::vec3((ssp->getEntity() + i)->gameItem.location[0], 3.2f, 0.f));  // needs delta time just testing
+      (ssp->getEntity() + i)->moveTo(glm::vec3((ssp->getEntity() + i)->gameItem.location[0], 4.2f, 0.f));  // needs delta time just testing
     }
   }
 
@@ -438,7 +438,7 @@ void Controls::sideScrollPlayerKeyboardInput(SideScrollPlayer* ssp)
     if (ssp->isAttacking()) count++;
     for (int i = 0; i < count; ++i)
     {
-      (ssp->getEntity() + i)->moveTo(glm::vec3((ssp->getEntity() + i)->gameItem.location[0], 2.2f, 0.f));  // needs delta time just testing
+      (ssp->getEntity() + i)->moveTo(glm::vec3((ssp->getEntity() + i)->gameItem.location[0], 2.5f, 0.f));  // needs delta time just testing
     }
   }
 }
