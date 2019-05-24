@@ -18,6 +18,8 @@ public:
 
   void sideScrollPlayerKeyboardInput(Entity* entity);
 
+  void sideScrollPlayerKeyboardInput(Entity* entity, unsigned int numEntities );
+
 private:
 
   bool firstMouse;
