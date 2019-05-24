@@ -1,9 +1,9 @@
 #pragma once
 #include "../../pckgs/skybox/SkyboxRenderer.h"
 #include "../../pckgs/primatives/PrimativeRenderer.h"
-#include "../../pckgs/monospaceFont/TextRenderer.h"
 #include "../pckgs/sideScrollerPlayer/SideScrollPlayer.h"
 #include "../pckgs/masterRenderer/MasterRenderer.h"
+#include "../pckgs/GUI/HealthBar.h"
 #include "../pckgs/spawner/Spawner.h"
 
 class Game {
@@ -13,7 +13,7 @@ public:
   Spawner* spawnedEnemies;
   PrimativeRenderer* primativeRenderer;
   SkyboxRenderer* skyboxRenderer;
-  TextRenderer* textRenderer;
+  HealthBar* healthBar;
 
   MasterRenderer masterRenderer;
 

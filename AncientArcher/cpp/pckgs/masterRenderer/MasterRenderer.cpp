@@ -25,7 +25,7 @@ void MasterRenderer::disableGLDepthTest() {
   glDisable(GL_DEPTH_TEST);
 }
 
-void MasterRenderer::update(PrimativeRenderer* primRen, SideScrollPlayer* playerRen, Spawner* enemyRen, TextRenderer* textRen, SkyboxRenderer* skyRen, float deltaTime)
+void MasterRenderer::update(PrimativeRenderer* primRen, SideScrollPlayer* playerRen, Spawner* enemyRen, HealthBar* healthRen, SkyboxRenderer* skyRen, float deltaTime)
 {
   display.clear();
 
@@ -35,10 +35,10 @@ void MasterRenderer::update(PrimativeRenderer* primRen, SideScrollPlayer* player
 
   enemyRen->render();
 
+  healthRen->render();
+
   skyRen->render();
 
-  //textRen->renderText(0, 0, "this is a test");
-
   display.update();
-}
 
+}

@@ -32,6 +32,8 @@ Game::Game() {
   spawnedEnemies->setPopulationCap(1);
   spawnedEnemies->setTimeBetweenSpawns(1.2f);
 
+  healthBar = new HealthBar();
+
 
   // ---------- PRELOAD ENVIRORNMENT DETAILS ---------- //
   primativeRenderer = new PrimativeRenderer();

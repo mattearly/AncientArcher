@@ -1,11 +1,12 @@
 #pragma once
-#include "../monospaceFont/TextRenderer.h"
 #include "../primatives/PrimativeRenderer.h"
 #include "../skybox/SkyboxRenderer.h"
 #include "../firstPersonPlayer/Player.h"
-#include <vector>
 #include "../sideScrollerPlayer/SideScrollPlayer.h"
 #include "../spawner/Spawner.h"
+#include "../GUI/HealthBar.h"
+#include <vector>
+
 class MasterRenderer {
 public:
   MasterRenderer();
@@ -18,7 +19,7 @@ public:
   void disableGLDepthTest();
 
   void update(PrimativeRenderer* primRen, SideScrollPlayer* playerRen, 
-    Spawner* enemyRen, TextRenderer* textRen, SkyboxRenderer* skyRen, 
+    Spawner* enemyRen, HealthBar* healthRen, SkyboxRenderer* skyRen, 
     float deltaTime);
 
 private:

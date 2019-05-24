@@ -52,7 +52,7 @@ void Game::mainLoop() {
 
     sideScrollPlayer->attackTimer(deltaTime);
 
-    masterRenderer.update(primativeRenderer, sideScrollPlayer, spawnedEnemies, textRenderer, skyboxRenderer, deltaTime);
+    masterRenderer.update(primativeRenderer, sideScrollPlayer, spawnedEnemies, healthBar, skyboxRenderer, deltaTime);
 
     glfwPollEvents();
   }
