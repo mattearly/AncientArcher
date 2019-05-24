@@ -3,6 +3,7 @@
 #include <glad/glad.h>
 #include <GLFW/glfw3.h>
 #include <Entity.h>
+#include "../../pckgs/sideScrollerPlayer/SideScrollPlayer.h"
 
 class Controls {
 
@@ -19,6 +20,8 @@ public:
   void sideScrollPlayerKeyboardInput(Entity* entity);
 
   void sideScrollPlayerKeyboardInput(Entity* entity, unsigned int numEntities );
+
+  void sideScrollPlayerKeyboardInput(SideScrollPlayer* ssp);
 
 private:
 

@@ -242,8 +242,6 @@ void Controls::sideScrollPlayerKeyboardInput(Entity* entity, unsigned int numEnt
 
   if (glfwGetMouseButton(display.window, GLFW_MOUSE_BUTTON_LEFT) == GLFW_PRESS)
   {
-    // left click
-  /*  playbowsound();*/
   }
 
   if (glfwGetKey(display.window, GLFW_KEY_ESCAPE) == GLFW_PRESS)
@@ -335,6 +333,114 @@ void Controls::sideScrollPlayerKeyboardInput(Entity* entity, unsigned int numEnt
     }
   }
 
+}
+
+void Controls::sideScrollPlayerKeyboardInput(SideScrollPlayer* ssp)
+{
+
+  // todo: need bools to go with, this just keep repeating if held
+
+  if (glfwGetMouseButton(display.window, GLFW_MOUSE_BUTTON_LEFT) == GLFW_PRESS)
+  {
+    ssp->attack();
+  }
+
+  if (glfwGetKey(display.window, GLFW_KEY_ESCAPE) == GLFW_PRESS)
+  {
+    glfwSetWindowShouldClose(display.window, true);  // closes app
+  }
+
+  if (glfwGetKey(display.window, GLFW_KEY_LEFT_SHIFT) == GLFW_PRESS)
+  {
+  }
+
+  if (glfwGetKey(display.window, GLFW_KEY_W) == GLFW_PRESS)
+  {
+  }
+
+  if (glfwGetKey(display.window, GLFW_KEY_S) == GLFW_PRESS)
+  {
+  }
+
+  if (glfwGetKey(display.window, GLFW_KEY_A) == GLFW_PRESS)
+  {
+    int count = 1;
+    if (ssp->isAttacking()) count++;
+    for (int i = 0; i < count; ++i)
+    {
+      (ssp->getEntity() + i)->moveBy(glm::vec3(-0.1f, 0.0f, 0.0f));  // needs delta time just testing
+    }
+    camera.Position.x -= 0.1f;   // hack to keep the cam in place with the player
+  }
+
+  if (glfwGetKey(display.window, GLFW_KEY_D) == GLFW_PRESS)
+  {
+    int count = 1;
+    if (ssp->isAttacking()) count++;
+    for (int i = 0; i < count; ++i)
+    {
+      (ssp->getEntity() + i)->moveBy(glm::vec3(0.1f, 0.0f, 0.0f));  // needs delta time just testing
+    }
+    camera.Position.x += 0.1f;   // hack to keep the cam in place with the player
+
+  }
+
+  if (glfwGetKey(display.window, GLFW_KEY_M) == GLFW_PRESS)
+  {
+    toggleAmbientWindyNight();
+  }
+
+  if (glfwGetKey(display.window, GLFW_KEY_SPACE) == GLFW_PRESS)
+  {
+    int count = 1;
+    if (ssp->isAttacking()) count++;
+    for (int i = 0; i < count; ++i)
+    {
+      (ssp->getEntity() + i)->moveTo(glm::vec3((ssp->getEntity() + i)->gameItem.location[0], 3.2f, 0.f));  // needs delta time just testing
+    }
+  }
+
+  if (glfwGetKey(display.window, GLFW_KEY_0) == GLFW_PRESS)
+  {
+  }
+
+  if (glfwGetKey(display.window, GLFW_KEY_1) == GLFW_PRESS)
+  {
+  }
+
+  if (glfwGetKey(display.window, GLFW_KEY_2) == GLFW_PRESS)
+  {
+  }
+
+  if (glfwGetKey(display.window, GLFW_KEY_W) == GLFW_RELEASE)
+  {
+  }
+
+  if (glfwGetKey(display.window, GLFW_KEY_S) == GLFW_RELEASE)
+  {
+  }
+
+  if (glfwGetKey(display.window, GLFW_KEY_A) == GLFW_RELEASE)
+  {
+  }
+
+  if (glfwGetKey(display.window, GLFW_KEY_D) == GLFW_RELEASE)
+  {
+  }
+
+  if (glfwGetKey(display.window, GLFW_KEY_LEFT_SHIFT) == GLFW_RELEASE)
+  {
+  }
+
+  if (glfwGetKey(display.window, GLFW_KEY_SPACE) == GLFW_RELEASE)
+  {
+    int count = 1;
+    if (ssp->isAttacking()) count++;
+    for (int i = 0; i < count; ++i)
+    {
+      (ssp->getEntity() + i)->moveTo(glm::vec3((ssp->getEntity() + i)->gameItem.location[0], 2.2f, 0.f));  // needs delta time just testing
+    }
+  }
 }
 
 // ---- SIDESCROLLER ---- //
