@@ -15,6 +15,8 @@ public:
   std::vector<Entity>* getEntites();
   Entity* getEntityPtr();  // returns ptr to first entity
   Shader* getShader();
+  
+  unsigned int size();
 
   void entityPopBack();
 
