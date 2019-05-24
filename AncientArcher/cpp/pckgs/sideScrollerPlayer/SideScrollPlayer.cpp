@@ -124,6 +124,7 @@ bool SideScrollPlayer::isAttacking()
 
 float SideScrollPlayer::getAttackDamage()
 {
+  stopAttacking();
   return _attackDamage;
 }
 

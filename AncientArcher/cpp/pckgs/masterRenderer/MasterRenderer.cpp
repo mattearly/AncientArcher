@@ -35,7 +35,7 @@ void MasterRenderer::update(PrimativeRenderer* primRen, SideScrollPlayer* player
 
   enemyRen->render();
 
-  healthRen->render();
+  //healthRen->render();
 
   skyRen->render();
 

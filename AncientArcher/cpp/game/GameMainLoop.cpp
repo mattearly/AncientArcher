@@ -34,6 +34,7 @@ void Game::mainLoop() {
           spawnedEnemies->getCollider()->impasse))
       {
         spawnedEnemies->takeHit(sideScrollPlayer->getAttackDamage());
+        //sideScrollPlayer->
         playswordswingsound();
       }
       else if (mearly::AABB_vs_AABB_3D(sideScrollPlayer->getCollider()->impasse,
