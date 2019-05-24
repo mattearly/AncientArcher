@@ -153,7 +153,7 @@ void Controls::sideScrollPlayerKeyboardInput(Entity* entity)
   if (glfwGetMouseButton(display.window, GLFW_MOUSE_BUTTON_LEFT) == GLFW_PRESS)
   {
     // left click
-    playbowsound();
+  /*  playbowsound();*/
   }
 
   if (glfwGetKey(display.window, GLFW_KEY_ESCAPE) == GLFW_PRESS)
