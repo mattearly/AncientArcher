@@ -10,17 +10,18 @@ public:
 
   void processControls();
 
-  void attack();
+  void spawnSword();
+  void despawnSword();
 
   void render();
 
-  Collider* getCollider();
+  Collider* getPlayerCollider();
 
-  Collider* getSwordCollider();
+  Collider* getPlayerSwordCollider();
 
   Entity* getEntity();
 
-  void attackTimer(float deltaTime);
+  void updateAttackTimer(float deltaTime);
 
   bool isAttacking();
 
@@ -45,8 +46,4 @@ private:
   float _maxHP = 2.9999f;
 
   float _currentHP = _maxHP;
-
-  void stopAttacking();
-
-
 };

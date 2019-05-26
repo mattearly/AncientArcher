@@ -370,7 +370,7 @@ void Controls::sideScrollPlayerKeyboardInput(SideScrollPlayer* ssp)
   i = 0;
   if (glfwGetMouseButton(display.window, GLFW_MOUSE_BUTTON_LEFT) == GLFW_PRESS)
   {
-    ssp->attack();
+    ssp->spawnSword();
   }
 
   if (glfwGetKey(display.window, GLFW_KEY_ESCAPE) == GLFW_PRESS)

@@ -29,15 +29,15 @@ void Game::mainLoop() {
     if (spawnedEnemies->getAliveCount() > 0 && collisionCheckTime > 0.2f)
     {
 
-      if (sideScrollPlayer->getSwordCollider() &&
-        mearly::AABB_vs_AABB_3D(sideScrollPlayer->getSwordCollider()->impasse,
+      if (sideScrollPlayer->getPlayerSwordCollider() &&
+        mearly::AABB_vs_AABB_3D(sideScrollPlayer->getPlayerSwordCollider()->impasse,
           spawnedEnemies->getCollider()->impasse))
       {
         spawnedEnemies->takeHit(sideScrollPlayer->getAttackDamage());
         //sideScrollPlayer->
         playswordswingsound();
       }
-      else if (mearly::AABB_vs_AABB_3D(sideScrollPlayer->getCollider()->impasse,
+      else if (mearly::AABB_vs_AABB_3D(sideScrollPlayer->getPlayerCollider()->impasse,
         spawnedEnemies->getCollider()->impasse))
       {
         sideScrollPlayer->takeHit(spawnedEnemies->getDamage());
@@ -51,7 +51,7 @@ void Game::mainLoop() {
       collisionCheckTime = 0.f;
     }
 
-    sideScrollPlayer->attackTimer(deltaTime);
+    sideScrollPlayer->updateAttackTimer(deltaTime);
 
     masterRenderer.update(primativeRenderer, sideScrollPlayer, spawnedEnemies, healthBar, skyboxRenderer, deltaTime);
 

@@ -41,7 +41,7 @@ void SideScrollPlayer::processControls()
   controls.sideScrollPlayerKeyboardInput(this);
 }
 
-void SideScrollPlayer::attack()
+void SideScrollPlayer::spawnSword()
 {
   if (!_isAttacking && playerModel->size() == 1)
   {
@@ -79,12 +79,12 @@ void SideScrollPlayer::render()
 /**
  * Returns the first Entity collider
  */
-Collider* SideScrollPlayer::getCollider()
+Collider* SideScrollPlayer::getPlayerCollider()
 {
   return playerModel->getEntityPtr()->collider;
 }
 
-Collider* SideScrollPlayer::getSwordCollider()
+Collider* SideScrollPlayer::getPlayerSwordCollider()
 {
   if (_isAttacking)
   { 
@@ -104,7 +104,7 @@ Entity* SideScrollPlayer::getEntity()
   return playerModel->getEntityPtr();
 }
 
-void SideScrollPlayer::attackTimer(float deltaTime)
+void SideScrollPlayer::updateAttackTimer(float deltaTime)
 {
   if (_isAttacking)
   {
@@ -112,7 +112,7 @@ void SideScrollPlayer::attackTimer(float deltaTime)
     if (_timeSinceLastAttack > _timeBetweenAttacks)
     {
       _isAttacking = false;
-      stopAttacking();
+      despawnSword();
     }
   }
 }
@@ -124,7 +124,7 @@ bool SideScrollPlayer::isAttacking()
 
 float SideScrollPlayer::getAttackDamage()
 {
-  stopAttacking();
+  despawnSword();
   return _attackDamage;
 }
 
@@ -141,7 +141,7 @@ void SideScrollPlayer::takeHit(float damage)
 /**
  * This despawns the sword ( entity 2 ) 
  */
-void SideScrollPlayer::stopAttacking()
+void SideScrollPlayer::despawnSword()
 {
   if (playerModel->size() > 1) {
     playerModel->entityPopBack();
