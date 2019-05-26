@@ -20,38 +20,48 @@ void Game::mainLoop() {
 
     sideScrollPlayer->processControls();
 
-    spawnedEnemies->checkAndSpawn(deltaTime);
 
 
-    // this collision is all a hack, don't take it too seriously hahahaha
-    static float collisionCheckTime = 0.f;
-    collisionCheckTime += deltaTime;
-    if (spawnedEnemies->getAliveCount() > 0 && collisionCheckTime > 0.2f)
+    if (spawnedEnemies->getAliveCount() > 0)
     {
+      spawnedEnemies->getEntity()->moveBy(glm::vec3(-2.0f * deltaTime, 0.f, 0.f));
 
-      if (sideScrollPlayer->getPlayerSwordCollider() &&
-        mearly::AABB_vs_AABB_3D(sideScrollPlayer->getPlayerSwordCollider()->impasse,
+      // Collision Player & Enemies
+        // uses SideScrollPlayer, Spawner, & Camera
+      static float collisionTimeOut = 0.0000f;
+      if (collisionTimeOut > 0.0001f) {
+        collisionTimeOut -= deltaTime;
+      }
+      if (collisionTimeOut < 0.0001f)
+      {
+        if (sideScrollPlayer->getPlayerSwordCollider() &&
+          mearly::AABB_vs_AABB_3D(sideScrollPlayer->getPlayerSwordCollider()->impasse,
+            spawnedEnemies->getCollider()->impasse))
+        {
+          spawnedEnemies->takeHit(sideScrollPlayer->getAttackDamage());
+          playswordswingsound();
+          collisionTimeOut = 0.8f;
+        }
+        else if (mearly::AABB_vs_AABB_3D(sideScrollPlayer->getPlayerCollider()->impasse,
           spawnedEnemies->getCollider()->impasse))
-      {
-        spawnedEnemies->takeHit(sideScrollPlayer->getAttackDamage());
-        //sideScrollPlayer->
-        playswordswingsound();
-      }
-      else if (mearly::AABB_vs_AABB_3D(sideScrollPlayer->getPlayerCollider()->impasse,
-        spawnedEnemies->getCollider()->impasse))
-      {
-        sideScrollPlayer->takeHit(spawnedEnemies->getDamage());
-        sideScrollPlayer->getEntity()->moveBy(glm::vec3(-3.5f, 0.f, 0.f));  //knock player back
-        camera.Position.x -= 3.5f;   // hack to keep the cam in place with the player
-        playpunchsound();
-      }
+        {
+          sideScrollPlayer->takeHit(spawnedEnemies->getDamage());
+          sideScrollPlayer->getEntity()->moveBy(glm::vec3(-3.5f, 0.f, 0.f));  //knock player back
+          camera.Position.x -= 3.5f;   // hack to keep the cam in place with the player
+          playpunchsound();
+          collisionTimeOut = 0.1f;
 
-
-//spawnedEnemies->getEntity()->moveBy(glm::vec3(2.5f, 0.f, 0.f));
-      collisionCheckTime = 0.f;
+        }
+        else
+        {
+          collisionTimeOut = 0.f;
+        }
+      }
     }
 
     sideScrollPlayer->updateAttackTimer(deltaTime);
+
+    spawnedEnemies->checkAndSpawn(deltaTime);
 
     masterRenderer.update(primativeRenderer, sideScrollPlayer, spawnedEnemies, healthBar, skyboxRenderer, deltaTime);
 
