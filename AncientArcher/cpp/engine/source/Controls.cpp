@@ -265,7 +265,8 @@ void Controls::sideScrollPlayerKeyboardInput(Entity* entity, unsigned int numEnt
 {
 
   // todo: need bools to go with, this just keep repeating if held
-
+  static unsigned int i = 0;
+  i = 0;
   if (glfwGetMouseButton(display.window, GLFW_MOUSE_BUTTON_LEFT) == GLFW_PRESS)
   {
   }
@@ -289,7 +290,7 @@ void Controls::sideScrollPlayerKeyboardInput(Entity* entity, unsigned int numEnt
 
   if (glfwGetKey(display.window, GLFW_KEY_A) == GLFW_PRESS)
   {
-    for (int i = 0; i < numEntities; ++i)
+    for (i = 0; i < numEntities; ++i)
     {
       (entity + i)->moveBy(glm::vec3(-0.1f, 0.0f, 0.0f));  // needs delta time just testing
     }
@@ -298,7 +299,7 @@ void Controls::sideScrollPlayerKeyboardInput(Entity* entity, unsigned int numEnt
 
   if (glfwGetKey(display.window, GLFW_KEY_D) == GLFW_PRESS)
   {
-    for (int i = 0; i < numEntities; ++i)
+    for (i = 0; i < numEntities; ++i)
     {
       (entity + i)->moveBy(glm::vec3(0.1f, 0.0f, 0.0f));  // needs delta time just testing
     }
@@ -313,7 +314,7 @@ void Controls::sideScrollPlayerKeyboardInput(Entity* entity, unsigned int numEnt
 
   if (glfwGetKey(display.window, GLFW_KEY_SPACE) == GLFW_PRESS)
   {
-    for (int i = 0; i < numEntities; ++i)
+    for (i = 0; i < numEntities; ++i)
     {
       (entity + i)->moveTo(glm::vec3((entity + i)->gameItem.location[0], 4.3f, 0.f));  // needs delta time just testing
     }
@@ -353,7 +354,7 @@ void Controls::sideScrollPlayerKeyboardInput(Entity* entity, unsigned int numEnt
 
   if (glfwGetKey(display.window, GLFW_KEY_SPACE) == GLFW_RELEASE)
   {
-    for (int i = 0; i < numEntities; ++i)
+    for (i = 0; i < numEntities; ++i)
     {
       (entity + i)->moveTo(glm::vec3((entity + i)->gameItem.location[0], 5.f, 0.f));  // needs delta time just testing
     }
@@ -365,7 +366,8 @@ void Controls::sideScrollPlayerKeyboardInput(SideScrollPlayer* ssp)
 {
 
   // todo: need bools to go with, this just keep repeating if held
-
+  static unsigned i = 0;
+  i = 0;
   if (glfwGetMouseButton(display.window, GLFW_MOUSE_BUTTON_LEFT) == GLFW_PRESS)
   {
     ssp->attack();
@@ -390,9 +392,9 @@ void Controls::sideScrollPlayerKeyboardInput(SideScrollPlayer* ssp)
 
   if (glfwGetKey(display.window, GLFW_KEY_A) == GLFW_PRESS)
   {
-    int count = 1;
+    unsigned int count = 1;
     if (ssp->isAttacking()) count++;
-    for (int i = 0; i < count; ++i)
+    for (i = 0; i < count; ++i)
     {
       (ssp->getEntity() + i)->moveBy(glm::vec3(-0.1f, 0.0f, 0.0f));  // needs delta time just testing
     }
@@ -403,7 +405,7 @@ void Controls::sideScrollPlayerKeyboardInput(SideScrollPlayer* ssp)
   {
     int count = 1;
     if (ssp->isAttacking()) count++;
-    for (int i = 0; i < count; ++i)
+    for (i = 0; i < count; ++i)
     {
       (ssp->getEntity() + i)->moveBy(glm::vec3(0.1f, 0.0f, 0.0f));  // needs delta time just testing
     }
@@ -420,7 +422,7 @@ void Controls::sideScrollPlayerKeyboardInput(SideScrollPlayer* ssp)
   {
     int count = 1;
     if (ssp->isAttacking()) count++;
-    for (int i = 0; i < count; ++i)
+    for (i = 0; i < count; ++i)
     {
       (ssp->getEntity() + i)->moveTo(glm::vec3((ssp->getEntity() + i)->gameItem.location[0], 4.2f, 0.f));  // needs delta time just testing
     }
@@ -462,7 +464,7 @@ void Controls::sideScrollPlayerKeyboardInput(SideScrollPlayer* ssp)
   {
     int count = 1;
     if (ssp->isAttacking()) count++;
-    for (int i = 0; i < count; ++i)
+    for (i = 0; i < count; ++i)
     {
       (ssp->getEntity() + i)->moveTo(glm::vec3((ssp->getEntity() + i)->gameItem.location[0], 2.5f, 0.f));  // needs delta time just testing
     }
