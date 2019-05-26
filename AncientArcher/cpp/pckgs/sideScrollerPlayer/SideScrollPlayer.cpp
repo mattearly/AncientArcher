@@ -7,6 +7,31 @@
 
 extern Controls controls;  // originally declared in Display.cpp
 
+extern Camera camera;
+
+void SideScrollPlayer::processMovement(float deltaTime)
+{
+  static unsigned int numEntities = 0;
+  static unsigned int j = 0;
+  numEntities = playerModel->getEntites()->size();
+  if (moves.forward || moves.backward)
+  {
+    if (moves.forward) {
+      for (j = 0; j < numEntities; ++j) {
+        (playerModel->getEntityPtr() + j)->moveBy(glm::vec3(11.f * deltaTime, 0.0f, 0.0f));
+      }
+      camera.Position.x += 11.f * deltaTime;
+    }
+    else if (moves.backward) {
+      for (j = 0; j < numEntities; ++j) {
+        (playerModel->getEntityPtr() + j)->moveBy(glm::vec3(-11.f * deltaTime, 0.0f, 0.0f));
+      }
+      camera.Position.x -= 11.f * deltaTime;
+
+    }
+  }
+}
+
 SideScrollPlayer::SideScrollPlayer()
 {
 
@@ -87,8 +112,8 @@ Collider* SideScrollPlayer::getPlayerCollider()
 Collider* SideScrollPlayer::getPlayerSwordCollider()
 {
   if (_isAttacking)
-  { 
-   return (playerModel->getEntityPtr() + 1)->collider;
+  {
+    return (playerModel->getEntityPtr() + 1)->collider;
   }
   else
   {
@@ -134,7 +159,7 @@ void SideScrollPlayer::takeHit(float damage)
 }
 
 /**
- * This despawns the sword ( entity 2 ) 
+ * This despawns the sword ( entity 2 )
  */
 void SideScrollPlayer::despawnSword()
 {

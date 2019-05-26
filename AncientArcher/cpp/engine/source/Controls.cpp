@@ -364,8 +364,6 @@ void Controls::sideScrollPlayerKeyboardInput(Entity* entity, unsigned int numEnt
 
 void Controls::sideScrollPlayerKeyboardInput(SideScrollPlayer* ssp)
 {
-
-  // todo: need bools to go with, this just keep repeating if held
   static unsigned i = 0;
   i = 0;
   if (glfwGetMouseButton(display.window, GLFW_MOUSE_BUTTON_LEFT) == GLFW_PRESS)
@@ -392,25 +390,14 @@ void Controls::sideScrollPlayerKeyboardInput(SideScrollPlayer* ssp)
 
   if (glfwGetKey(display.window, GLFW_KEY_A) == GLFW_PRESS)
   {
-    unsigned int count = 1;
-    if (ssp->isAttacking()) count++;
-    for (i = 0; i < count; ++i)
-    {
-      (ssp->getEntity() + i)->moveBy(glm::vec3(-0.1f, 0.0f, 0.0f));  // needs delta time just testing
-    }
-    camera.Position.x -= 0.1f;   // hack to keep the cam in place with the player
+    ssp->moves.forward = false;
+    ssp->moves.backward = true;
   }
 
   if (glfwGetKey(display.window, GLFW_KEY_D) == GLFW_PRESS)
   {
-    int count = 1;
-    if (ssp->isAttacking()) count++;
-    for (i = 0; i < count; ++i)
-    {
-      (ssp->getEntity() + i)->moveBy(glm::vec3(0.1f, 0.0f, 0.0f));  // needs delta time just testing
-    }
-    camera.Position.x += 0.1f;   // hack to keep the cam in place with the player
-
+    ssp->moves.backward = false;
+    ssp->moves.forward = true;
   }
 
   if (glfwGetKey(display.window, GLFW_KEY_M) == GLFW_PRESS)
@@ -450,10 +437,12 @@ void Controls::sideScrollPlayerKeyboardInput(SideScrollPlayer* ssp)
 
   if (glfwGetKey(display.window, GLFW_KEY_A) == GLFW_RELEASE)
   {
+    ssp->moves.backward = false;
   }
 
   if (glfwGetKey(display.window, GLFW_KEY_D) == GLFW_RELEASE)
   {
+    ssp->moves.forward = false;
   }
 
   if (glfwGetKey(display.window, GLFW_KEY_LEFT_SHIFT) == GLFW_RELEASE)

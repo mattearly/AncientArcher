@@ -6,9 +6,17 @@
 class SideScrollPlayer
 {
 public:
+  struct Moves
+  {
+    bool forward = false, backward = false;
+  } moves;
+  void processMovement(float deltaTime);
+
+
   SideScrollPlayer();
 
   void processControls();
+
 
   void spawnSword();
   void despawnSword();
@@ -46,4 +54,5 @@ private:
   float _maxHP = 2.9999f;
 
   float _currentHP = _maxHP;
+
 };
