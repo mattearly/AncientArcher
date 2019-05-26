@@ -15,7 +15,9 @@ void Spawner::init()
   lighting.setConstantLight(enemyModel->getShader());
 }
 
-
+/**
+ * Call this every frame for it to work as intended.
+ */
 void Spawner::checkAndSpawn(float deltaTime)
 {
   static float timeAccumulator = 0;
@@ -48,9 +50,6 @@ void Spawner::checkAndSpawn(float deltaTime)
 
       _numberAlive++;
       timeAccumulator = 0.f;
-
-      playgruntsound();
-
       _currentHP = _defaultHP;
 
     }
