@@ -131,11 +131,6 @@ float SideScrollPlayer::getAttackDamage()
 void SideScrollPlayer::takeHit(float damage)
 {
   _currentHP -= damage;
-  if (_currentHP < 0.f)
-  {
-    // dead
-    playsuccesssound();
-  }
 }
 
 /**
