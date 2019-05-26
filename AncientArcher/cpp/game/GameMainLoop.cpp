@@ -39,18 +39,18 @@ void Game::mainLoop() {
             spawnedEnemies->getCollider()->impasse))
         {
           spawnedEnemies->takeHit(sideScrollPlayer->getAttackDamage());
+          spawnedEnemies->getEntity()->moveBy(glm::vec3(3.5, 0.f, 0.f));
           playswordswingsound();
-          collisionTimeOut = 0.8f;
+          collisionTimeOut = 0.6f;
         }
         else if (mearly::AABB_vs_AABB_3D(sideScrollPlayer->getPlayerCollider()->impasse,
           spawnedEnemies->getCollider()->impasse))
         {
           sideScrollPlayer->takeHit(spawnedEnemies->getDamage());
           sideScrollPlayer->getEntity()->moveBy(glm::vec3(-3.5f, 0.f, 0.f));  //knock player back
-          camera.Position.x -= 3.5f;   // hack to keep the cam in place with the player
+          camera.Position.x -= 3.5f;   // knock back camera
           playpunchsound();
           collisionTimeOut = 0.1f;
-
         }
         else
         {
