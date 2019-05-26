@@ -20,6 +20,7 @@ Controls::Controls() {
   lastY = 0.f;
 }
 
+
 // ---- FIRST PERSON ---- //
 void Controls::FPPmouseMovement(float xpos, float ypos)
 {
@@ -146,6 +147,31 @@ void Controls::FPPplayerKeyboardInput()
 
 }
 
+
+// ---- SIDESCROLLER ---- //
+void Controls::SSmouseMovement(float xpos, float ypos)
+{
+
+  if (firstMouse) {
+    lastX = xpos;
+    lastY = ypos;
+    firstMouse = false;
+  }
+
+  float xoffset = xpos - lastX;
+  float yoffset = lastY - ypos;
+
+  lastX = xpos;
+  lastY = ypos;
+
+  xoffset *= mouseSensitivity;
+  yoffset *= mouseSensitivity;
+
+  // TODO HANDLE NEW MOUSE POSITION 
+  // OR WAIT FOR CLICK TO HANDLE NEW MOUSE POSITION in sideScrollPlayerKeyboardInput()
+
+}
+
 void Controls::sideScrollPlayerKeyboardInput(Entity* entity)
 {
   // todo: need bools to go with, this just keep repeating if held
@@ -265,7 +291,7 @@ void Controls::sideScrollPlayerKeyboardInput(Entity* entity, unsigned int numEnt
   {
     for (int i = 0; i < numEntities; ++i)
     {
-      (entity+i)->moveBy(glm::vec3(-0.1f, 0.0f, 0.0f));  // needs delta time just testing
+      (entity + i)->moveBy(glm::vec3(-0.1f, 0.0f, 0.0f));  // needs delta time just testing
     }
     camera.Position.x -= 0.1f;   // hack to keep the cam in place with the player
   }
@@ -274,7 +300,7 @@ void Controls::sideScrollPlayerKeyboardInput(Entity* entity, unsigned int numEnt
   {
     for (int i = 0; i < numEntities; ++i)
     {
-      (entity+i)->moveBy(glm::vec3(0.1f, 0.0f, 0.0f));  // needs delta time just testing
+      (entity + i)->moveBy(glm::vec3(0.1f, 0.0f, 0.0f));  // needs delta time just testing
     }
     camera.Position.x += 0.1f;   // hack to keep the cam in place with the player
 
@@ -289,7 +315,7 @@ void Controls::sideScrollPlayerKeyboardInput(Entity* entity, unsigned int numEnt
   {
     for (int i = 0; i < numEntities; ++i)
     {
-      (entity + i)->moveTo(glm::vec3((entity+i)->gameItem.location[0], 4.3f, 0.f));  // needs delta time just testing
+      (entity + i)->moveTo(glm::vec3((entity + i)->gameItem.location[0], 4.3f, 0.f));  // needs delta time just testing
     }
   }
 
@@ -443,26 +469,3 @@ void Controls::sideScrollPlayerKeyboardInput(SideScrollPlayer* ssp)
   }
 }
 
-// ---- SIDESCROLLER ---- //
-void Controls::SSmouseMovement(float xpos, float ypos)
-{
-
-  if (firstMouse) {
-    lastX = xpos;
-    lastY = ypos;
-    firstMouse = false;
-  }
-
-  float xoffset = xpos - lastX;
-  float yoffset = lastY - ypos;
-
-  lastX = xpos;
-  lastY = ypos;
-
-  xoffset *= mouseSensitivity;
-  yoffset *= mouseSensitivity;
-
-  // TODO HANDLE NEW MOUSE POSITION 
-  // OR WAIT FOR CLICK TO HANDLE NEW MOUSE POSITION in sideScrollPlayerKeyboardInput()
-
-}
