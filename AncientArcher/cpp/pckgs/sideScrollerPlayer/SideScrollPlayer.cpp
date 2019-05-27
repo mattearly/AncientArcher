@@ -11,6 +11,7 @@ extern Camera camera;
 
 void SideScrollPlayer::processMovement(float deltaTime)
 {
+  static const float SPEED = 7.f;
   static unsigned int numEntities = 0;
   static unsigned int j = 0;
   numEntities = playerModel->getEntites()->size();
@@ -18,15 +19,15 @@ void SideScrollPlayer::processMovement(float deltaTime)
   {
     if (moves.forward) {
       for (j = 0; j < numEntities; ++j) {
-        (playerModel->getEntityPtr() + j)->moveBy(glm::vec3(11.f * deltaTime, 0.0f, 0.0f));
+        (playerModel->getEntityPtr() + j)->moveBy(glm::vec3(SPEED * deltaTime, 0.0f, 0.0f));
       }
-      camera.Position.x += 11.f * deltaTime;
+      camera.Position.x += SPEED * deltaTime;
     }
     else if (moves.backward) {
       for (j = 0; j < numEntities; ++j) {
-        (playerModel->getEntityPtr() + j)->moveBy(glm::vec3(-11.f * deltaTime, 0.0f, 0.0f));
+        (playerModel->getEntityPtr() + j)->moveBy(glm::vec3(-SPEED * deltaTime, 0.0f, 0.0f));
       }
-      camera.Position.x -= 11.f * deltaTime;
+      camera.Position.x -= SPEED * deltaTime;
 
     }
   }

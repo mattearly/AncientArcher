@@ -1,6 +1,11 @@
 #include "HealthBar.h"
 #include <glad/glad.h>
+#include <glm/glm.hpp>
+#include <glm/gtc/matrix_transform.hpp>
 #include <vector>
+#include <AAEngine.h>
+extern Display display;
+
 HealthBar::HealthBar()
 {
   // init shader for rendering health bars
@@ -69,10 +74,36 @@ void HealthBar::render()
   glDrawElements(GL_TRIANGLES, indexSize, GL_UNSIGNED_INT, (void*)0);
 
   glBindVertexArray(0);
-  glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
+
+  static unsigned int k = 0;
+  for (k = 0; k < bar1current; ++k){
+    // update model
+    glm::mat4 model(1.0f);
+    model = glm::translate(model, glm::vec3(1.f - 1.f*k, 1.f, 0.f));
+    healthBarShader->setMat4("model", model);
+    glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
+  }
+  static unsigned int l = 0;
+  for (l = 0; l < bar1current; ++l) {
+    glm::mat4 model(1.0f);
+    model = glm::translate(model, glm::vec3(1.f * k * -1.f, 1.f, 0.f));
+    healthBarShader->setMat4("model", model);    glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
+  }
+
 }
 
 Shader* HealthBar::getShader()
 {
   return healthBarShader.get();
+}
+
+void HealthBar::setBar1(unsigned int current)
+{
+  bar1current = current;
+  
+}
+
+void HealthBar::setBar2(unsigned int current)
+{
+  bar2current = current;
 }

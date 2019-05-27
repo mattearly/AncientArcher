@@ -34,6 +34,10 @@ Game::Game() {
 
   healthBar = new HealthBar();
 
+  healthBar->setBar1(3);
+  healthBar->setBar2(3);
+ 
+
 
   // ---------- PRELOAD ENVIRORNMENT DETAILS ---------- //
   primativeRenderer = new PrimativeRenderer();
