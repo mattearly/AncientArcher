@@ -5,9 +5,9 @@ Kinematics::Kinematics()
 	velocity[0] = 0.0f;
 	velocity[1] = 0.0f;
 	velocity[2] = 0.0f;
-	accelaration[0] = 0.0f;
-	accelaration[1] = 0.0f;
-	accelaration[2] = 0.0f;
+	acceleration[0] = 0.0f;
+	acceleration[1] = 0.0f;
+	acceleration[2] = 0.0f;
 	jerk[0] = 0.0f;
 	jerk[1] = 0.0f;
 	jerk[2] = 0.0f;
@@ -16,9 +16,9 @@ Kinematics::Kinematics()
 	angular_velocity[0] = 0.0f;
 	angular_velocity[1] = 0.0f;
 	angular_velocity[2] = 0.0f;
-	angular_accelaration[0] = 0.0f;
-	angular_accelaration[1] = 0.0f;
-	angular_accelaration[2] = 0.0f;
+	angular_acceleration[0] = 0.0f;
+	angular_acceleration[1] = 0.0f;
+	angular_acceleration[2] = 0.0f;
 	angular_jerk[0] = 0.0f;
 	angular_jerk[1] = 0.0f;
 	angular_jerk[2] = 0.0f;

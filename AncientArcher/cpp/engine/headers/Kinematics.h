@@ -6,12 +6,12 @@ class Kinematics
 private:
 public:
 	float velocity[3];
-	float accelaration[3];
+	float acceleration[3];
 	float jerk[3];
 
 	//For rotational motion (rotational inertia, etc.)
 	float angular_velocity[3];
-	float angular_accelaration[3];
+	float angular_acceleration[3];
 	float angular_jerk[3];
 
 	Kinematics();
