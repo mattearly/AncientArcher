@@ -46,7 +46,8 @@ SideScrollPlayer::SideScrollPlayer()
     glm::vec3(0.f, 2.5f, 0.f),
     glm::vec3(2.3f, 3.5f, 0.03f),
     playertexID,
-    true
+    true,
+	true
   );
   playerModel->addToPrimativeEntities(*e);
   delete e;
@@ -78,7 +79,8 @@ void SideScrollPlayer::spawnSword()
       *playerModel->getEntityPtr()->gameItem.location + glm::vec3(2.15f, 2.8f, 0.f),
       glm::vec3(2.0f, 1.5f, 0.03f),
       weaponTexID,
-      true
+      true,
+	  true
     );
 
     playerModel->addToPrimativeEntities(*e);

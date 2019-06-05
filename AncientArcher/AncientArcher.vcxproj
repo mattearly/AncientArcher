@@ -153,6 +153,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="cpp\engine\source\GlyphLoader.cpp" />
+    <ClCompile Include="cpp\engine\source\Kinematics.cpp" />
     <ClCompile Include="cpp\pckgs\GUI\HealthBar.cpp" />
     <ClCompile Include="cpp\pckgs\monospaceFont\TextRenderer.cpp" />
     <ClCompile Include="cpp\pckgs\sideScrollerPlayer\SideScrollPlayer.cpp" />
@@ -182,6 +183,7 @@
     <ClInclude Include="cpp\engine\headers\Character.h" />
     <ClInclude Include="cpp\engine\headers\Glyph.h" />
     <ClInclude Include="cpp\engine\headers\GlyphLoader.h" />
+    <ClInclude Include="cpp\engine\headers\Kinematics.h" />
     <ClInclude Include="cpp\pckgs\firstPersonPlayer\Movement.h" />
     <ClInclude Include="cpp\pckgs\GUI\HealthBar.h" />
     <ClInclude Include="cpp\pckgs\monospaceFont\TextRenderer.h" />

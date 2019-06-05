@@ -1,6 +1,6 @@
 #include <Entity.h>
 
-Entity::Entity(ENTITYTYPE t, glm::vec3 loc, glm::vec3 sc, int texID, bool isImpassable)
+Entity::Entity(ENTITYTYPE t, glm::vec3 loc, glm::vec3 sc, int texID, bool isImpassable, bool hasKinematics)
 {
   gameItem.type = t;
   gameItem.location[0] = loc.x;
@@ -15,6 +15,12 @@ Entity::Entity(ENTITYTYPE t, glm::vec3 loc, glm::vec3 sc, int texID, bool isImpa
   }
   else {
     collider = nullptr;
+  }
+  if (hasKinematics) {
+	  kinematics = new Kinematics();
+  }
+  else {
+	  kinematics = nullptr;
   }
 }
 

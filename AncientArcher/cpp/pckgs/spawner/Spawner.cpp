@@ -39,7 +39,8 @@ void Spawner::checkAndSpawn(float deltaTime)
         glm::vec3(21.f * totalNumberSpawned, 2.79f, 0.f),
         glm::vec3(2.5f, 4.1f, 0.03f),
         enemyTexID,
-        true
+        true,
+		true
       );
 
       // add to render list

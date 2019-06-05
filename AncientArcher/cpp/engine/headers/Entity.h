@@ -1,6 +1,7 @@
 #pragma once
 
 #include <Collider.h>
+#include <Kinematics.h>
 #include <vector>
 
 class Collider;
@@ -17,7 +18,8 @@ private:
 public:
   GameItem gameItem;
   Collider* collider;
-  Entity(ENTITYTYPE t, glm::vec3 loc, glm::vec3 sc, int texID, bool isImpassable);
+  Kinematics* kinematics;
+  Entity(ENTITYTYPE t, glm::vec3 loc, glm::vec3 sc, int texID, bool isImpassable, bool hasKinematics);
 
   // MODIFIERS
   void moveBy(glm::vec3 amount);

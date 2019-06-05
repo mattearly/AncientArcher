@@ -1,5 +1,6 @@
 #pragma once
 #include <Collider.h>
+#include <Kinematics.h>
 #include <Entity.h>
 #include <Shader.h>
 #include <Lighting.h>
@@ -38,6 +39,7 @@ private:
   const float BASE_PLAYER_WEIGHT = 160.0f;
 
   Collider* collider;
+  Kinematics* kinematics;
 
   glm::vec3 previousPlayerLocation;
   glm::vec3 playerIntendedLocation;

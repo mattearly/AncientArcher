@@ -61,7 +61,8 @@ Game::Game() {
       glm::vec3(i, -0.8f, 0.f),
       glm::vec3(2.0f, 3.0f, 3.0f),
       lightBricksTexID,
-      true
+      true,
+	  true
     );
 
     primativeRenderer->addToPrimativeEntities(*e);
