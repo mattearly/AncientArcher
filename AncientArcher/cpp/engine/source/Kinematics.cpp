@@ -54,14 +54,29 @@ Kinematics::Kinematics(float speedStat, float weightStat)
 	weight = weightStat;
 }
 
-glm::vec3 Kinematics::getCalculatedPosition(float deltaTime)
+glm::vec3 Kinematics::getCalculatedPosition(float deltaTime, bool forward, bool backward, bool direction)
 {
-	if (velocity[0] < speed) {
-		velocity[0] += acceleration[0];
+
+	if (forward || backward)
+	{
+		if (velocity[0] < speed) {
+			velocity[0] += acceleration[0];
+		}
+	}
+	else {
+		if (velocity[0] > 0.0f) {
+			velocity[0] -= acceleration[0];
+		}
+	}
+
+	float temp_vel = velocity[0];
+
+	if (direction) {
+		temp_vel = -temp_vel;
 	}
 
 	return glm::vec3(
-		(velocity[0] * deltaTime),
+		(temp_vel * deltaTime),
 		(velocity[1] + acceleration[1] + jerk[1]),
 		(velocity[2] + acceleration[2] + jerk[2])
 	);

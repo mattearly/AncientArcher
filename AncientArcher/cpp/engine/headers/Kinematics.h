@@ -19,5 +19,5 @@ public:
 
 	Kinematics();
 	Kinematics(float speedStat, float weightStat);
-	glm::vec3 getCalculatedPosition(float deltaTime);
+	glm::vec3 getCalculatedPosition(float deltaTime, bool forward, bool backward, bool direction);
 };

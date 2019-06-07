@@ -14,27 +14,34 @@ void SideScrollPlayer::processMovement(float deltaTime)
   static const float SPEED = 7.f;
   static unsigned int numEntities = 0;
   static unsigned int j = 0;
+  bool direction = 0; // 0 for forward, 1 for backward
   numEntities = playerModel->getEntites()->size();
   if (moves.forward || moves.backward)
   {
-    if (moves.forward) {
-      for (j = 0; j < numEntities; ++j) {
-        (playerModel->getEntityPtr() + j)->moveBy((playerModel->getEntityPtr() + j)->kinematics->getCalculatedPosition(deltaTime));
-      }
-      camera.Position.x += playerModel->getEntityPtr()->kinematics->getCalculatedPosition(deltaTime).x;
-    }
-    else if (moves.backward) {
-      for (j = 0; j < numEntities; ++j) {
-        (playerModel->getEntityPtr() + j)->moveBy((playerModel->getEntityPtr() + j)->kinematics->getCalculatedPosition(-deltaTime));
-      }
-      camera.Position.x -= playerModel->getEntityPtr()->kinematics->getCalculatedPosition(deltaTime).x;
+	if (moves.forward) {
+		direction = 0;
+	}
+	else if (moves.backward) {
+		direction = 1;
+	}
 
-    }
+	for (j = 0; j < numEntities; ++j) {
+		(playerModel->getEntityPtr() + j)->moveBy((playerModel->getEntityPtr() + j)->kinematics->getCalculatedPosition(deltaTime, moves.forward, moves.backward, direction));
+	}
+	camera.Position.x += playerModel->getEntityPtr()->kinematics->getCalculatedPosition(deltaTime, moves.forward, moves.backward, direction).x;
   }
   else
   {
 	  for (j = 0; j < numEntities; ++j) {
-		  (playerModel->getEntityPtr() + j)->kinematics->velocity[0] = 0.0f;
+		  if ((playerModel->getEntityPtr() + j)->kinematics->velocity[0] != 0.0f) {
+			if ((playerModel->getEntityPtr() + j)->kinematics->velocity[0] > 0.0f) {
+				(playerModel->getEntityPtr() + j)->moveBy((playerModel->getEntityPtr() + j)->kinematics->getCalculatedPosition(deltaTime, moves.forward, moves.backward, direction));
+				camera.Position.x += playerModel->getEntityPtr()->kinematics->getCalculatedPosition(deltaTime, moves.forward, moves.backward, direction).x;
+			}
+			else {
+				(playerModel->getEntityPtr() + j)->kinematics->velocity[0] = 0.0f;
+			}
+		  }
 	  }
   }
 }

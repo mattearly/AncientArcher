@@ -61,7 +61,7 @@ void Game::mainLoop() {
 
     sideScrollPlayer->updateAttackTimer(deltaTime);
 
-    spawnedEnemies->checkAndSpawn(deltaTime);
+    //spawnedEnemies->checkAndSpawn(deltaTime);
 
     masterRenderer.update(primativeRenderer, sideScrollPlayer, spawnedEnemies, healthBar, skyboxRenderer, deltaTime);
 
