@@ -55,4 +55,6 @@ private:
 
   float _currentHP = _maxHP;
 
+  bool _direction = 0; // 0 for forward, 1 for backward
+
 };
