@@ -24,12 +24,11 @@ Kinematics::Kinematics()
 	angular_jerk[2] = 0.0f;
 }
 
-//Kinematics::Kinematics(glm::vec3 loc, glm::vec3 sz)
-//{
-//	loc[0] = loc.x;
-//	loc[1] = loc.y;
-//	loc[2] = loc.z;
-//	sz[0] = sz.x;
-//	sz[1] = sz.y;
-//	sz[2] = sz.z;
-//}
+glm::vec3 Kinematics::getCalculatedPosition(float speed_stat, float weight, float delta_time)
+{
+	return glm::vec3(
+		(velocity[0] + acceleration[0] + jerk[0]),
+		(velocity[1] + acceleration[1] + jerk[1]),
+		(velocity[2] + acceleration[2] + jerk[2])
+	);
+}

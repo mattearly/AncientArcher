@@ -16,4 +16,5 @@ public:
 
 	Kinematics();
 	//Kinematics(glm::vec3 loc, glm::vec3 sz);
+	glm::vec3 getCalculatedPosition(float speed_stat, float weight, float delta_time);
 };
