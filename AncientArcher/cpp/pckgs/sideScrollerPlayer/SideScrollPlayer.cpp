@@ -31,6 +31,12 @@ void SideScrollPlayer::processMovement(float deltaTime)
 
     }
   }
+  else
+  {
+	  for (j = 0; j < numEntities; ++j) {
+		  (playerModel->getEntityPtr() + j)->kinematics->velocity[0] = 0.0f;
+	  }
+  }
 }
 
 SideScrollPlayer::SideScrollPlayer()

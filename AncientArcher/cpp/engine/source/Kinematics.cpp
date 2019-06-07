@@ -56,8 +56,7 @@ Kinematics::Kinematics(float speedStat, float weightStat)
 
 glm::vec3 Kinematics::getCalculatedPosition(float deltaTime)
 {
-	if (velocity[0] < speed)
-	{
+	if (velocity[0] < speed) {
 		velocity[0] += acceleration[0];
 	}
 
