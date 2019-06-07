@@ -17,7 +17,7 @@ Entity::Entity(ENTITYTYPE t, glm::vec3 loc, glm::vec3 sc, int texID, bool isImpa
     collider = nullptr;
   }
   if (hasKinematics) {
-	  kinematics = new Kinematics();
+	  kinematics = new Kinematics(7.0f, 175.0f);
   }
   else {
 	  kinematics = nullptr;

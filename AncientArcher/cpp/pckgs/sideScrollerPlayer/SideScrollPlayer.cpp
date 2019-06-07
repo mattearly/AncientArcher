@@ -19,15 +19,15 @@ void SideScrollPlayer::processMovement(float deltaTime)
   {
     if (moves.forward) {
       for (j = 0; j < numEntities; ++j) {
-        (playerModel->getEntityPtr() + j)->moveBy(glm::vec3(SPEED * deltaTime, 0.0f, 0.0f));
+        (playerModel->getEntityPtr() + j)->moveBy((playerModel->getEntityPtr() + j)->kinematics->getCalculatedPosition(deltaTime));
       }
-      camera.Position.x += SPEED * deltaTime;
+      camera.Position.x += playerModel->getEntityPtr()->kinematics->getCalculatedPosition(deltaTime).x;
     }
     else if (moves.backward) {
       for (j = 0; j < numEntities; ++j) {
-        (playerModel->getEntityPtr() + j)->moveBy(glm::vec3(-SPEED * deltaTime, 0.0f, 0.0f));
+        (playerModel->getEntityPtr() + j)->moveBy((playerModel->getEntityPtr() + j)->kinematics->getCalculatedPosition(-deltaTime));
       }
-      camera.Position.x -= SPEED * deltaTime;
+      camera.Position.x -= playerModel->getEntityPtr()->kinematics->getCalculatedPosition(deltaTime).x;
 
     }
   }
