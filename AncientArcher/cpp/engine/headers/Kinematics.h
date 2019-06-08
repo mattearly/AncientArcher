@@ -5,19 +5,22 @@ class Kinematics
 {
 private:
 public:
-	float velocity[3];
-	float acceleration[3];
-	float jerk[3];
+
+	glm::vec3 vel; // Velocity of the moving body (position increased per second)
+	glm::vec3 acc; // Acceleration of the moving body (velocity increased per second)
+	glm::vec3 jrk; // Jerk of the moving body (acceleration increased per second)
 
 	//For rotational motion (rotational inertia, etc.)
-	float angular_velocity[3];
-	float angular_acceleration[3];
-	float angular_jerk[3];
 
-	float speed;
-	float weight;
+	glm::vec3 angVel; // Angular velocity of the moving body (angular position increased per second)
+	glm::vec3 angAcc; // Angular acceleration of the moving body (angular velocity increased per second)
+	glm::vec3 angJrk; // Angular jerk of the moving body (angular acceleration increased per second)
 
-	Kinematics();
-	Kinematics(float speedStat, float weightStat);
+	float speed; // Kinematic body max speed
+	float weight; // Kinematic body weight
+
+	Kinematics(); // Constructor
+	Kinematics(float speedStat, float weightStat); // Constructor for setting custom body 
 	glm::vec3 getCalculatedPosition(float deltaTime, bool forward, bool backward, bool direction);
+
 };
