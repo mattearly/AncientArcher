@@ -32,13 +32,13 @@ void SideScrollPlayer::processMovement(float deltaTime)
   else
   {
 	  for (j = 0; j < numEntities; ++j) {
-		  if ((playerModel->getEntityPtr() + j)->kinematics->velocity[0] != 0.0f) {
-			if ((playerModel->getEntityPtr() + j)->kinematics->velocity[0] > 0.0f) {
+		  if ((playerModel->getEntityPtr() + j)->kinematics->vel.x != 0.0f) {
+			if ((playerModel->getEntityPtr() + j)->kinematics->vel.x > 0.0f) {
 				(playerModel->getEntityPtr() + j)->moveBy((playerModel->getEntityPtr() + j)->kinematics->getCalculatedPosition(deltaTime, moves.forward, moves.backward, _direction));
 				camera.Position.x += playerModel->getEntityPtr()->kinematics->getCalculatedPosition(deltaTime, moves.forward, moves.backward, _direction).x;
 			}
 			else {
-				(playerModel->getEntityPtr() + j)->kinematics->velocity[0] = 0.0f;
+				(playerModel->getEntityPtr() + j)->kinematics->vel.x = 0.0f;
 			}
 		  }
 	  }
