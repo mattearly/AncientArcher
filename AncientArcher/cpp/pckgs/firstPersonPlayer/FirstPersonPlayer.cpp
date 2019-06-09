@@ -9,153 +9,55 @@
 
 extern Controls g_controls;    // from display.cpp (engine)
 extern Camera g_camera;        // from game.cpp    (game)
+
 /**
  *  default constructor
  */
 FirstPersonPlayer::FirstPersonPlayer()
 {
-  model = std::make_unique<PrimativeRenderer>();
-  light = std::make_unique<Lighting>();
-  legPower = 10.0f;
-  jumpTimer = 0.0f;
+  init();
 }
+
 /**
  *  constructor with custom leg_power value
  *  @param[in] leg_power  sets to 0 to 100 rating of player legpower
  */
 FirstPersonPlayer::FirstPersonPlayer(float leg_power)
 {
-  model = std::make_unique<PrimativeRenderer>();
-
-  TextureLoader tLoader;
-  unsigned int texID = tLoader.load2DTexture("../AncientArcher/cpp/pckgs/firstPersonPlayer/foot.png");
-
-  Entity e(
-    ENTITYTYPE::CUBE,
-    glm::vec3(0, 1, 0),
-    glm::vec3(.008f, 2.0f, .008f),
-    texID,
-    true,
-    true
-  );
-  model.get()->addToPrimativeEntities(e);
-
-  light = std::make_unique<Lighting>();
-  light->setConstantLight(model.get()->getShader());
-
-  g_camera.setPosition(model.get()->getFirstEntity()->gameItem.loc + _camOffset);
-
+  init();
   legPower = leg_power;
-  jumpTimer = 0.0f;
 }
 
 /**
- * Returns the calculated Unboosted Movement Speed of the player. Based on player stats.
+ * Main update function. Checks keyboard interaction and player move statuses to move accordingly. 
+ * Does not check collision.
+ * @param[in] deltaTime  for calculation movement distances.
  */
-float FirstPersonPlayer::getRunSpeed() const {
-  return (legPower / STAT_DIVISOR) + BASE_PLAYER_SPEED;
-}
-/**
- * Returns the calculated Rising Speed of the player. Based on player stats.
- */
-float FirstPersonPlayer::getRisingSpeed() const {
-  return (legPower / STAT_DIVISOR) + BASE_PLAYER_JUMP_SPEED;
-}
-/**
- * Returns the calculated Jump Height of the player. Based on player stats.
- */
-float FirstPersonPlayer::getJumpHeight() const {
-  return (legPower / STAT_DIVISOR) + BASE_PLAYER_JUMP_HEIGHT;
-}
-
-
-/**
- * Renders the player model
- */
-void FirstPersonPlayer::render() const
-{
-  if (model)
-  {
-    model.get()->render();
-  }
-}
-
-void FirstPersonPlayer::finalCollisionCheck(const std::vector<Entity>* entities)
-{
-  if (entities->empty())
-  {
-    std::cout << "finalCollisionCheck entities empty! returning...\n";
-    return;
-  }
-
-  static CollisionHandler collisionHandler;
-  for (Entity e : *entities)
-  {
-    if (collisionHandler.AABB_vs_AABB_3D(model.get()->getFirstEntity()->collider->impasse, e.collider->impasse))
-    {
-      moves.falling = false;
-      moves.onGround = true;
-      std::cout << "Collision detected! falling set to false, onground set to true\n";
-      return;
-    }
-  }
-
-}
-
-/**
- *  Set the cam to the player model
- */
-void FirstPersonPlayer::syncCam()
-{
-  g_camera.setPosition(model.get()->getFirstEntity()->gameItem.loc + _camOffset);
-}
-
-/**
- * Adds a point light at the player location specified.
- */
-void FirstPersonPlayer::addPointLight(glm::vec3 pos, Shader* shader)
-{
-  light->addPointLight(pos, shader);
-}
-
-/**
- * Moves the first point light to the newpos.
- */
-void FirstPersonPlayer::movePlayerLight(glm::vec3 newpos, Shader* shader)
-{
-  light->movePointLight(0, newpos, shader);
-}
-
-void FirstPersonPlayer::increaseLegPower(float add) {
-  if (legPower < 100.00f) {
-    legPower += add;
-    if (legPower > 100.00f) {
-      legPower = 100.00f;
-    }
-  }
-}
-
 void FirstPersonPlayer::update(float deltaTime)
 {
   // KEYBOARD
   g_controls.fppKeyboardIn(this);
 
-  // MOVEMENT 
+  // PRE-MOVEMENT 
   float velocity;
   moves.positionChanged = true;
   model.get()->getFirstEntity()->syncLocation();
 
-
+  // IF NOT ON GROUND
   if (!moves.onGround)
   {
     if (moves.falling)
     {
       model.get()->getFirstEntity()->moveBy(model->getFirstEntity()->kinematics->getCalculatedPosition(deltaTime, moves.forward, moves.back, moves.jumped, moves.falling, moves.left, moves.right));
     }
+    else // not on ground, not falling, must be flying or rising or something
+    {
+
+    }
   }
   else // moves.onGround
   {
-    // --- SPEED --- // 
+    // --- FIGURE SPEED --- // 
     velocity = getRunSpeed();                         // get player's statebased movement
     if (moves.forward && (moves.left || moves.right))
     {
@@ -168,7 +70,7 @@ void FirstPersonPlayer::update(float deltaTime)
     velocity *= deltaTime;                            // Final Result calculated with deltaTime.
 
 
-    // --- DIRECTION --- //
+    // --- SEND DIRECTION --- //
 
   // locks moving foward and backwards to the x and z axii. 
   // Note: you can use the camera.Front instead of movefront to do a fly type thing 
@@ -242,8 +144,134 @@ void FirstPersonPlayer::update(float deltaTime)
   //    }
   //  }
   //}
+}
 
+/**
+ * Run at the end of the loop before syncing cam an rendering.
+ * @param[in] entities  Pointer to a vector of entities to check the player box against.
+ */
+void FirstPersonPlayer::finalCollisionCheck(const std::vector<Entity>* entities)
+{
+  if (entities->empty())
+  {
+    std::cout << "finalCollisionCheck entities empty! returning...\n";
+    return;
+  }
 
+  for (Entity e : *entities)
+  {
+    if (cHandler->AABB_vs_AABB_3D(
+      model.get()->getFirstEntity()->collider->impasse,
+      e.collider->impasse)
+      )
+    {
+      moves.falling = false;
+      moves.onGround = true;
+      std::cout << "Collision detected! falling set to false, onground set to true\n";
+      return;
+    }
+  }
+}
 
+/**
+ *  Move the cam based on offset to near the player model.
+ */
+void FirstPersonPlayer::syncCam()
+{
+  g_camera.setPosition(model.get()->getFirstEntity()->gameItem.loc + _camOffset);
+}
+
+/**
+ * Moves the first point light to the newpos.
+ * @param[in] newpos  New position to move the light to.
+ * @param[in] shader  Shader to send the light info to.
+ */
+void FirstPersonPlayer::movePlayerLight(glm::vec3 newpos, Shader* shader)
+{
+  light->movePointLight(0, newpos, shader);
+}
+
+/**
+ * Renders the player model.
+ */
+void FirstPersonPlayer::render() const
+{
+  if (model)
+  {
+    model.get()->render();
+  }
+}
+
+/**
+ * Returns the calculated Unboosted Movement Speed of the player. Based on player stats.
+ */
+float FirstPersonPlayer::getRunSpeed() const {
+  return (legPower / STAT_DIVISOR) + BASE_PLAYER_SPEED;
+}
+/**
+ * Returns the calculated Rising Speed of the player. Based on player stats.
+ */
+float FirstPersonPlayer::getRisingSpeed() const {
+  return (legPower / STAT_DIVISOR) + BASE_PLAYER_JUMP_SPEED;
+}
+/**
+ * Returns the calculated Jump Height of the player. Based on player stats.
+ */
+float FirstPersonPlayer::getJumpHeight() const {
+  return (legPower / STAT_DIVISOR) + BASE_PLAYER_JUMP_HEIGHT;
+}
+
+/**
+ * Increase player stat legpower by amount to add. Caps at 100.
+ * @param[in] add  Amount to add to the player legPower.
+ */
+void FirstPersonPlayer::increaseLegPower(float add) {
+  if (legPower < 100.00f) {
+    legPower += add;
+    if (legPower > 100.00f) {
+      legPower = 100.00f;
+    }
+  }
+}
+
+/**
+ * Adds a point light at the player location specified.
+ * @param[in] pos     Position for the light to start at.
+ * @param[in] shader  Which shader to send the light info to.
+ */
+void FirstPersonPlayer::addPointLight(glm::vec3 pos, Shader* shader)
+{
+  light->addPointLight(pos, shader);
+}
+
+/**
+ * Common init ran from the constructors.
+ */
+void FirstPersonPlayer::init()
+{
+  model = std::make_unique<PrimativeRenderer>();
+
+  TextureLoader tLoader;
+  unsigned int texID = tLoader.load2DTexture("../AncientArcher/cpp/pckgs/firstPersonPlayer/foot.png");
+
+  Entity e(
+    ENTITYTYPE::CUBE,
+    glm::vec3(0, 1, 0),
+    glm::vec3(.008f, 2.0f, .008f),
+    texID,
+    true,
+    true
+  );
+  model.get()->addToPrimativeEntities(e);
+
+  light = std::make_unique<Lighting>();
+  light->setConstantLight(model.get()->getShader());
+
+  cHandler = std::make_unique<CollisionHandler>();
+
+  g_camera.setPosition(model.get()->getFirstEntity()->gameItem.loc + _camOffset);
+
+  legPower = 10.f;
+  jumpTimer = 0.0f;
 
 }

@@ -16,7 +16,6 @@ public:
   FirstPersonPlayer(float leg_power);
 
   struct Moves {
-
     bool positionChanged = false;
 
     bool forward = false, back = false;
@@ -35,22 +34,13 @@ public:
     bool canBoost() { return forward && !back; };
     bool isMoving() { return back || forward || left || right || jumped || !onGround; };
     bool isBoosted() { return forward && boost; };
-
   } moves;
 
   void update(float deltaTime);
-  //void processMovement();
-  //void processControls();
-
-  void render() const;
-
   void finalCollisionCheck(const std::vector<Entity>* entities);
-
   void syncCam();
-
-
-  void addPointLight(glm::vec3 pos, Shader* shader);
   void movePlayerLight(glm::vec3 newpos, Shader* shader);
+  void render() const;
 
   // accessors
   float getRunSpeed() const;
@@ -59,11 +49,13 @@ public:
 
   // player stats
   void increaseLegPower(float add);
+  void addPointLight(glm::vec3 pos, Shader* shader);
 
 private:
 
   std::unique_ptr<PrimativeRenderer> model;
   std::unique_ptr<Lighting> light;
+  std::unique_ptr<CollisionHandler> cHandler;
 
   float jumpTimer;
 
@@ -82,5 +74,6 @@ private:
   // control the divisor of the actual in-game stat, lower provides bigger results in the getter fuctions
   const float STAT_DIVISOR = 40.0f;
 
+  void init();
 };
 
