@@ -28,7 +28,7 @@ FirstPersonPlayer::FirstPersonPlayer(float leg_power)
   Entity e(
     ENTITYTYPE::CUBE,
     glm::vec3(0, 1, 0),
-    glm::vec3(.5f, 2.f, .2f),
+    glm::vec3(.008f, 2.0f,.008f),
     texID,
     true,
     true
@@ -37,6 +37,8 @@ FirstPersonPlayer::FirstPersonPlayer(float leg_power)
 
   light = std::make_unique<Lighting>();
   light->setConstantLight(model.get()->getShader());
+
+  g_camera.setPosition(glm::vec3(0, 2.011f, 0));
 
   legPower = leg_power;
   jumpTimer = 0.0f;
