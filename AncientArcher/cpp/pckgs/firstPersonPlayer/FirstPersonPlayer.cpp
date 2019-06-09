@@ -55,7 +55,7 @@ void FirstPersonPlayer::update(float deltaTime)
       // a ghetto 1 second jumper
       static auto risingTime = 0.f;
       risingTime += deltaTime;
-      if (risingTime > 1.0f)
+      if (risingTime > .85f)
       {
         risingTime = 0.f;
         moves.falling = true;
