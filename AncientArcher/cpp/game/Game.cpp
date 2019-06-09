@@ -42,6 +42,7 @@ Game::Game()
   unsigned int texID2 = tLoader.load2DTexture("../AncientArcher/cpp/pckgs/primatives/dirt.png");
 
 
+
   for (int i = 0; i < 10; i++)
   {
     for (int j = 0; j < 10; j++)
@@ -51,15 +52,14 @@ Game::Game()
         
         Entity e(
           ENTITYTYPE::CUBE,
-          glm::vec3(i, -3.f -.5f*k , j),
-          glm::vec3(1.f, .5f, 1.f),
+          glm::vec3(i*2, -3.f -.5f*k , j*2),
+          glm::vec3(2.f, .5f, 2.f),
           k < 1 ? texID : texID2,
           true,
           false
         );
         prims->addToPrimativeEntities(e);
       }
-
     }
   }
 
