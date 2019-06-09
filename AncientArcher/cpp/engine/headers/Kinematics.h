@@ -21,6 +21,6 @@ public:
 
   Kinematics(); // Constructor
   Kinematics(float speedStat, float weightStat); // Constructor for setting custom body 
-  glm::vec3 getCalculatedPosition(float deltaTime, bool forward, bool backward, bool direction);
+  glm::vec3 getCalculatedPosition(float deltaTime, bool f, bool b, bool u, bool d, bool l, bool r);
 
 };

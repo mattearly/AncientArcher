@@ -235,3 +235,52 @@ void FirstPersonPlayer::increaseLegPower(float add) {
   }
 }
 
+<<<<<<< Updated upstream
+=======
+void FirstPersonPlayer::update(float deltaTime)
+{
+  // KEYBOARD
+  g_controls.fppKeyboardIn(this);
+
+  // MOVEMENT 
+  float velocity;
+  moves.positionChanged = true;
+  model.get()->getEntityPtr()->syncLocation();
+
+  if (!moves.onGround)
+  {
+    if (moves.falling)
+    {
+      model.get()->getEntityPtr()->moveBy(model->getEntityPtr()->kinematics->getCalculatedPosition(deltaTime, moves.forward, moves.back, moves.jumped, moves.falling, moves.left, moves.right));
+    }
+  }
+
+
+
+  velocity = getRunSpeed() * deltaTime;  // MOVEMENT SPEED CALC : based on player stats
+  if (moves.forward) {  // half speed if moving left or right while forward
+    if (moves.left || moves.right) {
+      velocity = getRunSpeed() / 2 * deltaTime;
+    }
+  }
+
+  if (moves.boost && moves.forward) {  // boost while moving forward
+    velocity *= 2.0;  // velocity power
+  }
+
+
+}
+
+float FirstPersonPlayer::getRunSpeed() const {
+  return (legPower / STAT_DIVISOR) + BASE_PLAYER_SPEED;
+}
+
+float FirstPersonPlayer::getRisingSpeed() const {
+  return (legPower / STAT_DIVISOR) + BASE_PLAYER_JUMP_SPEED;
+}
+
+float FirstPersonPlayer::getJumpHeight() const {
+  return (legPower / STAT_DIVISOR) + BASE_PLAYER_JUMP_HEIGHT;
+}
+
+>>>>>>> Stashed changes

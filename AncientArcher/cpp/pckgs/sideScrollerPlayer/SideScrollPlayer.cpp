@@ -26,17 +26,17 @@ void SideScrollPlayer::processMovement(float deltaTime)
 	}
 
 	for (j = 0; j < numEntities; ++j) {
-		(playerModel->getEntityPtr() + j)->moveBy((playerModel->getEntityPtr() + j)->kinematics->getCalculatedPosition(deltaTime, moves.forward, moves.backward, _direction));
+		//(playerModel->getEntityPtr() + j)->moveBy((playerModel->getEntityPtr() + j)->kinematics->getCalculatedPosition(deltaTime, moves.forward, moves.backward, _direction));
 	}
-	g_camera.Position.x += playerModel->getEntityPtr()->kinematics->getCalculatedPosition(deltaTime, moves.forward, moves.backward, _direction).x;
+	//g_camera.Position.x += playerModel->getEntityPtr()->kinematics->getCalculatedPosition(deltaTime, moves.forward, moves.backward, _direction).x;
   }
   else
   {
 	  for (j = 0; j < numEntities; ++j) {
 		  if ((playerModel->getEntityPtr() + j)->kinematics->vel.x != 0.0f) {
 			if ((playerModel->getEntityPtr() + j)->kinematics->vel.x > 0.0f) {
-				(playerModel->getEntityPtr() + j)->moveBy((playerModel->getEntityPtr() + j)->kinematics->getCalculatedPosition(deltaTime, moves.forward, moves.backward, _direction));
-				g_camera.Position.x += playerModel->getEntityPtr()->kinematics->getCalculatedPosition(deltaTime, moves.forward, moves.backward, _direction).x;
+				//(playerModel->getEntityPtr() + j)->moveBy((playerModel->getEntityPtr() + j)->kinematics->getCalculatedPosition(deltaTime, moves.forward, moves.backward, _direction));
+				//g_camera.Position.x += playerModel->getEntityPtr()->kinematics->getCalculatedPosition(deltaTime, moves.forward, moves.backward, _direction).x;
 			}
 			else {
 				(playerModel->getEntityPtr() + j)->kinematics->vel.x = 0.0f;
