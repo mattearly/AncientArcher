@@ -23,6 +23,7 @@ public:
   // MODIFIERS
   void moveBy(glm::vec3 amount);
   void moveTo(glm::vec3 newLocation);
+  void syncLocation();
 
 };
 

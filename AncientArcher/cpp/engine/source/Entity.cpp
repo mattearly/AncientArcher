@@ -41,4 +41,10 @@ void Entity::moveTo(glm::vec3 newLocation)
   }
 }
 
+void Entity::syncLocation()
+{
+	this->gameItem.prevLoc = this->gameItem.loc;
+	this->collider->impasse.prevLoc = this->collider->impasse.loc;
+}
+
 
