@@ -1,9 +1,12 @@
 #include "TextRenderer.h"
 #include <GlyphLoader.h>
-#include <AAEngine.h>
 #include <glad/glad.h>
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
+#include <Display.h>
+
+extern Display g_display;
+
 TextRenderer::TextRenderer()
 {
   textShader = std::make_unique<Shader>(

@@ -16,7 +16,7 @@ Controls::Controls() {
 }
 
 /**
- *  First Person Mouse Movement Controls. Cursor visiblity is best hidden (see display class)
+ *  First Person Mouse moves Controls. Cursor visiblity is best hidden (see display class)
  *  when using this method.
  */
 void Controls::FPPmouseMovement(float xpos, float ypos)
@@ -76,10 +76,11 @@ void Controls::SSmouseMovement(float xpos, float ypos)
   // OR WAIT FOR CLICK TO HANDLE NEW MOUSE POSITION in sideScrollPlayerKeyboardInput()
 }
 
+
 /**
- *  Forwards First Person Player Controls.
+ *  fpp keyboard controls
  */
-void Controls::firstPersonPlayerKeyboardInput(FirstPersonPlayer* fpp)
+void Controls::fppKeyboardIn(FirstPersonPlayer* fpp)
 {
   if (glfwGetMouseButton(g_display.window, GLFW_MOUSE_BUTTON_LEFT) == GLFW_PRESS) {
     // left click
@@ -90,38 +91,38 @@ void Controls::firstPersonPlayerKeyboardInput(FirstPersonPlayer* fpp)
   }
 
   if (glfwGetKey(g_display.window, GLFW_KEY_LEFT_SHIFT) == GLFW_PRESS) {
-    if (fpp->movement.onGround) {
-      fpp->movement.boost = true;
+    if (fpp->moves.onGround) {
+      fpp->moves.boost = true;
     }
   }
 
   if (glfwGetKey(g_display.window, GLFW_KEY_W) == GLFW_PRESS) {
-    if (fpp->movement.onGround) {
-      fpp->movement.back = false;
-      fpp->movement.forward = true;
+    if (fpp->moves.onGround) {
+      fpp->moves.back = false;
+      fpp->moves.forward = true;
     }
   }
 
   if (glfwGetKey(g_display.window, GLFW_KEY_S) == GLFW_PRESS) {
-    if (fpp->movement.onGround) {
-      fpp->movement.forward = false;
-      fpp->movement.back = true;
+    if (fpp->moves.onGround) {
+      fpp->moves.forward = false;
+      fpp->moves.back = true;
 
     }
   }
 
   if (glfwGetKey(g_display.window, GLFW_KEY_A) == GLFW_PRESS) {
-    if (fpp->movement.onGround) {
-      fpp->movement.right = false;
-      fpp->movement.left = true;
+    if (fpp->moves.onGround) {
+      fpp->moves.right = false;
+      fpp->moves.left = true;
 
     }
   }
 
   if (glfwGetKey(g_display.window, GLFW_KEY_D) == GLFW_PRESS) {
-    if (fpp->movement.onGround) {
-      fpp->movement.left = false;
-      fpp->movement.right = true;
+    if (fpp->moves.onGround) {
+      fpp->moves.left = false;
+      fpp->moves.right = true;
     }
   }
 
@@ -130,9 +131,9 @@ void Controls::firstPersonPlayerKeyboardInput(FirstPersonPlayer* fpp)
   }
 
   if (glfwGetKey(g_display.window, GLFW_KEY_SPACE) == GLFW_PRESS) {
-    if (fpp->movement.onGround && fpp->movement.canJumpAgain) {  //can jump again is to make the spacebar spam by holding it down not work
-      fpp->movement.jumped = true;
-      fpp->movement.canJumpAgain = false;
+    if (fpp->moves.onGround && fpp->moves.canJumpAgain) {  //can jump again is to make the spacebar spam by holding it down not work
+      fpp->moves.jumped = true;
+      fpp->moves.canJumpAgain = false;
     }
   }
 
@@ -146,27 +147,27 @@ void Controls::firstPersonPlayerKeyboardInput(FirstPersonPlayer* fpp)
   }
 
   if (glfwGetKey(g_display.window, GLFW_KEY_W) == GLFW_RELEASE) {
-    fpp->movement.forward = false;
+    fpp->moves.forward = false;
   }
 
   if (glfwGetKey(g_display.window, GLFW_KEY_S) == GLFW_RELEASE) {
-    fpp->movement.back = false;
+    fpp->moves.back = false;
   }
 
   if (glfwGetKey(g_display.window, GLFW_KEY_A) == GLFW_RELEASE) {
-    fpp->movement.left = false;
+    fpp->moves.left = false;
   }
 
   if (glfwGetKey(g_display.window, GLFW_KEY_D) == GLFW_RELEASE) {
-    fpp->movement.right = false;
+    fpp->moves.right = false;
   }
 
   if (glfwGetKey(g_display.window, GLFW_KEY_LEFT_SHIFT) == GLFW_RELEASE) {
-    fpp->movement.boost = false;
+    fpp->moves.boost = false;
   }
 
   if (glfwGetKey(g_display.window, GLFW_KEY_SPACE) == GLFW_RELEASE) {
-    fpp->movement.canJumpAgain = true;
+    fpp->moves.canJumpAgain = true;
   }
 }
 

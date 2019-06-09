@@ -5,6 +5,7 @@
 #include <Display.h>
 #include <TextureLoader.h>
 #include <Global.h>
+#include <mearly.h>
 #define DEBUG FALSE;
 
 //--- GLOBALS ---//
@@ -15,7 +16,7 @@ Lighting g_lighting;
 std::vector<Entity> g_entities;
 //--- END GLOBALS ---//
 
-Game::Game() 
+Game::Game()
 {
 #ifdef DEBUG
   int __textures_allowed = 0, __totalTexturesAllowed = 0;
@@ -32,7 +33,7 @@ Game::Game()
 
   TextureLoader texLoader;
   unsigned int groundTextureId = texLoader.load2DTexture("../AncientArcher/cpp/pckgs/primatives/grass.png");
-  
+
   // ------------ SET FLOOR ------------ //
   float planeCollisionThickness = 0.18f;
   float currentGroundLevel = -0.02f;
@@ -121,24 +122,24 @@ Game::Game()
       );
     }
 
-    static CollisionHandler collisionHandler;
+    //static CollisionHandler collisionHandler;
 
-    for (auto const& f : g_entities) {
-      if (collisionHandler.AABB_vs_AABB_3D(e->collider->impasse, f.collider->impasse)) {
-        okayToSpawn = false;
-        countTotalCollisions++;
-        break;
-      }
-    }
+    //for (auto const& f : g_entities) {
+    //  if (collisionHandler.AABB_vs_AABB_3D(e->collider->impasse, f.collider->impasse)) {
+    //    okayToSpawn = false;
+    //    countTotalCollisions++;
+    //    break;
+    //  }
+    //}
 
     if (okayToSpawn) {
       g_entities.push_back(*e);
     }
-    else  // !okayToSpawn
-    {
-      i--;
-      okayToSpawn = false;  // try again
-    }
+    //else  // !okayToSpawn
+    //{
+    //  i--;
+    //  okayToSpawn = false;  // try again
+    //}
 
   }
   std::cout << "total collisions: " << countTotalCollisions << "\ntotal entities: " << g_entities.size() << "\n";

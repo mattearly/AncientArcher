@@ -1,7 +1,9 @@
 #include "MasterRenderer.h"
 #include <Display.h>
 #include <glad/glad.h>
-extern Display display;
+
+extern Display g_display;
+
 MasterRenderer::MasterRenderer() {
   enableGLDepthTest();
 }
@@ -31,7 +33,7 @@ void MasterRenderer::disableGLDepthTest() {
 
 void MasterRenderer::update(float deltaTime, FirstPersonPlayer* player, PrimativeRenderer* prims, SkyboxRenderer* sky)
 {
-  display.clear();
+  g_display.clear();
 
   prims->render();
 
@@ -39,12 +41,12 @@ void MasterRenderer::update(float deltaTime, FirstPersonPlayer* player, Primativ
 
   sky->render();
 
-  display.update();
+  g_display.update();
 }
 
 void MasterRenderer::update(PrimativeRenderer* primRen, SideScrollPlayer* playerRen, Spawner* enemyRen, HealthBar* healthRen, SkyboxRenderer* skyRen, float deltaTime)
 {
-  display.clear();
+  g_display.clear();
 
   primRen->render();
 
@@ -56,6 +58,6 @@ void MasterRenderer::update(PrimativeRenderer* primRen, SideScrollPlayer* player
 
   skyRen->render();
 
-  display.update();
+  g_display.update();
 
 }

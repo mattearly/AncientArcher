@@ -181,7 +181,6 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="cpp\engine\headers\CollisionHandler.h" />
-    <ClInclude Include="cpp\engine\headers\AAEngine.h" />
     <ClInclude Include="cpp\engine\headers\Character.h" />
     <ClInclude Include="cpp\engine\headers\Glyph.h" />
     <ClInclude Include="cpp\engine\headers\GlyphLoader.h" />

@@ -1,3 +1,4 @@
+#pragma once
 #include <Collider.h>
 class CollisionHandler
 {

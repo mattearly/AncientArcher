@@ -3,8 +3,6 @@
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
 #include <vector>
-#include <AAEngine.h>
-extern Display display;
 
 HealthBar::HealthBar()
 {

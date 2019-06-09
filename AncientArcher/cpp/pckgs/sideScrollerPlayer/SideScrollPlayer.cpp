@@ -1,10 +1,14 @@
 #include "SideScrollPlayer.h"
 #include <Global.h>
 #include <Controls.h>
+#include <Camera.h>
 #include <Entity.h>
 #include <TextureLoader.h>
 #include <glad/glad.h>
 #include <Sound.h>
+
+extern Camera g_camera;
+extern Controls g_controls;
 
 void SideScrollPlayer::processMovement(float deltaTime)
 {

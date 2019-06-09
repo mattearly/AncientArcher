@@ -1,7 +1,5 @@
 #pragma once
 #include <glm/glm.hpp>
-#include "mearly.h"
-
 struct Impasse {
   //Impasse(glm::vec3 lc, glm::vec3 sz) { loc = lc; size = sz; }
   glm::vec3 loc;

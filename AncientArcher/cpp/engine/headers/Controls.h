@@ -8,19 +8,21 @@
 #include "../../pckgs/sideScrollerPlayer/SideScrollPlayer.h"
 
 #include "../../pckgs/firstPersonPlayer/FirstPersonPlayer.h"
+
+class FirstPersonPlayer;
+class SideScrollPlayer;
+
 class Controls {
 
 public:
 
   Controls();
 
-
-
   void FPPmouseMovement(float xpos, float ypos);
 
   void SSmouseMovement(float xpos, float ypos);
 
-  void firstPersonPlayerKeyboardInput(FirstPersonPlayer* fpp);
+  void fppKeyboardIn(FirstPersonPlayer* fpp);
 
   void sideScrollPlayerKeyboardInput(SideScrollPlayer* ssp);
 

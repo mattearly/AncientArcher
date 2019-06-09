@@ -5,7 +5,7 @@
 #include <glad/glad.h>
 #include <glm/glm.hpp>
 
-extern Camera camera;  // camera is instantiated as a global in main.cpp
+extern Camera g_camera;  // camera is instantiated as a global in main.cpp
 
 /**
  * Default Constructor. Load a cube map texture the default skybox and skymap shader.
@@ -146,7 +146,7 @@ void SkyboxRenderer::loadSkybox()
  */
 void SkyboxRenderer::loadProjectionMatrix()
 {
-  glm::mat4 projectionMatrix = camera.getProjectionMatrix();
+  glm::mat4 projectionMatrix = g_camera.getProjectionMatrix();
   skyboxShader->use();
   skyboxShader->setMat4("projection", projectionMatrix);
 }
@@ -157,7 +157,7 @@ void SkyboxRenderer::loadProjectionMatrix()
  */
 void SkyboxRenderer::loadViewMatrix()
 {
-  glm::mat4 viewMatrix = glm::mat4(glm::mat3(camera.getViewMatrix())); // skybox never appears to move https://learnopengl.com/Advanced-OpenGL/Cubemaps
+  glm::mat4 viewMatrix = glm::mat4(glm::mat3(g_camera.getViewMatrix())); // skybox never appears to move https://learnopengl.com/Advanced-OpenGL/Cubemaps
   skyboxShader->use();
   skyboxShader->setMat4("view", viewMatrix);
 }

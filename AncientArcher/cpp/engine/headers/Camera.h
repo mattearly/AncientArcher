@@ -1,7 +1,10 @@
 #pragma once
+#include <Controls.h>
 #include <Shader.h>
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
+
+class Controls;
 
 class Camera {
 public:

@@ -1,6 +1,5 @@
 #include "PrimativeRenderer.h"
 
-#include <AAEngine.h>
 #include <glad/glad.h>
 #include <GLFW/glfw3.h>
 #include <glm/glm.hpp>
@@ -9,8 +8,10 @@
 #include <cmath>
 #include <iostream>
 #include <vector>
+#include <Controls.h>
+#include <Camera.h>
 
-extern Camera camera;
+extern Camera g_camera;
 
 // --- PUBLIC FUNCTIONS --- // 
 
@@ -24,7 +25,7 @@ PrimativeRenderer::PrimativeRenderer()
     "../AncientArcher/cpp/pckgs/primatives/primative.frag"
     );
   primShader->use();
-  glm::mat4 proj = camera.getProjectionMatrix();
+  glm::mat4 proj = g_camera.getProjectionMatrix();
   primShader->setMat4("projection", proj);
 }
 
@@ -34,7 +35,7 @@ PrimativeRenderer::PrimativeRenderer()
 void PrimativeRenderer::render()
 {
   primShader->use();
-  camera.update(primShader.get());
+  g_camera.update(primShader.get());
   for (auto e : entities)
   {
 

@@ -128,9 +128,6 @@
     <ClInclude Include="cpp\engine\headers\Global.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="cpp\engine\headers\AAEngine.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="cpp\game\Game.h">
       <Filter>Header Files</Filter>
     </ClInclude>

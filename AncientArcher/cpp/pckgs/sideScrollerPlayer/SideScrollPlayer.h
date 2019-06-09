@@ -6,14 +6,13 @@
 class SideScrollPlayer
 {
 public:
+  SideScrollPlayer();
+
   struct Moves
   {
     bool forward = false, backward = false;
   } moves;
   void processMovement(float deltaTime);
-
-  SideScrollPlayer();
-
   void processControls();
 
   void spawnSword();
