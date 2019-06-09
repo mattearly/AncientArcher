@@ -28,7 +28,7 @@ void Entity::moveBy(glm::vec3 amount)
   this->gameItem.loc += amount;
 
   if (collider != nullptr) {
-    this->gameItem.loc += amount;
+    this->collider->impasse.loc += amount;
   }
 
 }
