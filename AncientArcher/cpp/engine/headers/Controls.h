@@ -1,9 +1,12 @@
 #pragma once
+
 #include <Camera.h>
 #include <glad/glad.h>
 #include <GLFW/glfw3.h>
 #include <Entity.h>
+
 #include "../../pckgs/sideScrollerPlayer/SideScrollPlayer.h"
+#include "../../pckgs/firstPersonPlayer/FirstPersonPlayer.h"
 
 class Controls {
 
@@ -15,13 +18,13 @@ public:
 
   void SSmouseMovement(float xpos, float ypos);
 
-  void FPPplayerKeyboardInput();
-
-  void sideScrollPlayerKeyboardInput(Entity* entity);
-
-  void sideScrollPlayerKeyboardInput(Entity* entity, unsigned int numEntities );
+  void firstPersonPlayerKeyboardInput(FirstPersonPlayer* fpp);
 
   void sideScrollPlayerKeyboardInput(SideScrollPlayer* ssp);
+
+  void entityKeyboardInput(Entity* entity);
+
+  void entitiesKeyboardInput(Entity* entity, unsigned int numEntities);
 
 private:
 

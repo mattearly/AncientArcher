@@ -16,7 +16,7 @@ public:
   Entity* getEntityPtr();  // returns ptr to first entity
   Shader* getShader();
   
-  unsigned int size();
+  std::size_t size();
 
   void entityPopBack();
 

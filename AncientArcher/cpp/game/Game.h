@@ -1,19 +1,17 @@
 #pragma once
-#include "../../pckgs/skybox/SkyboxRenderer.h"
-#include "../../pckgs/primatives/PrimativeRenderer.h"
-#include "../pckgs/sideScrollerPlayer/SideScrollPlayer.h"
 #include "../pckgs/masterRenderer/MasterRenderer.h"
-#include "../pckgs/GUI/HealthBar.h"
-#include "../pckgs/spawner/Spawner.h"
+#include "../pckgs/primatives/PrimativeRenderer.h"
+#include "../pckgs/firstPersonPlayer/FirstPersonPlayer.h"
+#include "../pckgs/skybox/SkyboxRenderer.h"
 
 class Game {
 public:
 
-  SideScrollPlayer* sideScrollPlayer;
-  Spawner* spawnedEnemies;
-  PrimativeRenderer* primativeRenderer;
-  SkyboxRenderer* skyboxRenderer;
-  HealthBar* healthBar;
+  FirstPersonPlayer* player;
+  
+  PrimativeRenderer* prims;
+  
+  SkyboxRenderer* sky;
 
   MasterRenderer masterRenderer;
 

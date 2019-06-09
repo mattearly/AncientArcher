@@ -1,18 +1,13 @@
-#include <Camera.h>
 #include <Controls.h>
 #include <Display.h>
-#include <Sound.h>
-#include <glm/glm.hpp>
-#include <iostream>
-#include <math.h>
-#include "../../pckgs/firstPersonPlayer/Movement.h"
+#include <Camera.h>
 
-extern Movement movedir;  // from firstPersonPlayer/Player.cpp
+extern Display g_display;   // from game.cpp (game)
+extern Camera g_camera;     // from game.cpp (game)
 
-extern Display display;   // from game/main.cpp
-
-extern Camera camera;     // from game/main.cpp
-
+/**
+ *  Default Constructor.
+ */
 Controls::Controls() {
   firstMouse = true;
   mouseSensitivity = 0.09f;
@@ -20,14 +15,14 @@ Controls::Controls() {
   lastY = 0.f;
 }
 
-
-// ---- FIRST PERSON ---- //
+/**
+ *  First Person Mouse Movement Controls. Cursor visiblity is best hidden (see display class)
+ *  when using this method.
+ */
 void Controls::FPPmouseMovement(float xpos, float ypos)
 {
-  /// This block is first person controls
-  /// Note: cursor visibility can be toggled in the Display class, it should be OFF for these controls
-  ///
-  if (firstMouse) {
+  if (firstMouse)
+  {
     lastX = xpos;
     lastY = ypos;
     firstMouse = false;
@@ -42,116 +37,26 @@ void Controls::FPPmouseMovement(float xpos, float ypos)
   xoffset *= mouseSensitivity;
   yoffset *= mouseSensitivity;
 
-  camera.Yaw += xoffset;
-  camera.Pitch += yoffset;
+  g_camera.Yaw += xoffset;
+  g_camera.Pitch += yoffset;
 
-  if (camera.Pitch > 89.0f) {
-    camera.Pitch = 89.0f;
+  if (g_camera.Pitch > 89.0f)
+  {
+    g_camera.Pitch = 89.0f;
   }
-  else if (camera.Pitch < -89.0f) {
-    camera.Pitch = -89.0f;
+  else if (g_camera.Pitch < -89.0f)
+  {
+    g_camera.Pitch = -89.0f;
   }
 
-  camera.updateCameraVectors();
+  g_camera.updateCameraVectors();
 }
 
-void Controls::FPPplayerKeyboardInput()
-{
-  if (glfwGetMouseButton(display.window, GLFW_MOUSE_BUTTON_LEFT) == GLFW_PRESS) {
-    // left click
-  }
-
-  if (glfwGetKey(display.window, GLFW_KEY_ESCAPE) == GLFW_PRESS) {
-    glfwSetWindowShouldClose(display.window, true);
-  }
-
-  if (glfwGetKey(display.window, GLFW_KEY_LEFT_SHIFT) == GLFW_PRESS) {
-    if (movedir.onGround) {
-      movedir.boost = true;
-    }
-  }
-
-  if (glfwGetKey(display.window, GLFW_KEY_W) == GLFW_PRESS) {
-    if (movedir.onGround) {
-      movedir.back = false;
-      movedir.forward = true;
-    }
-  }
-
-  if (glfwGetKey(display.window, GLFW_KEY_S) == GLFW_PRESS) {
-    if (movedir.onGround) {
-      movedir.forward = false;
-      movedir.back = true;
-
-    }
-  }
-
-  if (glfwGetKey(display.window, GLFW_KEY_A) == GLFW_PRESS) {
-    if (movedir.onGround) {
-      movedir.right = false;
-      movedir.left = true;
-
-    }
-  }
-
-  if (glfwGetKey(display.window, GLFW_KEY_D) == GLFW_PRESS) {
-    if (movedir.onGround) {
-      movedir.left = false;
-      movedir.right = true;
-    }
-  }
-
-  if (glfwGetKey(display.window, GLFW_KEY_M) == GLFW_PRESS) {
-    toggleAmbientWindyNight();
-  }
-
-  if (glfwGetKey(display.window, GLFW_KEY_SPACE) == GLFW_PRESS) {
-    if (movedir.onGround && movedir.canJumpAgain) {  //can jump again is to make the spacebar spam by holding it down not work
-      movedir.jumped = true;
-      movedir.canJumpAgain = false;
-    }
-  }
-
-  if (glfwGetKey(display.window, GLFW_KEY_0) == GLFW_PRESS) {
-  }
-
-  if (glfwGetKey(display.window, GLFW_KEY_1) == GLFW_PRESS) {
-  }
-
-  if (glfwGetKey(display.window, GLFW_KEY_2) == GLFW_PRESS) {
-  }
-
-  if (glfwGetKey(display.window, GLFW_KEY_W) == GLFW_RELEASE) {
-    movedir.forward = false;
-  }
-
-  if (glfwGetKey(display.window, GLFW_KEY_S) == GLFW_RELEASE) {
-    movedir.back = false;
-  }
-
-  if (glfwGetKey(display.window, GLFW_KEY_A) == GLFW_RELEASE) {
-    movedir.left = false;
-  }
-
-  if (glfwGetKey(display.window, GLFW_KEY_D) == GLFW_RELEASE) {
-    movedir.right = false;
-  }
-
-  if (glfwGetKey(display.window, GLFW_KEY_LEFT_SHIFT) == GLFW_RELEASE) {
-    movedir.boost = false;
-  }
-
-  if (glfwGetKey(display.window, GLFW_KEY_SPACE) == GLFW_RELEASE) {
-    movedir.canJumpAgain = true;
-  }
-
-}
-
-
-// ---- SIDESCROLLER ---- //
+/**
+ *  In Development.
+ */
 void Controls::SSmouseMovement(float xpos, float ypos)
 {
-
   if (firstMouse) {
     lastX = xpos;
     lastY = ypos;
@@ -169,294 +74,397 @@ void Controls::SSmouseMovement(float xpos, float ypos)
 
   // TODO HANDLE NEW MOUSE POSITION 
   // OR WAIT FOR CLICK TO HANDLE NEW MOUSE POSITION in sideScrollPlayerKeyboardInput()
-
 }
 
-void Controls::sideScrollPlayerKeyboardInput(Entity* entity)
+/**
+ *  Forwards First Person Player Controls.
+ */
+void Controls::firstPersonPlayerKeyboardInput(FirstPersonPlayer* fpp)
 {
-  // todo: need bools to go with, this just keep repeating if held
-
-  if (glfwGetMouseButton(display.window, GLFW_MOUSE_BUTTON_LEFT) == GLFW_PRESS)
-  {
+  if (glfwGetMouseButton(g_display.window, GLFW_MOUSE_BUTTON_LEFT) == GLFW_PRESS) {
     // left click
-  /*  playbowsound();*/
   }
 
-  if (glfwGetKey(display.window, GLFW_KEY_ESCAPE) == GLFW_PRESS)
-  {
-    glfwSetWindowShouldClose(display.window, true);  // closes app
+  if (glfwGetKey(g_display.window, GLFW_KEY_ESCAPE) == GLFW_PRESS) {
+    glfwSetWindowShouldClose(g_display.window, true);
   }
 
-  if (glfwGetKey(display.window, GLFW_KEY_LEFT_SHIFT) == GLFW_PRESS)
-  {
+  if (glfwGetKey(g_display.window, GLFW_KEY_LEFT_SHIFT) == GLFW_PRESS) {
+    if (fpp->movement.onGround) {
+      fpp->movement.boost = true;
+    }
   }
 
-  if (glfwGetKey(display.window, GLFW_KEY_W) == GLFW_PRESS)
-  {
+  if (glfwGetKey(g_display.window, GLFW_KEY_W) == GLFW_PRESS) {
+    if (fpp->movement.onGround) {
+      fpp->movement.back = false;
+      fpp->movement.forward = true;
+    }
   }
 
-  if (glfwGetKey(display.window, GLFW_KEY_S) == GLFW_PRESS)
-  {
+  if (glfwGetKey(g_display.window, GLFW_KEY_S) == GLFW_PRESS) {
+    if (fpp->movement.onGround) {
+      fpp->movement.forward = false;
+      fpp->movement.back = true;
+
+    }
   }
 
-  if (glfwGetKey(display.window, GLFW_KEY_A) == GLFW_PRESS)
-  {
-    entity->moveBy(glm::vec3(-0.1f, 0.0f, 0.0f));  // needs delta time just testing
-    camera.Position.x -= 0.1f;   // hack to keep the cam in place with the player
+  if (glfwGetKey(g_display.window, GLFW_KEY_A) == GLFW_PRESS) {
+    if (fpp->movement.onGround) {
+      fpp->movement.right = false;
+      fpp->movement.left = true;
+
+    }
   }
 
-  if (glfwGetKey(display.window, GLFW_KEY_D) == GLFW_PRESS)
-  {
-    entity->moveBy(glm::vec3(0.1f, 0.0f, 0.0f));  // needs delta time just testing
-    camera.Position.x += 0.1f;   // hack to keep the cam in place with the player
-
+  if (glfwGetKey(g_display.window, GLFW_KEY_D) == GLFW_PRESS) {
+    if (fpp->movement.onGround) {
+      fpp->movement.left = false;
+      fpp->movement.right = true;
+    }
   }
 
-  if (glfwGetKey(display.window, GLFW_KEY_M) == GLFW_PRESS)
-  {
-    toggleAmbientWindyNight();
+  if (glfwGetKey(g_display.window, GLFW_KEY_M) == GLFW_PRESS) {
+    //toggleAmbientWindyNight();
   }
 
-  if (glfwGetKey(display.window, GLFW_KEY_SPACE) == GLFW_PRESS)
-  {
-    entity->moveTo(glm::vec3(entity->gameItem.location[0], 3.2f, 0.f));  // needs delta time just testing
+  if (glfwGetKey(g_display.window, GLFW_KEY_SPACE) == GLFW_PRESS) {
+    if (fpp->movement.onGround && fpp->movement.canJumpAgain) {  //can jump again is to make the spacebar spam by holding it down not work
+      fpp->movement.jumped = true;
+      fpp->movement.canJumpAgain = false;
+    }
   }
 
-  if (glfwGetKey(display.window, GLFW_KEY_0) == GLFW_PRESS)
-  {
+  if (glfwGetKey(g_display.window, GLFW_KEY_0) == GLFW_PRESS) {
   }
 
-  if (glfwGetKey(display.window, GLFW_KEY_1) == GLFW_PRESS)
-  {
+  if (glfwGetKey(g_display.window, GLFW_KEY_1) == GLFW_PRESS) {
   }
 
-  if (glfwGetKey(display.window, GLFW_KEY_2) == GLFW_PRESS)
-  {
+  if (glfwGetKey(g_display.window, GLFW_KEY_2) == GLFW_PRESS) {
   }
 
-  if (glfwGetKey(display.window, GLFW_KEY_W) == GLFW_RELEASE)
-  {
+  if (glfwGetKey(g_display.window, GLFW_KEY_W) == GLFW_RELEASE) {
+    fpp->movement.forward = false;
   }
 
-  if (glfwGetKey(display.window, GLFW_KEY_S) == GLFW_RELEASE)
-  {
+  if (glfwGetKey(g_display.window, GLFW_KEY_S) == GLFW_RELEASE) {
+    fpp->movement.back = false;
   }
 
-  if (glfwGetKey(display.window, GLFW_KEY_A) == GLFW_RELEASE)
-  {
+  if (glfwGetKey(g_display.window, GLFW_KEY_A) == GLFW_RELEASE) {
+    fpp->movement.left = false;
   }
 
-  if (glfwGetKey(display.window, GLFW_KEY_D) == GLFW_RELEASE)
-  {
+  if (glfwGetKey(g_display.window, GLFW_KEY_D) == GLFW_RELEASE) {
+    fpp->movement.right = false;
   }
 
-  if (glfwGetKey(display.window, GLFW_KEY_LEFT_SHIFT) == GLFW_RELEASE)
-  {
+  if (glfwGetKey(g_display.window, GLFW_KEY_LEFT_SHIFT) == GLFW_RELEASE) {
+    fpp->movement.boost = false;
   }
 
-  if (glfwGetKey(display.window, GLFW_KEY_SPACE) == GLFW_RELEASE)
-  {
-    entity->moveTo(glm::vec3(entity->gameItem.location[0], 2.2f, 0.f));  // needs delta time just testing
+  if (glfwGetKey(g_display.window, GLFW_KEY_SPACE) == GLFW_RELEASE) {
+    fpp->movement.canJumpAgain = true;
   }
-
 }
 
-void Controls::sideScrollPlayerKeyboardInput(Entity* entity, unsigned int numEntities)
-{
-
-  // todo: need bools to go with, this just keep repeating if held
-  static unsigned int i = 0;
-  i = 0;
-  if (glfwGetMouseButton(display.window, GLFW_MOUSE_BUTTON_LEFT) == GLFW_PRESS)
-  {
-  }
-
-  if (glfwGetKey(display.window, GLFW_KEY_ESCAPE) == GLFW_PRESS)
-  {
-    glfwSetWindowShouldClose(display.window, true);  // closes app
-  }
-
-  if (glfwGetKey(display.window, GLFW_KEY_LEFT_SHIFT) == GLFW_PRESS)
-  {
-  }
-
-  if (glfwGetKey(display.window, GLFW_KEY_W) == GLFW_PRESS)
-  {
-  }
-
-  if (glfwGetKey(display.window, GLFW_KEY_S) == GLFW_PRESS)
-  {
-  }
-
-  if (glfwGetKey(display.window, GLFW_KEY_A) == GLFW_PRESS)
-  {
-    for (i = 0; i < numEntities; ++i)
-    {
-      (entity + i)->moveBy(glm::vec3(-0.1f, 0.0f, 0.0f));  // needs delta time just testing
-    }
-    camera.Position.x -= 0.1f;   // hack to keep the cam in place with the player
-  }
-
-  if (glfwGetKey(display.window, GLFW_KEY_D) == GLFW_PRESS)
-  {
-    for (i = 0; i < numEntities; ++i)
-    {
-      (entity + i)->moveBy(glm::vec3(0.1f, 0.0f, 0.0f));  // needs delta time just testing
-    }
-    camera.Position.x += 0.1f;   // hack to keep the cam in place with the player
-
-  }
-
-  if (glfwGetKey(display.window, GLFW_KEY_M) == GLFW_PRESS)
-  {
-    toggleAmbientWindyNight();
-  }
-
-  if (glfwGetKey(display.window, GLFW_KEY_SPACE) == GLFW_PRESS)
-  {
-    for (i = 0; i < numEntities; ++i)
-    {
-      (entity + i)->moveTo(glm::vec3((entity + i)->gameItem.location[0], 4.3f, 0.f));  // needs delta time just testing
-    }
-  }
-
-  if (glfwGetKey(display.window, GLFW_KEY_0) == GLFW_PRESS)
-  {
-  }
-
-  if (glfwGetKey(display.window, GLFW_KEY_1) == GLFW_PRESS)
-  {
-  }
-
-  if (glfwGetKey(display.window, GLFW_KEY_2) == GLFW_PRESS)
-  {
-  }
-
-  if (glfwGetKey(display.window, GLFW_KEY_W) == GLFW_RELEASE)
-  {
-  }
-
-  if (glfwGetKey(display.window, GLFW_KEY_S) == GLFW_RELEASE)
-  {
-  }
-
-  if (glfwGetKey(display.window, GLFW_KEY_A) == GLFW_RELEASE)
-  {
-  }
-
-  if (glfwGetKey(display.window, GLFW_KEY_D) == GLFW_RELEASE)
-  {
-  }
-
-  if (glfwGetKey(display.window, GLFW_KEY_LEFT_SHIFT) == GLFW_RELEASE)
-  {
-  }
-
-  if (glfwGetKey(display.window, GLFW_KEY_SPACE) == GLFW_RELEASE)
-  {
-    for (i = 0; i < numEntities; ++i)
-    {
-      (entity + i)->moveTo(glm::vec3((entity + i)->gameItem.location[0], 5.f, 0.f));  // needs delta time just testing
-    }
-  }
-
-}
-
+/**
+ *  Forwards Side Scroll Player Controls
+ */
 void Controls::sideScrollPlayerKeyboardInput(SideScrollPlayer* ssp)
 {
   static unsigned i = 0;
   i = 0;
-  if (glfwGetMouseButton(display.window, GLFW_MOUSE_BUTTON_LEFT) == GLFW_PRESS)
+  if (glfwGetMouseButton(g_display.window, GLFW_MOUSE_BUTTON_LEFT) == GLFW_PRESS)
   {
     ssp->spawnSword();
   }
 
-  if (glfwGetKey(display.window, GLFW_KEY_ESCAPE) == GLFW_PRESS)
+  if (glfwGetKey(g_display.window, GLFW_KEY_ESCAPE) == GLFW_PRESS)
   {
-    glfwSetWindowShouldClose(display.window, true);  // closes app
+    glfwSetWindowShouldClose(g_display.window, true);  // closes app
   }
 
-  if (glfwGetKey(display.window, GLFW_KEY_LEFT_SHIFT) == GLFW_PRESS)
-  {
-  }
-
-  if (glfwGetKey(display.window, GLFW_KEY_W) == GLFW_PRESS)
+  if (glfwGetKey(g_display.window, GLFW_KEY_LEFT_SHIFT) == GLFW_PRESS)
   {
   }
 
-  if (glfwGetKey(display.window, GLFW_KEY_S) == GLFW_PRESS)
+  if (glfwGetKey(g_display.window, GLFW_KEY_W) == GLFW_PRESS)
   {
   }
 
-  if (glfwGetKey(display.window, GLFW_KEY_A) == GLFW_PRESS)
+  if (glfwGetKey(g_display.window, GLFW_KEY_S) == GLFW_PRESS)
+  {
+  }
+
+  if (glfwGetKey(g_display.window, GLFW_KEY_A) == GLFW_PRESS)
   {
     ssp->moves.forward = false;
     ssp->moves.backward = true;
   }
 
-  if (glfwGetKey(display.window, GLFW_KEY_D) == GLFW_PRESS)
+  if (glfwGetKey(g_display.window, GLFW_KEY_D) == GLFW_PRESS)
   {
     ssp->moves.backward = false;
     ssp->moves.forward = true;
   }
 
-  if (glfwGetKey(display.window, GLFW_KEY_M) == GLFW_PRESS)
+  if (glfwGetKey(g_display.window, GLFW_KEY_M) == GLFW_PRESS)
   {
-    toggleAmbientWindyNight();
+    //toggleAmbientWindyNight();
   }
 
-  if (glfwGetKey(display.window, GLFW_KEY_SPACE) == GLFW_PRESS)
+  if (glfwGetKey(g_display.window, GLFW_KEY_SPACE) == GLFW_PRESS)
   {
-    int count = 1;
+    unsigned int count = 1;
     if (ssp->isAttacking()) count++;
     for (i = 0; i < count; ++i)
     {
-      (ssp->getEntity() + i)->moveTo(glm::vec3((ssp->getEntity() + i)->gameItem.location[0], 4.2f, 0.f));  // needs delta time just testing
+      (ssp->getEntity() + i)->moveTo(glm::vec3((ssp->getEntity() + i)->gameItem.loc.x, 4.2f, 0.f));  // needs delta time just testing
     }
   }
 
-  if (glfwGetKey(display.window, GLFW_KEY_0) == GLFW_PRESS)
+  if (glfwGetKey(g_display.window, GLFW_KEY_0) == GLFW_PRESS)
   {
   }
 
-  if (glfwGetKey(display.window, GLFW_KEY_1) == GLFW_PRESS)
+  if (glfwGetKey(g_display.window, GLFW_KEY_1) == GLFW_PRESS)
   {
   }
 
-  if (glfwGetKey(display.window, GLFW_KEY_2) == GLFW_PRESS)
+  if (glfwGetKey(g_display.window, GLFW_KEY_2) == GLFW_PRESS)
   {
   }
 
-  if (glfwGetKey(display.window, GLFW_KEY_W) == GLFW_RELEASE)
+  if (glfwGetKey(g_display.window, GLFW_KEY_W) == GLFW_RELEASE)
   {
   }
 
-  if (glfwGetKey(display.window, GLFW_KEY_S) == GLFW_RELEASE)
+  if (glfwGetKey(g_display.window, GLFW_KEY_S) == GLFW_RELEASE)
   {
   }
 
-  if (glfwGetKey(display.window, GLFW_KEY_A) == GLFW_RELEASE)
+  if (glfwGetKey(g_display.window, GLFW_KEY_A) == GLFW_RELEASE)
   {
     ssp->moves.backward = false;
   }
 
-  if (glfwGetKey(display.window, GLFW_KEY_D) == GLFW_RELEASE)
+  if (glfwGetKey(g_display.window, GLFW_KEY_D) == GLFW_RELEASE)
   {
     ssp->moves.forward = false;
   }
 
-  if (glfwGetKey(display.window, GLFW_KEY_LEFT_SHIFT) == GLFW_RELEASE)
+  if (glfwGetKey(g_display.window, GLFW_KEY_LEFT_SHIFT) == GLFW_RELEASE)
   {
   }
 
-  if (glfwGetKey(display.window, GLFW_KEY_SPACE) == GLFW_RELEASE)
+  if (glfwGetKey(g_display.window, GLFW_KEY_SPACE) == GLFW_RELEASE)
   {
-    int count = 1;
+    unsigned int count = 1;
     if (ssp->isAttacking()) count++;
     for (i = 0; i < count; ++i)
     {
-      (ssp->getEntity() + i)->moveTo(glm::vec3((ssp->getEntity() + i)->gameItem.location[0], 2.5f, 0.f));  // needs delta time just testing
+      (ssp->getEntity() + i)->moveTo(glm::vec3((ssp->getEntity() + i)->gameItem.loc.x, 2.5f, 0.f));  // needs delta time just testing
     }
   }
 }
+
+/**
+ *  Forwards Controls for an entity.
+ */
+void Controls::entityKeyboardInput(Entity* entity)
+{
+  // todo: need bools to go with, this just keep repeating if held
+
+  if (glfwGetMouseButton(g_display.window, GLFW_MOUSE_BUTTON_LEFT) == GLFW_PRESS)
+  {
+    // left click
+  /*  playbowsound();*/
+  }
+
+  if (glfwGetKey(g_display.window, GLFW_KEY_ESCAPE) == GLFW_PRESS)
+  {
+    glfwSetWindowShouldClose(g_display.window, true);  // closes app
+  }
+
+  if (glfwGetKey(g_display.window, GLFW_KEY_LEFT_SHIFT) == GLFW_PRESS)
+  {
+  }
+
+  if (glfwGetKey(g_display.window, GLFW_KEY_W) == GLFW_PRESS)
+  {
+  }
+
+  if (glfwGetKey(g_display.window, GLFW_KEY_S) == GLFW_PRESS)
+  {
+  }
+
+  if (glfwGetKey(g_display.window, GLFW_KEY_A) == GLFW_PRESS)
+  {
+    entity->moveBy(glm::vec3(-0.1f, 0.0f, 0.0f));  // needs delta time just testing
+    g_camera.Position.x -= 0.1f;   // hack to keep the cam in place with the player
+  }
+
+  if (glfwGetKey(g_display.window, GLFW_KEY_D) == GLFW_PRESS)
+  {
+    entity->moveBy(glm::vec3(0.1f, 0.0f, 0.0f));  // needs delta time just testing
+    g_camera.Position.x += 0.1f;   // hack to keep the cam in place with the player
+
+  }
+
+  if (glfwGetKey(g_display.window, GLFW_KEY_M) == GLFW_PRESS)
+  {
+    //toggleAmbientWindyNight();
+  }
+
+  if (glfwGetKey(g_display.window, GLFW_KEY_SPACE) == GLFW_PRESS)
+  {
+    entity->moveTo(glm::vec3(entity->gameItem.loc.x, 3.2f, 0.f));  // needs delta time just testing
+  }
+
+  if (glfwGetKey(g_display.window, GLFW_KEY_0) == GLFW_PRESS)
+  {
+  }
+
+  if (glfwGetKey(g_display.window, GLFW_KEY_1) == GLFW_PRESS)
+  {
+  }
+
+  if (glfwGetKey(g_display.window, GLFW_KEY_2) == GLFW_PRESS)
+  {
+  }
+
+  if (glfwGetKey(g_display.window, GLFW_KEY_W) == GLFW_RELEASE)
+  {
+  }
+
+  if (glfwGetKey(g_display.window, GLFW_KEY_S) == GLFW_RELEASE)
+  {
+  }
+
+  if (glfwGetKey(g_display.window, GLFW_KEY_A) == GLFW_RELEASE)
+  {
+  }
+
+  if (glfwGetKey(g_display.window, GLFW_KEY_D) == GLFW_RELEASE)
+  {
+  }
+
+  if (glfwGetKey(g_display.window, GLFW_KEY_LEFT_SHIFT) == GLFW_RELEASE)
+  {
+  }
+
+  if (glfwGetKey(g_display.window, GLFW_KEY_SPACE) == GLFW_RELEASE)
+  {
+    entity->moveTo(glm::vec3(entity->gameItem.loc.x, 2.2f, 0.f));  // needs delta time just testing
+  }
+
+}
+
+/**
+ *  Forwards Controls for more than one entity.
+ */
+void Controls::entitiesKeyboardInput(Entity* entity, unsigned int numEntities)
+{
+
+  // todo: need bools to go with, this just keep repeating if held
+  static unsigned int i = 0;
+  i = 0;
+  if (glfwGetMouseButton(g_display.window, GLFW_MOUSE_BUTTON_LEFT) == GLFW_PRESS)
+  {
+  }
+
+  if (glfwGetKey(g_display.window, GLFW_KEY_ESCAPE) == GLFW_PRESS)
+  {
+    glfwSetWindowShouldClose(g_display.window, true);  // closes app
+  }
+
+  if (glfwGetKey(g_display.window, GLFW_KEY_LEFT_SHIFT) == GLFW_PRESS)
+  {
+  }
+
+  if (glfwGetKey(g_display.window, GLFW_KEY_W) == GLFW_PRESS)
+  {
+  }
+
+  if (glfwGetKey(g_display.window, GLFW_KEY_S) == GLFW_PRESS)
+  {
+  }
+
+  if (glfwGetKey(g_display.window, GLFW_KEY_A) == GLFW_PRESS)
+  {
+    for (i = 0; i < numEntities; ++i)
+    {
+      (entity + i)->moveBy(glm::vec3(-0.1f, 0.0f, 0.0f));  // needs delta time just testing
+    }
+    g_camera.Position.x -= 0.1f;   // hack to keep the cam in place with the player
+  }
+
+  if (glfwGetKey(g_display.window, GLFW_KEY_D) == GLFW_PRESS)
+  {
+    for (i = 0; i < numEntities; ++i)
+    {
+      (entity + i)->moveBy(glm::vec3(0.1f, 0.0f, 0.0f));  // needs delta time just testing
+    }
+    g_camera.Position.x += 0.1f;   // hack to keep the cam in place with the player
+
+  }
+
+  if (glfwGetKey(g_display.window, GLFW_KEY_M) == GLFW_PRESS)
+  {
+    //toggleAmbientWindyNight();
+  }
+
+  if (glfwGetKey(g_display.window, GLFW_KEY_SPACE) == GLFW_PRESS)
+  {
+    for (i = 0; i < numEntities; ++i)
+    {
+      (entity + i)->moveTo(glm::vec3((entity + i)->gameItem.loc.x, 4.3f, 0.f));  // needs delta time just testing
+    }
+  }
+
+  if (glfwGetKey(g_display.window, GLFW_KEY_0) == GLFW_PRESS)
+  {
+  }
+
+  if (glfwGetKey(g_display.window, GLFW_KEY_1) == GLFW_PRESS)
+  {
+  }
+
+  if (glfwGetKey(g_display.window, GLFW_KEY_2) == GLFW_PRESS)
+  {
+  }
+
+  if (glfwGetKey(g_display.window, GLFW_KEY_W) == GLFW_RELEASE)
+  {
+  }
+
+  if (glfwGetKey(g_display.window, GLFW_KEY_S) == GLFW_RELEASE)
+  {
+  }
+
+  if (glfwGetKey(g_display.window, GLFW_KEY_A) == GLFW_RELEASE)
+  {
+  }
+
+  if (glfwGetKey(g_display.window, GLFW_KEY_D) == GLFW_RELEASE)
+  {
+  }
+
+  if (glfwGetKey(g_display.window, GLFW_KEY_LEFT_SHIFT) == GLFW_RELEASE)
+  {
+  }
+
+  if (glfwGetKey(g_display.window, GLFW_KEY_SPACE) == GLFW_RELEASE)
+  {
+    for (i = 0; i < numEntities; ++i)
+    {
+      (entity + i)->moveTo(glm::vec3((entity + i)->gameItem.loc.x, 5.f, 0.f));  // needs delta time just testing
+    }
+  }
+
+}
+
 

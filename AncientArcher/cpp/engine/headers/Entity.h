@@ -4,14 +4,13 @@
 #include <Kinematics.h>
 #include <vector>
 
-class Collider;
-
 enum ENTITYTYPE { CUBE, PLANE, SPHERE };
 class Entity {
 private:
   struct GameItem {
-    float location[3];
-    float scale[3];
+    glm::vec3 prevLoc;
+    glm::vec3 loc;
+    glm::vec3 scale;
     int textureID;
     ENTITYTYPE type;
   };
@@ -24,5 +23,6 @@ public:
   // MODIFIERS
   void moveBy(glm::vec3 amount);
   void moveTo(glm::vec3 newLocation);
+
 };
 

@@ -1,11 +1,13 @@
 #pragma once
 #include "../primatives/PrimativeRenderer.h"
 #include "../skybox/SkyboxRenderer.h"
-#include "../firstPersonPlayer/Player.h"
 #include "../sideScrollerPlayer/SideScrollPlayer.h"
 #include "../spawner/Spawner.h"
 #include "../GUI/HealthBar.h"
 #include <vector>
+#include <glm/glm.hpp>
+#include "../firstPersonPlayer/FirstPersonPlayer.h"
+
 
 class MasterRenderer {
 public:
@@ -18,11 +20,15 @@ public:
   void enableGLDepthTest();
   void disableGLDepthTest();
 
-  void update(PrimativeRenderer* primRen, SideScrollPlayer* playerRen, 
-    Spawner* enemyRen, HealthBar* healthRen, SkyboxRenderer* skyRen, 
+  void update(float deltaTime, FirstPersonPlayer *fpplayer, PrimativeRenderer *prims, SkyboxRenderer *sky);
+
+  void update(PrimativeRenderer* primRen, SideScrollPlayer* playerRen,
+    Spawner* enemyRen, HealthBar* healthRen, SkyboxRenderer* skyRen,
     float deltaTime);
 
 private:
+  ///< color of the background if a skybox is not being rendered.
+  glm::vec3 _backgroundColor;
 
 };
 

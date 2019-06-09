@@ -12,7 +12,7 @@ extern Camera camera;
 void SideScrollPlayer::processMovement(float deltaTime)
 {
   static const float SPEED = 7.f;
-  static unsigned int numEntities = 0;
+  static std::size_t numEntities = 0;
   static unsigned int j = 0;
   numEntities = playerModel->getEntites()->size();
   if (moves.forward || moves.backward)
@@ -82,23 +82,23 @@ void SideScrollPlayer::processControls()
 
 void SideScrollPlayer::spawnSword()
 {
-  if (!_isAttacking && playerModel->size() == 1)
-  {
-    _isAttacking = true;
+  //if (!_isAttacking && playerModel->size() == 1)
+  //{
+  //  _isAttacking = true;
 
-    Entity* e = new Entity(
-      ENTITYTYPE::CUBE,
-      *playerModel->getEntityPtr()->gameItem.location + glm::vec3(2.15f, 2.8f, 0.f),
-      glm::vec3(2.0f, 1.5f, 0.03f),
-      weaponTexID,
-      true,
-	  true
-    );
+  //  Entity* e = new Entity(
+  //    ENTITYTYPE::CUBE,
+  //    *playerModel->getEntityPtr()->gameItem.loc + glm::vec3(2.15f, 2.8f, 0.f),
+  //    glm::vec3(2.0f, 1.5f, 0.03f),
+  //    weaponTexID,
+  //    true,
+	 // true
+  //  );
 
-    playerModel->addToPrimativeEntities(*e);
+  //  playerModel->addToPrimativeEntities(*e);
 
-    _timeSinceLastAttack = 0.f;
-  }
+  //  _timeSinceLastAttack = 0.f;
+  //}
 }
 
 /**

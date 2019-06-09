@@ -12,11 +12,9 @@ public:
   } moves;
   void processMovement(float deltaTime);
 
-
   SideScrollPlayer();
 
   void processControls();
-
 
   void spawnSword();
   void despawnSword();

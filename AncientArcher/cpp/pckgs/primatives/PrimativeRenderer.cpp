@@ -42,14 +42,15 @@ void PrimativeRenderer::render()
     glBindTexture(GL_TEXTURE_2D, e.gameItem.textureID);
 
     glm::mat4 model = glm::mat4(1.0f);
-    model = glm::translate(model, glm::vec3(e.gameItem.location[0], e.gameItem.location[1], e.gameItem.location[2]));
+    // step1: translate
+    model = glm::translate(model, glm::vec3(e.gameItem.loc));
+    // step2: rotations  -- not supported by colliders yet
+    //  model = glm::rotate(model, glm::radians(rotation.x), glm::vec3(1.0f, 0.0f, 0.0f));
+    //  model = glm::rotate(model, glm::radians(rotation.y), glm::vec3(0.0f, 1.0f, 0.0f));
+    //  model = glm::rotate(model, glm::radians(rotation.z), glm::vec3(0.0f, 0.0f, 1.0f));
+    // step3: scale
+    model = glm::scale(model, glm::vec3(e.gameItem.scale));
 
-    // rotations
-  //  model = glm::rotate(model, glm::radians(rotation.x), glm::vec3(1.0f, 0.0f, 0.0f));
-  //  model = glm::rotate(model, glm::radians(rotation.y), glm::vec3(0.0f, 1.0f, 0.0f));
-  //  model = glm::rotate(model, glm::radians(rotation.z), glm::vec3(0.0f, 0.0f, 1.0f));
-
-    model = glm::scale(model, glm::vec3(e.gameItem.scale[0], e.gameItem.scale[1], e.gameItem.scale[2]));
     primShader.get()->setMat4("model", model);
 
     switch (e.gameItem.type) {
@@ -90,7 +91,7 @@ Shader* PrimativeRenderer::getShader()
   return primShader.get();
 }
 
-unsigned int PrimativeRenderer::size()
+std::size_t PrimativeRenderer::size()
 {
   return entities.size();
 }
@@ -402,7 +403,7 @@ void PrimativeRenderer::loadSphere()
 
   //glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
 
-  sphereIndexSize = (unsigned int) indices.size();
+  sphereIndexSize = (unsigned int)indices.size();
 
   sphereLoaded = true;
 

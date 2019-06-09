@@ -27,7 +27,7 @@ private:
 
   // --- Point Lights --- //
   std::vector<glm::vec3> pointLights;
-  int _currentPointLights = 0;
+  std::size_t _currentPointLights = 0;
   const int MAXPOINTLIGHTS = 4;
 
   // --- Helper Functions --- //

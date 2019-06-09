@@ -3,11 +3,11 @@
 #include <utility>
 #include <iostream>
 
-Controls controls;
+Controls g_controls;
 
-Display::Display(std::string windowName, MouseControlType mouseType) 
+Display::Display(std::string windowName, MouseControlType mouseType)
 {
-  
+
   window_width = 1280;
   window_height = 720;
 
@@ -61,18 +61,18 @@ Display::~Display() {
   glfwTerminate();
 }
 
-void Display::reshapeWindow(GLFWwindow * window, int w, int h) {
+void Display::reshapeWindow(GLFWwindow* window, int w, int h) {
   glViewport(0, 0, w, h);
   window_width = w;
   window_height = h;
 }
 
-void Display::FPPmouseHandler(GLFWwindow * window, double xpos, double ypos) {
-  controls.FPPmouseMovement((float)xpos, (float)ypos);
+void Display::FPPmouseHandler(GLFWwindow* window, double xpos, double ypos) {
+  g_controls.FPPmouseMovement((float)xpos, (float)ypos);
 }
 
-void Display::SSmouseHandler(GLFWwindow * window, double xpos, double ypos) {
-  controls.SSmouseMovement((float)xpos, (float)ypos);
+void Display::SSmouseHandler(GLFWwindow* window, double xpos, double ypos) {
+  g_controls.SSmouseMovement((float)xpos, (float)ypos);
 }
 
 /**
@@ -84,7 +84,7 @@ void Display::enableCursor()
 }
 
 /**
- * GLFW_CURSOR_DISABLED hides and grabs the cursor, providing virtual and unlimited cursor movement. 
+ * GLFW_CURSOR_DISABLED hides and grabs the cursor, providing virtual and unlimited cursor movement.
  * This is useful for implementing for example 3D camera controls.
  */
 void Display::disableCursor()
@@ -103,21 +103,21 @@ void Display::update() const {
 
 static Display* g_CurrentInstance;
 
-extern "C" void reshapeCallback(GLFWwindow * window, int w, int h) {
+extern "C" void reshapeCallback(GLFWwindow* window, int w, int h) {
   g_CurrentInstance->reshapeWindow(window, w, h);
 }
 
 /**
  * First Person mouse.
  */
-extern "C" void mouseCallbackFPP(GLFWwindow * window, double xpos, double ypos) {
+extern "C" void mouseCallbackFPP(GLFWwindow* window, double xpos, double ypos) {
   g_CurrentInstance->FPPmouseHandler(window, xpos, ypos);
 }
 
 /**
  * Sidescroller mouse.
  */
-extern "C" void SSmouseCallback(GLFWwindow * window, double xpos, double ypos) {
+extern "C" void SSmouseCallback(GLFWwindow* window, double xpos, double ypos) {
   g_CurrentInstance->SSmouseHandler(window, xpos, ypos);
 }
 
