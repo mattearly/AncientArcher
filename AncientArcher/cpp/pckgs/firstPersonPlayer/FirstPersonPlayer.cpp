@@ -29,7 +29,7 @@ FirstPersonPlayer::FirstPersonPlayer(float leg_power)
 }
 
 /**
- * Main update function. Checks keyboard interaction and player move statuses to move accordingly. 
+ * Main update function. Checks keyboard interaction and player move statuses to move accordingly.
  * Does not check collision.
  * @param[in] deltaTime  for calculation movement distances.
  */
@@ -50,14 +50,26 @@ void FirstPersonPlayer::update(float deltaTime)
     {
       model.get()->getFirstEntity()->moveBy(model->getFirstEntity()->kinematics->getCalculatedPosition(deltaTime, moves.forward, moves.back, moves.jumped, moves.falling, moves.left, moves.right));
     }
-    else // not on ground, not falling, must be flying or rising or something
+    else // not on ground, not falling, must be flying or rising or floating
     {
-
+      // a ghetto 1 second jumper
+      static auto risingTime = 0.f;
+      risingTime += deltaTime;
+      if (risingTime > 1.0f)
+      {
+        risingTime = 0.f;
+        moves.falling = true;
+      }
+      else
+      {
+        model.get()->getFirstEntity()->moveBy(glm::vec3(0, getRisingSpeed() * deltaTime, 0));
+      }
+      // end ghetto 1 second jumper
     }
   }
   else // moves.onGround
   {
-    // --- FIGURE SPEED --- // 
+    // --- FIGURE OUT SPEED --- // 
     velocity = getRunSpeed();                         // get player's statebased movement
     if (moves.forward && (moves.left || moves.right))
     {
@@ -72,16 +84,19 @@ void FirstPersonPlayer::update(float deltaTime)
 
     // --- SEND DIRECTION --- //
 
-  // locks moving foward and backwards to the x and z axii. 
-  // Note: you can use the camera.Front instead of movefront to do a fly type thing 
-  // while the Y is unlocked or you are jumping
+
+    // --- FOWARD / BACKWARDS --- //
     if (moves.back || moves.forward) {
+      // locks moving foward and backwards to the x and z axii, if y is added in this is become a flyer 
       glm::vec3 moveFront = glm::vec3((float)g_camera.getFront()->x, 0.0f, (float)g_camera.getFront()->z); //get looking direction from the cam;
       if (moves.forward)     model.get()->getFirstEntity()->moveBy(moveFront * velocity);
       else if (moves.back)   model.get()->getFirstEntity()->moveBy(-moveFront * velocity);
     }
+    // --- LEFT / RIGHT STRAFING --- // 
     if (moves.right) model.get()->getFirstEntity()->moveBy(*g_camera.getRight() * velocity);
     else if (moves.left) model.get()->getFirstEntity()->moveBy(-(*g_camera.getRight()) * velocity);
+
+
 
     //// ------------ JUMP SYSTEM -------------- //
     //// * 3 phase system
@@ -158,17 +173,52 @@ void FirstPersonPlayer::finalCollisionCheck(const std::vector<Entity>* entities)
     return;
   }
 
-  for (Entity e : *entities)
-  {
-    if (cHandler->AABB_vs_AABB_3D(
-      model.get()->getFirstEntity()->collider->impasse,
-      e.collider->impasse)
-      )
-    {
-      moves.falling = false;
-      moves.onGround = true;
-      std::cout << "Collision detected! falling set to false, onground set to true\n";
-      return;
+  std::cout << "playerloc: "
+    << model.get()->getFirstEntity()->gameItem.loc.x << ","
+    << model.get()->getFirstEntity()->gameItem.loc.y << ","
+    << model.get()->getFirstEntity()->gameItem.loc.z << "\n";
+
+  // DEMO REVISION 2
+  for (auto const& e : *entities) {
+
+    //std::cout << "entityloc: " << e.gameItem.loc.x << "," << e.gameItem.loc.y << "," << e.gameItem.loc.z
+    //  << " e prevLoc: : " << e.gameItem.prevLoc.x << "," << e.gameItem.prevLoc.y << "," << e.gameItem.prevLoc.z << "\n";
+
+
+    bool didCollide = cHandler.get()->AABB_vs_AABB_3D(e.collider->impasse, model.get()->getFirstEntity()->collider->impasse);
+
+    if (didCollide) {
+      if (!moves.onGround && moves.falling)
+      {
+        moves.onGround = true;
+        moves.falling = false;
+        std::cout << "Ran into something while falling, setting moves.onGround to TRUE, moves.falling to FALSE\n";
+        // set y pos to prev position
+        model.get()->getFirstEntity()->moveTo(glm::vec3(
+          model.get()->getFirstEntity()->gameItem.loc.x,
+          model.get()->getFirstEntity()->gameItem.prevLoc.y,
+          model.get()->getFirstEntity()->gameItem.loc.z)
+        );
+      }
+      else if (!moves.onGround && !moves.falling)
+      {
+        moves.falling = true;
+        std::cout << "Ran into something while rising, setting move.falling to TRUE\n";
+      }
+      else // onGround
+      {
+        if (moves.forward) { moves.forward = false; }
+        if (moves.back) { moves.back = false; }
+        if (moves.left) { moves.left = false; }
+        if (moves.right) { moves.right = false; }
+        std::cout << "Ran into something while on the ground, setting directional movement to FALSE\n";
+        // set x and z loc to prev loc
+        model.get()->getFirstEntity()->moveTo(glm::vec3(
+          model.get()->getFirstEntity()->gameItem.prevLoc.x,
+          model.get()->getFirstEntity()->gameItem.loc.y,
+          model.get()->getFirstEntity()->gameItem.prevLoc.z)
+        );
+      }
     }
   }
 }
