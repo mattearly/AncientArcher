@@ -18,7 +18,7 @@ Kinematics::Kinematics()
 Kinematics::Kinematics(float speedStat, float weightStat)
 {
 	vel = glm::vec3(0.0f, 0.0f, 0.0f);
-	acc = glm::vec3(0.01f / weightStat, 0.01f - 0.01f / weightStat, 0.0f);
+	acc = glm::vec3(0.01f / weightStat, 1.f - 1.f / weightStat, 0.0f);
 	jrk = glm::vec3(0.0f, 0.0f, 0.0f);
 
 	//For rotational motion (rotational inertia, etc.)
