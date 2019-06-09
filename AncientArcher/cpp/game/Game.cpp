@@ -110,6 +110,55 @@ Game::Game()
         );
         prims->addToPrimativeEntities(e);
       }
+    }
+  }
+
+  // bridge
+  for (int i = 10; i < 24; i++)
+  {
+    for (int j = 5; j < 8; j++)
+    {
+        Entity e(
+          ENTITYTYPE::CUBE,
+          glm::vec3(i * 2, -3.f, j * 2),
+          glm::vec3(2.f, 2.0f, 2.f),
+          texIDLightBricks,
+          true,
+          false
+        );
+        prims->addToPrimativeEntities(e);
+        if (j == 5 || j == 7)  //side railings
+        {
+          Entity e(
+            ENTITYTYPE::SPHERE,
+            glm::vec3(i * 2, -2.f, j * 2),
+            glm::vec3(2.0f, 1.0f, .5f),
+            texIDLightBricks,
+            true,
+            false
+          );
+          prims->addToPrimativeEntities(e);
+        }
+    }
+  }
+
+  // other land of maze
+  for (int i = 24; i < 44; i++)  //ground
+  {
+    for (int j = 0; j < 10; j++)
+    {
+      for (int k = 0; k < 2; k++)
+      {
+        Entity e(
+          ENTITYTYPE::CUBE,
+          glm::vec3(i * 2, -4.f - .5f *k, j * 2),
+          glm::vec3(2.f, .5f, 2.f),
+          k < 1 ? texIDGrass : texIDDirt,
+          true,
+          false
+        );
+        prims->addToPrimativeEntities(e);
+      }
 
     }
   }
@@ -123,7 +172,6 @@ Game::Game()
 	  false
   );
   prims->addToMovingEntities(e);
-
   //for (int i = 6; i < 38; i++)  // walls
   //{
   //  for (int j = 5; j < 8; j++)
