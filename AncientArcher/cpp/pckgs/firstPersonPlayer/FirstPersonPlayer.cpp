@@ -40,7 +40,6 @@ void FirstPersonPlayer::update(float deltaTime)
   g_controls.fppKeyboardIn(this);
 
   // PRE-MOVEMENT 
-  float velocity;
   moves.positionChanged = true;
   model.get()->getFirstEntity()->syncLocation();
 
@@ -63,7 +62,20 @@ void FirstPersonPlayer::update(float deltaTime)
       }
       else
       {
-        model.get()->getFirstEntity()->moveBy(glm::vec3(0, getRisingSpeed() * deltaTime, 0));
+        model.get()->getFirstEntity()->moveBy(glm::vec3(
+                    moves.forward ? moves.currentVelocity * deltaTime : 0.f,
+                    getRisingSpeed() * deltaTime,
+                    0));
+
+
+        if (moves.back || moves.forward) {
+          // locks moving foward and backwards to the x and z axii, if y is added in this is become a flyer 
+          glm::vec3 moveFront = glm::vec3((float)g_camera.getFront()->x, 0.0f, (float)g_camera.getFront()->z); //get looking direction from the cam;
+          if (moves.forward)     model.get()->getFirstEntity()->moveBy(moveFront * moves.currentVelocity);
+          else if (moves.back)   model.get()->getFirstEntity()->moveBy(-moveFront * moves.currentVelocity);
+        }
+
+
       }
       // end ghetto 1 second jumper
     }
@@ -71,16 +83,16 @@ void FirstPersonPlayer::update(float deltaTime)
   else // moves.onGround
   {
     // --- FIGURE OUT SPEED --- // 
-    velocity = getRunSpeed();                         // get player's statebased movement
+    moves.currentVelocity = getRunSpeed();                         // get player's statebased movement
     if (moves.forward && (moves.left || moves.right))
     {
-      velocity = getRunSpeed() / 2;                   // LEFT+FORWARD OR RIGHT+FORWARD = HALF SPEED
+      moves.currentVelocity = getRunSpeed() / 2;                   // LEFT+FORWARD OR RIGHT+FORWARD = HALF SPEED
     }
     if (moves.boost && moves.forward)
     {
-      velocity *= 2.0;                                // BOOSTING?
+      moves.currentVelocity *= 2.0;                                // BOOSTING?
     }
-    velocity *= deltaTime;                            // Final Result calculated with deltaTime.
+    moves.currentVelocity *= deltaTime;                            // Final Result calculated with deltaTime.
 
 
     // --- SEND DIRECTION --- //
@@ -90,12 +102,12 @@ void FirstPersonPlayer::update(float deltaTime)
     if (moves.back || moves.forward) {
       // locks moving foward and backwards to the x and z axii, if y is added in this is become a flyer 
       glm::vec3 moveFront = glm::vec3((float)g_camera.getFront()->x, 0.0f, (float)g_camera.getFront()->z); //get looking direction from the cam;
-      if (moves.forward)     model.get()->getFirstEntity()->moveBy(moveFront * velocity);
-      else if (moves.back)   model.get()->getFirstEntity()->moveBy(-moveFront * velocity);
+      if (moves.forward)     model.get()->getFirstEntity()->moveBy(moveFront * moves.currentVelocity);
+      else if (moves.back)   model.get()->getFirstEntity()->moveBy(-moveFront * moves.currentVelocity);
     }
     // --- LEFT / RIGHT STRAFING --- // 
-    if (moves.right) model.get()->getFirstEntity()->moveBy(*g_camera.getRight() * velocity);
-    else if (moves.left) model.get()->getFirstEntity()->moveBy(-(*g_camera.getRight()) * velocity);
+    if (moves.right) model.get()->getFirstEntity()->moveBy(*g_camera.getRight() * moves.currentVelocity);
+    else if (moves.left) model.get()->getFirstEntity()->moveBy(-(*g_camera.getRight()) * moves.currentVelocity);
 
 
 

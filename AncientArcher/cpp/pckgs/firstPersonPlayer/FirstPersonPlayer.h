@@ -30,6 +30,8 @@ public:
     float lastOnGroundHeight = 0.0f;
     float currentGroundHeight = 0.0f;
 
+    float currentVelocity;
+
     bool canJump() { return canJumpAgain && onGround && !falling; };
     bool canBoost() { return forward && !back; };
     bool isMoving() { return back || forward || left || right || jumped || !onGround; };
