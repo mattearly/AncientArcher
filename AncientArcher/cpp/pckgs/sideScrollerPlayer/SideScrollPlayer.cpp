@@ -26,20 +26,20 @@ void SideScrollPlayer::processMovement(float deltaTime)
 	}
 
 	for (j = 0; j < numEntities; ++j) {
-		//(playerModel->getEntityPtr() + j)->moveBy((playerModel->getEntityPtr() + j)->kinematics->getCalculatedPosition(deltaTime, moves.forward, moves.backward, _direction));
+		//(playerModelgetFirstEntitytr() + j)->moveBy((playerModelgetFirstEntitytr() + j)->kinematics->getCalculatedPosition(deltaTime, moves.forward, moves.backward, _direction));
 	}
-	//g_camera.Position.x += playerModel->getEntityPtr()->kinematics->getCalculatedPosition(deltaTime, moves.forward, moves.backward, _direction).x;
+	//g_camera.Position.x += playerModelgetFirstEntitytr()->kinematics->getCalculatedPosition(deltaTime, moves.forward, moves.backward, _direction).x;
   }
   else
   {
 	  for (j = 0; j < numEntities; ++j) {
-		  if ((playerModel->getEntityPtr() + j)->kinematics->vel.x != 0.0f) {
-			if ((playerModel->getEntityPtr() + j)->kinematics->vel.x > 0.0f) {
-				//(playerModel->getEntityPtr() + j)->moveBy((playerModel->getEntityPtr() + j)->kinematics->getCalculatedPosition(deltaTime, moves.forward, moves.backward, _direction));
-				//g_camera.Position.x += playerModel->getEntityPtr()->kinematics->getCalculatedPosition(deltaTime, moves.forward, moves.backward, _direction).x;
+		  if ((playerModel->getFirstEntity() + j)->kinematics->vel.x != 0.0f) {
+			if ((playerModel->getFirstEntity() + j)->kinematics->vel.x > 0.0f) {
+				//(playerModelgetFirstEntitytr() + j)->moveBy((playerModelgetFirstEntitytr() + j)->kinematics->getCalculatedPosition(deltaTime, moves.forward, moves.backward, _direction));
+				//g_camera.Position.x += playerModelgetFirstEntitytr()->kinematics->getCalculatedPosition(deltaTime, moves.forward, moves.backward, _direction).x;
 			}
 			else {
-				(playerModel->getEntityPtr() + j)->kinematics->vel.x = 0.0f;
+				(playerModel->getFirstEntity() + j)->kinematics->vel.x = 0.0f;
 			}
 		  }
 	  }
@@ -77,7 +77,7 @@ SideScrollPlayer::SideScrollPlayer()
 void SideScrollPlayer::processControls()
 {
   // pass the first entity to the controls
-  //controls.sideScrollPlayerKeyboardInput(playerModel->getEntityPtr(), playerModel->size());
+  //controls.sideScrollPlayerKeyboardInput(playerModel->getFirstEntity(), playerModel->size());
   g_controls.sideScrollPlayerKeyboardInput(this);
 }
 
@@ -89,7 +89,7 @@ void SideScrollPlayer::spawnSword()
 
   //  Entity* e = new Entity(
   //    ENTITYTYPE::CUBE,
-  //    *playerModel->getEntityPtr()->gameItem.loc + glm::vec3(2.15f, 2.8f, 0.f),
+  //    *playerModel->getFirstEntity()->gameItem.loc + glm::vec3(2.15f, 2.8f, 0.f),
   //    glm::vec3(2.0f, 1.5f, 0.03f),
   //    weaponTexID,
   //    true,
@@ -122,14 +122,14 @@ void SideScrollPlayer::render()
  */
 Collider* SideScrollPlayer::getPlayerCollider()
 {
-  return playerModel->getEntityPtr()->collider;
+  return playerModel->getFirstEntity()->collider;
 }
 
 Collider* SideScrollPlayer::getPlayerSwordCollider()
 {
   if (_isAttacking)
   {
-    return (playerModel->getEntityPtr() + 1)->collider;
+    return (playerModel->getFirstEntity() + 1)->collider;
   }
   else
   {
@@ -142,7 +142,7 @@ Collider* SideScrollPlayer::getPlayerSwordCollider()
  */
 Entity* SideScrollPlayer::getEntity()
 {
-  return playerModel->getEntityPtr();
+  return playerModel->getFirstEntity();
 }
 
 void SideScrollPlayer::updateAttackTimer(float deltaTime)

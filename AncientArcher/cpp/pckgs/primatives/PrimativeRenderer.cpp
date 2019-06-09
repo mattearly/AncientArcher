@@ -81,7 +81,7 @@ std::vector<Entity>* PrimativeRenderer::getEntites()
   return &entities;
 }
 
-Entity* PrimativeRenderer::getEntityPtr()
+Entity* PrimativeRenderer::getFirstEntity()
 {
   return &entities[0];
 }

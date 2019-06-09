@@ -108,7 +108,7 @@ float Spawner::getDamage()
  */
 Collider* Spawner::getCollider()
 {
-  return enemyModel->getEntityPtr()->collider;
+  return enemyModel->getFirstEntity()->collider;
 }
 
 /**
@@ -116,7 +116,7 @@ Collider* Spawner::getCollider()
  */
 Entity* Spawner::getEntity()
 {
-  return  enemyModel->getEntityPtr();
+  return  enemyModel->getFirstEntity();
 }
 
 unsigned int Spawner::getAliveCount()

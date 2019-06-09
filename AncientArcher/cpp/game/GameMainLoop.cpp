@@ -4,6 +4,8 @@
 #include <glm/gtc/type_ptr.hpp>
 #include <Display.h>
 #include <CollisionHandler.h>
+#include <vector>
+#include <Entity.h>
 
 extern Display g_display;
 
@@ -21,12 +23,15 @@ void Game::mainLoop() {
 
     
 
+
+
+
+
+    //  FINAL COLLISION CHECK
+    //static CollisionHandler lastCHandler;
+    player->finalCollisionCheck(prims->getEntites());
+
     
-    static CollisionHandler lastCHandler;
-    //check collisions n stuff
-
-
-
 
 
     // MOVE CAMERA TO PROPER LOCATION

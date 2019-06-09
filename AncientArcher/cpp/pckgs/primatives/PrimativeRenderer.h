@@ -13,7 +13,7 @@ public:
   void addToPrimativeEntities(Entity entity);
 
   std::vector<Entity>* getEntites();
-  Entity* getEntityPtr();  // returns ptr to first entity
+  Entity* getFirstEntity();  // returns ptr to first entity
   Shader* getShader();
   
   std::size_t size();

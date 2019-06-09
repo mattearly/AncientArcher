@@ -8,6 +8,7 @@
 #include <vector>
 #include <Controls.h>
 #include <memory>
+#include <CollisionHandler.h>
 
 class FirstPersonPlayer {
 public:
@@ -43,7 +44,10 @@ public:
 
   void render() const;
 
+  void finalCollisionCheck(const std::vector<Entity>* entities);
+
   void syncCam();
+
 
   void addPointLight(glm::vec3 pos, Shader* shader);
   void movePlayerLight(glm::vec3 newpos, Shader* shader);

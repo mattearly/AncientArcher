@@ -43,7 +43,7 @@ FirstPersonPlayer::FirstPersonPlayer(float leg_power)
   light = std::make_unique<Lighting>();
   light->setConstantLight(model.get()->getShader());
 
-  g_camera.setPosition(model.get()->getEntityPtr()->gameItem.loc + _camOffset);
+  g_camera.setPosition(model.get()->getFirstEntity()->gameItem.loc + _camOffset);
 
   legPower = leg_power;
   jumpTimer = 0.0f;
@@ -80,12 +80,28 @@ void FirstPersonPlayer::render() const
   }
 }
 
+void FirstPersonPlayer::finalCollisionCheck(const std::vector<Entity>* entities)
+{
+
+    static CollisionHandler collisionHandler;
+    for (Entity e : *entities)
+    {
+      if (collisionHandler.AABB_vs_AABB_3D(model.get()->getFirstEntity()->collider->impasse, e.collider->impasse))
+      {
+        moves.falling = false;
+        moves.onGround = true;
+        return;
+      }
+    }
+  
+}
+
 /**
  *  Set the cam to the player model
  */
 void FirstPersonPlayer::syncCam()
 {
-  g_camera.setPosition(model.get()->getEntityPtr()->gameItem.loc + _camOffset);
+  g_camera.setPosition(model.get()->getFirstEntity()->gameItem.loc + _camOffset);
 }
 
 /**
@@ -121,13 +137,13 @@ void FirstPersonPlayer::update(float deltaTime)
   // MOVEMENT 
   float velocity;
   moves.positionChanged = true;
-  model.get()->getEntityPtr()->syncLocation();
+  model.get()->getFirstEntity()->syncLocation();
 
   if (!moves.onGround)
   {
     if (moves.falling)
     {
-      model.get()->getEntityPtr()->moveBy(model->getEntityPtr()->kinematics->getCalculatedPosition(deltaTime, moves.forward, moves.back, moves.jumped, moves.falling, moves.left, moves.right));
+      model.get()->getFirstEntity()->moveBy(model->getFirstEntity()->kinematics->getCalculatedPosition(deltaTime, moves.forward, moves.back, moves.jumped, moves.falling, moves.left, moves.right));
     }
   }
 
