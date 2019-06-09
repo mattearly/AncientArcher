@@ -38,9 +38,31 @@ Game::Game()
   g_lighting.setConstantLight(prims->getShader());
 
   TextureLoader tLoader;
-  unsigned int texID = tLoader.load2DTexture("../AncientArcher/cpp/pckgs/primatives/grass.png");
-  unsigned int texID2 = tLoader.load2DTexture("../AncientArcher/cpp/pckgs/primatives/dirt.png");
+  unsigned int texIDGrass = tLoader.load2DTexture("../AncientArcher/cpp/pckgs/primatives/grass.png");
+  unsigned int texIDDirt = tLoader.load2DTexture("../AncientArcher/cpp/pckgs/primatives/dirt.png");
+  unsigned int texIDLightBricks = tLoader.load2DTexture("../AncientArcher/cpp/pckgs/primatives/light_bricks.png");
+  unsigned int texIDMosaicBricks = tLoader.load2DTexture("../AncientArcher/cpp/pckgs/primatives/mosaic_bricks.png");
 
+
+  // grass + dirt layer
+  for (int i = 0; i < 10; i++)
+  {
+    for (int j = 0; j < 10; j++)
+    {
+      for (int k = 0; k < 2; k++)
+      {
+        Entity e(
+          ENTITYTYPE::CUBE,
+          glm::vec3(i*2, -3.f -.5f*k , j*2),
+          glm::vec3(2.f, .5f, 2.f),
+          k < 1 ? texIDGrass : texIDDirt,
+          true,
+          false
+        );
+        prims->addToPrimativeEntities(e);
+      }
+    }
+  }
 
 
   for (int i = 0; i < 10; i++)
@@ -49,12 +71,11 @@ Game::Game()
     {
       for (int k = 0; k < 2; k++)
       {
-        
         Entity e(
           ENTITYTYPE::CUBE,
-          glm::vec3(i*2, -3.f -.5f*k , j*2),
+          glm::vec3(i * 2, -3.f - .5f * k, j * 2),
           glm::vec3(2.f, .5f, 2.f),
-          k < 1 ? texID : texID2,
+          k < 1 ? texIDGrass : texIDDirt,
           true,
           false
         );
@@ -62,6 +83,7 @@ Game::Game()
       }
     }
   }
+
 
 
 
