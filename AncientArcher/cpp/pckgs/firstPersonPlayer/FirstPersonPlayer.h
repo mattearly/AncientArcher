@@ -36,8 +36,10 @@ public:
     bool isBoosted() { return forward && boost; };
 
   } moves;
-  void processMovement(float deltaTime);
-  void processControls();
+
+  void update(float deltaTime);
+  //void processMovement();
+  //void processControls();
 
   void render() const;
 

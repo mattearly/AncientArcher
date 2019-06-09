@@ -16,7 +16,7 @@ void Game::mainLoop() {
     lastFrame = currentFrame;
 
     // PROCESS PLAYER CONTROLS ---- //
-    player->processControls();
+    player->update(deltaTime);
 
 
 

@@ -8,7 +8,6 @@
 #include <cmath>
 #include <iostream>
 #include <vector>
-#include <Controls.h>
 #include <Camera.h>
 
 extern Camera g_camera;
