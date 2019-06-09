@@ -46,7 +46,7 @@ Game::Game()
       Entity e(
         ENTITYTYPE::CUBE,
         glm::vec3(i, -5.0f, j),
-        glm::vec3(1.f, 1.f, 1.f),
+        glm::vec3(1.f, 8.f, 1.f),
         texID,
         true,
         false
