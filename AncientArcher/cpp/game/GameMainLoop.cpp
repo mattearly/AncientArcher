@@ -20,6 +20,8 @@ void Game::mainLoop() {
     // PROCESS PLAYER CONTROLS & MOVEMENT ---- //
     player->update(deltaTime);
 
+	//if (prims->getFirstMovingEntity.gameItem.loc.x == 9.f) {
+	//}
 
     //  FINAL COLLISION CHECK
     if (player->moves.positionChanged)

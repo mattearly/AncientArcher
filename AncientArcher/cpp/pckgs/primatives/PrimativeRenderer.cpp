@@ -66,12 +66,48 @@ void PrimativeRenderer::render()
     default: break;
     }
   }
+  for (auto e : movingEntities)
+  {
+
+	  glActiveTexture(GL_TEXTURE0);
+	  glBindTexture(GL_TEXTURE_2D, e.gameItem.textureID);
+
+	  glm::mat4 model = glm::mat4(1.0f);
+	  // step1: translate
+	  model = glm::translate(model, glm::vec3(e.gameItem.loc));
+	  // step2: rotations  -- not supported by colliders yet
+	  //  model = glm::rotate(model, glm::radians(rotation.x), glm::vec3(1.0f, 0.0f, 0.0f));
+	  //  model = glm::rotate(model, glm::radians(rotation.y), glm::vec3(0.0f, 1.0f, 0.0f));
+	  //  model = glm::rotate(model, glm::radians(rotation.z), glm::vec3(0.0f, 0.0f, 1.0f));
+	  // step3: scale
+	  model = glm::scale(model, glm::vec3(e.gameItem.scale));
+
+	  primShader.get()->setMat4("model", model);
+
+	  switch (e.gameItem.type) {
+	  case ENTITYTYPE::CUBE:
+		  drawCube();
+		  break;
+	  case ENTITYTYPE::PLANE:
+		  drawPlane();
+		  break;
+	  case ENTITYTYPE::SPHERE:
+		  drawSphere();
+		  break;
+	  default: break;
+	  }
+  }
 }
 
 /**
  * Adds a built entity to the std::vector<Entity> entities array.
  */
 void PrimativeRenderer::addToPrimativeEntities(Entity entity)
+{
+  entities.push_back(entity);
+}
+
+void PrimativeRenderer::addToMovingEntities(Entity entity)
 {
   entities.push_back(entity);
 }
@@ -84,6 +120,16 @@ std::vector<Entity>* PrimativeRenderer::getEntites()
 Entity* PrimativeRenderer::getFirstEntity()
 {
   return &entities[0];
+}
+
+std::vector<Entity>* PrimativeRenderer::getMovingEntites()
+{
+	return &movingEntities;
+}
+
+Entity* PrimativeRenderer::getFirstMovingEntity()
+{
+	return &movingEntities[0];
 }
 
 Shader* PrimativeRenderer::getShader()

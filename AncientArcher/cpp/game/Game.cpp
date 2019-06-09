@@ -26,7 +26,7 @@ Game::Game()
   std::cout << "Max total textures:  " << __totalTexturesAllowed << "\n";
 #endif
 
-  player = new FirstPersonPlayer();
+  player = new FirstPersonPlayer(100.0f);
   prims = new PrimativeRenderer();
   sky = new SkyboxRenderer();
 
@@ -40,9 +40,6 @@ Game::Game()
   TextureLoader tLoader;
   unsigned int texID = tLoader.load2DTexture("../AncientArcher/cpp/pckgs/primatives/grass.png");
   unsigned int texID2 = tLoader.load2DTexture("../AncientArcher/cpp/pckgs/primatives/dirt.png");
-
-
-
   for (int i = 0; i < 10; i++)
   {
     for (int j = 0; j < 10; j++)
@@ -52,17 +49,26 @@ Game::Game()
         
         Entity e(
           ENTITYTYPE::CUBE,
-          glm::vec3(i*2, -3.f -.5f*k , j*2),
-          glm::vec3(2.f, .5f, 2.f),
+          glm::vec3(i, -3.f -.5f*k , j),
+          glm::vec3(1.f, .5f, 1.f),
           k < 1 ? texID : texID2,
           true,
           false
         );
         prims->addToPrimativeEntities(e);
       }
+
     }
   }
 
-
+  Entity e(
+	  ENTITYTYPE::CUBE,
+	  glm::vec3(9.f, -2.25f, 9.f),
+	  glm::vec3(1.f, 1.f, 1.f),
+	  texID2,
+	  true,
+	  false
+  );
+  prims->addToMovingEntities(e);
 
 }

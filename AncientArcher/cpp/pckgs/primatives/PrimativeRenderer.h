@@ -11,9 +11,14 @@ public:
 
   void render();
   void addToPrimativeEntities(Entity entity);
+  void addToMovingEntities(Entity entity);
 
   std::vector<Entity>* getEntites();
   Entity* getFirstEntity();  // returns ptr to first entity
+
+  std::vector<Entity>* getMovingEntites();
+  Entity* getFirstMovingEntity();  // returns ptr to first entity
+
   Shader* getShader();
   
   std::size_t size();
@@ -44,6 +49,8 @@ private:
   unsigned int sphereIndexSize = 0;
 
   std::vector<Entity> entities;
+
+  std::vector<Entity> movingEntities;
 
   std::unique_ptr< Shader > primShader;
 
