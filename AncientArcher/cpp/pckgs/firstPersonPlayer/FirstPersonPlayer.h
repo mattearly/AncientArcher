@@ -63,7 +63,7 @@ private:
 
   float jumpTimer;
 
-  glm::vec3 _camOffset = glm::vec3(0, 1.011f, 0);
+  glm::vec3 _camOffset = glm::vec3(0, 1.013f, 0);
 
   // player stats
   const float BASE_PLAYER_SPEED = 3.0f;
