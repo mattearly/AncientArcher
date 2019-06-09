@@ -17,18 +17,15 @@ void Game::mainLoop() {
     currentFrame = (float)glfwGetTime();
     deltaTime = currentFrame - lastFrame;
     lastFrame = currentFrame;
-
-    // PROCESS PLAYER CONTROLS ---- //
+    // PROCESS PLAYER CONTROLS & MOVEMENT ---- //
     player->update(deltaTime);
 
 
     //  FINAL COLLISION CHECK
-    //static CollisionHandler lastCHandler;
     if (player->moves.positionChanged)
     {
       player->finalCollisionCheck(prims->getEntites());
     }
-
     // MOVE CAMERA TO PROPER LOCATION
     player->syncCam();
     // RENDER EVERYTHING ---- //
