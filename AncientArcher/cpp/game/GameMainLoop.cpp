@@ -3,6 +3,7 @@
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtc/type_ptr.hpp>
 #include <Display.h>
+#include <CollisionHandler.h>
 
 extern Display g_display;
 
@@ -18,13 +19,14 @@ void Game::mainLoop() {
     // PROCESS PLAYER CONTROLS ---- //
     player->update(deltaTime);
 
+    
 
+    
+    static CollisionHandler lastCHandler;
+    //check collisions n stuff
 
     // RENDER EVERYTHING ---- //
     masterRenderer.update(deltaTime, player, prims, sky);
-
-
-
     // RECORD KEYPRESSES N STUFF FOR NEXT FRAME ---- //
     glfwPollEvents();
   }
