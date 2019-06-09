@@ -30,13 +30,18 @@ Game::Game()
   prims = new PrimativeRenderer();
   sky = new SkyboxRenderer();
 
+  g_lighting.updateConstantLightAmbient(glm::vec3(.25, 0.25, 0.25));
+  //g_lighting.updateConstantLightDirection(glm::vec3(-1, -.93, -1));
+  g_lighting.updateConstantLightDiffuse(glm::vec3(.7, .7, .7));
+  g_lighting.updateConstantLightSpecular(glm::vec3(1, 1, 1));
+
   g_lighting.setConstantLight(prims->getShader());
 
   TextureLoader tLoader;
-  unsigned int texID = tLoader.load2DTexture("../AncientArcher/cpp/pckgs/primatives/light_bricks.png");
-  for (int i = 0; i < 20; i++)
+  unsigned int texID = tLoader.load2DTexture("../AncientArcher/cpp/pckgs/primatives/grass.png");
+  for (int i = 0; i < 10; i++)
   {
-    for (int j = 0; j < 20; j++)
+    for (int j = 0; j < 10; j++)
     {
       Entity e(
         ENTITYTYPE::CUBE,
