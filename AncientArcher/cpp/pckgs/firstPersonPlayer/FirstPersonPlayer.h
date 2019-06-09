@@ -59,7 +59,7 @@ private:
 
   float jumpTimer;
 
-  glm::vec3 _camOffset = glm::vec3(0, 1.013f, 0);
+  glm::vec3 _camOffset = glm::vec3(0, /*1.013f*/ 0.718f, 0);
 
   // player stats
   const float BASE_PLAYER_SPEED = 3.0f;
@@ -72,7 +72,7 @@ private:
   const float LEGPOWER_CAP = 100.0f;
 
   // control the divisor of the actual in-game stat, lower provides bigger results in the getter fuctions
-  const float STAT_DIVISOR = 40.0f;
+  const float STAT_DIVISOR = 10.0f;
 
   void init();
 };
