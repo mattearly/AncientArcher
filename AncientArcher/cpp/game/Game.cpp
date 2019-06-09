@@ -26,7 +26,7 @@ Game::Game()
 	std::cout << "Max total textures:  " << __totalTexturesAllowed << "\n";
 #endif
 
-	player = new FirstPersonPlayer(100.0f);
+	player = new FirstPersonPlayer();
 	prims = new PrimativeRenderer();
 	sky = new SkyboxRenderer();
 
