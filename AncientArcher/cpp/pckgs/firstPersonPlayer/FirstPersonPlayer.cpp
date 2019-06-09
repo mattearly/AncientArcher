@@ -6,6 +6,7 @@
 #include <iostream>
 #include <memory>
 #include <TextureLoader.h>
+#include <Global.h>
 
 extern Controls g_controls;    // from display.cpp (engine)
 extern Camera g_camera;        // from game.cpp    (game)
@@ -177,47 +178,57 @@ void FirstPersonPlayer::finalCollisionCheck(const std::vector<Entity>* entities)
     << model.get()->getFirstEntity()->gameItem.loc.x << ","
     << model.get()->getFirstEntity()->gameItem.loc.y << ","
     << model.get()->getFirstEntity()->gameItem.loc.z << "\n";
+  
+  int entcount = 0;
 
   // DEMO REVISION 2
   for (auto const& e : *entities) {
 
-    //std::cout << "entityloc: " << e.gameItem.loc.x << "," << e.gameItem.loc.y << "," << e.gameItem.loc.z
-    //  << " e prevLoc: : " << e.gameItem.prevLoc.x << "," << e.gameItem.prevLoc.y << "," << e.gameItem.prevLoc.z << "\n";
+    // check distance
+    float distance = glm::distance(e.collider->impasse.loc, model.get()->getFirstEntity()->collider->impasse.loc);
 
+    if (distance < ENGINE_LOGIC_CHECKING_DISTANCE)
+    {
+      entcount++;
+      std::cout << "entityloc: " << e.gameItem.loc.x << "," << e.gameItem.loc.y << "," << e.gameItem.loc.z
+        << " e prevLoc: : " << e.gameItem.prevLoc.x << "," << e.gameItem.prevLoc.y << "," << e.gameItem.prevLoc.z << "\n";
+      std::cout << "going through entitites: " << entcount << "\n";
 
-    bool didCollide = cHandler.get()->AABB_vs_AABB_3D(e.collider->impasse, model.get()->getFirstEntity()->collider->impasse);
+      bool didCollide = cHandler.get()->AABB_vs_AABB_3D(e.collider->impasse, model.get()->getFirstEntity()->collider->impasse);
 
-    if (didCollide) {
-      if (!moves.onGround && moves.falling)
-      {
-        moves.onGround = true;
-        moves.falling = false;
-        std::cout << "Ran into something while falling, setting moves.onGround to TRUE, moves.falling to FALSE\n";
-        // set y pos to prev position
-        model.get()->getFirstEntity()->moveTo(glm::vec3(
-          model.get()->getFirstEntity()->gameItem.loc.x,
-          model.get()->getFirstEntity()->gameItem.prevLoc.y,
-          model.get()->getFirstEntity()->gameItem.loc.z)
-        );
-      }
-      else if (!moves.onGround && !moves.falling)
-      {
-        moves.falling = true;
-        std::cout << "Ran into something while rising, setting move.falling to TRUE\n";
-      }
-      else // onGround
-      {
-        if (moves.forward) { moves.forward = false; }
-        if (moves.back) { moves.back = false; }
-        if (moves.left) { moves.left = false; }
-        if (moves.right) { moves.right = false; }
-        std::cout << "Ran into something while on the ground, setting directional movement to FALSE\n";
-        // set x and z loc to prev loc
-        model.get()->getFirstEntity()->moveTo(glm::vec3(
-          model.get()->getFirstEntity()->gameItem.prevLoc.x,
-          model.get()->getFirstEntity()->gameItem.loc.y,
-          model.get()->getFirstEntity()->gameItem.prevLoc.z)
-        );
+      if (didCollide) {
+        std::cout << "A WILD COLLISION!\n";
+        if (!moves.onGround && moves.falling)
+        {
+          moves.onGround = true;
+          moves.falling = false;
+          std::cout << "Ran into something while falling, setting moves.onGround to TRUE, moves.falling to FALSE\n";
+          // set y pos to prev position
+          model.get()->getFirstEntity()->moveTo(glm::vec3(
+            model.get()->getFirstEntity()->gameItem.loc.x,
+            model.get()->getFirstEntity()->gameItem.prevLoc.y,
+            model.get()->getFirstEntity()->gameItem.loc.z)
+          );
+        }
+        else if (!moves.onGround && !moves.falling)
+        {
+          moves.falling = true;
+          std::cout << "Ran into something while rising, setting move.falling to TRUE\n";
+        }
+        else // onGround
+        {
+          if (moves.forward) { moves.forward = false; }
+          if (moves.back) { moves.back = false; }
+          if (moves.left) { moves.left = false; }
+          if (moves.right) { moves.right = false; }
+          std::cout << "Ran into something while on the ground, setting directional movement to FALSE\n";
+          // set x and z loc to prev loc
+          model.get()->getFirstEntity()->moveTo(glm::vec3(
+            model.get()->getFirstEntity()->gameItem.prevLoc.x,
+            model.get()->getFirstEntity()->gameItem.loc.y,
+            model.get()->getFirstEntity()->gameItem.prevLoc.z)
+          );
+        }
       }
     }
   }
