@@ -122,7 +122,7 @@ void FirstPersonPlayer::update(float deltaTime)
     //  float jumpAccel = -32.1522f * pow(jumpTimer, 2.f); // Accelaration of jump due top gravity in 'feet' (at^2 term in equation below)
     //              // modifier * (	  c	   +	bt	 +	 at^2	) 
     //  playerIntendedLocation.y += jumpMod * (jumpPos + jumpVel + jumpAccel); // Parabolic equation based on time
-    //  //std::cout << previousPlayerLocation.y - playerIntendedLocation.y << "\n";
+    //  //// std::cout << previousPlayerLocation.y - playerIntendedLocation.y << "\n";
     //  //if (playerIntendedLocation.y > getJumpHeight() + movedir.lastOnGroundHeight) // MAX HEIGHT CALC: jump height based on LegPower Player Stat
     //  if (previousPlayerLocation.y - playerIntendedLocation.y > 0) {
     //    movedir.falling = true;
@@ -170,14 +170,14 @@ void FirstPersonPlayer::finalCollisionCheck(const std::vector<Entity>* entities)
 {
   if (entities->empty())
   {
-    std::cout << "finalCollisionCheck entities empty! returning...\n";
+    // std::cout << "finalCollisionCheck entities empty! returning...\n";
     return;
   }
 
-  std::cout << "playerloc: "
-    << model.get()->getFirstEntity()->gameItem.loc.x << ","
-    << model.get()->getFirstEntity()->gameItem.loc.y << ","
-    << model.get()->getFirstEntity()->gameItem.loc.z << "\n";
+  //// std::cout << "playerloc: "
+  //  << model.get()->getFirstEntity()->gameItem.loc.x << ","
+  //  << model.get()->getFirstEntity()->gameItem.loc.y << ","
+  //  << model.get()->getFirstEntity()->gameItem.loc.z << "\n";
   
   int entcount = 0;
 
@@ -190,19 +190,19 @@ void FirstPersonPlayer::finalCollisionCheck(const std::vector<Entity>* entities)
     if (distance < ENGINE_LOGIC_CHECKING_DISTANCE)
     {
       entcount++;
-      std::cout << "entityloc: " << e.gameItem.loc.x << "," << e.gameItem.loc.y << "," << e.gameItem.loc.z
-        << " e prevLoc: : " << e.gameItem.prevLoc.x << "," << e.gameItem.prevLoc.y << "," << e.gameItem.prevLoc.z << "\n";
-      std::cout << "going through entitites: " << entcount << "\n";
+      // std::cout << "entityloc: " << e.gameItem.loc.x << "," << e.gameItem.loc.y << "," << e.gameItem.loc.z
+        //<< " e prevLoc: : " << e.gameItem.prevLoc.x << "," << e.gameItem.prevLoc.y << "," << e.gameItem.prevLoc.z << "\n";
+      // std::cout << "going through entitites: " << entcount << "\n";
 
       bool didCollide = cHandler.get()->AABB_vs_AABB_3D(e.collider->impasse, model.get()->getFirstEntity()->collider->impasse);
 
       if (didCollide) {
-        std::cout << "A WILD COLLISION!\n";
+        // std::cout << "A WILD COLLISION!\n";
         if (!moves.onGround && moves.falling)
         {
           moves.onGround = true;
           moves.falling = false;
-          std::cout << "Ran into something while falling, setting moves.onGround to TRUE, moves.falling to FALSE\n";
+          // std::cout << "Ran into something while falling, setting moves.onGround to TRUE, moves.falling to FALSE\n";
           // set y pos to prev position
           model.get()->getFirstEntity()->moveTo(glm::vec3(
             model.get()->getFirstEntity()->gameItem.loc.x,
@@ -213,7 +213,7 @@ void FirstPersonPlayer::finalCollisionCheck(const std::vector<Entity>* entities)
         else if (!moves.onGround && !moves.falling)
         {
           moves.falling = true;
-          std::cout << "Ran into something while rising, setting move.falling to TRUE\n";
+          // std::cout << "Ran into something while rising, setting move.falling to TRUE\n";
         }
         else // onGround
         {
@@ -221,7 +221,7 @@ void FirstPersonPlayer::finalCollisionCheck(const std::vector<Entity>* entities)
           if (moves.back) { moves.back = false; }
           if (moves.left) { moves.left = false; }
           if (moves.right) { moves.right = false; }
-          std::cout << "Ran into something while on the ground, setting directional movement to FALSE\n";
+          // std::cout << "Ran into something while on the ground, setting directional movement to FALSE\n";
           // set x and z loc to prev loc
           model.get()->getFirstEntity()->moveTo(glm::vec3(
             model.get()->getFirstEntity()->gameItem.prevLoc.x,
