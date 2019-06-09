@@ -32,26 +32,32 @@ Game::Game()
 
   g_lighting.updateConstantLightAmbient(glm::vec3(.25, 0.25, 0.25));
   //g_lighting.updateConstantLightDirection(glm::vec3(-1, -.93, -1));
-  g_lighting.updateConstantLightDiffuse(glm::vec3(.7, .7, .7));
+  g_lighting.updateConstantLightDiffuse(glm::vec3(.6, .6, .6));
   g_lighting.updateConstantLightSpecular(glm::vec3(1, 1, 1));
 
   g_lighting.setConstantLight(prims->getShader());
 
   TextureLoader tLoader;
   unsigned int texID = tLoader.load2DTexture("../AncientArcher/cpp/pckgs/primatives/grass.png");
+  unsigned int texID2 = tLoader.load2DTexture("../AncientArcher/cpp/pckgs/primatives/dirt.png");
   for (int i = 0; i < 10; i++)
   {
     for (int j = 0; j < 10; j++)
     {
-      Entity e(
-        ENTITYTYPE::CUBE,
-        glm::vec3(i, -5.0f, j),
-        glm::vec3(1.f, 8.f, 1.f),
-        texID,
-        true,
-        false
-      );
-      prims->addToPrimativeEntities(e);
+      for (int k = 0; k < 2; k++)
+      {
+        
+        Entity e(
+          ENTITYTYPE::CUBE,
+          glm::vec3(i, -3.f -.5f*k , j),
+          glm::vec3(1.f, .5f, 1.f),
+          k < 1 ? texID : texID2,
+          true,
+          false
+        );
+        prims->addToPrimativeEntities(e);
+      }
+
     }
   }
 
