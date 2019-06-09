@@ -11,7 +11,7 @@ extern Display g_display;
 
 void Game::mainLoop() {
   static float currentFrame;
-  while (!glfwWindowShouldClose(g_display.window)) 
+  while (!glfwWindowShouldClose(g_display.window))
   {
     // TIMING - UDPATE DELTA TIME ---- // 
     currentFrame = (float)glfwGetTime();
@@ -21,18 +21,13 @@ void Game::mainLoop() {
     // PROCESS PLAYER CONTROLS ---- //
     player->update(deltaTime);
 
-    
-
-
-
-
 
     //  FINAL COLLISION CHECK
     //static CollisionHandler lastCHandler;
-    player->finalCollisionCheck(prims->getEntites());
-
-    
-
+    if (player->moves.positionChanged)
+    {
+      player->finalCollisionCheck(prims->getEntites());
+    }
 
     // MOVE CAMERA TO PROPER LOCATION
     player->syncCam();
