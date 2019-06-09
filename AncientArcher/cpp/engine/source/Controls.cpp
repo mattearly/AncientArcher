@@ -132,7 +132,7 @@ void Controls::fppKeyboardIn(FirstPersonPlayer* fpp)
 
   if (glfwGetKey(g_display.window, GLFW_KEY_SPACE) == GLFW_PRESS) {
     if (fpp->moves.onGround && fpp->moves.canJumpAgain) {  //can jump again is to make the spacebar spam by holding it down not work
-      fpp->moves.jumped = true;
+      fpp->moves.onGround = false;
       fpp->moves.canJumpAgain = false;
     }
   }
