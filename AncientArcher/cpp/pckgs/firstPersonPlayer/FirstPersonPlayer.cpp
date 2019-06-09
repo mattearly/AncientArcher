@@ -1,8 +1,7 @@
-#include <AAEngine.h>
+#include "FirstPersonPlayer.h"
 #include <Controls.h>
 #include <glm/glm.hpp>
 #include <iostream>
-#include "FirstPersonPlayer.h"
 
 extern Controls g_controls;    // from display.cpp (engine)
 

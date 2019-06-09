@@ -1,13 +1,10 @@
 #include "SideScrollPlayer.h"
+#include <Global.h>
 #include <Controls.h>
 #include <Entity.h>
 #include <TextureLoader.h>
 #include <glad/glad.h>
 #include <Sound.h>
-
-extern Controls controls;  // originally declared in Display.cpp
-
-extern Camera camera;
 
 void SideScrollPlayer::processMovement(float deltaTime)
 {
@@ -27,7 +24,7 @@ void SideScrollPlayer::processMovement(float deltaTime)
 	for (j = 0; j < numEntities; ++j) {
 		(playerModel->getEntityPtr() + j)->moveBy((playerModel->getEntityPtr() + j)->kinematics->getCalculatedPosition(deltaTime, moves.forward, moves.backward, _direction));
 	}
-	camera.Position.x += playerModel->getEntityPtr()->kinematics->getCalculatedPosition(deltaTime, moves.forward, moves.backward, _direction).x;
+	g_camera.Position.x += playerModel->getEntityPtr()->kinematics->getCalculatedPosition(deltaTime, moves.forward, moves.backward, _direction).x;
   }
   else
   {
@@ -35,7 +32,7 @@ void SideScrollPlayer::processMovement(float deltaTime)
 		  if ((playerModel->getEntityPtr() + j)->kinematics->vel.x != 0.0f) {
 			if ((playerModel->getEntityPtr() + j)->kinematics->vel.x > 0.0f) {
 				(playerModel->getEntityPtr() + j)->moveBy((playerModel->getEntityPtr() + j)->kinematics->getCalculatedPosition(deltaTime, moves.forward, moves.backward, _direction));
-				camera.Position.x += playerModel->getEntityPtr()->kinematics->getCalculatedPosition(deltaTime, moves.forward, moves.backward, _direction).x;
+				g_camera.Position.x += playerModel->getEntityPtr()->kinematics->getCalculatedPosition(deltaTime, moves.forward, moves.backward, _direction).x;
 			}
 			else {
 				(playerModel->getEntityPtr() + j)->kinematics->vel.x = 0.0f;
@@ -77,7 +74,7 @@ void SideScrollPlayer::processControls()
 {
   // pass the first entity to the controls
   //controls.sideScrollPlayerKeyboardInput(playerModel->getEntityPtr(), playerModel->size());
-  controls.sideScrollPlayerKeyboardInput(this);
+  g_controls.sideScrollPlayerKeyboardInput(this);
 }
 
 void SideScrollPlayer::spawnSword()

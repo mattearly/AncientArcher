@@ -6,13 +6,15 @@
 #include <Entity.h>
 
 #include "../../pckgs/sideScrollerPlayer/SideScrollPlayer.h"
-#include "../../pckgs/firstPersonPlayer/FirstPersonPlayer.h"
 
+#include "../../pckgs/firstPersonPlayer/FirstPersonPlayer.h"
 class Controls {
 
 public:
 
   Controls();
+
+
 
   void FPPmouseMovement(float xpos, float ypos);
 

@@ -29,7 +29,7 @@ bool CollisionHandler::AABB_vs_AABB_3D(const Impasse& a, const Impasse& b) const
  * Bouding Box Collision for a point v.s. a 3D rectangular Box.
  * @return        True if they collide. False if they do not collide
  */
-bool CollisionHandler::point_vs_AABB_3D(const float& px, const float& py, const float& pz, const Impasse& b)
+bool CollisionHandler::point_vs_AABB_3D(const float& px, const float& py, const float& pz, const Impasse& b) const
 {
   float bMinX = b.loc.x - b.size.x / 2.f;
   float bMaxX = b.loc.x + b.size.x / 2.f;

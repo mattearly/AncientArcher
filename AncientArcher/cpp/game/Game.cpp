@@ -9,14 +9,14 @@
 
 //--- GLOBALS ---//
 Display g_display(" MMO ", Display::MouseControlType::FPP);
-// Starting Position           YAW    PITCH  FOV
+//              Starting Position           YAW    PITCH  FOV
 Camera g_camera(glm::vec3(12.f, 9.f, 13.f), -88.f, -7.5f, 65.f);
 Lighting g_lighting;
 std::vector<Entity> g_entities;
 //--- END GLOBALS ---//
 
-Game::Game() {
-
+Game::Game() 
+{
 #ifdef DEBUG
   int __textures_allowed = 0, __totalTexturesAllowed = 0;
   glGetIntegerv(GL_MAX_TEXTURE_IMAGE_UNITS, &__textures_allowed);
@@ -25,16 +25,14 @@ Game::Game() {
   std::cout << "Max total textures:  " << __totalTexturesAllowed << "\n";
 #endif
 
+  player = new FirstPersonPlayer(100.0f);
   prims = new PrimativeRenderer();
 
   g_lighting.setConstantLight(prims->getShader());
-  player = new FirstPersonPlayer(100.0f);
 
   TextureLoader texLoader;
-
   unsigned int groundTextureId = texLoader.load2DTexture("../AncientArcher/cpp/pckgs/primatives/grass.png");
-
-
+  
   // ------------ SET FLOOR ------------ //
   float planeCollisionThickness = 0.18f;
   float currentGroundLevel = -0.02f;
@@ -81,10 +79,12 @@ Game::Game() {
     g_entities.push_back(floor4);
   }
 
-  // ------------ PLACE RANDOMIZED BOXES ------------ //
+
+  unsigned int bricksTextureId = texLoader.load2DTexture("../AncientArcher/cpp/pckgs/primatives/light_bricks.png");
+
+  // ------------ PLACE RANDOMIZED NON-COLLIDING BOXES ------------ //
   bool okayToSpawn = true;
   int countTotalCollisions = 0;
-
   for (int i = 0; i < 500; ++i) {
 
     Entity* e;
@@ -95,7 +95,7 @@ Game::Game() {
         glm::vec3(mearly::NTKR(3.f, ENGINE_LOGIC_CHECKING_DISTANCE * 3.5),
           mearly::NTKR(7.01f, 15.0f), mearly::NTKR(3.f, ENGINE_LOGIC_CHECKING_DISTANCE * 3.5)),
         glm::vec3(mearly::NTKR(2.5f, 4.5f), mearly::NTKR(0.3f, 6.5f), mearly::NTKR(2.5f, 4.5f)),
-        groundTextureId,
+        bricksTextureId,
         true,
         true
       );
@@ -105,7 +105,7 @@ Game::Game() {
         ENTITYTYPE::CUBE,
         glm::vec3(mearly::NTKR(3.f, ENGINE_LOGIC_CHECKING_DISTANCE * 3.5), mearly::NTKR(2.01f, 8.0f), mearly::NTKR(3.f, ENGINE_LOGIC_CHECKING_DISTANCE * 3.5)),
         glm::vec3(mearly::NTKR(0.5f, 8.0f), mearly::NTKR(0.5f, 5.0f), mearly::NTKR(0.5f, 8.0f)),
-        groundTextureId,
+        bricksTextureId,
         true,
         true
       );
@@ -115,7 +115,7 @@ Game::Game() {
         ENTITYTYPE::CUBE,
         glm::vec3(mearly::NTKR(3.f, ENGINE_LOGIC_CHECKING_DISTANCE * 3.5), 1.08f, mearly::NTKR(3.f, ENGINE_LOGIC_CHECKING_DISTANCE * 3.5)),
         glm::vec3(2.f, 2.f, 2.f),
-        groundTextureId,
+        bricksTextureId,
         true,
         true
       );

@@ -4,7 +4,7 @@
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
 #include <glad/glad.h>  
-extern Display display;
+extern Display g_display;
 
 Camera::Camera(const glm::vec3 startingPos, const float lookDir, const float pitch, const float fov)
 {
@@ -17,7 +17,7 @@ Camera::Camera(const glm::vec3 startingPos, const float lookDir, const float pit
   updateCameraVectors();  // set Front, Up, & Right
 }
 
-void Camera::update(Shader * shader) {
+void Camera::update(Shader* shader) {
   glm::mat4 view = getViewMatrix();
   shader->use();
   shader->setMat4("view", view);
@@ -25,15 +25,15 @@ void Camera::update(Shader * shader) {
 
 // needs called to update the FoV and/or window_width window_height, and draw distances
 // this is for the global texBankShader
-void Camera::updateProjectionMatrix(Shader * shader) {
-  glm::mat4 projection = glm::perspective(glm::radians(FoV), (float)display.window_width / (float)display.window_height, 0.01f, RENDER_DISTANCE);
+void Camera::updateProjectionMatrix(Shader* shader) {
+  glm::mat4 projection = glm::perspective(glm::radians(FoV), (float)g_display.window_width / (float)g_display.window_height, 0.01f, RENDER_DISTANCE);
   shader->use();
   shader->setMat4("projection", projection);
 }
 
 glm::mat4 Camera::getProjectionMatrix()
 {
-  glm::mat4 projection = glm::perspective(glm::radians(FoV), (float)display.window_width / (float)display.window_height, 0.01f, RENDER_DISTANCE);
+  glm::mat4 projection = glm::perspective(glm::radians(FoV), (float)g_display.window_width / (float)g_display.window_height, 0.01f, RENDER_DISTANCE);
 
   return projection;
 }
@@ -47,14 +47,14 @@ void Camera::setToOrtho(Shader* shader)
 {
   //ortho(T const& left, T const& right, T const& bottom, T const& top, T const& zNear, T const& zFar)
 
-  glm::mat4 projection = glm::ortho( -(float)display.window_width/2.f, (float)display.window_width / 2.f, -(float)display.window_height / 2.f, (float)display.window_height/2.f, -1.f, 1.f);
+  glm::mat4 projection = glm::ortho(-(float)g_display.window_width / 2.f, (float)g_display.window_width / 2.f, -(float)g_display.window_height / 2.f, (float)g_display.window_height / 2.f, -1.f, 1.f);
   shader->use();
   shader->setMat4("projection", projection);
 }
 
 void Camera::setToPerspective(Shader* shader, float fov)
 {
-  glm::mat4 projection = glm::perspective(glm::radians(FoV), (float)display.window_width / (float)display.window_height, 0.01f, RENDER_DISTANCE);
+  glm::mat4 projection = glm::perspective(glm::radians(FoV), (float)g_display.window_width / (float)g_display.window_height, 0.01f, RENDER_DISTANCE);
   shader->use();
   shader->setMat4("projection", projection);
 }

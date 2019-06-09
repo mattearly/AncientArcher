@@ -2,12 +2,12 @@
 #include <vector>
 
 /**
- * Monospaced glyphs. 
+ * Monospaced glyphs.
  */
 
-/**
- * Holds a single Glyph Character 
- */
+ /**
+  * Holds a single Glyph Character
+  */
 struct Glyph {
   ///< ASCII char that maps with the glyph.
   char _char;

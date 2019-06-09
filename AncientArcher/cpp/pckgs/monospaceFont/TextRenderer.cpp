@@ -16,7 +16,7 @@ TextRenderer::TextRenderer()
   // not sure if this is necessary when only one texture
   textShader->setInt("textBitmap", 0);
   
-  glm::mat4 projection = glm::ortho(0.0f, static_cast<GLfloat>(display.window_width), 0.0f, static_cast<GLfloat>(display.window_width));
+  glm::mat4 projection = glm::ortho(0.0f, static_cast<GLfloat>(g_display.window_width), 0.0f, static_cast<GLfloat>(g_display.window_width));
   textShader->setMat4("projection", projection);
 }
 
