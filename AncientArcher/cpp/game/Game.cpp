@@ -30,10 +30,10 @@ Game::Game()
   prims = new PrimativeRenderer();
   sky = new SkyboxRenderer();
 
-  g_lighting.updateConstantLightAmbient(glm::vec3(.25, 0.25, 0.25));
+  g_lighting.updateConstantLightAmbient(glm::vec3(.15, 0.15, 0.15));
   //g_lighting.updateConstantLightDirection(glm::vec3(-1, -.93, -1));
-  g_lighting.updateConstantLightDiffuse(glm::vec3(.6, .6, .6));
-  g_lighting.updateConstantLightSpecular(glm::vec3(1, 1, 1));
+  g_lighting.updateConstantLightDiffuse(glm::vec3(.58, .58, .58));
+  g_lighting.updateConstantLightSpecular(glm::vec3(.3, .3, .3));
 
   g_lighting.setConstantLight(prims->getShader());
 
@@ -53,7 +53,7 @@ Game::Game()
       {
         Entity e(
           ENTITYTYPE::CUBE,
-          glm::vec3(i*2, -3.f -.5f*k , j*2),
+          glm::vec3(i * 2, -3.f - .5f * k, j * 2),
           glm::vec3(2.f, .5f, 2.f),
           k < 1 ? texIDGrass : texIDDirt,
           true,
@@ -69,40 +69,89 @@ Game::Game()
   {
     for (int j = 5; j < 8; j++)
     {
+      Entity e(
+        ENTITYTYPE::CUBE,
+        glm::vec3(i * 2, -3.f, j * 2),
+        glm::vec3(2.f, 2.0f, 2.f),
+        texIDLightBricks,
+        true,
+        false
+      );
+
+      prims->addToPrimativeEntities(e);
+      if (j == 5 || j == 7)  //side railings
+      {
         Entity e(
           ENTITYTYPE::CUBE,
-          glm::vec3(i * 2, -3.f, j * 2),
-          glm::vec3(2.f, 2.0f, 2.f),
+          glm::vec3(i * 2.f, -1.75f, j * 2.f),
+          glm::vec3(2.0f, 0.5f, .25f),
           texIDLightBricks,
           true,
           false
         );
         prims->addToPrimativeEntities(e);
-        if (j == 5 || j == 7)  //side railings
-        {
-          Entity e(
-            ENTITYTYPE::SPHERE,
-            glm::vec3(i * 2, -2.f, j * 2),
-            glm::vec3(2.0f, 1.0f, .5f),
-            texIDLightBricks,
-            true,
-            false
-          );
-          prims->addToPrimativeEntities(e);
-        }
+      }
     }
   }
 
-  // other land of maze
-  for (int i = 24; i < 44; i++)  //ground
+  // reverse other bridge thingy railings
+  for (int i = 10; i < 24; i++)
   {
-    for (int j = 0; j < 10; j++)
+    for (int j = 5; j < 8; j++)
     {
-      for (int k = 0; k < 2; k++)
+
+      if (j == 5 || j == 7)  //secondary
       {
         Entity e(
           ENTITYTYPE::CUBE,
-          glm::vec3(i * 2, -4.f - .5f *k, j * 2),
+          glm::vec3(
+            j * 2,
+            -3.5f,
+            i * 2),
+          glm::vec3(2.0f, 1.0f, 2.0f),
+          texIDLightBricks,
+          true,
+          false
+        );
+        prims->addToPrimativeEntities(e);
+      }
+    }
+  }
+  // other land of maze
+  for (int i = 24; i < 44; i++)
+  {
+    // walls
+    Entity e(
+      ENTITYTYPE::CUBE,
+      glm::vec3(i * 2, -3.f, 0),
+      glm::vec3(2.f, 2.f, 1.f),
+      texIDMosaicBricks,
+      true,
+      false
+    );
+    prims->addToPrimativeEntities(e);
+
+    Entity e2(
+      ENTITYTYPE::CUBE,
+      glm::vec3(10 + i * 2, -2.f, 0),
+      glm::vec3(2.f, 2.f, 1.f),
+      texIDMosaicBricks,
+      true,
+      false
+    );
+    prims->addToPrimativeEntities(e);
+
+    for (int j = 0; j < 10; j++)
+    {
+
+      //walls
+
+      for (int k = 0; k < 2; k++)
+      {
+        // ground
+        Entity e(
+          ENTITYTYPE::CUBE,
+          glm::vec3(i * 2, -4.f - .5f * k, j * 2),
           glm::vec3(2.f, .5f, 2.f),
           k < 1 ? texIDGrass : texIDDirt,
           true,
@@ -112,24 +161,4 @@ Game::Game()
       }
     }
   }
-
-  //for (int i = 6; i < 38; i++)  // walls
-  //{
-  //  for (int j = 5; j < 8; j++)
-  //  {
-  //    Entity e(
-  //      ENTITYTYPE::CUBE,
-  //      glm::vec3(i * 2, -2.f - .5f, j * 2),
-  //      glm::vec3(2.f, .5f, 2.f),
-  //      k < 1 ? texIDGrass : texIDDirt,
-  //      true,
-  //      false
-  //    );
-  //    prims->addToPrimativeEntities(e);
-  //  }
-  //}
-
-
-
-
 }
