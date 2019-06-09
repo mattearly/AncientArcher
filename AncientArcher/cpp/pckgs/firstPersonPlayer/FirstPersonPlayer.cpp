@@ -38,7 +38,7 @@ FirstPersonPlayer::FirstPersonPlayer(float leg_power)
   light = std::make_unique<Lighting>();
   light->setConstantLight(model.get()->getShader());
 
-  g_camera.setPosition(glm::vec3(0, 2.011f, 0));
+  g_camera.setPosition(model.get()->getEntityPtr()->gameItem.loc + _camOffset);
 
   legPower = leg_power;
   jumpTimer = 0.0f;
@@ -51,6 +51,11 @@ void FirstPersonPlayer::render() const
   { 
     model.get()->render();
   }
+}
+
+void FirstPersonPlayer::syncCam()
+{
+  g_camera.setPosition(model.get()->getEntityPtr()->gameItem.loc + _camOffset);
 }
 
 /**
@@ -80,11 +85,23 @@ void FirstPersonPlayer::increaseLegPower(float add) {
 
 void FirstPersonPlayer::update(float deltaTime)
 {
+  // KEYBOARD
   g_controls.fppKeyboardIn(this);
 
-  //glm::vec3 playerIntendedLocation = g_camera.Position;
+  // MOVEMENT 
   float velocity;
   moves.positionChanged = true;
+  model.get()->getEntityPtr()->syncLocation();
+
+  if (!moves.onGround)
+  {
+    if (moves.falling)
+    {
+      model.get()->getEntityPtr()->moveBy(glm::vec3(0, /* fall speed */ -0.1f * deltaTime, 0));
+    }
+  }
+
+
 
   velocity = getRunSpeed() * deltaTime;  // MOVEMENT SPEED CALC : based on player stats
   if (moves.forward) {  // half speed if moving left or right while forward
@@ -96,6 +113,7 @@ void FirstPersonPlayer::update(float deltaTime)
   if (moves.boost && moves.forward) {  // boost while moving forward
     velocity *= 2.0;  // velocity power
   }
+
 
 }
 

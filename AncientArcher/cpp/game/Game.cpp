@@ -11,7 +11,8 @@
 //--- GLOBALS ---//
 Display g_display(" MMO ", Display::MouseControlType::FPP);
 //              Starting Position           YAW    PITCH  FOV
-Camera g_camera(glm::vec3(0.f, 1.0f, 0.f), 0, 0, 45.f);
+//Camera g_camera(glm::vec3(0.f, 1.0f, 0.f), 0, 0, 45.f);
+Camera g_camera(glm::vec3(0.f, 1.0f, 0.f), 0, 0, 75.f);
 Lighting g_lighting;
 //--- END GLOBALS ---//
 

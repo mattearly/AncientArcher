@@ -43,6 +43,8 @@ public:
 
   void render() const;
 
+  void syncCam();
+
   void addPointLight(glm::vec3 pos, Shader* shader);
   void movePlayerLight(glm::vec3 newpos, Shader* shader);
 
@@ -60,6 +62,8 @@ private:
   std::unique_ptr<Lighting> light;
 
   float jumpTimer;
+
+  glm::vec3 _camOffset = glm::vec3(0, 1.011f, 0);
 
   // player stats
   const float BASE_PLAYER_SPEED = 3.0f;

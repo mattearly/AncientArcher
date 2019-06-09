@@ -25,10 +25,15 @@ void Game::mainLoop() {
     static CollisionHandler lastCHandler;
     //check collisions n stuff
 
+
+
+
+
+    // MOVE CAMERA TO PROPER LOCATION
+    player->syncCam();
     // RENDER EVERYTHING ---- //
     masterRenderer.update(deltaTime, player, prims, sky);
     // RECORD KEYPRESSES N STUFF FOR NEXT FRAME ---- //
     glfwPollEvents();
   }
-
 }
