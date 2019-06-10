@@ -54,7 +54,7 @@ Game::Game()
   {
     for (int j = -20; j < 40; j++)
     {
-      for (int k = 0; k < 20; k++)
+      for (int k = 0; k < 21; k++)
       {
         Entity e(
           ENTITYTYPE::CUBE,
