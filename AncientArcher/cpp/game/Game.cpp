@@ -6,7 +6,6 @@
 #include <TextureLoader.h>
 #include <Global.h>
 #include <mearly.h>
-#define DEBUG FALSE;
 
 //--- GLOBALS ---//
 Display g_display(" MMO ", Display::MouseControlType::FPP);
@@ -18,21 +17,22 @@ Lighting g_lighting;
 
 Game::Game()
 {
-#ifdef DEBUG
 	int __textures_allowed = 0, __totalTexturesAllowed = 0;
 	glGetIntegerv(GL_MAX_TEXTURE_IMAGE_UNITS, &__textures_allowed);
 	glGetIntegerv(GL_MAX_COMBINED_TEXTURE_IMAGE_UNITS, &__totalTexturesAllowed);
 	std::cout << "//--GRAPHIC CARD INFO--//\nMax textures per shader:  " << __textures_allowed << "\n";
 	std::cout << "Max total textures:  " << __totalTexturesAllowed << "\n";
-#endif
 
 	player = new FirstPersonPlayer();
 	prims = new PrimativeRenderer();
+
+  player->addPointLight(glm::vec3(0, 0, 0), prims->getShader());
+
 	sky = new SkyboxRenderer();
 
-	g_lighting.updateConstantLightAmbient(glm::vec3(.15, 0.15, 0.15));
+	g_lighting.updateConstantLightAmbient(glm::vec3(.12, 0.12, 0.12));
 	//g_lighting.updateConstantLightDirection(glm::vec3(-1, -.93, -1));
-	g_lighting.updateConstantLightDiffuse(glm::vec3(.58, .58, .58));
+	g_lighting.updateConstantLightDiffuse(glm::vec3(.48, .48, .48));
 	g_lighting.updateConstantLightSpecular(glm::vec3(.3, .3, .3));
 
 	g_lighting.setConstantLight(prims->getShader());

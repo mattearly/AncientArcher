@@ -30,6 +30,7 @@ void Game::mainLoop() {
     }
     // MOVE CAMERA TO PROPER LOCATION
     player->syncCam();
+    player->syncPlayerLight(prims->getShader());
     // RENDER EVERYTHING ---- //
     masterRenderer.update(deltaTime, player, prims, sky);
     // RECORD KEYPRESSES N STUFF FOR NEXT FRAME ---- //

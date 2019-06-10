@@ -41,6 +41,7 @@ public:
   void update(float deltaTime);
   void finalCollisionCheck(const std::vector<Entity>* entities);
   void syncCam();
+  void syncPlayerLight(Shader *shader);
   void movePlayerLight(glm::vec3 newpos, Shader* shader);
   void render() const;
 

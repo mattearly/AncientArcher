@@ -186,10 +186,10 @@ void FirstPersonPlayer::finalCollisionCheck(const std::vector<Entity>* entities)
     return;
   }
 
-  //// std::cout << "playerloc: "
-  //  << model.get()->getFirstEntity()->gameItem.loc.x << ","
-  //  << model.get()->getFirstEntity()->gameItem.loc.y << ","
-  //  << model.get()->getFirstEntity()->gameItem.loc.z << "\n";
+   std::cout << "playerloc: "
+    << model.get()->getFirstEntity()->gameItem.loc.x << ","
+    << model.get()->getFirstEntity()->gameItem.loc.y << ","
+    << model.get()->getFirstEntity()->gameItem.loc.z << "\n";
   
   int entcount = 0;
 
@@ -252,6 +252,15 @@ void FirstPersonPlayer::finalCollisionCheck(const std::vector<Entity>* entities)
 void FirstPersonPlayer::syncCam()
 {
   g_camera.setPosition(model.get()->getFirstEntity()->gameItem.loc + _camOffset);
+}
+/**
+ *  Moves the player raidus light to the gameItem location.
+ *  @param[in] shader  Shader to send the lighting information to.
+ */
+void FirstPersonPlayer::syncPlayerLight(Shader* shader)
+{
+  movePlayerLight(glm::vec3(model.get()->getFirstEntity()->gameItem.loc), shader);
+
 }
 
 /**
