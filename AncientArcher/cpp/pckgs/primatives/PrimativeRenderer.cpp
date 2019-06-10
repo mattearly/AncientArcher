@@ -109,7 +109,7 @@ void PrimativeRenderer::addToPrimativeEntities(Entity entity)
 
 void PrimativeRenderer::addToMovingEntities(Entity entity)
 {
-  entities.push_back(entity);
+  movingEntities.push_back(entity);
 }
 
 std::vector<Entity>* PrimativeRenderer::getEntites()

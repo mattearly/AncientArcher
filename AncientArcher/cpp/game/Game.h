@@ -25,4 +25,8 @@ private:
 
   float deltaTime = 0.0f;
 
+  float elapsedTime = 0.0f;
+
+	  bool timeTrigger = true;
+
 };

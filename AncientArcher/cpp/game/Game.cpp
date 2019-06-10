@@ -213,16 +213,22 @@ Game::Game()
 		}
 	}
 
+	//Moving Blocks
+	for (int i = 0; i < 4; i++)  //ground
 	{
-		Entity e(
-			ENTITYTYPE::CUBE,
-			glm::vec3(9.f, -2.25f, 9.f),
-			glm::vec3(1.f, 1.f, 1.f),
-			texIDMosaicBricks,
-			true,
-			false
-		);
-		prims->addToMovingEntities(e);
+		for (int j = 0; j < 5; j++)
+		{
+			Entity e(
+				ENTITYTYPE::CUBE,
+				glm::vec3((1.f * i) + 9.f, (1.f * j) - 2.25f, 9.f),
+				glm::vec3(1.f, 1.f, 1.f),
+				texIDMosaicBricks,
+				true,
+				false
+			);
+			prims->addToMovingEntities(e);
+
+		}
 	}
 
 }
