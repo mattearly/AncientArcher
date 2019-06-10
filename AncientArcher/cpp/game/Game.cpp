@@ -117,34 +117,36 @@ Game::Game()
 			}
 		}
 	}
+
 	// other land of maze
 	for (int i = 24; i < 44; i++)
 	{
-		// walls
-		Entity e(
-			ENTITYTYPE::CUBE,
-			glm::vec3(i * 2, -3.f, 0),
-			glm::vec3(2.f, 2.f, 1.f),
-			texIDMosaicBricks,
-			true,
-			false
-		);
-		prims->addToPrimativeEntities(e);
+    {// l/r walls
+      Entity e(
+        ENTITYTYPE::CUBE,
+        glm::vec3(i * 2, -3.f, 0),
+        glm::vec3(2.f, 2.f, 1.f),
+        texIDMosaicBricks,
+        true,
+        false
+      );
+      prims->addToPrimativeEntities(e);
+    }
 
-		Entity e2(
-			ENTITYTYPE::CUBE,
-			glm::vec3(10 + i * 2, -2.f, 0),
-			glm::vec3(2.f, 2.f, 1.f),
-			texIDMosaicBricks,
-			true,
-			false
-		);
-		prims->addToPrimativeEntities(e);
+    {
+      Entity e2(
+        ENTITYTYPE::CUBE,
+        glm::vec3(i * 2, -3.f, 19),
+        glm::vec3(2.f, 2.f, 1.f),
+        texIDMosaicBricks,
+        true,
+        false
+      );
+      prims->addToPrimativeEntities(e2);
+    }
 
 		for (int j = 0; j < 10; j++)
 		{
-
-			//walls
 
 			for (int k = 0; k < 2; k++)
 			{
@@ -191,8 +193,8 @@ Game::Game()
 		}
 	}
 
-	// other land of maze
-	for (int i = 24; i < 44; i++)  //ground
+	// few random blocks off to the side
+	for (int i = 24; i < 44; i++)
 	{
 		for (int j = 0; j < 10; j++)
 		{
@@ -208,7 +210,6 @@ Game::Game()
 				);
 				prims->addToPrimativeEntities(e);
 			}
-
 		}
 	}
 
@@ -224,19 +225,4 @@ Game::Game()
 		prims->addToMovingEntities(e);
 	}
 
-  //for (int i = 6; i < 38; i++)  // walls
-  //{
-  //  for (int j = 5; j < 8; j++)
-  //  {
-  //    Entity e(
-  //      ENTITYTYPE::CUBE,
-  //      glm::vec3(i * 2, -2.f - .5f, j * 2),
-  //      glm::vec3(2.f, .5f, 2.f),
-  //      k < 1 ? texIDGrass : texIDDirt,
-  //      true,
-  //      false
-  //    );
-  //    prims->addToPrimativeEntities(e);
-  //  }
-  //}
 }
