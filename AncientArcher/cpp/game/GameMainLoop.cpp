@@ -25,8 +25,6 @@ void Game::mainLoop() {
     prims->update(deltaTime);
 
 
-    spawner->update(deltaTime);
-
 
 
 
@@ -36,6 +34,11 @@ void Game::mainLoop() {
     {
       player->finalCollisionCheck(prims->getEntites());
       player->finalCollisionCheck(prims->getMovingEntites());
+    }
+    // CHECK FRONT VECTOR OF PLAYER IF CLICKED
+    if (player->moves.interacting) 
+    {
+        player->checkFrontVectorVsWorld(prims->getEntites());
     }
     // MOVE CAMERA TO PROPER LOCATION
     player->syncCam();
