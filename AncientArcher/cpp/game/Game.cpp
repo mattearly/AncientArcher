@@ -220,7 +220,7 @@ Game::Game()
 		{
 			Entity e(
 				ENTITYTYPE::CUBE,
-				glm::vec3((1.f * i) + 9.f, (1.f * j) - 2.25f, 9.f),
+				glm::vec3(48.f, (1.f * j) - 3.25f, (1.f* i) + 9.f),
 				glm::vec3(1.f, 1.f, 1.f),
 				texIDMosaicBricks,
 				true,

@@ -21,6 +21,7 @@ void Game::mainLoop() {
     // PROCESS PLAYER CONTROLS & MOVEMENT ---- //
     player->update(deltaTime);
 
+	// PROCESS PRIMATIVES MOVEMENT ---- //
 	prims->update(deltaTime);
 
     //  FINAL COLLISION CHECK

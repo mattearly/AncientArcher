@@ -39,9 +39,9 @@ void PrimativeRenderer::update(float deltaTime)
 	}
 
 	for (auto& e : *(getMovingEntites())) {
-		e.moveBy(glm::vec3((sin(elapsedTime * 3.14159 / 180) * (timeTrigger ? 1.0 : -1.0)),
+		e.moveBy(glm::vec3(0.f,
 			0.f,
-			0.f)
+			(sin(elapsedTime * 3.14159 / 180) * (timeTrigger ? 1.0 : -1.0)))
 		);
 	}
 }
