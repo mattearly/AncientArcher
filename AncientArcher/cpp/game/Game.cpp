@@ -159,7 +159,7 @@ Game::Game()
     {
       Entity eslider1(
         ENTITYTYPE::CUBE,
-        glm::vec3(58, -2.2f, -35 + i * 2),
+        glm::vec3(58, -2.2f, -58 + i * 2),
         glm::vec3(1.f, 3.f, 2.f),
         texIDMosaicBricks,
         true,
@@ -171,9 +171,9 @@ Game::Game()
     {
       Entity eslider2(
         ENTITYTYPE::CUBE,
-        glm::vec3(62, -2.2f, -20 + i * 2),
+        glm::vec3(62, -2.2f, -72 + i * 2),
         glm::vec3(1.f, 3.f, 2.f),
-        texIDLightBricks,
+        texIDMosaicBricks,
         true,
         false
       );
@@ -183,9 +183,9 @@ Game::Game()
     {
       Entity eslider3(
         ENTITYTYPE::CUBE,
-        glm::vec3(72, -2.2f, -55 + i * 2),
+        glm::vec3(68, -2.2f, -45 + i * 2),
         glm::vec3(1.f, 3.f, 2.f),
-        texIDLightBricks,
+        texIDMosaicBricks,
         true,
         false
       );
@@ -195,7 +195,7 @@ Game::Game()
     {
       Entity eslider4(
         ENTITYTYPE::CUBE,
-        glm::vec3(76, -2.2f, -55 + i * 2),
+        glm::vec3(76, -2.2f, -52 + i * 2),
         glm::vec3(1.f, 3.f, 2.f),
         texIDDirt,
         true,
@@ -220,6 +220,20 @@ Game::Game()
 				);
 				prims->addToPrimativeEntities(e);
 			}
+
+      {
+        // ceiling
+        Entity eCeiling1(
+          ENTITYTYPE::CUBE,
+          glm::vec3(i * 2, 20.f, j * 2),
+          glm::vec3(2.f, .5f, 2.f),
+          texIDMosaicBricks,
+          true,
+          false
+        );
+        prims->addToPrimativeEntities(eCeiling1);
+
+      }
 		}
 	}
 
