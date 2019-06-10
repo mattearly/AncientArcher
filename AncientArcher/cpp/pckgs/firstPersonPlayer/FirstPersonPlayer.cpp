@@ -359,7 +359,7 @@ void FirstPersonPlayer::init()
   Entity e(
     ENTITYTYPE::CUBE,
     glm::vec3(0, 1, 0),
-    glm::vec3(.18f, 1.0f, .18f),
+    glm::vec3(.15f, 1.0f, .15f),
     texID,
     true,
     true
