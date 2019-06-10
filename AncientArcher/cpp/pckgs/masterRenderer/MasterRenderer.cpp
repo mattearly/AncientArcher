@@ -37,7 +37,7 @@ void MasterRenderer::update(float deltaTime, FirstPersonPlayer* player, Primativ
 
   prims->render();
 
-  player->render();
+  //player->render();
 
   sky->render();
 
