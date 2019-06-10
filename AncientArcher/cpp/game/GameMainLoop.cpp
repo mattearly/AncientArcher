@@ -21,14 +21,21 @@ void Game::mainLoop() {
     // PROCESS PLAYER CONTROLS & MOVEMENT ---- //
     player->update(deltaTime);
 
-	// PROCESS PRIMATIVES MOVEMENT ---- //
-	prims->update(deltaTime);
+    // PROCESS PRIMATIVES MOVEMENT ---- //
+    prims->update(deltaTime);
+
+
+    spawner->update(deltaTime);
+
+
+
+
 
     //  FINAL COLLISION CHECK
     if (player->moves.positionChanged)
     {
       player->finalCollisionCheck(prims->getEntites());
-	  player->finalCollisionCheck(prims->getMovingEntites());
+      player->finalCollisionCheck(prims->getMovingEntites());
     }
     // MOVE CAMERA TO PROPER LOCATION
     player->syncCam();

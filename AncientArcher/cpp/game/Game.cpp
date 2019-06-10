@@ -35,6 +35,10 @@ Game::Game()
 
 	g_lighting.setConstantLight(prims->getShader());
 
+  spawner = new Spawner();
+  spawner->setPopulationCap(1);
+  spawner->setTimeBetweenSpawns(2.f);
+
 	TextureLoader tLoader;
 	unsigned int texIDGrass = tLoader.load2DTexture("../AncientArcher/cpp/pckgs/primatives/grass.png");
 	unsigned int texIDDirt = tLoader.load2DTexture("../AncientArcher/cpp/pckgs/primatives/dirt.png");
@@ -159,7 +163,7 @@ Game::Game()
     {
       Entity eslider1(
         ENTITYTYPE::CUBE,
-        glm::vec3(58, -2.2f, -58 + i * 2),
+        glm::vec3(58, -2.2f, -35 + i * 2),
         glm::vec3(1.f, 3.f, 2.f),
         texIDMosaicBricks,
         true,

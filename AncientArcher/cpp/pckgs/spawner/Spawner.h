@@ -13,6 +13,8 @@ public:
 
   void setPopulationCap(unsigned int max);
 
+  void update(float deltaTime);
+
   void render();
 
   void takeHit(float damage);
@@ -28,7 +30,7 @@ public:
 
 private:
 
-  std::unique_ptr<PrimativeRenderer> enemyModel;
+  std::unique_ptr<PrimativeRenderer> thing;
 
   unsigned int _popCap = 0;
 
@@ -36,12 +38,13 @@ private:
 
   float _timeBetweenSpawns = 0.f;
 
-  unsigned int enemyTexID = 0;
+  unsigned int texID = 0;
 
   float _defaultHP = 2.1f;
 
   float _currentHP = _defaultHP;
 
-  float _minionAttackDamage = 1.0f;
+  float _defaultAttackDamage = 0.0f;
 
+  void spawnAt(glm::vec3 loc);
 };

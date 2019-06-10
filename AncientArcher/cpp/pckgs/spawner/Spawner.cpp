@@ -6,13 +6,17 @@ void Spawner::init()
 {
 
   TextureLoader texLoader;
-  enemyTexID = texLoader.load2DTexture("../AncientArcher/cpp/pckgs/spawner/scaryModel.png");
+  texID = texLoader.load2DTexture("../AncientArcher/cpp/pckgs/spawner/scaryModel.png");
 
-  enemyModel = std::make_unique<PrimativeRenderer>();
+  thing = std::make_unique<PrimativeRenderer>();
 
   Lighting lighting;
   lighting.updateConstantLightAmbient(glm::vec3(0.6f, 0.6f, 0.6f));
-  lighting.setConstantLight(enemyModel->getShader());
+  lighting.setConstantLight(thing->getShader());
+}
+
+void Spawner::spawnAt(glm::vec3 loc)
+{
 }
 
 /**
@@ -38,13 +42,13 @@ void Spawner::checkAndSpawn(float deltaTime)
         ENTITYTYPE::CUBE,
         glm::vec3(21.f * totalNumberSpawned, 2.79f, 0.f),
         glm::vec3(2.5f, 4.1f, 0.03f),
-        enemyTexID,
+        texID,
         true,
 		true
       );
 
       // add to render list
-      enemyModel->addToPrimativeEntities(*e);
+      thing->addToPrimativeEntities(*e);
 
       // yeah we're done lets not leak 
       delete e;
@@ -78,9 +82,14 @@ void Spawner::setPopulationCap(unsigned int max)
   _popCap = max;
 }
 
+void Spawner::update(float deltaTime)
+{
+  //do stuff with the guy
+}
+
 void Spawner::render()
 {
-  enemyModel->render();
+  thing->render();
 }
 
 void Spawner::takeHit(float damage)
@@ -94,13 +103,13 @@ void Spawner::takeHit(float damage)
 
 void Spawner::despawn()
 {
-  enemyModel->entityPopBack();
+  thing->entityPopBack();
   _numberAlive--;
 }
 
 float Spawner::getDamage()
 {
-  return _minionAttackDamage;
+  return _defaultAttackDamage;
 }
 
 /**
@@ -108,7 +117,7 @@ float Spawner::getDamage()
  */
 Collider* Spawner::getCollider()
 {
-  return enemyModel->getFirstEntity()->collider;
+  return thing->getFirstEntity()->collider;
 }
 
 /**
@@ -116,7 +125,7 @@ Collider* Spawner::getCollider()
  */
 Entity* Spawner::getEntity()
 {
-  return  enemyModel->getFirstEntity();
+  return  thing->getFirstEntity();
 }
 
 unsigned int Spawner::getAliveCount()
