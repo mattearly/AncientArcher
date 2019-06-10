@@ -83,7 +83,7 @@ void Controls::SSmouseMovement(float xpos, float ypos)
 void Controls::fppKeyboardIn(FirstPersonPlayer* fpp)
 {
   if (glfwGetMouseButton(g_display.window, GLFW_MOUSE_BUTTON_LEFT) == GLFW_PRESS) {
-    // left click
+    fpp->moves.interacting = true;
   }
 
   if (glfwGetKey(g_display.window, GLFW_KEY_ESCAPE) == GLFW_PRESS) {

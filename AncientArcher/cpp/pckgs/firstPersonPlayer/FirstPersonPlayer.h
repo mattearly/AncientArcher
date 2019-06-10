@@ -27,6 +27,8 @@ public:
     bool onGround = false;
     bool falling = true;
 
+    bool interacting = false;
+
     //float lastOnGroundHeight = 0.0f;
     //float currentGroundHeight = 0.0f;
 
@@ -53,6 +55,9 @@ public:
   // player stats
   void increaseLegPower(float add);
   void addPointLight(glm::vec3 pos, Shader* shader);
+
+  // interact -- called by left click
+  void checkFrontVectorVsWorld(std::vector<Entity>* entities);
 
 private:
 

@@ -48,7 +48,7 @@ void FirstPersonPlayer::update(float deltaTime)
   {
     if (moves.falling)
     {
-		model.get()->getFirstEntity()->moveBy(model->getFirstEntity()->kinematics->getCalculatedPosition(deltaTime, moves.forward, moves.back, moves.jumped, moves.falling, moves.left, moves.right));
+      model.get()->getFirstEntity()->moveBy(model->getFirstEntity()->kinematics->getCalculatedPosition(deltaTime, moves.forward, moves.back, moves.jumped, moves.falling, moves.left, moves.right));
     }
     else // not on ground, not falling, must be flying or rising or floating
     {
@@ -62,8 +62,8 @@ void FirstPersonPlayer::update(float deltaTime)
       }
       else
       {
-		model->getFirstEntity()->kinematics->vel.x = moves.forward ? moves.currentVelocity: 0.f;
-		model->getFirstEntity()->kinematics->vel.y = getRisingSpeed();
+        model->getFirstEntity()->kinematics->vel.x = moves.forward ? moves.currentVelocity : 0.f;
+        model->getFirstEntity()->kinematics->vel.y = getRisingSpeed();
 
         model.get()->getFirstEntity()->moveBy(model->getFirstEntity()->kinematics->getCalculatedPosition(deltaTime, moves.forward, moves.back, moves.jumped, moves.falling, moves.left, moves.right));
 
@@ -186,15 +186,15 @@ void FirstPersonPlayer::finalCollisionCheck(const std::vector<Entity>* entities)
     return;
   }
   static bool needsToFall;
-   std::cout << "playerloc: "
-    << model.get()->getFirstEntity()->gameItem.loc.x << ","
-    << model.get()->getFirstEntity()->gameItem.loc.y << ","
-    << model.get()->getFirstEntity()->gameItem.loc.z << "\n";
-  
+  //std::cout << "playerloc: "
+  // << model.get()->getFirstEntity()->gameItem.loc.x << ","
+  // << model.get()->getFirstEntity()->gameItem.loc.y << ","
+  // << model.get()->getFirstEntity()->gameItem.loc.z << "\n";
+
   int entcount = 0;
 
   // DEMO REVISION 2
-  for (auto const& e : *entities) 
+  for (auto const& e : *entities)
   {
 
     // check distance
@@ -250,11 +250,11 @@ void FirstPersonPlayer::finalCollisionCheck(const std::vector<Entity>* entities)
       {
         glm::vec3 yCheckBelow = glm::vec3(
           model.get()->getFirstEntity()->collider->impasse.loc.x,
-          model.get()->getFirstEntity()->collider->impasse.loc.y - model.get()->getFirstEntity()->collider->impasse.size.y/2 - .02f,
+          model.get()->getFirstEntity()->collider->impasse.loc.y - model.get()->getFirstEntity()->collider->impasse.size.y / 2 - .02f,
           model.get()->getFirstEntity()->collider->impasse.loc.z
         );
 
-        if (needsToFall) 
+        if (needsToFall)
           needsToFall = cHandler.get()->point_vs_AABB_3D(yCheckBelow, e.collider->impasse);
 
       }
@@ -344,6 +344,53 @@ void FirstPersonPlayer::increaseLegPower(float add) {
 void FirstPersonPlayer::addPointLight(glm::vec3 pos, Shader* shader)
 {
   light->addPointLight(pos, shader);
+}
+/**
+ * Send out a vector in front of the player and returns which entity was hit first.
+ * @param[inout] entities  list to check against and modify
+ */
+void FirstPersonPlayer::checkFrontVectorVsWorld(std::vector<Entity>* entities)
+{
+  glm::vec3 frontVecPoint = *g_camera.getFront() * 1.8f;
+  glm::vec3 frontPointLocation = model.get()->getFirstEntity()->gameItem.loc + frontVecPoint + _camOffset;
+  //std::cout << "front Point Vec @ " << frontPointLocation.x << "," << frontPointLocation.y << "," << frontPointLocation.z << "\n";
+
+
+
+  auto i = std::begin(*entities);
+
+  while (i != std::end(*entities)) {
+    // Do some stuff
+    if (cHandler.get()->point_vs_AABB_3D(frontPointLocation, i->collider->impasse)) 
+    {
+      *entities->erase(i);
+      return;
+    }
+    else 
+    {
+      ++i;
+    }
+  }
+
+  moves.interacting = false;
+
+  /*
+    bool hitSomething = false;
+    std::size_t whichToRemove = 0;
+    for (auto& e : *entities)
+    {
+      if (cHandler.get()->point_vs_AABB_3D(frontPointLocation, e.collider->impasse))
+      {
+        hitSomething = true;
+        return;
+      }
+      whichToRemove++;
+    }
+
+    if (hitSomething)
+    {
+      *entities->erase(entities);
+    }*/
 }
 
 /**
