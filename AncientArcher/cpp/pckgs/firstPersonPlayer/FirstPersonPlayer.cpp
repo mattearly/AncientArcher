@@ -359,7 +359,7 @@ void FirstPersonPlayer::checkFrontVectorVsEntities(std::vector<Entity>* entities
     if (cHandler.get()->vector_vs_AABB_3D(startPosition, tipOfHitScanVec, i->collider->impasse))
     {
       *entities->erase(i);
-      playSift01SoundEffect();
+      playSift02SoundEffect();
       return;
     }
     else 
