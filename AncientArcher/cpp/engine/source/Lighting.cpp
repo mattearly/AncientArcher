@@ -62,10 +62,10 @@ void Lighting::addPointLight(glm::vec3 pos, Shader * shader) {
   shader->setVec3(pLightposition.c_str(), pos);
 
   std::string pLightambient = ss.str() + "ambient";   // pointLight[i].ambient
-  //shader->setVec3(pLightambient.c_str(), 0.05f, 0.05f, 0.05f);
+  shader->setVec3(pLightambient.c_str(), 0.05f, 0.05f, 0.05f);
   //shader->setVec3(pLightambient.c_str(), 0.9f, 0.9f, 0.9f);
   //shader->setVec3(pLightambient.c_str(), 0.15f, 0.15f, 0.15f);
-  shader->setVec3(pLightambient.c_str(), 0.35f, 0.35f, 0.35f);
+  //shader->setVec3(pLightambient.c_str(), 0.35f, 0.35f, 0.35f);
 
   std::string pLightdiffuse = ss.str() + "diffuse";
   shader->setVec3(pLightdiffuse.c_str(), 0.8f, 0.8f, 0.8f);
@@ -74,7 +74,7 @@ void Lighting::addPointLight(glm::vec3 pos, Shader * shader) {
   //shader->setVec3(pLightdiffuse.c_str(), 0.75f, 0.35f, 0.005f);
 
   std::string pLightspecular = ss.str() + "specular";
-  shader->setVec3(pLightspecular, 1.0f, 1.0f, 1.0f);
+  shader->setVec3(pLightspecular, .4f, .4f, .4f);
 
   std::string pLightconstant = ss.str() + "constant";
   shader->setFloat(pLightconstant, 1.0f);

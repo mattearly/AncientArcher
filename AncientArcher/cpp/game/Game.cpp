@@ -28,8 +28,6 @@ Game::Game()
 
   player->addPointLight(glm::vec3(0, 0, 0), prims->getShader());
 
-	sky = new SkyboxRenderer();
-
 	g_lighting.updateConstantLightAmbient(glm::vec3(.12, 0.12, 0.12));
 	//g_lighting.updateConstantLightDirection(glm::vec3(-1, -.93, -1));
 	g_lighting.updateConstantLightDiffuse(glm::vec3(.48, .48, .48));
@@ -230,5 +228,19 @@ Game::Game()
 
 		}
 	}
+
+
+  // ---- LOAD SKYBOX ---- //
+  std::vector<std::string> skyboxFiles =
+  {
+    "../AncientArcher/cpp/pckgs/skybox/stars/right.png",
+    "../AncientArcher/cpp/pckgs/skybox/stars/left.png",
+    "../AncientArcher/cpp/pckgs/skybox/stars/top.png",
+    "../AncientArcher/cpp/pckgs/skybox/stars/bottom.png",
+    "../AncientArcher/cpp/pckgs/skybox/stars/front.png",
+    "../AncientArcher/cpp/pckgs/skybox/stars/back.png"
+  };
+
+  sky = new SkyboxRenderer(skyboxFiles);
 
 }
