@@ -48,7 +48,6 @@ void FirstPersonPlayer::update(float deltaTime)
   {
     if (moves.falling)
     {
-		model->getFirstEntity()->kinematics->vel.x = moves.forward ? moves.currentVelocity * deltaTime : 0.f;
 		model.get()->getFirstEntity()->moveBy(model->getFirstEntity()->kinematics->getCalculatedPosition(deltaTime, moves.forward, moves.back, moves.jumped, moves.falling, moves.left, moves.right));
     }
     else // not on ground, not falling, must be flying or rising or floating
@@ -63,10 +62,10 @@ void FirstPersonPlayer::update(float deltaTime)
       }
       else
       {
-        model.get()->getFirstEntity()->moveBy(glm::vec3(
-                    moves.forward ? moves.currentVelocity * deltaTime : 0.f,
-                    getRisingSpeed() * deltaTime,
-                    0));
+		model->getFirstEntity()->kinematics->vel.x = moves.forward ? moves.currentVelocity: 0.f;
+		model->getFirstEntity()->kinematics->vel.y = getRisingSpeed();
+
+        model.get()->getFirstEntity()->moveBy(model->getFirstEntity()->kinematics->getCalculatedPosition(deltaTime, moves.forward, moves.back, moves.jumped, moves.falling, moves.left, moves.right));
 
 
         if (moves.back || moves.forward) {
