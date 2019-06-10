@@ -185,7 +185,7 @@ void FirstPersonPlayer::finalCollisionCheck(const std::vector<Entity>* entities)
     // std::cout << "finalCollisionCheck entities empty! returning...\n";
     return;
   }
-
+  static bool needsToFall;
    std::cout << "playerloc: "
     << model.get()->getFirstEntity()->gameItem.loc.x << ","
     << model.get()->getFirstEntity()->gameItem.loc.y << ","
@@ -194,7 +194,8 @@ void FirstPersonPlayer::finalCollisionCheck(const std::vector<Entity>* entities)
   int entcount = 0;
 
   // DEMO REVISION 2
-  for (auto const& e : *entities) {
+  for (auto const& e : *entities) 
+  {
 
     // check distance
     float distance = glm::distance(e.collider->impasse.loc, model.get()->getFirstEntity()->collider->impasse.loc);
@@ -205,6 +206,7 @@ void FirstPersonPlayer::finalCollisionCheck(const std::vector<Entity>* entities)
       // std::cout << "entityloc: " << e.gameItem.loc.x << "," << e.gameItem.loc.y << "," << e.gameItem.loc.z
         //<< " e prevLoc: : " << e.gameItem.prevLoc.x << "," << e.gameItem.prevLoc.y << "," << e.gameItem.prevLoc.z << "\n";
       // std::cout << "going through entitites: " << entcount << "\n";
+
 
       bool didCollide = cHandler.get()->AABB_vs_AABB_3D(e.collider->impasse, model.get()->getFirstEntity()->collider->impasse);
 
@@ -227,8 +229,10 @@ void FirstPersonPlayer::finalCollisionCheck(const std::vector<Entity>* entities)
           moves.falling = true;
           // std::cout << "Ran into something while rising, setting move.falling to TRUE\n";
         }
-        else // onGround
+        else // ------ON GROUND LOGIC
         {
+          needsToFall = true;
+
           if (moves.forward) { moves.forward = false; }
           if (moves.back) { moves.back = false; }
           if (moves.left) { moves.left = false; }
@@ -250,10 +254,15 @@ void FirstPersonPlayer::finalCollisionCheck(const std::vector<Entity>* entities)
           model.get()->getFirstEntity()->collider->impasse.loc.z
         );
 
-        bool needsToFall = cHandler.get()->point_vs_AABB_3D(yCheckBelow, e.collider->impasse);
+        if (needsToFall) 
+          needsToFall = cHandler.get()->point_vs_AABB_3D(yCheckBelow, e.collider->impasse);
 
       }
     }
+  } // exit for entity loop
+  if (needsToFall) {
+    moves.onGround = !needsToFall;
+    moves.falling = needsToFall;
   }
 }
 

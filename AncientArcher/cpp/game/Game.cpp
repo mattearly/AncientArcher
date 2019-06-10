@@ -28,10 +28,10 @@ Game::Game()
 
   player->addPointLight(glm::vec3(0, 0, 0), prims->getShader());
 
-	g_lighting.updateConstantLightAmbient(glm::vec3(.12, 0.12, 0.12));
+	g_lighting.updateConstantLightAmbient(glm::vec3(.05, 0.05, 0.05));
 	//g_lighting.updateConstantLightDirection(glm::vec3(-1, -.93, -1));
-	g_lighting.updateConstantLightDiffuse(glm::vec3(.48, .48, .48));
-	g_lighting.updateConstantLightSpecular(glm::vec3(.3, .3, .3));
+	g_lighting.updateConstantLightDiffuse(glm::vec3(.38, .38, .38));
+	g_lighting.updateConstantLightSpecular(glm::vec3(.2, .2, .2));
 
 	g_lighting.setConstantLight(prims->getShader());
 
