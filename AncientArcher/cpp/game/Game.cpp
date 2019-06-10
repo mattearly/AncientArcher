@@ -28,8 +28,8 @@ Game::Game()
 
   player->addPointLight(glm::vec3(0, 0, 0), prims->getShader());
 
-	g_lighting.updateConstantLightAmbient(glm::vec3(.05, 0.05, 0.05));
-	g_lighting.updateConstantLightDirection(glm::vec3(-0.5, -0.75, 0.5));
+	g_lighting.updateConstantLightAmbient(glm::vec3(.15, 0.123, 0.123));
+	g_lighting.updateConstantLightDirection(glm::vec3(0.5, -0.75, 0.5));
 	g_lighting.updateConstantLightDiffuse(glm::vec3(.38, .38, .38));
 	g_lighting.updateConstantLightSpecular(glm::vec3(.2, .2, .2));
 
@@ -116,31 +116,43 @@ Game::Game()
 		}
 	}
 
-	// other land of maze
+	// MAZE
 	for (int i = 24; i < 44; i++)
 	{
     {// l/r walls
       Entity e(
         ENTITYTYPE::CUBE,
-        glm::vec3(i * 2, -3.f, 0),
-        glm::vec3(2.f, 2.f, 1.f),
+        glm::vec3(i * 2, -2.2f, -.43),
+        glm::vec3(2.f, 3.f, 1.f),
         texIDMosaicBricks,
         true,
         false
       );
       prims->addToPrimativeEntities(e);
     }
-
     {
       Entity e2(
         ENTITYTYPE::CUBE,
-        glm::vec3(i * 2, -3.f, 19),
-        glm::vec3(2.f, 2.f, 1.f),
+        glm::vec3(i * 2, -2.2f, 15.3),
+        glm::vec3(2.f, 3.f, 1.f),
         texIDMosaicBricks,
         true,
         false
       );
       prims->addToPrimativeEntities(e2);
+    }
+
+    //back wall
+    {
+      Entity e3(
+        ENTITYTYPE::CUBE,
+        glm::vec3(24, -1.f, -2.5 + i * 2),
+        glm::vec3(1.f, 3.f, 1.f),
+        texIDMosaicBricks,
+        true,
+        false
+      );
+      prims->addToPrimativeEntities(e3);
     }
 
 		for (int j = 0; j < 10; j++)
