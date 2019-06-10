@@ -27,10 +27,10 @@ public:
     bool onGround = false;
     bool falling = true;
 
-    float lastOnGroundHeight = 0.0f;
-    float currentGroundHeight = 0.0f;
+    //float lastOnGroundHeight = 0.0f;
+    //float currentGroundHeight = 0.0f;
 
-    float currentVelocity;
+    float currentVelocity = 0.f;
 
     bool canJump() { return canJumpAgain && onGround && !falling; };
     bool canBoost() { return forward && !back; };
