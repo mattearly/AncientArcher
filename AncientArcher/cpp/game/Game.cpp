@@ -11,7 +11,7 @@
 Display g_display(" MMO ", Display::MouseControlType::FPP);
 //              Starting Position           YAW    PITCH  FOV
 //Camera g_camera(glm::vec3(0.f, 1.0f, 0.f), 0, 0, 45.f);
-Camera g_camera(glm::vec3(0.f, 1.0f, 0.f), 0, 0, 75.f);
+Camera g_camera(glm::vec3(0.f, 1.0f, 0.f), -89.991f, 0, 75.f);
 Lighting g_lighting;
 //--- END GLOBALS ---//
 
@@ -28,9 +28,9 @@ Game::Game()
 
   player->addPointLight(glm::vec3(0, 0, 0), prims->getShader());
 
-	g_lighting.updateConstantLightAmbient(glm::vec3(.15, 0.123, 0.123));
-	g_lighting.updateConstantLightDirection(glm::vec3(0.5, -0.75, 0.5));
-	g_lighting.updateConstantLightDiffuse(glm::vec3(.38, .38, .38));
+	g_lighting.updateConstantLightAmbient(glm::vec3(.27, 0.223, 0.223));
+	g_lighting.updateConstantLightDirection(glm::vec3(0.35, -0.75, 0.15));
+	g_lighting.updateConstantLightDiffuse(glm::vec3(.58, .58, .58));
 	g_lighting.updateConstantLightSpecular(glm::vec3(.2, .2, .2));
 
 	g_lighting.setConstantLight(prims->getShader());
@@ -40,24 +40,25 @@ Game::Game()
   spawner->setTimeBetweenSpawns(2.f);
 
 	TextureLoader tLoader;
-	unsigned int texIDGrass = tLoader.load2DTexture("../AncientArcher/cpp/pckgs/primatives/grass.png");
+	unsigned int texIDGrass = tLoader.load2DTexture("../AncientArcher/cpp/pckgs/primatives/grass3.png");
+	unsigned int texIDCrumblingRocks = tLoader.load2DTexture("../AncientArcher/cpp/pckgs/primatives/crumbling_rocks.png");
 	unsigned int texIDDirt = tLoader.load2DTexture("../AncientArcher/cpp/pckgs/primatives/dirt.png");
 	unsigned int texIDLightBricks = tLoader.load2DTexture("../AncientArcher/cpp/pckgs/primatives/light_bricks.png");
 	unsigned int texIDMosaicBricks = tLoader.load2DTexture("../AncientArcher/cpp/pckgs/primatives/mosaic_bricks.png");
 
 
 	// grass + dirt layer
-	for (int i = 0; i < 10; i++)
+	for (int i = -21; i < 40; i++)
 	{
-		for (int j = 0; j < 10; j++)
+		for (int j = -21; j < 40; j++)
 		{
-			for (int k = 0; k < 2; k++)
+			for (int k = 0; k < 15; k++)
 			{
 				Entity e(
 					ENTITYTYPE::CUBE,
 					glm::vec3(i * 2, -3.f - .5f * k, j * 2),
 					glm::vec3(2.f, .5f, 2.f),
-					k < 1 ? texIDGrass : texIDDirt,
+					(k < 1) ? texIDGrass : (k < 5) ? texIDDirt : texIDCrumblingRocks,
 					true,
 					false
 				);
@@ -98,16 +99,16 @@ Game::Game()
 
 
   // ---- LOAD SKYBOX ---- //
-  std::vector<std::string> skyboxFiles =
-  {
-    "../AncientArcher/cpp/pckgs/skybox/stars/right.png",
-    "../AncientArcher/cpp/pckgs/skybox/stars/left.png",
-    "../AncientArcher/cpp/pckgs/skybox/stars/top.png",
-    "../AncientArcher/cpp/pckgs/skybox/stars/bottom.png",
-    "../AncientArcher/cpp/pckgs/skybox/stars/front.png",
-    "../AncientArcher/cpp/pckgs/skybox/stars/back.png"
-  };
+  //std::vector<std::string> skyboxFiles =
+  //{
+  //  "../AncientArcher/cpp/pckgs/skybox/sunny/right.png",
+  //  "../AncientArcher/cpp/pckgs/skybox/sunny/left.png",
+  //  "../AncientArcher/cpp/pckgs/skybox/sunny/top.png",
+  //  "../AncientArcher/cpp/pckgs/skybox/sunny/bottom.png",
+  //  "../AncientArcher/cpp/pckgs/skybox/sunny/front.png",
+  //  "../AncientArcher/cpp/pckgs/skybox/sunny/back.png"
+  //};
 
-  sky = new SkyboxRenderer(skyboxFiles);
+  sky = new SkyboxRenderer();
 
 }
