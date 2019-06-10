@@ -47,20 +47,21 @@ Game::Game()
   unsigned int texIDMosaicBricks = tLoader.load2DTexture("../AncientArcher/cpp/pckgs/primatives/mosaic_bricks.png");
   unsigned int texIDDarkStone = tLoader.load2DTexture("../AncientArcher/cpp/pckgs/primatives/darkstone.png");
   unsigned int texIDPackedRocks = tLoader.load2DTexture("../AncientArcher/cpp/pckgs/primatives/packed_rocks.png");
+  unsigned int texIDLava = tLoader.load2DTexture("../AncientArcher/cpp/pckgs/primatives/lava.png");
   
   //BASE GROUND LAYERS
-  for (int i = -21; i < 40; i++)
+  for (int i = -20; i < 40; i++)
   {
-    for (int j = -21; j < 40; j++)
+    for (int j = -20; j < 40; j++)
     {
-      for (int k = 0; k < 25; k++)
+      for (int k = 0; k < 20; k++)
       {
         Entity e(
           ENTITYTYPE::CUBE,
           glm::vec3(i * 2, -3.f - .5f * k, j * 2),
           glm::vec3(2.f, .5f, 2.f),
-          // Layers - 1:grass + 6:dirt + 6:crumbling + 6:packedrock + 6:darkstone
-          (k < 1) ? texIDGrass : (k < 8) ? texIDDirt : (k < 14) ? texIDCrumblingRocks : (k < 20) ? texIDPackedRocks : texIDDarkStone,
+          // Layers - 1:grass + 3:dirt + 4:crumbling + 5:packedrock + 6:darkstone + 1:lava
+          (k < 1) ? texIDGrass : (k < 4) ? texIDDirt : (k < 8) ? texIDCrumblingRocks : (k < 13) ? texIDPackedRocks : (k<19)? texIDDarkStone : texIDLava,
           true,
           false
         );
