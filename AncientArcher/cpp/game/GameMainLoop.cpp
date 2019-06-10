@@ -17,25 +17,11 @@ void Game::mainLoop() {
     // TIMING - UDPATE DELTA TIME ---- // 
     currentFrame = (float)glfwGetTime();
     deltaTime = currentFrame - lastFrame;
-	elapsedTime += deltaTime;
     lastFrame = currentFrame;
     // PROCESS PLAYER CONTROLS & MOVEMENT ---- //
     player->update(deltaTime);
 
-	if (elapsedTime > 2.0f) {
-		timeTrigger = !timeTrigger;
-		elapsedTime = 0.0f;
-	}
-
-	for (auto &e : *(prims->getMovingEntites())) {
-		e.moveBy(glm::vec3((sin(elapsedTime * 3.14159 / 180) * (timeTrigger ? 1.0 : -1.0)),
-			0.f,
-			0.f)
-		);
-	}
-
-	//if (prims->getFirstMovingEntity.gameItem.loc.x == 9.f) {
-	//}
+	prims->update(deltaTime);
 
     //  FINAL COLLISION CHECK
     if (player->moves.positionChanged)

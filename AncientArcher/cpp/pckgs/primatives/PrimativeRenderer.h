@@ -9,6 +9,7 @@ class PrimativeRenderer {
 public:
   PrimativeRenderer();
 
+  void update(float deltaTime);
   void render();
   void addToPrimativeEntities(Entity entity);
   void addToMovingEntities(Entity entity);
@@ -26,6 +27,9 @@ public:
   void entityPopBack();
 
 private:
+
+	float elapsedTime = 0.0f;
+	bool timeTrigger = true;
 
   void drawCube();
   void drawPlane();

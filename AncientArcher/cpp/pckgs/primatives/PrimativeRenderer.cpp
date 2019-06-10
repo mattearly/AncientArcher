@@ -28,6 +28,24 @@ PrimativeRenderer::PrimativeRenderer()
   primShader->setMat4("projection", proj);
 }
 
+
+void PrimativeRenderer::update(float deltaTime)
+{
+	elapsedTime += deltaTime;
+
+	if (elapsedTime > 2.0f) {
+		timeTrigger = !timeTrigger;
+		elapsedTime = 0.0f;
+	}
+
+	for (auto& e : *(getMovingEntites())) {
+		e.moveBy(glm::vec3((sin(elapsedTime * 3.14159 / 180) * (timeTrigger ? 1.0 : -1.0)),
+			0.f,
+			0.f)
+		);
+	}
+}
+
 /**
  * Renders all the objects on the std::vector<Entity> entities array.
  */
