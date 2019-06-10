@@ -351,8 +351,8 @@ void FirstPersonPlayer::addPointLight(glm::vec3 pos, Shader* shader)
  */
 void FirstPersonPlayer::checkFrontVectorVsWorld(std::vector<Entity>* entities)
 {
-  glm::vec3 frontVecPoint = *g_camera.getFront() * 1.4f;
-  glm::vec3 frontPointLocation = model.get()->getFirstEntity()->gameItem.loc + frontVecPoint;
+  glm::vec3 frontVecPoint = *g_camera.getFront() * 1.8f;
+  glm::vec3 frontPointLocation = model.get()->getFirstEntity()->gameItem.loc + frontVecPoint + _camOffset;
   //std::cout << "front Point Vec @ " << frontPointLocation.x << "," << frontPointLocation.y << "," << frontPointLocation.z << "\n";
 
 
