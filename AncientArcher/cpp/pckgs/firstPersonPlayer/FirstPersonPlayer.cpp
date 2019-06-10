@@ -242,6 +242,17 @@ void FirstPersonPlayer::finalCollisionCheck(const std::vector<Entity>* entities)
           );
         }
       }
+      else
+      {
+        glm::vec3 yCheckBelow = glm::vec3(
+          model.get()->getFirstEntity()->collider->impasse.loc.x,
+          model.get()->getFirstEntity()->collider->impasse.loc.y - model.get()->getFirstEntity()->collider->impasse.size.y/2 - .02f,
+          model.get()->getFirstEntity()->collider->impasse.loc.z
+        );
+
+        bool needsToFall = cHandler.get()->point_vs_AABB_3D(yCheckBelow, e.collider->impasse);
+
+      }
     }
   }
 }
