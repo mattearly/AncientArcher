@@ -290,7 +290,7 @@ void FirstPersonPlayer::addPointLight(glm::vec3 pos, Shader* shader)
 void FirstPersonPlayer::removeObjectInFrontOfPlayer(std::vector<Entity>* entities)
 {
   glm::vec3 startPosition = *g_camera.getPosition();
-  glm::vec3 tipOfHitScanVec = *g_camera.getFront() * 1.25f;
+  glm::vec3 tipOfHitScanVec = *g_camera.getFront() * 1.2f;
   //std::cout << "front Point Vec @ " << tipOfHitScanVec.x << "," << tipOfHitScanVec.y << "," << tipOfHitScanVec.z << "\n";
 
   auto i = std::begin(*entities);
