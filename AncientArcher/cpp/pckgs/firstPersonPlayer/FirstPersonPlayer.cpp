@@ -67,15 +67,12 @@ void FirstPersonPlayer::update(float deltaTime)
 
         model.get()->getFirstEntity()->moveBy(model->getFirstEntity()->kinematics->getCalculatedPosition(deltaTime, moves.forward, moves.back, moves.jumped, moves.falling, moves.left, moves.right));
 
-
         if (moves.back || moves.forward) {
           // locks moving foward and backwards to the x and z axii, if y is added in this is become a flyer 
           glm::vec3 moveFront = glm::vec3((float)g_camera.getFront()->x, 0.0f, (float)g_camera.getFront()->z); //get looking direction from the cam;
           if (moves.forward)     model.get()->getFirstEntity()->moveBy(moveFront * moves.currentVelocity);
           else if (moves.back)   model.get()->getFirstEntity()->moveBy(-moveFront * moves.currentVelocity);
         }
-
-
       }
       // end ghetto 1 second jumper
     }
@@ -349,19 +346,17 @@ void FirstPersonPlayer::addPointLight(glm::vec3 pos, Shader* shader)
  * Send out a vector in front of the player and returns which entity was hit first.
  * @param[inout] entities  list to check against and modify
  */
-void FirstPersonPlayer::checkFrontVectorVsWorld(std::vector<Entity>* entities)
+void FirstPersonPlayer::checkFrontVectorVsEntities(std::vector<Entity>* entities)
 {
-  glm::vec3 frontVecPoint = *g_camera.getFront() * 1.8f;
-  glm::vec3 frontPointLocation = model.get()->getFirstEntity()->gameItem.loc + frontVecPoint + _camOffset;
-  //std::cout << "front Point Vec @ " << frontPointLocation.x << "," << frontPointLocation.y << "," << frontPointLocation.z << "\n";
-
-
+  glm::vec3 startPosition = *g_camera.getPosition();
+  glm::vec3 tipOfHitScanVec = *g_camera.getFront() * 2.f;
+  //std::cout << "front Point Vec @ " << tipOfHitScanVec.x << "," << tipOfHitScanVec.y << "," << tipOfHitScanVec.z << "\n";
 
   auto i = std::begin(*entities);
 
-  while (i != std::end(*entities)) {
-    // Do some stuff
-    if (cHandler.get()->point_vs_AABB_3D(frontPointLocation, i->collider->impasse)) 
+  while (i != std::end(*entities)) 
+  {
+    if (cHandler.get()->vector_vs_AABB_3D(startPosition, tipOfHitScanVec, i->collider->impasse))
     {
       *entities->erase(i);
       return;
@@ -379,7 +374,7 @@ void FirstPersonPlayer::checkFrontVectorVsWorld(std::vector<Entity>* entities)
     std::size_t whichToRemove = 0;
     for (auto& e : *entities)
     {
-      if (cHandler.get()->point_vs_AABB_3D(frontPointLocation, e.collider->impasse))
+      if (cHandler.get()->point_vs_AABB_3D(tipOfHitScanVec, e.collider->impasse))
       {
         hitSomething = true;
         return;

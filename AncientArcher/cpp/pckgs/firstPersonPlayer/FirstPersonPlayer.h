@@ -57,7 +57,7 @@ public:
   void addPointLight(glm::vec3 pos, Shader* shader);
 
   // interact -- called by left click
-  void checkFrontVectorVsWorld(std::vector<Entity>* entities);
+  void checkFrontVectorVsEntities(std::vector<Entity>* entities);
 
 private:
 

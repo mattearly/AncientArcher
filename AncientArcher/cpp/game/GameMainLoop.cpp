@@ -24,11 +24,6 @@ void Game::mainLoop() {
     // PROCESS PRIMATIVES MOVEMENT ---- //
     prims->update(deltaTime);
 
-
-
-
-
-
     //  FINAL COLLISION CHECK
     if (player->moves.positionChanged)
     {
@@ -38,7 +33,7 @@ void Game::mainLoop() {
     // CHECK FRONT VECTOR OF PLAYER IF CLICKED
     if (player->moves.interacting) 
     {
-        player->checkFrontVectorVsWorld(prims->getEntites());
+        player->checkFrontVectorVsEntities(prims->getEntites());
     }
     // MOVE CAMERA TO PROPER LOCATION
     player->syncCam();
