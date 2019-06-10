@@ -133,7 +133,7 @@ Game::Game()
     {
       Entity e2(
         ENTITYTYPE::CUBE,
-        glm::vec3(i * 2, -2.2f, 15.3),
+        glm::vec3(i * 2, -2.2f, 38.5),
         glm::vec3(2.f, 3.f, 1.f),
         texIDMosaicBricks,
         true,
@@ -146,8 +146,8 @@ Game::Game()
     {
       Entity e3(
         ENTITYTYPE::CUBE,
-        glm::vec3(24, -1.f, -2.5 + i * 2),
-        glm::vec3(1.f, 3.f, 1.f),
+        glm::vec3(85, -2.2f, -48 + i*2),
+        glm::vec3(1.f, 3.f, 2.f),
         texIDMosaicBricks,
         true,
         false
@@ -155,7 +155,56 @@ Game::Game()
       prims->addToPrimativeEntities(e3);
     }
 
-		for (int j = 0; j < 10; j++)
+    //MAZE IN SLIDERS
+    {
+      Entity eslider1(
+        ENTITYTYPE::CUBE,
+        glm::vec3(58, -2.2f, -35 + i * 2),
+        glm::vec3(1.f, 3.f, 2.f),
+        texIDMosaicBricks,
+        true,
+        false
+      );
+      prims->addToPrimativeEntities(eslider1);
+    }
+
+    {
+      Entity eslider2(
+        ENTITYTYPE::CUBE,
+        glm::vec3(62, -2.2f, -20 + i * 2),
+        glm::vec3(1.f, 3.f, 2.f),
+        texIDLightBricks,
+        true,
+        false
+      );
+      prims->addToPrimativeEntities(eslider2);
+    }
+
+    {
+      Entity eslider3(
+        ENTITYTYPE::CUBE,
+        glm::vec3(72, -2.2f, -55 + i * 2),
+        glm::vec3(1.f, 3.f, 2.f),
+        texIDLightBricks,
+        true,
+        false
+      );
+      prims->addToPrimativeEntities(eslider3);
+    }
+
+    {
+      Entity eslider4(
+        ENTITYTYPE::CUBE,
+        glm::vec3(76, -2.2f, -55 + i * 2),
+        glm::vec3(1.f, 3.f, 2.f),
+        texIDDirt,
+        true,
+        false
+      );
+      prims->addToPrimativeEntities(eslider4);
+    }
+
+		for (int j = 0; j < 20; j++)
 		{
 
 			for (int k = 0; k < 2; k++)
