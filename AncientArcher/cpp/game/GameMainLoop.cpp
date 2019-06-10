@@ -33,7 +33,7 @@ void Game::mainLoop() {
     // CHECK FRONT VECTOR OF PLAYER IF CLICKED
     if (player->moves.interacting) 
     {
-        player->checkFrontVectorVsEntities(prims->getEntites());
+        player->removeObjectInFrontOfPlayer(prims->getEntites());
     }
     // MOVE CAMERA TO PROPER LOCATION
     player->syncCam();

@@ -60,7 +60,7 @@ Game::Game()
           ENTITYTYPE::CUBE,
           glm::vec3(i * 2, -3.f - .5f * k, j * 2),
           glm::vec3(2.f, .5f, 2.f),
-          // Layers - 1:grass + 3:dirt + 4:crumbling + 5:packedrock + 6:darkstone + 1:lava
+          // Layers - 1:grass + 3:dirt + 4:crumbling + 5:packedrock + 6:darkstone + 2:lava
           (k < 1) ? texIDGrass : (k < 4) ? texIDDirt : (k < 8) ? texIDCrumblingRocks : (k < 13) ? texIDPackedRocks : (k<19)? texIDDarkStone : texIDLava,
           true,
           false
@@ -73,6 +73,7 @@ Game::Game()
   // bridge
   for (int i = 10; i < 24; i++)
   {
+    //base
     for (int j = 5; j < 8; j++)
     {
       Entity e(
@@ -83,14 +84,15 @@ Game::Game()
         true,
         false
       );
-
       prims->addToPrimativeEntities(e);
-      if (j == 5 || j == 7)  //side railings
+
+      //side railings
+      if (j == 5 || j == 7)  
       {
         Entity e(
           ENTITYTYPE::CUBE,
-          /* loc */ glm::vec3( /* good */ (i * 2.f), -1.5f, (j == 5) ? (j * 2.f) : (j * 2.f)),
-          glm::vec3(1.8f, 0.5f, .25f),
+          /* loc */ glm::vec3(/*x*/(i * 2.f), /*y*/(-1.25f), /*z*/((j == 5) ? (-.75f + j * 2.f) : (.75f + j * 2.f))),
+          glm::vec3(1.5f, 0.5f, .5f),
           texIDLightBricks,
           true,
           false

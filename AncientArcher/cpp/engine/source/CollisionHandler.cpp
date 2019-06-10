@@ -55,7 +55,6 @@ bool CollisionHandler::point_vs_AABB_3D(glm::vec3 pt, const Impasse& b) const
 
 bool CollisionHandler::vector_vs_AABB_3D(glm::vec3 startpt, glm::vec3 endpt, const Impasse& b) const
 {
-
   float bMinX = b.loc.x - b.size.x / 2.f;
   float bMaxX = b.loc.x + b.size.x / 2.f;
   float bMinY = b.loc.y - b.size.y / 2.f;

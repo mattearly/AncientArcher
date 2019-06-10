@@ -12,7 +12,7 @@ extern Controls g_controls;    // from display.cpp (engine)
 extern Camera g_camera;        // from game.cpp    (game)
 
 /**
- *  default constructor
+ *  Default constructor.
  */
 FirstPersonPlayer::FirstPersonPlayer()
 {
@@ -20,7 +20,7 @@ FirstPersonPlayer::FirstPersonPlayer()
 }
 
 /**
- *  constructor with custom leg_power value
+ *  Constructor with custom leg_power value
  *  @param[in] leg_power  sets to 0 to 100 rating of player legpower
  */
 FirstPersonPlayer::FirstPersonPlayer(float leg_power)
@@ -93,8 +93,6 @@ void FirstPersonPlayer::update(float deltaTime)
 
 
     // --- SEND DIRECTION --- //
-
-
     // --- FOWARD / BACKWARDS --- //
     if (moves.back || moves.forward) {
       // locks moving foward and backwards to the x and z axii, if y is added in this is become a flyer 
@@ -105,71 +103,9 @@ void FirstPersonPlayer::update(float deltaTime)
     // --- LEFT / RIGHT STRAFING --- // 
     if (moves.right) model.get()->getFirstEntity()->moveBy(*g_camera.getRight() * moves.currentVelocity);
     else if (moves.left) model.get()->getFirstEntity()->moveBy(-(*g_camera.getRight()) * moves.currentVelocity);
-
-
-
-    //// ------------ JUMP SYSTEM -------------- //
-    //// * 3 phase system
-
-    //// PHASE 1: Liftoff
-    //// Liftoff is where the jump is triggered and sounds/animations are played.
-    //if (movedir.jumped) { // if a jump is triggered
-    //  movedir.onGround = false; // the player leaves the ground
-    //  movedir.jumped = false; // the jump is untriggered
-    //  //liftoff animation here
-    //  playgruntsound();
-    //}
-
-    //// PHASE 2: Arc
-    //// Rising and falling are now combined into one function which is
-    //// just a quadratic equation based on the length of the jump action
-    //else if (!movedir.onGround) { // && !movedir.falling) { 
-    //  jumpTimer += deltaTime; // Elapsed time of the player being 'in air'
-    //  float jumpMod = 0.5f / BASE_PLAYER_WEIGHT; // Modifier based on the user weight in 'kg' (probably needs rework)
-    //  float jumpPos = 8.0f; // Initial Y intercept of jump, I think.. not sure why its 8.0f ('c' term in equation below)
-    //  float jumpVel = getRisingSpeed() * jumpTimer; // Velocity of jump ('bt' term in equation below) // RISING SPEED CALC: jump speed based on LegPower Player Stat
-    //  float jumpAccel = -32.1522f * pow(jumpTimer, 2.f); // Accelaration of jump due top gravity in 'feet' (at^2 term in equation below)
-    //              // modifier * (	  c	   +	bt	 +	 at^2	) 
-    //  playerIntendedLocation.y += jumpMod * (jumpPos + jumpVel + jumpAccel); // Parabolic equation based on time
-    //  //// std::cout << previousPlayerLocation.y - playerIntendedLocation.y << "\n";
-    //  //if (playerIntendedLocation.y > getJumpHeight() + movedir.lastOnGroundHeight) // MAX HEIGHT CALC: jump height based on LegPower Player Stat
-    //  if (previousPlayerLocation.y - playerIntendedLocation.y > 0) {
-    //    movedir.falling = true;
-    //    // falling animation here
-    //  }
-    //  else if (previousPlayerLocation.y - playerIntendedLocation.y < 0) {
-    //    // rising animation here
-    //  }
   }
-
-  //// PHASE 3: Landing
-  //// Landing will now just be triggered by the general collision
-  //// checking but it may make sense to put animations or sounds
-  //// here for landing 
-  //if (movedir.positionChanged) { // If the player moves
-  //  for (auto const& e : *entities) { // For every entity
-  //    bool didCollide = checkBoundCollisionWithEntity(e, collider, playerIntendedLocation); // check if the player collided
-  //    if (didCollide) { // if it did collide
-  //      if (!movedir.onGround) { // if player is off the ground
-  //        playerIntendedLocation = *camera.getPosition(); // move the collision checker to the camera position
-  //        movedir.falling = true; // player is falling
-  //      }
-  //      else { // if player is on the ground
-  //        movedir.positionChanged = false; // the position doesn't change
-  //      }
-  //      float ytop = e.collider->impasse.loc[1] + e.collider->impasse.sz[1] / 2; // top of the entity
-  //      if (playerIntendedLocation.y > ytop) { // if the player Y locations is higher than the top of the entity
-  //        movedir.falling = false; // player isn't falling
-  //        movedir.onGround = true; // player is on groung
-  //        jumpTimer = 0.0f; // reset the jump timer
-  //        movedir.lastOnGroundHeight = camera.getPosition()->y; // the last ground height is the current position
-  //        // landing animation here
-  //        playlandingsound();
-  //      }
-  //    }
-  //  }
-  //}
 }
+
 
 /**
  * Run at the end of the loop before syncing cam an rendering.
@@ -177,36 +113,36 @@ void FirstPersonPlayer::update(float deltaTime)
  */
 void FirstPersonPlayer::finalCollisionCheck(const std::vector<Entity>* entities)
 {
+  static bool needsToFall;
+
   if (entities->empty())
   {
     // std::cout << "finalCollisionCheck entities empty! returning...\n";
+    needsToFall = true;
     return;
   }
-  static bool needsToFall;
+
   //std::cout << "playerloc: "
   // << model.get()->getFirstEntity()->gameItem.loc.x << ","
   // << model.get()->getFirstEntity()->gameItem.loc.y << ","
   // << model.get()->getFirstEntity()->gameItem.loc.z << "\n";
 
-  int entcount = 0;
+  //int inLogicCheckingRangeCount = 0;
 
   // DEMO REVISION 2
   for (auto const& e : *entities)
   {
-
     // check distance
     float distance = glm::distance(e.collider->impasse.loc, model.get()->getFirstEntity()->collider->impasse.loc);
 
     if (distance < ENGINE_LOGIC_CHECKING_DISTANCE)
     {
-      entcount++;
+      //inLogicCheckingRangeCount++;  // for debug purposes
       // std::cout << "entityloc: " << e.gameItem.loc.x << "," << e.gameItem.loc.y << "," << e.gameItem.loc.z
         //<< " e prevLoc: : " << e.gameItem.prevLoc.x << "," << e.gameItem.prevLoc.y << "," << e.gameItem.prevLoc.z << "\n";
-      // std::cout << "going through entitites: " << entcount << "\n";
-
+      // std::cout << "going through entitites: " << inLogicCheckingRangeCount << "\n";
 
       bool didCollide = cHandler.get()->AABB_vs_AABB_3D(e.collider->impasse, model.get()->getFirstEntity()->collider->impasse);
-
       if (didCollide) {
         // std::cout << "A WILD COLLISION!\n";
         if (!moves.onGround && moves.falling)
@@ -247,20 +183,25 @@ void FirstPersonPlayer::finalCollisionCheck(const std::vector<Entity>* entities)
       {
         glm::vec3 yCheckBelow = glm::vec3(
           model.get()->getFirstEntity()->collider->impasse.loc.x,
-          model.get()->getFirstEntity()->collider->impasse.loc.y - model.get()->getFirstEntity()->collider->impasse.size.y / 2 - .02f,
+          model.get()->getFirstEntity()->collider->impasse.loc.y - model.get()->getFirstEntity()->collider->impasse.size.y / 2 - 0.1f,
           model.get()->getFirstEntity()->collider->impasse.loc.z
         );
 
         if (needsToFall)
           needsToFall = cHandler.get()->point_vs_AABB_3D(yCheckBelow, e.collider->impasse);
-
       }
     }
-  } // exit for entity loop
+
+  } // exit foreach entity loop
+ 
+  //std::cout << "Entities within logic checking range: " << inLogicCheckingRangeCount << "\n";
+
+
   if (needsToFall) {
-    moves.onGround = !needsToFall;
-    moves.falling = needsToFall;
+    moves.onGround = false;
+    moves.falling = true;
   }
+
 }
 
 /**
@@ -346,23 +287,24 @@ void FirstPersonPlayer::addPointLight(glm::vec3 pos, Shader* shader)
  * Send out a vector in front of the player and returns which entity was hit first.
  * @param[inout] entities  list to check against and modify
  */
-void FirstPersonPlayer::checkFrontVectorVsEntities(std::vector<Entity>* entities)
+void FirstPersonPlayer::removeObjectInFrontOfPlayer(std::vector<Entity>* entities)
 {
   glm::vec3 startPosition = *g_camera.getPosition();
-  glm::vec3 tipOfHitScanVec = *g_camera.getFront() * 2.f;
+  glm::vec3 tipOfHitScanVec = *g_camera.getFront() * 1.25f;
   //std::cout << "front Point Vec @ " << tipOfHitScanVec.x << "," << tipOfHitScanVec.y << "," << tipOfHitScanVec.z << "\n";
 
   auto i = std::begin(*entities);
 
-  while (i != std::end(*entities)) 
+  while (i != std::end(*entities))
   {
     if (cHandler.get()->vector_vs_AABB_3D(startPosition, tipOfHitScanVec, i->collider->impasse))
     {
       *entities->erase(i);
       playSift02SoundEffect();
+      moves.interacting = false;
       return;
     }
-    else 
+    else
     {
       ++i;
     }
@@ -370,23 +312,29 @@ void FirstPersonPlayer::checkFrontVectorVsEntities(std::vector<Entity>* entities
 
   moves.interacting = false;
 
-  /*
-    bool hitSomething = false;
-    std::size_t whichToRemove = 0;
-    for (auto& e : *entities)
-    {
-      if (cHandler.get()->point_vs_AABB_3D(tipOfHitScanVec, e.collider->impasse))
-      {
-        hitSomething = true;
-        return;
-      }
-      whichToRemove++;
-    }
+}
 
-    if (hitSomething)
-    {
-      *entities->erase(entities);
-    }*/
+/**
+ * Checks if a specific entity collides with a hitscan
+ * @param[in] entity  The entity to check the player's interacting front vector against.
+ * @return  True if hits, False if doesn't hit.
+ */
+bool FirstPersonPlayer::checkFrontVectorVsEntity(const Entity* entity)
+{
+  glm::vec3 startPosition = *g_camera.getPosition();
+
+  glm::vec3 tipOfHitScanVec = *g_camera.getFront() * 2.f;
+
+  bool returner = false;
+
+  if (cHandler.get()->vector_vs_AABB_3D(startPosition, tipOfHitScanVec, entity->collider->impasse))
+  {
+    returner = true;
+    moves.interacting = false;
+  }
+
+  return returner;
+
 }
 
 /**
