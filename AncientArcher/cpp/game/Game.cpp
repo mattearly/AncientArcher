@@ -237,8 +237,8 @@ Game::Game()
     "../AncientArcher/cpp/pckgs/skybox/stars/left.png",
     "../AncientArcher/cpp/pckgs/skybox/stars/top.png",
     "../AncientArcher/cpp/pckgs/skybox/stars/bottom.png",
-    "../AncientArcher/cpp/pckgs/skybox/stars/back.png",
-    "../AncientArcher/cpp/pckgs/skybox/stars/front.png"
+    "../AncientArcher/cpp/pckgs/skybox/stars/front.png",
+    "../AncientArcher/cpp/pckgs/skybox/stars/back.png"
   };
 
   sky = new SkyboxRenderer(skyboxFiles);
