@@ -117,7 +117,6 @@ Game::Game()
         false
       );
       prims->addToMovingEntities(e);
-
     }
   }
 

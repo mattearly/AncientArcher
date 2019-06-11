@@ -39,6 +39,7 @@ void FirstPersonPlayer::update(float deltaTime)
   // KEYBOARD
   g_controls.fppKeyboardIn(this);
 
+
   // PRE-MOVEMENT 
   moves.positionChanged = true;
   model.get()->getFirstEntity()->syncLocation();
@@ -204,13 +205,19 @@ void FirstPersonPlayer::finalCollisionCheck(const std::vector<Entity>* entities)
   }
 
 }
-
+/**
+ *  Move the cam based on offset to near the player model.
+ */
+void FirstPersonPlayer::syncFrontVectorVisual()
+{
+  (model->getFirstEntity() + 1)->moveTo(g_camera.Position + *g_camera.getFront() * _frontCheckerVecScaler);
+}
 /**
  *  Move the cam based on offset to near the player model.
  */
 void FirstPersonPlayer::syncCam()
 {
-  g_camera.setPosition(model.get()->getFirstEntity()->gameItem.loc + _camOffset);
+  g_camera.setPosition(model->getFirstEntity()->gameItem.loc + _camOffset);
 }
 /**
  *  Moves the player raidus light to the gameItem location.
@@ -288,10 +295,10 @@ void FirstPersonPlayer::addPointLight(glm::vec3 pos, Shader* shader)
  * Send out a vector in front of the player and returns which entity was hit first.
  * @param[inout] entities  list to check against and modify
  */
-void FirstPersonPlayer::removeObjectInFrontOfPlayer(std::vector<Entity>* entities)
+void FirstPersonPlayer::destroyEntityInFrontOfPlayer(std::vector<Entity>* entities)
 {
   glm::vec3 startPosition = *g_camera.getPosition();
-  glm::vec3 tipOfHitScanVec = *g_camera.getFront() * 1.2f;
+  glm::vec3 tipOfHitScanVec = *g_camera.getFront() * _frontCheckerVecScaler;
   //std::cout << "front Point Vec @ " << tipOfHitScanVec.x << "," << tipOfHitScanVec.y << "," << tipOfHitScanVec.z << "\n";
 
   auto i = std::begin(*entities);
@@ -347,23 +354,34 @@ void FirstPersonPlayer::init()
 
   TextureLoader tLoader;
   unsigned int texID = tLoader.load2DTexture("../AncientArcher/cpp/pckgs/firstPersonPlayer/foot.png");
+  unsigned int texIDRed= tLoader.load2DTexture("../AncientArcher/cpp/pckgs/firstPersonPlayer/red_shimmer.png");
 
   Entity e(
     ENTITYTYPE::CUBE,
     glm::vec3(0, 1, 0),
-    glm::vec3(.15f, 1.0f, .15f),
+    glm::vec3(.115f, 1.0f, .115f),
     texID,
     true,
     true
   );
-  model.get()->addToPrimativeEntities(e);
+  model->addToPrimativeEntities(e);
+
+  Entity e2(
+    ENTITYTYPE::CUBE,
+    glm::vec3(0, 1, 0),
+    glm::vec3(0.06f, 0.06f, 0.06f),
+    texIDRed,
+    true,
+    false
+  );
+  model->addToPrimativeEntities(e2);
 
   light = std::make_unique<Lighting>();
-  light->setConstantLight(model.get()->getShader());
+  light->setConstantLight(model->getShader());
 
   cHandler = std::make_unique<CollisionHandler>();
 
-  g_camera.setPosition(model.get()->getFirstEntity()->gameItem.loc + _camOffset);
+  syncFrontVectorVisual();
 
   legPower = 10.f;
   jumpTimer = 0.0f;
