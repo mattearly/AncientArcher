@@ -35,6 +35,10 @@ void Game::mainLoop() {
     {
         player->destroyEntityInFrontOfPlayer(prims->getEntites());
     }
+    if (player->moves.usingTool)
+    {
+      player->usePlanter(prims);
+    }
     // MOVE CAMERA TO PROPER LOCATION
     player->syncCam();
     player->syncPlayerLight(prims->getShader());

@@ -9,6 +9,7 @@
 #include <Controls.h>
 #include <memory>
 #include <CollisionHandler.h>
+#include "../planter/Planter.h"
 
 class FirstPersonPlayer {
 public:
@@ -28,6 +29,7 @@ public:
     bool falling = true;
 
     bool interacting = false;
+    bool usingTool = false;
 
     //float lastOnGroundHeight = 0.0f;
     //float currentGroundHeight = 0.0f;
@@ -60,12 +62,18 @@ public:
   // interact -- called by left click
   void destroyEntityInFrontOfPlayer(std::vector<Entity>* entities);
   bool checkFrontVectorVsEntity(const Entity* entity);
+  // use - called by right click
+  //void usePlanter(PrimativeRenderer& prims);
+  void usePlanter(PrimativeRenderer* prims);
+
+  //void usePlanter(Planter* planter);
 
 private:
 
   std::unique_ptr<PrimativeRenderer> model;
   std::unique_ptr<Lighting> light;
   std::unique_ptr<CollisionHandler> cHandler;
+  std::unique_ptr<Planter> planter;
 
   float jumpTimer;
 
