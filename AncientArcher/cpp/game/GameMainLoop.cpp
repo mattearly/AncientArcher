@@ -33,11 +33,12 @@ void Game::mainLoop() {
     // CHECK FRONT VECTOR OF PLAYER IF CLICKED
     if (player->moves.interacting) 
     {
-        player->removeObjectInFrontOfPlayer(prims->getEntites());
+        player->destroyEntityInFrontOfPlayer(prims->getEntites());
     }
     // MOVE CAMERA TO PROPER LOCATION
     player->syncCam();
     player->syncPlayerLight(prims->getShader());
+    player->syncFrontVectorVisual();
     // RENDER EVERYTHING ---- //
     masterRenderer.update(deltaTime, player, prims, sky);
     // RECORD KEYPRESSES N STUFF FOR NEXT FRAME ---- //

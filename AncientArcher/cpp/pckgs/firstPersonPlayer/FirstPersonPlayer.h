@@ -42,6 +42,7 @@ public:
 
   void update(float deltaTime);
   void finalCollisionCheck(const std::vector<Entity>* entities);
+  void syncFrontVectorVisual();
   void syncCam();
   void syncPlayerLight(Shader *shader);
   void movePlayerLight(glm::vec3 newpos, Shader* shader);
@@ -57,7 +58,7 @@ public:
   void addPointLight(glm::vec3 pos, Shader* shader);
 
   // interact -- called by left click
-  void removeObjectInFrontOfPlayer(std::vector<Entity>* entities);
+  void destroyEntityInFrontOfPlayer(std::vector<Entity>* entities);
   bool checkFrontVectorVsEntity(const Entity* entity);
 
 private:
@@ -68,7 +69,8 @@ private:
 
   float jumpTimer;
 
-  glm::vec3 _camOffset = glm::vec3(0, /*1.013f*/ 0.588f, 0);
+  glm::vec3 _camOffset = glm::vec3(0, /*1.013f*/ 0.618f, 0);
+  float _frontCheckerVecScaler = 1.6667f;
 
   // player stats
   const float BASE_PLAYER_SPEED = 3.0f;
