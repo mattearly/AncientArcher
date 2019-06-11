@@ -39,6 +39,7 @@ void FirstPersonPlayer::update(float deltaTime)
   // KEYBOARD
   g_controls.fppKeyboardIn(this);
 
+  planter->update(deltaTime);
 
   // PRE-MOVEMENT 
   moves.positionChanged = true;
@@ -345,6 +346,14 @@ bool FirstPersonPlayer::checkFrontVectorVsEntity(const Entity* entity)
 
 }
 
+void FirstPersonPlayer::usePlanter(PrimativeRenderer *prims)
+{
+  prims->getEntites()->push_back(
+    *planter->plantDemoTree((model->getFirstEntity() + 1)->gameItem.loc)
+  );
+  moves.usingTool = false;
+}
+
 /**
  * Common init ran from the constructors.
  */
@@ -380,6 +389,8 @@ void FirstPersonPlayer::init()
   light->setConstantLight(model->getShader());
 
   cHandler = std::make_unique<CollisionHandler>();
+
+  planter = std::make_unique<Planter>();
 
   syncFrontVectorVisual();
 

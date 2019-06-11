@@ -157,6 +157,7 @@
     <ClCompile Include="cpp\engine\source\Kinematics.cpp" />
     <ClCompile Include="cpp\pckgs\GUI\HealthBar.cpp" />
     <ClCompile Include="cpp\pckgs\monospaceFont\TextRenderer.cpp" />
+    <ClCompile Include="cpp\pckgs\planter\Planter.cpp" />
     <ClCompile Include="cpp\pckgs\sideScrollerPlayer\SideScrollPlayer.cpp" />
     <ClCompile Include="cpp\pckgs\skybox\SkyboxRenderer.cpp" />
     <ClCompile Include="cpp\engine\source\Camera.cpp" />
@@ -187,6 +188,7 @@
     <ClInclude Include="cpp\engine\headers\Kinematics.h" />
     <ClInclude Include="cpp\pckgs\GUI\HealthBar.h" />
     <ClInclude Include="cpp\pckgs\monospaceFont\TextRenderer.h" />
+    <ClInclude Include="cpp\pckgs\planter\Planter.h" />
     <ClInclude Include="cpp\pckgs\sideScrollerPlayer\SideScrollPlayer.h" />
     <ClInclude Include="cpp\pckgs\skybox\SkyboxRenderer.h" />
     <ClInclude Include="cpp\engine\headers\Camera.h" />

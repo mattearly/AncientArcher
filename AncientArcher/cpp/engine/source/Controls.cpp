@@ -86,6 +86,11 @@ void Controls::fppKeyboardIn(FirstPersonPlayer* fpp)
     fpp->moves.interacting = true;
   }
 
+
+  if (glfwGetMouseButton(g_display.window, GLFW_MOUSE_BUTTON_RIGHT) == GLFW_PRESS) {
+    fpp->moves.usingTool = true;
+  }
+
   if (glfwGetKey(g_display.window, GLFW_KEY_ESCAPE) == GLFW_PRESS) {
     glfwSetWindowShouldClose(g_display.window, true);
   }
