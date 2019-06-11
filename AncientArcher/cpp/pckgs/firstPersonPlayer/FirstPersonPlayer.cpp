@@ -67,7 +67,8 @@ void FirstPersonPlayer::update(float deltaTime)
 
         model.get()->getFirstEntity()->moveBy(model->getFirstEntity()->kinematics->getCalculatedPosition(deltaTime, moves.forward, moves.back, moves.jumped, moves.falling, moves.left, moves.right));
 
-        if (moves.back || moves.forward) {
+        if (moves.back || moves.forward) 
+        {
           // locks moving foward and backwards to the x and z axii, if y is added in this is become a flyer 
           glm::vec3 moveFront = glm::vec3((float)g_camera.getFront()->x, 0.0f, (float)g_camera.getFront()->z); //get looking direction from the cam;
           if (moves.forward)     model.get()->getFirstEntity()->moveBy(moveFront * moves.currentVelocity);

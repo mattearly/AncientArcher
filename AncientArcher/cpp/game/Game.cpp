@@ -103,6 +103,25 @@ Game::Game()
   }
 
 
+  //Moving Blocks
+  for (int i = 0; i < 4; i++)  //ground
+  {
+    for (int j = 0; j < 5; j++)
+    {
+      Entity e(
+        ENTITYTYPE::CUBE,
+        glm::vec3(47.5f, (1.f * j) - 2.0f, (1.f * i) + 11.f),
+        glm::vec3(1.f, 1.f, 1.f),
+        texIDMosaicBricks,
+        true,
+        false
+      );
+      prims->addToMovingEntities(e);
+
+    }
+  }
+
+
   // ---- LOAD SKYBOX ---- //
   //std::vector<std::string> skyboxFiles =
   //{
