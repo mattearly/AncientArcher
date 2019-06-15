@@ -107,6 +107,44 @@ void Lighting::addPointLight(glm::vec3 pos, Shader* shader) {
   _currentPointLights = i + 1;
 
 }
+/**
+ * Removes the last point light and sets all values to 0. Doesn't change the position of it.
+ * @param shader  The shader that has the PointLight information.
+ */
+void Lighting::removePointLight(Shader *shader)
+{
+  if (_currentPointLights > 0) {
+    std::stringstream ss("pointLight[", std::ios_base::app | std::ios_base::out);
+    ss << _currentPointLights << "].";
+
+    shader->use();
+
+    std::string pLightambient = ss.str() + "ambient";
+    shader->setVec3(pLightambient.c_str(), 0,0,0); 
+
+    std::string pLightdiffuse = ss.str() + "diffuse";
+    shader->setVec3(pLightdiffuse.c_str(), 0,0,0);
+
+    std::string pLightspecular = ss.str() + "specular";
+    shader->setVec3(pLightspecular, 0,0,0);
+
+    std::string pLightconstant = ss.str() + "constant";
+    shader->setFloat(pLightconstant, 0);
+
+    std::string pLightlinear = ss.str() + "linear";
+    shader->setFloat(pLightlinear, 0);
+
+    std::string pLightquadratic = ss.str() + "quadratic";
+    shader->setFloat(pLightquadratic, 0);
+
+    shader->setInt("numPointLights", (int)i - 1);
+
+    std::cout << "point Light " << ss.str() << " removed!\n";
+
+    pointLights.pop_back();
+    _currentPointLights--;
+  }
+}
 
 void Lighting::movePointLight(int lightnum, glm::vec3 newpos, Shader* shader) {
   if (lightnum < _currentPointLights)
