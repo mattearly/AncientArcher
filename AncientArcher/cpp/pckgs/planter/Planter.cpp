@@ -1,23 +1,14 @@
 #include "Planter.h"
+#include <CollisionHandler.h>
+#include <Sound.h>
+#include <Entity.h>
 
-void Planter::update(float deltaTime)
-{
-  //for (auto& plant : allPlants)
-  //{
-  //  plant->growBy(glm::vec3(1.0f, 1.0f, 1.0f) * deltaTime);
-
-
-    //if (plant == null)
-    //{
-    //  allPlants->erase(plant);
-    //}
-  //}
-  // grow plants or whatever
-}
 /**
- *  Returns a new beginning to grow tree entity.
+ *  Returns a new beginning to grow tree entity. Checks for collision of world is not null.
+ *  @param[in] loc    Location to plant the object.
+ *  @param[in] prims  A PrimativeRenderer object to check for collision againt and place a new entity onto.
  */
-Entity* Planter::plantDemoTree(glm::vec3 loc)
+void Planter::plantDemoTree(const glm::vec3 loc, PrimativeRenderer *prims)
 {
   if (texIDPlant == 0) 
   {
@@ -33,9 +24,19 @@ Entity* Planter::plantDemoTree(glm::vec3 loc)
     false
   );
 
-  allPlants.resize(allPlants.size() + 1);
+  if (prims)
+  {
+    static CollisionHandler ch;
+    for (const auto& e : *prims->getEntites())
+    {
+      if (ch.AABB_vs_AABB_3D(newPlant->collider->impasse, e.collider->impasse))
+      {
+        delete newPlant;
+        return;
+      }
+    }
+  }
 
-  allPlants.back() = newPlant;  
-  
-  return newPlant;
+  prims->addToPrimativeEntities(*newPlant);
+  playequipgearsound();
 }

@@ -348,9 +348,15 @@ bool FirstPersonPlayer::checkFrontVectorVsEntity(const Entity* entity)
 
 void FirstPersonPlayer::usePlanter(PrimativeRenderer *prims)
 {
-  prims->getEntites()->push_back(
-    *planter->plantDemoTree((model->getFirstEntity() + 1)->gameItem.loc)
+  planter->plantDemoTree(
+    (model->getFirstEntity() + 1)->gameItem.loc, 
+    prims
   );
+
+  /*prims->getEntites()->push_back(
+    *planter->plantDemoTree((model->getFirstEntity() + 1)->gameItem.loc, prims->getEntites())
+  );*/
+  
   moves.usingTool = false;
 }
 
