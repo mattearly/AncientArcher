@@ -86,7 +86,6 @@ void Controls::fppKeyboardIn(FirstPersonPlayer* fpp)
     fpp->moves.interacting = true;
   }
 
-
   if (glfwGetMouseButton(g_display.window, GLFW_MOUSE_BUTTON_RIGHT) == GLFW_PRESS) {
     fpp->moves.usingTool = true;
   }
@@ -146,6 +145,14 @@ void Controls::fppKeyboardIn(FirstPersonPlayer* fpp)
   }
 
   if (glfwGetKey(g_display.window, GLFW_KEY_1) == GLFW_PRESS) {
+    if (fpp->moves.canUseItem01) {
+      fpp->moves.useItem01 = true;
+      fpp->moves.canUseItem01 = false;
+    }
+
+  }
+  if (glfwGetKey(g_display.window, GLFW_KEY_1) == GLFW_RELEASE) {
+    fpp->moves.canUseItem01 = true;
   }
 
   if (glfwGetKey(g_display.window, GLFW_KEY_2) == GLFW_PRESS) {

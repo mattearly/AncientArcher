@@ -39,8 +39,6 @@ void FirstPersonPlayer::update(float deltaTime)
   // KEYBOARD
   g_controls.fppKeyboardIn(this);
 
-  planter->update(deltaTime);
-
   // PRE-MOVEMENT 
   moves.positionChanged = true;
   model.get()->getFirstEntity()->syncLocation();
@@ -69,7 +67,7 @@ void FirstPersonPlayer::update(float deltaTime)
 
         model.get()->getFirstEntity()->moveBy(model->getFirstEntity()->kinematics->getCalculatedPosition(deltaTime, moves.forward, moves.back, moves.jumped, moves.falling, moves.left, moves.right));
 
-        if (moves.back || moves.forward) 
+        if (moves.back || moves.forward)
         {
           // locks moving foward and backwards to the x and z axii, if y is added in this is become a flyer 
           glm::vec3 moveFront = glm::vec3((float)g_camera.getFront()->x, 0.0f, (float)g_camera.getFront()->z); //get looking direction from the cam;
@@ -196,7 +194,7 @@ void FirstPersonPlayer::finalCollisionCheck(const std::vector<Entity>* entities)
     }
 
   } // exit foreach entity loop
- 
+
   //std::cout << "Entities within logic checking range: " << inLogicCheckingRangeCount << "\n";
 
 
@@ -220,14 +218,17 @@ void FirstPersonPlayer::syncCam()
 {
   g_camera.setPosition(model->getFirstEntity()->gameItem.loc + _camOffset);
 }
+
 /**
  *  Moves the player raidus light to the gameItem location.
  *  @param[in] shader  Shader to send the lighting information to.
  */
 void FirstPersonPlayer::syncPlayerLight(Shader* shader)
 {
-  movePlayerLight(glm::vec3(model.get()->getFirstEntity()->gameItem.loc), shader);
-
+  if (status.radiusLightOn)
+  {
+    movePlayerLight(glm::vec3(model.get()->getFirstEntity()->gameItem.loc), shader);
+  }
 }
 
 /**
@@ -292,9 +293,13 @@ void FirstPersonPlayer::addPointLight(glm::vec3 pos, Shader* shader)
 {
   light->addPointLight(pos, shader);
 }
+void FirstPersonPlayer::removePointLight(Shader* shader)
+{
+  light->removePointLight(shader);
+}
 /**
- * Send out a vector in front of the player and returns which entity was hit first.
- * @param[inout] entities  list to check against and modify
+ * Send out a vector in front of the player and erases entity that was hit.
+ * @param[inout] entities  list to check against and modify (erase).
  */
 void FirstPersonPlayer::destroyEntityInFrontOfPlayer(std::vector<Entity>* entities)
 {
@@ -346,18 +351,40 @@ bool FirstPersonPlayer::checkFrontVectorVsEntity(const Entity* entity)
 
 }
 
-void FirstPersonPlayer::usePlanter(PrimativeRenderer *prims)
+void FirstPersonPlayer::usePlanter(PrimativeRenderer* prims)
 {
   planter->plantDemoTree(
-    (model->getFirstEntity() + 1)->gameItem.loc, 
+    (model->getFirstEntity() + 1)->gameItem.loc,
     prims
   );
 
   /*prims->getEntites()->push_back(
     *planter->plantDemoTree((model->getFirstEntity() + 1)->gameItem.loc, prims->getEntites())
   );*/
-  
+
   moves.usingTool = false;
+}
+
+/**
+ * Toggle the player raidus light on or off.
+ * @param shader  shader that has the light details.
+ */
+void FirstPersonPlayer::toggleRadiusLight(Shader* shader)
+{
+
+  if (status.radiusLightOn)
+  {
+    removePointLight(shader);
+  }
+  else
+  {
+    addPointLight((model->getFirstEntity()->gameItem.loc), shader);  // add light at location of the player model
+  }
+
+  status.radiusLightOn = !status.radiusLightOn;  // toggle state
+
+  moves.useItem01 = false;
+
 }
 
 /**
@@ -369,7 +396,7 @@ void FirstPersonPlayer::init()
 
   TextureLoader tLoader;
   unsigned int texID = tLoader.load2DTexture("../AncientArcher/cpp/pckgs/firstPersonPlayer/foot.png");
-  unsigned int texIDRed= tLoader.load2DTexture("../AncientArcher/cpp/pckgs/firstPersonPlayer/red_shimmer.png");
+  unsigned int texIDRed = tLoader.load2DTexture("../AncientArcher/cpp/pckgs/firstPersonPlayer/red_shimmer.png");
 
   Entity e(
     ENTITYTYPE::CUBE,

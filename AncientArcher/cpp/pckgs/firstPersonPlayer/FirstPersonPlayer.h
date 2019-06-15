@@ -31,16 +31,21 @@ public:
     bool interacting = false;
     bool usingTool = false;
 
-    //float lastOnGroundHeight = 0.0f;
-    //float currentGroundHeight = 0.0f;
-
+    bool useItem01 = false;
+    bool canUseItem01 = true;
+    
     float currentVelocity = 0.f;
 
     bool canJump() { return canJumpAgain && onGround && !falling; };
     bool canBoost() { return forward && !back; };
     bool isMoving() { return back || forward || left || right || jumped || !onGround; };
     bool isBoosted() { return forward && boost; };
+
   } moves;
+
+  struct Status {
+    bool radiusLightOn = false;
+  } status;
 
   void update(float deltaTime);
   void finalCollisionCheck(const std::vector<Entity>* entities);
@@ -55,18 +60,16 @@ public:
   float getRisingSpeed() const;
   float getJumpHeight() const;
 
-  // player stats
+  // increase player stats
   void increaseLegPower(float add);
-  void addPointLight(glm::vec3 pos, Shader* shader);
 
   // interact -- called by left click
   void destroyEntityInFrontOfPlayer(std::vector<Entity>* entities);
   bool checkFrontVectorVsEntity(const Entity* entity);
-  // use - called by right click
-  //void usePlanter(PrimativeRenderer& prims);
-  void usePlanter(PrimativeRenderer* prims);
 
-  //void usePlanter(Planter* planter);
+  // use -- called by right click
+  void usePlanter(PrimativeRenderer* prims);
+  void toggleRadiusLight(Shader* shader);
 
 private:
 
@@ -94,5 +97,9 @@ private:
   const float STAT_DIVISOR = 10.0f;
 
   void init();
+
+  void addPointLight(glm::vec3 pos, Shader* shader);
+  void removePointLight(Shader* shader);
+
 };
 

@@ -101,32 +101,32 @@ void Lighting::addPointLight(glm::vec3 pos, Shader* shader) {
   shader->setInt("numPointLights", (int)i + 1);
 
   pointLights.push_back(pos);
-
-  std::cout << "point Light " << ss.str() << " added!\n";
-
-  _currentPointLights = i + 1;
+  ++_currentPointLights;
 
 }
 /**
  * Removes the last point light and sets all values to 0. Doesn't change the position of it.
  * @param shader  The shader that has the PointLight information.
  */
-void Lighting::removePointLight(Shader *shader)
+void Lighting::removePointLight(Shader* shader)
 {
-  if (_currentPointLights > 0) {
+
+  std::size_t i = pointLights.size();
+
+  if (i > 0) {
     std::stringstream ss("pointLight[", std::ios_base::app | std::ios_base::out);
-    ss << _currentPointLights << "].";
+    ss << i << "].";
 
     shader->use();
 
     std::string pLightambient = ss.str() + "ambient";
-    shader->setVec3(pLightambient.c_str(), 0,0,0); 
+    shader->setVec3(pLightambient.c_str(), 0, 0, 0);
 
     std::string pLightdiffuse = ss.str() + "diffuse";
-    shader->setVec3(pLightdiffuse.c_str(), 0,0,0);
+    shader->setVec3(pLightdiffuse.c_str(), 0, 0, 0);
 
     std::string pLightspecular = ss.str() + "specular";
-    shader->setVec3(pLightspecular, 0,0,0);
+    shader->setVec3(pLightspecular, 0, 0, 0);
 
     std::string pLightconstant = ss.str() + "constant";
     shader->setFloat(pLightconstant, 0);
@@ -139,10 +139,8 @@ void Lighting::removePointLight(Shader *shader)
 
     shader->setInt("numPointLights", (int)i - 1);
 
-    std::cout << "point Light " << ss.str() << " removed!\n";
-
     pointLights.pop_back();
-    _currentPointLights--;
+    --_currentPointLights;
   }
 }
 

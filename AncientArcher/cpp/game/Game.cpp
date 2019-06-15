@@ -26,7 +26,7 @@ Game::Game()
   player = new FirstPersonPlayer();
   prims = new PrimativeRenderer();
 
-  player->addPointLight(glm::vec3(0, 0, 0), prims->getShader());
+  //player->toggleRadiusLight(prims->getShader());
 
   g_lighting.updateConstantLightAmbient(glm::vec3(.09, 0.07, 0.07));
   g_lighting.updateConstantLightDirection(glm::vec3(0.35, -0.75, 0.15));

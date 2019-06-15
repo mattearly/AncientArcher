@@ -39,6 +39,10 @@ void Game::mainLoop() {
     {
       player->usePlanter(prims);
     }
+    if (player->moves.useItem01)
+    {
+      player->toggleRadiusLight(prims->getShader());
+    }
     // MOVE CAMERA TO PROPER LOCATION
     player->syncCam();
     player->syncPlayerLight(prims->getShader());
