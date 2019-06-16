@@ -4,6 +4,7 @@
 #include <vector>
 
 class Lighting {
+
 public:
 
   // --- Directional Constant Lights --- //

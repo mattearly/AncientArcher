@@ -30,6 +30,7 @@ void Game::mainLoop() {
       player->finalCollisionCheck(prims->getEntites());
       player->finalCollisionCheck(prims->getMovingEntites());
     }
+
     // CHECK FRONT VECTOR OF PLAYER IF CLICKED
     if (player->moves.interacting) 
     {
@@ -43,7 +44,8 @@ void Game::mainLoop() {
     {
       player->toggleRadiusLight(prims->getShader());
     }
-    // MOVE CAMERA TO PROPER LOCATION
+
+    // PLAYER SYNC
     player->syncCam();
     player->syncPlayerLight(prims->getShader());
     player->syncFrontVectorVisual();

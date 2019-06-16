@@ -48,7 +48,7 @@ Game::Game()
   unsigned int texIDDarkStone = tLoader.load2DTexture("../AncientArcher/cpp/pckgs/primatives/darkstone.png");
   unsigned int texIDPackedRocks = tLoader.load2DTexture("../AncientArcher/cpp/pckgs/primatives/packed_rocks.png");
   unsigned int texIDLava = tLoader.load2DTexture("../AncientArcher/cpp/pckgs/primatives/lava.png");
-  
+
   //BASE GROUND LAYERS
   for (int i = -20; i < 40; i++)
   {
@@ -61,7 +61,7 @@ Game::Game()
           glm::vec3(i * 2, -3.f - 1.0f * k, j * 2),
           glm::vec3(2.f, 1.0f, 2.f),
           // Layers - 1:grass + 3:dirt + 4:crumbling + 5:packedrock + 6:darkstone + 2:lava
-          (k < 1) ? texIDGrass : (k < 4) ? texIDDirt : (k < 8) ? texIDCrumblingRocks : (k < 13) ? texIDPackedRocks : (k<19)? texIDDarkStone : texIDLava,
+          (k < 1) ? texIDGrass : (k < 4) ? texIDDirt : (k < 8) ? texIDCrumblingRocks : (k < 13) ? texIDPackedRocks : (k < 19) ? texIDDarkStone : texIDLava,
           true,
           false
         );
@@ -87,7 +87,7 @@ Game::Game()
       prims->addToPrimativeEntities(e);
 
       //side railings
-      if (j == 5 || j == 7)  
+      if (j == 5 || j == 7)
       {
         Entity e(
           ENTITYTYPE::CUBE,
