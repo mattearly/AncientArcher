@@ -50,16 +50,18 @@ Game::Game()
   unsigned int texIDLava = tLoader.load2DTexture("../AncientArcher/cpp/pckgs/primatives/lava.png");
 
   //BASE GROUND LAYERS
-  for (int i = -20; i < 40; i++)
+  for (int i = -20; i < 20; i++)
   {
-    for (int j = -20; j < 40; j++)
+    for (int j = -20; j < 20; j++)
     {
       for (int k = 0; k < 21; k++)
       {
         Entity e(
           ENTITYTYPE::CUBE,
-          glm::vec3(i * 2, -3.f - 1.0f * k, j * 2),
-          glm::vec3(2.f, 1.0f, 2.f),
+          //glm::vec3(i * 2, -3.f - 1.0f * k, j * 2),
+          //glm::vec3(2.f, 1.0f, 2.f),   //prev
+          glm::vec3(i, -3.f - 1.0f * k, j),
+          glm::vec3(1,1,1),
           // Layers - 1:grass + 3:dirt + 4:crumbling + 5:packedrock + 6:darkstone + 2:lava
           (k < 1) ? texIDGrass : (k < 4) ? texIDDirt : (k < 8) ? texIDCrumblingRocks : (k < 13) ? texIDPackedRocks : (k < 19) ? texIDDarkStone : texIDLava,
           true,
@@ -102,7 +104,6 @@ Game::Game()
     }
   }
 
-
   //Moving Blocks
   for (int i = 0; i < 4; i++)  //ground
   {
@@ -119,7 +120,6 @@ Game::Game()
       prims->addToMovingEntities(e);
     }
   }
-
 
   // ---- LOAD SKYBOX ---- //
   //std::vector<std::string> skyboxFiles =
