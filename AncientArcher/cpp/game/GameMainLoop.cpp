@@ -25,7 +25,7 @@ void Game::mainLoop() {
     prims->update(deltaTime);
 
     //  FINAL COLLISION CHECK
-    if (player->moves.positionChanged)
+    if (player->moves.isMoving())
     {
       player->finalCollisionCheck(prims->getEntites());
       player->finalCollisionCheck(prims->getMovingEntites());
@@ -51,7 +51,7 @@ void Game::mainLoop() {
     player->syncFrontVectorVisual();
     // RENDER EVERYTHING ---- //
     masterRenderer.update(deltaTime, player, prims, sky);
-    // RECORD KEYPRESSES N STUFF FOR NEXT FRAME ---- //
+    // RECORD KEYPRESSES FOR NEXT FRAME ---- //
     glfwPollEvents();
   }
 }

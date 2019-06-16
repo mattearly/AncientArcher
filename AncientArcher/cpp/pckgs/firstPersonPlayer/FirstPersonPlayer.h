@@ -17,7 +17,6 @@ public:
   FirstPersonPlayer(float leg_power);
 
   struct Moves {
-    bool positionChanged = false;
 
     bool forward = false, back = false;
     bool left = false, right = false;
