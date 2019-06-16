@@ -18,7 +18,7 @@ void Planter::plantDemoTree(const glm::vec3 loc, PrimativeRenderer *prims)
   Entity* newPlant = new Entity(
     ENTITYTYPE::CUBE,
     loc,
-    glm::vec3(1.0f),
+    glm::vec3(0.9f),
     texIDPlant,
     true,
     false
