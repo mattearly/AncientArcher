@@ -12,6 +12,66 @@ extern Controls g_controls;    // from display.cpp (engine)
 extern Camera g_camera;        // from game.cpp    (game)
 
 /**
+ * Common init ran from the constructors.
+ */
+void FirstPersonPlayer::init()
+{
+  // model class stand-in
+  model = std::make_unique<PrimativeRenderer>();
+
+  // player textues
+  TextureLoader tLoader;
+  unsigned int texID = tLoader.load2DTexture("../AncientArcher/cpp/pckgs/firstPersonPlayer/foot.png");
+  unsigned int texIDRed = tLoader.load2DTexture("../AncientArcher/cpp/pckgs/firstPersonPlayer/red_shimmer.png");
+
+  // player model
+  Entity mainPlayerEntity(
+    ENTITYTYPE::CUBE,
+    glm::vec3(0, 4, 0),
+    glm::vec3(.05f, 0.05f, .05f),
+    texID,
+    true,
+    true
+  );
+  model->addToPrimativeEntities(mainPlayerEntity);
+
+  // front vector debug box
+  Entity playerFrontVectorVisualDebugModel(
+    ENTITYTYPE::CUBE,
+    glm::vec3(0, 1, 0),
+    glm::vec3(0.0166667f, 0.0166667f, 0.0166667f),
+    texIDRed,
+    true,
+    false
+  );
+  model->addToPrimativeEntities(playerFrontVectorVisualDebugModel);
+
+  // put vector debug box in the right starting position
+  syncFrontVectorVisual();
+
+
+  // set constant lighting on player model
+  light = std::make_unique<Lighting>();
+  light->setConstantLight(model->getShader());
+
+  //model->
+
+  // your own. personal. collider.
+  cHandler = std::make_unique<CollisionHandler>();
+
+  // plant module
+  planter = std::make_unique<Planter>();
+
+
+  legPower = 10.f;
+  jumpTimer = 0.0f;
+  moves.falling = true;
+  moves.onGround = false;
+
+}
+
+
+/**
  *  Default constructor.
  */
 FirstPersonPlayer::FirstPersonPlayer()
@@ -40,7 +100,6 @@ void FirstPersonPlayer::update(float deltaTime)
   g_controls.fppKeyboardIn(this);
 
   // PRE-MOVEMENT 
-  moves.positionChanged = true;
   model.get()->getFirstEntity()->syncLocation();
 
   // IF NOT ON GROUND
@@ -123,10 +182,6 @@ void FirstPersonPlayer::finalCollisionCheck(const std::vector<Entity>* entities)
     return;
   }
 
-  //std::cout << "playerloc: "
-  // << model.get()->getFirstEntity()->gameItem.loc.x << ","
-  // << model.get()->getFirstEntity()->gameItem.loc.y << ","
-  // << model.get()->getFirstEntity()->gameItem.loc.z << "\n";
 
   //int inLogicCheckingRangeCount = 0;
 
@@ -201,6 +256,12 @@ void FirstPersonPlayer::finalCollisionCheck(const std::vector<Entity>* entities)
   if (needsToFall) {
     moves.onGround = false;
     moves.falling = true;
+  }
+
+  if (moves.isMoving()) {
+    std::cout << "player location ( x = "
+      << model.get()->getFirstEntity()->gameItem.loc.x << ", z = "
+      << model.get()->getFirstEntity()->gameItem.loc.z << " )\n";
   }
 
 }
@@ -384,50 +445,5 @@ void FirstPersonPlayer::toggleRadiusLight(Shader* shader)
   status.radiusLightOn = !status.radiusLightOn;  // toggle state
 
   moves.useItem01 = false;
-
-}
-
-/**
- * Common init ran from the constructors.
- */
-void FirstPersonPlayer::init()
-{
-  model = std::make_unique<PrimativeRenderer>();
-
-  TextureLoader tLoader;
-  unsigned int texID = tLoader.load2DTexture("../AncientArcher/cpp/pckgs/firstPersonPlayer/foot.png");
-  unsigned int texIDRed = tLoader.load2DTexture("../AncientArcher/cpp/pckgs/firstPersonPlayer/red_shimmer.png");
-
-  Entity e(
-    ENTITYTYPE::CUBE,
-    glm::vec3(0, 1, 0),
-    glm::vec3(.115f, 1.0f, .115f),
-    texID,
-    true,
-    true
-  );
-  model->addToPrimativeEntities(e);
-
-  Entity e2(
-    ENTITYTYPE::CUBE,
-    glm::vec3(0, 1, 0),
-    glm::vec3(0.06f, 0.06f, 0.06f),
-    texIDRed,
-    true,
-    false
-  );
-  model->addToPrimativeEntities(e2);
-
-  light = std::make_unique<Lighting>();
-  light->setConstantLight(model->getShader());
-
-  cHandler = std::make_unique<CollisionHandler>();
-
-  planter = std::make_unique<Planter>();
-
-  syncFrontVectorVisual();
-
-  legPower = 10.f;
-  jumpTimer = 0.0f;
 
 }
