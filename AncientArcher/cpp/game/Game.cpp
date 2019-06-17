@@ -9,10 +9,8 @@
 
 //--- GLOBALS ---//
 Display g_display(" MMO ", Display::MouseControlType::FPP);
-//              Starting Position           YAW    PITCH  FOV
-//Camera g_camera(glm::vec3(0.f, 1.0f, 0.f), 0, 0, 45.f);
+//             (Starting Position        ,  YAW    , PITCH,  FOV)
 Camera g_camera(glm::vec3(0.f, 1.0f, 0.f), -89.991f, 0, 75.f);
-Lighting g_lighting;
 //--- END GLOBALS ---//
 
 Game::Game()
@@ -23,17 +21,9 @@ Game::Game()
   std::cout << "//--GRAPHIC CARD INFO--//\nMax textures per shader:  " << __textures_allowed << "\n";
   std::cout << "Max total textures:  " << __totalTexturesAllowed << "\n";
 
-  player = new FirstPersonPlayer();
   prims = new PrimativeRenderer();
 
-  //player->toggleRadiusLight(prims->getShader());
-
-  g_lighting.updateConstantLightAmbient(glm::vec3(.09, 0.07, 0.07));
-  g_lighting.updateConstantLightDirection(glm::vec3(0.35, -0.75, 0.15));
-  g_lighting.updateConstantLightDiffuse(glm::vec3(.80, .70, .74));
-  //g_lighting.updateConstantLightSpecular(glm::vec3(.2, .2, .2));
-
-  g_lighting.setConstantLight(prims->getShader());
+  player = new FirstPersonPlayer();
 
   spawner = new Spawner();
   spawner->setPopulationCap(1);
@@ -61,7 +51,7 @@ Game::Game()
           //glm::vec3(i * 2, -3.f - 1.0f * k, j * 2),
           //glm::vec3(2.f, 1.0f, 2.f),   //prev
           glm::vec3(i, -3.f - 1.0f * k, j),
-          glm::vec3(1,1,1),
+          glm::vec3(1, 1, 1),
           // Layers - 1:grass + 3:dirt + 4:crumbling + 5:packedrock + 6:darkstone + 2:lava
           (k < 1) ? texIDGrass : (k < 4) ? texIDDirt : (k < 8) ? texIDCrumblingRocks : (k < 13) ? texIDPackedRocks : (k < 19) ? texIDDarkStone : texIDLava,
           true,

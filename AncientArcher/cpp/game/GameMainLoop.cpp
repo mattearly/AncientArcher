@@ -32,9 +32,9 @@ void Game::mainLoop() {
     }
 
     // CHECK FRONT VECTOR OF PLAYER IF CLICKED
-    if (player->moves.interacting) 
+    if (player->moves.interacting)
     {
-        player->destroyEntityInFrontOfPlayer(prims->getEntites());
+      player->destroyEntityInFrontOfPlayer(prims->getEntites());
     }
     if (player->moves.usingTool)
     {
@@ -42,12 +42,12 @@ void Game::mainLoop() {
     }
     if (player->moves.useItem01)
     {
-      player->toggleRadiusLight(prims->getShader());
+      player->toggleRadiusLight(prims->getLight(), prims->getShader());
     }
 
     // PLAYER SYNC
     player->syncCam();
-    player->syncPlayerLight(prims->getShader());
+    player->syncPlayerLight(prims->getLight(), prims->getShader());
     player->syncFrontVectorVisual();
     // RENDER EVERYTHING ---- //
     masterRenderer.update(deltaTime, player, prims, sky);

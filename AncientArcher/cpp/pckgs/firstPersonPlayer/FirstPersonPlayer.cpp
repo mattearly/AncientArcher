@@ -49,12 +49,12 @@ void FirstPersonPlayer::init()
   // put vector debug box in the right starting position
   syncFrontVectorVisual();
 
-
   // set constant lighting on player model
-  light = std::make_unique<Lighting>();
-  light->setConstantLight(model->getShader());
+  //light = std::make_unique<Lighting>();
+  //light->setConstantLight(model->getShader());
+  // toggle light off
 
-  //model->
+  //toggleRadiusLight(model->getShader());
 
   // your own. personal. collider.
   cHandler = std::make_unique<CollisionHandler>();
@@ -67,6 +67,10 @@ void FirstPersonPlayer::init()
   jumpTimer = 0.0f;
   moves.falling = true;
   moves.onGround = false;
+
+  // default player ambient - to init sound too before play begins
+  toggleAmbientWindyNight();
+
 
 }
 
@@ -284,11 +288,11 @@ void FirstPersonPlayer::syncCam()
  *  Moves the player raidus light to the gameItem location.
  *  @param[in] shader  Shader to send the lighting information to.
  */
-void FirstPersonPlayer::syncPlayerLight(Shader* shader)
+void FirstPersonPlayer::syncPlayerLight(Lighting* light, Shader* shader)
 {
   if (status.radiusLightOn)
   {
-    movePlayerLight(glm::vec3(model.get()->getFirstEntity()->gameItem.loc), shader);
+    movePlayerLight(light, glm::vec3(model.get()->getFirstEntity()->gameItem.loc), shader);
   }
 }
 
@@ -297,7 +301,7 @@ void FirstPersonPlayer::syncPlayerLight(Shader* shader)
  * @param[in] newpos  New position to move the light to.
  * @param[in] shader  Shader to send the light info to.
  */
-void FirstPersonPlayer::movePlayerLight(glm::vec3 newpos, Shader* shader)
+void FirstPersonPlayer::movePlayerLight(Lighting* light, glm::vec3 newpos, Shader* shader)
 {
   light->movePointLight(0, newpos, shader);
 }
@@ -350,11 +354,11 @@ void FirstPersonPlayer::increaseLegPower(float add) {
  * @param[in] pos     Position for the light to start at.
  * @param[in] shader  Which shader to send the light info to.
  */
-void FirstPersonPlayer::addPointLight(glm::vec3 pos, Shader* shader)
+void FirstPersonPlayer::addPointLight(Lighting* light, glm::vec3 pos, Shader* shader)
 {
   light->addPointLight(pos, shader);
 }
-void FirstPersonPlayer::removePointLight(Shader* shader)
+void FirstPersonPlayer::removePointLight(Lighting* light, Shader* shader)
 {
   light->removePointLight(shader);
 }
@@ -430,16 +434,19 @@ void FirstPersonPlayer::usePlanter(PrimativeRenderer* prims)
  * Toggle the player raidus light on or off.
  * @param shader  shader that has the light details.
  */
-void FirstPersonPlayer::toggleRadiusLight(Shader* shader)
+void FirstPersonPlayer::toggleRadiusLight(Lighting* light, Shader* shader)
 {
 
   if (status.radiusLightOn)
   {
-    removePointLight(shader);
+    removePointLight(light, shader);
+    std::cout << "radius light turned OFF\n";
   }
   else
   {
-    addPointLight((model->getFirstEntity()->gameItem.loc), shader);  // add light at location of the player model
+    addPointLight(light, (model->getFirstEntity()->gameItem.loc), shader);  // add light at location of the player model
+    std::cout << "radius light turned ON\n";
+
   }
 
   status.radiusLightOn = !status.radiusLightOn;  // toggle state

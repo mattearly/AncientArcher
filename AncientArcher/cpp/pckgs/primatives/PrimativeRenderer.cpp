@@ -10,7 +10,9 @@
 #include <vector>
 #include <Camera.h>
 
-extern Camera g_camera;
+// --- EXTERNS --- // 
+
+extern Camera g_camera;  // from player
 
 // --- PUBLIC FUNCTIONS --- // 
 
@@ -26,24 +28,32 @@ PrimativeRenderer::PrimativeRenderer()
   primShader->use();
   glm::mat4 proj = g_camera.getProjectionMatrix();
   primShader->setMat4("projection", proj);
+  primWorldLighting = std::make_shared<Lighting>();
+
+  primWorldLighting->updateConstantLightAmbient(glm::vec3(.09, 0.07, 0.07));
+  primWorldLighting->updateConstantLightDirection(glm::vec3(0, -1, 0));
+  primWorldLighting->updateConstantLightDiffuse(glm::vec3(.80, .70, .74));
+  primWorldLighting->updateConstantLightSpecular(glm::vec3(.5, .5, .5));
+
+  primWorldLighting->setConstantLight(getShader());
 }
 
 
 void PrimativeRenderer::update(float deltaTime)
 {
-	elapsedTime += deltaTime;
+  elapsedTime += deltaTime;
 
-	if (elapsedTime > 2.0f) {
-		timeTrigger = !timeTrigger;
-		elapsedTime = 0.0f;
-	}
+  if (elapsedTime > 2.0f) {
+    timeTrigger = !timeTrigger;
+    elapsedTime = 0.0f;
+  }
 
-	for (auto& e : *(getMovingEntites())) {
-		e.moveBy(glm::vec3(0.f,
-			0.f,
-			(sin(elapsedTime * 3.14159 / 180) * (timeTrigger ? 1.0 : -1.0)))
-		);
-	}
+  for (auto& e : *(getMovingEntites())) {
+    e.moveBy(glm::vec3(0.f,
+      0.f,
+      (sin(elapsedTime * 3.14159 / 180) * (timeTrigger ? 1.0 : -1.0)))
+    );
+  }
 }
 
 /**
@@ -87,33 +97,33 @@ void PrimativeRenderer::render()
   for (auto e : movingEntities)
   {
 
-	  glActiveTexture(GL_TEXTURE0);
-	  glBindTexture(GL_TEXTURE_2D, e.gameItem.textureID);
+    glActiveTexture(GL_TEXTURE0);
+    glBindTexture(GL_TEXTURE_2D, e.gameItem.textureID);
 
-	  glm::mat4 model = glm::mat4(1.0f);
-	  // step1: translate
-	  model = glm::translate(model, glm::vec3(e.gameItem.loc));
-	  // step2: rotations  -- not supported by colliders yet
-	  //  model = glm::rotate(model, glm::radians(rotation.x), glm::vec3(1.0f, 0.0f, 0.0f));
-	  //  model = glm::rotate(model, glm::radians(rotation.y), glm::vec3(0.0f, 1.0f, 0.0f));
-	  //  model = glm::rotate(model, glm::radians(rotation.z), glm::vec3(0.0f, 0.0f, 1.0f));
-	  // step3: scale
-	  model = glm::scale(model, glm::vec3(e.gameItem.scale));
+    glm::mat4 model = glm::mat4(1.0f);
+    // step1: translate
+    model = glm::translate(model, glm::vec3(e.gameItem.loc));
+    // step2: rotations  -- not supported by colliders yet
+    //  model = glm::rotate(model, glm::radians(rotation.x), glm::vec3(1.0f, 0.0f, 0.0f));
+    //  model = glm::rotate(model, glm::radians(rotation.y), glm::vec3(0.0f, 1.0f, 0.0f));
+    //  model = glm::rotate(model, glm::radians(rotation.z), glm::vec3(0.0f, 0.0f, 1.0f));
+    // step3: scale
+    model = glm::scale(model, glm::vec3(e.gameItem.scale));
 
-	  primShader.get()->setMat4("model", model);
+    primShader.get()->setMat4("model", model);
 
-	  switch (e.gameItem.type) {
-	  case ENTITYTYPE::CUBE:
-		  drawCube();
-		  break;
-	  case ENTITYTYPE::PLANE:
-		  drawPlane();
-		  break;
-	  case ENTITYTYPE::SPHERE:
-		  drawSphere();
-		  break;
-	  default: break;
-	  }
+    switch (e.gameItem.type) {
+    case ENTITYTYPE::CUBE:
+      drawCube();
+      break;
+    case ENTITYTYPE::PLANE:
+      drawPlane();
+      break;
+    case ENTITYTYPE::SPHERE:
+      drawSphere();
+      break;
+    default: break;
+    }
   }
 }
 
@@ -142,17 +152,22 @@ Entity* PrimativeRenderer::getFirstEntity()
 
 std::vector<Entity>* PrimativeRenderer::getMovingEntites()
 {
-	return &movingEntities;
+  return &movingEntities;
 }
 
 Entity* PrimativeRenderer::getFirstMovingEntity()
 {
-	return &movingEntities[0];
+  return &movingEntities[0];
 }
 
 Shader* PrimativeRenderer::getShader()
 {
   return primShader.get();
+}
+
+Lighting* PrimativeRenderer::getLight()
+{
+  return primWorldLighting.get();
 }
 
 std::size_t PrimativeRenderer::size()

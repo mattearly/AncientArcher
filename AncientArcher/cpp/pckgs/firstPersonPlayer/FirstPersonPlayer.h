@@ -50,8 +50,8 @@ public:
   void finalCollisionCheck(const std::vector<Entity>* entities);
   void syncFrontVectorVisual();
   void syncCam();
-  void syncPlayerLight(Shader *shader);
-  void movePlayerLight(glm::vec3 newpos, Shader* shader);
+  void syncPlayerLight(Lighting* light, Shader* shader);
+  void movePlayerLight(Lighting* light, glm::vec3 newpos, Shader* shader);
   void render() const;
 
   // accessors
@@ -68,14 +68,14 @@ public:
 
   // use -- called by right click
   void usePlanter(PrimativeRenderer* prims);
-  void toggleRadiusLight(Shader* shader);
+  void toggleRadiusLight(Lighting* light, Shader* shader);
 
 private:
 
   std::unique_ptr<PrimativeRenderer> model;
-  std::unique_ptr<Lighting> light;
   std::unique_ptr<CollisionHandler> cHandler;
   std::unique_ptr<Planter> planter;
+  std::shared_ptr<Lighting> playerLighting;
 
   float jumpTimer;
 
@@ -97,8 +97,9 @@ private:
 
   void init();
 
-  void addPointLight(glm::vec3 pos, Shader* shader);
-  void removePointLight(Shader* shader);
+  void addPointLight(Lighting* light, glm::vec3 pos, Shader* shader);
+
+  void removePointLight(Lighting* light, Shader* shader);
 
 };
 
