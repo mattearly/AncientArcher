@@ -67,6 +67,20 @@ void playequipgearsound() {
   Mix_PlayChannel(-1, equipgearsoundeffect, 0);
 }
 
+void playSift01SoundEffect()
+{
+  if (!soundReady) initsound();
+
+  Mix_PlayChannel(-1, sift01SoundEffect, 0);
+}
+
+void playSift02SoundEffect()
+{
+  if (!soundReady) initsound();
+
+  Mix_PlayChannel(-1, sift02SoundEffect, 0);
+}
+
 void toggleAmbientWindyNight() {
   if (!soundReady) initsound();
   static bool playing = false;
@@ -170,6 +184,20 @@ void initsound() {
 
   equipgearsoundeffect = Mix_LoadWAV("../AncientArcher/resource/equip_gear.wav");
   if (equipgearsoundeffect == nullptr) {
+    SDL_LogError(SDL_LOG_CATEGORY_APPLICATION,
+      "Couldn't load audio: %s",
+      Mix_GetError());
+  }
+
+  sift01SoundEffect = Mix_LoadWAV("../AncientArcher/resource/sift01.wav");
+  if (sift01SoundEffect == nullptr) {
+    SDL_LogError(SDL_LOG_CATEGORY_APPLICATION,
+      "Couldn't load audio: %s",
+      Mix_GetError());
+  } 
+  
+  sift02SoundEffect = Mix_LoadWAV("../AncientArcher/resource/sift02.wav");
+  if (sift01SoundEffect == nullptr) {
     SDL_LogError(SDL_LOG_CATEGORY_APPLICATION,
       "Couldn't load audio: %s",
       Mix_GetError());

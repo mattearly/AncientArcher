@@ -4,6 +4,7 @@
 #include <vector>
 
 class Lighting {
+
 public:
 
   // --- Directional Constant Lights --- //
@@ -15,6 +16,7 @@ public:
 
   // --- Point Lights --- //
   void addPointLight(glm::vec3 pos, Shader* shader);
+  void removePointLight(Shader* shader);
   void movePointLight(int lightnum, glm::vec3 newpos, Shader* shader);
 
 private:

@@ -24,25 +24,34 @@ void Game::mainLoop() {
     // PROCESS PRIMATIVES MOVEMENT ---- //
     prims->update(deltaTime);
 
-
-    spawner->update(deltaTime);
-
-
-
-
-
     //  FINAL COLLISION CHECK
-    if (player->moves.positionChanged)
+    if (player->moves.isMoving())
     {
       player->finalCollisionCheck(prims->getEntites());
       player->finalCollisionCheck(prims->getMovingEntites());
     }
-    // MOVE CAMERA TO PROPER LOCATION
+
+    // CHECK FRONT VECTOR OF PLAYER IF CLICKED
+    if (player->moves.interacting)
+    {
+      player->destroyEntityInFrontOfPlayer(prims->getEntites());
+    }
+    if (player->moves.usingTool)
+    {
+      player->usePlanter(prims);
+    }
+    if (player->moves.useItem01)
+    {
+      player->toggleRadiusLight(prims->getLight(), prims->getShader());
+    }
+
+    // PLAYER SYNC
     player->syncCam();
-    player->syncPlayerLight(prims->getShader());
+    player->syncPlayerLight(prims->getLight(), prims->getShader());
+    player->syncFrontVectorVisual();
     // RENDER EVERYTHING ---- //
     masterRenderer.update(deltaTime, player, prims, sky);
-    // RECORD KEYPRESSES N STUFF FOR NEXT FRAME ---- //
+    // RECORD KEYPRESSES FOR NEXT FRAME ---- //
     glfwPollEvents();
   }
 }

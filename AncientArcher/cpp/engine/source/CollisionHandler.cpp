@@ -53,4 +53,30 @@ bool CollisionHandler::point_vs_AABB_3D(glm::vec3 pt, const Impasse& b) const
   return (pt.x >= bMinX && pt.x <= bMaxX) && (pt.y >= bMinY && pt.y <= bMaxY) && (pt.z >= bMinZ && pt.z <= bMaxZ);
 }
 
+bool CollisionHandler::vector_vs_AABB_3D(glm::vec3 startpt, glm::vec3 endpt, const Impasse& b) const
+{
+  float bMinX = b.loc.x - b.size.x / 2.f;
+  float bMaxX = b.loc.x + b.size.x / 2.f;
+  float bMinY = b.loc.y - b.size.y / 2.f;
+  float bMaxY = b.loc.y + b.size.y / 2.f;
+  float bMinZ = b.loc.z - b.size.z / 2.f;
+  float bMaxZ = b.loc.z + b.size.z / 2.f;
+
+  glm::vec3 pt = startpt;
+  for (int i = 1; i < 3; ++i)
+  {
+    pt += (endpt / (float)i);
+    if (
+      (pt.x >= bMinX && pt.x <= bMaxX) &&
+      (pt.y >= bMinY && pt.y <= bMaxY) &&
+      (pt.z >= bMinZ && pt.z <= bMaxZ)
+      )
+    {
+      return true;
+    }
+  }
+
+  return false;
+}
+
 

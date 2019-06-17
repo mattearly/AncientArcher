@@ -25,5 +25,7 @@ public:
   void moveTo(glm::vec3 newLocation);
   void syncLocation();
 
+  void growBy(glm::vec3 scaleAmount);
+
 };
 

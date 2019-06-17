@@ -9,6 +9,7 @@
 #include <Controls.h>
 #include <memory>
 #include <CollisionHandler.h>
+#include "../planter/Planter.h"
 
 class FirstPersonPlayer {
 public:
@@ -16,7 +17,6 @@ public:
   FirstPersonPlayer(float leg_power);
 
   struct Moves {
-    bool positionChanged = false;
 
     bool forward = false, back = false;
     bool left = false, right = false;
@@ -27,22 +27,31 @@ public:
     bool onGround = false;
     bool falling = true;
 
-    //float lastOnGroundHeight = 0.0f;
-    //float currentGroundHeight = 0.0f;
+    bool interacting = false;
+    bool usingTool = false;
 
+    bool useItem01 = false;
+    bool canUseItem01 = true;
+    
     float currentVelocity = 0.f;
 
     bool canJump() { return canJumpAgain && onGround && !falling; };
     bool canBoost() { return forward && !back; };
     bool isMoving() { return back || forward || left || right || jumped || !onGround; };
     bool isBoosted() { return forward && boost; };
+
   } moves;
+
+  struct Status {
+    bool radiusLightOn = false;
+  } status;
 
   void update(float deltaTime);
   void finalCollisionCheck(const std::vector<Entity>* entities);
+  void syncFrontVectorVisual();
   void syncCam();
-  void syncPlayerLight(Shader *shader);
-  void movePlayerLight(glm::vec3 newpos, Shader* shader);
+  void syncPlayerLight(Lighting* light, Shader* shader);
+  void movePlayerLight(Lighting* light, glm::vec3 newpos, Shader* shader);
   void render() const;
 
   // accessors
@@ -50,19 +59,28 @@ public:
   float getRisingSpeed() const;
   float getJumpHeight() const;
 
-  // player stats
+  // increase player stats
   void increaseLegPower(float add);
-  void addPointLight(glm::vec3 pos, Shader* shader);
+
+  // interact -- called by left click
+  void destroyEntityInFrontOfPlayer(std::vector<Entity>* entities);
+  bool checkFrontVectorVsEntity(const Entity* entity);
+
+  // use -- called by right click
+  void usePlanter(PrimativeRenderer* prims);
+  void toggleRadiusLight(Lighting* light, Shader* shader);
 
 private:
 
   std::unique_ptr<PrimativeRenderer> model;
-  std::unique_ptr<Lighting> light;
   std::unique_ptr<CollisionHandler> cHandler;
+  std::unique_ptr<Planter> planter;
+  std::shared_ptr<Lighting> playerLighting;
 
   float jumpTimer;
 
-  glm::vec3 _camOffset = glm::vec3(0, /*1.013f*/ 0.588f, 0);
+  glm::vec3 _camOffset = glm::vec3(0, /*1.013f*/ 0.618f, 0);
+  float _frontCheckerVecScaler = 1.6667f;
 
   // player stats
   const float BASE_PLAYER_SPEED = 3.0f;
@@ -78,5 +96,10 @@ private:
   const float STAT_DIVISOR = 10.0f;
 
   void init();
+
+  void addPointLight(Lighting* light, glm::vec3 pos, Shader* shader);
+
+  void removePointLight(Lighting* light, Shader* shader);
+
 };
 

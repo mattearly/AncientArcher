@@ -13,19 +13,19 @@ uniform mat4 projection;
 
 void main() {
 
-  // ------- OUT FRAG POS --------- //
+  // -------     OUT FRAG POS    --------- //
   FragPos = vec3(model * vec4(aPosition, 1.0));
 
-  // ------- OUT TEX COORDS ---------//
+  // -------     OUT TEX COORDS   ---------//
   texCoords = aTexCoord;
-
-  // ------- OUT NORMAL ------ //
+   
+  // -------     OUT NORMAL    ------ //
   Normal = aNormal;
 
   // This formula is to handle odd transforms, use if needed 
   // Normal = mat3( transpose( inverse( model ) ) ) * aNormal;
   
-  // --------- POSITION  --------//
+  // --------- POSITION with PROJECTION  --------//
   gl_Position = projection * view * model * vec4(aPosition, 1.0);
 
 }

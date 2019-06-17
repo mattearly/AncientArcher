@@ -12,7 +12,71 @@ extern Controls g_controls;    // from display.cpp (engine)
 extern Camera g_camera;        // from game.cpp    (game)
 
 /**
- *  default constructor
+ * Common init ran from the constructors.
+ */
+void FirstPersonPlayer::init()
+{
+  // model class stand-in
+  model = std::make_unique<PrimativeRenderer>();
+
+  // player textues
+  TextureLoader tLoader;
+  unsigned int texID = tLoader.load2DTexture("../AncientArcher/cpp/pckgs/firstPersonPlayer/foot.png");
+  unsigned int texIDRed = tLoader.load2DTexture("../AncientArcher/cpp/pckgs/firstPersonPlayer/red_shimmer.png");
+
+  // player model
+  Entity mainPlayerEntity(
+    ENTITYTYPE::CUBE,
+    glm::vec3(0, 4, 0),
+    glm::vec3(.05f, 0.05f, .05f),
+    texID,
+    true,
+    true
+  );
+  model->addToPrimativeEntities(mainPlayerEntity);
+
+  // front vector debug box
+  Entity playerFrontVectorVisualDebugModel(
+    ENTITYTYPE::CUBE,
+    glm::vec3(0, 1, 0),
+    glm::vec3(0.0166667f, 0.0166667f, 0.0166667f),
+    texIDRed,
+    true,
+    false
+  );
+  model->addToPrimativeEntities(playerFrontVectorVisualDebugModel);
+
+  // put vector debug box in the right starting position
+  syncFrontVectorVisual();
+
+  // set constant lighting on player model
+  //light = std::make_unique<Lighting>();
+  //light->setConstantLight(model->getShader());
+  // toggle light off
+
+  //toggleRadiusLight(model->getShader());
+
+  // your own. personal. collider.
+  cHandler = std::make_unique<CollisionHandler>();
+
+  // plant module
+  planter = std::make_unique<Planter>();
+
+
+  legPower = 10.f;
+  jumpTimer = 0.0f;
+  moves.falling = true;
+  moves.onGround = false;
+
+  // default player ambient - to init sound too before play begins
+  toggleAmbientWindyNight();
+
+
+}
+
+
+/**
+ *  Default constructor.
  */
 FirstPersonPlayer::FirstPersonPlayer()
 {
@@ -20,7 +84,7 @@ FirstPersonPlayer::FirstPersonPlayer()
 }
 
 /**
- *  constructor with custom leg_power value
+ *  Constructor with custom leg_power value
  *  @param[in] leg_power  sets to 0 to 100 rating of player legpower
  */
 FirstPersonPlayer::FirstPersonPlayer(float leg_power)
@@ -40,7 +104,6 @@ void FirstPersonPlayer::update(float deltaTime)
   g_controls.fppKeyboardIn(this);
 
   // PRE-MOVEMENT 
-  moves.positionChanged = true;
   model.get()->getFirstEntity()->syncLocation();
 
   // IF NOT ON GROUND
@@ -48,7 +111,7 @@ void FirstPersonPlayer::update(float deltaTime)
   {
     if (moves.falling)
     {
-		model.get()->getFirstEntity()->moveBy(model->getFirstEntity()->kinematics->getCalculatedPosition(deltaTime, moves.forward, moves.back, moves.jumped, moves.falling, moves.left, moves.right));
+      model.get()->getFirstEntity()->moveBy(model->getFirstEntity()->kinematics->getCalculatedPosition(deltaTime, moves.forward, moves.back, moves.jumped, moves.falling, moves.left, moves.right));
     }
     else // not on ground, not falling, must be flying or rising or floating
     {
@@ -62,20 +125,18 @@ void FirstPersonPlayer::update(float deltaTime)
       }
       else
       {
-		model->getFirstEntity()->kinematics->vel.x = moves.forward ? moves.currentVelocity: 0.f;
-		model->getFirstEntity()->kinematics->vel.y = getRisingSpeed();
+        model->getFirstEntity()->kinematics->vel.x = moves.forward ? moves.currentVelocity : 0.f;
+        model->getFirstEntity()->kinematics->vel.y = getRisingSpeed();
 
         model.get()->getFirstEntity()->moveBy(model->getFirstEntity()->kinematics->getCalculatedPosition(deltaTime, moves.forward, moves.back, moves.jumped, moves.falling, moves.left, moves.right));
 
-
-        if (moves.back || moves.forward) {
+        if (moves.back || moves.forward)
+        {
           // locks moving foward and backwards to the x and z axii, if y is added in this is become a flyer 
           glm::vec3 moveFront = glm::vec3((float)g_camera.getFront()->x, 0.0f, (float)g_camera.getFront()->z); //get looking direction from the cam;
           if (moves.forward)     model.get()->getFirstEntity()->moveBy(moveFront * moves.currentVelocity);
           else if (moves.back)   model.get()->getFirstEntity()->moveBy(-moveFront * moves.currentVelocity);
         }
-
-
       }
       // end ghetto 1 second jumper
     }
@@ -96,8 +157,6 @@ void FirstPersonPlayer::update(float deltaTime)
 
 
     // --- SEND DIRECTION --- //
-
-
     // --- FOWARD / BACKWARDS --- //
     if (moves.back || moves.forward) {
       // locks moving foward and backwards to the x and z axii, if y is added in this is become a flyer 
@@ -108,71 +167,9 @@ void FirstPersonPlayer::update(float deltaTime)
     // --- LEFT / RIGHT STRAFING --- // 
     if (moves.right) model.get()->getFirstEntity()->moveBy(*g_camera.getRight() * moves.currentVelocity);
     else if (moves.left) model.get()->getFirstEntity()->moveBy(-(*g_camera.getRight()) * moves.currentVelocity);
-
-
-
-    //// ------------ JUMP SYSTEM -------------- //
-    //// * 3 phase system
-
-    //// PHASE 1: Liftoff
-    //// Liftoff is where the jump is triggered and sounds/animations are played.
-    //if (movedir.jumped) { // if a jump is triggered
-    //  movedir.onGround = false; // the player leaves the ground
-    //  movedir.jumped = false; // the jump is untriggered
-    //  //liftoff animation here
-    //  playgruntsound();
-    //}
-
-    //// PHASE 2: Arc
-    //// Rising and falling are now combined into one function which is
-    //// just a quadratic equation based on the length of the jump action
-    //else if (!movedir.onGround) { // && !movedir.falling) { 
-    //  jumpTimer += deltaTime; // Elapsed time of the player being 'in air'
-    //  float jumpMod = 0.5f / BASE_PLAYER_WEIGHT; // Modifier based on the user weight in 'kg' (probably needs rework)
-    //  float jumpPos = 8.0f; // Initial Y intercept of jump, I think.. not sure why its 8.0f ('c' term in equation below)
-    //  float jumpVel = getRisingSpeed() * jumpTimer; // Velocity of jump ('bt' term in equation below) // RISING SPEED CALC: jump speed based on LegPower Player Stat
-    //  float jumpAccel = -32.1522f * pow(jumpTimer, 2.f); // Accelaration of jump due top gravity in 'feet' (at^2 term in equation below)
-    //              // modifier * (	  c	   +	bt	 +	 at^2	) 
-    //  playerIntendedLocation.y += jumpMod * (jumpPos + jumpVel + jumpAccel); // Parabolic equation based on time
-    //  //// std::cout << previousPlayerLocation.y - playerIntendedLocation.y << "\n";
-    //  //if (playerIntendedLocation.y > getJumpHeight() + movedir.lastOnGroundHeight) // MAX HEIGHT CALC: jump height based on LegPower Player Stat
-    //  if (previousPlayerLocation.y - playerIntendedLocation.y > 0) {
-    //    movedir.falling = true;
-    //    // falling animation here
-    //  }
-    //  else if (previousPlayerLocation.y - playerIntendedLocation.y < 0) {
-    //    // rising animation here
-    //  }
   }
-
-  //// PHASE 3: Landing
-  //// Landing will now just be triggered by the general collision
-  //// checking but it may make sense to put animations or sounds
-  //// here for landing 
-  //if (movedir.positionChanged) { // If the player moves
-  //  for (auto const& e : *entities) { // For every entity
-  //    bool didCollide = checkBoundCollisionWithEntity(e, collider, playerIntendedLocation); // check if the player collided
-  //    if (didCollide) { // if it did collide
-  //      if (!movedir.onGround) { // if player is off the ground
-  //        playerIntendedLocation = *camera.getPosition(); // move the collision checker to the camera position
-  //        movedir.falling = true; // player is falling
-  //      }
-  //      else { // if player is on the ground
-  //        movedir.positionChanged = false; // the position doesn't change
-  //      }
-  //      float ytop = e.collider->impasse.loc[1] + e.collider->impasse.sz[1] / 2; // top of the entity
-  //      if (playerIntendedLocation.y > ytop) { // if the player Y locations is higher than the top of the entity
-  //        movedir.falling = false; // player isn't falling
-  //        movedir.onGround = true; // player is on groung
-  //        jumpTimer = 0.0f; // reset the jump timer
-  //        movedir.lastOnGroundHeight = camera.getPosition()->y; // the last ground height is the current position
-  //        // landing animation here
-  //        playlandingsound();
-  //      }
-  //    }
-  //  }
-  //}
 }
+
 
 /**
  * Run at the end of the loop before syncing cam an rendering.
@@ -180,36 +177,32 @@ void FirstPersonPlayer::update(float deltaTime)
  */
 void FirstPersonPlayer::finalCollisionCheck(const std::vector<Entity>* entities)
 {
+  static bool needsToFall;
+
   if (entities->empty())
   {
     // std::cout << "finalCollisionCheck entities empty! returning...\n";
+    needsToFall = true;
     return;
   }
-  static bool needsToFall;
-   std::cout << "playerloc: "
-    << model.get()->getFirstEntity()->gameItem.loc.x << ","
-    << model.get()->getFirstEntity()->gameItem.loc.y << ","
-    << model.get()->getFirstEntity()->gameItem.loc.z << "\n";
-  
-  int entcount = 0;
+
+
+  //int inLogicCheckingRangeCount = 0;
 
   // DEMO REVISION 2
-  for (auto const& e : *entities) 
+  for (auto const& e : *entities)
   {
-
     // check distance
     float distance = glm::distance(e.collider->impasse.loc, model.get()->getFirstEntity()->collider->impasse.loc);
 
     if (distance < ENGINE_LOGIC_CHECKING_DISTANCE)
     {
-      entcount++;
+      //inLogicCheckingRangeCount++;  // for debug purposes
       // std::cout << "entityloc: " << e.gameItem.loc.x << "," << e.gameItem.loc.y << "," << e.gameItem.loc.z
         //<< " e prevLoc: : " << e.gameItem.prevLoc.x << "," << e.gameItem.prevLoc.y << "," << e.gameItem.prevLoc.z << "\n";
-      // std::cout << "going through entitites: " << entcount << "\n";
-
+      // std::cout << "going through entitites: " << inLogicCheckingRangeCount << "\n";
 
       bool didCollide = cHandler.get()->AABB_vs_AABB_3D(e.collider->impasse, model.get()->getFirstEntity()->collider->impasse);
-
       if (didCollide) {
         // std::cout << "A WILD COLLISION!\n";
         if (!moves.onGround && moves.falling)
@@ -250,37 +243,57 @@ void FirstPersonPlayer::finalCollisionCheck(const std::vector<Entity>* entities)
       {
         glm::vec3 yCheckBelow = glm::vec3(
           model.get()->getFirstEntity()->collider->impasse.loc.x,
-          model.get()->getFirstEntity()->collider->impasse.loc.y - model.get()->getFirstEntity()->collider->impasse.size.y/2 - .02f,
+          model.get()->getFirstEntity()->collider->impasse.loc.y - model.get()->getFirstEntity()->collider->impasse.size.y / 2 - 0.1f,
           model.get()->getFirstEntity()->collider->impasse.loc.z
         );
 
-        if (needsToFall) 
+        if (needsToFall)
           needsToFall = cHandler.get()->point_vs_AABB_3D(yCheckBelow, e.collider->impasse);
-
       }
     }
-  } // exit for entity loop
-  if (needsToFall) {
-    moves.onGround = !needsToFall;
-    moves.falling = needsToFall;
-  }
-}
 
+  } // exit foreach entity loop
+
+  //std::cout << "Entities within logic checking range: " << inLogicCheckingRangeCount << "\n";
+
+
+  if (needsToFall) {
+    moves.onGround = false;
+    moves.falling = true;
+  }
+
+  if (moves.isMoving()) {
+    std::cout << "player location ( x = "
+      << model.get()->getFirstEntity()->gameItem.loc.x << ", z = "
+      << model.get()->getFirstEntity()->gameItem.loc.z << " )\n";
+  }
+
+}
+/**
+ *  Move the cam based on offset to near the player model.
+ */
+void FirstPersonPlayer::syncFrontVectorVisual()
+{
+  (model->getFirstEntity() + 1)->moveTo(g_camera.Position + *g_camera.getFront() * _frontCheckerVecScaler);
+}
 /**
  *  Move the cam based on offset to near the player model.
  */
 void FirstPersonPlayer::syncCam()
 {
-  g_camera.setPosition(model.get()->getFirstEntity()->gameItem.loc + _camOffset);
+  g_camera.setPosition(model->getFirstEntity()->gameItem.loc + _camOffset);
 }
+
 /**
  *  Moves the player raidus light to the gameItem location.
  *  @param[in] shader  Shader to send the lighting information to.
  */
-void FirstPersonPlayer::syncPlayerLight(Shader* shader)
+void FirstPersonPlayer::syncPlayerLight(Lighting* light, Shader* shader)
 {
-  movePlayerLight(glm::vec3(model.get()->getFirstEntity()->gameItem.loc), shader);
-
+  if (status.radiusLightOn)
+  {
+    movePlayerLight(light, glm::vec3(model.get()->getFirstEntity()->gameItem.loc), shader);
+  }
 }
 
 /**
@@ -288,7 +301,7 @@ void FirstPersonPlayer::syncPlayerLight(Shader* shader)
  * @param[in] newpos  New position to move the light to.
  * @param[in] shader  Shader to send the light info to.
  */
-void FirstPersonPlayer::movePlayerLight(glm::vec3 newpos, Shader* shader)
+void FirstPersonPlayer::movePlayerLight(Lighting* light, glm::vec3 newpos, Shader* shader)
 {
   light->movePointLight(0, newpos, shader);
 }
@@ -341,39 +354,103 @@ void FirstPersonPlayer::increaseLegPower(float add) {
  * @param[in] pos     Position for the light to start at.
  * @param[in] shader  Which shader to send the light info to.
  */
-void FirstPersonPlayer::addPointLight(glm::vec3 pos, Shader* shader)
+void FirstPersonPlayer::addPointLight(Lighting* light, glm::vec3 pos, Shader* shader)
 {
   light->addPointLight(pos, shader);
 }
+void FirstPersonPlayer::removePointLight(Lighting* light, Shader* shader)
+{
+  light->removePointLight(shader);
+}
+/**
+ * Send out a vector in front of the player and erases entity that was hit.
+ * @param[inout] entities  list to check against and modify (erase).
+ */
+void FirstPersonPlayer::destroyEntityInFrontOfPlayer(std::vector<Entity>* entities)
+{
+  glm::vec3 startPosition = *g_camera.getPosition();
+  glm::vec3 tipOfHitScanVec = *g_camera.getFront() * _frontCheckerVecScaler;
+  //std::cout << "front Point Vec @ " << tipOfHitScanVec.x << "," << tipOfHitScanVec.y << "," << tipOfHitScanVec.z << "\n";
+
+  auto i = std::begin(*entities);
+
+  while (i != std::end(*entities))
+  {
+    if (cHandler.get()->vector_vs_AABB_3D(startPosition, tipOfHitScanVec, i->collider->impasse))
+    {
+      *entities->erase(i);
+      playSift02SoundEffect();
+      moves.interacting = false;
+      return;
+    }
+    else
+    {
+      ++i;
+    }
+  }
+
+  moves.interacting = false;
+
+}
 
 /**
- * Common init ran from the constructors.
+ * Checks if a specific entity collides with a hitscan
+ * @param[in] entity  The entity to check the player's interacting front vector against.
+ * @return  True if hits, False if doesn't hit.
  */
-void FirstPersonPlayer::init()
+bool FirstPersonPlayer::checkFrontVectorVsEntity(const Entity* entity)
 {
-  model = std::make_unique<PrimativeRenderer>();
+  glm::vec3 startPosition = *g_camera.getPosition();
 
-  TextureLoader tLoader;
-  unsigned int texID = tLoader.load2DTexture("../AncientArcher/cpp/pckgs/firstPersonPlayer/foot.png");
+  glm::vec3 tipOfHitScanVec = *g_camera.getFront() * 2.f;
 
-  Entity e(
-    ENTITYTYPE::CUBE,
-    glm::vec3(0, 1, 0),
-    glm::vec3(.15f, 1.0f, .15f),
-    texID,
-    true,
-    true
+  bool returner = false;
+
+  if (cHandler.get()->vector_vs_AABB_3D(startPosition, tipOfHitScanVec, entity->collider->impasse))
+  {
+    returner = true;
+    moves.interacting = false;
+  }
+
+  return returner;
+
+}
+
+void FirstPersonPlayer::usePlanter(PrimativeRenderer* prims)
+{
+  planter->plantDemoTree(
+    (model->getFirstEntity() + 1)->gameItem.loc,
+    prims
   );
-  model.get()->addToPrimativeEntities(e);
 
-  light = std::make_unique<Lighting>();
-  light->setConstantLight(model.get()->getShader());
+  /*prims->getEntites()->push_back(
+    *planter->plantDemoTree((model->getFirstEntity() + 1)->gameItem.loc, prims->getEntites())
+  );*/
 
-  cHandler = std::make_unique<CollisionHandler>();
+  moves.usingTool = false;
+}
 
-  g_camera.setPosition(model.get()->getFirstEntity()->gameItem.loc + _camOffset);
+/**
+ * Toggle the player raidus light on or off.
+ * @param shader  shader that has the light details.
+ */
+void FirstPersonPlayer::toggleRadiusLight(Lighting* light, Shader* shader)
+{
 
-  legPower = 10.f;
-  jumpTimer = 0.0f;
+  if (status.radiusLightOn)
+  {
+    removePointLight(light, shader);
+    std::cout << "radius light turned OFF\n";
+  }
+  else
+  {
+    addPointLight(light, (model->getFirstEntity()->gameItem.loc), shader);  // add light at location of the player model
+    std::cout << "radius light turned ON\n";
+
+  }
+
+  status.radiusLightOn = !status.radiusLightOn;  // toggle state
+
+  moves.useItem01 = false;
 
 }

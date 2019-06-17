@@ -9,10 +9,10 @@ class Game {
 public:
 
   FirstPersonPlayer* player;
-  
+
   PrimativeRenderer* prims;
-  
-  Spawner *spawner;
+
+  Spawner* spawner;
 
   SkyboxRenderer* sky;
 

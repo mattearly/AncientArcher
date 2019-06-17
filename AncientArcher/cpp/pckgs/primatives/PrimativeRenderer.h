@@ -21,15 +21,17 @@ public:
   Entity* getFirstMovingEntity();  // returns ptr to first entity
 
   Shader* getShader();
-  
+
+  Lighting* getLight();
+
   std::size_t size();
 
   void entityPopBack();
 
 private:
 
-	float elapsedTime = 0.0f;
-	bool timeTrigger = true;
+  float elapsedTime = 0.0f;
+  bool timeTrigger = true;
 
   void drawCube();
   void drawPlane();
@@ -57,5 +59,7 @@ private:
   std::vector<Entity> movingEntities;
 
   std::unique_ptr< Shader > primShader;
+
+  std::shared_ptr<Lighting> primWorldLighting;
 
 };

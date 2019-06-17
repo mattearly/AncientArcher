@@ -4,9 +4,7 @@ Entity::Entity(ENTITYTYPE t, glm::vec3 loc, glm::vec3 sc, int texID, bool isImpa
 {
   gameItem.type = t;
   gameItem.loc = loc;
-  gameItem.scale[0] = sc.x;
-  gameItem.scale[1] = sc.y;
-  gameItem.scale[2] = sc.z;
+  gameItem.scale = sc;
   gameItem.textureID = texID;
   if (isImpassable) {
     collider = new Collider(loc, sc);
@@ -45,6 +43,18 @@ void Entity::syncLocation()
 {
 	this->gameItem.prevLoc = this->gameItem.loc;
 	this->collider->impasse.prevLoc = this->collider->impasse.loc;
+}
+
+/**
+ *  Needs tested.
+ */
+void Entity::growBy(glm::vec3 scaleAmount)
+{
+  gameItem.scale += scaleAmount;
+  if (collider)
+  {
+    collider->impasse.size += scaleAmount;
+  }
 }
 
 

@@ -3,7 +3,7 @@
 out vec4 FragColor;
 
 struct Material {
-  //sampler2D diffuse;  // diffuse will be whatever texture we are using from TextureBank
+  //sampler2D diffuse;  // diffuse will be whatever texture we are using from texture0
   //sampler2D specular;  // specular comes from diffuseTextureBank
   float shininess;
 };

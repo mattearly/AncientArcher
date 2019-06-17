@@ -9,317 +9,119 @@
 
 //--- GLOBALS ---//
 Display g_display(" MMO ", Display::MouseControlType::FPP);
-//              Starting Position           YAW    PITCH  FOV
-//Camera g_camera(glm::vec3(0.f, 1.0f, 0.f), 0, 0, 45.f);
-Camera g_camera(glm::vec3(0.f, 1.0f, 0.f), 0, 0, 75.f);
-Lighting g_lighting;
+//             (Starting Position        ,  YAW    , PITCH,  FOV)
+Camera g_camera(glm::vec3(0.f, 1.0f, 0.f), -89.991f, 0, 75.f);
 //--- END GLOBALS ---//
 
 Game::Game()
 {
-	int __textures_allowed = 0, __totalTexturesAllowed = 0;
-	glGetIntegerv(GL_MAX_TEXTURE_IMAGE_UNITS, &__textures_allowed);
-	glGetIntegerv(GL_MAX_COMBINED_TEXTURE_IMAGE_UNITS, &__totalTexturesAllowed);
-	std::cout << "//--GRAPHIC CARD INFO--//\nMax textures per shader:  " << __textures_allowed << "\n";
-	std::cout << "Max total textures:  " << __totalTexturesAllowed << "\n";
+  int __textures_allowed = 0, __totalTexturesAllowed = 0;
+  glGetIntegerv(GL_MAX_TEXTURE_IMAGE_UNITS, &__textures_allowed);
+  glGetIntegerv(GL_MAX_COMBINED_TEXTURE_IMAGE_UNITS, &__totalTexturesAllowed);
+  std::cout << "//--GRAPHIC CARD INFO--//\nMax textures per shader:  " << __textures_allowed << "\n";
+  std::cout << "Max total textures:  " << __totalTexturesAllowed << "\n";
 
-	player = new FirstPersonPlayer();
-	prims = new PrimativeRenderer();
+  prims = new PrimativeRenderer();
 
-  player->addPointLight(glm::vec3(0, 0, 0), prims->getShader());
-
-	g_lighting.updateConstantLightAmbient(glm::vec3(.15, 0.123, 0.123));
-	g_lighting.updateConstantLightDirection(glm::vec3(0.5, -0.75, 0.5));
-	g_lighting.updateConstantLightDiffuse(glm::vec3(.38, .38, .38));
-	g_lighting.updateConstantLightSpecular(glm::vec3(.2, .2, .2));
-
-	g_lighting.setConstantLight(prims->getShader());
+  player = new FirstPersonPlayer();
 
   spawner = new Spawner();
   spawner->setPopulationCap(1);
   spawner->setTimeBetweenSpawns(2.f);
 
-	TextureLoader tLoader;
-	unsigned int texIDGrass = tLoader.load2DTexture("../AncientArcher/cpp/pckgs/primatives/grass.png");
-	unsigned int texIDDirt = tLoader.load2DTexture("../AncientArcher/cpp/pckgs/primatives/dirt.png");
-	unsigned int texIDLightBricks = tLoader.load2DTexture("../AncientArcher/cpp/pckgs/primatives/light_bricks.png");
-	unsigned int texIDMosaicBricks = tLoader.load2DTexture("../AncientArcher/cpp/pckgs/primatives/mosaic_bricks.png");
+  TextureLoader tLoader;
+  unsigned int texIDGrass = tLoader.load2DTexture("../AncientArcher/cpp/pckgs/primatives/grass.png");
+  unsigned int texIDCrumblingRocks = tLoader.load2DTexture("../AncientArcher/cpp/pckgs/primatives/crumbling_rocks.png");
+  unsigned int texIDDirt = tLoader.load2DTexture("../AncientArcher/cpp/pckgs/primatives/dirt.png");
+  unsigned int texIDLightBricks = tLoader.load2DTexture("../AncientArcher/cpp/pckgs/primatives/light_bricks.png");
+  unsigned int texIDMosaicBricks = tLoader.load2DTexture("../AncientArcher/cpp/pckgs/primatives/mosaic_bricks.png");
+  unsigned int texIDDarkStone = tLoader.load2DTexture("../AncientArcher/cpp/pckgs/primatives/darkstone.png");
+  unsigned int texIDPackedRocks = tLoader.load2DTexture("../AncientArcher/cpp/pckgs/primatives/packed_rocks.png");
+  unsigned int texIDLava = tLoader.load2DTexture("../AncientArcher/cpp/pckgs/primatives/lava.png");
 
+  //BASE GROUND LAYERS
+  for (int i = -20; i < 20; i++)
+  {
+    for (int j = -20; j < 20; j++)
+    {
+      for (int k = 0; k < 21; k++)
+      {
+        Entity e(
+          ENTITYTYPE::CUBE,
+          //glm::vec3(i * 2, -3.f - 1.0f * k, j * 2),
+          //glm::vec3(2.f, 1.0f, 2.f),   //prev
+          glm::vec3(i, -3.f - 1.0f * k, j),
+          glm::vec3(1, 1, 1),
+          // Layers - 1:grass + 3:dirt + 4:crumbling + 5:packedrock + 6:darkstone + 2:lava
+          (k < 1) ? texIDGrass : (k < 4) ? texIDDirt : (k < 8) ? texIDCrumblingRocks : (k < 13) ? texIDPackedRocks : (k < 19) ? texIDDarkStone : texIDLava,
+          true,
+          false
+        );
+        prims->addToPrimativeEntities(e);
+      }
+    }
+  }
 
-	// grass + dirt layer
-	for (int i = 0; i < 10; i++)
-	{
-		for (int j = 0; j < 10; j++)
-		{
-			for (int k = 0; k < 2; k++)
-			{
-				Entity e(
-					ENTITYTYPE::CUBE,
-					glm::vec3(i * 2, -3.f - .5f * k, j * 2),
-					glm::vec3(2.f, .5f, 2.f),
-					k < 1 ? texIDGrass : texIDDirt,
-					true,
-					false
-				);
-				prims->addToPrimativeEntities(e);
-			}
-		}
-	}
-
-	// bridge
-	for (int i = 10; i < 24; i++)
-	{
-		for (int j = 5; j < 8; j++)
-		{
-			Entity e(
-				ENTITYTYPE::CUBE,
-				glm::vec3(i * 2, -3.f, j * 2),
-				glm::vec3(2.f, 2.0f, 2.f),
-				texIDLightBricks,
-				true,
-				false
-			);
-
-			prims->addToPrimativeEntities(e);
-			if (j == 5 || j == 7)  //side railings
-			{
-				Entity e(
-					ENTITYTYPE::CUBE,
-					glm::vec3(i * 2.f, -1.75f, j * 2.f),
-					glm::vec3(2.0f, 0.5f, .25f),
-					texIDLightBricks,
-					true,
-					false
-				);
-				prims->addToPrimativeEntities(e);
-			}
-		}
-	}
-
-	// reverse other bridge thingy railings
-	for (int i = 10; i < 24; i++)
-	{
-		for (int j = 5; j < 8; j++)
-		{
-
-			if (j == 5 || j == 7)  //secondary
-			{
-				Entity e(
-					ENTITYTYPE::CUBE,
-					glm::vec3(
-						j * 2,
-						-3.5f,
-						i * 2),
-					glm::vec3(2.0f, 1.0f, 2.0f),
-					texIDLightBricks,
-					true,
-					false
-				);
-				prims->addToPrimativeEntities(e);
-			}
-		}
-	}
-
-	// MAZE
-	for (int i = 24; i < 44; i++)
-	{
-    {// l/r walls
+  // bridge
+  for (int i = 10; i < 24; i++)
+  {
+    //base
+    for (int j = 5; j < 8; j++)
+    {
       Entity e(
         ENTITYTYPE::CUBE,
-        glm::vec3(i * 2, -2.2f, -.43),
-        glm::vec3(2.f, 3.f, 1.f),
-        texIDMosaicBricks,
+        glm::vec3(i * 2, -2.f, j * 2),
+        glm::vec3(2.f, 1.0f, 2.f),
+        texIDLightBricks,
         true,
         false
       );
       prims->addToPrimativeEntities(e);
-    }
-    {
-      Entity e2(
-        ENTITYTYPE::CUBE,
-        glm::vec3(i * 2, -2.2f, 38.5),
-        glm::vec3(2.f, 3.f, 1.f),
-        texIDMosaicBricks,
-        true,
-        false
-      );
-      prims->addToPrimativeEntities(e2);
-    }
 
-    //back wall
-    {
-      Entity e3(
-        ENTITYTYPE::CUBE,
-        glm::vec3(85, -2.2f, -48 + i*2),
-        glm::vec3(1.f, 3.f, 2.f),
-        texIDMosaicBricks,
-        true,
-        false
-      );
-      prims->addToPrimativeEntities(e3);
-    }
-
-    //MAZE IN SLIDERS
-    {
-      Entity eslider1(
-        ENTITYTYPE::CUBE,
-        glm::vec3(58, -2.2f, -35 + i * 2),
-        glm::vec3(1.f, 3.f, 2.f),
-        texIDMosaicBricks,
-        true,
-        false
-      );
-      prims->addToPrimativeEntities(eslider1);
-    }
-
-    {
-      Entity eslider2(
-        ENTITYTYPE::CUBE,
-        glm::vec3(62, -2.2f, -72 + i * 2),
-        glm::vec3(1.f, 3.f, 2.f),
-        texIDMosaicBricks,
-        true,
-        false
-      );
-      prims->addToPrimativeEntities(eslider2);
-    }
-
-    {
-      Entity eslider3(
-        ENTITYTYPE::CUBE,
-        glm::vec3(68, -2.2f, -45 + i * 2),
-        glm::vec3(1.f, 3.f, 2.f),
-        texIDMosaicBricks,
-        true,
-        false
-      );
-      prims->addToPrimativeEntities(eslider3);
-    }
-
-    {
-      Entity eslider4(
-        ENTITYTYPE::CUBE,
-        glm::vec3(76, -2.2f, -52 + i * 2),
-        glm::vec3(1.f, 3.f, 2.f),
-        texIDDirt,
-        true,
-        false
-      );
-      prims->addToPrimativeEntities(eslider4);
-    }
-
-		for (int j = 0; j < 20; j++)
-		{
-
-			for (int k = 0; k < 2; k++)
-			{
-				// ground
-				Entity e(
-					ENTITYTYPE::CUBE,
-					glm::vec3(i * 2, -4.f - .5f * k, j * 2),
-					glm::vec3(2.f, .5f, 2.f),
-					k < 1 ? texIDGrass : texIDDirt,
-					true,
-					false
-				);
-				prims->addToPrimativeEntities(e);
-			}
-
+      //side railings
+      if (j == 5 || j == 7)
       {
-        // ceiling
-        Entity eCeiling1(
+        Entity e(
           ENTITYTYPE::CUBE,
-          glm::vec3(i * 2, 20.f, j * 2),
-          glm::vec3(2.f, .5f, 2.f),
-          texIDMosaicBricks,
+          /* loc */ glm::vec3(/*x*/(i * 2.f), /*y*/(-1.25f), /*z*/((j == 5) ? (-.75f + j * 2.f) : (.75f + j * 2.f))),
+          glm::vec3(1.5f, 0.5f, .5f),
+          texIDLightBricks,
           true,
           false
         );
-        prims->addToPrimativeEntities(eCeiling1);
-
+        prims->addToPrimativeEntities(e);
       }
-		}
-	}
+    }
+  }
 
-	// bridge
-	for (int i = 10; i < 24; i++)
-	{
-		for (int j = 5; j < 8; j++)
-		{
-			Entity e(
-				ENTITYTYPE::CUBE,
-				glm::vec3(i * 2, -3.f, j * 2),
-				glm::vec3(2.f, 2.0f, 2.f),
-				texIDLightBricks,
-				true,
-				false
-			);
-			prims->addToPrimativeEntities(e);
-			if (j == 5 || j == 7)  //side railings
-			{
-				Entity e(
-					ENTITYTYPE::SPHERE,
-					glm::vec3(i * 2, -2.f, j * 2),
-					glm::vec3(2.0f, 1.0f, .5f),
-					texIDLightBricks,
-					true,
-					false
-				);
-				prims->addToPrimativeEntities(e);
-			}
-		}
-	}
-
-	// few random blocks off to the side
-	for (int i = 24; i < 44; i++)
-	{
-		for (int j = 0; j < 10; j++)
-		{
-			for (int k = 0; k < 2; k++)
-			{
-				Entity e(
-					ENTITYTYPE::CUBE,
-					glm::vec3(i * 2, -4.f - .5f * k, j * 2),
-					glm::vec3(2.f, .5f, 2.f),
-					k < 1 ? texIDGrass : texIDDirt,
-					true,
-					false
-				);
-				prims->addToPrimativeEntities(e);
-			}
-		}
-	}
-
-	//Moving Blocks
-	for (int i = 0; i < 4; i++)  //ground
-	{
-		for (int j = 0; j < 5; j++)
-		{
-			Entity e(
-				ENTITYTYPE::CUBE,
-				glm::vec3(47.5f, (1.f * j) - 3.25f, (1.f* i) + 9.f),
-				glm::vec3(1.f, 1.f, 1.f),
-				texIDMosaicBricks,
-				true,
-				false
-			);
-			prims->addToMovingEntities(e);
-
-		}
-	}
-
+  //Moving Blocks
+  for (int i = 0; i < 4; i++)  //ground
+  {
+    for (int j = 0; j < 5; j++)
+    {
+      Entity e(
+        ENTITYTYPE::CUBE,
+        glm::vec3(47.5f, (1.f * j) - 2.0f, (1.f * i) + 11.f),
+        glm::vec3(1.f, 1.f, 1.f),
+        texIDMosaicBricks,
+        true,
+        false
+      );
+      prims->addToMovingEntities(e);
+    }
+  }
 
   // ---- LOAD SKYBOX ---- //
-  std::vector<std::string> skyboxFiles =
-  {
-    "../AncientArcher/cpp/pckgs/skybox/stars/right.png",
-    "../AncientArcher/cpp/pckgs/skybox/stars/left.png",
-    "../AncientArcher/cpp/pckgs/skybox/stars/top.png",
-    "../AncientArcher/cpp/pckgs/skybox/stars/bottom.png",
-    "../AncientArcher/cpp/pckgs/skybox/stars/front.png",
-    "../AncientArcher/cpp/pckgs/skybox/stars/back.png"
-  };
+  //std::vector<std::string> skyboxFiles =
+  //{
+  //  "../AncientArcher/cpp/pckgs/skybox/sunny/right.png",
+  //  "../AncientArcher/cpp/pckgs/skybox/sunny/left.png",
+  //  "../AncientArcher/cpp/pckgs/skybox/sunny/top.png",
+  //  "../AncientArcher/cpp/pckgs/skybox/sunny/bottom.png",
+  //  "../AncientArcher/cpp/pckgs/skybox/sunny/front.png",
+  //  "../AncientArcher/cpp/pckgs/skybox/sunny/back.png"
+  //};
 
-  sky = new SkyboxRenderer(skyboxFiles);
+  sky = new SkyboxRenderer();
 
 }
