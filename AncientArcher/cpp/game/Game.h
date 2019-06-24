@@ -2,13 +2,13 @@
 #include "../pckgs/masterRenderer/MasterRenderer.h"
 #include "../pckgs/primatives/PrimativeRenderer.h"
 #include "../pckgs/spawner/Spawner.h"
-#include "../pckgs/firstPersonPlayer/FirstPersonPlayer.h"
 #include "../pckgs/skybox/SkyboxRenderer.h"
+#include "../pckgs/topDownPlayer/TopDownPlayer.h"
 
 class Game {
 public:
 
-  FirstPersonPlayer* player;
+  TopDownPlayer* player;
 
   PrimativeRenderer* prims;
 

@@ -23,7 +23,7 @@ Game::Game()
 
   prims = new PrimativeRenderer();
 
-  player = new FirstPersonPlayer();
+  player = new TopDownPlayer();
 
   spawner = new Spawner();
   spawner->setPopulationCap(1);
@@ -112,15 +112,15 @@ Game::Game()
   }
 
   // ---- LOAD SKYBOX ---- //
-  //std::vector<std::string> skyboxFiles =
-  //{
-  //  "../AncientArcher/cpp/pckgs/skybox/sunny/right.png",
-  //  "../AncientArcher/cpp/pckgs/skybox/sunny/left.png",
-  //  "../AncientArcher/cpp/pckgs/skybox/sunny/top.png",
-  //  "../AncientArcher/cpp/pckgs/skybox/sunny/bottom.png",
-  //  "../AncientArcher/cpp/pckgs/skybox/sunny/front.png",
-  //  "../AncientArcher/cpp/pckgs/skybox/sunny/back.png"
-  //};
+  std::vector<std::string> skyboxFiles =
+  {
+    "../AncientArcher/cpp/pckgs/skybox/stars/right.png",
+    "../AncientArcher/cpp/pckgs/skybox/stars/left.png",
+    "../AncientArcher/cpp/pckgs/skybox/stars/top.png",
+    "../AncientArcher/cpp/pckgs/skybox/stars/bottom.png",
+    "../AncientArcher/cpp/pckgs/skybox/stars/front.png",
+    "../AncientArcher/cpp/pckgs/skybox/stars/back.png"
+  };
 
   sky = new SkyboxRenderer();
 
