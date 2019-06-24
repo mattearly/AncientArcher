@@ -1,15 +1,11 @@
 #include "TopDownPlayer.h"
-
-void TopDownPlayer::render()
-{
-  _ent
-}
-
+extern Camera g_camera;
+extern Controls g_controls;
 void TopDownPlayer::initPlayerEntity()
 {
   TextureLoader texLoader;
-  //unsigned int texture = texLoader.load2DTexture()
-  //_entity = std::make_shared();
+  unsigned int texture = texLoader.load2DTexture("../AncientArcher/cpp/pckgs/topDownPlayer/chronos-javelin.png");
+    _entity = std::make_shared<Entity>(glm::vec3(0), glm::ve);
 }
 
 TopDownPlayer::TopDownPlayer()
@@ -31,5 +27,29 @@ void TopDownPlayer::moveRight(float amount)
 void TopDownPlayer::moveUp(float amount)
 {
   _position.z += amount;
+
+}
+
+void TopDownPlayer::update(float deltaTime)
+{
+  g_controls.tdpKeyboardIn(_moveStatus.get())
+
+  if (_moveStatus.up)
+  {
+    moveUp(1.f);
+  }
+  if (_moveStatus.down)
+  {
+    moveUp(-1.f);
+  }
+  if (_moveStatus.left)
+  {
+    moveRight(-1.f);
+  }
+  if (_moveStatus.right)
+  {
+    moveRight(1.f);
+  }
+
 
 }

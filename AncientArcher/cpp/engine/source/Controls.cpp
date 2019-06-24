@@ -480,4 +480,62 @@ void Controls::entitiesKeyboardInput(Entity* entity, unsigned int numEntities)
 
 }
 
+ void Controls::tdpKeyboardIn(MoveStatus& mv)
+ {
+
+   //if (glfwGetMouseButton(g_display.window, GLFW_MOUSE_BUTTON_LEFT) == GLFW_PRESS)
+   //{
+   //}
+
+   if (glfwGetKey(g_display.window, GLFW_KEY_ESCAPE) == GLFW_PRESS)
+   {
+     glfwSetWindowShouldClose(g_display.window, true);  // closes app
+   }
+
+
+   if (glfwGetKey(g_display.window, GLFW_KEY_W) == GLFW_PRESS)
+   {
+     mv.up = true;
+   }
+
+   if (glfwGetKey(g_display.window, GLFW_KEY_S) == GLFW_PRESS)
+   {
+     mv.down = true;
+   }
+
+   if (glfwGetKey(g_display.window, GLFW_KEY_A) == GLFW_PRESS)
+   {
+     mv.left = true;
+   }
+
+   if (glfwGetKey(g_display.window, GLFW_KEY_D) == GLFW_PRESS)
+   {
+     mv.right = true;
+   }
+
+   if (glfwGetKey(g_display.window, GLFW_KEY_SPACE) == GLFW_PRESS)
+   {
+   }
+
+   if (glfwGetKey(g_display.window, GLFW_KEY_W) == GLFW_RELEASE)
+   {
+     mv.up = false;
+   }
+
+   if (glfwGetKey(g_display.window, GLFW_KEY_S) == GLFW_RELEASE)
+   {
+     mv.down = false;
+   }
+
+   if (glfwGetKey(g_display.window, GLFW_KEY_A) == GLFW_RELEASE)
+   {
+     mv.left = false;
+   }
+
+   if (glfwGetKey(g_display.window, GLFW_KEY_D) == GLFW_RELEASE)
+   {
+     mv.right = false;
+   }
+ }
+
 

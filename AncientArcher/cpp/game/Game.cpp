@@ -8,9 +8,9 @@
 #include <mearly.h>
 
 //--- GLOBALS ---//
-Display g_display(" MMO ", Display::MouseControlType::FPP);
+Display g_display(" SPACESHOOTER ", Display::MouseControlType::TOPDOWNPLAYER);
 //             (Starting Position        ,  YAW    , PITCH,  FOV)
-Camera g_camera(glm::vec3(0.f, 1.0f, 0.f), -89.991f, 0, 75.f);
+Camera g_camera(glm::vec3(0.f, 0.0f, 0.f), 0.f, 0.90f, 90.f);
 //--- END GLOBALS ---//
 
 Game::Game()
@@ -40,74 +40,21 @@ Game::Game()
   unsigned int texIDLava = tLoader.load2DTexture("../AncientArcher/cpp/pckgs/primatives/lava.png");
 
   //BASE GROUND LAYERS
-  for (int i = -20; i < 20; i++)
+  for (int x = -20; x < 20; x++)
   {
-    for (int j = -20; j < 20; j++)
-    {
-      for (int k = 0; k < 21; k++)
-      {
-        Entity e(
-          ENTITYTYPE::CUBE,
-          //glm::vec3(i * 2, -3.f - 1.0f * k, j * 2),
-          //glm::vec3(2.f, 1.0f, 2.f),   //prev
-          glm::vec3(i, -3.f - 1.0f * k, j),
-          glm::vec3(1, 1, 1),
-          // Layers - 1:grass + 3:dirt + 4:crumbling + 5:packedrock + 6:darkstone + 2:lava
-          (k < 1) ? texIDGrass : (k < 4) ? texIDDirt : (k < 8) ? texIDCrumblingRocks : (k < 13) ? texIDPackedRocks : (k < 19) ? texIDDarkStone : texIDLava,
-          true,
-          false
-        );
-        prims->addToPrimativeEntities(e);
-      }
-    }
-  }
-
-  // bridge
-  for (int i = 10; i < 24; i++)
-  {
-    //base
-    for (int j = 5; j < 8; j++)
+    for (int z = -20; z < 20; z++)
     {
       Entity e(
         ENTITYTYPE::CUBE,
-        glm::vec3(i * 2, -2.f, j * 2),
-        glm::vec3(2.f, 1.0f, 2.f),
-        texIDLightBricks,
+        glm::vec3(x + 1, 0.f, z + 1),
+        glm::vec3(1, 1, 1),
+        texIDGrass,
+        //(k < 1) ? texIDGrass : (k < 4) ? texIDDirt : (k < 8) ? texIDCrumblingRocks : (k < 13) ? texIDPackedRocks : (k < 19) ? texIDDarkStone : texIDLava,
         true,
         false
       );
       prims->addToPrimativeEntities(e);
-
-      //side railings
-      if (j == 5 || j == 7)
-      {
-        Entity e(
-          ENTITYTYPE::CUBE,
-          /* loc */ glm::vec3(/*x*/(i * 2.f), /*y*/(-1.25f), /*z*/((j == 5) ? (-.75f + j * 2.f) : (.75f + j * 2.f))),
-          glm::vec3(1.5f, 0.5f, .5f),
-          texIDLightBricks,
-          true,
-          false
-        );
-        prims->addToPrimativeEntities(e);
-      }
-    }
-  }
-
-  //Moving Blocks
-  for (int i = 0; i < 4; i++)  //ground
-  {
-    for (int j = 0; j < 5; j++)
-    {
-      Entity e(
-        ENTITYTYPE::CUBE,
-        glm::vec3(47.5f, (1.f * j) - 2.0f, (1.f * i) + 11.f),
-        glm::vec3(1.f, 1.f, 1.f),
-        texIDMosaicBricks,
-        true,
-        false
-      );
-      prims->addToMovingEntities(e);
+      //prims->addToMovingEntities(e);
     }
   }
 

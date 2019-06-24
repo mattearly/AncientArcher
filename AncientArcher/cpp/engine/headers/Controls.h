@@ -9,6 +9,8 @@
 
 #include "../../pckgs/firstPersonPlayer/FirstPersonPlayer.h"
 
+struct MoveStatus { bool up, down, left, right; };
+
 class FirstPersonPlayer;
 class SideScrollPlayer;
 
@@ -29,6 +31,8 @@ public:
   void entityKeyboardInput(Entity* entity);
 
   void entitiesKeyboardInput(Entity* entity, unsigned int numEntities);
+
+  void tdpKeyboardIn(MoveStatus& moveStatus);
 
 private:
 

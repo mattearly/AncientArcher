@@ -24,15 +24,6 @@ void Game::mainLoop() {
     // PROCESS PRIMATIVES MOVEMENT ---- //
     prims->update(deltaTime);
 
-    //  FINAL COLLISION CHECK
-    if (player->moves.isMoving())
-    {
-      player->finalCollisionCheck(prims->getEntites());
-      player->finalCollisionCheck(prims->getMovingEntites());
-    }
-
-
-
     // PLAYER SYNC
     player->syncCam();
 
