@@ -18,7 +18,8 @@ public:
   GameItem gameItem;
   Collider* collider;
   Kinematics* kinematics;
-  Entity(ENTITYTYPE t, glm::vec3 loc, glm::vec3 sc, int texID, bool isImpassable, bool hasKinematics);
+  Entity(ENTITYTYPE t, glm::vec3 loc, glm::vec3 sc,
+    int texID, bool isImpassable, bool hasKinematics);
 
   // MODIFIERS
   void moveBy(glm::vec3 amount);

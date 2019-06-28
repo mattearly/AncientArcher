@@ -8,7 +8,7 @@
 class Display {
 public:
   enum MouseControlType {
-    FPP, SIDESCROLLER
+    FPP, SIDESCROLLER, TOPDOWNPLAYER
   };
 
   Display(std::string windowName = "AncientArcherEngine", MouseControlType mouseType = MouseControlType::FPP);

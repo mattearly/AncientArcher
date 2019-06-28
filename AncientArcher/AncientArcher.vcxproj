@@ -179,6 +179,7 @@
     <ClCompile Include="cpp\engine\source\stb_image.cpp" />
     <ClCompile Include="cpp\engine\source\TextureLoader.cpp" />
     <ClCompile Include="cpp\pckgs\spawner\Spawner.cpp" />
+    <ClCompile Include="cpp\pckgs\topDownPlayer\TopDownPlayer.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="cpp\engine\headers\CollisionHandler.h" />
@@ -209,6 +210,7 @@
     <ClInclude Include="cpp\engine\headers\TextureLoader.h" />
     <ClInclude Include="cpp\pckgs\spawner\Spawner.h" />
     <ClInclude Include="cpp\pckgs\text\Text.h" />
+    <ClInclude Include="cpp\pckgs\topDownPlayer\TopDownPlayer.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

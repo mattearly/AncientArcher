@@ -8,9 +8,13 @@
 #include <mearly.h>
 
 //--- GLOBALS ---//
-Display g_display(" MMO ", Display::MouseControlType::FPP);
-//             (Starting Position        ,  YAW    , PITCH,  FOV)
-Camera g_camera(glm::vec3(0.f, 1.0f, 0.f), -89.991f, 0, 75.f);
+Display g_display("SPACESHOOTER", Display::MouseControlType::TOPDOWNPLAYER);
+
+// world position 0,0,0
+// yaw -90.f : forward facing down the -z axis  (should be 0.f is down the -z axis, why the f is it -90? #confusedprogramming)
+// pitch -89.f : downward
+// field of view 80.f : pretty wide, slight fisheye
+Camera g_camera(glm::vec3(0.f, 0.0f, 0.f), -90.f, -89.0f, 80.f);
 //--- END GLOBALS ---//
 
 Game::Game()
@@ -23,11 +27,7 @@ Game::Game()
 
   prims = new PrimativeRenderer();
 
-  player = new FirstPersonPlayer();
-
-  spawner = new Spawner();
-  spawner->setPopulationCap(1);
-  spawner->setTimeBetweenSpawns(2.f);
+  player = new TopDownPlayer();
 
   TextureLoader tLoader;
   unsigned int texIDGrass = tLoader.load2DTexture("../AncientArcher/cpp/pckgs/primatives/grass.png");
@@ -40,87 +40,34 @@ Game::Game()
   unsigned int texIDLava = tLoader.load2DTexture("../AncientArcher/cpp/pckgs/primatives/lava.png");
 
   //BASE GROUND LAYERS
-  for (int i = -20; i < 20; i++)
+  for (int x = -10; x < 10; x++)
   {
-    for (int j = -20; j < 20; j++)
-    {
-      for (int k = 0; k < 21; k++)
-      {
-        Entity e(
-          ENTITYTYPE::CUBE,
-          //glm::vec3(i * 2, -3.f - 1.0f * k, j * 2),
-          //glm::vec3(2.f, 1.0f, 2.f),   //prev
-          glm::vec3(i, -3.f - 1.0f * k, j),
-          glm::vec3(1, 1, 1),
-          // Layers - 1:grass + 3:dirt + 4:crumbling + 5:packedrock + 6:darkstone + 2:lava
-          (k < 1) ? texIDGrass : (k < 4) ? texIDDirt : (k < 8) ? texIDCrumblingRocks : (k < 13) ? texIDPackedRocks : (k < 19) ? texIDDarkStone : texIDLava,
-          true,
-          false
-        );
-        prims->addToPrimativeEntities(e);
-      }
-    }
-  }
-
-  // bridge
-  for (int i = 10; i < 24; i++)
-  {
-    //base
-    for (int j = 5; j < 8; j++)
+    for (int z = -30; z < 10; z++)
     {
       Entity e(
-        ENTITYTYPE::CUBE,
-        glm::vec3(i * 2, -2.f, j * 2),
-        glm::vec3(2.f, 1.0f, 2.f),
-        texIDLightBricks,
+        ENTITYTYPE::PLANE,
+        glm::vec3(x + 1.f, -4.f, z + 1.f),
+        glm::vec3(1.f, 0.25f, 1.f),
+        texIDGrass,
+        //(k < 1) ? texIDGrass : (k < 4) ? texIDDirt : (k < 8) ? texIDCrumblingRocks : (k < 13) ? texIDPackedRocks : (k < 19) ? texIDDarkStone : texIDLava,
         true,
         false
       );
       prims->addToPrimativeEntities(e);
-
-      //side railings
-      if (j == 5 || j == 7)
-      {
-        Entity e(
-          ENTITYTYPE::CUBE,
-          /* loc */ glm::vec3(/*x*/(i * 2.f), /*y*/(-1.25f), /*z*/((j == 5) ? (-.75f + j * 2.f) : (.75f + j * 2.f))),
-          glm::vec3(1.5f, 0.5f, .5f),
-          texIDLightBricks,
-          true,
-          false
-        );
-        prims->addToPrimativeEntities(e);
-      }
-    }
-  }
-
-  //Moving Blocks
-  for (int i = 0; i < 4; i++)  //ground
-  {
-    for (int j = 0; j < 5; j++)
-    {
-      Entity e(
-        ENTITYTYPE::CUBE,
-        glm::vec3(47.5f, (1.f * j) - 2.0f, (1.f * i) + 11.f),
-        glm::vec3(1.f, 1.f, 1.f),
-        texIDMosaicBricks,
-        true,
-        false
-      );
-      prims->addToMovingEntities(e);
+      //prims->addToMovingEntities(e);
     }
   }
 
   // ---- LOAD SKYBOX ---- //
-  //std::vector<std::string> skyboxFiles =
-  //{
-  //  "../AncientArcher/cpp/pckgs/skybox/sunny/right.png",
-  //  "../AncientArcher/cpp/pckgs/skybox/sunny/left.png",
-  //  "../AncientArcher/cpp/pckgs/skybox/sunny/top.png",
-  //  "../AncientArcher/cpp/pckgs/skybox/sunny/bottom.png",
-  //  "../AncientArcher/cpp/pckgs/skybox/sunny/front.png",
-  //  "../AncientArcher/cpp/pckgs/skybox/sunny/back.png"
-  //};
+  std::vector<std::string> skyboxFiles =
+  {
+    "../AncientArcher/cpp/pckgs/skybox/stars/right.png",
+    "../AncientArcher/cpp/pckgs/skybox/stars/left.png",
+    "../AncientArcher/cpp/pckgs/skybox/stars/top.png",
+    "../AncientArcher/cpp/pckgs/skybox/stars/bottom.png",
+    "../AncientArcher/cpp/pckgs/skybox/stars/front.png",
+    "../AncientArcher/cpp/pckgs/skybox/stars/back.png"
+  };
 
   sky = new SkyboxRenderer();
 
