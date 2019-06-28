@@ -8,9 +8,13 @@
 #include <mearly.h>
 
 //--- GLOBALS ---//
-Display g_display(" SPACESHOOTER ", Display::MouseControlType::TOPDOWNPLAYER);
-//             (Starting Position        ,  YAW    , PITCH,  FOV)
-Camera g_camera(glm::vec3(0.f, 0.0f, 0.f), 0.f, 0.90f, 90.f);
+Display g_display("SPACESHOOTER", Display::MouseControlType::TOPDOWNPLAYER);
+
+// world position 0,0,0
+// yaw -90.f : forward facing down the -z axis  (should be 0.f is down the -z axis, why the f is it -90? #confusedprogramming)
+// pitch -89.f : downward
+// field of view 80.f : pretty wide, slight fisheye
+Camera g_camera(glm::vec3(0.f, 0.0f, 0.f), -90.f, -89.0f, 80.f);
 //--- END GLOBALS ---//
 
 Game::Game()
@@ -25,10 +29,6 @@ Game::Game()
 
   player = new TopDownPlayer();
 
-  spawner = new Spawner();
-  spawner->setPopulationCap(1);
-  spawner->setTimeBetweenSpawns(2.f);
-
   TextureLoader tLoader;
   unsigned int texIDGrass = tLoader.load2DTexture("../AncientArcher/cpp/pckgs/primatives/grass.png");
   unsigned int texIDCrumblingRocks = tLoader.load2DTexture("../AncientArcher/cpp/pckgs/primatives/crumbling_rocks.png");
@@ -40,14 +40,14 @@ Game::Game()
   unsigned int texIDLava = tLoader.load2DTexture("../AncientArcher/cpp/pckgs/primatives/lava.png");
 
   //BASE GROUND LAYERS
-  for (int x = -20; x < 20; x++)
+  for (int x = -10; x < 10; x++)
   {
-    for (int z = -20; z < 20; z++)
+    for (int z = -30; z < 10; z++)
     {
       Entity e(
-        ENTITYTYPE::CUBE,
-        glm::vec3(x + 1, 0.f, z + 1),
-        glm::vec3(1, 1, 1),
+        ENTITYTYPE::PLANE,
+        glm::vec3(x + 1.f, -4.f, z + 1.f),
+        glm::vec3(1.f, 0.25f, 1.f),
         texIDGrass,
         //(k < 1) ? texIDGrass : (k < 4) ? texIDDirt : (k < 8) ? texIDCrumblingRocks : (k < 13) ? texIDPackedRocks : (k < 19) ? texIDDarkStone : texIDLava,
         true,

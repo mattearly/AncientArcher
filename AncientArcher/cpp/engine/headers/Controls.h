@@ -9,8 +9,7 @@
 
 #include "../../pckgs/firstPersonPlayer/FirstPersonPlayer.h"
 
-struct MoveStatus { bool up, down, left, right; };
-
+struct MoveStatus;
 class FirstPersonPlayer;
 class SideScrollPlayer;
 

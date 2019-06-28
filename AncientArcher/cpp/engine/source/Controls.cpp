@@ -1,6 +1,8 @@
 #include <Controls.h>
 #include <Display.h>
 #include <Camera.h>
+#include "../../pckgs/topDownPlayer/TopDownPlayer.h"
+
 
 extern Display g_display;   // from game.cpp (game)
 extern Camera g_camera;     // from game.cpp (game)

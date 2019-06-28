@@ -1,55 +1,48 @@
 #include "TopDownPlayer.h"
+#include <iostream>
 extern Camera g_camera;
 extern Controls g_controls;
-void TopDownPlayer::initPlayerEntity()
-{
-  TextureLoader texLoader;
-  unsigned int texture = texLoader.load2DTexture("../AncientArcher/cpp/pckgs/topDownPlayer/chronos-javelin.png");
-    _entity = std::make_shared<Entity>(glm::vec3(0), glm::ve);
-}
-
-TopDownPlayer::TopDownPlayer()
-{
-  initPlayerEntity();
-}
 
 void TopDownPlayer::syncCam()
 {
-  g_camera.setPosition(_entity->gameItem.loc + _camOffset);
+  //g_camera.setPosition(_entity->gameItem.loc + _camOffset);
 }
 
 void TopDownPlayer::moveRight(float amount)
 {
-  _position.x += amount;
-
+  g_camera.Position.x += amount;
+  std::cout << "pos( x:" << g_camera.getPosition()->x << " z:" << g_camera.getPosition()->z << std::endl;
 }
 
 void TopDownPlayer::moveUp(float amount)
 {
-  _position.z += amount;
-
+  g_camera.Position.z += amount;
 }
 
-void TopDownPlayer::update(float deltaTime)
+void TopDownPlayer::update()
 {
-  g_controls.tdpKeyboardIn(_moveStatus.get())
+  g_controls.tdpKeyboardIn(_moveStatus);
+}
 
+void TopDownPlayer::updateMovement(float deltaTime)
+{
+  static const float MVSPEED = 1.55666667f;
   if (_moveStatus.up)
   {
-    moveUp(1.f);
+    moveUp(-MVSPEED * deltaTime);
   }
   if (_moveStatus.down)
   {
-    moveUp(-1.f);
+    moveUp(MVSPEED * deltaTime);
   }
   if (_moveStatus.left)
   {
-    moveRight(-1.f);
+    moveRight(-MVSPEED * deltaTime);
   }
   if (_moveStatus.right)
   {
-    moveRight(1.f);
+    moveRight(MVSPEED * deltaTime);
   }
 
-
+  //syncCam();
 }

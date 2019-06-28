@@ -1,7 +1,6 @@
 #pragma once
 #include "../pckgs/masterRenderer/MasterRenderer.h"
 #include "../pckgs/primatives/PrimativeRenderer.h"
-#include "../pckgs/spawner/Spawner.h"
 #include "../pckgs/skybox/SkyboxRenderer.h"
 #include "../pckgs/topDownPlayer/TopDownPlayer.h"
 
@@ -11,8 +10,6 @@ public:
   TopDownPlayer* player;
 
   PrimativeRenderer* prims;
-
-  Spawner* spawner;
 
   SkyboxRenderer* sky;
 

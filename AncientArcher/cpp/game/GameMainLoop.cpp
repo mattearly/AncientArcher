@@ -14,21 +14,19 @@ void Game::mainLoop() {
   static float currentFrame;
   while (!glfwWindowShouldClose(g_display.window))
   {
-    // TIMING - UDPATE DELTA TIME ---- // 
+    // TIMING - UDPATE DELTA TIME
     currentFrame = (float)glfwGetTime();
     deltaTime = currentFrame - lastFrame;
     lastFrame = currentFrame;
-    // PROCESS PLAYER CONTROLS & MOVEMENT ---- //
-    player->update(deltaTime);
-
-    // PROCESS PRIMATIVES MOVEMENT ---- //
-    prims->update(deltaTime);
+    // PROCESS PLAYER CONTROLS & MOVEMENT
+    player->update();
 
     // PLAYER SYNC
-    player->syncCam();
+    player->updateMovement(deltaTime);
 
-    // RENDER EVERYTHING ---- //
+    // RENDER EVERYTHING 
     masterRenderer.update(deltaTime, player, prims, sky);
+
     // RECORD KEYPRESSES FOR NEXT FRAME ---- //
     glfwPollEvents();
   }
