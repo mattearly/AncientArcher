@@ -1,6 +1,7 @@
 #include "MasterRenderer.h"
 #include <Display.h>
 #include <glad/glad.h>
+#include "../topDownPlayer/TopDownPlayer.h"
 
 extern Display g_display;
 
@@ -38,6 +39,17 @@ void MasterRenderer::update(float deltaTime, FirstPersonPlayer* player, Primativ
   prims->render();
 
   player->render();
+
+  sky->render();
+
+  g_display.update();
+}
+
+void MasterRenderer::update(float deltaTime, TopDownPlayer* tdp, PrimativeRenderer* prims, SkyboxRenderer* sky)
+{
+  g_display.clear();
+
+  prims->render();
 
   sky->render();
 

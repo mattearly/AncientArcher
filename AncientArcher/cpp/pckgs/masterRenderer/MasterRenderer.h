@@ -7,6 +7,7 @@
 #include <vector>
 #include <glm/glm.hpp>
 #include "../firstPersonPlayer/FirstPersonPlayer.h"
+#include "../topDownPlayer/TopDownPlayer.h"
 
 
 class MasterRenderer {
@@ -21,6 +22,7 @@ public:
   void disableGLDepthTest();
 
   void update(float deltaTime, FirstPersonPlayer *fpplayer, PrimativeRenderer *prims, SkyboxRenderer *sky);
+  void update(float deltaTime, TopDownPlayer *tdp, PrimativeRenderer *prims, SkyboxRenderer *sky);
 
   void update(PrimativeRenderer* primRen, SideScrollPlayer* playerRen,
     Spawner* enemyRen, HealthBar* healthRen, SkyboxRenderer* skyRen,

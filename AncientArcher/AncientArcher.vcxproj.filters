@@ -96,6 +96,9 @@
     <ClCompile Include="cpp\pckgs\planter\Planter.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="cpp\pckgs\topDownPlayer\TopDownPlayer.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="cpp\engine\headers\Collider.h">
@@ -180,6 +183,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="cpp\pckgs\planter\Planter.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="cpp\pckgs\topDownPlayer\TopDownPlayer.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
