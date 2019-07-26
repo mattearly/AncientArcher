@@ -5,13 +5,16 @@
 #include <glad/glad.h>
 #include <glm/glm.hpp>
 
-extern Camera g_camera;  // camera is instantiated as a global in main.cpp
+//extern Camera g_camera;  // camera is instantiated as a global in main.cpp
 
 /**
  * Default Constructor. Load a cube map texture the default skybox and skymap shader.
  */
-SkyboxRenderer::SkyboxRenderer()
+SkyboxRenderer::SkyboxRenderer(std::shared_ptr<Camera> camera)
 {
+
+  _camera = camera;
+  
   skyboxShader = std::make_unique< Shader >(
     "../AncientArcher/cpp/pckgs/skybox/skybox.vert",
     "../AncientArcher/cpp/pckgs/skybox/skybox.frag"
@@ -41,8 +44,11 @@ SkyboxRenderer::SkyboxRenderer()
  *
  * @param incomingSkymapFiles  A six image cube map texture.
  */
-SkyboxRenderer::SkyboxRenderer(std::vector<std::string> incomingSkymapFiles)
+SkyboxRenderer::SkyboxRenderer(std::shared_ptr<Camera> camera, std::vector<std::string> incomingSkymapFiles)
 {
+
+  _camera = camera;
+
   skyboxShader = std::make_unique< Shader >(
     "../AncientArcher/cpp/pckgs/skybox/skybox.vert",
     "../AncientArcher/cpp/pckgs/skybox/skybox.frag"
@@ -146,7 +152,7 @@ void SkyboxRenderer::loadSkybox()
  */
 void SkyboxRenderer::loadProjectionMatrix()
 {
-  glm::mat4 projectionMatrix = g_camera.getProjectionMatrix();
+  glm::mat4 projectionMatrix = _camera->getProjectionMatrix();
   skyboxShader->use();
   skyboxShader->setMat4("projection", projectionMatrix);
 }
@@ -157,7 +163,7 @@ void SkyboxRenderer::loadProjectionMatrix()
  */
 void SkyboxRenderer::loadViewMatrix()
 {
-  glm::mat4 viewMatrix = glm::mat4(glm::mat3(g_camera.getViewMatrix())); // skybox never appears to move https://learnopengl.com/Advanced-OpenGL/Cubemaps
+  glm::mat4 viewMatrix = glm::mat4(glm::mat3(_camera->getViewMatrix())); // skybox never appears to move https://learnopengl.com/Advanced-OpenGL/Cubemaps
   skyboxShader->use();
   skyboxShader->setMat4("view", viewMatrix);
 }

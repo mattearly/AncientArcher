@@ -1,44 +1,19 @@
 #pragma once
-
-#include <Camera.h>
 #include <glad/glad.h>
 #include <GLFW/glfw3.h>
-#include <Entity.h>
-
-#include "../../pckgs/sideScrollerPlayer/SideScrollPlayer.h"
-
-#include "../../pckgs/firstPersonPlayer/FirstPersonPlayer.h"
-
-struct MoveStatus;
-class FirstPersonPlayer;
-class SideScrollPlayer;
+#include <keys.h>
+#include <mouse.h>
 
 class Controls {
 
 public:
 
-  Controls();
+  void mouseMovement(float x, float y);
 
-  void FPPmouseMovement(float xpos, float ypos);
-
-  void SSmouseMovement(float xpos, float ypos);
-
-  void fppKeyboardIn(FirstPersonPlayer* fpp);
-
-  void sideScrollPlayerKeyboardInput(SideScrollPlayer* ssp);
-
-  void entityKeyboardInput(Entity* entity);
-
-  void entitiesKeyboardInput(Entity* entity, unsigned int numEntities);
-
-  void tdpKeyboardIn(MoveStatus& moveStatus);
-
+  void keyboardInput();
+  
 private:
 
-  bool firstMouse;
-
-  float lastX, lastY;
-
-  float mouseSensitivity;
+  float mouseSensitivity = 0.09f;
 
 };

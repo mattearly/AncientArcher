@@ -4,6 +4,7 @@
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
 #include <glad/glad.h>  
+
 extern Display g_display;
 
 Camera::Camera(const glm::vec3 startingPos, const float lookDir, const float pitch, const float fov)

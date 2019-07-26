@@ -1,11 +1,12 @@
 #include <Display.h>
 #include <Controls.h>
+#include <Camera.h>
 #include <utility>
 #include <iostream>
 
 Controls g_controls;
 
-Display::Display(std::string windowName, MouseControlType mouseType)
+Display::Display(std::string windowName)
 {
 
   window_width = 1280;
@@ -35,17 +36,9 @@ Display::Display(std::string windowName, MouseControlType mouseType)
   // setup reshape window handler
   setupReshapeWindow();
 
-  // setup mouse handler
-  if (mouseType == MouseControlType::FPP)
-  {
-    setupMouseHandlerToFPPMode();
-    disableCursor();
-  }
-  else  // SIDESCROLLER MOUSE
-  {
-    setupMouseHanderToSideScrollerMode();
-    enableCursor();
-  }
+  setupMouseHandler();
+
+  enableCursor();
 
   // init glad
   if (!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress)) {
@@ -67,12 +60,9 @@ void Display::reshapeWindow(GLFWwindow* window, int w, int h) {
   window_height = h;
 }
 
-void Display::FPPmouseHandler(GLFWwindow* window, double xpos, double ypos) {
-  g_controls.FPPmouseMovement((float)xpos, (float)ypos);
-}
-
-void Display::SSmouseHandler(GLFWwindow* window, double xpos, double ypos) {
-  g_controls.SSmouseMovement((float)xpos, (float)ypos);
+void Display::mouseHandler(GLFWwindow* window, double xpos, double ypos)
+{
+  g_controls.mouseMovement((float)xpos, (float)ypos);
 }
 
 /**
@@ -107,18 +97,9 @@ extern "C" void reshapeCallback(GLFWwindow* window, int w, int h) {
   g_CurrentInstance->reshapeWindow(window, w, h);
 }
 
-/**
- * First Person mouse.
- */
-extern "C" void mouseCallbackFPP(GLFWwindow* window, double xpos, double ypos) {
-  g_CurrentInstance->FPPmouseHandler(window, xpos, ypos);
-}
-
-/**
- * Sidescroller mouse.
- */
-extern "C" void SSmouseCallback(GLFWwindow* window, double xpos, double ypos) {
-  g_CurrentInstance->SSmouseHandler(window, xpos, ypos);
+extern "C" void mouseCallback(GLFWwindow* window, double xpos, double ypos)
+{
+  g_CurrentInstance->mouseHandler(window, xpos, ypos);
 }
 
 void Display::setupReshapeWindow() {
@@ -126,13 +107,7 @@ void Display::setupReshapeWindow() {
   ::glfwSetFramebufferSizeCallback(window, ::reshapeCallback);
 }
 
-void Display::setupMouseHandlerToFPPMode() {
+void Display::setupMouseHandler() {
   ::g_CurrentInstance = this;
-  ::glfwSetCursorPosCallback(window, ::mouseCallbackFPP);
-}
-
-void Display::setupMouseHanderToSideScrollerMode()
-{
-  ::g_CurrentInstance = this;
-  ::glfwSetCursorPosCallback(window, ::SSmouseCallback);
+  ::glfwSetCursorPosCallback(window, ::mouseCallback);
 }

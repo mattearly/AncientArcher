@@ -1,5 +1,4 @@
-#include "PrimativeRenderer.h"
-
+#include <World.h>
 #include <glad/glad.h>
 #include <GLFW/glfw3.h>
 #include <glm/glm.hpp>
@@ -8,38 +7,36 @@
 #include <cmath>
 #include <iostream>
 #include <vector>
-#include <Camera.h>
-
-// --- EXTERNS --- // 
-
-extern Camera g_camera;  // from player
-
-// --- PUBLIC FUNCTIONS --- // 
 
 /**
  * Loads up a primative renderer with the default settings and shader.
  */
-PrimativeRenderer::PrimativeRenderer()
+World::World()
 {
-  primShader = std::make_unique< Shader >(
-    "../AncientArcher/cpp/pckgs/primatives/primative.vert",
-    "../AncientArcher/cpp/pckgs/primatives/primative.frag"
+
+  _defaultWorldCamera = std::make_unique<Camera>(glm::vec3(0.f, 5.0f, 0.f), -90.f, -89.0f, 80.f);
+
+
+  _defaultWorldShader = std::make_shared<Shader>(
+    "../AncientArcher/resource/world/primative.vert",
+    "../AncientArcher/resource/world/primative.frag"
     );
-  primShader->use();
-  glm::mat4 proj = g_camera.getProjectionMatrix();
-  primShader->setMat4("projection", proj);
-  primWorldLighting = std::make_shared<Lighting>();
+  _defaultWorldShader->use();
+  glm::mat4 proj = _defaultWorldCamera->getProjectionMatrix();
+  _defaultWorldShader->setMat4("projection", proj);
+  _defaultWorldLighting = std::make_shared<Lighting>();
 
-  primWorldLighting->updateConstantLightAmbient(glm::vec3(.09, 0.07, 0.07));
-  primWorldLighting->updateConstantLightDirection(glm::vec3(0, -1, 0));
-  primWorldLighting->updateConstantLightDiffuse(glm::vec3(.80, .70, .74));
-  primWorldLighting->updateConstantLightSpecular(glm::vec3(.5, .5, .5));
+  _defaultWorldLighting->updateConstantLightAmbient(glm::vec3(.09, 0.07, 0.07));
+  _defaultWorldLighting->updateConstantLightDirection(glm::vec3(0, -1, 0));
+  _defaultWorldLighting->updateConstantLightDiffuse(glm::vec3(.80, .70, .74));
+  _defaultWorldLighting->updateConstantLightSpecular(glm::vec3(.5, .5, .5));
 
-  primWorldLighting->setConstantLight(getShader());
+  _defaultWorldLighting->setConstantLight(getShader());
+
 }
 
 
-void PrimativeRenderer::update(float deltaTime)
+void World::update(float deltaTime)
 {
   elapsedTime += deltaTime;
 
@@ -59,11 +56,11 @@ void PrimativeRenderer::update(float deltaTime)
 /**
  * Renders all the objects on the std::vector<Entity> entities array.
  */
-void PrimativeRenderer::render()
+void World::render()
 {
-  primShader->use();
-  g_camera.update(primShader.get());
-  for (auto e : entities)
+  _defaultWorldShader->use();
+  _defaultWorldCamera->update(_defaultWorldShader.get());
+  for (auto e : _stationaryEntities)
   {
 
     glActiveTexture(GL_TEXTURE0);
@@ -79,7 +76,7 @@ void PrimativeRenderer::render()
     // step3: scale
     model = glm::scale(model, glm::vec3(e.gameItem.scale));
 
-    primShader.get()->setMat4("model", model);
+    _defaultWorldShader.get()->setMat4("model", model);
 
     switch (e.gameItem.type) {
     case ENTITYTYPE::CUBE:
@@ -94,7 +91,7 @@ void PrimativeRenderer::render()
     default: break;
     }
   }
-  for (auto e : movingEntities)
+  for (auto e : _movingEntities)
   {
 
     glActiveTexture(GL_TEXTURE0);
@@ -110,7 +107,7 @@ void PrimativeRenderer::render()
     // step3: scale
     model = glm::scale(model, glm::vec3(e.gameItem.scale));
 
-    primShader.get()->setMat4("model", model);
+    _defaultWorldShader.get()->setMat4("model", model);
 
     switch (e.gameItem.type) {
     case ENTITYTYPE::CUBE:
@@ -130,56 +127,78 @@ void PrimativeRenderer::render()
 /**
  * Adds a built entity to the std::vector<Entity> entities array.
  */
-void PrimativeRenderer::addToPrimativeEntities(Entity entity)
+void World::addToPrimativeEntities(Entity entity)
 {
-  entities.push_back(entity);
+  _stationaryEntities.push_back(entity);
 }
 
-void PrimativeRenderer::addToMovingEntities(Entity entity)
+void World::addToMovingEntities(Entity entity)
 {
-  movingEntities.push_back(entity);
+  _movingEntities.push_back(entity);
 }
 
-std::vector<Entity>* PrimativeRenderer::getEntites()
+std::vector<Entity>* World::getEntites()
 {
-  return &entities;
+  return &_stationaryEntities;
 }
 
-Entity* PrimativeRenderer::getFirstEntity()
+Entity* World::getFirstEntity()
 {
-  return &entities[0];
+  return &_stationaryEntities[0];
+  //return entities.data();
 }
 
-std::vector<Entity>* PrimativeRenderer::getMovingEntites()
+Entity* World::getFirstPlayerEntity()
 {
-  return &movingEntities;
+  return &_players[0];
+  //return players.data();
 }
 
-Entity* PrimativeRenderer::getFirstMovingEntity()
+std::vector<Entity>* World::getMovingEntites()
 {
-  return &movingEntities[0];
+  return &_movingEntities;
 }
 
-Shader* PrimativeRenderer::getShader()
+Entity* World::getFirstMovingEntity()
 {
-  return primShader.get();
+  return &_movingEntities[0];
 }
 
-Lighting* PrimativeRenderer::getLight()
+Shader* World::getShader()
 {
-  return primWorldLighting.get();
+  return _defaultWorldShader.get();
 }
 
-std::size_t PrimativeRenderer::size()
+std::shared_ptr<Shader> World::getSharedShader()
 {
-  return entities.size();
+  return _defaultWorldShader;
 }
 
-void PrimativeRenderer::entityPopBack()
+Lighting* World::getLight()
 {
-  if (entities.size() > 0)
+  return _defaultWorldLighting.get();
+}
+
+Camera* World::getCamera()
+{
+  return _defaultWorldCamera.get();
+}
+
+std::shared_ptr<Camera> World::getSharedCamera()
+{
+  return _defaultWorldCamera;
+
+}
+std::size_t World::numberOfEntities()
+{
+  return _stationaryEntities.size();
+}
+
+void World::entityPopBack()
+{
+  if (_stationaryEntities.size() > 0)
   {
-    entities.pop_back();
+    _stationaryEntities.pop_back();
   }
 }
 
@@ -188,7 +207,7 @@ void PrimativeRenderer::entityPopBack()
 /**
  * Draws a cube. Loads up the cube primative if it isn't already loaded. Instantiate Entities and call render() to draw them.
  */
-void PrimativeRenderer::drawCube()
+void World::drawCube()
 {
   if (!cubeLoaded) {
     loadCube();
@@ -202,7 +221,7 @@ void PrimativeRenderer::drawCube()
 /**
  * Draws a plane. Loads up the plane primative if it isn't already loaded. Instantiate Entities and call render() to draw them.
  */
-void PrimativeRenderer::drawPlane()
+void World::drawPlane()
 {
   if (!planeLoaded) {
     loadPlane();
@@ -216,7 +235,7 @@ void PrimativeRenderer::drawPlane()
 /**
  * Draws a sphere. Loads up the sphere primative if it isn't already loaded. Instantiate Entities and call render() to draw them.
  */
-void PrimativeRenderer::drawSphere()
+void World::drawSphere()
 {
   if (!sphereLoaded) {
     loadSphere();
@@ -233,7 +252,7 @@ void PrimativeRenderer::drawSphere()
 
 }
 
-void PrimativeRenderer::loadCube() {
+void World::loadCube() {
   // cube with texture coords and normals
   const float vertices[] = {
     // positions            // normals             // texture coords
@@ -312,7 +331,7 @@ void PrimativeRenderer::loadCube() {
 
 }
 
-void PrimativeRenderer::loadPlane() {
+void World::loadPlane() {
   // plane with texture coords and normals
   float vertices[] = {
     // positions               // normals       //text cords    
@@ -357,7 +376,7 @@ void PrimativeRenderer::loadPlane() {
  * * sets sphereVAO and sphere VBO's
  * largely built from this source: http://www.songho.ca/opengl/gl_sphere.html
  */
-void PrimativeRenderer::loadSphere()
+void World::loadSphere()
 {
   // --- PREPARE SPHERE VERTICES --- //
   const float radius = 0.5f;

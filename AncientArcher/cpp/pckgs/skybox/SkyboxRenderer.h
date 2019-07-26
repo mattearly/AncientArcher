@@ -1,5 +1,6 @@
 #pragma once
 #include <Shader.h>
+#include <Camera.h>
 #include <vector>
 #include <string>
 #include <memory>
@@ -9,8 +10,8 @@ class SkyboxRenderer
 {
 public:
 
-  SkyboxRenderer();
-  SkyboxRenderer(std::vector<std::string> incomingSkymapFiles);
+  SkyboxRenderer(std::shared_ptr<Camera> camera);
+  SkyboxRenderer(std::shared_ptr<Camera> camera, std::vector<std::string> incomingSkymapFiles);
 
   void render();
 
@@ -24,5 +25,7 @@ private:
   std::unique_ptr< Shader > skyboxShader;
   void loadProjectionMatrix();
   void loadViewMatrix();
+
+  std::shared_ptr<Camera> _camera;
 
 };

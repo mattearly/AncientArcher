@@ -14,20 +14,17 @@ void Game::mainLoop() {
   static float currentFrame;
   while (!glfwWindowShouldClose(g_display.window))
   {
-    // TIMING - UDPATE DELTA TIME
+    // --- TIMING - UPDATE DELTA TIME
     currentFrame = (float)glfwGetTime();
     deltaTime = currentFrame - lastFrame;
     lastFrame = currentFrame;
-    // PROCESS PLAYER CONTROLS & MOVEMENT
-    player->update();
+  
+    // --- RENDER
 
-    // PLAYER SYNC
-    player->updateMovement(deltaTime);
+    
+    
 
-    // RENDER EVERYTHING 
-    masterRenderer.update(deltaTime, player, prims, sky);
-
-    // RECORD KEYPRESSES FOR NEXT FRAME ---- //
+    // --- RECORD KEYPRESSES FOR NEXT FRAME
     glfwPollEvents();
   }
 }

@@ -63,9 +63,6 @@
     <ClCompile Include="cpp\pckgs\masterRenderer\MasterRenderer.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="cpp\pckgs\primatives\PrimativeRenderer.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="cpp\pckgs\skybox\SkyboxRenderer.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -73,9 +70,6 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="cpp\engine\source\GlyphLoader.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="cpp\pckgs\sideScrollerPlayer\SideScrollPlayer.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="cpp\pckgs\spawner\Spawner.cpp">
@@ -97,6 +91,9 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="cpp\pckgs\topDownPlayer\TopDownPlayer.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="cpp\engine\source\World.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -143,9 +140,6 @@
     <ClInclude Include="cpp\pckgs\masterRenderer\MasterRenderer.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="cpp\pckgs\primatives\PrimativeRenderer.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="cpp\pckgs\skybox\SkyboxRenderer.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -162,9 +156,6 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="cpp\engine\headers\Character.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="cpp\pckgs\sideScrollerPlayer\SideScrollPlayer.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="cpp\pckgs\spawner\Spawner.h">
@@ -186,6 +177,15 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="cpp\pckgs\topDownPlayer\TopDownPlayer.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="cpp\engine\headers\World.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="cpp\engine\headers\keys.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="cpp\engine\headers\mouse.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

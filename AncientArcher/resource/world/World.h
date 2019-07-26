@@ -1,6 +1,7 @@
 #pragma once
 #include <Shader.h>
 #include <Lighting.h>
+#include <Camera.h>
 #include <glm/glm.hpp>
 #include <vector>
 #include <memory>
@@ -23,6 +24,8 @@ public:
   Shader* getShader();
 
   Lighting* getLight();
+
+  Camera* getCamera();
 
   std::size_t size();
 
@@ -58,7 +61,9 @@ private:
 
   std::vector<Entity> movingEntities;
 
-  std::unique_ptr< Shader > primShader;
+  std::unique_ptr<Camera> camera;
+
+  std::unique_ptr<Shader> primShader;
 
   std::shared_ptr<Lighting> primWorldLighting;
 

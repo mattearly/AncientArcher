@@ -1,23 +1,26 @@
 #pragma once
-#include "../pckgs/masterRenderer/MasterRenderer.h"
-#include "../pckgs/primatives/PrimativeRenderer.h"
+#include <World.h>
+#include <keys.h>
+#include <mouse.h>
 #include "../pckgs/skybox/SkyboxRenderer.h"
-#include "../pckgs/topDownPlayer/TopDownPlayer.h"
+#include "../pckgs/firstPersonPlayer/FirstPersonPlayer.h"
 
 class Game {
 public:
 
-  TopDownPlayer* player;
+  World* world;
 
-  PrimativeRenderer* prims;
+  FirstPersonPlayer* player;
 
   SkyboxRenderer* sky;
-
-  MasterRenderer masterRenderer;
 
   Game();
 
   void mainLoop();
+
+  keys keypress;
+
+  mouse mousepos;
 
 private:
 
