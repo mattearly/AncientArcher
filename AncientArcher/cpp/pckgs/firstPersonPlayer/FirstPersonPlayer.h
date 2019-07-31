@@ -17,7 +17,7 @@ class Camera;
 
 class FirstPersonPlayer {
 public:
-  FirstPersonPlayer(std::shared_ptr<Camera> cam, std::shared_ptr<Shader> shader);
+  FirstPersonPlayer(std::shared_ptr<Camera>& cam, std::shared_ptr<Shader>& shader);
 
   struct Moves {
 
@@ -49,7 +49,8 @@ public:
     bool radiusLightOn = false;
   } status;
 
-  void update(float deltaTime);
+  //void update(float deltaTime);
+  void update();
   void finalCollisionCheck(const std::vector<Entity>* entities);
   void syncCam();
 

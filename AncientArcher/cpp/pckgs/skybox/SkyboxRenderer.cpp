@@ -5,20 +5,27 @@
 #include <glad/glad.h>
 #include <glm/glm.hpp>
 
+#include <iostream>
+
 //extern Camera g_camera;  // camera is instantiated as a global in main.cpp
 
 /**
  * Default Constructor. Load a cube map texture the default skybox and skymap shader.
  */
-SkyboxRenderer::SkyboxRenderer(std::shared_ptr<Camera> camera)
+SkyboxRenderer::SkyboxRenderer(std::shared_ptr<Camera>& camera)
 {
-
   _camera = camera;
-  
+
+  //debug
+  std::cout << "cam use count in skybox init: " << _camera.use_count() << std::endl;
+  // 4???????????
+
   skyboxShader = std::make_unique< Shader >(
     "../AncientArcher/cpp/pckgs/skybox/skybox.vert",
     "../AncientArcher/cpp/pckgs/skybox/skybox.frag"
     );
+
+
   loadSkybox();
 
   TextureLoader loader;
@@ -44,7 +51,7 @@ SkyboxRenderer::SkyboxRenderer(std::shared_ptr<Camera> camera)
  *
  * @param incomingSkymapFiles  A six image cube map texture.
  */
-SkyboxRenderer::SkyboxRenderer(std::shared_ptr<Camera> camera, std::vector<std::string> incomingSkymapFiles)
+SkyboxRenderer::SkyboxRenderer(std::shared_ptr<Camera>& camera, std::vector<std::string> incomingSkymapFiles)
 {
 
   _camera = camera;

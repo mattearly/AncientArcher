@@ -14,24 +14,26 @@
 World::World()
 {
 
-  _defaultWorldCamera = std::make_unique<Camera>(glm::vec3(0.f, 5.0f, 0.f), -90.f, -89.0f, 80.f);
+  _defaultWorldCamera = std::make_shared<Camera>(glm::vec3(0.f, 5.0f, 0.f), -90.f, -89.0f, 80.f);
+  _defaultWorldShader = std::make_shared<Shader>("../AncientArcher/resource/world/primative.vert", "../AncientArcher/resource/world/primative.frag");
+  _defaultWorldLighting = std::make_shared<Lighting>();
 
+  // debug
+  std::cout << "number of shared Camera in world init " << _defaultWorldCamera.use_count() << std::endl;
+  std::cout << "number of shared Shader in world init " << _defaultWorldShader.use_count() << std::endl;
+  std::cout << "number of shared Lighting in world init " << _defaultWorldLighting.use_count() << std::endl;
+  // -- ok
 
-  _defaultWorldShader = std::make_shared<Shader>(
-    "../AncientArcher/resource/world/primative.vert",
-    "../AncientArcher/resource/world/primative.frag"
-    );
   _defaultWorldShader->use();
   glm::mat4 proj = _defaultWorldCamera->getProjectionMatrix();
   _defaultWorldShader->setMat4("projection", proj);
-  _defaultWorldLighting = std::make_shared<Lighting>();
 
   _defaultWorldLighting->updateConstantLightAmbient(glm::vec3(.09, 0.07, 0.07));
   _defaultWorldLighting->updateConstantLightDirection(glm::vec3(0, -1, 0));
   _defaultWorldLighting->updateConstantLightDiffuse(glm::vec3(.80, .70, .74));
   _defaultWorldLighting->updateConstantLightSpecular(glm::vec3(.5, .5, .5));
 
-  _defaultWorldLighting->setConstantLight(getShader());
+  _defaultWorldLighting->setConstantLight(getShader());  //todo check
 
 }
 
@@ -62,7 +64,6 @@ void World::render()
   _defaultWorldCamera->update(_defaultWorldShader.get());
   for (auto e : _stationaryEntities)
   {
-
     glActiveTexture(GL_TEXTURE0);
     glBindTexture(GL_TEXTURE_2D, e.gameItem.textureID);
 
@@ -127,7 +128,7 @@ void World::render()
 /**
  * Adds a built entity to the std::vector<Entity> entities array.
  */
-void World::addToPrimativeEntities(Entity entity)
+void World::addToStationaryEntities(Entity entity)
 {
   _stationaryEntities.push_back(entity);
 }
@@ -169,7 +170,7 @@ Shader* World::getShader()
   return _defaultWorldShader.get();
 }
 
-std::shared_ptr<Shader> World::getSharedShader()
+std::shared_ptr<Shader>& World::getSharedShader()
 {
   return _defaultWorldShader;
 }
@@ -184,7 +185,7 @@ Camera* World::getCamera()
   return _defaultWorldCamera.get();
 }
 
-std::shared_ptr<Camera> World::getSharedCamera()
+std::shared_ptr<Camera>& World::getSharedCamera()
 {
   return _defaultWorldCamera;
 

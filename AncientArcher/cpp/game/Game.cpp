@@ -25,14 +25,14 @@ Game::Game()
   world = new World();
 
   TextureLoader tLoader;
-  unsigned int texIDGrass = tLoader.load2DTexture(         "../AncientArcher/resource/world/grass.png");
+  unsigned int texIDGrass = tLoader.load2DTexture("../AncientArcher/resource/world/grass.png");
   unsigned int texIDCrumblingRocks = tLoader.load2DTexture("../AncientArcher/resource/world/crumbling_rocks.png");
-  unsigned int texIDDirt = tLoader.load2DTexture(          "../AncientArcher/resource/world/dirt.png");
-  unsigned int texIDLightBricks = tLoader.load2DTexture(   "../AncientArcher/resource/world/light_bricks.png");
-  unsigned int texIDMosaicBricks = tLoader.load2DTexture(  "../AncientArcher/resource/world/mosaic_bricks.png");
-  unsigned int texIDDarkStone = tLoader.load2DTexture(     "../AncientArcher/resource/world/darkstone.png");
-  unsigned int texIDPackedRocks = tLoader.load2DTexture(   "../AncientArcher/resource/world/packed_rocks.png");
-  unsigned int texIDLava = tLoader.load2DTexture(          "../AncientArcher/resource/world/lava.png");
+  unsigned int texIDDirt = tLoader.load2DTexture("../AncientArcher/resource/world/dirt.png");
+  unsigned int texIDLightBricks = tLoader.load2DTexture("../AncientArcher/resource/world/light_bricks.png");
+  unsigned int texIDMosaicBricks = tLoader.load2DTexture("../AncientArcher/resource/world/mosaic_bricks.png");
+  unsigned int texIDDarkStone = tLoader.load2DTexture("../AncientArcher/resource/world/darkstone.png");
+  unsigned int texIDPackedRocks = tLoader.load2DTexture("../AncientArcher/resource/world/packed_rocks.png");
+  unsigned int texIDLava = tLoader.load2DTexture("../AncientArcher/resource/world/lava.png");
 
   // ---- Base Ground Layers ----
   for (int i = -20; i < 20; i++)
@@ -45,16 +45,16 @@ Game::Game()
           ENTITYTYPE::CUBE,
           glm::vec3(i, -3.f - 1.0f * k, j),
           glm::vec3(1, 1, 1),
-          (k < 1) ? texIDGrass : 
-          (k < 4) ? texIDDirt : 
-          (k < 8) ? texIDCrumblingRocks : 
-          (k < 13) ? texIDPackedRocks : 
-          (k < 19) ? texIDDarkStone : 
+          (k < 1) ? texIDGrass :
+          (k < 4) ? texIDDirt :
+          (k < 8) ? texIDCrumblingRocks :
+          (k < 13) ? texIDPackedRocks :
+          (k < 19) ? texIDDarkStone :
           texIDLava,
           true,
           false
         );
-        world->addToPrimativeEntities(e);
+        world->addToStationaryEntities(e);
       }
     }
   }

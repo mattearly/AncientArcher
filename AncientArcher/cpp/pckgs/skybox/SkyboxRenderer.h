@@ -10,8 +10,8 @@ class SkyboxRenderer
 {
 public:
 
-  SkyboxRenderer(std::shared_ptr<Camera> camera);
-  SkyboxRenderer(std::shared_ptr<Camera> camera, std::vector<std::string> incomingSkymapFiles);
+  SkyboxRenderer(std::shared_ptr<Camera>& camera);
+  SkyboxRenderer(std::shared_ptr<Camera>& camera, std::vector<std::string> incomingSkymapFiles);
 
   void render();
 

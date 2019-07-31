@@ -11,7 +11,7 @@ Camera::Camera(const glm::vec3 startingPos, const float lookDir, const float pit
 {
   Position = startingPos;
   Yaw = lookDir;
-  Pitch = pitch;
+  Pitch = pitch; 
   FoV = fov;
 
   WorldUp = glm::vec3(0.0f, 1.0f, 0.0f);

@@ -35,6 +35,7 @@ void Controls::mouseMovement(float xpos, float ypos)
   }
 
   _camera->updateCameraVectors();*/
+
 }
 
 ///**

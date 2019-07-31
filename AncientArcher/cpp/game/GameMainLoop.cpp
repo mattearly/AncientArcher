@@ -1,12 +1,5 @@
 #include "Game.h"
-#include <glm/glm.hpp>
-#include <glm/gtc/matrix_transform.hpp>
-#include <glm/gtc/type_ptr.hpp>
-#include <GLFW/glfw3.h>
 #include <Display.h>
-#include <CollisionHandler.h>
-#include <vector>
-#include <Entity.h>
 
 extern Display g_display;
 
@@ -14,16 +7,20 @@ void Game::mainLoop() {
   static float currentFrame;
   while (!glfwWindowShouldClose(g_display.window))
   {
-    // --- TIMING - UPDATE DELTA TIME
-    currentFrame = (float)glfwGetTime();
-    deltaTime = currentFrame - lastFrame;
-    lastFrame = currentFrame;
-  
+    currentFrame = (float)glfwGetTime();    // --- TIMING - UPDATE DELTA TIME
+    deltaTime = currentFrame - lastFrame;   // --- don't touch this or the world
+    lastFrame = currentFrame;               // --- may come crashing down
+   
+
     // --- RENDER
+    g_display.clear();
+    player->update();
+    world->update(deltaTime);  // updates moving entites if there are any
+    world->render();
+    sky->render();
 
+    g_display.update();
     
-    
-
     // --- RECORD KEYPRESSES FOR NEXT FRAME
     glfwPollEvents();
   }

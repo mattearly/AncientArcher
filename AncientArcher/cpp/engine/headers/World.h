@@ -15,7 +15,7 @@ public:
 
   void update(float deltaTime);
   void render();
-  void addToPrimativeEntities(Entity entity);
+  void addToStationaryEntities(Entity entity);
   void addToMovingEntities(Entity entity);
 
   std::vector<Entity>* getEntites();
@@ -29,12 +29,12 @@ public:
   Entity* getFirstMovingEntity();             // returns ptr to first entity
 
   Shader* getShader();
-  std::shared_ptr<Shader> getSharedShader();
+  std::shared_ptr<Shader>& getSharedShader();
 
   Lighting* getLight();
 
   Camera *getCamera();
-  std::shared_ptr<Camera> getSharedCamera();
+  std::shared_ptr<Camera>& getSharedCamera();
 
   std::size_t numberOfEntities();
 

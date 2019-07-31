@@ -4,6 +4,7 @@
 #include <glm/glm.hpp>
 #include <TextureLoader.h>
 #include <Global.h>
+#include <iostream>
 
 extern Controls g_controls;    // from display.cpp (engine)
 
@@ -21,10 +22,15 @@ void FirstPersonPlayer::init()
 /**
  * Construct using a previously allocated cam and light.
  */
-FirstPersonPlayer::FirstPersonPlayer(std::shared_ptr<Camera> cam, std::shared_ptr<Shader> shader)
+FirstPersonPlayer::FirstPersonPlayer(std::shared_ptr<Camera>& cam, std::shared_ptr<Shader>& shader)
 {
   _playerCamera   = cam;
   _playerShader   = shader;
+
+  //debug
+  std::cout << "cam use count in player init: " << _playerCamera.use_count() << std::endl;
+  std::cout << "shader use count in player init: " << _playerShader.use_count() << std::endl;
+  // -- ok
 
   init();
 }
@@ -34,11 +40,14 @@ FirstPersonPlayer::FirstPersonPlayer(std::shared_ptr<Camera> cam, std::shared_pt
  * Does not check collision.
  * @param[in] deltaTime  for calculation movement distances.
  */
-void FirstPersonPlayer::update(float deltaTime)
+//void FirstPersonPlayer::update(float deltaTime)
+//{
+void FirstPersonPlayer::update()
 {
   // KEYBOARD
   g_controls.keyboardInput();
 
+  //_playerCamera->update( _playerShader.get() );
 }
 
 /**

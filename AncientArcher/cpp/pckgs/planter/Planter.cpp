@@ -37,6 +37,6 @@ void Planter::plantDemoTree(const glm::vec3 loc, World *world)
     }
   }
 
-  world->addToPrimativeEntities(*newPlant);
+  world->addToStationaryEntities(*newPlant);
   playequipgearsound();
 }
