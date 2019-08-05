@@ -7,11 +7,6 @@
 #include <Global.h>
 #include <mearly.h>
 
-// world position 0,0,0
-// yaw -90.f : forward facing down the -z axis  (should be 0.f is down the -z axis, why the f is it -90? #confusedprogramming)
-// pitch -89.f : downward
-// field of view 80.f : pretty wide, slight fisheye
-//Camera g_camera(glm::vec3(0.f, 5.0f, 0.f), -90.f, -89.0f, 80.f);
 extern Display g_display;
 
 Game::Game()
@@ -59,20 +54,20 @@ Game::Game()
     }
   }
 
-  player = new FirstPersonPlayer(world->getSharedCamera(), world->getSharedShader());
+  //player = new FirstPersonPlayer(world->getSharedCamera(), world->getSharedShader());
 
   // ---- LOAD SKYBOX ---- 
-  //std::vector<std::string> skyboxFiles =
-  //{
-  //  "../AncientArcher/cpp/pckgs/skybox/stars/right.png",
-  //  "../AncientArcher/cpp/pckgs/skybox/stars/left.png",
-  //  "../AncientArcher/cpp/pckgs/skybox/stars/top.png",
-  //  "../AncientArcher/cpp/pckgs/skybox/stars/bottom.png",
-  //  "../AncientArcher/cpp/pckgs/skybox/stars/front.png",
-  //  "../AncientArcher/cpp/pckgs/skybox/stars/back.png"
-  //};
-  //sky = new SkyboxRenderer(skyboxFiles);
+  std::vector<std::string> skyboxFiles =
+  {
+    "../AncientArcher/cpp/pckgs/skybox/stars/right.png",
+    "../AncientArcher/cpp/pckgs/skybox/stars/left.png",
+    "../AncientArcher/cpp/pckgs/skybox/stars/top.png",
+    "../AncientArcher/cpp/pckgs/skybox/stars/bottom.png",
+    "../AncientArcher/cpp/pckgs/skybox/stars/front.png",
+    "../AncientArcher/cpp/pckgs/skybox/stars/back.png"
+  };
+  sky = new Skybox(world->getSharedCamera(), skyboxFiles);
 
-  sky = new SkyboxRenderer(world->getSharedCamera());
+  //sky = new SkyboxRenderer(world->getSharedCamera());
 
 }

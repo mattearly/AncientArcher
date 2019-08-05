@@ -27,12 +27,13 @@ FirstPersonPlayer::FirstPersonPlayer(std::shared_ptr<Camera>& cam, std::shared_p
   _playerCamera   = cam;
   _playerShader   = shader;
 
+  init();
+
+
   //debug
   std::cout << "cam use count in player init: " << _playerCamera.use_count() << std::endl;
   std::cout << "shader use count in player init: " << _playerShader.use_count() << std::endl;
   // -- ok
-
-  init();
 }
 
 /**

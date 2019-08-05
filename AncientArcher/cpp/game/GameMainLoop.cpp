@@ -10,18 +10,28 @@ void Game::mainLoop() {
     currentFrame = (float)glfwGetTime();    // --- TIMING - UPDATE DELTA TIME
     deltaTime = currentFrame - lastFrame;   // --- don't touch this or the world
     lastFrame = currentFrame;               // --- may come crashing down
-   
 
-    // --- RENDER
-    g_display.clear();
-    player->update();
-    world->update(deltaTime);  // updates moving entites if there are any
-    world->render();
-    sky->render();
+    update(deltaTime);                 // --- process world logic
 
-    g_display.update();
-    
-    // --- RECORD KEYPRESSES FOR NEXT FRAME
-    glfwPollEvents();
+    render();                          // --- Draw the next frame
+
+    glfwPollEvents();                       // --- Record Keypresses and Mouse Movement
   }
+}
+
+void Game::update(float dt)
+{
+}
+
+void Game::render()
+{
+  g_display.clear();
+
+
+  world->render();
+  sky->render();
+
+
+
+  g_display.update();
 }

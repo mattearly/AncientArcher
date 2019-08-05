@@ -14,9 +14,26 @@
 World::World()
 {
 
-  _defaultWorldCamera = std::make_shared<Camera>(glm::vec3(0.f, 5.0f, 0.f), -90.f, -89.0f, 80.f);
+  // world position 0,0,0
+  // yaw -90.f : forward facing down the -z axis  (should be 0.f is down the -z axis, why the f is it -90? #confusedprogramming)
+  // pitch 0.0f : forward
+  // field of view 80.f : pretty wide, slight fisheye
+  _defaultWorldCamera = std::make_shared<Camera>(glm::vec3(0.f, 5.0f, 0.f), -90.f, -45.0f, 80.f);
   _defaultWorldShader = std::make_shared<Shader>("../AncientArcher/resource/world/primative.vert", "../AncientArcher/resource/world/primative.frag");
+  
+  _defaultWorldShader->use();
+  glm::mat4 proj = _defaultWorldCamera->getProjectionMatrix();
+  _defaultWorldShader->setMat4("projection", proj);
+
+  
   _defaultWorldLighting = std::make_shared<Lighting>();
+
+  _defaultWorldLighting->updateConstantLightAmbient(glm::vec3(.09, 0.07, 0.07));
+  _defaultWorldLighting->updateConstantLightDirection(glm::vec3(0, -1, 0));
+  _defaultWorldLighting->updateConstantLightDiffuse(glm::vec3(.80, .70, .74));
+  _defaultWorldLighting->updateConstantLightSpecular(glm::vec3(.5, .5, .5));
+
+  _defaultWorldLighting->setConstantLight(getShader());
 
   // debug
   std::cout << "number of shared Camera in world init " << _defaultWorldCamera.use_count() << std::endl;
@@ -24,19 +41,7 @@ World::World()
   std::cout << "number of shared Lighting in world init " << _defaultWorldLighting.use_count() << std::endl;
   // -- ok
 
-  _defaultWorldShader->use();
-  glm::mat4 proj = _defaultWorldCamera->getProjectionMatrix();
-  _defaultWorldShader->setMat4("projection", proj);
-
-  _defaultWorldLighting->updateConstantLightAmbient(glm::vec3(.09, 0.07, 0.07));
-  _defaultWorldLighting->updateConstantLightDirection(glm::vec3(0, -1, 0));
-  _defaultWorldLighting->updateConstantLightDiffuse(glm::vec3(.80, .70, .74));
-  _defaultWorldLighting->updateConstantLightSpecular(glm::vec3(.5, .5, .5));
-
-  _defaultWorldLighting->setConstantLight(getShader());  //todo check
-
 }
-
 
 void World::update(float deltaTime)
 {
@@ -62,6 +67,7 @@ void World::render()
 {
   _defaultWorldShader->use();
   _defaultWorldCamera->update(_defaultWorldShader.get());
+
   for (auto e : _stationaryEntities)
   {
     glActiveTexture(GL_TEXTURE0);
@@ -94,7 +100,6 @@ void World::render()
   }
   for (auto e : _movingEntities)
   {
-
     glActiveTexture(GL_TEXTURE0);
     glBindTexture(GL_TEXTURE_2D, e.gameItem.textureID);
 

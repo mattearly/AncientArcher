@@ -1,4 +1,4 @@
-#include "SkyboxRenderer.h"
+#include "Skybox.h"
 #include <Camera.h>
 #include <TextureLoader.h>
 
