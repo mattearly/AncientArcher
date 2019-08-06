@@ -28,10 +28,10 @@ World::World()
 
   _defaultWorldLighting = std::make_shared<Lighting>();
 
-  _defaultWorldLighting->updateConstantLightAmbient(glm::vec3(.09, 0.07, 0.07));
-  _defaultWorldLighting->updateConstantLightDirection(glm::vec3(0, -1, 0));
-  _defaultWorldLighting->updateConstantLightDiffuse(glm::vec3(.80, .70, .74));
-  _defaultWorldLighting->updateConstantLightSpecular(glm::vec3(.5, .5, .5));
+  //_defaultWorldLighting->updateConstantLightAmbient(glm::vec3(.09, 0.07, 0.07));
+  //_defaultWorldLighting->updateConstantLightDirection(glm::vec3(0, -1, 0));
+  //_defaultWorldLighting->updateConstantLightDiffuse(glm::vec3(.80, .70, .74));
+  //_defaultWorldLighting->updateConstantLightSpecular(glm::vec3(.5, .5, .5));
 
   _defaultWorldLighting->setConstantLight(getShader());
 
