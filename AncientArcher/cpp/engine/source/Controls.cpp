@@ -4,24 +4,40 @@ void Controls::keyboardInput()
 {
 }
 
-void Controls::mouseMovement(float xpos, float ypos)
+void Controls::setKeyboard(std::shared_ptr<keys>& kb)
 {
- /* if (firstMouse)
+  keypress = kb;
+}
+
+void Controls::setMouse(std::shared_ptr<mouse>& mouse)
+{
+  mousepos = mouse;
+}
+
+void Controls::mouseMovement(float x, float y)
+{
+  static bool firstMouse = true;
+  static float lastX(0.f), lastY(0.f), xOffset(0.f), yOffset(0.f);
+ if (firstMouse)
   {
-    lastX = xpos;
-    lastY = ypos;
+    lastX = x;
+    lastY = y;
     firstMouse = false;
   }
 
-  float xoffset = xpos - lastX;
-  float yoffset = lastY - ypos;
+  xOffset = x - lastX;
+  yOffset = lastY - y;
 
-  lastX = xpos;
-  lastY = ypos;
+  lastX = x;
+  lastY = y;
 
-  xoffset *= mouseSensitivity;
-  yoffset *= mouseSensitivity;
+  xOffset *= mouseSensitivity;
+  yOffset *= mouseSensitivity;
 
+  mousepos->xPos = xOffset;
+  mousepos->yPos = yOffset;
+
+  /*
   _camera->Yaw += xoffset;
   _camera->Pitch += yoffset;
 

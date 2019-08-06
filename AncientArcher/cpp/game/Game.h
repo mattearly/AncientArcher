@@ -1,5 +1,6 @@
 #pragma once
 #include <World.h>
+#include <memory.h>
 #include <keys.h>
 #include <mouse.h>
 #include "../pckgs/skybox/Skybox.h"
@@ -9,10 +10,11 @@ class Game {
 public:
 
   World* world;
-
   FirstPersonPlayer* player;
-
   Skybox* sky;
+
+  std::shared_ptr<keys> keypress;
+  std::shared_ptr<mouse> mousepos;
 
   Game();
 
@@ -20,12 +22,7 @@ public:
 
 private:
 
-  float lastFrame = 0.0f;
-  float deltaTime = 0.0f;
-
-  keys keypress;
-  mouse mousepos;
-
+  void update();
   void update(float dt);
   void render();
 

@@ -3,11 +3,13 @@
 #include <glm/glm.hpp>
 #include <iostream>
 #include <Display.h>
+#include <Controls.h>
 #include <TextureLoader.h>
 #include <Global.h>
 #include <mearly.h>
 
 extern Display g_display;
+extern Controls g_controls;
 
 Game::Game()
 {
@@ -17,8 +19,13 @@ Game::Game()
   std::cout << "//--GRAPHIC CARD INFO--//\nMax textures per shader:  " << __textures_allowed << "\n";
   std::cout << "Max total textures:  " << __totalTexturesAllowed << "\n";
 
-  world = new World();
+  keypress = std::make_shared<keys>();
+  mousepos = std::make_shared<mouse>();
+  g_controls.setKeyboard(keypress);
+  g_controls.setMouse(mousepos);
 
+  world = new World();
+  
   TextureLoader tLoader;
   unsigned int texIDGrass = tLoader.load2DTexture("../AncientArcher/resource/world/grass.png");
   unsigned int texIDCrumblingRocks = tLoader.load2DTexture("../AncientArcher/resource/world/crumbling_rocks.png");

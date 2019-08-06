@@ -1,7 +1,7 @@
 #include "Game.h"
 #include "Display.h"
 
-Display g_display("AADemo");
+Display g_display("AADemo", 640, 640, false);
 
 int main()
 {

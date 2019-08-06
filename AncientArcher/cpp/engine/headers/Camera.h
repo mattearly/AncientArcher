@@ -1,4 +1,5 @@
 #pragma once
+#include <Global.h>
 #include <Controls.h>
 #include <Shader.h>
 #include <glm/glm.hpp>
@@ -9,7 +10,7 @@ class Controls;
 class Camera {
 public:
   Camera(
-    const glm::vec3 startingPosition = { 0, 3, 0 },
+    const glm::vec3 startingPosition = glm::vec3(0.0f, 1.0f, 0.0f),
     const float lookingDir = 0.f,
     const float pitch = 0.f,
     const float fov = 45.f
@@ -26,44 +27,31 @@ public:
   glm::vec3* getPosition();
   glm::vec3* getFront();
   glm::vec3* getRight();
-  glm::vec3* getWorldUp();
   float getYaw();
   float getPitch();
   glm::mat4 getProjectionMatrix();
 
   // SETTERS
   void setPosition(glm::vec3 pos);
-
+  void increaseYawAndPitch(float yawOff, float pitchOff);
+  void increaseYaw(float offset);
+  void increasePitch(float offset);
   void setToOrtho(Shader* shader);
   void setToPerspective(Shader* shader, float fov);
 
-  glm::vec3 Position;
-
 private:
+  Camera() = delete;    // no default constructor
 
+  glm::vec3 Position;   // point position of the camera.
 
-  float FoV;
-
-  // left/right looking direction angle
-  float Yaw;
-
-  // up/down looking direction angle
-  float Pitch;
-
-  // where the camera is facing
-  glm::vec3 Front;
-
-  // up relative to the camera's lean
-  glm::vec3 Up;
-
-  // 90degree right to the camera's front
-  glm::vec3 Right;
-
-  // world's up direction: 0.0f, 1.0f, 0.0f
-  glm::vec3 WorldUp;
-
+  float FoV;            // Field of View
+  float Yaw;            // left/right looking direction angle
+  float Pitch;          // up/down looking direction angle
+  
   void updateCameraVectors();
-
-  Camera() = delete;  // no default constructor
+  
+  glm::vec3 Front;      // direction from Postion. where the camera is facing
+  glm::vec3 Right;      // direction from Postion. 90degree right to the camera's front
+  glm::vec3 Up;         // up relative to the camera's lean
 
 };

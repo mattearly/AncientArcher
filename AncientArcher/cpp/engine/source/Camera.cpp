@@ -1,4 +1,5 @@
 #include <Camera.h>
+#include <Global.h>
 #include <Display.h>
 #include <Global.h>
 #include <glm/glm.hpp>
@@ -12,10 +13,11 @@ Camera::Camera(const glm::vec3 startingPos, const float lookDir, const float pit
   Position = startingPos;
   Yaw = lookDir;
   Pitch = pitch; 
+
+  updateCameraVectors();  // set Front, Up, & Right
+
   FoV = fov;
 
-  WorldUp = glm::vec3(0.0f, 1.0f, 0.0f);
-  updateCameraVectors();  // set Front, Up, & Right
 }
 
 void Camera::update(Shader* shader) {
@@ -42,6 +44,33 @@ glm::mat4 Camera::getProjectionMatrix()
 void Camera::setPosition(glm::vec3 pos)
 {
   Position = pos;
+  //updateCameraVectors();  //update front, up, right 
+}
+
+void Camera::increaseYawAndPitch(float yawOff, float pitchOff)
+{
+  increaseYaw(yawOff);
+  increasePitch(pitchOff);
+  updateCameraVectors();
+}
+
+void Camera::increaseYaw(float offset)
+{
+  Yaw += offset;
+}
+
+void Camera::increasePitch(float offset)
+{
+  Pitch += offset;
+
+  if (this->Pitch > 89.0f)
+  {
+    this->Pitch = 89.0f;
+  }
+  else if (this->Pitch < -89.0f)
+  {
+    this->Pitch = -89.0f;
+  }
 }
 
 void Camera::setToOrtho(Shader* shader)
@@ -76,11 +105,6 @@ glm::vec3* Camera::getRight() {
   return &Right;
 }
 
-glm::vec3* Camera::getWorldUp()
-{
-  return &WorldUp;
-}
-
 float Camera::getYaw() {
   return Yaw;
 }
@@ -96,6 +120,6 @@ void Camera::updateCameraVectors() {
   front.z = sin(glm::radians(Yaw)) * cos(glm::radians(Pitch));
 
   Front = glm::normalize(front);
-  Right = glm::normalize(glm::cross(Front, WorldUp));
+  Right = glm::normalize(glm::cross(Front, WORLD_UP));
   Up = glm::normalize(glm::cross(Right, Front));
 }

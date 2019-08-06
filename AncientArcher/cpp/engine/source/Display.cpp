@@ -6,11 +6,11 @@
 
 Controls g_controls;
 
-Display::Display(std::string windowName)
+Display::Display(std::string winName, uint16_t width, uint16_t height, bool fullscreen)
 {
 
-  window_width = 1280;
-  window_height = 720;
+  window_width = width;
+  window_height = height;
 
   /* init glfw and opengl and game components */
   glfwInit();
@@ -23,7 +23,8 @@ Display::Display(std::string windowName)
 #endif
 
   // init window
-  window = glfwCreateWindow(window_width, window_height, windowName.c_str(), nullptr, nullptr);
+  //window = glfwCreateWindow(window_width, window_height, winName.c_str(), nullptr, nullptr);
+  window = glfwCreateWindow(window_width, window_height, winName.c_str(), nullptr, nullptr);
   if (window == nullptr) {
     std::cout << "failed to create glfw window" << std::endl;
     glfwTerminate();
@@ -38,8 +39,13 @@ Display::Display(std::string windowName)
 
   setupMouseHandler();
 
-  enableCursor();
+  //enableCursor();
+  disableCursor();
 
+  if (fullscreen)
+  {
+    glfwSetWindowMonitor(window, nullptr, 0, 0, width, height, NULL);
+  }
   // init glad
   if (!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress)) {
     std::cout << "failed to init GLAD" << std::endl;
@@ -54,15 +60,15 @@ Display::~Display() {
   glfwTerminate();
 }
 
-void Display::reshapeWindow(GLFWwindow* window, int w, int h) {
+void Display::reshapeWindow(GLFWwindow* window, uint16_t w, uint16_t h) {
   glViewport(0, 0, w, h);
   window_width = w;
   window_height = h;
 }
 
-void Display::mouseHandler(GLFWwindow* window, double xpos, double ypos)
+void Display::mouseHandler(GLFWwindow* window, float xpos, float ypos)
 {
-  g_controls.mouseMovement((float)xpos, (float)ypos);
+  g_controls.mouseMovement(xpos, ypos);
 }
 
 /**
@@ -99,7 +105,7 @@ extern "C" void reshapeCallback(GLFWwindow* window, int w, int h) {
 
 extern "C" void mouseCallback(GLFWwindow* window, double xpos, double ypos)
 {
-  g_CurrentInstance->mouseHandler(window, xpos, ypos);
+  g_CurrentInstance->mouseHandler(window, (float)xpos, (float)ypos);
 }
 
 void Display::setupReshapeWindow() {
