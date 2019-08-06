@@ -36,8 +36,7 @@ Game::Game()
   unsigned int texIDPackedRocks = tLoader.load2DTexture("../AncientArcher/resource/world/packed_rocks.png");
   unsigned int texIDLava = tLoader.load2DTexture("../AncientArcher/resource/world/lava.png");
 
-  // ---- Base Ground Layers ----
-  for (int i = -20; i < 20; i++)
+  for (int i = -20; i < 20; i++)  // Base Ground Layers
   {
     for (int j = -20; j < 20; j++)
     {
@@ -63,7 +62,7 @@ Game::Game()
 
   //player = new FirstPersonPlayer(world->getSharedCamera(), world->getSharedShader());
 
-  // ---- LOAD SKYBOX ---- 
+  // LOAD SKYBOX 
   std::vector<std::string> skyboxFiles =
   {
     "../AncientArcher/cpp/pckgs/skybox/stars/right.png",
@@ -80,23 +79,47 @@ Game::Game()
   world->getLight()->addPointLight(*world->getCamera()->getPosition(), world->getShader());   //debug point light
 }
 
+
+//////////////////////////////////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////////////////////////////////
+////////////////////////HELPER FUNCTIONS//////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////////////////////////////////
+
 void Game::moveCamHelper(float dt)
 {
   // this is a debug cam mover with no colliding
-
+  static const float FlyIncrement = 0.4f;
   static float flySpeed = 1.f;
   static float realVelocity = 0.f;
   static glm::vec3 directionPlacement = glm::vec3(0.f, 0.f, 0.f);
   static glm::vec3 moveFront = glm::vec3(*world->getCamera()->getFront());
 
-  flySpeed += scrolling->yOffset;
-  if (flySpeed > 10.f)
-  {
-    flySpeed = 10.f;
+  if (scrolling->yOffset > 0.1f) {
+
+    flySpeed += FlyIncrement;
+    std::cout << "flySpeed: " << flySpeed << std::endl;
+    scrolling->yOffset = 0;
   }
-  if (flySpeed < 1.f)
+
+  if (scrolling->yOffset < -0.1f) {
+
+    flySpeed -= FlyIncrement;
+    std::cout << "flySpeed: " << flySpeed << std::endl;
+    scrolling->yOffset = 0;
+
+  }
+  if (flySpeed >= 10.f)
   {
-    flySpeed = 1.f;
+    flySpeed = 9.999999f;
+    std::cout << "flySpeed: " << flySpeed << std::endl;
+
+  }
+  if (flySpeed <= 1.f)
+  {
+    flySpeed = 1.000001f;
+    std::cout << "flySpeed: " << flySpeed << std::endl;
+
   }
 
   realVelocity = dt * flySpeed;
@@ -122,9 +145,7 @@ void Game::moveCamHelper(float dt)
   }
 
   world->getCamera()->increasePosition(directionPlacement);
-
   world->getLight()->movePointLight(0, *world->getCamera()->getPosition(), world->getShader());  // debug point light stays at cam
-
   directionPlacement = glm::vec3(0.f, 0.f, 0.f);
   moveFront = glm::vec3(*world->getCamera()->getFront());
 }
