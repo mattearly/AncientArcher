@@ -1,11 +1,5 @@
 #include "FirstPersonPlayer.h"
 #include <Controls.h>
-#include <Camera.h>
-#include <glm/glm.hpp>
-#include <TextureLoader.h>
-#include <Global.h>
-#include <iostream>
-
 extern Controls g_controls;    // from display.cpp (engine)
 
 /**
@@ -31,8 +25,8 @@ FirstPersonPlayer::FirstPersonPlayer(std::shared_ptr<Camera>& cam, std::shared_p
 
 
   //debug
-  std::cout << "cam use count in player init: " << _playerCamera.use_count() << std::endl;
-  std::cout << "shader use count in player init: " << _playerShader.use_count() << std::endl;
+  //std::cout << "cam use count in player init: " << _playerCamera.use_count() << std::endl;
+  //std::cout << "shader use count in player init: " << _playerShader.use_count() << std::endl;
   // -- ok
 }
 

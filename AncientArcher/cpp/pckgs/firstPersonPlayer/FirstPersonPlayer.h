@@ -1,20 +1,10 @@
 #pragma once
 #include <Camera.h>
-#include <Collider.h>
-#include <Kinematics.h>
-#include <Entity.h>
 #include <Shader.h>
-#include <Lighting.h>
-#include <glm/glm.hpp>
-#include <vector>
-#include <Controls.h>
-#include <memory>
+#include <Entity.h>
 #include <CollisionHandler.h>
-#include <World.h>
-#include "../planter/Planter.h"
-
-class Camera;
-
+#include <vector>
+#include <memory>
 class FirstPersonPlayer {
 public:
   FirstPersonPlayer(std::shared_ptr<Camera>& cam, std::shared_ptr<Shader>& shader);
