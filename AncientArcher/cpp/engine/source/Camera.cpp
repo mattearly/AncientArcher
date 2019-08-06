@@ -20,10 +20,10 @@ Camera::Camera(const glm::vec3 startingPos, const float lookDir, const float pit
 
 }
 
-void Camera::update(Shader* shader) {
-  glm::mat4 view = getViewMatrix();
+void Camera::update(Shader* shader)
+{
   shader->use();
-  shader->setMat4("view", view);
+  shader->setMat4("view", getViewMatrix());
 }
 
 // needs called to update the FoV and/or window_width window_height, and draw distances

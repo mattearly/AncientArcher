@@ -66,6 +66,7 @@ void World::update(float deltaTime)
 void World::render()
 {
   _defaultWorldShader->use();
+
   _defaultWorldCamera->update(_defaultWorldShader.get());
 
   for (auto e : _stationaryEntities)
@@ -83,7 +84,7 @@ void World::render()
     // step3: scale
     model = glm::scale(model, glm::vec3(e.gameItem.scale));
 
-    _defaultWorldShader.get()->setMat4("model", model);
+    _defaultWorldShader->setMat4("model", model);
 
     switch (e.gameItem.type) {
     case ENTITYTYPE::CUBE:
