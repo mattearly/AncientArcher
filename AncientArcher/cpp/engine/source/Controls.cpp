@@ -34,8 +34,8 @@ void Controls::mouseMovement(float x, float y)
   xOffset *= mouseSensitivity;
   yOffset *= mouseSensitivity;
 
-  mousepos->xPos = xOffset;
-  mousepos->yPos = yOffset;
+  mousepos->xOffset = xOffset;
+  mousepos->yOffset = yOffset;
 
   /*
   _camera->Yaw += xoffset;

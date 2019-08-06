@@ -41,6 +41,9 @@ void Game::update()
 {
   glfwPollEvents();    // --- Record Keypresses and Mouse Movement
   
-  world->getCamera()->increaseYawAndPitch(mousepos->xPos, mousepos->yPos);
+  world->getCamera()->increaseYawAndPitch(mousepos->xOffset, mousepos->yOffset);
+
+  mousepos->xOffset = 0.f;
+  mousepos->yOffset = 0.f;
 
 }
