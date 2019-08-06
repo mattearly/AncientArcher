@@ -12,7 +12,7 @@ Camera::Camera(const glm::vec3 startingPos, const float lookDir, const float pit
 {
   Position = startingPos;
   Yaw = lookDir;
-  Pitch = pitch; 
+  Pitch = pitch;
 
   updateCameraVectors();  // set Front, Up, & Right
 
@@ -44,7 +44,7 @@ glm::mat4 Camera::getProjectionMatrix()
 void Camera::setPosition(glm::vec3 pos)
 {
   Position = pos;
-  //updateCameraVectors();  //update front, up, right 
+  updateCameraVectors();  //update front, up, right   --- todo: should we do this here?
 }
 
 void Camera::increaseYawAndPitch(float yawOff, float pitchOff)
@@ -52,6 +52,13 @@ void Camera::increaseYawAndPitch(float yawOff, float pitchOff)
   increaseYaw(yawOff);
   increasePitch(pitchOff);
   updateCameraVectors();
+}
+
+void Camera::increasePosition(glm::vec3 amount)
+{
+  Position += amount;
+  updateCameraVectors();  //update front, up, right   --- todo: should we do this here?
+
 }
 
 void Camera::increaseYaw(float offset)

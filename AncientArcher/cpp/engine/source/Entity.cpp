@@ -13,16 +13,16 @@ Entity::Entity(ENTITYTYPE t, glm::vec3 loc, glm::vec3 sc, int texID, bool isImpa
     collider = nullptr;
   }
   if (hasKinematics) {
-	  kinematics = new Kinematics(7.0f, 175.0f);
+    kinematics = new Kinematics(7.0f, 175.0f);
   }
   else {
-	  kinematics = nullptr;
+    kinematics = nullptr;
   }
 }
 
 void Entity::moveBy(glm::vec3 amount)
 {
-  
+
   this->gameItem.loc += amount;
 
   if (collider != nullptr) {
@@ -41,8 +41,8 @@ void Entity::moveTo(glm::vec3 newLocation)
 
 void Entity::syncLocation()
 {
-	this->gameItem.prevLoc = this->gameItem.loc;
-	this->collider->impasse.prevLoc = this->collider->impasse.loc;
+  this->gameItem.prevLoc = this->gameItem.loc;
+  this->collider->impasse.prevLoc = this->collider->impasse.loc;
 }
 
 /**

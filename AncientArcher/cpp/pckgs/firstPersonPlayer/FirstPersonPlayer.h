@@ -3,11 +3,12 @@
 #include <Shader.h>
 #include <Entity.h>
 #include <CollisionHandler.h>
+#include <keys.h>
 #include <vector>
 #include <memory>
 class FirstPersonPlayer {
 public:
-  FirstPersonPlayer(std::shared_ptr<Camera>& cam, std::shared_ptr<Shader>& shader);
+  FirstPersonPlayer(std::shared_ptr<Camera>& cam, std::shared_ptr<Shader>& shader, std::shared_ptr<keys>& key);
 
   struct Moves {
 
@@ -39,7 +40,6 @@ public:
     bool radiusLightOn = false;
   } status;
 
-  //void update(float deltaTime);
   void update();
   void finalCollisionCheck(const std::vector<Entity>* entities);
   void syncCam();
@@ -58,6 +58,9 @@ private:
 
   std::shared_ptr<Camera>   _playerCamera;
   std::shared_ptr<Shader>   _playerShader;
+  std::shared_ptr<keys> _keypress;
+
+
 
   float jumpTimer;
 
@@ -73,6 +76,8 @@ private:
   const float LEGPOWER_CAP = 100.0f;
   // control the divisor of the actual in-game stat, lower provides bigger results in the getter fuctions
   const float STAT_DIVISOR = 10.0f;
+
+  void updateFromKeypresses();
 
   void init();
 

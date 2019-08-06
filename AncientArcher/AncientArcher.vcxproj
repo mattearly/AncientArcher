@@ -188,6 +188,7 @@
     <ClInclude Include="cpp\engine\headers\GlyphLoader.h" />
     <ClInclude Include="cpp\engine\headers\Kinematics.h" />
     <ClInclude Include="cpp\engine\headers\mouse.h" />
+    <ClInclude Include="cpp\engine\headers\scroll.h" />
     <ClInclude Include="cpp\pckgs\GUI\HealthBar.h" />
     <ClInclude Include="cpp\pckgs\monospaceFont\TextRenderer.h" />
     <ClInclude Include="cpp\pckgs\planter\Planter.h" />

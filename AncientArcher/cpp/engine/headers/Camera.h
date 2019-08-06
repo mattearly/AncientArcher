@@ -33,9 +33,10 @@ public:
 
   // SETTERS
   void setPosition(glm::vec3 pos);
+
   void increaseYawAndPitch(float yawOff, float pitchOff);
-  void increaseYaw(float offset);
-  void increasePitch(float offset);
+  void increasePosition(glm::vec3 amount);
+
   void setToOrtho(Shader* shader);
   void setToPerspective(Shader* shader, float fov);
 
@@ -54,4 +55,7 @@ private:
   glm::vec3 Right;      // direction from Postion. 90degree right to the camera's front
   glm::vec3 Up;         // up relative to the camera's lean
 
+  // helper for increaseYawAndPitch()
+  void increaseYaw(float offset);
+  void increasePitch(float offset);
 };

@@ -34,10 +34,9 @@ Display::Display(std::string winName, uint16_t width, uint16_t height, bool full
   }
   glfwMakeContextCurrent(window);
 
-  // setup reshape window handler
-  setupReshapeWindow();
-
-  setupMouseHandler();
+  setupReshapeWindow();      // setup reshape window handler
+  setupMouseHandler();       // setup the mouse handler
+  setupScrollHandler();      // setup the scrollwheel handler
 
   //enableCursor();
   disableCursor();
@@ -71,6 +70,11 @@ void Display::mouseHandler(GLFWwindow* window, float xpos, float ypos)
   g_controls.mouseMovement(xpos, ypos);
 }
 
+void Display::scrollHandler(GLFWwindow* window, float xpos, float ypos)
+{
+  g_controls.scrollMovement(xpos, ypos);
+}
+
 /**
  * GLFW_CURSOR_NORMAL makes the cursor visible and behaving normally.
  */
@@ -97,6 +101,7 @@ void Display::update() const {
   glfwSwapBuffers(window);
 }
 
+
 static Display* g_CurrentInstance;
 
 extern "C" void reshapeCallback(GLFWwindow* window, int w, int h) {
@@ -108,6 +113,11 @@ extern "C" void mouseCallback(GLFWwindow* window, double xpos, double ypos)
   g_CurrentInstance->mouseHandler(window, (float)xpos, (float)ypos);
 }
 
+extern "C" void scrollCallback(GLFWwindow* window, double xpos, double ypos)
+{
+  g_CurrentInstance->scrollHandler(window, (float)xpos, (float)ypos);
+}
+
 void Display::setupReshapeWindow() {
   ::g_CurrentInstance = this;
   ::glfwSetFramebufferSizeCallback(window, ::reshapeCallback);
@@ -116,4 +126,9 @@ void Display::setupReshapeWindow() {
 void Display::setupMouseHandler() {
   ::g_CurrentInstance = this;
   ::glfwSetCursorPosCallback(window, ::mouseCallback);
+}
+
+void Display::setupScrollHandler() {
+  ::g_CurrentInstance = this;
+  ::glfwSetScrollCallback(window, ::scrollCallback);
 }

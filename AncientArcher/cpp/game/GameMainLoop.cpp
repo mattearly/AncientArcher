@@ -1,7 +1,9 @@
 #include "Game.h"
 #include <Display.h>
+#include <Controls.h>
 
 extern Display g_display;
+extern Controls g_controls;
 
 void Game::mainLoop() {
   while (!glfwWindowShouldClose(g_display.window))
@@ -11,19 +13,17 @@ void Game::mainLoop() {
     deltaTime = currentFrame - lastFrame;   // --- don't touch this or the world
     lastFrame = currentFrame;               // --- may come crashing down
 
-
     update(deltaTime);                      // --- process events reliant on deltaTime
-
 
     render();                               // --- Draw the next frame
 
-
-    update();                               // process events not reliant on deltaTime
+    update();                               // --- Process events not reliant on deltaTime
   }
 }
 
 void Game::update(float dt)
 {
+  moveCamHelper(dt);
 }
 
 void Game::render()
@@ -36,14 +36,15 @@ void Game::render()
   g_display.update();  // don't touch this
 }
 
-
 void Game::update()
 {
   glfwPollEvents();    // --- Record Keypresses and Mouse Movement
-  
-  world->getCamera()->increaseYawAndPitch(mousepos->xOffset, mousepos->yOffset);
 
+  g_controls.keyboardInput();
+
+  world->getCamera()->increaseYawAndPitch(mousepos->xOffset, mousepos->yOffset);
   mousepos->xOffset = 0.f;
   mousepos->yOffset = 0.f;
 
 }
+

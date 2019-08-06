@@ -33,7 +33,7 @@ public:
 
   Lighting* getLight();
 
-  Camera *getCamera();
+  Camera* getCamera();
   std::shared_ptr<Camera>& getSharedCamera();
 
   std::size_t numberOfEntities();

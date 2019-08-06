@@ -22,6 +22,7 @@ public:
 
   void reshapeWindow(GLFWwindow* window, uint16_t w, uint16_t h);
   void mouseHandler(GLFWwindow* window, float xpos, float ypos);
+  void scrollHandler(GLFWwindow* window, float xpos, float ypos);
 
   void enableCursor();
   void disableCursor();
@@ -33,5 +34,7 @@ private:
   void setupReshapeWindow();
 
   void setupMouseHandler();
+
+  void setupScrollHandler();
 
 };

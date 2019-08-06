@@ -188,5 +188,8 @@
     <ClInclude Include="cpp\pckgs\skybox\Skybox.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="cpp\engine\headers\scroll.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

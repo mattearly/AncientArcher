@@ -1,12 +1,9 @@
 #include "Game.h"
-#include <CollisionHandler.h>
 #include <glm/glm.hpp>
 #include <iostream>
 #include <Display.h>
 #include <Controls.h>
 #include <TextureLoader.h>
-#include <Global.h>
-#include <mearly.h>
 
 extern Display g_display;
 extern Controls g_controls;
@@ -21,11 +18,14 @@ Game::Game()
 
   keypress = std::make_shared<keys>();
   mousepos = std::make_shared<mouse>();
+  scrolling = std::make_shared<scroll>();
+
   g_controls.setKeyboard(keypress);
   g_controls.setMouse(mousepos);
+  g_controls.setScroller(scrolling);
 
   world = new World();
-  
+
   TextureLoader tLoader;
   unsigned int texIDGrass = tLoader.load2DTexture("../AncientArcher/resource/world/grass.png");
   unsigned int texIDCrumblingRocks = tLoader.load2DTexture("../AncientArcher/resource/world/crumbling_rocks.png");
@@ -77,4 +77,54 @@ Game::Game()
 
   //sky = new SkyboxRenderer(world->getSharedCamera());
 
+  world->getLight()->addPointLight(*world->getCamera()->getPosition(), world->getShader());   //debug point light
+}
+
+void Game::moveCamHelper(float dt)
+{
+  // this is a debug cam mover with no colliding
+
+  static float flySpeed = 1.f;
+  static float realVelocity = 0.f;
+  static glm::vec3 directionPlacement = glm::vec3(0.f, 0.f, 0.f);
+  static glm::vec3 moveFront = glm::vec3(*world->getCamera()->getFront());
+
+  flySpeed += scrolling->yOffset;
+  if (flySpeed > 10.f)
+  {
+    flySpeed = 10.f;
+  }
+  if (flySpeed < 1.f)
+  {
+    flySpeed = 1.f;
+  }
+
+  realVelocity = dt * flySpeed;
+
+  if (keypress->w)
+  {
+    directionPlacement += moveFront * realVelocity;
+  }
+
+  if (keypress->s)
+  {
+    directionPlacement -= moveFront * realVelocity;
+  }
+
+  if (keypress->a)
+  {
+    directionPlacement -= *world->getCamera()->getRight() * realVelocity;
+  }
+
+  if (keypress->d)
+  {
+    directionPlacement += *world->getCamera()->getRight() * realVelocity;
+  }
+
+  world->getCamera()->increasePosition(directionPlacement);
+
+  world->getLight()->movePointLight(0, *world->getCamera()->getPosition(), world->getShader());  // debug point light stays at cam
+
+  directionPlacement = glm::vec3(0.f, 0.f, 0.f);
+  moveFront = glm::vec3(*world->getCamera()->getFront());
 }

@@ -20,12 +20,12 @@ World::World()
   // field of view 80.f : pretty wide, slight fisheye
   _defaultWorldCamera = std::make_shared<Camera>(glm::vec3(0.f, 5.0f, 0.f), -90.f, -45.0f, 80.f);
   _defaultWorldShader = std::make_shared<Shader>("../AncientArcher/resource/world/primative.vert", "../AncientArcher/resource/world/primative.frag");
-  
+
   _defaultWorldShader->use();
   glm::mat4 proj = _defaultWorldCamera->getProjectionMatrix();
   _defaultWorldShader->setMat4("projection", proj);
 
-  
+
   _defaultWorldLighting = std::make_shared<Lighting>();
 
   _defaultWorldLighting->updateConstantLightAmbient(glm::vec3(.09, 0.07, 0.07));
