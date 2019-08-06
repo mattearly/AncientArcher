@@ -68,6 +68,7 @@ void World::render()
   _defaultWorldShader->use();
 
   _defaultWorldCamera->update(_defaultWorldShader.get());
+  glEnable(GL_DEPTH_TEST);
 
   for (auto e : _stationaryEntities)
   {
