@@ -78,9 +78,6 @@
     <ClCompile Include="cpp\pckgs\GUI\HealthBar.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="cpp\pckgs\masterRenderer\MasterRenderer.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="cpp\pckgs\monospaceFont\TextRenderer.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -174,9 +171,6 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="cpp\pckgs\GUI\HealthBar.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="cpp\pckgs\masterRenderer\MasterRenderer.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="cpp\pckgs\monospaceFont\TextRenderer.h">

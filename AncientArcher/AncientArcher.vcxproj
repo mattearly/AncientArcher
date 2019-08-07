@@ -172,7 +172,6 @@
     <ClCompile Include="cpp\engine\source\mearly.cpp" />
     <ClCompile Include="cpp\pckgs\firstPersonPlayer\FirstPersonPlayer.cpp" />
     <ClCompile Include="cpp\engine\source\World.cpp" />
-    <ClCompile Include="cpp\pckgs\masterRenderer\MasterRenderer.cpp" />
     <ClCompile Include="cpp\engine\source\Shader.cpp" />
     <ClCompile Include="cpp\engine\source\Sound.cpp" />
     <ClCompile Include="cpp\engine\source\stb_image.cpp" />
@@ -205,7 +204,6 @@
     <ClInclude Include="cpp\engine\headers\mearly.h" />
     <ClInclude Include="cpp\pckgs\firstPersonPlayer\FirstPersonPlayer.h" />
     <ClInclude Include="cpp\engine\headers\World.h" />
-    <ClInclude Include="cpp\pckgs\masterRenderer\MasterRenderer.h" />
     <ClInclude Include="cpp\engine\headers\Shader.h" />
     <ClInclude Include="cpp\engine\headers\Sound.h" />
     <ClInclude Include="cpp\engine\headers\stb_image.h" />
