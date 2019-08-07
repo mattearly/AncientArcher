@@ -1,44 +1,31 @@
 #pragma once
-
-#include <Camera.h>
 #include <glad/glad.h>
 #include <GLFW/glfw3.h>
-#include <Entity.h>
-
-#include "../../pckgs/sideScrollerPlayer/SideScrollPlayer.h"
-
-#include "../../pckgs/firstPersonPlayer/FirstPersonPlayer.h"
-
-struct MoveStatus;
-class FirstPersonPlayer;
-class SideScrollPlayer;
+#include <keys.h>
+#include <mouse.h>
+#include <scroll.h>
+#include <memory>
 
 class Controls {
 
 public:
 
-  Controls();
+  void mouseMovement(float x, float y);
 
-  void FPPmouseMovement(float xpos, float ypos);
+  void scrollMovement(float x, float y);
 
-  void SSmouseMovement(float xpos, float ypos);
-
-  void fppKeyboardIn(FirstPersonPlayer* fpp);
-
-  void sideScrollPlayerKeyboardInput(SideScrollPlayer* ssp);
-
-  void entityKeyboardInput(Entity* entity);
-
-  void entitiesKeyboardInput(Entity* entity, unsigned int numEntities);
-
-  void tdpKeyboardIn(MoveStatus& moveStatus);
+  void keyboardInput();
+ 
+  void setKeyboard(std::shared_ptr<keys>& kb);
+  void setMouse(std::shared_ptr<mouse>& mouse);
+  void setScroller(std::shared_ptr<scroll>& sroller);
 
 private:
 
-  bool firstMouse;
+  float mouseSensitivity = 0.09f;
 
-  float lastX, lastY;
-
-  float mouseSensitivity;
+  std::shared_ptr<keys> _keypress;
+  std::shared_ptr<mouse> _mousepos;
+  std::shared_ptr<scroll> _scrolling;
 
 };

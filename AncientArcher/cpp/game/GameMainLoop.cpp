@@ -1,33 +1,66 @@
 #include "Game.h"
-#include <glm/glm.hpp>
-#include <glm/gtc/matrix_transform.hpp>
-#include <glm/gtc/type_ptr.hpp>
-#include <GLFW/glfw3.h>
 #include <Display.h>
-#include <CollisionHandler.h>
-#include <vector>
-#include <Entity.h>
-
+#include <Controls.h>
 extern Display g_display;
+extern Controls g_controls;
 
 void Game::mainLoop() {
-  static float currentFrame;
   while (!glfwWindowShouldClose(g_display.window))
   {
-    // TIMING - UDPATE DELTA TIME
-    currentFrame = (float)glfwGetTime();
-    deltaTime = currentFrame - lastFrame;
-    lastFrame = currentFrame;
-    // PROCESS PLAYER CONTROLS & MOVEMENT
-    player->update();
+    static float currentFrame(0.f), deltaTime(0.f), lastFrame(0.f);
+    currentFrame = (float)glfwGetTime();    // --- TIMING - UPDATE DELTA TIME
+    deltaTime = currentFrame - lastFrame;   // --- don't touch this or the world
+    lastFrame = currentFrame;               // --- may come crashing down
 
-    // PLAYER SYNC
-    player->updateMovement(deltaTime);
+    update(deltaTime);                      // --- process events reliant on deltaTime
 
-    // RENDER EVERYTHING 
-    masterRenderer.update(deltaTime, player, prims, sky);
+    render();                               // --- Draw the next frame
 
-    // RECORD KEYPRESSES FOR NEXT FRAME ---- //
-    glfwPollEvents();
+    update();                               // --- Process events not reliant on deltaTime
   }
+}
+
+//////////////////////////////////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////////////////////////////////
+/////////////////////////////UPDATE BASED ON DELTA TIME///////////////////////////////////
+//////////////////////////////////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////////////////////////////////
+
+void Game::update(float dt)
+{
+  moveCamHelper(dt);
+}
+
+//////////////////////////////////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////////////////////////////////
+//////////////////////////////RENDER NEXT FRAME///////////////////////////////////////////
+//////////////////////////////////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////////////////////////////////
+
+void Game::render()
+{
+  g_display.clear();   // don't touch this
+
+  world->render();
+  sky->render();
+
+  g_display.update();  // don't touch this
+}
+
+//////////////////////////////////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////////////////////////////////
+///////////////////////UPDATE NOT RELIANT ON DELTA TIME///////////////////////////////////
+//////////////////////////////////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////////////////////////////////
+
+void Game::update()
+{
+  glfwPollEvents();    // Record Keypresses and Mouse Movement
+
+  g_controls.keyboardInput();
+
+  world->getCamera()->increaseYawAndPitch(mousepos->xOffset, mousepos->yOffset);
+  mousepos->xOffset = 0.f;
+  mousepos->yOffset = 0.f;
+
 }

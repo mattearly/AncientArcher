@@ -194,8 +194,8 @@ void initsound() {
     SDL_LogError(SDL_LOG_CATEGORY_APPLICATION,
       "Couldn't load audio: %s",
       Mix_GetError());
-  } 
-  
+  }
+
   sift02SoundEffect = Mix_LoadWAV("../AncientArcher/resource/sift02.wav");
   if (sift01SoundEffect == nullptr) {
     SDL_LogError(SDL_LOG_CATEGORY_APPLICATION,

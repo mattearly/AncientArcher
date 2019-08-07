@@ -7,3 +7,6 @@ static constexpr const float MAX_WORLD_HEIGHT = 40.0f;
 
 //static constexpr const float RENDER_DISTANCE = 50.f;
 static constexpr const float RENDER_DISTANCE = 100.f;
+
+#include <glm/glm.hpp>
+static constexpr const glm::vec3 WORLD_UP = glm::vec3(0.0f, 1.0f, 0.0f);

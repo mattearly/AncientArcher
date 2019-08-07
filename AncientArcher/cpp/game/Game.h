@@ -1,19 +1,22 @@
 #pragma once
-#include "../pckgs/masterRenderer/MasterRenderer.h"
-#include "../pckgs/primatives/PrimativeRenderer.h"
-#include "../pckgs/skybox/SkyboxRenderer.h"
-#include "../pckgs/topDownPlayer/TopDownPlayer.h"
+#include <World.h>
+#include <memory.h>
+#include <keys.h>
+#include <mouse.h>
+#include <scroll.h>
+#include "../pckgs/skybox/Skybox.h"
+#include "../pckgs/firstPersonPlayer/FirstPersonPlayer.h"
 
 class Game {
 public:
 
-  TopDownPlayer* player;
+  World* world;
+  FirstPersonPlayer* player;
+  Skybox* sky;
 
-  PrimativeRenderer* prims;
-
-  SkyboxRenderer* sky;
-
-  MasterRenderer masterRenderer;
+  std::shared_ptr<keys> keypress;
+  std::shared_ptr<mouse> mousepos;
+  std::shared_ptr<scroll> scrolling;
 
   Game();
 
@@ -21,8 +24,10 @@ public:
 
 private:
 
-  float lastFrame = 0.0f;
+  void update();
+  void update(float dt);
+  void render();
 
-  float deltaTime = 0.0f;
+  void moveCamHelper(float dt);
 
 };

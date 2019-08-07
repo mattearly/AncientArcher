@@ -1,21 +1,12 @@
 #include "Game.h"
-#include <CollisionHandler.h>
 #include <glm/glm.hpp>
 #include <iostream>
 #include <Display.h>
-#include <TextureLoader.h>
-#include <Global.h>
-#include <mearly.h>
+#include <Controls.h>
+#include "../pckgs/randomLevel/RandomLevel.h"
 
-//--- GLOBALS ---//
-Display g_display("SPACESHOOTER", Display::MouseControlType::TOPDOWNPLAYER);
-
-// world position 0,0,0
-// yaw -90.f : forward facing down the -z axis  (should be 0.f is down the -z axis, why the f is it -90? #confusedprogramming)
-// pitch -89.f : downward
-// field of view 80.f : pretty wide, slight fisheye
-Camera g_camera(glm::vec3(0.f, 0.0f, 0.f), -90.f, -89.0f, 80.f);
-//--- END GLOBALS ---//
+extern Display g_display;
+extern Controls g_controls;
 
 Game::Game()
 {
@@ -25,40 +16,24 @@ Game::Game()
   std::cout << "//--GRAPHIC CARD INFO--//\nMax textures per shader:  " << __textures_allowed << "\n";
   std::cout << "Max total textures:  " << __totalTexturesAllowed << "\n";
 
-  prims = new PrimativeRenderer();
+  keypress = std::make_shared<keys>();
+  mousepos = std::make_shared<mouse>();
+  scrolling = std::make_shared<scroll>();
 
-  player = new TopDownPlayer();
+  g_controls.setKeyboard(keypress);
+  g_controls.setMouse(mousepos);
+  g_controls.setScroller(scrolling);
 
-  TextureLoader tLoader;
-  unsigned int texIDGrass = tLoader.load2DTexture("../AncientArcher/cpp/pckgs/primatives/grass.png");
-  unsigned int texIDCrumblingRocks = tLoader.load2DTexture("../AncientArcher/cpp/pckgs/primatives/crumbling_rocks.png");
-  unsigned int texIDDirt = tLoader.load2DTexture("../AncientArcher/cpp/pckgs/primatives/dirt.png");
-  unsigned int texIDLightBricks = tLoader.load2DTexture("../AncientArcher/cpp/pckgs/primatives/light_bricks.png");
-  unsigned int texIDMosaicBricks = tLoader.load2DTexture("../AncientArcher/cpp/pckgs/primatives/mosaic_bricks.png");
-  unsigned int texIDDarkStone = tLoader.load2DTexture("../AncientArcher/cpp/pckgs/primatives/darkstone.png");
-  unsigned int texIDPackedRocks = tLoader.load2DTexture("../AncientArcher/cpp/pckgs/primatives/packed_rocks.png");
-  unsigned int texIDLava = tLoader.load2DTexture("../AncientArcher/cpp/pckgs/primatives/lava.png");
+  world = new World();
 
-  //BASE GROUND LAYERS
-  for (int x = -10; x < 10; x++)
-  {
-    for (int z = -30; z < 10; z++)
-    {
-      Entity e(
-        ENTITYTYPE::PLANE,
-        glm::vec3(x + 1.f, -4.f, z + 1.f),
-        glm::vec3(1.f, 0.25f, 1.f),
-        texIDGrass,
-        //(k < 1) ? texIDGrass : (k < 4) ? texIDDirt : (k < 8) ? texIDCrumblingRocks : (k < 13) ? texIDPackedRocks : (k < 19) ? texIDDarkStone : texIDLava,
-        true,
-        false
-      );
-      prims->addToPrimativeEntities(e);
-      //prims->addToMovingEntities(e);
-    }
-  }
+  RandomLevel randomLevel;
+  
+  randomLevel.populateLayeredBlockGround(*world);
+  randomLevel.populateBoundries(*world);
 
-  // ---- LOAD SKYBOX ---- //
+  //player = new FirstPersonPlayer(world->getSharedCamera(), world->getSharedShader());
+
+  // LOAD SKYBOX 
   std::vector<std::string> skyboxFiles =
   {
     "../AncientArcher/cpp/pckgs/skybox/stars/right.png",
@@ -68,7 +43,81 @@ Game::Game()
     "../AncientArcher/cpp/pckgs/skybox/stars/front.png",
     "../AncientArcher/cpp/pckgs/skybox/stars/back.png"
   };
+  sky = new Skybox(world->getSharedCamera(), skyboxFiles);
 
-  sky = new SkyboxRenderer();
+  //sky = new SkyboxRenderer(world->getSharedCamera());
 
+  world->getLight()->addPointLight(*world->getCamera()->getPosition(), world->getShader());   //debug point light
+}
+
+
+//////////////////////////////////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////////////////////////////////
+////////////////////////HELPER FUNCTIONS//////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////////////////////////////////
+
+void Game::moveCamHelper(float dt)
+{
+  // this is a debug cam mover with no colliding
+  static const float FlyIncrement = 0.4f;
+  static float flySpeed = 1.f;
+  static float realVelocity = 0.f;
+  static glm::vec3 directionPlacement = glm::vec3(0.f, 0.f, 0.f);
+  static glm::vec3 moveFront = glm::vec3(*world->getCamera()->getFront());
+
+  if (scrolling->yOffset > 0.1f) {
+
+    flySpeed += FlyIncrement;
+    std::cout << "flySpeed: " << flySpeed << std::endl;
+    scrolling->yOffset = 0;
+  }
+
+  if (scrolling->yOffset < -0.1f) {
+
+    flySpeed -= FlyIncrement;
+    std::cout << "flySpeed: " << flySpeed << std::endl;
+    scrolling->yOffset = 0;
+
+  }
+  if (flySpeed >= 10.f)
+  {
+    flySpeed = 9.999999f;
+    std::cout << "flySpeed: " << flySpeed << std::endl;
+
+  }
+  if (flySpeed <= 1.f)
+  {
+    flySpeed = 1.000001f;
+    std::cout << "flySpeed: " << flySpeed << std::endl;
+
+  }
+
+  realVelocity = dt * flySpeed;
+
+  if (keypress->w)
+  {
+    directionPlacement += moveFront * realVelocity;
+  }
+
+  if (keypress->s)
+  {
+    directionPlacement -= moveFront * realVelocity;
+  }
+
+  if (keypress->a)
+  {
+    directionPlacement -= *world->getCamera()->getRight() * realVelocity;
+  }
+
+  if (keypress->d)
+  {
+    directionPlacement += *world->getCamera()->getRight() * realVelocity;
+  }
+
+  world->getCamera()->increasePosition(directionPlacement);                // Set final new position
+
+  world->getLight()->movePointLight(0, *world->getCamera()->getPosition(), world->getShader());  // debug point light stays at cam
+  directionPlacement = glm::vec3(0.f, 0.f, 0.f);            // reset local variables
+  moveFront = glm::vec3(*world->getCamera()->getFront());   // reset local variables
 }

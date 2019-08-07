@@ -60,28 +60,7 @@
     <ClCompile Include="cpp\engine\source\Camera.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="cpp\pckgs\masterRenderer\MasterRenderer.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="cpp\pckgs\primatives\PrimativeRenderer.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="cpp\pckgs\skybox\SkyboxRenderer.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="cpp\pckgs\monospaceFont\TextRenderer.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="cpp\engine\source\GlyphLoader.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="cpp\pckgs\sideScrollerPlayer\SideScrollPlayer.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="cpp\pckgs\spawner\Spawner.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="cpp\pckgs\GUI\HealthBar.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="cpp\engine\source\Kinematics.cpp">
@@ -90,13 +69,31 @@
     <ClCompile Include="cpp\engine\source\CollisionHandler.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="cpp\engine\source\World.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
     <ClCompile Include="cpp\pckgs\firstPersonPlayer\FirstPersonPlayer.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="cpp\pckgs\GUI\HealthBar.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="cpp\pckgs\monospaceFont\TextRenderer.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="cpp\pckgs\planter\Planter.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="cpp\pckgs\skybox\Skybox.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="cpp\pckgs\spawner\Spawner.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
     <ClCompile Include="cpp\pckgs\topDownPlayer\TopDownPlayer.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="cpp\pckgs\randomLevel\RandomLevel.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -140,19 +137,7 @@
     <ClInclude Include="cpp\engine\headers\Camera.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="cpp\pckgs\masterRenderer\MasterRenderer.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="cpp\pckgs\primatives\PrimativeRenderer.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="cpp\pckgs\skybox\SkyboxRenderer.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="cpp\pckgs\text\Text.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="cpp\pckgs\monospaceFont\TextRenderer.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="cpp\engine\headers\GlyphLoader.h">
@@ -164,28 +149,46 @@
     <ClInclude Include="cpp\engine\headers\Character.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="cpp\pckgs\sideScrollerPlayer\SideScrollPlayer.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="cpp\pckgs\spawner\Spawner.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="cpp\pckgs\GUI\HealthBar.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="cpp\engine\headers\Kinematics.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="cpp\engine\headers\CollisionHandler.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="cpp\engine\headers\World.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="cpp\engine\headers\keys.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="cpp\engine\headers\mouse.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="cpp\engine\headers\scroll.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
     <ClInclude Include="cpp\pckgs\firstPersonPlayer\FirstPersonPlayer.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="cpp\pckgs\GUI\HealthBar.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="cpp\pckgs\monospaceFont\TextRenderer.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="cpp\pckgs\planter\Planter.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="cpp\pckgs\skybox\Skybox.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="cpp\pckgs\spawner\Spawner.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
     <ClInclude Include="cpp\pckgs\topDownPlayer\TopDownPlayer.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="cpp\pckgs\randomLevel\RandomLevel.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

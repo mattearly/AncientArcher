@@ -8,7 +8,7 @@
  *  @param[in] loc    Location to plant the object.
  *  @param[in] prims  A PrimativeRenderer object to check for collision againt and place a new entity onto.
  */
-void Planter::plantDemoTree(const glm::vec3 loc, PrimativeRenderer *prims)
+void Planter::plantDemoTree(const glm::vec3 loc, World *world)
 {
   if (texIDPlant == 0) 
   {
@@ -24,10 +24,10 @@ void Planter::plantDemoTree(const glm::vec3 loc, PrimativeRenderer *prims)
     false
   );
 
-  if (prims)
+  if (world)
   {
     static CollisionHandler ch;
-    for (const auto& e : *prims->getEntites())
+    for (const auto& e : *world->getEntites())
     {
       if (ch.AABB_vs_AABB_3D(newPlant->collider->impasse, e.collider->impasse))
       {
@@ -37,6 +37,6 @@ void Planter::plantDemoTree(const glm::vec3 loc, PrimativeRenderer *prims)
     }
   }
 
-  prims->addToPrimativeEntities(*newPlant);
+  world->addToStationaryEntities(*newPlant);
   playequipgearsound();
 }

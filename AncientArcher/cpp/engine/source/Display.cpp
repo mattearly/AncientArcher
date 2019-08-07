@@ -1,15 +1,16 @@
 #include <Display.h>
 #include <Controls.h>
+#include <Camera.h>
 #include <utility>
 #include <iostream>
 
 Controls g_controls;
 
-Display::Display(std::string windowName, MouseControlType mouseType)
+Display::Display(std::string winName, uint16_t width, uint16_t height, bool fullscreen)
 {
 
-  window_width = 1280;
-  window_height = 720;
+  window_width = width;
+  window_height = height;
 
   /* init glfw and opengl and game components */
   glfwInit();
@@ -22,7 +23,8 @@ Display::Display(std::string windowName, MouseControlType mouseType)
 #endif
 
   // init window
-  window = glfwCreateWindow(window_width, window_height, windowName.c_str(), nullptr, nullptr);
+  //window = glfwCreateWindow(window_width, window_height, winName.c_str(), nullptr, nullptr);
+  window = glfwCreateWindow(window_width, window_height, winName.c_str(), NULL, nullptr);
   if (window == nullptr) {
     std::cout << "failed to create glfw window" << std::endl;
     glfwTerminate();
@@ -32,21 +34,21 @@ Display::Display(std::string windowName, MouseControlType mouseType)
   }
   glfwMakeContextCurrent(window);
 
-  // setup reshape window handler
-  setupReshapeWindow();
+  setupReshapeWindow();      // setup reshape window handler
+  setupMouseHandler();       // setup the mouse handler
+  setupScrollHandler();      // setup the scrollwheel handler
 
-  // setup mouse handler
-  if (mouseType == MouseControlType::FPP)
-  {
-    setupMouseHandlerToFPPMode();
-    disableCursor();
-  }
-  else  // SIDESCROLLER MOUSE
-  {
-    setupMouseHanderToSideScrollerMode();
-    enableCursor();
-  }
+  //enableCursor();
+  disableCursor();
 
+  if (fullscreen)
+  {
+    glfwSetWindowMonitor(window, glfwGetPrimaryMonitor(), 0, 0, width, height, NULL);
+  }
+  else
+  {
+    glfwSetWindowMonitor(window, NULL, 1920/2 - width/2, 1080/2 - height/2, width, height, NULL);
+  }
   // init glad
   if (!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress)) {
     std::cout << "failed to init GLAD" << std::endl;
@@ -61,18 +63,20 @@ Display::~Display() {
   glfwTerminate();
 }
 
-void Display::reshapeWindow(GLFWwindow* window, int w, int h) {
+void Display::reshapeWindow(GLFWwindow* window, uint16_t w, uint16_t h) {
   glViewport(0, 0, w, h);
   window_width = w;
   window_height = h;
 }
 
-void Display::FPPmouseHandler(GLFWwindow* window, double xpos, double ypos) {
-  g_controls.FPPmouseMovement((float)xpos, (float)ypos);
+void Display::mouseHandler(GLFWwindow* window, float xpos, float ypos)
+{
+  g_controls.mouseMovement(xpos, ypos);
 }
 
-void Display::SSmouseHandler(GLFWwindow* window, double xpos, double ypos) {
-  g_controls.SSmouseMovement((float)xpos, (float)ypos);
+void Display::scrollHandler(GLFWwindow* window, float xpos, float ypos)
+{
+  g_controls.scrollMovement(xpos, ypos);
 }
 
 /**
@@ -101,24 +105,21 @@ void Display::update() const {
   glfwSwapBuffers(window);
 }
 
+
 static Display* g_CurrentInstance;
 
 extern "C" void reshapeCallback(GLFWwindow* window, int w, int h) {
   g_CurrentInstance->reshapeWindow(window, w, h);
 }
 
-/**
- * First Person mouse.
- */
-extern "C" void mouseCallbackFPP(GLFWwindow* window, double xpos, double ypos) {
-  g_CurrentInstance->FPPmouseHandler(window, xpos, ypos);
+extern "C" void mouseCallback(GLFWwindow* window, double xpos, double ypos)
+{
+  g_CurrentInstance->mouseHandler(window, (float)xpos, (float)ypos);
 }
 
-/**
- * Sidescroller mouse.
- */
-extern "C" void SSmouseCallback(GLFWwindow* window, double xpos, double ypos) {
-  g_CurrentInstance->SSmouseHandler(window, xpos, ypos);
+extern "C" void scrollCallback(GLFWwindow* window, double xpos, double ypos)
+{
+  g_CurrentInstance->scrollHandler(window, (float)xpos, (float)ypos);
 }
 
 void Display::setupReshapeWindow() {
@@ -126,13 +127,12 @@ void Display::setupReshapeWindow() {
   ::glfwSetFramebufferSizeCallback(window, ::reshapeCallback);
 }
 
-void Display::setupMouseHandlerToFPPMode() {
+void Display::setupMouseHandler() {
   ::g_CurrentInstance = this;
-  ::glfwSetCursorPosCallback(window, ::mouseCallbackFPP);
+  ::glfwSetCursorPosCallback(window, ::mouseCallback);
 }
 
-void Display::setupMouseHanderToSideScrollerMode()
-{
+void Display::setupScrollHandler() {
   ::g_CurrentInstance = this;
-  ::glfwSetCursorPosCallback(window, ::SSmouseCallback);
+  ::glfwSetScrollCallback(window, ::scrollCallback);
 }

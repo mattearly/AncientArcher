@@ -1,46 +1,83 @@
 #include <Camera.h>
+#include <Global.h>
 #include <Display.h>
 #include <Global.h>
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
 #include <glad/glad.h>  
+
 extern Display g_display;
 
 Camera::Camera(const glm::vec3 startingPos, const float lookDir, const float pitch, const float fov)
 {
-  Position = startingPos;
-  Yaw = lookDir;
-  Pitch = pitch;
-  FoV = fov;
+  _position = startingPos;
+  _yaw = lookDir;
+  _pitch = pitch;
 
-  WorldUp = glm::vec3(0.0f, 1.0f, 0.0f);
-  updateCameraVectors();  // set Front, Up, & Right
+  _updateCameraVectors();  // set Front, Up, & Right
+
+  _fov = fov;
+
 }
 
-void Camera::update(Shader* shader) {
-  glm::mat4 view = getViewMatrix();
+void Camera::update(Shader* shader)
+{
   shader->use();
-  shader->setMat4("view", view);
+  shader->setMat4("view", getViewMatrix());
 }
 
 // needs called to update the FoV and/or window_width window_height, and draw distances
 // this is for the global texBankShader
 void Camera::updateProjectionMatrix(Shader* shader) {
-  glm::mat4 projection = glm::perspective(glm::radians(FoV), (float)g_display.window_width / (float)g_display.window_height, 0.01f, RENDER_DISTANCE);
+  glm::mat4 projection = glm::perspective(glm::radians(_fov), (float)g_display.window_width / (float)g_display.window_height, 0.01f, RENDER_DISTANCE);
   shader->use();
   shader->setMat4("projection", projection);
 }
 
 glm::mat4 Camera::getProjectionMatrix()
 {
-  glm::mat4 projection = glm::perspective(glm::radians(FoV), (float)g_display.window_width / (float)g_display.window_height, 0.01f, RENDER_DISTANCE);
+  glm::mat4 projection = glm::perspective(glm::radians(_fov), (float)g_display.window_width / (float)g_display.window_height, 0.01f, RENDER_DISTANCE);
 
   return projection;
 }
 
 void Camera::setPosition(glm::vec3 pos)
 {
-  Position = pos;
+  _position = pos;
+  _updateCameraVectors();  //update front, up, right   --- todo: should we do this here?
+}
+
+void Camera::increaseYawAndPitch(float yawOff, float pitchOff)
+{
+  _increaseYaw(yawOff);
+  _increasePitch(pitchOff);
+  _updateCameraVectors();
+}
+
+void Camera::increasePosition(glm::vec3 amount)
+{
+  _position += amount;
+  _updateCameraVectors();  //update front, up, right   --- todo: should we do this here?
+
+}
+
+void Camera::_increaseYaw(float offset)
+{
+  _yaw += offset;
+}
+
+void Camera::_increasePitch(float offset)
+{
+  _pitch += offset;
+
+  if (this->_pitch > 89.0f)
+  {
+    this->_pitch = 89.0f;
+  }
+  else if (this->_pitch < -89.0f)
+  {
+    this->_pitch = -89.0f;
+  }
 }
 
 void Camera::setToOrtho(Shader* shader)
@@ -54,47 +91,42 @@ void Camera::setToOrtho(Shader* shader)
 
 void Camera::setToPerspective(Shader* shader, float fov)
 {
-  glm::mat4 projection = glm::perspective(glm::radians(FoV), (float)g_display.window_width / (float)g_display.window_height, 0.01f, RENDER_DISTANCE);
+  glm::mat4 projection = glm::perspective(glm::radians(_fov), (float)g_display.window_width / (float)g_display.window_height, 0.01f, RENDER_DISTANCE);
   shader->use();
   shader->setMat4("projection", projection);
 }
 
 glm::mat4 Camera::getViewMatrix() {
-  return glm::lookAt(Position, Position + Front, Up);
+  return glm::lookAt(_position, _position + _front, _up);
 }
 
 glm::vec3* Camera::getPosition() {
-  return &Position;
+  return &_position;
 }
 
 glm::vec3* Camera::getFront() {
-  return &Front;
+  return &_front;
 }
 
 glm::vec3* Camera::getRight() {
-  return &Right;
-}
-
-glm::vec3* Camera::getWorldUp()
-{
-  return &WorldUp;
+  return &_right;
 }
 
 float Camera::getYaw() {
-  return Yaw;
+  return _yaw;
 }
 
 float Camera::getPitch() {
-  return Pitch;
+  return _pitch;
 }
 
-void Camera::updateCameraVectors() {
+void Camera::_updateCameraVectors() {
   glm::vec3 front;
-  front.x = cos(glm::radians(Yaw)) * cos(glm::radians(Pitch));
-  front.y = sin(glm::radians(Pitch));
-  front.z = sin(glm::radians(Yaw)) * cos(glm::radians(Pitch));
+  front.x = cos(glm::radians(_yaw)) * cos(glm::radians(_pitch));
+  front.y = sin(glm::radians(_pitch));
+  front.z = sin(glm::radians(_yaw)) * cos(glm::radians(_pitch));
 
-  Front = glm::normalize(front);
-  Right = glm::normalize(glm::cross(Front, WorldUp));
-  Up = glm::normalize(glm::cross(Right, Front));
+  _front = glm::normalize(front);
+  _right = glm::normalize(glm::cross(_front, WORLD_UP));
+  _up = glm::normalize(glm::cross(_right, _front));
 }
