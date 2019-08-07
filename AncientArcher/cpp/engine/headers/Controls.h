@@ -24,8 +24,8 @@ private:
 
   float mouseSensitivity = 0.09f;
 
-  std::shared_ptr<keys> keypress;
-  std::shared_ptr<mouse> mousepos;
+  std::shared_ptr<keys> _keypress;
+  std::shared_ptr<mouse> _mousepos;
   std::shared_ptr<scroll> _scrolling;
 
 };

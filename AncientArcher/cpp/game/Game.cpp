@@ -3,7 +3,7 @@
 #include <iostream>
 #include <Display.h>
 #include <Controls.h>
-#include <TextureLoader.h>
+#include "../pckgs/randomLevel/RandomLevel.h"
 
 extern Display g_display;
 extern Controls g_controls;
@@ -26,39 +26,10 @@ Game::Game()
 
   world = new World();
 
-  TextureLoader tLoader;
-  unsigned int texIDGrass = tLoader.load2DTexture("../AncientArcher/resource/world/grass.png");
-  unsigned int texIDCrumblingRocks = tLoader.load2DTexture("../AncientArcher/resource/world/crumbling_rocks.png");
-  unsigned int texIDDirt = tLoader.load2DTexture("../AncientArcher/resource/world/dirt.png");
-  unsigned int texIDLightBricks = tLoader.load2DTexture("../AncientArcher/resource/world/light_bricks.png");
-  unsigned int texIDMosaicBricks = tLoader.load2DTexture("../AncientArcher/resource/world/mosaic_bricks.png");
-  unsigned int texIDDarkStone = tLoader.load2DTexture("../AncientArcher/resource/world/darkstone.png");
-  unsigned int texIDPackedRocks = tLoader.load2DTexture("../AncientArcher/resource/world/packed_rocks.png");
-  unsigned int texIDLava = tLoader.load2DTexture("../AncientArcher/resource/world/lava.png");
-
-  for (int i = -20; i < 20; i++)  // Base Ground Layers
-  {
-    for (int j = -20; j < 20; j++)
-    {
-      for (int k = 0; k < 21; k++)
-      {
-        Entity e(
-          ENTITYTYPE::CUBE,
-          glm::vec3(i, -3.f - 1.0f * k, j),
-          glm::vec3(1, 1, 1),
-          (k < 1) ? texIDGrass :
-          (k < 4) ? texIDDirt :
-          (k < 8) ? texIDCrumblingRocks :
-          (k < 13) ? texIDPackedRocks :
-          (k < 19) ? texIDDarkStone :
-          texIDLava,
-          true,
-          false
-        );
-        world->addToStationaryEntities(e);
-      }
-    }
-  }
+  RandomLevel randomLevel;
+  
+  randomLevel.populateLayeredBlockGround(*world);
+  randomLevel.populateBoundries(*world);
 
   //player = new FirstPersonPlayer(world->getSharedCamera(), world->getSharedShader());
 
@@ -144,8 +115,9 @@ void Game::moveCamHelper(float dt)
     directionPlacement += *world->getCamera()->getRight() * realVelocity;
   }
 
-  world->getCamera()->increasePosition(directionPlacement);
+  world->getCamera()->increasePosition(directionPlacement);                // Set final new position
+
   world->getLight()->movePointLight(0, *world->getCamera()->getPosition(), world->getShader());  // debug point light stays at cam
-  directionPlacement = glm::vec3(0.f, 0.f, 0.f);
-  moveFront = glm::vec3(*world->getCamera()->getFront());
+  directionPlacement = glm::vec3(0.f, 0.f, 0.f);            // reset local variables
+  moveFront = glm::vec3(*world->getCamera()->getFront());   // reset local variables
 }

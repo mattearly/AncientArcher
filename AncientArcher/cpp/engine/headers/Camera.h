@@ -43,19 +43,19 @@ public:
 private:
   Camera() = delete;    // no default constructor
 
-  glm::vec3 Position;   // point position of the camera.
+  glm::vec3 _position;   // point position of the camera.
 
-  float FoV;            // Field of View
-  float Yaw;            // left/right looking direction angle
-  float Pitch;          // up/down looking direction angle
+  float _fov;            // Field of View
+  float _yaw;            // left/right looking direction angle
+  float _pitch;          // up/down looking direction angle
   
-  void updateCameraVectors();
+  void _updateCameraVectors();
   
-  glm::vec3 Front;      // direction from Postion. where the camera is facing
-  glm::vec3 Right;      // direction from Postion. 90degree right to the camera's front
-  glm::vec3 Up;         // up relative to the camera's lean
+  glm::vec3 _front;      // direction from Postion. where the camera is facing
+  glm::vec3 _right;      // direction from Postion. 90degree right to the camera's front
+  glm::vec3 _up;         // up relative to the camera's lean
 
   // helper for increaseYawAndPitch()
-  void increaseYaw(float offset);
-  void increasePitch(float offset);
+  void _increaseYaw(float offset);
+  void _increasePitch(float offset);
 };

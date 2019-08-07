@@ -24,7 +24,7 @@ Display::Display(std::string winName, uint16_t width, uint16_t height, bool full
 
   // init window
   //window = glfwCreateWindow(window_width, window_height, winName.c_str(), nullptr, nullptr);
-  window = glfwCreateWindow(window_width, window_height, winName.c_str(), nullptr, nullptr);
+  window = glfwCreateWindow(window_width, window_height, winName.c_str(), NULL, nullptr);
   if (window == nullptr) {
     std::cout << "failed to create glfw window" << std::endl;
     glfwTerminate();
@@ -43,7 +43,11 @@ Display::Display(std::string winName, uint16_t width, uint16_t height, bool full
 
   if (fullscreen)
   {
-    glfwSetWindowMonitor(window, nullptr, 0, 0, width, height, NULL);
+    glfwSetWindowMonitor(window, glfwGetPrimaryMonitor(), 0, 0, width, height, NULL);
+  }
+  else
+  {
+    glfwSetWindowMonitor(window, NULL, 1920/2 - width/2, 1080/2 - height/2, width, height, NULL);
   }
   // init glad
   if (!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress)) {

@@ -14,88 +14,88 @@ void Controls::keyboardInput()
 
   // Left Click
   if (glfwGetMouseButton(g_display.window, GLFW_MOUSE_BUTTON_LEFT) == GLFW_PRESS) {
-    keypress->leftClick = true;
+    _keypress->leftClick = true;
   }
   if (glfwGetMouseButton(g_display.window, GLFW_MOUSE_BUTTON_LEFT) == GLFW_RELEASE) {
-    keypress->leftClick = false;
+    _keypress->leftClick = false;
   }
 
   // Right Click
   if (glfwGetMouseButton(g_display.window, GLFW_MOUSE_BUTTON_RIGHT) == GLFW_PRESS) {
-    keypress->rightClick = true;
+    _keypress->rightClick = true;
   }
   if (glfwGetMouseButton(g_display.window, GLFW_MOUSE_BUTTON_RIGHT) == GLFW_RELEASE) {
-    keypress->rightClick = false;
+    _keypress->rightClick = false;
   }
 
   // Shift
   if (glfwGetKey(g_display.window, GLFW_KEY_LEFT_SHIFT) == GLFW_PRESS) {
-    keypress->leftShift = true;
+    _keypress->leftShift = true;
   }
   if (glfwGetKey(g_display.window, GLFW_KEY_LEFT_SHIFT) == GLFW_RELEASE) {
-    keypress->leftShift = false;
+    _keypress->leftShift = false;
   }
 
   // WASD
   if (glfwGetKey(g_display.window, GLFW_KEY_W) == GLFW_PRESS) {
-    keypress->w = true;
+    _keypress->w = true;
   }
   if (glfwGetKey(g_display.window, GLFW_KEY_W) == GLFW_RELEASE) {
-    keypress->w = false;
+    _keypress->w = false;
   }
 
   if (glfwGetKey(g_display.window, GLFW_KEY_S) == GLFW_PRESS) {
-    keypress->s = true;
+    _keypress->s = true;
   }
   if (glfwGetKey(g_display.window, GLFW_KEY_S) == GLFW_RELEASE) {
-    keypress->s = false;
+    _keypress->s = false;
   }
 
   if (glfwGetKey(g_display.window, GLFW_KEY_A) == GLFW_PRESS) {
-    keypress->a = true;
+    _keypress->a = true;
   }
   if (glfwGetKey(g_display.window, GLFW_KEY_A) == GLFW_RELEASE) {
-    keypress->a = false;
+    _keypress->a = false;
   }
 
   if (glfwGetKey(g_display.window, GLFW_KEY_D) == GLFW_PRESS) {
-    keypress->d = true;
+    _keypress->d = true;
   }
   if (glfwGetKey(g_display.window, GLFW_KEY_D) == GLFW_RELEASE) {
-    keypress->d = false;
+    _keypress->d = false;
   }
 
   // 1, 2, 3
   if (glfwGetKey(g_display.window, GLFW_KEY_1) == GLFW_PRESS) {
-    keypress->_1 = true;
+    _keypress->_1 = true;
   }
 
   if (glfwGetKey(g_display.window, GLFW_KEY_1) == GLFW_RELEASE) {
-    keypress->_1 = false;
+    _keypress->_1 = false;
   }
 
   if (glfwGetKey(g_display.window, GLFW_KEY_2) == GLFW_PRESS) {
-    keypress->_2 = true;
+    _keypress->_2 = true;
   }
 
   if (glfwGetKey(g_display.window, GLFW_KEY_2) == GLFW_RELEASE) {
-    keypress->_2 = false;
+    _keypress->_2 = false;
   }
 
   if (glfwGetKey(g_display.window, GLFW_KEY_3) == GLFW_PRESS) {
-    keypress->_3 = true;
+    _keypress->_3 = true;
   }
 
   if (glfwGetKey(g_display.window, GLFW_KEY_3) == GLFW_RELEASE) {
-    keypress->_3 = false;
+    _keypress->_3 = false;
   }
 
   // Spacebar
   if (glfwGetKey(g_display.window, GLFW_KEY_SPACE) == GLFW_PRESS) {
-    keypress->spacebar = true;
+    _keypress->spacebar = true;
   }
   if (glfwGetKey(g_display.window, GLFW_KEY_SPACE) == GLFW_RELEASE) {
-    keypress->spacebar = false;
+    _keypress->spacebar = false;
   }
 
 }
@@ -120,8 +120,8 @@ void Controls::mouseMovement(float x, float y)
   xOffset *= mouseSensitivity;
   yOffset *= mouseSensitivity;
 
-  mousepos->xOffset = xOffset;
-  mousepos->yOffset = yOffset;
+  _mousepos->xOffset = xOffset;
+  _mousepos->yOffset = yOffset;
 }
 
 void Controls::scrollMovement(float x, float y)
@@ -132,12 +132,12 @@ void Controls::scrollMovement(float x, float y)
 
 void Controls::setMouse(std::shared_ptr<mouse>& mouse)
 {
-  mousepos = mouse;
+  _mousepos = mouse;
 }
 
 void Controls::setKeyboard(std::shared_ptr<keys>& key)
 {
-  keypress = key;
+  _keypress = key;
 }
 
 void Controls::setScroller(std::shared_ptr<scroll>& scroller)

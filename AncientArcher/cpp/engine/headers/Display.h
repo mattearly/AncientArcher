@@ -29,7 +29,7 @@ public:
 
 private:
 
-  Display() = delete;    // no default constructor
+  Display() = delete;             // no default constructor
 
   void setupReshapeWindow();
 
