@@ -27,7 +27,7 @@ void Planter::plantDemoTree(const glm::vec3 loc, World *world)
   if (world)
   {
     static CollisionHandler ch;
-    for (const auto& e : *world->getEntites())
+    for (const auto& e : *world->getEntities())
     {
       if (ch.AABB_vs_AABB_3D(newPlant->collider->impasse, e.collider->impasse))
       {

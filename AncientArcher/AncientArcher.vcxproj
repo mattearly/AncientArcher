@@ -153,6 +153,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="cpp\engine\source\CollisionHandler.cpp" />
+    <ClCompile Include="cpp\engine\source\Primative.cpp" />
     <ClCompile Include="cpp\engine\source\GlyphLoader.cpp" />
     <ClCompile Include="cpp\engine\source\Kinematics.cpp" />
     <ClCompile Include="cpp\pckgs\GUI\HealthBar.cpp" />
@@ -181,6 +182,7 @@
     <ClCompile Include="cpp\pckgs\randomLevel\RandomLevel.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="cpp\engine\headers\Primative.h" />
     <ClInclude Include="cpp\engine\headers\keys.h" />
     <ClInclude Include="cpp\engine\headers\CollisionHandler.h" />
     <ClInclude Include="cpp\engine\headers\Character.h" />

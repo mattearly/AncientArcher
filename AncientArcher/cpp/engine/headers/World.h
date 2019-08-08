@@ -3,6 +3,7 @@
 #include <Shader.h>
 #include <Lighting.h>
 #include <Entity.h>
+#include <Primative.h>
 #include <glm/glm.hpp>
 #include <vector>
 #include <memory>
@@ -15,57 +16,38 @@ public:
 
   void update(float deltaTime);
   void render();
+
   void addToStationaryEntities(Entity entity);
+  void stationaryEntityPopBack();
+  std::size_t numberOfStationaryEntities();
+
   void addToMovingEntities(Entity entity);
 
-  std::vector<Entity>* getEntites();
+  Entity* getFirstEntity();
+  std::vector<Entity>* getEntities();
 
-  Entity* getFirstEntity();                   // returns ptr to first entity
+  Entity* getFirstPlayerEntity();
+  std::vector<Entity>* getPlayers();
 
-  Entity* getFirstPlayerEntity();             // returns ptr to the first player entity
-
+  Entity* getFirstMovingEntity();
   std::vector<Entity>* getMovingEntites();
-
-  Entity* getFirstMovingEntity();             // returns ptr to first entity
 
   Shader* getShader();
   std::shared_ptr<Shader>& getSharedShader();
 
-  Lighting* getLight();
+  Lighting* getLighting();
+  std::shared_ptr<Lighting>& getSharedLighting();
 
   Camera* getCamera();
   std::shared_ptr<Camera>& getSharedCamera();
 
-  std::size_t numberOfEntities();
-
-  void entityPopBack();
-
 private:
-  float elapsedTime = 0.0f;
-  bool timeTrigger = true;
-
-  void drawCube();
-  void drawPlane();
-  void drawSphere();
-  void loadCube();
-  void loadPlane();
-  void loadSphere();
-  bool cubeLoaded = false;
-  bool planeLoaded = false;
-  bool sphereLoaded = false;
-
-  unsigned int cubeVAO = 0;
-  unsigned int cubeVBO = 0;
-  unsigned int planeVAO = 0;
-  unsigned int planeVBO = 0;
-  unsigned int sphereVAO = 0;
-  unsigned int sphereVBO = 0;
-  unsigned int sphereIBO = 0;
-  unsigned int sphereIndexSize = 0;
 
   std::vector<Entity> _players;
   std::vector<Entity> _stationaryEntities;
   std::vector<Entity> _movingEntities;
+
+  Primative _prims;
 
   std::shared_ptr<Camera>   _defaultWorldCamera;
   std::shared_ptr<Shader>   _defaultWorldShader;
