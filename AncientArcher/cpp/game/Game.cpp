@@ -47,7 +47,7 @@ Game::Game()
 
   //sky = new SkyboxRenderer(world->getSharedCamera());
 
-  world->getLight()->addPointLight(*world->getCamera()->getPosition(), world->getShader());   //debug point light
+  world->getLighting()->addPointLight(*world->getCamera()->getPosition(), world->getShader());   //debug point light
 }
 
 
@@ -117,7 +117,7 @@ void Game::moveCamHelper(float dt)
 
   world->getCamera()->increasePosition(directionPlacement);                // Set final new position
 
-  world->getLight()->movePointLight(0, *world->getCamera()->getPosition(), world->getShader());  // debug point light stays at cam
+  world->getLighting()->movePointLight(0, *world->getCamera()->getPosition(), world->getShader());  // debug point light stays at cam
   directionPlacement = glm::vec3(0.f, 0.f, 0.f);            // reset local variables
   moveFront = glm::vec3(*world->getCamera()->getFront());   // reset local variables
 }

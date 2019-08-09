@@ -41,7 +41,6 @@ void RandomLevel::populateLayeredBlockGround(World& world)
 
 void RandomLevel::populateBoundries(World& world)
 {
-  //floor
   TextureLoader tLoader;
   unsigned int texIDMazeMetal = tLoader.load2DTexture("../AncientArcher/resource/14-maze_metal.png");
 

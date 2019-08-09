@@ -2,11 +2,11 @@
 
 out vec4 FragColor;
 
-struct Material {
-  //sampler2D diffuse;  // diffuse will be whatever texture we are using from texture0
+//struct Material {
+//  sampler2D diffuse;  // diffuse will be whatever texture we are using from texture0
   //sampler2D specular;  // specular comes from diffuseTextureBank
-  float shininess;
-};
+//  float shininess;
+//};
 
 struct DirLight {
   vec3 direction;
@@ -43,7 +43,6 @@ struct PointLight {
 //  vec3 specular;
 //};
 
-
 in vec3 FragPos;
 in vec2 texCoords;
 in vec3 Normal;
@@ -53,7 +52,7 @@ in vec3 Normal;
 // texture samplers switcher for texture bank
 //uniform int activeTex;
 // texture samplers from texture bank
-uniform sampler2D texture0;  // GLTexture0
+uniform sampler2D texture0;  // GLTexture0  //for primatives
 //uniform sampler2D texture1;
 //uniform sampler2D texture2;
 //uniform sampler2D texture3;
@@ -96,7 +95,7 @@ uniform DirLight dirLight;
 uniform int numPointLights;
 uniform PointLight pointLight[4];
 //uniform SpotLight spotLight;
-uniform Material material;
+//uniform Material material;
 
 // function prototypes
 vec3 CalcDirLight(DirLight light, vec3 normal, vec3 viewDir);
@@ -174,7 +173,9 @@ vec3 CalcDirLight(DirLight light, vec3 normal, vec3 viewDir) {
 
   // specular shading
   vec3 reflectDir = reflect(-lightDir, normal);
-  float spec = pow(max(dot(viewDir, reflectDir), 0.0), material.shininess);
+
+//  float spec = pow(max(dot(viewDir, reflectDir), 0.0), material.shininess);
+  float spec = pow(max(dot(viewDir, reflectDir), 0.0), 0.f);
 
   // combine results
   vec3 ambient0 = light.ambient * color;
@@ -200,7 +201,8 @@ vec3 CalcPointLight(PointLight light, vec3 normal, vec3 fragPos, vec3 viewDir) {
 
   // specular shading
   vec3 reflectDir = reflect(-lightDir, normal);
-  float spec = pow(max(dot(viewDir, reflectDir), 0.0), material.shininess);
+//  float spec = pow(max(dot(viewDir, reflectDir), 0.0), material.shininess);
+  float spec = pow(max(dot(viewDir, reflectDir), 0.0), 0.f);
 
   // attenuation
   float distance = length(light.position - fragPos);
