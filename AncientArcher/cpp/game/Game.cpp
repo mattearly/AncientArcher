@@ -20,7 +20,7 @@ Game::Game()
   mousepos = std::make_shared<mouse>();
   scrolling = std::make_shared<scroll>();
 
-  g_controls.setKeyboard(keypress);
+  g_controls.setKeyboard(keypress);   // sets the shared pointer for these
   g_controls.setMouse(mousepos);
   g_controls.setScroller(scrolling);
 
@@ -30,6 +30,14 @@ Game::Game()
   
   randomLevel.populateLayeredBlockGround(*world);
   randomLevel.populateBoundries(*world);
+
+  modelShader = new Shader("../AncientArcher/resource/models/default.vert", "../AncientArcher/resource/models/default.frag");
+
+  modelShader->use();
+  glm::mat4 proj = world->getCamera()->getProjectionMatrix();
+  modelShader->setMat4("projection", proj);
+
+  demoModel = new Model("../AncientArcher/resource/models/nanosuit/nanosuit.obj");
 
   //player = new FirstPersonPlayer(world->getSharedCamera(), world->getSharedShader());
 

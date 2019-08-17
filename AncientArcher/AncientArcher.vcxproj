@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <Project DefaultTargets="Build" ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup Label="ProjectConfigurations">
     <ProjectConfiguration Include="Debug|Win32">
@@ -153,6 +153,8 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="cpp\engine\source\CollisionHandler.cpp" />
+    <ClCompile Include="cpp\engine\source\Mesh.cpp" />
+    <ClCompile Include="cpp\engine\source\Model.cpp" />
     <ClCompile Include="cpp\engine\source\Primative.cpp" />
     <ClCompile Include="cpp\engine\source\GlyphLoader.cpp" />
     <ClCompile Include="cpp\engine\source\Kinematics.cpp" />
@@ -182,6 +184,8 @@
     <ClCompile Include="cpp\pckgs\randomLevel\RandomLevel.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="cpp\engine\headers\Mesh.h" />
+    <ClInclude Include="cpp\engine\headers\Model.h" />
     <ClInclude Include="cpp\engine\headers\Primative.h" />
     <ClInclude Include="cpp\engine\headers\keys.h" />
     <ClInclude Include="cpp\engine\headers\CollisionHandler.h" />
@@ -191,6 +195,8 @@
     <ClInclude Include="cpp\engine\headers\Kinematics.h" />
     <ClInclude Include="cpp\engine\headers\mouse.h" />
     <ClInclude Include="cpp\engine\headers\scroll.h" />
+    <ClInclude Include="cpp\engine\headers\texture.h" />
+    <ClInclude Include="cpp\engine\headers\vertex.h" />
     <ClInclude Include="cpp\pckgs\GUI\HealthBar.h" />
     <ClInclude Include="cpp\pckgs\monospaceFont\TextRenderer.h" />
     <ClInclude Include="cpp\pckgs\planter\Planter.h" />

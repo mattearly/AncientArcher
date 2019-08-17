@@ -1,5 +1,6 @@
 #pragma once
 #include <World.h>
+#include <Model.h>
 #include <memory.h>
 #include <keys.h>
 #include <mouse.h>
@@ -10,6 +11,16 @@
 class Game {
 public:
 
+  Game();
+
+  void mainLoop();
+
+private:
+
+  // testing model loading and shaders
+  Model* demoModel;
+  Shader* modelShader;
+
   World* world;
   FirstPersonPlayer* player;
   Skybox* sky;
@@ -17,12 +28,6 @@ public:
   std::shared_ptr<keys> keypress;
   std::shared_ptr<mouse> mousepos;
   std::shared_ptr<scroll> scrolling;
-
-  Game();
-
-  void mainLoop();
-
-private:
 
   void update();
   void update(float dt);
