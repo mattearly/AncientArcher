@@ -1,10 +1,10 @@
 #pragma once
-
 #include <Collider.h>
 #include <Kinematics.h>
 #include <vector>
 
-enum ENTITYTYPE { CUBE, PLANE, SPHERE };
+enum ENTITYTYPE { CUBE, PLANE, SPHERE, MODEL };
+
 class Entity {
 private:
   struct GameItem {

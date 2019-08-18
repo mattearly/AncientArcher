@@ -94,13 +94,13 @@ void World::render()
     switch (e.gameItem.type)
     {
     case ENTITYTYPE::CUBE:
-      _prims.drawCube();
+      Cube::instance()->drawCube();
       break;
     case ENTITYTYPE::PLANE:
-      _prims.drawPlane();
+      Plane::instance()->drawPlane();
       break;
     case ENTITYTYPE::SPHERE:
-      _prims.drawSphere();
+      Sphere::instance()->drawSphere();
       break;
     default: break;
     }
@@ -126,13 +126,13 @@ void World::render()
     switch (e.gameItem.type)
     {
     case ENTITYTYPE::CUBE:
-      _prims.drawCube();
+      Cube::instance()->drawCube();
       break;
     case ENTITYTYPE::PLANE:
-      _prims.drawPlane();
+      Plane::instance()->drawPlane();
       break;
     case ENTITYTYPE::SPHERE:
-      _prims.drawSphere();
+      Sphere::instance()->drawSphere();
       break;
     default: break;
     }

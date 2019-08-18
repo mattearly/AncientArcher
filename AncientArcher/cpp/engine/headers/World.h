@@ -1,9 +1,11 @@
-  #pragma once
+#pragma once
 #include <Camera.h>
 #include <Shader.h>
 #include <Lighting.h>
 #include <Entity.h>
-#include <Primitive.h>
+#include <Cube.h>
+#include <Plane.h>
+#include <Sphere.h>
 #include <glm/glm.hpp>
 #include <vector>
 #include <memory>
@@ -50,7 +52,7 @@ private:
   std::vector<Entity> _movingPrimitives;
 
   // for drawing 
-  Primitive _prims;
+  //Primitive _prims;
 
   std::shared_ptr<Camera>   _defaultWorldCamera;
   

@@ -30,6 +30,8 @@ Game::Game()
   
   randomLevel.populateLayeredBlockGround(*world);
   randomLevel.populateBoundries(*world);
+  randomLevel.populateMidSpheres(*world);
+  randomLevel.popluateWalkwayPlanes(*world);
 
   modelShader = new Shader("../AncientArcher/resource/models/default.vert", "../AncientArcher/resource/models/default.frag");
 
