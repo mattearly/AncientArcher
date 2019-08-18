@@ -67,65 +67,74 @@ Game::Game()
 
 void Game::moveCamHelper(float dt)
 {
-  // this is a debug cam mover with no colliding
+  // this is a debug cam mover with no colliding - called every frame with deltaTime
   static const float FlyIncrement = 0.4f;
   static float flySpeed = 1.f;
   static float realVelocity = 0.f;
   static glm::vec3 directionPlacement = glm::vec3(0.f, 0.f, 0.f);
   static glm::vec3 moveFront = glm::vec3(*world->getCamera()->getFront());
 
-  if (scrolling->yOffset > 0.1f) {
-
+  // set flyspeed when mouse wheel moves
+  if (scrolling->yOffset > 0.1f) 
+  {
     flySpeed += FlyIncrement;
     std::cout << "flySpeed: " << flySpeed << std::endl;
     scrolling->yOffset = 0;
   }
-
-  if (scrolling->yOffset < -0.1f) {
-
+  if (scrolling->yOffset < -0.1f) 
+  {
     flySpeed -= FlyIncrement;
     std::cout << "flySpeed: " << flySpeed << std::endl;
     scrolling->yOffset = 0;
-
   }
+
+  // cap flyspeed
   if (flySpeed >= 10.f)
   {
     flySpeed = 9.999999f;
     std::cout << "flySpeed: " << flySpeed << std::endl;
-
   }
   if (flySpeed <= 1.f)
   {
     flySpeed = 1.000001f;
     std::cout << "flySpeed: " << flySpeed << std::endl;
-
   }
 
+  // setting our velocity based on our current flyspeed
   realVelocity = dt * flySpeed;
 
+  // process wasd
   if (keypress->w)
   {
     directionPlacement += moveFront * realVelocity;
   }
-
   if (keypress->s)
   {
     directionPlacement -= moveFront * realVelocity;
   }
-
   if (keypress->a)
   {
     directionPlacement -= *world->getCamera()->getRight() * realVelocity;
   }
-
   if (keypress->d)
   {
     directionPlacement += *world->getCamera()->getRight() * realVelocity;
   }
 
-  world->getCamera()->increasePosition(directionPlacement);                // Set final new position
+  // process page up/down for height
+  if (keypress->pageup)
+  {
+    directionPlacement += WORLD_UP * realVelocity;
+  }
+  if (keypress->pagedown)
+  {
+    directionPlacement -= WORLD_UP * realVelocity;
+  }
+
+  // Set final new position this frame
+  world->getCamera()->increasePosition(directionPlacement);                
 
   world->getLighting()->movePointLight(0, *world->getCamera()->getPosition(), world->getShader());  // debug point light stays at cam
-  directionPlacement = glm::vec3(0.f, 0.f, 0.f);            // reset local variables
+  directionPlacement = glm::vec3(0.f, 0.f, 0.f);            // reset local variables for next frame processing
   moveFront = glm::vec3(*world->getCamera()->getFront());   // reset local variables
 }

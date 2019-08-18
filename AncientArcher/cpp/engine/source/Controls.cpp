@@ -96,6 +96,22 @@ void Controls::keyboardInput()
   }
   if (glfwGetKey(g_display.window, GLFW_KEY_SPACE) == GLFW_RELEASE) {
     _keypress->spacebar = false;
+  } 
+  
+  
+  // PageUp
+  if (glfwGetKey(g_display.window, GLFW_KEY_PAGE_UP) == GLFW_PRESS) {
+    _keypress->pageup = true;
+  }
+  if (glfwGetKey(g_display.window, GLFW_KEY_PAGE_UP) == GLFW_RELEASE) {
+    _keypress->pageup = false;
+  }  
+  // PageDOwn
+  if (glfwGetKey(g_display.window, GLFW_KEY_PAGE_DOWN) == GLFW_PRESS) {
+    _keypress->pagedown = true;
+  }
+  if (glfwGetKey(g_display.window, GLFW_KEY_PAGE_DOWN) == GLFW_RELEASE) {
+    _keypress->pagedown = false;
   }
 
 }
