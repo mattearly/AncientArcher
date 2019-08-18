@@ -49,12 +49,14 @@ void World::update(float deltaTime)
 
   elapsedTime += deltaTime;
 
-  if (elapsedTime > 2.0f) {
+  if (elapsedTime > 2.0f)
+  {
     timeTrigger = !timeTrigger;
     elapsedTime = 0.0f;
   }
 
-  for (auto& e : *(getMovingEntites())) {
+  for (auto& e : *(getMovingEntites())) 
+  {
     e.moveBy(glm::vec3(0.f,
       0.f,
       (sin(elapsedTime * 3.14159 / 180) * (timeTrigger ? 1.0 : -1.0)))
@@ -89,7 +91,8 @@ void World::render()
 
     _defaultWorldShader->setMat4("model", model);
 
-    switch (e.gameItem.type) {
+    switch (e.gameItem.type)
+    {
     case ENTITYTYPE::CUBE:
       _prims.drawCube();
       break;
@@ -119,7 +122,8 @@ void World::render()
 
     _defaultWorldShader.get()->setMat4("model", model);
 
-    switch (e.gameItem.type) {
+    switch (e.gameItem.type)
+    {
     case ENTITYTYPE::CUBE:
       _prims.drawCube();
       break;

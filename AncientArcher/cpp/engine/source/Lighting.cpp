@@ -11,7 +11,8 @@
  * Call this again after making updates to the lighting to apply the changes.
  * @param shader   Shader to have the variables set in.
  */
-void Lighting::setConstantLight(Shader* shader) {
+void Lighting::setConstantLight(Shader* shader) 
+{
 
   shader->use();
   shader->setVec3("dirLight.direction", direction);
@@ -44,11 +45,13 @@ void Lighting::updateConstantLightSpecular(glm::vec3 changedVar)
   specular = changedVar;
 }
 
-void Lighting::addPointLight(glm::vec3 pos, Shader* shader) {
+void Lighting::addPointLight(glm::vec3 pos, Shader* shader)
+{
 
   std::size_t i = pointLights.size();
 
-  if (i >= MAXPOINTLIGHTS) {   // make sure we are not going past what our texBankShader allows
+  if (i >= MAXPOINTLIGHTS) 
+  {   // make sure we are not going past what our texBankShader allows
     std::cout << MAXPOINTLIGHTS << " reached, no more can be added.\n";
     return;
   }
@@ -113,7 +116,8 @@ void Lighting::removePointLight(Shader* shader)
 
   std::size_t i = pointLights.size();
 
-  if (i > 0) {
+  if (i > 0) 
+  {
     std::stringstream ss("pointLight[", std::ios_base::app | std::ios_base::out);
     ss << i << "].";
 
@@ -144,11 +148,13 @@ void Lighting::removePointLight(Shader* shader)
   }
 }
 
-void Lighting::movePointLight(int lightnum, glm::vec3 newpos, Shader* shader) {
+void Lighting::movePointLight(int lightnum, glm::vec3 newpos, Shader* shader)
+{
   if (lightnum < _currentPointLights)
   {
     shader->use();
-    switch (lightnum) {
+    switch (lightnum)
+    {
     case 0:
       shader->setVec3("pointLight[0].position", newpos);
       break;

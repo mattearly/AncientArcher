@@ -6,16 +6,22 @@ Entity::Entity(ENTITYTYPE t, glm::vec3 loc, glm::vec3 sc, int texID, bool isImpa
   gameItem.loc = loc;
   gameItem.scale = sc;
   gameItem.textureID = texID;
-  if (isImpassable) {
+
+  if (isImpassable) 
+  {
     collider = new Collider(loc, sc);
   }
-  else {
+  else 
+  {
     collider = nullptr;
   }
-  if (hasKinematics) {
+
+  if (hasKinematics) 
+  {
     kinematics = new Kinematics(7.0f, 175.0f);
   }
-  else {
+  else 
+  {
     kinematics = nullptr;
   }
 }
@@ -25,7 +31,8 @@ void Entity::moveBy(glm::vec3 amount)
 
   this->gameItem.loc += amount;
 
-  if (collider != nullptr) {
+  if (collider != nullptr) 
+  {
     this->collider->impasse.loc += amount;
   }
 
@@ -34,7 +41,8 @@ void Entity::moveBy(glm::vec3 amount)
 void Entity::moveTo(glm::vec3 newLocation)
 {
   this->gameItem.loc = newLocation;
-  if (collider != nullptr) {
+  if (collider != nullptr) 
+  {
     this->collider->impasse.loc = newLocation;
   }
 }

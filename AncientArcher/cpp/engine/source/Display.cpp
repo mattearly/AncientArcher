@@ -59,11 +59,13 @@ Display::Display(std::string winName, uint16_t width, uint16_t height, bool full
 
 }
 
-Display::~Display() {
+Display::~Display() 
+{
   glfwTerminate();
 }
 
-void Display::reshapeWindow(GLFWwindow* window, uint16_t w, uint16_t h) {
+void Display::reshapeWindow(GLFWwindow* window, uint16_t w, uint16_t h) 
+{
   glViewport(0, 0, w, h);
   window_width = w;
   window_height = h;
@@ -96,19 +98,22 @@ void Display::disableCursor()
   glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
 }
 
-void Display::clear() const {
+void Display::clear() const 
+{
   glClearColor(0.1f, 0.1f, 0.85f, 0.0f);
   glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 }
 
-void Display::update() const {
+void Display::update() const 
+{
   glfwSwapBuffers(window);
 }
 
 
 static Display* g_CurrentInstance;
 
-extern "C" void reshapeCallback(GLFWwindow* window, int w, int h) {
+extern "C" void reshapeCallback(GLFWwindow* window, int w, int h) 
+{
   g_CurrentInstance->reshapeWindow(window, w, h);
 }
 
@@ -122,17 +127,20 @@ extern "C" void scrollCallback(GLFWwindow* window, double xpos, double ypos)
   g_CurrentInstance->scrollHandler(window, (float)xpos, (float)ypos);
 }
 
-void Display::setupReshapeWindow() {
+void Display::setupReshapeWindow() 
+{
   ::g_CurrentInstance = this;
   ::glfwSetFramebufferSizeCallback(window, ::reshapeCallback);
 }
 
-void Display::setupMouseHandler() {
+void Display::setupMouseHandler() 
+{
   ::g_CurrentInstance = this;
   ::glfwSetCursorPosCallback(window, ::mouseCallback);
 }
 
-void Display::setupScrollHandler() {
+void Display::setupScrollHandler() 
+{
   ::g_CurrentInstance = this;
   ::glfwSetScrollCallback(window, ::scrollCallback);
 }

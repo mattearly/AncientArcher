@@ -7,6 +7,7 @@ Primative::Primative()
   loadPlane();
   loadSphere();
 }
+
 void Primative::drawCube()
 {
   glBindVertexArray(cubeVAO);
@@ -118,7 +119,8 @@ void Primative::loadCube()
 void Primative::loadPlane()
 {
   // plane with texture coords and normals
-  float vertices[] = {
+  float vertices[] = 
+  {
     // positions               // normals       //text cords    
     -0.5f, 0.0f, -0.5f,   0.0f, 1.0f, 0.0f,    0.0f, 1.0f,
      0.5f, 0.0f, -0.5f,   0.0f, 1.0f, 0.0f,    1.0f, 1.0f,
