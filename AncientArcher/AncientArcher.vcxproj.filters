@@ -96,13 +96,13 @@
     <ClCompile Include="cpp\pckgs\randomLevel\RandomLevel.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="cpp\engine\source\Primative.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="cpp\engine\source\Mesh.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="cpp\engine\source\Model.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="cpp\engine\source\Primitive.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -200,9 +200,6 @@
     <ClInclude Include="cpp\pckgs\randomLevel\RandomLevel.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="cpp\engine\headers\Primative.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="cpp\engine\headers\Mesh.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -213,6 +210,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="cpp\engine\headers\Model.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="cpp\engine\headers\Primitive.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

@@ -1,7 +1,7 @@
 #pragma once
-class Primative {
+class Primitive {
 public:
-  Primative();
+  Primitive();
   void drawCube();
   void drawPlane();
   void drawSphere();

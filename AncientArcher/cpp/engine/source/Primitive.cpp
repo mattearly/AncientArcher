@@ -1,14 +1,14 @@
-#include <Primative.h>
+#include <Primitive.h>
 #include <glad/glad.h>
 #include <vector>
-Primative::Primative()
+Primitive::Primitive()
 {
   loadCube();
   loadPlane();
   loadSphere();
 }
 
-void Primative::drawCube()
+void Primitive::drawCube()
 {
   glBindVertexArray(cubeVAO);
   glEnableVertexAttribArray(0);
@@ -16,7 +16,7 @@ void Primative::drawCube()
   glBindVertexArray(0);
 }
 
-void Primative::drawPlane()
+void Primitive::drawPlane()
 {
   glBindVertexArray(planeVAO);
   glEnableVertexAttribArray(0);
@@ -24,7 +24,7 @@ void Primative::drawPlane()
   glBindVertexArray(0);
 }
 
-void Primative::drawSphere()
+void Primitive::drawSphere()
 {
   glBindVertexArray(sphereVAO);
 
@@ -37,7 +37,7 @@ void Primative::drawSphere()
   glBindVertexArray(0);
 }
 
-void Primative::loadCube()
+void Primitive::loadCube()
 {
   // cube with texture coords and normals
   const float vertices[] = {
@@ -116,7 +116,7 @@ void Primative::loadCube()
   //std::cout << "cube Loaded to Graphics Card \n";
 }
 
-void Primative::loadPlane()
+void Primitive::loadPlane()
 {
   // plane with texture coords and normals
   float vertices[] = 
@@ -158,7 +158,7 @@ void Primative::loadPlane()
   planeLoaded = true;
 }
 
-void Primative::loadSphere()
+void Primitive::loadSphere()
 {
   // --- PREPARE SPHERE VERTICES --- //
   const float radius = 0.5f;

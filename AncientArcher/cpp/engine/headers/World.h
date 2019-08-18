@@ -1,16 +1,17 @@
-#pragma once
+  #pragma once
 #include <Camera.h>
 #include <Shader.h>
 #include <Lighting.h>
 #include <Entity.h>
-#include <Primative.h>
+#include <Primitive.h>
 #include <glm/glm.hpp>
 #include <vector>
 #include <memory>
 
 class Camera;
 
-class World {
+class World 
+{
 public:
   World();
 
@@ -44,13 +45,16 @@ public:
 private:
 
   std::vector<Entity> _players;
-  std::vector<Entity> _stationaryEntities;
-  std::vector<Entity> _movingEntities;
 
-  Primative _prims;
+  std::vector<Entity> _stationaryPrimitives;
+  std::vector<Entity> _movingPrimitives;
+
+  // for drawing 
+  Primitive _prims;
 
   std::shared_ptr<Camera>   _defaultWorldCamera;
-  std::shared_ptr<Shader>   _defaultWorldShader;
-  std::shared_ptr<Lighting> _defaultWorldLighting;
+  
+  std::shared_ptr<Shader>   _defaultPrimitiveShader;
+  std::shared_ptr<Lighting> _defaultPrimitiveLighting;
 
 };
