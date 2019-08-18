@@ -11,6 +11,9 @@ struct keys {
 
   bool spacebar = false;
 
+  bool pageup = false;
+  bool pagedown = false;
+
   bool leftShift = false;
   bool leftCtrl = false;
 
