@@ -44,7 +44,7 @@ void Game::render()
 
   //demo model render testing
   modelShader->use();
-  world->getCamera()->update(modelShader);
+  world->getCamera()->updateViewMatrix(modelShader);
   demoModel->render(modelShader);
 
   world->render();

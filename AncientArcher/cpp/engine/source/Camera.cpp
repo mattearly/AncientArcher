@@ -20,14 +20,13 @@ Camera::Camera(const glm::vec3 startingPos, const float lookDir, const float pit
 
 }
 
-void Camera::update(Shader* shader)
+void Camera::updateViewMatrix(Shader* shader)
 {
   shader->use();
   shader->setMat4("view", getViewMatrix());
 }
 
 // needs called to update the FoV and/or window_width window_height, and draw distances
-// this is for the global texBankShader
 void Camera::updateProjectionMatrix(Shader* shader) 
 {
   glm::mat4 projection = glm::perspective(glm::radians(_fov), (float)g_display.window_width / (float)g_display.window_height, 0.01f, RENDER_DISTANCE);

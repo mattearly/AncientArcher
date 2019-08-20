@@ -71,7 +71,7 @@ void World::render()
 {
   _defaultPrimitiveShader->use();
 
-  _defaultWorldCamera->update(_defaultPrimitiveShader.get());
+  _defaultWorldCamera->updateViewMatrix(_defaultPrimitiveShader.get());
   glEnable(GL_DEPTH_TEST);
 
   for (auto e : _stationaryPrimitives)
