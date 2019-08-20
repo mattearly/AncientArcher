@@ -17,9 +17,8 @@ public:
 
 private:
 
-  // testing model loading and shaders
+  // testing model loading
   Model* demoModel;
-  Shader* modelShader;
 
   World* world;
   FirstPersonPlayer* player;

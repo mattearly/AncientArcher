@@ -34,12 +34,6 @@ Game::Game()
   randomLevel.populateMidSpheres(*world);
   randomLevel.popluateWalkwayPlanes(*world);
 
-  modelShader = new Shader("../AncientArcher/resource/models/default.vert", "../AncientArcher/resource/models/default.frag");
-
-  modelShader->use();
-  glm::mat4 proj = world->getCamera()->getProjectionMatrix();
-  modelShader->setMat4("projection", proj);
-
   demoModel = new Model("../AncientArcher/resource/models/nanosuit/nanosuit.obj");
 
   //player = new FirstPersonPlayer(world->getSharedCamera(), world->getSharedShader());
@@ -56,7 +50,7 @@ Game::Game()
   };
   sky = new Skybox(world->getSharedCamera(), skyboxFiles);
 
-  //sky = new SkyboxRenderer(world->getSharedCamera());
+  //sky = new Skybox(world->getSharedCamera());
 
   world->getLighting()->addPointLight(*world->getCamera()->getPosition(), world->getShader());   //debug point light
 }
@@ -137,7 +131,6 @@ void Game::moveCamHelper(float dt)
   // update projection matrix on shaders if window was resized
   if (g_projectionResize)
   {
-    world->getCamera()->updateProjectionMatrix(modelShader);
     world->getCamera()->updateProjectionMatrix(world->getShader());
     g_projectionResize = !g_projectionResize;
   }

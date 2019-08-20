@@ -52,7 +52,7 @@ in vec3 Normal;
 // texture samplers switcher for texture bank
 //uniform int activeTex;
 // texture samplers from texture bank
-uniform sampler2D texture0;  // GLTexture0  //for primatives
+uniform sampler2D texture_diffuse1;  // GLTexture0
 //uniform sampler2D texture1;
 //uniform sampler2D texture2;
 //uniform sampler2D texture3;
@@ -105,7 +105,7 @@ vec3 color;
 
 void main() {
 
-color = texture(texture0, texCoords).rgb;
+color = texture(texture_diffuse1, texCoords).rgb;
    //texture bank switch
 //  switch (activeTex) {
 //  case 0: color = texture(texture0, texCoords).rgb; break;

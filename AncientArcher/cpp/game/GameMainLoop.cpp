@@ -42,12 +42,8 @@ void Game::render()
 {
   g_display.clear();   // don't touch this
 
-  //demo model render testing
-  modelShader->use();
-  world->getCamera()->updateViewMatrix(modelShader);
-  demoModel->render(modelShader);
-
   world->render();
+  demoModel->render(world->getShader());
   sky->render();
 
   g_display.update();  // don't touch this
