@@ -5,6 +5,7 @@
 #include <iostream>
 
 Controls g_controls;
+bool g_projectionResize = false;
 
 Display::Display(std::string winName, uint16_t width, uint16_t height, bool fullscreen)
 {
@@ -69,6 +70,7 @@ void Display::reshapeWindow(GLFWwindow* window, uint16_t w, uint16_t h)
   glViewport(0, 0, w, h);
   window_width = w;
   window_height = h;
+  g_projectionResize = true;
 }
 
 void Display::mouseHandler(GLFWwindow* window, float xpos, float ypos)

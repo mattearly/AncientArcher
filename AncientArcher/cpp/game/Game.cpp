@@ -7,6 +7,7 @@
 
 extern Display g_display;
 extern Controls g_controls;
+extern bool g_projectionResize;
 
 Game::Game()
 {
@@ -131,6 +132,14 @@ void Game::moveCamHelper(float dt)
   if (keypress->pagedown)
   {
     directionPlacement -= WORLD_UP * realVelocity;
+  }
+
+  // update projection matrix on shaders if window was resized
+  if (g_projectionResize)
+  {
+    world->getCamera()->updateProjectionMatrix(modelShader);
+    world->getCamera()->updateProjectionMatrix(world->getShader());
+    g_projectionResize = !g_projectionResize;
   }
 
   // Set final new position this frame
