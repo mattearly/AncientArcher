@@ -1,6 +1,6 @@
 #pragma once
 struct mouse
 {
-  float xOffset = 0;
-  float yOffset = 0;
+  float xOffset = 0.f;
+  float yOffset = 0.f;
 };

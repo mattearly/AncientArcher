@@ -66,3 +66,50 @@ void RandomLevel::populateBoundries(World& world)
     }
   }
 }
+
+void RandomLevel::populateMidSpheres(World& world)
+{
+  TextureLoader tLoader;
+  unsigned int texIDWater = tLoader.load2DTexture("../AncientArcher/resource/08-pixelized_water.png");
+
+  for (int i = -3; i < 3; i++)  // Base Ground Layers
+  {
+    for (int j = -3; j < 3; j++)
+    {
+      Entity e(
+        ENTITYTYPE::SPHERE,
+        glm::vec3(i, -2.f, j),
+        glm::vec3(1, 1, 1),
+        texIDWater,
+        true,
+        false
+      );
+      world.addToStationaryEntities(e);
+    }
+  }
+}
+
+void RandomLevel::popluateWalkwayPlanes(World& world)
+{
+  TextureLoader tLoader;
+  unsigned int texIDDarkwood = tLoader.load2DTexture("../AncientArcher/resource/11-pixelized_darkwood.png");
+
+  for (int i = -21; i < 21; i++)  // width
+  {
+    for (int j = -21; j < 21; j++)  // width
+    {
+      if ((i == -20 || i == 19) || (j == -20 || j == 19))
+      {
+        Entity e(
+          ENTITYTYPE::PLANE,
+          glm::vec3(i, 0.f, j),
+          glm::vec3(1, 1, 1),
+          texIDDarkwood,
+          true,
+          false
+        );
+        world.addToStationaryEntities(e);
+      }
+    }
+  }
+}

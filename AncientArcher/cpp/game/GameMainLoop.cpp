@@ -4,7 +4,8 @@
 extern Display g_display;
 extern Controls g_controls;
 
-void Game::mainLoop() {
+void Game::mainLoop() 
+{
   while (!glfwWindowShouldClose(g_display.window))
   {
     static float currentFrame(0.f), deltaTime(0.f), lastFrame(0.f);
@@ -42,6 +43,7 @@ void Game::render()
   g_display.clear();   // don't touch this
 
   world->render();
+  demoModel->render(world->getShader());
   sky->render();
 
   g_display.update();  // don't touch this

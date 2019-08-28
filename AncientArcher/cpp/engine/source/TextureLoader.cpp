@@ -113,11 +113,13 @@ unsigned int TextureLoader::load2DTexture(std::string path) {
   int width, height, nrChannel;
 
   unsigned char* data = stbi_load(path.c_str(), &width, &height, &nrChannel, 0);
-  if (data) {
+  if (data) 
+  {
     glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, width, height, 0, GL_RGBA, GL_UNSIGNED_BYTE, data);
     glGenerateMipmap(GL_TEXTURE_2D);
   }
-  else {
+  else
+  {
     std::cout << "Failed to load texture at path: " << path << std::endl;
     stbi_image_free(data);
   }

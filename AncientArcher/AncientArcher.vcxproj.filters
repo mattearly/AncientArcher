@@ -96,7 +96,19 @@
     <ClCompile Include="cpp\pckgs\randomLevel\RandomLevel.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="cpp\engine\source\Primative.cpp">
+    <ClCompile Include="cpp\engine\source\Mesh.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="cpp\engine\source\Model.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="cpp\engine\source\Cube.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="cpp\engine\source\Plane.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="cpp\engine\source\Sphere.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -194,7 +206,28 @@
     <ClInclude Include="cpp\pckgs\randomLevel\RandomLevel.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="cpp\engine\headers\Primative.h">
+    <ClInclude Include="cpp\engine\headers\Mesh.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="cpp\engine\headers\vertex.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="cpp\engine\headers\texture.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="cpp\engine\headers\Model.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="cpp\engine\headers\Primitive.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="cpp\engine\headers\Cube.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="cpp\engine\headers\Plane.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="cpp\engine\headers\Sphere.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

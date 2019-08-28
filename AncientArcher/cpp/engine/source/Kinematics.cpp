@@ -34,13 +34,16 @@ glm::vec3 Kinematics::getCalculatedPosition(float deltaTime, bool f, bool b, boo
 {
   if (f || b)
   {
-    if (vel.x < speed) {
+    if (vel.x < speed) 
+    {
       acc.x += jrk.x;
       vel.x += acc.x;
     }
   }
-  else {
-    if (vel.x > 0.0f) {
+  else 
+  {
+    if (vel.x > 0.0f) 
+    {
       acc.x -= jrk.x;
       vel.x -= acc.x;
     }
@@ -48,13 +51,16 @@ glm::vec3 Kinematics::getCalculatedPosition(float deltaTime, bool f, bool b, boo
 
   if (u || d)
   {
-    if (vel.y < speed) {
+    if (vel.y < speed) 
+    {
       acc.y += jrk.y;
       vel.y += acc.y;
     }
   }
-  else {
-    if (vel.y > 0.0f) {
+  else 
+  {
+    if (vel.y > 0.0f)
+    {
       acc.y -= jrk.y;
       vel.y -= acc.y;
     }
@@ -62,13 +68,16 @@ glm::vec3 Kinematics::getCalculatedPosition(float deltaTime, bool f, bool b, boo
 
   if (l || r)
   {
-    if (vel.z < speed) {
+    if (vel.z < speed) 
+    {
       acc.z += jrk.z;
       vel.z += acc.z;
     }
   }
-  else {
-    if (vel.z > 0.0f) {
+  else
+  {
+    if (vel.z > 0.0f)
+    {
       acc.z -= jrk.z;
       vel.z -= acc.z;
     }
@@ -76,13 +85,16 @@ glm::vec3 Kinematics::getCalculatedPosition(float deltaTime, bool f, bool b, boo
 
   glm::vec3 temp_vel = vel;
 
-  if (b) {
+  if (b) 
+  {
     temp_vel.x = -temp_vel.x;
   }
-  if (d) {
+  if (d) 
+  {
     temp_vel.y = -temp_vel.y;
   }
-  if (l) {
+  if (l) 
+  {
     temp_vel.z = -temp_vel.z;
   }
 

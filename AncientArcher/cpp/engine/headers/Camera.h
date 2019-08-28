@@ -18,7 +18,7 @@ public:
 
   friend class Controls;
 
-  void update(Shader* shader);
+  void updateViewMatrix(Shader* shader);
 
   void updateProjectionMatrix(Shader* shader);
 

@@ -148,14 +148,18 @@
     <Link>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
-      <AdditionalDependencies>opengl32.lib;glfw3.lib;SDL2.lib;SDL2main.lib;SDL2_mixer.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>opengl32.lib;glfw3.lib;SDL2.lib;SDL2main.lib;SDL2_mixer.lib;assimp-vc141-mt.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="cpp\engine\source\CollisionHandler.cpp" />
-    <ClCompile Include="cpp\engine\source\Primative.cpp" />
+    <ClCompile Include="cpp\engine\source\Cube.cpp" />
+    <ClCompile Include="cpp\engine\source\Mesh.cpp" />
+    <ClCompile Include="cpp\engine\source\Model.cpp" />
+    <ClCompile Include="cpp\engine\source\Plane.cpp" />
     <ClCompile Include="cpp\engine\source\GlyphLoader.cpp" />
     <ClCompile Include="cpp\engine\source\Kinematics.cpp" />
+    <ClCompile Include="cpp\engine\source\Sphere.cpp" />
     <ClCompile Include="cpp\pckgs\GUI\HealthBar.cpp" />
     <ClCompile Include="cpp\pckgs\monospaceFont\TextRenderer.cpp" />
     <ClCompile Include="cpp\pckgs\planter\Planter.cpp" />
@@ -182,7 +186,11 @@
     <ClCompile Include="cpp\pckgs\randomLevel\RandomLevel.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="cpp\engine\headers\Primative.h" />
+    <ClInclude Include="cpp\engine\headers\Cube.h" />
+    <ClInclude Include="cpp\engine\headers\Mesh.h" />
+    <ClInclude Include="cpp\engine\headers\Model.h" />
+    <ClInclude Include="cpp\engine\headers\Plane.h" />
+    <ClInclude Include="cpp\engine\headers\Primitive.h" />
     <ClInclude Include="cpp\engine\headers\keys.h" />
     <ClInclude Include="cpp\engine\headers\CollisionHandler.h" />
     <ClInclude Include="cpp\engine\headers\Character.h" />
@@ -191,6 +199,9 @@
     <ClInclude Include="cpp\engine\headers\Kinematics.h" />
     <ClInclude Include="cpp\engine\headers\mouse.h" />
     <ClInclude Include="cpp\engine\headers\scroll.h" />
+    <ClInclude Include="cpp\engine\headers\Sphere.h" />
+    <ClInclude Include="cpp\engine\headers\texture.h" />
+    <ClInclude Include="cpp\engine\headers\vertex.h" />
     <ClInclude Include="cpp\pckgs\GUI\HealthBar.h" />
     <ClInclude Include="cpp\pckgs\monospaceFont\TextRenderer.h" />
     <ClInclude Include="cpp\pckgs\planter\Planter.h" />

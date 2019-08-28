@@ -18,26 +18,26 @@ World::World()
   // pitch 0.0f : forward
   // field of view 80.f : pretty wide, slight fisheye
   _defaultWorldCamera = std::make_shared<Camera>(glm::vec3(0.f, 5.0f, 0.f), -90.f, -45.0f, 80.f);
-  _defaultWorldShader = std::make_shared<Shader>("../AncientArcher/resource/world/primative.vert", "../AncientArcher/resource/world/primative.frag");
+  _defaultPrimitiveShader = std::make_shared<Shader>("../AncientArcher/resource/world/primative.vert", "../AncientArcher/resource/world/primative.frag");
 
-  _defaultWorldShader->use();
+  _defaultPrimitiveShader->use();
   glm::mat4 proj = _defaultWorldCamera->getProjectionMatrix();
-  _defaultWorldShader->setMat4("projection", proj);
+  _defaultPrimitiveShader->setMat4("projection", proj);
 
 
-  _defaultWorldLighting = std::make_shared<Lighting>();
+  _defaultPrimitiveLighting = std::make_shared<Lighting>();
 
   //_defaultWorldLighting->updateConstantLightAmbient(glm::vec3(.09, 0.07, 0.07));
   //_defaultWorldLighting->updateConstantLightDirection(glm::vec3(0, -1, 0));
   //_defaultWorldLighting->updateConstantLightDiffuse(glm::vec3(.80, .70, .74));
   //_defaultWorldLighting->updateConstantLightSpecular(glm::vec3(.5, .5, .5));
 
-  _defaultWorldLighting->setConstantLight(getShader());
+  _defaultPrimitiveLighting->setConstantLight(getShader());
 
   // debug
   std::cout << "number of shared Camera in world init " << _defaultWorldCamera.use_count() << std::endl;
-  std::cout << "number of shared Shader in world init " << _defaultWorldShader.use_count() << std::endl;
-  std::cout << "number of shared Lighting in world init " << _defaultWorldLighting.use_count() << std::endl;
+  std::cout << "number of shared Shader in world init " << _defaultPrimitiveShader.use_count() << std::endl;
+  std::cout << "number of shared Lighting in world init " << _defaultPrimitiveLighting.use_count() << std::endl;
   // -- ok
 
 }
@@ -49,12 +49,14 @@ void World::update(float deltaTime)
 
   elapsedTime += deltaTime;
 
-  if (elapsedTime > 2.0f) {
+  if (elapsedTime > 2.0f)
+  {
     timeTrigger = !timeTrigger;
     elapsedTime = 0.0f;
   }
 
-  for (auto& e : *(getMovingEntites())) {
+  for (auto& e : *(getMovingEntites())) 
+  {
     e.moveBy(glm::vec3(0.f,
       0.f,
       (sin(elapsedTime * 3.14159 / 180) * (timeTrigger ? 1.0 : -1.0)))
@@ -67,12 +69,12 @@ void World::update(float deltaTime)
  */
 void World::render()
 {
-  _defaultWorldShader->use();
+  _defaultPrimitiveShader->use();
 
-  _defaultWorldCamera->update(_defaultWorldShader.get());
+  _defaultWorldCamera->updateViewMatrix(_defaultPrimitiveShader.get());
   glEnable(GL_DEPTH_TEST);
 
-  for (auto e : _stationaryEntities)
+  for (auto e : _stationaryPrimitives)
   {
     glActiveTexture(GL_TEXTURE0);
     glBindTexture(GL_TEXTURE_2D, e.gameItem.textureID);
@@ -87,22 +89,24 @@ void World::render()
     // step3: scale
     model = glm::scale(model, glm::vec3(e.gameItem.scale));
 
-    _defaultWorldShader->setMat4("model", model);
+    _defaultPrimitiveShader->setMat4("model", model);
 
-    switch (e.gameItem.type) {
+    switch (e.gameItem.type)
+    {
     case ENTITYTYPE::CUBE:
-      _prims.drawCube();
+      Cube::instance()->drawCube();
       break;
     case ENTITYTYPE::PLANE:
-      _prims.drawPlane();
+      Plane::instance()->drawPlane();
       break;
     case ENTITYTYPE::SPHERE:
-      _prims.drawSphere();
+      Sphere::instance()->drawSphere();
       break;
     default: break;
     }
   }
-  for (auto e : _movingEntities)
+
+  for (auto e : _movingPrimitives)
   {
     glActiveTexture(GL_TEXTURE0);
     glBindTexture(GL_TEXTURE_2D, e.gameItem.textureID);
@@ -117,17 +121,18 @@ void World::render()
     // step3: scale
     model = glm::scale(model, glm::vec3(e.gameItem.scale));
 
-    _defaultWorldShader.get()->setMat4("model", model);
+    _defaultPrimitiveShader.get()->setMat4("model", model);
 
-    switch (e.gameItem.type) {
+    switch (e.gameItem.type)
+    {
     case ENTITYTYPE::CUBE:
-      _prims.drawCube();
+      Cube::instance()->drawCube();
       break;
     case ENTITYTYPE::PLANE:
-      _prims.drawPlane();
+      Plane::instance()->drawPlane();
       break;
     case ENTITYTYPE::SPHERE:
-      _prims.drawSphere();
+      Sphere::instance()->drawSphere();
       break;
     default: break;
     }
@@ -139,22 +144,22 @@ void World::render()
  */
 void World::addToStationaryEntities(Entity entity)
 {
-  _stationaryEntities.push_back(entity);
+  _stationaryPrimitives.push_back(entity);
 }
 
 void World::addToMovingEntities(Entity entity)
 {
-  _movingEntities.push_back(entity);
+  _movingPrimitives.push_back(entity);
 }
 
 std::vector<Entity>* World::getEntities()
 {
-  return &_stationaryEntities;
+  return &_stationaryPrimitives;
 }
 
 Entity* World::getFirstEntity()
 {
-  return &_stationaryEntities[0];
+  return &_stationaryPrimitives[0];
   //return entities.data();
 }
 
@@ -171,32 +176,32 @@ Entity* World::getFirstPlayerEntity()
 
 std::vector<Entity>* World::getMovingEntites()
 {
-  return &_movingEntities;
+  return &_movingPrimitives;
 }
 
 Entity* World::getFirstMovingEntity()
 {
-  return &_movingEntities[0];
+  return &_movingPrimitives[0];
 }
 
 Shader* World::getShader()
 {
-  return _defaultWorldShader.get();
+  return _defaultPrimitiveShader.get();
 }
 
 std::shared_ptr<Shader>& World::getSharedShader()
 {
-  return _defaultWorldShader;
+  return _defaultPrimitiveShader;
 }
 
 Lighting* World::getLighting()
 {
-  return _defaultWorldLighting.get();
+  return _defaultPrimitiveLighting.get();
 }
 
 std::shared_ptr<Lighting>& World::getSharedLighting()
 {
-  return _defaultWorldLighting;
+  return _defaultPrimitiveLighting;
 }
 
 Camera* World::getCamera()
@@ -211,13 +216,13 @@ std::shared_ptr<Camera>& World::getSharedCamera()
 }
 std::size_t World::numberOfStationaryEntities()
 {
-  return _stationaryEntities.size();
+  return _stationaryPrimitives.size();
 }
 
 void World::stationaryEntityPopBack()
 {
-  if (_stationaryEntities.size() > 0)
+  if (_stationaryPrimitives.size() > 0)
   {
-    _stationaryEntities.pop_back();
+    _stationaryPrimitives.pop_back();
   }
 }

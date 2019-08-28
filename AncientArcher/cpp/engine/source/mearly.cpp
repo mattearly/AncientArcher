@@ -2,7 +2,8 @@
 namespace mearly {
 
 // returns a double between zero and one randomly
-double ZTOR() {
+double ZTOR() 
+{
   // initialize the random number generator with time-dependent seed
   static uint64_t timeSeed = std::chrono::high_resolution_clock::now().time_since_epoch().count();
   static std::seed_seq ss{ uint32_t(timeSeed & 0xffffffff), uint32_t(timeSeed >> 32) };
@@ -13,7 +14,8 @@ double ZTOR() {
 }
 
 // returns integer zero or one randomly [true / false]
-int ZOOR() {
+int ZOOR() 
+{
   static uint64_t timeSeed = std::chrono::high_resolution_clock::now().time_since_epoch().count();
   static std::seed_seq ss{ uint32_t(timeSeed & 0xffffffff), uint32_t(timeSeed >> 32) };
   static std::mt19937 mgen(ss);
@@ -23,7 +25,8 @@ int ZOOR() {
 }
 
 // returns a interger between n and k randomly
-int NTKR(int n, int k) {
+int NTKR(int n, int k)
+{
   static uint64_t timeSeed = std::chrono::high_resolution_clock::now().time_since_epoch().count();
   static std::seed_seq ss{ uint32_t(timeSeed & 0xffffffff), uint32_t(timeSeed >> 32) };
   static std::mt19937 mgen(ss);
@@ -33,7 +36,8 @@ int NTKR(int n, int k) {
 }
 
 // returns a float between n and k randomly
-float NTKR(float n, float k) {
+float NTKR(float n, float k)
+{
   static uint64_t timeSeed = std::chrono::high_resolution_clock::now().time_since_epoch().count();
   static std::seed_seq ss{ uint32_t(timeSeed & 0xffffffff), uint32_t(timeSeed >> 32) };
   static std::mt19937 mgen(ss);
