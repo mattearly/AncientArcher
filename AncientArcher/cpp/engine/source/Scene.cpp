@@ -10,6 +10,12 @@ void Scene::render()
     pg.render();
   }
 
+  // draw models
+  for (auto model : _models)
+  {
+    model.render(_shader.get());
+  }
+
   // draw sky
   sky->render();
 

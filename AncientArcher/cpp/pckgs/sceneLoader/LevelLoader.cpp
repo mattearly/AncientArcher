@@ -1,5 +1,7 @@
 #include "LevelLoader.h"
 #include <TextureLoader.h>
+#include <Model.h>
+#include <Prims.h>
 #include <Entity.h>
 #include <glm/glm.hpp>
 
@@ -7,9 +9,10 @@
 void LevelLoader::loadDemoLevel(Scene& scene)
 {
   populateLayeredBlockGround(scene);
-  populateBoundries         (scene);
-  populateMidSpheres        (scene);
-  popluateWalkwayPlanes     (scene);
+  populateBoundries(scene);
+  populateMidSpheres(scene);
+  populateWalkwayPlanes(scene);
+  populateDemoModel(scene);
 }
 
 ////////////////////////PRIVATE FUNCTIONS/////////////////////////
@@ -59,7 +62,7 @@ void LevelLoader::populateBoundries(Scene& scene)
             glm::vec3(1, 1, 1),
             "../AncientArcher/resource/14-maze_metal.png",
             true
-            );
+          );
         }
       }
     }
@@ -86,7 +89,7 @@ void LevelLoader::populateMidSpheres(Scene& scene)
   scene.addPrimGroup(tmp);
 }
 
-void LevelLoader::popluateWalkwayPlanes(Scene& scene)
+void LevelLoader::populateWalkwayPlanes(Scene& scene)
 {
   Prims tmp;
   for (int i = -21; i < 21; i++)  // width
@@ -106,4 +109,11 @@ void LevelLoader::popluateWalkwayPlanes(Scene& scene)
     }
   }
   scene.addPrimGroup(tmp);
+}
+
+void LevelLoader::populateDemoModel(Scene& scene)
+{
+  Model* tmpModel;
+  tmpModel = new Model("../AncientArcher/resource/models/nanosuit/nanosuit.obj");
+  scene.addModel(*tmpModel);
 }

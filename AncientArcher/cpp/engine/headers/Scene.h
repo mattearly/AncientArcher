@@ -23,7 +23,7 @@ public:
 private:
   std::vector<Model> _models;
   std::vector<Prims> _primGroups;
-  Skybox* sky;
+  Skybox* sky = nullptr;
 
   std::shared_ptr<Shader> _shader;
   std::shared_ptr<Camera> _camera;

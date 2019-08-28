@@ -10,5 +10,6 @@ private:
   void populateLayeredBlockGround(Scene& scene);
   void populateBoundries(Scene& scene);
   void populateMidSpheres(Scene& scene);
-  void popluateWalkwayPlanes(Scene& scene);
+  void populateWalkwayPlanes(Scene& scene);
+  void populateDemoModel(Scene& scene);
 };
