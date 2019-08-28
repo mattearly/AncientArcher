@@ -42,9 +42,7 @@ void Game::render()
 {
   g_display.clear();   // don't touch this
 
-  world->render();
-  demoModel->render(world->getShader());
-  sky->render();
+  scene.render();
 
   g_display.update();  // don't touch this
 }
@@ -61,8 +59,8 @@ void Game::update()
 
   g_controls.keyboardInput();
 
-  world->getCamera()->increaseYawAndPitch(mousepos->xOffset, mousepos->yOffset);
-  mousepos->xOffset = 0.f;
-  mousepos->yOffset = 0.f;
+  _camera->increaseYawAndPitch(_mousepos->xOffset, _mousepos->yOffset);
+  _mousepos->xOffset = 0.f;
+  _mousepos->yOffset = 0.f;
 
 }

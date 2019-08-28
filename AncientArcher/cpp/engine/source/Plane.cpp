@@ -32,7 +32,7 @@ void Plane::loadPlane()
   // plane with texture coords and normals
   float vertices[] =
   {
-    // positions               // normals       //text cords    
+    // positions              // normals       //text cords    
     -0.5f, 0.0f, -0.5f,   0.0f, 1.0f, 0.0f,    0.0f, 1.0f,
      0.5f, 0.0f, -0.5f,   0.0f, 1.0f, 0.0f,    1.0f, 1.0f,
      0.5f, 0.0f, 0.5f,    0.0f, 1.0f, 0.0f,    1.0f, 0.0f,

@@ -1,12 +1,11 @@
 #pragma once
-#include <World.h>
 #include <Model.h>
 #include <memory.h>
 #include <keys.h>
 #include <mouse.h>
 #include <scroll.h>
-#include "../pckgs/skybox/Skybox.h"
-#include "../pckgs/firstPersonPlayer/FirstPersonPlayer.h"
+#include <Scene.h>
+#include <Lighting.h>
 
 class Game {
 public:
@@ -17,16 +16,14 @@ public:
 
 private:
 
-  // testing model loading
-  Model* demoModel;
+  std::shared_ptr<keys>     _keypress;
+  std::shared_ptr<mouse>    _mousepos;
+  std::shared_ptr<scroll>   _scrolling;
+  std::shared_ptr<Camera>   _camera;
+  std::shared_ptr<Shader>   _shader;
+  std::shared_ptr<Lighting> _lighting;
 
-  World* world;
-  FirstPersonPlayer* player;
-  Skybox* sky;
-
-  std::shared_ptr<keys> keypress;
-  std::shared_ptr<mouse> mousepos;
-  std::shared_ptr<scroll> scrolling;
+  Scene scene;
 
   void update();
   void update(float dt);

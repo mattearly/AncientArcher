@@ -8,35 +8,35 @@
  *  @param[in] loc    Location to plant the object.
  *  @param[in] prims  A PrimativeRenderer object to check for collision againt and place a new entity onto.
  */
-void Planter::plantDemoTree(const glm::vec3 loc, World *world)
-{
-  if (texIDPlant == 0) 
-  {
-    texIDPlant = texLoader.load2DTexture("../AncientArcher/cpp/pckgs/planter/bark.png");
-  }
-
-  Entity* newPlant = new Entity(
-    ENTITYTYPE::CUBE,
-    loc,
-    glm::vec3(0.9f),
-    texIDPlant,
-    true,
-    false
-  );
-
-  if (world)
-  {
-    static CollisionHandler ch;
-    for (const auto& e : *world->getEntities())
-    {
-      if (ch.AABB_vs_AABB_3D(newPlant->collider->impasse, e.collider->impasse))
-      {
-        delete newPlant;
-        return;
-      }
-    }
-  }
-
-  world->addToStationaryEntities(*newPlant);
-  playequipgearsound();
-}
+//void Planter::plantDemoTree(const glm::vec3 loc, World *world)
+//{
+//  if (texIDPlant == 0) 
+//  {
+//    texIDPlant = texLoader.load2DTexture("../AncientArcher/cpp/pckgs/planter/bark.png");
+//  }
+//
+//  Entity* newPlant = new Entity(
+//    ENTITYTYPE::CUBE,
+//    loc,
+//    glm::vec3(0.9f),
+//    texIDPlant,
+//    true,
+//    false
+//  );
+//
+//  if (world)
+//  {
+//    static CollisionHandler ch;
+//    for (const auto& e : *world->getEntities())
+//    {
+//      if (ch.AABB_vs_AABB_3D(newPlant->collider->impasse, e.collider->impasse))
+//      {
+//        delete newPlant;
+//        return;
+//      }
+//    }
+//  }
+//
+//  world->addToStationaryEntities(*newPlant);
+//  playequipgearsound();
+//}
