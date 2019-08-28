@@ -11,5 +11,7 @@ private:
   void populateBoundries(Scene& scene);
   void populateMidSpheres(Scene& scene);
   void populateWalkwayPlanes(Scene& scene);
-  void populateDemoModel(Scene& scene);
+  void populateDemoNanosuitModel(Scene& scene);
+  void populateDemoConeModel(Scene& scene);
+  void populateDemoMonkeyModel(Scene& scene);
 };
