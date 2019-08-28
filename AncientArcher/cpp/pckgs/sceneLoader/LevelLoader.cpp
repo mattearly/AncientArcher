@@ -105,4 +105,5 @@ void LevelLoader::popluateWalkwayPlanes(Scene& scene)
       }
     }
   }
+  scene.addPrimGroup(tmp);
 }
