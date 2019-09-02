@@ -46,9 +46,7 @@ Game::Game()
   scene.setShader(_shader);
   scene.setCamera(_camera);
 
-  LevelLoader levelLoader;
-  levelLoader.loadDemoLevel(scene);
-
+  LevelLoader::getLevelLoader()->loadDemoLevel(scene);
 
   _lighting->addPointLight(*_camera->getPosition(), _shader.get()); // debug point light
 }
@@ -126,6 +124,24 @@ void Game::moveCamHelper(float dt)
     directionPlacement -= WORLD_UP * realVelocity;
   }
 
+  // check if level switch button is pressed ( TEST )
+  if (_keypress->_1)
+  {
+    LevelLoader::getLevelLoader()->loadDemoLevel(scene);
+  }
+
+  if (_keypress->_2)
+  {
+    LevelLoader::getLevelLoader()->loadDemoLevel2(scene);
+
+  }
+
+  if (_keypress->_3)
+  {
+    LevelLoader::getLevelLoader()->loadDemoLevel3(scene);
+  }
+
+
   // update projection matrix on shaders if window was resized
   if (g_projectionResize)
   {
@@ -135,8 +151,9 @@ void Game::moveCamHelper(float dt)
 
   // Set final new position this frame
   _camera->increasePosition(directionPlacement);
-
   _lighting->movePointLight(0, *_camera->getPosition(), _shader.get());  // debug point light stays at cam
-  directionPlacement = glm::vec3(0.f, 0.f, 0.f);            // reset local variables for next frame processing
-  moveFront = glm::vec3(*_camera->getFront());   // reset local variables
+
+  // reset local variables for next frame processing
+  directionPlacement = glm::vec3(0.f, 0.f, 0.f);
+  moveFront = glm::vec3(*_camera->getFront());
 }

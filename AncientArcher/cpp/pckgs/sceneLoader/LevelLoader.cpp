@@ -5,15 +5,69 @@
 #include <Entity.h>
 #include <glm/glm.hpp>
 
+LevelLoader* LevelLoader::_levelLoader = nullptr;
+
+LevelLoader* LevelLoader::getLevelLoader()
+{
+  if (!_levelLoader)
+  {
+    _levelLoader = new LevelLoader();
+  }
+  return _levelLoader;
+}
+
 /////////////////////////PUBLIC FUNCTIONS/////////////////////////
 void LevelLoader::loadDemoLevel(Scene& scene)
 {
-  populateLayeredBlockGround(scene);
-  populateBoundries(scene);
-  populateMidSpheres(scene);
-  populateWalkwayPlanes(scene);
-  populateRockBall_1_Model(scene);
+  if (_currentLevelLoaded != ONE)
+  {
+    scene.clearAll();
+
+    populateLayeredBlockGround(scene);
+    populateBoundries(scene);
+    populateMidSpheres(scene);
+    populateWalkwayPlanes(scene);
+    populateRockBall_1_Model(scene);
+    _currentLevelLoaded = ONE;
+
+  }
+  else
+  {
+    std::cout << "already on level one\n";
+  }
 }
+
+void LevelLoader::loadDemoLevel2(Scene& scene)
+{
+  if (_currentLevelLoaded != TWO)
+  {
+    scene.clearAll();
+    populateLayeredBlockGround(scene);
+    _currentLevelLoaded = TWO;
+
+  }
+  else
+  {
+    std::cout << "already on level two\n";
+  }
+}
+
+void LevelLoader::loadDemoLevel3(Scene& scene)
+{
+  if (_currentLevelLoaded != THREE)
+  {
+    scene.clearAll();
+
+    populateFullWalkwayPlanes(scene);
+    _currentLevelLoaded = THREE;
+
+  }
+  else
+  {
+    std::cout << "already on level three\n";
+  }
+}
+
 
 ////////////////////////PRIVATE FUNCTIONS/////////////////////////
 void LevelLoader::populateLayeredBlockGround(Scene& scene)
@@ -116,4 +170,23 @@ void LevelLoader::populateRockBall_1_Model(Scene& scene)
   Model* tmpModel;
   tmpModel = new Model("../AncientArcher/resource/models/sphere/rock_ball_1.dae");
   scene.addModel(*tmpModel);
+}
+
+void LevelLoader::populateFullWalkwayPlanes(Scene& scene)
+{
+  Prims tmp;
+  for (int i = -21; i < 21; i++)  // width
+  {
+    for (int j = -21; j < 21; j++)  // width
+    {
+      tmp.newObject(
+        PRIMTYPE::CUBE,
+        glm::vec3(i, -4.f, j),
+        glm::vec3(1, 1, 1),
+        "../AncientArcher/resource/11-pixelized_darkwood.png",
+        true
+      );
+    }
+  }
+  scene.addPrimGroup(tmp);
 }

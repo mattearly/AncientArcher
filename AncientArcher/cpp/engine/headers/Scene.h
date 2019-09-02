@@ -19,6 +19,8 @@ public:
 
   void setShader(std::shared_ptr<Shader>& shader);
   void setCamera(std::shared_ptr<Camera>& camera);
+
+  void clearAll();
   
 private:
   std::vector<Model> _models;

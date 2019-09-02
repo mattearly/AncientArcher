@@ -63,3 +63,9 @@ void Scene::setCamera(std::shared_ptr<Camera>& camera)
 {
   _camera = camera;
 }
+
+void Scene::clearAll()
+{
+  _primGroups.clear();
+  _models.clear();
+}
