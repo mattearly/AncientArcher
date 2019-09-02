@@ -14,4 +14,10 @@ private:
   void populateDemoNanosuitModel(Scene& scene);
   void populateDemoConeModel(Scene& scene);
   void populateDemoMonkeyModel(Scene& scene);
+  void populateDemoSphereModel(Scene& scene);
+  void populateDemoCylinderModel(Scene& scene);
+  void populateDemoBrickCylinderModel(Scene& scene);
+  void populateRobot_1_Model(Scene& scene);
+  void populateRockBall_1_Model(Scene& scene);
+  void populateRustRobotDemo_1_Model(Scene& scene);
 };

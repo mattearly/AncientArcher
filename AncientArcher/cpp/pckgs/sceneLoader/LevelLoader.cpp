@@ -12,9 +12,7 @@ void LevelLoader::loadDemoLevel(Scene& scene)
   populateBoundries(scene);
   populateMidSpheres(scene);
   populateWalkwayPlanes(scene);
-  //populateDemoNanosuitModel(scene);
-  //populateDemoConeModel(scene);
-  populateDemoMonkeyModel(scene);
+  populateRockBall_1_Model(scene);
 }
 
 ////////////////////////PRIVATE FUNCTIONS/////////////////////////
@@ -113,23 +111,9 @@ void LevelLoader::populateWalkwayPlanes(Scene& scene)
   scene.addPrimGroup(tmp);
 }
 
-void LevelLoader::populateDemoNanosuitModel(Scene& scene)
+void LevelLoader::populateRockBall_1_Model(Scene& scene)
 {
   Model* tmpModel;
-  tmpModel = new Model("../AncientArcher/resource/models/nanosuit/nanosuit.obj");
-  scene.addModel(*tmpModel);
-}
-
-void LevelLoader::populateDemoConeModel(Scene& scene)
-{
-  Model* tmpModel;
-  tmpModel = new Model("../AncientArcher/resource/models/cone/cone.obj");
-  scene.addModel(*tmpModel);
-}
-
-void LevelLoader::populateDemoMonkeyModel(Scene& scene)
-{
-  Model* tmpModel;
-  tmpModel = new Model("../AncientArcher/resource/models/monkey/monkey.fbx");
+  tmpModel = new Model("../AncientArcher/resource/models/sphere/rock_ball_1.dae");
   scene.addModel(*tmpModel);
 }
