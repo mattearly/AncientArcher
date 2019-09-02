@@ -11,4 +11,5 @@ private:
   void populateBoundries(Scene& scene);
   void populateMidSpheres(Scene& scene);
   void populateWalkwayPlanes(Scene& scene);
+  void populateRockBall_1_Model(Scene& scene);
 };
