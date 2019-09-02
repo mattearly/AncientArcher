@@ -1,5 +1,16 @@
 #include <CollisionHandler.h>
 
+CollisionHandler* CollisionHandler::_collisionHandler = nullptr;
+
+CollisionHandler* CollisionHandler::getCollisionHandler()
+{
+  if (!_collisionHandler)
+  {
+    _collisionHandler = new CollisionHandler();
+  }
+  return _collisionHandler;
+}
+
 /**
  * Bounding Box Collision for 2 3D rectagular Boxes
  * @param[in] a  An impassible collider blockage, A.
