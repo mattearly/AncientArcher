@@ -181,6 +181,8 @@ vector<texture> Model::loadMaterialTextures(aiMaterial* mat, aiTextureType type,
 
 unsigned int textureFromFile(const char* path, const std::string& directory, bool gamma)
 {
+  stbi_set_flip_vertically_on_load(false); // tell stb_image.h to flip loaded texture's on the y-axis.
+
   std::string filename = std::string(path);
   filename = directory + '/' + filename;
 
