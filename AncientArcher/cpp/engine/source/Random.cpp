@@ -1,8 +1,11 @@
-#include <mearly.h>
-namespace mearly {
+#include <Random.h>
+#include <random>
+#include <chrono>
+
+Random* Random::_random = nullptr;
 
 // returns a double between zero and one randomly
-double ZTOR() 
+double Random::ZTOR()
 {
   // initialize the random number generator with time-dependent seed
   static uint64_t timeSeed = std::chrono::high_resolution_clock::now().time_since_epoch().count();
@@ -13,8 +16,17 @@ double ZTOR()
   return unif(mgen);
 }
 
+Random* Random::getRandom()
+{
+  if (!_random)
+  {
+    _random = new Random();
+  }
+  return _random;
+}
+
 // returns integer zero or one randomly [true / false]
-int ZOOR() 
+int Random::ZOOR()
 {
   static uint64_t timeSeed = std::chrono::high_resolution_clock::now().time_since_epoch().count();
   static std::seed_seq ss{ uint32_t(timeSeed & 0xffffffff), uint32_t(timeSeed >> 32) };
@@ -25,7 +37,7 @@ int ZOOR()
 }
 
 // returns a interger between n and k randomly
-int NTKR(int n, int k)
+int Random::NTKR(int n, int k)
 {
   static uint64_t timeSeed = std::chrono::high_resolution_clock::now().time_since_epoch().count();
   static std::seed_seq ss{ uint32_t(timeSeed & 0xffffffff), uint32_t(timeSeed >> 32) };
@@ -36,7 +48,7 @@ int NTKR(int n, int k)
 }
 
 // returns a float between n and k randomly
-float NTKR(float n, float k)
+float Random::NTKR(float n, float k)
 {
   static uint64_t timeSeed = std::chrono::high_resolution_clock::now().time_since_epoch().count();
   static std::seed_seq ss{ uint32_t(timeSeed & 0xffffffff), uint32_t(timeSeed >> 32) };
@@ -44,7 +56,4 @@ float NTKR(float n, float k)
 
   std::uniform_real_distribution<float> ntkd(n, k);
   return ntkd(mgen);
-}
-
-/* end namespace mearly */
 }

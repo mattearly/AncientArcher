@@ -1,6 +1,5 @@
 #include <Sound.h>
-#include <mearly.h>
-
+#include <Random.h>
 #include <SDL2/SDL.h>
 
 #include <cmath>
@@ -13,7 +12,7 @@ void playfootstepsound()
 
   if (!soundReady) initsound();
 
-  int dist = mearly::NTKR(0, NUMFOOTSTEPS - 1);
+  int dist = Random::getRandom()->NTKR(0, NUMFOOTSTEPS - 1);
 
   Mix_PlayChannel(-1, footstepsoundeffects[dist], 0);
 }
@@ -23,7 +22,7 @@ void playgruntsound()
 
   if (!soundReady) initsound();
 
-  int dist = mearly::NTKR(0, NUMGRUNTS - 1);
+  int dist = Random::getRandom()->NTKR(0, NUMGRUNTS - 1);
 
   Mix_PlayChannel(-1, gruntsoundeffects[dist], 0);
 }
