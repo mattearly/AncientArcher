@@ -159,6 +159,7 @@
     <ClCompile Include="cpp\engine\source\Plane.cpp" />
     <ClCompile Include="cpp\engine\source\GlyphLoader.cpp" />
     <ClCompile Include="cpp\engine\source\Kinematics.cpp" />
+    <ClCompile Include="cpp\engine\source\Random.cpp" />
     <ClCompile Include="cpp\engine\source\Scene.cpp" />
     <ClCompile Include="cpp\engine\source\Sphere.cpp" />
     <ClCompile Include="cpp\pckgs\GUI\HealthBar.cpp" />
@@ -176,7 +177,6 @@
     <ClCompile Include="cpp\engine\source\glad.c" />
     <ClCompile Include="cpp\engine\source\Lighting.cpp" />
     <ClCompile Include="cpp\game\main.cpp" />
-    <ClCompile Include="cpp\engine\source\mearly.cpp" />
     <ClCompile Include="cpp\pckgs\firstPersonPlayer\FirstPersonPlayer.cpp" />
     <ClCompile Include="cpp\engine\source\Shader.cpp" />
     <ClCompile Include="cpp\engine\source\Sound.cpp" />
@@ -198,6 +198,7 @@
     <ClInclude Include="cpp\engine\headers\GlyphLoader.h" />
     <ClInclude Include="cpp\engine\headers\Kinematics.h" />
     <ClInclude Include="cpp\engine\headers\mouse.h" />
+    <ClInclude Include="cpp\engine\headers\Random.h" />
     <ClInclude Include="cpp\engine\headers\Scene.h" />
     <ClInclude Include="cpp\engine\headers\scroll.h" />
     <ClInclude Include="cpp\engine\headers\Sphere.h" />
@@ -216,7 +217,6 @@
     <ClInclude Include="cpp\game\Game.h" />
     <ClInclude Include="cpp\engine\headers\Global.h" />
     <ClInclude Include="cpp\engine\headers\Lighting.h" />
-    <ClInclude Include="cpp\engine\headers\mearly.h" />
     <ClInclude Include="cpp\pckgs\firstPersonPlayer\FirstPersonPlayer.h" />
     <ClInclude Include="cpp\engine\headers\Shader.h" />
     <ClInclude Include="cpp\engine\headers\Sound.h" />
