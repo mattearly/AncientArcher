@@ -1,11 +1,9 @@
 #include <Entity.h>
 
-Entity::Entity(ENTITYTYPE t, glm::vec3 loc, glm::vec3 sc, int texID, bool isImpassable, bool hasKinematics)
+Entity::Entity(glm::vec3 loc, glm::vec3 sc, bool isImpassable, bool hasKinematics)
 {
-  gameItem.type = t;
   gameItem.loc = loc;
   gameItem.scale = sc;
-  gameItem.textureID = texID;
 
   if (isImpassable) 
   {

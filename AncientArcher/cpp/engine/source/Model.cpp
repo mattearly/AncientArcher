@@ -114,7 +114,7 @@ Mesh Model::processMesh(aiMesh* mesh, const aiScene* scene)
     verts.Bitangent = vector;
     vertices.push_back(verts);
   }
-  // now wak through each of the mesh's faces (a face is a mesh its triangle) and retrieve the corresponding vertex indices.
+  // now walk through each of the mesh's faces (a face is a mesh its triangle) and retrieve the corresponding vertex indices.
   for (unsigned int i = 0; i < mesh->mNumFaces; i++)
   {
     aiFace face = mesh->mFaces[i];
@@ -169,7 +169,7 @@ vector<texture> Model::loadMaterialTextures(aiMaterial* mat, aiTextureType type,
     if (!skip)
     {   // if texture hasn't been loaded already, load it
       texture tex;
-      tex.ID = textureFromFile(str.C_Str(), this->directory);
+      tex.ID = textureFromFile(str.C_Str(), directory);
       tex.type = typeName;
       tex.path = str.C_Str();
       textures.push_back(tex);
@@ -181,6 +181,8 @@ vector<texture> Model::loadMaterialTextures(aiMaterial* mat, aiTextureType type,
 
 unsigned int textureFromFile(const char* path, const std::string& directory, bool gamma)
 {
+  stbi_set_flip_vertically_on_load(false); // tell stb_image.h to flip loaded texture's on the y-axis.
+
   std::string filename = std::string(path);
   filename = directory + '/' + filename;
 

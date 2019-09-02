@@ -1,46 +1,9 @@
-#include "SkyboxRenderer.h"
+#include <Skybox.h>
 #include <Camera.h>
 #include <TextureLoader.h>
-
 #include <glad/glad.h>
 #include <glm/glm.hpp>
-
 #include <iostream>
-
-//extern Camera g_camera;  // camera is instantiated as a global in main.cpp
-
-/**
- * Default Constructor. Load a cube map texture the default skybox and skymap shader.
- */
-Skybox::Skybox(std::shared_ptr<Camera>& camera)
-{
-  _camera = camera;
-  skyboxShader = std::make_unique< Shader >(
-    "../AncientArcher/cpp/pckgs/skybox/skybox.vert",
-    "../AncientArcher/cpp/pckgs/skybox/skybox.frag"
-    );
-  loadSkybox();
-
-  TextureLoader loader;
-  std::vector<std::string> skymapFiles =
-  {
-    "../AncientArcher/cpp/pckgs/skybox/default/skybox_right.jpg",
-    "../AncientArcher/cpp/pckgs/skybox/default/skybox_left.jpg",
-    "../AncientArcher/cpp/pckgs/skybox/default/skybox_top.jpg",
-    "../AncientArcher/cpp/pckgs/skybox/default/skybox_bottom.jpg",
-    "../AncientArcher/cpp/pckgs/skybox/default/skybox_front.jpg",
-    "../AncientArcher/cpp/pckgs/skybox/default/skybox_back.jpg"
-  };
-
-  cubemapTexture = loader.loadCubeTexture(skymapFiles);
-
-  skyboxShader->use();
-  skyboxShader->setInt("skybox", 0);
-
-  //debug
-  std::cout << "cam use count in skybox init: " << _camera.use_count() << std::endl;
-  // --okay
-}
 
 /**
  * Custom skymap constructor. Loads up the files in the path and skymap shader.
@@ -53,9 +16,10 @@ Skybox::Skybox(std::shared_ptr<Camera>& camera, std::vector<std::string> incomin
   _camera = camera;
 
   skyboxShader = std::make_unique< Shader >(
-    "../AncientArcher/cpp/pckgs/skybox/skybox.vert",
-    "../AncientArcher/cpp/pckgs/skybox/skybox.frag"
+    "../AncientArcher/resource/skybox/skybox.vert",
+    "../AncientArcher/resource/skybox/skybox.frag"
     );
+
   loadSkybox();
 
   TextureLoader loader;
