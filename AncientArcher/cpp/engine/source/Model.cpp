@@ -4,6 +4,7 @@
 #include <glad/glad.h> 
 #include <glm/glm.hpp>
 #include <stb_image.h>
+#include <assimp/anim.h>
 #include <cstring>
 #include <fstream>
 #include <sstream>
@@ -21,7 +22,8 @@ void Model::render(Shader* shader)
          // render the loaded model
   glm::mat4 model = glm::mat4(1.0f);
   model = glm::translate(model, glm::vec3(0.0f, 0.0f, 0.0f)); // translate it down so it's at the center of the scene
-  model = glm::scale(model, glm::vec3(0.2f, 0.2f, 0.2f));	// it's a bit too big for our scene, so scale it down
+  //model = glm::rotate(model, glm::radians(-90.f), glm::vec3(0.0f, 0.0f, 1.0f));
+  model = glm::scale(model, glm::vec3(0.2f, 0.2f, 0.2f));	  // it's a bit too big for our scene, so scale it down
   shader->setMat4("model", model);
 
   for (unsigned int i = 0; i < meshes.size(); i++)
@@ -46,6 +48,9 @@ void Model::loadModel(const std::string& path)
 
   // process ASSIMP's root node recursively
   processNode(scene->mRootNode, scene);
+
+
+  aiAnimation anim;
 }
 
 void Model::processNode(aiNode* node, const aiScene* scene)

@@ -15,7 +15,4 @@ public:
   bool vector_vs_AABB_3D(glm::vec3 startpt, glm::vec3 endpt, const Impasse& b) const;
 
 private:
-
-  static CollisionHandler* _collisionHandler;
-
 };

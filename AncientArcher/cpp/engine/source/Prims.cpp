@@ -61,7 +61,6 @@ void Prims::render()
 
 void Prims::newObject(PRIMTYPE type, glm::vec3 pos, glm::vec3 scale, std::string texPath, bool isVisible)
 {
-  static TextureLoader tloader;
   primObject tmpobj;
 
   tmpobj.type = type;
@@ -72,7 +71,7 @@ void Prims::newObject(PRIMTYPE type, glm::vec3 pos, glm::vec3 scale, std::string
   if (_texturePaths.empty())
   {
     // set object texture
-    tmpobj.texID = tloader.load2DTexture(texPath);
+    tmpobj.texID = TextureLoader::getTextureLoader()->load2DTexture(texPath);
 
     // save note of texture path loaded
     texture tex;
@@ -96,7 +95,7 @@ void Prims::newObject(PRIMTYPE type, glm::vec3 pos, glm::vec3 scale, std::string
     if (!texFound)
     {
       // set object texture
-      tmpobj.texID = tloader.load2DTexture(texPath);
+      tmpobj.texID = TextureLoader::getTextureLoader()->load2DTexture(texPath);
 
       // save note of texture path loaded
       texture tex;

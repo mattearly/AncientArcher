@@ -7,6 +7,7 @@
 #include <assimp/scene.h>
 #include <assimp/postprocess.h>
 #include <Mesh.h>
+#include <animation.h>
 #include <Shader.h>
 #include <string>
 #include <vector>
@@ -19,6 +20,7 @@ public:
   /*  Model Data */
   std::vector<texture> textures_loaded;	// stores all the textures loaded so far, optimization to make sure textures aren't loaded more than once.
   std::vector<Mesh> meshes;
+  std::vector<animation> animations;
   std::string directory;
   bool gammaCorrection;
 
@@ -38,6 +40,8 @@ private:
   void processNode(aiNode* node, const aiScene* scene);
 
   Mesh processMesh(aiMesh* mesh, const aiScene* scene);
+
+  //void processTransforms(aiAnimation* )
 
   // checks all material textures of a given type and loads the textures if they're not loaded yet.
   // the required info is returned as a Texture struct.

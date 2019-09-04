@@ -62,7 +62,7 @@ void Game::moveCamHelper(float dt)
 {
   // this is a debug cam mover with no colliding - called every frame with deltaTime
   static const float FlyIncrement = 0.4f;
-  static float flySpeed = 1.f;
+  static float flySpeed = 5.f;
   static float realVelocity = 0.f;
   static glm::vec3 directionPlacement = glm::vec3(0.f, 0.f, 0.f);
   static glm::vec3 moveFront = glm::vec3(*_camera->getFront());
@@ -114,12 +114,12 @@ void Game::moveCamHelper(float dt)
     directionPlacement += *_camera->getRight() * realVelocity;
   }
 
-  // process page up/down for height
-  if (_keypress->pageup)
+  // process going up and down
+  if (!_keypress->leftShift && _keypress->spacebar)  // spacebar goes up
   {
     directionPlacement += WORLD_UP * realVelocity;
   }
-  if (_keypress->pagedown)
+  if (_keypress->leftShift && _keypress->spacebar)   // shift + spacebar goes down
   {
     directionPlacement -= WORLD_UP * realVelocity;
   }
@@ -133,12 +133,16 @@ void Game::moveCamHelper(float dt)
   if (_keypress->_2)
   {
     LevelLoader::getLevelLoader()->loadDemoLevel2(scene);
-
   }
 
   if (_keypress->_3)
   {
     LevelLoader::getLevelLoader()->loadDemoLevel3(scene);
+  }  
+  
+  if (_keypress->_4)
+  {
+    LevelLoader::getLevelLoader()->loadDemoLevel4(scene);
   }
 
 

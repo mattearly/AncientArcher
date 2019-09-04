@@ -1,13 +1,8 @@
 #include <CollisionHandler.h>
 
-CollisionHandler* CollisionHandler::_collisionHandler = nullptr;
-
 CollisionHandler* CollisionHandler::getCollisionHandler()
 {
-  if (!_collisionHandler)
-  {
-    _collisionHandler = new CollisionHandler();
-  }
+  static CollisionHandler* _collisionHandler = new CollisionHandler();
   return _collisionHandler;
 }
 

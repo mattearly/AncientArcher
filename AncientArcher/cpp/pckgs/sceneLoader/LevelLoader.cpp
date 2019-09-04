@@ -5,14 +5,9 @@
 #include <Entity.h>
 #include <glm/glm.hpp>
 
-LevelLoader* LevelLoader::_levelLoader = nullptr;
-
 LevelLoader* LevelLoader::getLevelLoader()
 {
-  if (!_levelLoader)
-  {
-    _levelLoader = new LevelLoader();
-  }
+  static LevelLoader* _levelLoader = new LevelLoader();
   return _levelLoader;
 }
 
@@ -43,8 +38,8 @@ void LevelLoader::loadDemoLevel2(Scene& scene)
   {
     scene.clearAll();
     populateLayeredBlockGround(scene);
+    populateRandomGuy(scene);
     _currentLevelLoaded = TWO;
-
   }
   else
   {
@@ -59,7 +54,27 @@ void LevelLoader::loadDemoLevel3(Scene& scene)
     scene.clearAll();
 
     populateFullWalkwayPlanes(scene);
+    populateBouncyBall(scene);
     _currentLevelLoaded = THREE;
+
+  }
+  else
+  {
+    std::cout << "already on level three\n";
+  }
+}
+
+void LevelLoader::loadDemoLevel4(Scene& scene)
+{
+  if (_currentLevelLoaded != FOUR)
+  {
+    scene.clearAll();
+
+
+    populateFullWalkwayPlanes(scene);
+    populateAliveBlock(scene);
+
+    _currentLevelLoaded = FOUR;
 
   }
   else
@@ -189,4 +204,25 @@ void LevelLoader::populateFullWalkwayPlanes(Scene& scene)
     }
   }
   scene.addPrimGroup(tmp);
+}
+
+void LevelLoader::populateRandomGuy(Scene& scene)
+{
+  Model* tmpModel;
+  tmpModel = new Model("../AncientArcher/resource/models/random_guy/random_guy.dae");
+  scene.addModel(*tmpModel);
+}
+
+void LevelLoader::populateBouncyBall(Scene& scene)
+{
+  Model* tmpModel;
+  tmpModel = new Model("../AncientArcher/resource/models/sphere/ball_anim.dae");
+  scene.addModel(*tmpModel);
+}
+
+void LevelLoader::populateAliveBlock(Scene& scene)
+{
+  Model* tmpModel;
+  tmpModel = new Model("../AncientArcher/resource/models/hello/alive_block.dae");
+  scene.addModel(*tmpModel);
 }
