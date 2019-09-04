@@ -3,6 +3,7 @@ struct keys {
   bool _1 = false;
   bool _2 = false;
   bool _3 = false;
+  bool _4 = false;
 
   bool w = false;
   bool a = false;
