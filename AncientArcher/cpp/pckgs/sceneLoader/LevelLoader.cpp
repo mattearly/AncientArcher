@@ -4,22 +4,18 @@
 #include <Prims.h>
 #include <Entity.h>
 #include <glm/glm.hpp>
-
-LevelLoader* LevelLoader::_levelLoader = nullptr;
+#include <AnimatedModel.h>
 
 LevelLoader* LevelLoader::getLevelLoader()
 {
-  if (!_levelLoader)
-  {
-    _levelLoader = new LevelLoader();
-  }
+  static LevelLoader* _levelLoader = new LevelLoader();
   return _levelLoader;
 }
 
 /////////////////////////PUBLIC FUNCTIONS/////////////////////////
 void LevelLoader::loadDemoLevel(Scene& scene)
 {
-  if (_currentLevelLoaded != ONE)
+  if (_currentLevelLoaded != CURRENT_LEVEL::ONE)
   {
     scene.clearAll();
 
@@ -28,7 +24,7 @@ void LevelLoader::loadDemoLevel(Scene& scene)
     populateMidSpheres(scene);
     populateWalkwayPlanes(scene);
     populateRockBall_1_Model(scene);
-    _currentLevelLoaded = ONE;
+    _currentLevelLoaded = CURRENT_LEVEL::ONE;
 
   }
   else
@@ -39,12 +35,12 @@ void LevelLoader::loadDemoLevel(Scene& scene)
 
 void LevelLoader::loadDemoLevel2(Scene& scene)
 {
-  if (_currentLevelLoaded != TWO)
+  if (_currentLevelLoaded != CURRENT_LEVEL::TWO)
   {
     scene.clearAll();
     populateLayeredBlockGround(scene);
-    _currentLevelLoaded = TWO;
-
+    populateRandomGuy(scene);
+    _currentLevelLoaded = CURRENT_LEVEL::TWO;
   }
   else
   {
@@ -54,12 +50,13 @@ void LevelLoader::loadDemoLevel2(Scene& scene)
 
 void LevelLoader::loadDemoLevel3(Scene& scene)
 {
-  if (_currentLevelLoaded != THREE)
+  if (_currentLevelLoaded != CURRENT_LEVEL::THREE)
   {
     scene.clearAll();
 
     populateFullWalkwayPlanes(scene);
-    _currentLevelLoaded = THREE;
+    populateBouncyBall(scene);
+    _currentLevelLoaded = CURRENT_LEVEL::THREE;
 
   }
   else
@@ -67,6 +64,45 @@ void LevelLoader::loadDemoLevel3(Scene& scene)
     std::cout << "already on level three\n";
   }
 }
+
+void LevelLoader::loadDemoLevel4(Scene& scene)
+{
+  if (_currentLevelLoaded != CURRENT_LEVEL::FOUR)
+  {
+    scene.clearAll();
+
+    populateFullWalkwayPlanes(scene);
+    populateAliveBlock(scene);
+
+    _currentLevelLoaded = CURRENT_LEVEL::FOUR;
+
+  }
+  else
+  {
+    std::cout << "already on level four\n";
+  }
+}
+
+void LevelLoader::loadDemoLevel5(Scene& scene)
+{
+  if (_currentLevelLoaded != CURRENT_LEVEL::FIVE)
+  {
+    scene.clearAll();
+
+    //populateLayeredBlockGround(scene);
+    //populateBoundries(scene);
+    populateBisonDemo(scene);
+    std::cout << "the cow should be showing.\n";
+
+    _currentLevelLoaded = CURRENT_LEVEL::FIVE;
+
+  }
+  else
+  {
+    std::cout << "already on level five\n";
+  }
+}
+
 
 
 ////////////////////////PRIVATE FUNCTIONS/////////////////////////
@@ -189,4 +225,41 @@ void LevelLoader::populateFullWalkwayPlanes(Scene& scene)
     }
   }
   scene.addPrimGroup(tmp);
+}
+
+void LevelLoader::populateRandomGuy(Scene& scene)
+{
+  Model* tmpModel;
+  tmpModel = new Model("../AncientArcher/resource/models/random_guy/random_guy.dae");
+  scene.addModel(*tmpModel);
+}
+
+void LevelLoader::populateBouncyBall(Scene& scene)
+{
+  Model* tmpModel;
+  tmpModel = new Model("../AncientArcher/resource/models/sphere/ball_anim.dae");
+  scene.addModel(*tmpModel);
+}
+
+void LevelLoader::populateAliveBlock(Scene& scene)
+{
+  Model* tmpModel;
+  tmpModel = new Model("../AncientArcher/resource/models/hello/alive_block.dae");
+  scene.addModel(*tmpModel);
+}
+
+void LevelLoader::populateAnimatedDemo(Scene& scene)
+{
+  AnimatedModel* tmpModel;
+  tmpModel = new AnimatedModel("../AncientArcher/resource/models/hello/alive_block.dae");
+  scene.addAnimatedModel(*tmpModel);
+}
+
+void LevelLoader::populateBisonDemo(Scene& scene)
+{
+  //AnimatedModel* tmpModel = new AnimatedModel("../AncientArcher/resource/models/wuson/Testwuson.X");
+  //scene.addAnimatedModel(*tmpModel);
+
+  Model* tmpModel = new Model("../AncientArcher/resource/models/wuson/Testwuson.X");
+  scene.addModel(*tmpModel);
 }
