@@ -5,6 +5,13 @@
 #include <sstream>
 #include <iostream>
 
+TextureLoader* TextureLoader::getTextureLoader()
+{
+  static TextureLoader* texLoader = new TextureLoader();
+
+  return texLoader;
+}
+
 /**
  * This code loads in a cube map texture.
  * @param[in] files       to the textures
