@@ -17,6 +17,12 @@ TextureLoader* TextureLoader::getTextureLoader()
  * @param[in] files       to the textures
  * @return    textureID   id to reference the loaded texture
  */
+TextureLoader* TextureLoader::getTextureLoader()
+{
+  static TextureLoader* _textureLoader = new TextureLoader();
+  return _textureLoader;
+}
+
 unsigned int TextureLoader::loadCubeTexture(const std::vector<std::string>& files)
 {
   if (files.size() != 6)

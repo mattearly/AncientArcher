@@ -11,6 +11,9 @@ public:
   void loadDemoLevel2(Scene& scene);
 
   void loadDemoLevel3(Scene& scene);
+
+  void loadDemoLevel4(Scene& scene);
+
 private:
   /* demo level*/
   void populateLayeredBlockGround(Scene& scene);
@@ -21,8 +24,12 @@ private:
 
   void populateFullWalkwayPlanes(Scene& scene);
 
-  enum CURRENT_LEVEL { NA = 0, ONE, TWO, THREE } _currentLevelLoaded = NA;
+  void populateRandomGuy(Scene& scene);
 
-  static LevelLoader* _levelLoader;
+  void populateBouncyBall(Scene& scene);
+
+  void populateAliveBlock(Scene& scene);
+
+  enum CURRENT_LEVEL { NA = 0, ONE, TWO, THREE, FOUR } _currentLevelLoaded = NA;
 
 };

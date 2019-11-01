@@ -65,29 +65,37 @@ void Controls::keyboardInput()
     _keypress->d = false;
   }
 
-  // 1, 2, 3
+  // number keys
+  // 1
   if (glfwGetKey(g_display.window, GLFW_KEY_1) == GLFW_PRESS) {
     _keypress->_1 = true;
   }
-
   if (glfwGetKey(g_display.window, GLFW_KEY_1) == GLFW_RELEASE) {
     _keypress->_1 = false;
   }
-
+  
+  // 2
   if (glfwGetKey(g_display.window, GLFW_KEY_2) == GLFW_PRESS) {
     _keypress->_2 = true;
   }
-
   if (glfwGetKey(g_display.window, GLFW_KEY_2) == GLFW_RELEASE) {
     _keypress->_2 = false;
   }
 
+  // 3
   if (glfwGetKey(g_display.window, GLFW_KEY_3) == GLFW_PRESS) {
     _keypress->_3 = true;
   }
-
   if (glfwGetKey(g_display.window, GLFW_KEY_3) == GLFW_RELEASE) {
     _keypress->_3 = false;
+  }  
+
+  // 4
+  if (glfwGetKey(g_display.window, GLFW_KEY_4) == GLFW_PRESS) {
+    _keypress->_4 = true;
+  }
+  if (glfwGetKey(g_display.window, GLFW_KEY_4) == GLFW_RELEASE) {
+    _keypress->_4 = false;
   }
 
   // Spacebar
@@ -97,7 +105,6 @@ void Controls::keyboardInput()
   if (glfwGetKey(g_display.window, GLFW_KEY_SPACE) == GLFW_RELEASE) {
     _keypress->spacebar = false;
   } 
-  
   
   // PageUp
   if (glfwGetKey(g_display.window, GLFW_KEY_PAGE_UP) == GLFW_PRESS) {

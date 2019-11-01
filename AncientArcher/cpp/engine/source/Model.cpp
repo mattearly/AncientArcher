@@ -4,37 +4,31 @@
 #include <glad/glad.h> 
 #include <glm/glm.hpp>
 #include <stb_image.h>
+#include <assimp/anim.h>
 #include <cstring>
 #include <fstream>
 #include <sstream>
 #include <iostream>
 #include <map>
-#include <TextureLoader.h>
 using std::vector;
-
-Model::Model()
-{
-}
-
 Model::Model(const std::string& path, bool gamma) : gammaCorrection(gamma)
 {
   loadModel(path);
 }
 
-void Model::render(Shader* shader, Camera* camera)
+void Model::render(Shader* shader)
 {
-  // set model size for demo rendering
-  // render the loaded model
-  // todo: come up with a different way for setting model location
+  //set model size for demo rendering
+         // render the loaded model
   glm::mat4 model = glm::mat4(1.0f);
   model = glm::translate(model, glm::vec3(0.0f, 0.0f, 0.0f)); // translate it down so it's at the center of the scene
-  // model = glm::rotate(model, glm::radians(-90.f), glm::vec3(0.0f, 0.0f, 1.0f));
-  model = glm::scale(model, glm::vec3(1.f, 1.f, 1.f));	  // it's a bit too big for our scene, so scale it down
+  //model = glm::rotate(model, glm::radians(-90.f), glm::vec3(0.0f, 0.0f, 1.0f));
+  model = glm::scale(model, glm::vec3(0.2f, 0.2f, 0.2f));	  // it's a bit too big for our scene, so scale it down
   shader->setMat4("model", model);
 
-  for (unsigned int i = 0; i < _meshes.size(); i++)
+  for (unsigned int i = 0; i < meshes.size(); i++)
   {
-    _meshes[i].render(shader, camera);
+    meshes[i].render(shader);
   }
 }
 
@@ -50,25 +44,25 @@ void Model::loadModel(const std::string& path)
     return;
   }
   // retrieve the directory path of the filepath
-  _modelDir = path.substr(0, path.find_last_of('/'));
+  directory = path.substr(0, path.find_last_of('/'));
 
   // process ASSIMP's root node recursively
   processNode(scene->mRootNode, scene);
 
+
+  aiAnimation anim;
 }
 
 void Model::processNode(aiNode* node, const aiScene* scene)
 {
-
   // process each mesh located at the current node
   for (unsigned int i = 0; i < node->mNumMeshes; i++)
   {
     // the node object only contains indices to index the actual objects in the scene. 
     // the scene contains all the data, node is just to keep stuff organized (like relations between nodes).
     aiMesh* mesh = scene->mMeshes[node->mMeshes[i]];
-    _meshes.push_back(processMesh(mesh, scene));
+    meshes.push_back(processMesh(mesh, scene));
   }
-
   // after we've processed all of the meshes (if any) we then recursively process each of the children nodes
   for (unsigned int i = 0; i < node->mNumChildren; i++)
   {
@@ -80,14 +74,14 @@ void Model::processNode(aiNode* node, const aiScene* scene)
 Mesh Model::processMesh(aiMesh* mesh, const aiScene* scene)
 {
   // data to fill
-  std::vector<Vertex> vertices;
+  std::vector<vertex> vertices;
   std::vector<unsigned int> indices;
-  std::vector<Texture> textures;
+  std::vector<texture> textures;
 
   // Walk through each of the mesh's vertices
   for (unsigned int i = 0; i < mesh->mNumVertices; i++)
   {
-    Vertex verts;
+    vertex verts;
     glm::vec3 vector; // we declare a placeholder vector since assimp uses its own vector class that doesn't directly convert to glm's vec3 class so we transfer the data to this placeholder glm::vec3 first.
     // positions
     vector.x = mesh->mVertices[i].x;
@@ -143,51 +137,97 @@ Mesh Model::processMesh(aiMesh* mesh, const aiScene* scene)
   // normal: texture_normalN
 
   // 1. diffuse maps
-  std::vector<Texture> diffuseMaps = loadMaterialTextures(material, aiTextureType_DIFFUSE, "texture_diffuse");
+  std::vector<texture> diffuseMaps = loadMaterialTextures(material, aiTextureType_DIFFUSE, "texture_diffuse");
   textures.insert(textures.end(), diffuseMaps.begin(), diffuseMaps.end());
   // 2. specular maps
-  std::vector<Texture> specularMaps = loadMaterialTextures(material, aiTextureType_SPECULAR, "texture_specular");
+  std::vector<texture> specularMaps = loadMaterialTextures(material, aiTextureType_SPECULAR, "texture_specular");
   textures.insert(textures.end(), specularMaps.begin(), specularMaps.end());
   // 3. normal maps
-  std::vector<Texture> normalMaps = loadMaterialTextures(material, aiTextureType_HEIGHT, "texture_normal");
+  std::vector<texture> normalMaps = loadMaterialTextures(material, aiTextureType_HEIGHT, "texture_normal");
   textures.insert(textures.end(), normalMaps.begin(), normalMaps.end());
   // 4. height maps
-  std::vector<Texture> heightMaps = loadMaterialTextures(material, aiTextureType_AMBIENT, "texture_height");
-  textures.insert(textures.end(), heightMaps.begin(), heightMaps.end()); 
+  std::vector<texture> heightMaps = loadMaterialTextures(material, aiTextureType_AMBIENT, "texture_height");
+  textures.insert(textures.end(), heightMaps.begin(), heightMaps.end());
 
   // return a mesh object created from the extracted mesh data
   return Mesh(vertices, indices, textures);
 }
 
-vector<Texture> Model::loadMaterialTextures(aiMaterial* mat, aiTextureType type, std::string typeName)
+vector<texture> Model::loadMaterialTextures(aiMaterial* mat, aiTextureType type, std::string typeName)
 {
-  std::vector<Texture> textures;
+  std::vector<texture> textures;
   for (unsigned int i = 0; i < mat->GetTextureCount(type); i++)
   {
     aiString str;
     mat->GetTexture(type, i, &str);
     // check if texture was loaded before and if so, continue to next iteration: skip loading a new texture
     bool skip = false;
-    for (unsigned int j = 0; j < _texturesLoaded.size(); j++)
+    for (unsigned int j = 0; j < textures_loaded.size(); j++)
     {
-      if (std::strcmp(_texturesLoaded[j].path.data(), str.C_Str()) == 0)
+      if (std::strcmp(textures_loaded[j].path.data(), str.C_Str()) == 0)
       {
-        textures.push_back(_texturesLoaded[j]);
+        textures.push_back(textures_loaded[j]);
         skip = true; // a texture with the same filepath has already been loaded, continue to next one. (optimization)
         break;
       }
     }
     if (!skip)
-    {   
-      // if texture hasn't been loaded already, load it
-      Texture tex;
-      tex.ID = TextureLoader::getTextureLoader()->textureFromFile(str.C_Str(), _modelDir);
+    {   // if texture hasn't been loaded already, load it
+      texture tex;
+      tex.ID = textureFromFile(str.C_Str(), directory);
       tex.type = typeName;
       tex.path = str.C_Str();
       textures.push_back(tex);
-      _texturesLoaded.push_back(tex);  // store it as texture loaded for entire model, to ensure we won't unnecesery load duplicate textures.
+      textures_loaded.push_back(tex);  // store it as texture loaded for entire model, to ensure we won't unnecesery load duplicate textures.
     }
   }
   return textures;
 }
 
+unsigned int textureFromFile(const char* path, const std::string& directory, bool gamma)
+{
+  stbi_set_flip_vertically_on_load(false); // tell stb_image.h to flip loaded texture's on the y-axis.
+
+  std::string filename = std::string(path);
+  filename = directory + '/' + filename;
+
+  unsigned int textureID;
+  glGenTextures(1, &textureID);
+
+  int width, height, nrComponents;
+  unsigned char* data = stbi_load(filename.c_str(), &width, &height, &nrComponents, 0);
+  if (data)
+  {
+    GLenum format;
+    if (nrComponents == 1)
+    {
+      format = GL_RED;
+    }
+    else if (nrComponents == 3)
+    {
+      format = GL_RGB;
+    }
+    else if (nrComponents == 4)
+    {
+      format = GL_RGBA;
+    }
+
+    glBindTexture(GL_TEXTURE_2D, textureID);
+    glTexImage2D(GL_TEXTURE_2D, 0, format, width, height, 0, format, GL_UNSIGNED_BYTE, data);
+    glGenerateMipmap(GL_TEXTURE_2D);
+
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+
+    stbi_image_free(data);
+  }
+  else
+  {
+    std::cout << "Texture failed to load at path: " << path << std::endl;
+    stbi_image_free(data);
+  }
+
+  return textureID;
+}

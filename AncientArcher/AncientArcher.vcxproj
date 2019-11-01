@@ -187,6 +187,7 @@
     <ClCompile Include="cpp\pckgs\sceneLoader\LevelLoader.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="cpp\engine\headers\animation.h" />
     <ClInclude Include="cpp\engine\headers\Cube.h" />
     <ClInclude Include="cpp\engine\headers\Mesh.h" />
     <ClInclude Include="cpp\engine\headers\Model.h" />

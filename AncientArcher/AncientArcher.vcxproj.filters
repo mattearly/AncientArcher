@@ -233,5 +233,8 @@
     <ClInclude Include="cpp\engine\headers\Random.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="cpp\engine\headers\animation.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>
