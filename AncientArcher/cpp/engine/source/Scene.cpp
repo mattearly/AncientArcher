@@ -13,7 +13,7 @@ void Scene::render()
   // draw models
   for (auto model : _models)
   {
-    model.render(_shader.get());
+    model.render(_shader.get(), _camera.get());
   }
 
   // draw sky

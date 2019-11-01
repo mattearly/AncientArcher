@@ -11,6 +11,7 @@
 #include <Shader.h>
 #include <string>
 #include <vector>
+#include <texture.h>
 
 unsigned int textureFromFile(const char* path, const std::string& directory, bool gamma = false);
 
@@ -29,7 +30,7 @@ public:
   Model(const std::string& path, bool gamma = false);
 
   // draws the model, and thus all its meshes
-  void render(Shader* shader);
+  void render(Shader* shader, Camera* camera);
 
 private:
   /*  Functions   */

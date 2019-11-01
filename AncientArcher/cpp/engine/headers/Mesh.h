@@ -11,24 +11,8 @@
 #include <sstream>
 #include <iostream>
 #include <vector>
-
-struct Texture
-{
-  unsigned int ID = 0;
-  std::string type;
-  std::string path;
-};
-
-struct Vertex
-{
-  glm::vec3 Position = glm::vec3(0);
-  glm::vec3 Normal = glm::vec3(0);
-  glm::vec2 TexCoords = glm::vec2(0);
-  glm::vec3 Tangent = glm::vec3(0);
-  glm::vec3 Bitangent = glm::vec3(0);
-  glm::ivec4 BoneId = glm::ivec4(0);
-  glm::vec4 BoneWeight = glm::vec4(0);
-};
+#include <vertex.h>
+#include <texture.h>
 
 struct BoneInfo
 {
@@ -42,10 +26,10 @@ class Mesh
 public:
 
   // initialize a mesh that doesn't have bones and/or animations
-  Mesh(std::vector<Vertex> vertices, std::vector<unsigned int> indices, std::vector<Texture> textures);
+  Mesh(std::vector<vertex> vertices, std::vector<unsigned int> indices, std::vector<texture> textures);
 
   // initialize a mesh that has bones and/or animations
-  Mesh(std::vector<Vertex> vertices, std::vector<unsigned int> indices, std::vector<Texture> textures, std::vector<BoneInfo> bones);
+  Mesh(std::vector<vertex> vertices, std::vector<unsigned int> indices, std::vector<texture> textures, std::vector<BoneInfo> bones);
   
   // update animated meshes
   //void update(float deltaTime);
@@ -63,11 +47,11 @@ private:
   void setupMesh();
 
   // vertices is the core mesh data for shaders
-  std::vector<Vertex> _vertices;
+  std::vector<vertex> _vertices;
   // for iterating over vertices
   std::vector<unsigned int> _indices;
   // texture information
-  std::vector<Texture> _textures;
+  std::vector<texture> _textures;
 
 
   // Vertex Array Object

@@ -10,13 +10,15 @@
 #include <sstream>
 #include <iostream>
 #include <map>
+#include <vertex.h>
+
 using std::vector;
 Model::Model(const std::string& path, bool gamma) : gammaCorrection(gamma)
 {
   loadModel(path);
 }
 
-void Model::render(Shader* shader)
+void Model::render(Shader* shader, Camera* camera)
 {
   //set model size for demo rendering
          // render the loaded model
@@ -28,7 +30,7 @@ void Model::render(Shader* shader)
 
   for (unsigned int i = 0; i < meshes.size(); i++)
   {
-    meshes[i].render(shader);
+    meshes[i].render(shader, camera);
   }
 }
 
