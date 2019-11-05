@@ -148,85 +148,22 @@
     <Link>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
-      <AdditionalDependencies>opengl32.lib;glfw3.lib;SDL2.lib;SDL2main.lib;SDL2_mixer.lib;assimp-vc141-mt.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>opengl32.lib;glfw3.lib;SDL2.lib;SDL2main.lib;SDL2_mixer.lib;assimp-vc142-mt.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="cpp\engine\source\CollisionHandler.cpp" />
-    <ClCompile Include="cpp\engine\source\Cube.cpp" />
-    <ClCompile Include="cpp\engine\source\Mesh.cpp" />
-    <ClCompile Include="cpp\engine\source\Model.cpp" />
-    <ClCompile Include="cpp\engine\source\Plane.cpp" />
-    <ClCompile Include="cpp\engine\source\GlyphLoader.cpp" />
-    <ClCompile Include="cpp\engine\source\Kinematics.cpp" />
-    <ClCompile Include="cpp\engine\source\Random.cpp" />
-    <ClCompile Include="cpp\engine\source\Scene.cpp" />
-    <ClCompile Include="cpp\engine\source\Sphere.cpp" />
-    <ClCompile Include="cpp\pckgs\GUI\HealthBar.cpp" />
-    <ClCompile Include="cpp\pckgs\monospaceFont\TextRenderer.cpp" />
-    <ClCompile Include="cpp\pckgs\planter\Planter.cpp" />
-    <ClCompile Include="cpp\engine\source\Prims.cpp" />
-    <ClCompile Include="cpp\engine\source\Skybox.cpp" />
-    <ClCompile Include="cpp\engine\source\Camera.cpp" />
-    <ClCompile Include="cpp\engine\source\Collider.cpp" />
-    <ClCompile Include="cpp\engine\source\Controls.cpp" />
-    <ClCompile Include="cpp\engine\source\Display.cpp" />
-    <ClCompile Include="cpp\engine\source\Entity.cpp" />
-    <ClCompile Include="cpp\game\Game.cpp" />
-    <ClCompile Include="cpp\game\GameMainLoop.cpp" />
-    <ClCompile Include="cpp\engine\source\glad.c" />
-    <ClCompile Include="cpp\engine\source\Lighting.cpp" />
-    <ClCompile Include="cpp\game\main.cpp" />
-    <ClCompile Include="cpp\pckgs\firstPersonPlayer\FirstPersonPlayer.cpp" />
-    <ClCompile Include="cpp\engine\source\Shader.cpp" />
-    <ClCompile Include="cpp\engine\source\Sound.cpp" />
-    <ClCompile Include="cpp\engine\source\stb_image.cpp" />
-    <ClCompile Include="cpp\engine\source\TextureLoader.cpp" />
-    <ClCompile Include="cpp\pckgs\spawner\Spawner.cpp" />
-    <ClCompile Include="cpp\pckgs\topDownPlayer\TopDownPlayer.cpp" />
-    <ClCompile Include="cpp\pckgs\sceneLoader\LevelLoader.cpp" />
+    <ClCompile Include="cpp\engine\AAEngine.cpp" />
+    <ClCompile Include="cpp\engine\AAControls.cpp" />
+    <ClCompile Include="cpp\engine\AADisplay.cpp" />
+    <ClCompile Include="cpp\tests\main.cpp" />
+    <ClCompile Include="include\glad.c" />
+    <ClCompile Include="include\stb_image.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="cpp\engine\headers\animation.h" />
-    <ClInclude Include="cpp\engine\headers\Cube.h" />
-    <ClInclude Include="cpp\engine\headers\Mesh.h" />
-    <ClInclude Include="cpp\engine\headers\Model.h" />
-    <ClInclude Include="cpp\engine\headers\Plane.h" />
-    <ClInclude Include="cpp\engine\headers\keys.h" />
-    <ClInclude Include="cpp\engine\headers\CollisionHandler.h" />
-    <ClInclude Include="cpp\engine\headers\Character.h" />
-    <ClInclude Include="cpp\engine\headers\Glyph.h" />
-    <ClInclude Include="cpp\engine\headers\GlyphLoader.h" />
-    <ClInclude Include="cpp\engine\headers\Kinematics.h" />
-    <ClInclude Include="cpp\engine\headers\mouse.h" />
-    <ClInclude Include="cpp\engine\headers\Random.h" />
-    <ClInclude Include="cpp\engine\headers\Scene.h" />
-    <ClInclude Include="cpp\engine\headers\scroll.h" />
-    <ClInclude Include="cpp\engine\headers\Sphere.h" />
-    <ClInclude Include="cpp\engine\headers\texture.h" />
-    <ClInclude Include="cpp\engine\headers\vertex.h" />
-    <ClInclude Include="cpp\pckgs\GUI\HealthBar.h" />
-    <ClInclude Include="cpp\pckgs\monospaceFont\TextRenderer.h" />
-    <ClInclude Include="cpp\pckgs\planter\Planter.h" />
-    <ClInclude Include="cpp\engine\headers\Prims.h" />
-    <ClInclude Include="cpp\engine\headers\Skybox.h" />
-    <ClInclude Include="cpp\engine\headers\Camera.h" />
-    <ClInclude Include="cpp\engine\headers\Collider.h" />
-    <ClInclude Include="cpp\engine\headers\Controls.h" />
-    <ClInclude Include="cpp\engine\headers\Display.h" />
-    <ClInclude Include="cpp\engine\headers\Entity.h" />
-    <ClInclude Include="cpp\game\Game.h" />
-    <ClInclude Include="cpp\engine\headers\Global.h" />
-    <ClInclude Include="cpp\engine\headers\Lighting.h" />
-    <ClInclude Include="cpp\pckgs\firstPersonPlayer\FirstPersonPlayer.h" />
-    <ClInclude Include="cpp\engine\headers\Shader.h" />
-    <ClInclude Include="cpp\engine\headers\Sound.h" />
-    <ClInclude Include="cpp\engine\headers\stb_image.h" />
-    <ClInclude Include="cpp\engine\headers\TextureLoader.h" />
-    <ClInclude Include="cpp\pckgs\spawner\Spawner.h" />
-    <ClInclude Include="cpp\pckgs\text\Text.h" />
-    <ClInclude Include="cpp\pckgs\topDownPlayer\TopDownPlayer.h" />
-    <ClInclude Include="cpp\pckgs\sceneLoader\LevelLoader.h" />
+    <ClInclude Include="cpp\engine\AAEngine.h" />
+    <ClInclude Include="cpp\engine\AAControls.h" />
+    <ClInclude Include="cpp\engine\AADisplay.h" />
+    <ClInclude Include="cpp\engine\AAKeyInput.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
