@@ -48,7 +48,7 @@ AADisplay::~AADisplay()
 
 void AADisplay::reshapeWindowHandler(GLFWwindow* window, int width, int height)
 {
-  glViewport(0, 0, width, height);
+  glViewport(mXPos, mYPos, width, height);
   mWindowWidth = width;
   mWindowHeight = height;
   gWindowRatioChanged = true;
