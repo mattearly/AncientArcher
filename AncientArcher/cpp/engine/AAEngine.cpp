@@ -28,7 +28,7 @@ void AAEngine::render()
   AADisplay::getInstance()->clearBackBuffer(); 
 
 
-
+  
   AADisplay::getInstance()->swapWindowBuffers();
 }
 
@@ -48,7 +48,7 @@ void AAEngine::update()
   }
 
   static bool isFullscreen = false;
-  if (mKeys->leftAlt && mKeys->enter)
+  if ((mKeys->leftAlt || mKeys->rightAlt) && mKeys->enter)
   {
     if (isFullscreen)
     {
