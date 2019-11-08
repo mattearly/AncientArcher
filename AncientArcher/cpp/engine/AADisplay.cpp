@@ -9,34 +9,31 @@ AADisplay* AADisplay::getInstance()
 
 AADisplay::AADisplay()
 {
-  initGLFW();
+  initGLFW(); 
 
-  mWindowWidth = 1280;
-  mWindowHeight = 720;
+  glfwGetMonitorWorkarea(glfwGetPrimaryMonitor(), &mXPos, &mYPos, &mLaunchedMainScreenWindowWidth, &mLaunchedMainScreenWindowHeight);
 
-  int xpos, ypos, width, height;
-  glfwGetMonitorWorkarea(glfwGetPrimaryMonitor(), &xpos, &ypos, &width, &height);
-
-  mWindowWidth = width;
-  mWindowHeight = height;
-
-  mWindow = glfwCreateWindow(mWindowWidth, mWindowHeight, "AncientArcher", nullptr, nullptr);
-
-  if (!mWindow) {
-    std::cout << "failed to init glfw3 window\n";
+  mWindow = glfwCreateWindow(
+    mLaunchedMainScreenWindowWidth, 
+    mLaunchedMainScreenWindowHeight, 
+    "AncientArcher", 
+    nullptr, 
+    nullptr
+  );
+  if (!mWindow) 
+  {
+    std::cout << "Failed to init GLFW3 window\n";
     glfwTerminate();
   }
 
-  glfwMakeContextCurrent(mWindow);
+  glfwGetWindowFrameSize(mWindow, &mWindowFrameSizeLeft, &mWindowFrameSizeTop, &mWindowFrameSizeRight, &mWindowFrameSizeBottom);
 
+  glfwMakeContextCurrent(mWindow);
   initReshapeWindowHandler();
   initMouseHandler();
   initMouseScrollHandler();
-
   enableCursor();
-
   FullscreenOff();
-
   if (!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress))  // init glad (for opengl context)
   {
     std::cout << "failed to init glad\n";
@@ -54,7 +51,7 @@ void AADisplay::reshapeWindowHandler(GLFWwindow* window, int width, int height)
   glViewport(0, 0, width, height);
   mWindowWidth = width;
   mWindowHeight = height;
-  gWindowNeedsResized = true;
+  gWindowRatioChanged = true;
 }
 
 void AADisplay::mouseHandler(GLFWwindow* window, float xpos, float ypos)
@@ -84,12 +81,24 @@ void AADisplay::setWindowTitle(const char* name)
 
 void AADisplay::FullscreenOn()
 {
+  mWindowWidth = 1920;
+  mWindowHeight = 1080;
   glfwSetWindowMonitor(mWindow, glfwGetPrimaryMonitor(), 0, 0, mWindowWidth, mWindowHeight, 0);
+  gWindowRatioChanged = true;
 }
 
 void AADisplay::FullscreenOff()
 {
-  glfwSetWindowMonitor(mWindow, nullptr, 0, 0, mWindowWidth, mWindowHeight, 0);
+  glfwSetWindowMonitor(
+    mWindow, 
+    nullptr,
+    mWindowFrameSizeLeft - mWindowFrameSizeRight,
+    mWindowFrameSizeTop - mWindowFrameSizeBottom,
+    mLaunchedMainScreenWindowWidth,
+    mLaunchedMainScreenWindowHeight,
+    0
+  );
+  gWindowRatioChanged = true;
 }
 
 void AADisplay::clearBackBuffer() const

@@ -7,6 +7,7 @@ class AADisplay
 {
 
 public:
+
   static AADisplay* getInstance();
 
   AADisplay();
@@ -26,15 +27,19 @@ public:
   void clearBackBuffer() const;
   void swapWindowBuffers() const;
 
-  bool gWindowNeedsResized = false;
+  bool gWindowRatioChanged = false;
 
   GLFWwindow* getWindow();
 
 private:
 
-  int mWindowWidth, mWindowHeight;
+  int mWindowWidth = 0, mWindowHeight = 0;
+  int mXPos = 0, mYPos = 0;
   GLFWmonitor* mMonitor;
   GLFWwindow* mWindow;
+  int mLaunchedMainScreenWindowWidth = 0;
+  int mLaunchedMainScreenWindowHeight = 0;
+  int mWindowFrameSizeLeft = 0, mWindowFrameSizeTop = 0, mWindowFrameSizeRight = 0, mWindowFrameSizeBottom = 0;
 
   void initGLFW();
   void initReshapeWindowHandler();
