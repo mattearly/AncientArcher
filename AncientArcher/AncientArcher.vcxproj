@@ -152,6 +152,8 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="cpp\engine\AAViewport.cpp" />
+    <ClCompile Include="cpp\engine\AAOGLGraphics.cpp" />
     <ClCompile Include="cpp\engine\AAEngine.cpp" />
     <ClCompile Include="cpp\engine\AAControls.cpp" />
     <ClCompile Include="cpp\engine\AADisplay.cpp" />
@@ -160,10 +162,13 @@
     <ClCompile Include="include\stb_image.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="cpp\engine\AAViewport.h" />
+    <ClInclude Include="cpp\engine\AAOGLGraphics.h" />
     <ClInclude Include="cpp\engine\AAEngine.h" />
     <ClInclude Include="cpp\engine\AAControls.h" />
     <ClInclude Include="cpp\engine\AADisplay.h" />
     <ClInclude Include="cpp\engine\AAKeyInput.h" />
+    <ClInclude Include="cpp\tests\loadModel.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
