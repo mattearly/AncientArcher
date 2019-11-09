@@ -41,7 +41,6 @@ void AAEngine::update()
   glfwPollEvents();
   AAControls::getInstance()->keyInput(mKeys.get());
 
-
   if (mKeys->a)
   {
     std::cout << "a pressed\n";
@@ -49,15 +48,13 @@ void AAEngine::update()
 
   if ((mKeys->leftAlt || mKeys->rightAlt) && mKeys->enter)
   {
-    if (isFullscreen)
+    if (AADisplay::getInstance()->getIsWindowFullScreen())
     {
       AADisplay::getInstance()->FullscreenOff();
-      isFullscreen = !isFullscreen;
     }
     else
     {
       AADisplay::getInstance()->FullscreenOn();
-      isFullscreen = !isFullscreen;
     }
   }
 }
