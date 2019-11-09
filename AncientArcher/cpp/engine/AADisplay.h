@@ -21,6 +21,7 @@ public:
   void disableCursor();
 
   void setWindowTitle(const char* name);  
+  void setWindowSize(int width, int height, int xpos = 0, int ypos = 0);
   void FullscreenOn();
   void FullscreenOff();
 
@@ -30,6 +31,7 @@ public:
   bool gWindowRatioChanged = false;
   int getScreenWidth();
   int getScreenHeight();
+  bool getIsWindowFullScreen();
 
   GLFWwindow* getWindow();
 

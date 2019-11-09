@@ -79,6 +79,23 @@ void AADisplay::setWindowTitle(const char* name)
   glfwSetWindowTitle(mWindow, name);
 }
 
+void AADisplay::setWindowSize(int width, int height, int xpos, int ypos)
+{
+  mWindowWidth = width;
+  mWindowHeight = height;
+  glfwSetWindowMonitor(
+    mWindow, 
+    nullptr, 
+    (xpos == 0) ? mWindowFrameSizeLeft - mWindowFrameSizeRight : xpos,
+    (ypos == 0) ? mWindowFrameSizeTop - mWindowFrameSizeBottom : ypos, 
+    mWindowWidth, 
+    mWindowHeight, 
+    0
+  );
+  gWindowRatioChanged = true;
+  mWindowIsFullScreen = false;
+}
+
 void AADisplay::FullscreenOn()
 {
   mWindowWidth = 1920;
@@ -122,6 +139,11 @@ int AADisplay::getScreenWidth()
 int AADisplay::getScreenHeight()
 {
   return mWindowHeight;
+}
+
+bool AADisplay::getIsWindowFullScreen()
+{
+  return mWindowIsFullScreen;
 }
 
 GLFWwindow* AADisplay::getWindow()
