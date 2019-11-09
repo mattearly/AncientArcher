@@ -47,7 +47,6 @@ void AAEngine::update()
     std::cout << "a pressed\n";
   }
 
-  static bool isFullscreen = false;
   if ((mKeys->leftAlt || mKeys->rightAlt) && mKeys->enter)
   {
     if (isFullscreen)
