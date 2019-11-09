@@ -85,6 +85,7 @@ void AADisplay::FullscreenOn()
   mWindowHeight = 1080;
   glfwSetWindowMonitor(mWindow, glfwGetPrimaryMonitor(), 0, 0, mWindowWidth, mWindowHeight, 0);
   gWindowRatioChanged = true;
+  mWindowIsFullScreen = true;
 }
 
 void AADisplay::FullscreenOff()
@@ -99,6 +100,7 @@ void AADisplay::FullscreenOff()
     0
   );
   gWindowRatioChanged = true;
+  mWindowIsFullScreen = false;
 }
 
 void AADisplay::clearBackBuffer() const
@@ -110,6 +112,16 @@ void AADisplay::clearBackBuffer() const
 void AADisplay::swapWindowBuffers() const
 {
   glfwSwapBuffers(mWindow);
+}
+
+int AADisplay::getScreenWidth()
+{
+  return mWindowWidth;
+}
+
+int AADisplay::getScreenHeight()
+{
+  return mWindowHeight;
 }
 
 GLFWwindow* AADisplay::getWindow()

@@ -28,11 +28,14 @@ public:
   void swapWindowBuffers() const;
 
   bool gWindowRatioChanged = false;
+  int getScreenWidth();
+  int getScreenHeight();
 
   GLFWwindow* getWindow();
 
 private:
 
+  bool mWindowIsFullScreen = false;
   int mWindowWidth = 0, mWindowHeight = 0;
   int mXPos = 0, mYPos = 0;
   GLFWmonitor* mMonitor;
