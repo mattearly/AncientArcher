@@ -83,11 +83,13 @@ void AADisplay::setWindowSize(int width, int height, int xpos, int ypos)
 {
   mWindowWidth = width;
   mWindowHeight = height;
+  mXPos = (xpos == 0) ? mWindowFrameSizeLeft - mWindowFrameSizeRight : xpos;
+  mYPos = (ypos == 0) ? mWindowFrameSizeTop - mWindowFrameSizeBottom : ypos;
   glfwSetWindowMonitor(
     mWindow, 
     nullptr, 
-    (xpos == 0) ? mWindowFrameSizeLeft - mWindowFrameSizeRight : xpos,
-    (ypos == 0) ? mWindowFrameSizeTop - mWindowFrameSizeBottom : ypos, 
+    mXPos,
+    mYPos,
     mWindowWidth, 
     mWindowHeight, 
     0
@@ -107,11 +109,14 @@ void AADisplay::FullscreenOn()
 
 void AADisplay::FullscreenOff()
 {
+  mXPos = mWindowFrameSizeLeft - mWindowFrameSizeRight;
+  mYPos = mWindowFrameSizeTop - mWindowFrameSizeBottom;
   glfwSetWindowMonitor(
-    mWindow, 
+    mWindow,
     nullptr,
-    mWindowFrameSizeLeft - mWindowFrameSizeRight,
-    mWindowFrameSizeTop - mWindowFrameSizeBottom,
+    mXPos,
+    mYPos,
+
     mLaunchedMainScreenWindowWidth,
     mLaunchedMainScreenWindowHeight,
     0
