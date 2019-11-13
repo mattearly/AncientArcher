@@ -3,7 +3,7 @@
 #include "../engine/AAOGLGraphics.h"
 #include <iostream>
 
-extern void showModelHeaderInfo(std::string path)
+void showModelHeaderInfo(std::string path)
 {
   AAOGLGraphics test;
 
@@ -14,7 +14,7 @@ extern void showModelHeaderInfo(std::string path)
   test.outputModelData();
 }
 
-extern void showModelHeaderInfo(std::vector<std::string> paths)
+void showModelHeaderInfo(std::vector<std::string> paths)
 {
   AAOGLGraphics test;
 
