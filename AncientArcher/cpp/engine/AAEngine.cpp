@@ -25,10 +25,10 @@ void AAEngine::setKeyStruct(std::shared_ptr<AAKeyInput>& keys)
 
 void AAEngine::render()
 {
-  AADisplay::getInstance()->clearBackBuffer(); 
+  AADisplay::getInstance()->clearBackBuffer();
 
 
-  
+
   AADisplay::getInstance()->swapWindowBuffers();
 }
 
@@ -50,11 +50,11 @@ void AAEngine::update()
   {
     if (AADisplay::getInstance()->getIsWindowFullScreen())
     {
-      AADisplay::getInstance()->FullscreenOff();
+      AADisplay::getInstance()->setFullscreenToOff();
     }
     else
     {
-      AADisplay::getInstance()->FullscreenOn();
+      AADisplay::getInstance()->setFullscreenToOn();
     }
   }
 }
