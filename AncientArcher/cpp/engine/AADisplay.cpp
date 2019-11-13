@@ -33,7 +33,7 @@ AADisplay::AADisplay()
   initMouseHandler();
   initMouseScrollHandler();
   enableCursor();
-  FullscreenOff();
+  setFullscreenToOff();
   if (!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress))  // init glad (for opengl context)
   {
     std::cout << "failed to init glad\n";
@@ -98,7 +98,12 @@ void AADisplay::setWindowSize(int width, int height, int xpos, int ypos)
   mWindowIsFullScreen = false;
 }
 
-void AADisplay::FullscreenOn()
+void AADisplay::setWindowClearColor(glm::vec3 rgb)
+{
+  mWindowClearColor = rgb;
+}
+
+void AADisplay::setFullscreenToOn()
 {
   mWindowWidth = 1920;
   mWindowHeight = 1080;
@@ -107,7 +112,7 @@ void AADisplay::FullscreenOn()
   mWindowIsFullScreen = true;
 }
 
-void AADisplay::FullscreenOff()
+void AADisplay::setFullscreenToOff()
 {
   mXPos = mWindowFrameSizeLeft - mWindowFrameSizeRight;
   mYPos = mWindowFrameSizeTop - mWindowFrameSizeBottom;
@@ -127,7 +132,7 @@ void AADisplay::FullscreenOff()
 
 void AADisplay::clearBackBuffer() const
 {
-  glClearColor(0.94f, 0.03f, 0.03f, 0.0f);  // red
+  glClearColor(mWindowClearColor.x, mWindowClearColor.y, mWindowClearColor.z, 0.0f);  // red
   glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 }
 
