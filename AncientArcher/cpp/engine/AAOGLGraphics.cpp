@@ -3,6 +3,10 @@
 #include <assimp/scene.h>
 #include <iostream>
 
+void AAOGLGraphics::drawModel(int id)
+{
+}
+
 int AAOGLGraphics::loadModel(std::string path)
 {
   if (!isLoaded(path))

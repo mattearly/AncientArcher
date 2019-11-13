@@ -1,5 +1,4 @@
 #include "AAEngine.h"
-#include <iostream>
 
 void AAEngine::run()
 {
@@ -40,11 +39,6 @@ void AAEngine::update()
 {
   glfwPollEvents();
   AAControls::getInstance()->keyInput(mKeys.get());
-
-  if (mKeys->a)
-  {
-    std::cout << "a pressed\n";
-  }
 
   if ((mKeys->leftAlt || mKeys->rightAlt) && mKeys->enter)
   {
