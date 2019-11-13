@@ -17,12 +17,12 @@ extern void showModelHeaderInfo(std::string path)
 extern void showModelHeaderInfo(std::vector<std::string> paths)
 {
   AAOGLGraphics test;
-  
-  for (auto i = 0; i < paths.size(); ++i) 
+
+  for (auto i = 0; i < paths.size(); ++i)
   {
     int return_value = test.loadModel(paths[i]);
     std::cout << i << ". loadModel Returned: " << return_value << '\n';
   }
-  
+
   test.outputModelData();
 }

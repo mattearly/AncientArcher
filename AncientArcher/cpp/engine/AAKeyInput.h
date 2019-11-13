@@ -2,16 +2,16 @@
 struct AAKeyInput
 {
   //keyboard
-  bool esc, f1, f2, f3, f4, f5, f6, f7, f8, f9, 
+  bool esc, f1, f2, f3, f4, f5, f6, f7, f8, f9,
     f10, f11, f12;
 
-  bool graveAccent, n1, n2, n3, n4, n5, n6, n7, 
+  bool graveAccent, n1, n2, n3, n4, n5, n6, n7,
     n8, n9, n0, minus, equal, backspace;
 
-  bool a, b, c, d, e, f, g, h, i, j, k, l, m, 
+  bool a, b, c, d, e, f, g, h, i, j, k, l, m,
     n, o, p, q, r, s, t, u, v, w, x, y, z;
 
-  bool tab, leftShift, rightShift, leftControl, 
+  bool tab, leftShift, rightShift, leftControl,
     rightControl, leftAlt, rightAlt, spacebar;
 
   bool leftSquareBracket, rightSquareBracket;
@@ -20,7 +20,7 @@ struct AAKeyInput
 
   bool comma, period, forwardSlash;
 
-  bool printScreen, scrollLock, pauseBreak, insert, 
+  bool printScreen, scrollLock, pauseBreak, insert,
     del, home, end, pageUp, pageDown;
 
   bool upArrow, downArrow, leftArrow, rightArrow;
@@ -30,7 +30,7 @@ struct AAKeyInput
   //todo bool keypad keys;
 
   //mouse
-  bool mouseButton1, mouseButton2, mouseButton3, 
-    mouseButton4, mousebutton5, mouseButton6, 
+  bool mouseButton1, mouseButton2, mouseButton3,
+    mouseButton4, mousebutton5, mouseButton6,
     mousebutton7, mouseButton8;
 };

@@ -729,8 +729,4 @@ void AAControls::keyInput(AAKeyInput* keyInput)
   else if (glfwGetMouseButton(AADisplay::getInstance()->getWindow(), GLFW_MOUSE_BUTTON_8) == GLFW_RELEASE) {
     keyInput->mouseButton8 = false;
   }
-
-
-
-
 }
