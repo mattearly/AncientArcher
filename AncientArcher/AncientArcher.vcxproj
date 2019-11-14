@@ -158,8 +158,8 @@
     <ClCompile Include="cpp\engine\AAControls.cpp" />
     <ClCompile Include="cpp\engine\AADisplay.cpp" />
     <ClCompile Include="cpp\tests\main.cpp" />
-    <ClCompile Include="include\glad.c" />
-    <ClCompile Include="include\stb_image.cpp" />
+    <ClCompile Include="include\glad\glad.c" />
+    <ClCompile Include="include\stb_image\stb_image.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="cpp\engine\AAViewport.h" />
