@@ -7,8 +7,10 @@
 
 struct AAOGLModel
 {
-  int numVertices = 0, numPositions = 0, /*numTexels = 0, numNormals = 0,*/ numFaces = 0;
-  int numMeshes = 0, numMaterials = 0, numAnimations = 0, numTextures = 0, numBones = 0;
+  int numVertices = 0,  numFaces = 0, numMeshes = 0;
+  int numTextures = 0, numMaterials = 0, numAnimations = 0, numBones = 0;
+
+  /* numBones = 0, numPositions = 0, numTexels = 0, numNormals = 0,*/
 
   struct Mesh {
     std::vector<glm::vec3> vertex;  //v   x,y,z  

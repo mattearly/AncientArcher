@@ -34,10 +34,16 @@ void AAOGLGraphics::outputModelData()
   int count = 0;
   for (auto model : mModels)
   {
+
     std::cout << "model " << count << ":\n";
     std::cout << " numMeshes " << model.numMeshes << '\n';
-    std::cout << " numVertices " << model.numVertices << '\n';
-    std::cout << " numFaces " << model.numFaces << '\n';
+    std::cout << "   numVertices " << model.numVertices << '\n';
+    std::cout << "   numFaces " << model.numFaces << '\n';
+    std::cout << "   numBones " << model.numBones << '\n';
+    std::cout << " numTextures " << model.numTextures << '\n';
+    std::cout << " numMaterials " << model.numMaterials << '\n';
+    std::cout << " numAnimations " << model.numAnimations << '\n';
+
   }
 }
 
@@ -58,7 +64,6 @@ AAOGLModel AAOGLGraphics::loadElements(const aiScene* scene)
   buildingModel.numMeshes = scene->mNumMeshes;
   buildingModel.numTextures = scene->mNumTextures;
   buildingModel.numMaterials = scene->mNumMaterials;
-  buildingModel.numAnimations = scene->mNumAnimations;
 
   for (int i = 0; i < buildingModel.numMeshes; ++i)
   {
