@@ -7,11 +7,11 @@ AAControls* AAControls::getInstance()
   return controls;
 }
 
-void AAControls::mouseMovement(int xpos, int ypos)
+void AAControls::mouseMovement(float xpos, float ypos)
 {
 }
 
-void AAControls::mouseScrollWheelMovement(int xpos, int ypos)
+void AAControls::mouseScrollWheelMovement(float xpos, float ypos)
 {
 }
 
