@@ -1,5 +1,6 @@
 #include "AADisplay.h"
 #include <iostream>
+#include <glm/glm.hpp>
 
 AADisplay* AADisplay::getInstance()
 {
@@ -100,6 +101,10 @@ void AADisplay::setWindowSize(int width, int height, int xpos, int ypos)
 
 void AADisplay::setWindowClearColor(glm::vec3 rgb)
 {
+  if (rgb.x < 0.f || rgb.x > 1.0f || rgb.y < 0.f || rgb.y > 1.0f || rgb.z < 0.f || rgb.z > 1.0f)
+  {
+    std::cout << "WARNING: out of range value on setWindowClearColor, values should be between 0.f and 1.f\n";
+  }
   mWindowClearColor = rgb;
 }
 
