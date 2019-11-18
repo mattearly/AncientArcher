@@ -1,7 +1,11 @@
 #include "AAEngine.h"
 
-void AAEngine::run()
+int AAEngine::run()
 {
+  if (checkIfKeysSet() == -1)
+  {
+    return -1;
+  }
   while (!glfwWindowShouldClose(AADisplay::getInstance()->getWindow()))
   {
     static float currentFrame(0.f), deltaTime(0.f), lastFrame(0.f);
@@ -26,7 +30,8 @@ void AAEngine::render()
 {
   AADisplay::getInstance()->clearBackBuffer();
 
-
+  // display new draws
+  
 
   AADisplay::getInstance()->swapWindowBuffers();
 }
@@ -39,7 +44,6 @@ void AAEngine::update()
 {
   glfwPollEvents();
   AAControls::getInstance()->keyInput(mKeys.get());
-
   if ((mKeys->leftAlt || mKeys->rightAlt) && mKeys->enter)
   {
     if (AADisplay::getInstance()->getIsWindowFullScreen())
@@ -50,5 +54,13 @@ void AAEngine::update()
     {
       AADisplay::getInstance()->setFullscreenToOn();
     }
+  }
+}
+
+int AAEngine::checkIfKeysSet()
+{
+  if (!mKeys)
+  {
+    return -1;
   }
 }

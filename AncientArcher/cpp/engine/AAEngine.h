@@ -1,11 +1,12 @@
 #pragma once
 #include "AADisplay.h"
 #include "AAKeyInput.h"
+#include "AAViewport.h"
 #include <memory>
 class AAEngine
 {
 public:
-  void run();
+  int run();
 
   void setKeyStruct(std::shared_ptr<AAKeyInput>& keys);
 
@@ -18,5 +19,6 @@ private:
 
   std::shared_ptr<AAKeyInput> mKeys;
 
-};
+  int checkIfKeysSet();
 
+};
