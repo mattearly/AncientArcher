@@ -59,7 +59,10 @@
     <ClInclude Include="cpp\engine\AAViewport.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="cpp\tests\loadModel.h">
+    <ClInclude Include="cpp\tests\model.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="cpp\tests\display.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

@@ -168,7 +168,8 @@
     <ClInclude Include="cpp\engine\AAControls.h" />
     <ClInclude Include="cpp\engine\AADisplay.h" />
     <ClInclude Include="cpp\engine\AAKeyInput.h" />
-    <ClInclude Include="cpp\tests\loadModel.h" />
+    <ClInclude Include="cpp\tests\display.h" />
+    <ClInclude Include="cpp\tests\model.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
