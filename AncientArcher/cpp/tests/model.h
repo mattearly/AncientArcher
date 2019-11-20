@@ -5,41 +5,6 @@
 #include <assimp\BaseImporter.h>
 #include <assimp\Importer.hpp>
 
-//void showModelHeaderInfo(std::string path)
-//{
-//  AAOGLGraphics test;
-//
-//  test.showModelHeaderInfo(path);
-//
-//  std::cout << "model: " << test.path << ":\n";
-//  std::cout << " numNodes " << model.numNodes << '\n';
-//  std::cout << "   numMeshes " << model.numMeshes << '\n';
-//  std::cout << "     numVertices " << model.numVertices << '\n';
-//  std::cout << "     numFaces " << model.numFaces << '\n';
-//  std::cout << "     numBones " << model.numBones << '\n';
-//  std::cout << " numTextures " << model.numTextures << '\n';
-//  std::cout << " numMaterials " << model.numMaterials << '\n';
-//  std::cout << " numAnimations " << model.numAnimations << '\n';
-//}
-//
-//void showModelHeaderInfo(std::vector<std::string> paths)
-//{
-//  AAOGLGraphics test;
-//
-//  for (auto i = 0; i < paths.size(); ++i)
-//  {
-//    std::cout << "model " << i << '\n';
-//    test.showModelHeaderInfo(paths[i]);
-//  }
-//}
-//
-//int loadDemoBlock(std::string path)
-//{
-//  AAOGLGraphics test;
-//  test.loadModel(path);
-//
-//}
-
 void testAssimpBaseLoading(std::string path)
 {
   struct ModelHeader
@@ -63,7 +28,7 @@ void testAssimpBaseLoading(std::string path)
 
   if (!scene)
   {
-    std::cout << "could not openfile\n";
+    std::cout << "could not openfile at " << path << '\n';
   }
   else {
     demoModel.numNodes = scene->mRootNode->mNumChildren;
@@ -88,5 +53,5 @@ void testAssimpBaseLoading(std::string path)
       << "faces: " << demoModel.numFaces << '\n'
       << "bones: " << demoModel.numBones << '\n';
   }
-  
+
 }

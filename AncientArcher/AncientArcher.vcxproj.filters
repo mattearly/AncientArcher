@@ -39,6 +39,9 @@
     <ClCompile Include="include\stb_image\stb_image.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="include\mearly\Shader.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="cpp\engine\AADisplay.h">
@@ -50,9 +53,6 @@
     <ClInclude Include="cpp\engine\AAEngine.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="cpp\engine\AAKeyInput.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="cpp\engine\AAOGLGraphics.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -62,7 +62,13 @@
     <ClInclude Include="cpp\tests\model.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="cpp\engine\AAInput.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
     <ClInclude Include="cpp\tests\display.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="cpp\tests\engineloop.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

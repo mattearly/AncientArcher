@@ -1,5 +1,6 @@
 #include "AAControls.h"
 #include "AADisplay.h"
+#include <iostream>
 
 AAControls* AAControls::getInstance()
 {
@@ -7,26 +8,60 @@ AAControls* AAControls::getInstance()
   return controls;
 }
 
-void AAControls::mouseMovement(float xpos, float ypos)
+void AAControls::setMouse(std::shared_ptr<AAMouseInput>& mouse)
 {
+  mMouse = mouse;
 }
 
-void AAControls::mouseScrollWheelMovement(float xpos, float ypos)
+void AAControls::setScroll(std::shared_ptr<AAScrollInput>& scroll)
 {
+  mScroll = scroll;
 }
 
-void AAControls::keyInput(AAKeyInput* keyInput)
+void AAControls::mouseMovement(float x, float y)
 {
-  //esc
+  //first person
+  static bool firstMouse = true;
+  static float lastX(0.f), lastY(0.f), xOffset(0.f), yOffset(0.f);
+  if (firstMouse)
+  {
+    lastX = x;
+    lastY = y;
+    firstMouse = false;
+  }
+
+  xOffset = x - lastX;
+  yOffset = lastY - y;
+
+  lastX = x;
+  lastY = y;
+
+  xOffset *= mMouseSensitivity;
+  yOffset *= mMouseSensitivity;
+
+  mMouse->xOffset = xOffset;
+  mMouse->yOffset = yOffset;
+}
+
+void AAControls::mouseScrollWheelMovement(float x, float y)
+{
+  mScroll->xOffset = x;
+  mScroll->yOffset = y;
+}
+
+void AAControls::keyInput(std::shared_ptr<AAKeyInput>& keyInput)
+{
+  // esc
   if (glfwGetKey(AADisplay::getInstance()->getWindow(), GLFW_KEY_ESCAPE) == GLFW_PRESS)
   {
+    std::cout << "escape pressed.\n";
     keyInput->esc = true;
   }
-  else if (glfwGetKey(AADisplay::getInstance()->getWindow(), GLFW_KEY_ESCAPE) == GLFW_RELEASE)
+  if (glfwGetKey(AADisplay::getInstance()->getWindow(), GLFW_KEY_ESCAPE) == GLFW_RELEASE)
   {
     keyInput->esc = false;
   }
-  //function keys
+  // function keys
   if (glfwGetKey(AADisplay::getInstance()->getWindow(), GLFW_KEY_F1) == GLFW_PRESS)
   {
     keyInput->f1 = true;
@@ -123,7 +158,7 @@ void AAControls::keyInput(AAKeyInput* keyInput)
   {
     keyInput->f12 = false;
   }
-  //number key row
+  // number key row
   if (glfwGetKey(AADisplay::getInstance()->getWindow(), GLFW_KEY_GRAVE_ACCENT) == GLFW_PRESS)
   {
     keyInput->graveAccent = true;
@@ -236,7 +271,7 @@ void AAControls::keyInput(AAKeyInput* keyInput)
   {
     keyInput->backspace = false;
   }
-  //alphabet keys
+  // alphabet keys
   if (glfwGetKey(AADisplay::getInstance()->getWindow(), GLFW_KEY_A) == GLFW_PRESS) 
   {
     keyInput->a = true;
@@ -445,7 +480,7 @@ void AAControls::keyInput(AAKeyInput* keyInput)
   {
     keyInput->z = false;
   }
-  //tab-shift-control-alt
+  // tab-shift-control-alt
   if (glfwGetKey(AADisplay::getInstance()->getWindow(), GLFW_KEY_TAB) == GLFW_PRESS)
   {
     keyInput->tab = true;
@@ -510,7 +545,7 @@ void AAControls::keyInput(AAKeyInput* keyInput)
   {
     keyInput->spacebar = false;
   }
-  //brackets
+  // brackets
   if (glfwGetKey(AADisplay::getInstance()->getWindow(), GLFW_KEY_LEFT_BRACKET) == GLFW_PRESS)
   {
     keyInput->leftSquareBracket = true;
@@ -527,7 +562,7 @@ void AAControls::keyInput(AAKeyInput* keyInput)
   {
     keyInput->rightSquareBracket = false;
   }
-  //slash-quote-semicolon-enter
+  // slash-quote-semicolon-enter
   if (glfwGetKey(AADisplay::getInstance()->getWindow(), GLFW_KEY_BACKSLASH) == GLFW_PRESS)
   {
     keyInput->backslash = true;
@@ -560,7 +595,7 @@ void AAControls::keyInput(AAKeyInput* keyInput)
   {
     keyInput->enter = false;
   }
-  //comma-period-forwardslash
+  // comma-period-forwardslash
   if (glfwGetKey(AADisplay::getInstance()->getWindow(), GLFW_KEY_COMMA) == GLFW_PRESS)
   {
     keyInput->comma = true;
@@ -585,7 +620,7 @@ void AAControls::keyInput(AAKeyInput* keyInput)
   {
     keyInput->forwardSlash = false;
   }
-  //printscreen-etc
+  // printscreen-etc
   if (glfwGetKey(AADisplay::getInstance()->getWindow(), GLFW_KEY_PRINT_SCREEN) == GLFW_PRESS)
   {
     keyInput->printScreen = true;
@@ -654,7 +689,7 @@ void AAControls::keyInput(AAKeyInput* keyInput)
   else if (glfwGetKey(AADisplay::getInstance()->getWindow(), GLFW_KEY_PAGE_DOWN) == GLFW_RELEASE) {
     keyInput->pageDown = false;
   }
-  //arrows
+  // arrows
   if (glfwGetKey(AADisplay::getInstance()->getWindow(), GLFW_KEY_UP) == GLFW_PRESS) {
     keyInput->upArrow = true;
   }
@@ -680,7 +715,7 @@ void AAControls::keyInput(AAKeyInput* keyInput)
     keyInput->rightArrow = false;
   }
 
-  //mouse clicks
+  // mouse clicks
   if (glfwGetMouseButton(AADisplay::getInstance()->getWindow(), GLFW_MOUSE_BUTTON_LEFT) == GLFW_PRESS) {
     keyInput->mouseButton1 = true;
   }

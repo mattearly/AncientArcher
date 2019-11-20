@@ -27,10 +27,24 @@ struct AAKeyInput
 
   bool menu, leftSuper, rightSuper;
 
-  //todo bool keypad keys;
+  // todo 
+  // bool keypad_keys;
 
-  //mouse
+  //mouse buttons
   bool mouseButton1, mouseButton2, mouseButton3,
     mouseButton4, mousebutton5, mouseButton6,
     mousebutton7, mouseButton8;
+
+};
+
+struct AAMouseInput
+{
+  float xOffset;
+  float yOffset;
+};
+
+struct AAScrollInput
+{
+  float xOffset;
+  float yOffset;
 };

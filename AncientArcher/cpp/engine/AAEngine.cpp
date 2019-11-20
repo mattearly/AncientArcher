@@ -1,11 +1,32 @@
 #include "AAEngine.h"
+#include <iostream>
+
+AAEngine::~AAEngine()
+{
+  onBegin.clear();
+  onDeltaUpdate.clear();
+  onRender.clear();
+  onUpdate.clear();
+  onKeyHandling.clear();
+}
 
 int AAEngine::run()
 {
-  if (checkIfKeysSet() == -1)
+  if (checkIfKeysSet() == false)
   {
     return -1;
   }
+  if (checkIfMouseSet() == false)
+  {
+    return -2;
+  }
+  if (checkIfScrollSet() == false)
+  {
+    return -3;
+  }
+
+  begin();
+
   while (!glfwWindowShouldClose(AADisplay::getInstance()->getWindow()))
   {
     static float currentFrame(0.f), deltaTime(0.f), lastFrame(0.f);
@@ -19,6 +40,7 @@ int AAEngine::run()
 
     update();
   }
+  return 0;
 }
 
 void AAEngine::setKeyStruct(std::shared_ptr<AAKeyInput>& keys)
@@ -26,41 +48,97 @@ void AAEngine::setKeyStruct(std::shared_ptr<AAKeyInput>& keys)
   mKeys = keys;
 }
 
+void AAEngine::setMouseStruct(std::shared_ptr<AAMouseInput>& mouse)
+{
+  mMouse = mouse;
+  AAControls::getInstance()->setMouse(mouse);
+}
+
+void AAEngine::setScrollStruct(std::shared_ptr<AAScrollInput>& scroll)
+{
+  mScroll = scroll;
+  AAControls::getInstance()->setScroll(scroll);
+}
+
+void AAEngine::addToOnBegin(void(*function)())
+{
+  onBegin.push_back(function);
+}
+
+void AAEngine::addToUpdate(void(*function)())
+{
+  onUpdate.push_back(function);
+}
+
+void AAEngine::addToKeyHandling(void(*function)(std::shared_ptr<AAKeyInput>&))
+{
+  onKeyHandling.push_back(function);
+}
+
+void AAEngine::addToOnRender(void(*function)())
+{
+  onRender.push_back(function);
+}
+
+void AAEngine::addToDeltaUpdate(void(*function)(float))
+{
+  onDeltaUpdate.push_back(function);
+}
+
 void AAEngine::render()
 {
   AADisplay::getInstance()->clearBackBuffer();
 
-  // display new draws
-  
+  for (auto ren : onRender)
+  {
+    ren();
+  }
 
   AADisplay::getInstance()->swapWindowBuffers();
 }
 
+void AAEngine::begin()
+{
+  for (auto ob : onBegin)
+  {
+    ob();
+  }
+}
+
 void AAEngine::update(float dt)
 {
+  for (auto ud : onDeltaUpdate)
+  {
+    ud(dt);
+  }
 }
 
 void AAEngine::update()
 {
   glfwPollEvents();
-  AAControls::getInstance()->keyInput(mKeys.get());
-  if ((mKeys->leftAlt || mKeys->rightAlt) && mKeys->enter)
+  AAControls::getInstance()->keyInput(mKeys);
+  for (auto okh : onKeyHandling)
   {
-    if (AADisplay::getInstance()->getIsWindowFullScreen())
-    {
-      AADisplay::getInstance()->setFullscreenToOff();
-    }
-    else
-    {
-      AADisplay::getInstance()->setFullscreenToOn();
-    }
+    okh(mKeys);
+  }
+
+  for (auto u : onUpdate)
+  {
+    u();
   }
 }
 
-int AAEngine::checkIfKeysSet()
+bool AAEngine::checkIfKeysSet()
 {
-  if (!mKeys)
-  {
-    return -1;
-  }
+  return mKeys ? true : false;
+}
+
+bool AAEngine::checkIfMouseSet()
+{
+  return mMouse ? true : false;
+}
+
+bool AAEngine::checkIfScrollSet()
+{
+  return mScroll ? true : false;
 }

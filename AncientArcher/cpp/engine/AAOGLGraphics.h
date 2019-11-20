@@ -5,45 +5,46 @@
 #include <vector>
 #include <assimp/scene.h>
 
-struct AAOGLModel
+struct Mesh
 {
-  int numVertices = 0,  numFaces = 0, numMeshes = 0;
-  int numTextures = 0, numMaterials = 0, numAnimations = 0, numBones = 0;
+  unsigned int vao = 0;
+  unsigned int vbo = 0;
+  unsigned int ebo = 0;
+  Mesh(unsigned int a, unsigned int b, unsigned int e);
+};
 
-  /* numBones = 0, numPositions = 0, numTexels = 0, numNormals = 0,*/
-
-  struct Mesh {
-    std::vector<glm::vec3> vertex;  //v   x,y,z  
-    std::vector<glm::vec2> texel;   //vt  u,v
-    std::vector<glm::vec3> normal;  //vn  x,y,z
-    std::vector<glm::vec3> faces;   //f   (v,vt,vn v,vt,vn v,vt,vn)
-  };
-
-  std::vector<Mesh> meshes;
-
+struct AAModel
+{
+  std::vector<Mesh> meshVec;
 };
 
 class AAOGLGraphics
 {
 public:
 
-  void drawModel(int id);
+  void drawModel(const AAModel* modelToDraw);
 
-  int loadModel(std::string path);
+  void loadModel(std::string path, AAModel& modelToFill);
 
-  void outputModelData();
+  void unloadModel(std::string path);
 
 private:
-
-  std::vector<AAOGLModel> mModels;
 
   std::vector<std::string> mPathsLoaded;
 
   bool isLoaded(std::string path);
 
-  AAOGLModel loadElements(const aiScene* scene);
+  AAModel loadElements(const aiScene* scene);
 
   int getAlreadyLoadedModelID(std::string path);
+
+  Mesh loadMesh(const aiMesh* mesh);
+
+  void pushToGraphicsCard(AAModel& aamodel);
+
+  void unloadElements(std::string path);
+
+  void unloadElements(int id);
 
 };
 

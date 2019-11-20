@@ -160,6 +160,7 @@
     <ClCompile Include="cpp\tests\main.cpp" />
     <ClCompile Include="include\glad\glad.c" />
     <ClCompile Include="include\stb_image\stb_image.cpp" />
+    <ClCompile Include="include\mearly\Shader.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="cpp\engine\AAViewport.h" />
@@ -167,8 +168,9 @@
     <ClInclude Include="cpp\engine\AAEngine.h" />
     <ClInclude Include="cpp\engine\AAControls.h" />
     <ClInclude Include="cpp\engine\AADisplay.h" />
-    <ClInclude Include="cpp\engine\AAKeyInput.h" />
+    <ClInclude Include="cpp\engine\AAInput.h" />
     <ClInclude Include="cpp\tests\display.h" />
+    <ClInclude Include="cpp\tests\engineloop.h" />
     <ClInclude Include="cpp\tests\model.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

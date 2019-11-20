@@ -1,92 +1,183 @@
 #include "AAOGLGraphics.h"
+//#include <glad/glad.h>
 #include <assimp/Importer.hpp>
 #include <assimp/scene.h>
-#include <iostream>
+//#include <iostream>
+//#include <algorithm>
+//#include <cstddef>
+//
+//
+//void AAOGLGraphics::drawModel(int id)
+//{
+//
+//}
+//
+//int AAOGLGraphics::loadModel(std::string path)
+//{
+//  AAOGLModel tmpModel;
+//
+//  if (!isLoaded(path))
+//  {
+//    static int id = -1;
+//    static Assimp::Importer importer;
+//    const aiScene* scene = importer.ReadFile(path, 0);
+//    if (!scene)
+//    {
+//      return -2;  // failed to load path
+//    }
+//    tmpModel = loadElements(scene);
+//    mPathsLoaded.emplace_back(path);
+//    pushToGraphicsCard(tmpModel);
+//    return ++id;
+//  }
+//  else
+//  {
+//    return getAlreadyLoadedModelID(path);  //already loaded, return the index
+//  }
+//}
+//
+//void AAOGLGraphics::showModelHeaderInfo(std::string path)
+//{
+//  AAModel model;
+//
+//  static Assimp::Importer importer;
+//  const aiScene* scene = importer.ReadFile(path, 0);
+//  model = loadModelHeaderInfo(scene);
+//
+//}
 
-void AAOGLGraphics::drawModel(int id)
-{
-}
+//bool AAOGLGraphics::isLoaded(std::string path)
+//{
+//  for (auto loadedPath : mPathsLoaded)
+//  {
+//    if (loadedPath == path)
+//      return true;  //already loaded
+//  }
+//  return false;  // not loaded
+//}
+//
+//AAOGLModel AAOGLGraphics::loadElements(const aiScene* scene)
+//{
+//  // header info
+//  AAOGLModel buildingModel = loadModelHeaderInfo(scene);
+//
+//  // mesh data
+//  for (int i = 0; i < buildingModel.numMeshes; ++i)
+//  {
+//    buildingModel.meshes.emplace_back(loadMesh(scene->mMeshes[i]));
+//  }
+//
+//  return buildingModel;
+//}
+//
+//AAOGLModel AAOGLGraphics::loadModelHeaderInfo(const aiScene* scene)
+//{
+//  AAOGLModel buildingModel;
+//  buildingModel.numNodes = scene->mRootNode->mNumChildren;
+//  buildingModel.numMeshes = scene->mNumMeshes;
+//  buildingModel.numTextures = scene->mNumTextures;
+//  buildingModel.numMaterials = scene->mNumMaterials;
+//
+//  for (int i = 0; i < buildingModel.numMeshes; ++i)
+//  {
+//    buildingModel.numVertices += scene->mMeshes[i]->mNumVertices;
+//    buildingModel.numFaces += scene->mMeshes[i]->mNumFaces;
+//    buildingModel.numBones += scene->mMeshes[i]->mNumBones;
+//  }
+//
+//  return buildingModel;
+//
+//}
+//
+//int AAOGLGraphics::getAlreadyLoadedModelID(std::string path)
+//{
+//  int count = 0;
+//  for (auto loadedPath : mPathsLoaded)
+//  {
+//    if (loadedPath == path)
+//      return count;  //already loaded
+//    count++;
+//  }
+//  return -1;  // failed to get loaded model
+//}
+//
+//AAOGLModel::Mesh AAOGLGraphics::loadMesh(const aiMesh* mesh)
+//{
+//  AAOGLModel::Mesh tmpMesh;
+//
+//  for (int i = 0; i < mesh->mNumVertices; ++i)
+//  {
+//    std::cout << "loading vert\n";
+//    tmpMesh.verticies.emplace_back(mesh->mVertices[i]);
+//  }
+//
+//  return tmpMesh;
+//}
+//
+//void AAOGLGraphics::pushToGraphicsCard(AAOGLModel& aamodel)
+//{
+//  //for (int i = 0; i < aamodel.meshes.size(); ++i)
+//  //{
+//  //  // setup Mesh
+//  //  glGenVertexArrays(1, &aamodel.meshes[i].vao);
+//  //  glGenBuffers(1, &aamodel.meshes[i].vbo);
+//  //  glGenBuffers(1, &aamodel.meshes[i].ebo);
+//
+//  //  glBindVertexArray(aamodel.meshes[i].vao);
+//  //  glBindBuffer(GL_ARRAY_BUFFER, aamodel.meshes[i].vbo);
+//
+//  //  glBufferData(
+//  //    GL_ARRAY_BUFFER,
+//  //    aamodel.meshes[i].verticies.size() * sizeof(aamodel.meshes[i].verticies[0]),
+//  //    &aamodel.meshes[i].verticies[0],
+//  //    GL_STATIC_DRAW
+//  //  );
+//
+//  //  glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, aamodel.meshes[i].ebo);
+//  //  glBufferData(
+//  //    GL_ELEMENT_ARRAY_BUFFER,
+//  //    aamodel.meshes[i].indices.size() * sizeof(unsigned int),
+//  //    &aamodel.meshes[i].indices[0],  
+//  //    GL_STATIC_DRAW
+//  //  );
+//
+//  //  glEnableVertexAttribArray(0);
+//  //  glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(aamodel.meshes[i].verticies[0]), (void *)0);
+//
+//  //  glBindVertexArray(0);
+//  //}
+//}
+//
+//void AAOGLGraphics::unloadElements(std::string path)
+//{
+//  int id = getAlreadyLoadedModelID(path);
+//  if (id == -1)
+//  {
+//    std::cout << "model " << path << "is not loaded\n";
+//  }
+//  else
+//  {
+//    mPathsLoaded.erase(
+//      std::remove_if(
+//        mPathsLoaded.begin(),
+//        mPathsLoaded.end(),
+//        [path](std::string a) {return a == path; }
+//      ),
+//      mPathsLoaded.end()
+//    );
+//
+//    std::cout << "removed " << path << '\n';
+//
+//    unloadElements(id);
+//  }
+//}
+//
+//void AAOGLGraphics::unloadElements(int id)
+//{
+//  //todo
+//  std::cout << "todo-build unloadElements(id)\n";
+//}
 
-int AAOGLGraphics::loadModel(std::string path)
-{
-  if (!isLoaded(path))
-  {
-    static int id = -1;
-    static Assimp::Importer importer;
-    const aiScene* scene = importer.ReadFile(path, 0);
-    if (!scene)
-    {
-      return -2;  // failed to load path
-    }
-    mModels.emplace_back(loadElements(scene));
-    mPathsLoaded.emplace_back(path);
-    return ++id;
-  }
-  else
-  {
-    return getAlreadyLoadedModelID(path);  //already loaded, return the index
-  }
-}
+Mesh::Mesh(unsigned int a, unsigned int b, unsigned int e)
+  : vao(a), vbo(b), ebo(e) {}
 
-void AAOGLGraphics::outputModelData()
-{
-  std::cout << "models loaded: " << mModels.size() << '\n';
-  int count = 0;
-  for (auto model : mModels)
-  {
-
-    std::cout << "model " << count << ":\n";
-    std::cout << " numMeshes " << model.numMeshes << '\n';
-    std::cout << "   numVertices " << model.numVertices << '\n';
-    std::cout << "   numFaces " << model.numFaces << '\n';
-    std::cout << "   numBones " << model.numBones << '\n';
-    std::cout << " numTextures " << model.numTextures << '\n';
-    std::cout << " numMaterials " << model.numMaterials << '\n';
-    std::cout << " numAnimations " << model.numAnimations << '\n';
-
-  }
-}
-
-bool AAOGLGraphics::isLoaded(std::string path)
-{
-  for (auto loadedPath : mPathsLoaded)
-  {
-    if (loadedPath == path)
-      return true;  //already loaded
-  }
-  return false;  // not loaded
-}
-
-AAOGLModel AAOGLGraphics::loadElements(const aiScene* scene)
-{
-  // load model up here
-  AAOGLModel buildingModel;
-  buildingModel.numMeshes = scene->mNumMeshes;
-  buildingModel.numTextures = scene->mNumTextures;
-  buildingModel.numMaterials = scene->mNumMaterials;
-
-  for (int i = 0; i < buildingModel.numMeshes; ++i)
-  {
-    buildingModel.numVertices += scene->mMeshes[i]->mNumVertices;
-    buildingModel.numFaces += scene->mMeshes[i]->mNumFaces;
-    buildingModel.numBones += scene->mMeshes[i]->mNumBones;
-    //buildingModel.numTexels += scene->mMeshes[i]->mNumUVComponents[x];
-    //buildingModel.numNormals += scene->mMeshes[i]->mNum;
-    //buildingModel.numPositions += scene->mMeshes[i]->mNumPos
-    //buildingModel.numTexels += scene->mN
-  }
-
-  return buildingModel;
-}
-
-int AAOGLGraphics::getAlreadyLoadedModelID(std::string path)
-{
-  int count = 0;
-  for (auto loadedPath : mPathsLoaded)
-  {
-    if (loadedPath == path)
-      return count;  //already loaded
-    count++;
-  }
-  return -1;  // failed to get loaded model
-}

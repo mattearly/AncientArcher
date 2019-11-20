@@ -103,7 +103,7 @@ void AADisplay::setWindowClearColor(glm::vec3 rgb)
 {
   if (rgb.x < 0.f || rgb.x > 1.0f || rgb.y < 0.f || rgb.y > 1.0f || rgb.z < 0.f || rgb.z > 1.0f)
   {
-    std::cout << "WARNING: out of range value on setWindowClearColor, values should be between 0.f and 1.f\n";
+    std::cout << "WARNING: Out of range value on setWindowClearColor, values should be between 0.f and 1.f\n";
   }
   mWindowClearColor = rgb;
 }
@@ -121,14 +121,15 @@ void AADisplay::setFullscreenToOff()
 {
   mXPos = mWindowFrameSizeLeft - mWindowFrameSizeRight;
   mYPos = mWindowFrameSizeTop - mWindowFrameSizeBottom;
+  mWindowWidth = mLaunchedMainScreenWindowWidth;
+  mWindowHeight = mLaunchedMainScreenWindowHeight;
   glfwSetWindowMonitor(
     mWindow,
     nullptr,
     mXPos,
     mYPos,
-
-    mLaunchedMainScreenWindowWidth,
-    mLaunchedMainScreenWindowHeight,
+    mWindowWidth,
+    mWindowHeight,
     0
   );
   gWindowRatioChanged = true;
