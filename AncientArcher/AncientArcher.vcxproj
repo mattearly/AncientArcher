@@ -159,6 +159,7 @@
     <ClCompile Include="cpp\engine\AADisplay.cpp" />
     <ClCompile Include="cpp\tests\main.cpp" />
     <ClCompile Include="include\glad\glad.c" />
+    <ClCompile Include="include\mearly\Random.cpp" />
     <ClCompile Include="include\stb_image\stb_image.cpp" />
     <ClCompile Include="include\mearly\Shader.cpp" />
   </ItemGroup>
