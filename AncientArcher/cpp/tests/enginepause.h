@@ -1,14 +1,15 @@
 #pragma once
+#pragma once
 #include "../engine/AAEngine.h"
 #include <memory>
 #include <iostream>
 
-void testEngineLoop()
+void testEnginePause()
 {
   glfwSetWindowShouldClose(AADisplay::getInstance()->getWindow(), false);
 
-  AADisplay::getInstance()->setWindowTitle("Engine Loop Demo");  // test changing window title
-  AADisplay::getInstance()->setWindowClearColor(glm::vec3(0));        // test changing window clear color
+  AADisplay::getInstance()->setWindowTitle("PAUSE");  // test changing window title
+  AADisplay::getInstance()->setWindowClearColor(glm::vec3(.9,.0,.0));        // test changing window clear color
 
   AAEngine engine;
   std::shared_ptr<AAKeyInput> keys = std::make_shared<AAKeyInput>();           // keyinput set for engine to update
@@ -18,29 +19,16 @@ void testEngineLoop()
   std::shared_ptr<AAScrollInput> scroll = std::make_shared<AAScrollInput>();   // 
   engine.setScrollStruct(scroll);                                              //
 
-  auto begincout = []() {std::cout << "->One Time Begin Run\n"; };                             // test adding functions to the 4 engine function lists
-  engine.addToOnBegin(begincout);
-
-  auto deltacout = [](float step) {std::cout << ".    timestep: " << step << '\n'; };
-  engine.addToDeltaUpdate(deltacout);
-
-  auto rendercout = []() {std::cout << "..   render\n"; };
-  engine.addToOnRender(rendercout);
-
-  auto customhandleinput = [](std::shared_ptr<AAKeyInput>& keys) {
-    std::cout << "...  process keyboard/mouse [SPACE TO STOP]\n";
-    if (keys->spacebar)
+  auto handleKeys = [](std::shared_ptr<AAKeyInput>& keys) {
+    if (keys->enter)
     {
       glfwSetWindowShouldClose(AADisplay::getInstance()->getWindow(), true);
     }
   };
-  engine.addToKeyHandling(customhandleinput);
+  engine.addToKeyHandling(handleKeys);
 
-  auto updatecout = []() {std::cout << ".... update\n"; };
-  engine.addToUpdate(updatecout);
-
+  std::cout << "Press [ENTER] to Continue...\n";
   int engine_ret = engine.run();                                               // test run (main loop)  
-
   switch (engine_ret)
   {
   case -1:

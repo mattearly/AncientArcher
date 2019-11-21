@@ -74,5 +74,11 @@
     <ClInclude Include="cpp\tests\engineloop.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="cpp\tests\enginepause.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="cpp\tests\enginefunctions.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

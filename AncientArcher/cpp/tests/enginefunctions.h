@@ -1,14 +1,16 @@
 #pragma once
+#include <GLFW\glfw3.h>
+#include "../engine/AADisplay.h"
 #include "../engine/AAEngine.h"
-#include <memory>
 #include <iostream>
+#include <mearly\Random.h>
 
-void testEngineLoop()
+void  testEngineFunctionsPossibilities()
 {
   glfwSetWindowShouldClose(AADisplay::getInstance()->getWindow(), false);
 
-  AADisplay::getInstance()->setWindowTitle("Engine Loop Demo");  // test changing window title
-  AADisplay::getInstance()->setWindowClearColor(glm::vec3(0));        // test changing window clear color
+  AADisplay::getInstance()->setWindowTitle("Engine Function Tests");  // test changing window title
+  AADisplay::getInstance()->setWindowClearColor(glm::vec3(.1,.1,.1));        // test changing window clear color
 
   AAEngine engine;
   std::shared_ptr<AAKeyInput> keys = std::make_shared<AAKeyInput>();           // keyinput set for engine to update
@@ -21,7 +23,11 @@ void testEngineLoop()
   auto begincout = []() {std::cout << "->One Time Begin Run\n"; };                             // test adding functions to the 4 engine function lists
   engine.addToOnBegin(begincout);
 
-  auto deltacout = [](float step) {std::cout << ".    timestep: " << step << '\n'; };
+  auto deltacout = [](float step) {
+    std::cout << ".    timestep: " << step << '\n';
+    AADisplay::getInstance()->setWindowClearColor(glm::vec3(Random::getInstance()->ZTOR(), Random::getInstance()->ZTOR(), Random::getInstance()->ZTOR()));        // test changing window clear color
+
+  };
   engine.addToDeltaUpdate(deltacout);
 
   auto rendercout = []() {std::cout << "..   render\n"; };

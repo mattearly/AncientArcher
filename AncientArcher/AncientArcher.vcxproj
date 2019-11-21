@@ -171,7 +171,9 @@
     <ClInclude Include="cpp\engine\AADisplay.h" />
     <ClInclude Include="cpp\engine\AAInput.h" />
     <ClInclude Include="cpp\tests\display.h" />
+    <ClInclude Include="cpp\tests\enginefunctions.h" />
     <ClInclude Include="cpp\tests\engineloop.h" />
+    <ClInclude Include="cpp\tests\enginepause.h" />
     <ClInclude Include="cpp\tests\model.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

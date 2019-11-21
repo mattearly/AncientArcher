@@ -2,8 +2,13 @@
 #include "display.h"
 #include "engineloop.h"
 #include <glm/glm.hpp>
+#include "enginepause.h"
 #include <iostream>
+#include <chrono>
+#include <thread>
+#include "enginefunctions.h"
 
+void delay(int time);
 void holdAtCommandPrompt();
 
 int main()
@@ -16,17 +21,33 @@ int main()
   testAssimpBaseLoading(model_random1);
   testAssimpBaseLoading("This/is/a/test/");
 
+  AADisplay::getInstance()->setWindowSize(800, 600, 1920/2 - 400, 1080/2 - 300);                // test changing window size (and position)
+
   testEngineMainDisplay();
 
-  holdAtCommandPrompt();
+  delay(1);
+
+  testEnginePause();
+
+  delay(1);
 
   testEngineLoop();
 
-  holdAtCommandPrompt();
+  delay(1);
+
+  testEnginePause();
+
+  delay(1);
+
+  testEngineFunctionsPossibilities();
 
   return 0;
 }
 
+void delay(int time)
+{
+  std::this_thread::sleep_for(std::chrono::seconds(time));
+}
 
 void holdAtCommandPrompt()
 {
