@@ -54,10 +54,9 @@ void AAControls::keyInput(std::shared_ptr<AAKeyInput>& keyInput)
   // esc
   if (glfwGetKey(AADisplay::getInstance()->getWindow(), GLFW_KEY_ESCAPE) == GLFW_PRESS)
   {
-    std::cout << "escape pressed.\n";
     keyInput->esc = true;
   }
-  if (glfwGetKey(AADisplay::getInstance()->getWindow(), GLFW_KEY_ESCAPE) == GLFW_RELEASE)
+  else if (glfwGetKey(AADisplay::getInstance()->getWindow(), GLFW_KEY_ESCAPE) == GLFW_RELEASE)
   {
     keyInput->esc = false;
   }
