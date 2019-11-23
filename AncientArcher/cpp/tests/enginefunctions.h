@@ -25,10 +25,14 @@ void  testEngineFunctionsPossibilities()
 
   auto deltacout = [](float step) {
     std::cout << ".    timestep: " << step << '\n';
-    AADisplay::getInstance()->setWindowClearColor(glm::vec3(Random::getInstance()->ZTOR(), Random::getInstance()->ZTOR(), Random::getInstance()->ZTOR()));        // test changing window clear color
-
+    AADisplay::getInstance()->setWindowClearColor(
+      glm::vec3(Random::getInstance()->ZTOR(), 
+        Random::getInstance()->ZTOR(), 
+        Random::getInstance()->ZTOR())
+    );        // test changing window clear color
   };
   engine.addToDeltaUpdate(deltacout);
+
 
   auto rendercout = []() {std::cout << "..   render\n"; };
   engine.addToOnRender(rendercout);
