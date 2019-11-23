@@ -178,6 +178,3 @@
 //  std::cout << "todo-build unloadElements(id)\n";
 //}
 
-Mesh::Mesh(unsigned int a, unsigned int b, unsigned int e)
-  : vao(a), vbo(b), ebo(e) {}
-
