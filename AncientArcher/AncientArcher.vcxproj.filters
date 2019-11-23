@@ -42,6 +42,9 @@
     <ClCompile Include="include\mearly\Shader.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="cpp\engine\AAGameObject.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
     <ClCompile Include="include\mearly\Random.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -72,6 +75,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="cpp\tests\engineloop.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="cpp\engine\AAGameObject.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="cpp\tests\enginepause.h">
