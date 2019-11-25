@@ -9,8 +9,7 @@ void  testEngineFunctionsPossibilities()
 {
   glfwSetWindowShouldClose(AADisplay::getInstance()->getWindow(), false);
 
-  AADisplay::getInstance()->setWindowTitle("Engine Function Tests");  // test changing window title
-  AADisplay::getInstance()->setWindowClearColor(glm::vec3(0));        // test changing window clear color
+  AADisplay::getInstance()->setWindowTitle("Test Screen Color Pulse - Press [Enter] to continue.");  // test changing window title
 
   AAEngine engine;
   std::shared_ptr<AAKeyInput> keys = std::make_shared<AAKeyInput>();           // keyinput set for engine to update
@@ -20,25 +19,22 @@ void  testEngineFunctionsPossibilities()
   std::shared_ptr<AAScrollInput> scroll = std::make_shared<AAScrollInput>();   // 
   engine.setScrollStruct(scroll);                                              //
 
-  auto runOnce = []() {    std::cout << "Screen should pulse red/black. Press [SPACE TO STOP]\n";
-  };
-  engine.addToOnBegin(runOnce);
-
   auto deltacout = [](float step) {
     static float timePassed = 0;
     timePassed += step;
+    float newcolor = abs(sin(timePassed));
     AADisplay::getInstance()->setWindowClearColor(
       glm::vec3(
-        abs(sin(timePassed)),
-        0.f,
-        0.f
+        newcolor,
+        newcolor,
+        newcolor
       )
     );        // test changing window clear color to random values
   };
   engine.addToDeltaUpdate(deltacout);
 
   auto customhandleinput = [](std::shared_ptr<AAKeyInput>& keys) {
-    if (keys->spacebar)
+    if (keys->enter)
     {
       glfwSetWindowShouldClose(AADisplay::getInstance()->getWindow(), true);
     }
@@ -59,7 +55,6 @@ void  testEngineFunctionsPossibilities()
     std::cout << "Scroll not set.\n";
     break;
   default:
-    std::cout << "Engine stopped.\n";
     break;
   }
 }

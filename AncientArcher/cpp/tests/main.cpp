@@ -25,11 +25,7 @@ int main()
 
   testEngineMainDisplay();
   delay(1);
-  testEnginePause();
-  delay(1);
   testEngineLoop();
-  delay(1);
-  testEnginePause();
   delay(1);
   testEngineFunctionsPossibilities();
   delay(1);

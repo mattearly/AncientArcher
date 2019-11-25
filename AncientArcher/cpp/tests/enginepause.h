@@ -2,14 +2,13 @@
 #pragma once
 #include "../engine/AAEngine.h"
 #include <memory>
-#include <iostream>
 
 void testEnginePause()
 {
   glfwSetWindowShouldClose(AADisplay::getInstance()->getWindow(), false);
 
-  AADisplay::getInstance()->setWindowTitle("PAUSE");  // test changing window title
-  AADisplay::getInstance()->setWindowClearColor(glm::vec3(.9,.0,.0));        // test changing window clear color
+  AADisplay::getInstance()->setWindowTitle("Engine Pause - Press Enter To Continue");  // test changing window title
+  AADisplay::getInstance()->setWindowClearColor(glm::vec3(.0,.1,.0));        // test changing window clear color
 
   AAEngine engine;
   std::shared_ptr<AAKeyInput> keys = std::make_shared<AAKeyInput>();           // keyinput set for engine to update
@@ -27,7 +26,6 @@ void testEnginePause()
   };
   engine.addToKeyHandling(handleKeys);
 
-  std::cout << "Press [ENTER] to Continue...\n";
   int engine_ret = engine.run();                                               // test run (main loop)  
   switch (engine_ret)
   {
@@ -41,7 +39,6 @@ void testEnginePause()
     std::cout << "Scroll not set.\n";
     break;
   default:
-    std::cout << "Engine stopped.\n";
     break;
   }
 }

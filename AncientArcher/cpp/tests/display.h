@@ -8,7 +8,7 @@ void testEngineMainDisplay()
 {
 
   {
-    AADisplay::getInstance()->setWindowTitle("Set by testEngineMainDisplay()");  // test changing window title
+    AADisplay::getInstance()->setWindowTitle("Test Engine Startup - Press [Enter] to continue.");  // test changing window title
     AADisplay::getInstance()->setWindowClearColor(glm::vec3(.2,.5,.1));        // test changing window clear color
   }
 
@@ -22,14 +22,13 @@ void testEngineMainDisplay()
   engine.setScrollStruct(scroll);                                                //
 
   auto handleKeys = [](std::shared_ptr<AAKeyInput>& keys) {
-    if (keys->spacebar)
+    if (keys->enter)
     {
       glfwSetWindowShouldClose(AADisplay::getInstance()->getWindow(), true);
     }
   };
   engine.addToKeyHandling(handleKeys);
 
-  std::cout << "Press [SPACE] To Continue...\n";
   int engine_ret = engine.run();                                               // test run (main loop)
   switch (engine_ret)
   {
@@ -43,7 +42,6 @@ void testEngineMainDisplay()
     std::cout << "Scroll not set.\n";
     break;
   default:
-    std::cout << "Engine stopped.\n";
     break;
   }
 }

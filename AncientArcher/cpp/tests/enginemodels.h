@@ -11,8 +11,8 @@ void  testEngineFunctionsPossibilities()
 {
   glfwSetWindowShouldClose(AADisplay::getInstance()->getWindow(), false);
 
-  AADisplay::getInstance()->setWindowTitle("Engine Game Objects In functions Test");  // test changing window title
-  AADisplay::getInstance()->setWindowClearColor(glm::vec3(.1, .1, .7));        // test changing window clear color
+  AADisplay::getInstance()->setWindowTitle("Test Engine Game Objects - Press [Enter] to continue.");  // test changing window title
+  AADisplay::getInstance()->setWindowClearColor(glm::vec3(0));        // test changing window clear color
 
   AAEngine engine;
   std::shared_ptr<AAKeyInput> keys = std::make_shared<AAKeyInput>();           // keyinput set for engine to update
@@ -20,11 +20,12 @@ void  testEngineFunctionsPossibilities()
   std::shared_ptr<AAMouseInput> mouse = std::make_shared<AAMouseInput>();      // mouseinput for the display
   engine.setMouseStruct(mouse);                                                //
   std::shared_ptr<AAScrollInput> scroll = std::make_shared<AAScrollInput>();   // 
-  engine.setScrollStruct(scroll);           
-  
+  engine.setScrollStruct(scroll);
+
   std::string model = "C:\\Users\\matt\\Dropbox_me298414\\Dropbox\\My3DModels\\6ColorSquare.obj";
-  
+
   AAGameObject gameObj = AAOGLGraphics::getInstance()->loadModelWithAssimpToOpenGL(model);
+
   //auto beginFunc = []() {
   //  
   //};                             
@@ -35,13 +36,13 @@ void  testEngineFunctionsPossibilities()
   //};
   //engine.addToDeltaUpdate(deltacout);
 
-  auto rendercout = []() 
+  auto rendercout = []()
   {
     gameObj.draw();
   };
   engine.addToOnRender(rendercout);
 
-  auto customhandleinput = [](std::shared_ptr<AAKeyInput>& keys) 
+  auto customhandleinput = [](std::shared_ptr<AAKeyInput>& keys)
   {
     std::cout << "...  process keyboard/mouse [SPACE TO STOP]\n";
     if (keys->spacebar)
