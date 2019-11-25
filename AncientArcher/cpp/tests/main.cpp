@@ -24,22 +24,16 @@ int main()
   AADisplay::getInstance()->setWindowSize(800, 600, 1920/2 - 400, 1080/2 - 300);                // test changing window size (and position)
 
   testEngineMainDisplay();
-
   delay(1);
-
   testEnginePause();
-
   delay(1);
-
   testEngineLoop();
-
   delay(1);
-
   testEnginePause();
-
   delay(1);
-
   testEngineFunctionsPossibilities();
+  delay(1);
+  testEnginePause();
 
   return 0;
 }
