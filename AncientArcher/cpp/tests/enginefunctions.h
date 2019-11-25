@@ -10,7 +10,7 @@ void  testEngineFunctionsPossibilities()
   glfwSetWindowShouldClose(AADisplay::getInstance()->getWindow(), false);
 
   AADisplay::getInstance()->setWindowTitle("Engine Function Tests");  // test changing window title
-  AADisplay::getInstance()->setWindowClearColor(glm::vec3(.1,.1,.1));        // test changing window clear color
+  AADisplay::getInstance()->setWindowClearColor(glm::vec3(0));        // test changing window clear color
 
   AAEngine engine;
   std::shared_ptr<AAKeyInput> keys = std::make_shared<AAKeyInput>();           // keyinput set for engine to update
@@ -20,33 +20,30 @@ void  testEngineFunctionsPossibilities()
   std::shared_ptr<AAScrollInput> scroll = std::make_shared<AAScrollInput>();   // 
   engine.setScrollStruct(scroll);                                              //
 
-  auto begincout = []() {std::cout << "->One Time Begin Run\n"; };                             // test adding functions to the 4 engine function lists
-  engine.addToOnBegin(begincout);
+  auto runOnce = []() {    std::cout << "Screen should pulse red/black. Press [SPACE TO STOP]\n";
+  };
+  engine.addToOnBegin(runOnce);
 
   auto deltacout = [](float step) {
-    std::cout << ".    timestep: " << step << '\n';
+    static float timePassed = 0;
+    timePassed += step;
     AADisplay::getInstance()->setWindowClearColor(
-      glm::vec3(Random::getInstance()->ZTOR(), 
-        Random::getInstance()->ZTOR(), 
-        Random::getInstance()->ZTOR())
+      glm::vec3(
+        abs(sin(timePassed)),
+        0.f,
+        0.f
+      )
     );        // test changing window clear color to random values
   };
   engine.addToDeltaUpdate(deltacout);
 
-  auto rendercout = []() {std::cout << "..   render\n"; };
-  engine.addToOnRender(rendercout);
-
   auto customhandleinput = [](std::shared_ptr<AAKeyInput>& keys) {
-    std::cout << "...  process keyboard/mouse [SPACE TO STOP]\n";
     if (keys->spacebar)
     {
       glfwSetWindowShouldClose(AADisplay::getInstance()->getWindow(), true);
     }
   };
   engine.addToKeyHandling(customhandleinput);
-
-  auto updatecout = []() {std::cout << ".... update\n"; };
-  engine.addToUpdate(updatecout);
 
   int engine_ret = engine.run();                                               // test run (main loop)  
 
