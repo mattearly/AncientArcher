@@ -9,10 +9,10 @@ AAGameObject::AAGameObject(std::vector<Mesh> meshes)
   mMeshes = meshes;
 }
 
-void AAGameObject::draw(Shader* shader)
+void AAGameObject::draw()
 {
   for (auto m : mMeshes)
-  {
-
+  { 
+    
   }
 }

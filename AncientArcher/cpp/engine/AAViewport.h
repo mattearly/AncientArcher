@@ -34,6 +34,9 @@ private:
 
   const glm::vec3 WORLD_UP = glm::vec3(0, 1, 0);
 
-  std::shared_ptr<Shader> mShader = std::make_shared<Shader>("../AncientArcher/shader/VertexShader.glsl", "../AncientArcher/shader/FragmentShader.glsl");
+  std::shared_ptr<Shader> mShader = std::make_shared<Shader>(
+    "../AncientArcher/shader/VertexShader.glsl", 
+    "../AncientArcher/shader/FragmentShader.glsl"
+    );
 };
 

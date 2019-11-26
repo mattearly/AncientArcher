@@ -13,9 +13,11 @@ public:
 
   AAGameObject loadModelWithAssimpToOpenGL(std::string path);
 
-  void processNode(aiNode* node, const aiScene* scene, std::vector<Mesh>& meshes);
-
 private:
+
+  void processNode(aiNode* node, const aiScene* scene, std::vector<Mesh>& meshes);
+  Mesh processMesh(aiMesh* mesh, const aiScene* scene);
+  std::vector<Texture> loadMaterialTextures(aiMaterial* mat, aiTextureType type, std::string typeName);
 
 };
 

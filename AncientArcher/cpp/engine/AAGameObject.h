@@ -26,8 +26,6 @@ struct Texture {
   std::string type;
 };
 
-
-
 class AAGameObject
 {
 
@@ -36,7 +34,7 @@ public:
 
   AAGameObject(std::vector<Mesh> meshes);
   
-  void draw(Shader* shader);
+  void draw();
 
 private:
 

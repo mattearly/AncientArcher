@@ -26,34 +26,20 @@ void  testEngineFunctionsPossibilities()
 
   AAGameObject gameObj = AAOGLGraphics::getInstance()->loadModelWithAssimpToOpenGL(model);
 
-  //auto beginFunc = []() {
-  //  
-  //};                             
-  //engine.addToOnBegin(beginFunc);
-
-  //auto deltacout = [](float step) {
-  //  std::cout << ".    timestep: " << step << '\n';
-  //};
-  //engine.addToDeltaUpdate(deltacout);
-
-  auto rendercout = []()
+  auto drawsquare = []()
   {
     gameObj.draw();
   };
-  engine.addToOnRender(rendercout);
+  engine.addToOnRender(drawsquare);
 
   auto customhandleinput = [](std::shared_ptr<AAKeyInput>& keys)
   {
-    std::cout << "...  process keyboard/mouse [SPACE TO STOP]\n";
-    if (keys->spacebar)
+    if (keys->enter)
     {
       glfwSetWindowShouldClose(AADisplay::getInstance()->getWindow(), true);
     }
   };
   engine.addToKeyHandling(customhandleinput);
-
-  auto updatecout = []() {std::cout << ".... update\n"; };
-  engine.addToUpdate(updatecout);
 
   int engine_ret = engine.run();                                               // test run (main loop)  
 
@@ -69,7 +55,6 @@ void  testEngineFunctionsPossibilities()
     std::cout << "Scroll not set.\n";
     break;
   default:
-    std::cout << "Engine stopped.\n";
     break;
   }
 }
