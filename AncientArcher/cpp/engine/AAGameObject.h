@@ -1,43 +1,37 @@
 #pragma once
 #include <vector>
 #include <mearly\Shader.h>
+#include <memory>
 
-struct Mesh
+struct MeshDrawInfo
 {
+  MeshDrawInfo(unsigned int a, unsigned int b, unsigned int e);
   unsigned int vao = 0;
   unsigned int vbo = 0;
   unsigned int ebo = 0;
-  Mesh(unsigned int a, unsigned int b, unsigned int e);
 };
 
-struct Model
+struct TextureInfo
 {
-  int id = 0;
-};
-
-struct Vertex {
-  glm::vec3 Position;
-  glm::vec3 Normal;
-  glm::vec2 TexCoords;
-};
-
-struct Texture {
   unsigned int id;
   std::string type;
+  std::string path;
 };
 
 class AAGameObject
 {
 
-
 public:
 
-  AAGameObject(std::vector<Mesh> meshes);
-  
+  AAGameObject(std::vector<MeshDrawInfo> meshes, std::vector<TextureInfo> textures, std::vector<unsigned int> elements);
+
   void draw();
 
 private:
 
-  std::vector<Mesh> mMeshes;
+  std::vector<MeshDrawInfo> mMeshes;
+  std::vector<unsigned int> mElements;
+  std::vector<TextureInfo> mTextures;
 
+  std::shared_ptr<Shader> mShader;
 };

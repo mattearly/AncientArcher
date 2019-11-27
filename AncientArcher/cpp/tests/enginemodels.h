@@ -24,7 +24,7 @@ void  testEngineFunctionsPossibilities()
 
   std::string model = "C:\\Users\\matt\\Dropbox_me298414\\Dropbox\\My3DModels\\6ColorSquare.obj";
 
-  AAGameObject gameObj = AAOGLGraphics::getInstance()->loadModelWithAssimpToOpenGL(model);
+  AAGameObject gameObj = AAOGLGraphics::getInstance()->loadGameObjectWithAssimp(model);
 
   auto drawsquare = []()
   {

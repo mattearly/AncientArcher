@@ -32,6 +32,8 @@ private:
   glm::vec3 mRight    = glm::vec3(1, 0, 0);
   glm::vec3 mUp       = glm::vec3(0, 1, 0);
 
+  float mRenderDistance = 100.f;
+
   const glm::vec3 WORLD_UP = glm::vec3(0, 1, 0);
 
   std::shared_ptr<Shader> mShader = std::make_shared<Shader>(
