@@ -12,7 +12,6 @@
 std::string lastDirectory;
 std::vector<MeshDrawInfo> meshes;
 std::vector<TextureInfo> textures;
-std::vector<unsigned int> elements;
 
 Vertex::Vertex(glm::vec3 pos, glm::vec2 texcoords, glm::vec3 norms)
   : Position(pos), TexCoords(texcoords), Normal(norms) {}
@@ -80,12 +79,10 @@ AAGameObject AAOGLGraphics::loadGameObjectWithAssimp(std::string path)
 
   meshes.clear();
   textures.clear();
-  elements.clear();
 
   processNode(scene->mRootNode, scene);
 
-  return AAGameObject(meshes, textures, elements);
-
+  return AAGameObject(meshes, textures);
 }
 
 void AAOGLGraphics::processNode(aiNode* node, const aiScene* scene)
@@ -105,35 +102,29 @@ void AAOGLGraphics::processNode(aiNode* node, const aiScene* scene)
 MeshDrawInfo AAOGLGraphics::processMesh(aiMesh* mesh, const aiScene* scene)
 {
   std::vector<Vertex> loadedVerts;
-
   for (int i = 0; i < mesh->mNumVertices; ++i)
   {
-    
     glm::vec3 tmpPos = aiVec3_to_glmVec3(mesh->mVertices[i]);
-
     glm::vec3 tmpNorm = aiVec3_to_glmVec3(mesh->mNormals[i]);
-
     glm::vec2 tmpTexCoords(0);
-
     if (mesh->mTextureCoords[0] != nullptr)
     {
       tmpTexCoords = glm::vec2(mesh->mTextureCoords[0][i].x, mesh->mTextureCoords[0][i].y);
     }
-
     loadedVerts.emplace_back(Vertex(tmpPos, tmpTexCoords, tmpNorm));
   }
 
+  std::vector<unsigned int> loadedElements;
   for (int i = 0; i < mesh->mNumFaces; ++i)
   {
     aiFace face = mesh->mFaces[i];
     for (int j = 0; j < face.mNumIndices; ++j)
     {
-      elements.push_back(face.mIndices[j]);
+      loadedElements.push_back(face.mIndices[j]);
     }
   }
 
   aiMaterial* material = scene->mMaterials[mesh->mMaterialIndex];
-
   std::vector<TextureInfo> diffuseMaps = loadMaterialTextures(material, aiTextureType_DIFFUSE, "diffuse");
   textures.insert(textures.end(), diffuseMaps.begin(), diffuseMaps.end());
   std::vector<TextureInfo> specMaps = loadMaterialTextures(material, aiTextureType_SPECULAR, "specular");
@@ -153,11 +144,11 @@ MeshDrawInfo AAOGLGraphics::processMesh(aiMesh* mesh, const aiScene* scene)
   glBufferData(GL_ARRAY_BUFFER, loadedVerts.size() * sizeof(Vertex), &loadedVerts[0], GL_STATIC_DRAW);
 
   glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);
-  glBufferData(GL_ELEMENT_ARRAY_BUFFER, elements.size() * sizeof(unsigned int), &elements[0], GL_STATIC_DRAW);
+  glBufferData(GL_ELEMENT_ARRAY_BUFFER, loadedElements.size() * sizeof(unsigned int), &loadedElements[0], GL_STATIC_DRAW);
 
   glEnableVertexAttribArray(0);
   glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void*)offsetof(Vertex, Position));
-  
+
   glEnableVertexAttribArray(1);
   glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void*)offsetof(Vertex, TexCoords));
 

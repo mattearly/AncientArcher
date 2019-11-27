@@ -23,7 +23,7 @@ class AAGameObject
 
 public:
 
-  AAGameObject(std::vector<MeshDrawInfo> meshes, std::vector<TextureInfo> textures, std::vector<unsigned int> elements);
+  AAGameObject(std::vector<MeshDrawInfo> meshes, std::vector<TextureInfo> textures);
 
   void draw();
 
@@ -34,4 +34,5 @@ private:
   std::vector<TextureInfo> mTextures;
 
   std::shared_ptr<Shader> mShader;
+
 };

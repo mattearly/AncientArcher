@@ -3,8 +3,8 @@
 
 MeshDrawInfo::MeshDrawInfo(unsigned int a, unsigned int b, unsigned int e) : vao(a), vbo(b), ebo(e) {}
 
-AAGameObject::AAGameObject(std::vector<MeshDrawInfo> meshes, std::vector<TextureInfo> textures, std::vector<unsigned int> elements)
-  : mMeshes(meshes), mTextures(textures), mElements(elements) {}
+AAGameObject::AAGameObject(std::vector<MeshDrawInfo> meshes, std::vector<TextureInfo> textures)
+  : mMeshes(meshes), mTextures(textures) {}
 
 void AAGameObject::draw()
 {
