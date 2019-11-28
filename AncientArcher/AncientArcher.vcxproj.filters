@@ -89,8 +89,5 @@
     <ClInclude Include="cpp\tests\enginefunctions.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="cpp\tests\enginemodels.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
   </ItemGroup>
 </Project>
