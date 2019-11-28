@@ -28,18 +28,12 @@ int main()
   std::string model_random1 = "C:\\Users\\matt\\Dropbox_me298414\\Dropbox\\My3DModels\\random1.obj";
 
   testAssimpBaseLoading(model_sixColorSquare);
-  testAssimpBaseLoading(model_random1);
-  testAssimpBaseLoading("This/is/a/test/");
+  //testAssimpBaseLoading(model_random1);
+  //testAssimpBaseLoading("This/is/a/test/");
 
-  AADisplay::getInstance()->setWindowSize(800, 600, 1920/2 - 400, 1080/2 - 300);                // test changing window size (and position)
+  AADisplay::getInstance()->setWindowSize(800, 600, 1920 / 2 - 400, 1080 / 2 - 300);                // test changing window size (and position)
 
-  testEngineMainDisplay();
-  delay(100);
-  testEngineLoop();
-  delay(100);
-  testEngineFunctionsPossibilities();
-  delay(100);
-  testEnginePause();
+  stressEngineFunctions();
 
   return 0;
 }
