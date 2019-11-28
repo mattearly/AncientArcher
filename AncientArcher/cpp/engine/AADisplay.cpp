@@ -1,6 +1,7 @@
 #include "AADisplay.h"
 #include <iostream>
 #include <glm/glm.hpp>
+#include "AAViewport.h"
 
 AADisplay* AADisplay::getInstance()
 {
@@ -53,6 +54,8 @@ void AADisplay::reshapeWindowHandler(GLFWwindow* window, int width, int height)
   mWindowWidth = width;
   mWindowHeight = height;
   gWindowRatioChanged = true;
+  AAViewport::getInstance()->mShader->use();
+  AAViewport::getInstance()->mShader->setMat4("projection", AAViewport::getInstance()->getProjectionMatrix());
 }
 
 void AADisplay::mouseHandler(GLFWwindow* window, float xpos, float ypos)
