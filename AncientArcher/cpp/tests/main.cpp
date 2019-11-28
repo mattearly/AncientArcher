@@ -8,8 +8,18 @@
 #include <thread>
 #include "enginefunctions.h"
 
-void delay(int time);
-void holdAtCommandPrompt();
+void delay(int time)
+{
+  std::this_thread::sleep_for(std::chrono::milliseconds(time));
+}
+
+void holdAtCommandPrompt()
+{
+  // Software has chosen to exit hold on command prompt so we can view output
+  std::cout << "Press Enter To Continue\n";
+  char a;
+  a = std::cin.get();
+}
 
 int main()
 {
@@ -24,25 +34,13 @@ int main()
   AADisplay::getInstance()->setWindowSize(800, 600, 1920/2 - 400, 1080/2 - 300);                // test changing window size (and position)
 
   testEngineMainDisplay();
-  delay(1);
+  delay(100);
   testEngineLoop();
-  delay(1);
+  delay(100);
   testEngineFunctionsPossibilities();
-  delay(1);
+  delay(100);
   testEnginePause();
 
   return 0;
 }
 
-void delay(int time)
-{
-  std::this_thread::sleep_for(std::chrono::seconds(time));
-}
-
-void holdAtCommandPrompt()
-{
-  // Software has chosen to exit hold on command prompt so we can view output
-  std::cout << "Press Enter To Continue\n";
-  char a;
-  a = std::cin.get();
-}
