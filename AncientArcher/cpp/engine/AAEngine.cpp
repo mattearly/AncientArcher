@@ -75,6 +75,11 @@ void AAEngine::addToKeyHandling(void(*function)(std::shared_ptr<AAKeyInput>&))
   onKeyHandling.push_back(function);
 }
 
+void AAEngine::addToScrollHandling(void(*function)(std::shared_ptr<AAScrollInput>&))
+{
+  onScrollHandling.push_back(function);
+}
+
 void AAEngine::addToOnRender(void(*function)())
 {
   onRender.push_back(function);
@@ -120,6 +125,11 @@ void AAEngine::update()
   for (auto okh : onKeyHandling)
   {
     okh(mKeys);
+  }
+
+  for (auto osh : onScrollHandling)
+  {
+    osh(mScroll);
   }
 
   for (auto u : onUpdate)

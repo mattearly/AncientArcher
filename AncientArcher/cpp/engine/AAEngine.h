@@ -22,6 +22,7 @@ public:
   void addToOnRender(void(*function)());
   void addToUpdate(void(*function)());
   void addToKeyHandling(void(*function)(std::shared_ptr<AAKeyInput>&));
+  void addToScrollHandling(void(*function)(std::shared_ptr<AAScrollInput>&));
 
 private:
 
@@ -38,6 +39,7 @@ private:
   std::vector<void (*)(float)> onDeltaUpdate;
   std::vector<void (*)()> onRender;
   std::vector<void (*)(std::shared_ptr<AAKeyInput>&)> onKeyHandling;
+  std::vector<void (*)(std::shared_ptr<AAScrollInput>&)> onScrollHandling;
   std::vector<void (*)()> onUpdate;
 
   bool checkIfKeysSet();
