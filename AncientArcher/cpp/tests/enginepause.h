@@ -7,7 +7,7 @@ void testEnginePause()
 {
   glfwSetWindowShouldClose(AADisplay::getInstance()->getWindow(), false);
 
-  AADisplay::getInstance()->setWindowTitle("Engine Pause - Press Enter To Continue");  // test changing window title
+  AADisplay::getInstance()->setWindowTitle("Engine Pause - Press [ENTER] To Continue");  // test changing window title
   AADisplay::getInstance()->setWindowClearColor(glm::vec3(.0,.1,.0));        // test changing window clear color
 
   AAEngine engine;

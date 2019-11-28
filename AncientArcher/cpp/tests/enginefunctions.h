@@ -9,7 +9,7 @@ void  testEngineFunctionsPossibilities()
 {
   glfwSetWindowShouldClose(AADisplay::getInstance()->getWindow(), false);
 
-  AADisplay::getInstance()->setWindowTitle("Test Screen Color Pulse - Press [Enter] to continue.");  // test changing window title
+  AADisplay::getInstance()->setWindowTitle("Test Screen Color Pulse - Press [ENTER] To Continue");  // test changing window title
 
   AAEngine engine;
   std::shared_ptr<AAKeyInput> keys = std::make_shared<AAKeyInput>();           // keyinput set for engine to update

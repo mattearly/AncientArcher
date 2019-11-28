@@ -11,7 +11,7 @@ void  testEngineFunctionsPossibilities()
 {
   glfwSetWindowShouldClose(AADisplay::getInstance()->getWindow(), false);
 
-  AADisplay::getInstance()->setWindowTitle("Test Engine Game Objects - Press [Enter] to continue.");  // test changing window title
+  AADisplay::getInstance()->setWindowTitle("Test Engine Game Objects - Press [ENTER] To Continue");  // test changing window title
   AADisplay::getInstance()->setWindowClearColor(glm::vec3(0));        // test changing window clear color
 
   AAEngine engine;
@@ -24,7 +24,7 @@ void  testEngineFunctionsPossibilities()
 
   std::string model = "C:\\Users\\matt\\Dropbox_me298414\\Dropbox\\My3DModels\\6ColorSquare.obj";
 
-  AAGameObject gameObj = AAOGLGraphics::getInstance()->loadGameObjectWithAssimp(model);
+  static AAGameObject gameObj = AAOGLGraphics::getInstance()->loadGameObjectWithAssimp(model);
 
   auto drawsquare = []()
   {

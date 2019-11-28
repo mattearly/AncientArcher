@@ -8,7 +8,7 @@ void testEngineMainDisplay()
 {
 
   {
-    AADisplay::getInstance()->setWindowTitle("Test Engine Startup - Press [Enter] to continue.");  // test changing window title
+    AADisplay::getInstance()->setWindowTitle("Test Engine Startup - Press [ENTER] To Continue");  // test changing window title
     AADisplay::getInstance()->setWindowClearColor(glm::vec3(.2,.5,.1));        // test changing window clear color
   }
 

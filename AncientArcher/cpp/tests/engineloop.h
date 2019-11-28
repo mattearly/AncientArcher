@@ -7,7 +7,7 @@ void testEngineLoop()
 {
   glfwSetWindowShouldClose(AADisplay::getInstance()->getWindow(), false);
 
-  AADisplay::getInstance()->setWindowTitle("Test Engine Function in Loops - Press [Enter] to stop.");  // test changing window title
+  AADisplay::getInstance()->setWindowTitle("Test Engine Function in Loops - Press [ENTER] To Continue");  // test changing window title
   AADisplay::getInstance()->setWindowClearColor(glm::vec3(0));        // test changing window clear color
 
   AAEngine engine;
