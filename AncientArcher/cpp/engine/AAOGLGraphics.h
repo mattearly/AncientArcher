@@ -6,11 +6,6 @@
 #include <assimp/scene.h>
 #include "AAGameObject.h"
 
-struct Model
-{
-  int id = 0;
-};
-
 struct Vertex
 {
   Vertex(glm::vec3 pos, glm::vec2 texcoords, glm::vec3 norms);
@@ -35,7 +30,4 @@ private:
 
   std::vector<std::string> mPathsLoaded;
   std::vector<TextureInfo> mTexturesLoaded;
-
-  std::shared_ptr<Shader> mShader;
-
 };

@@ -8,10 +8,10 @@
 #include <mearly\TexLoader.h>
 #include <glad\glad.h>
 #include <cstddef>
+#include "AAViewport.h"
 
 std::string lastDirectory;
 std::vector<MeshDrawInfo> meshes;
-std::vector<TextureInfo> textures;
 
 Vertex::Vertex(glm::vec3 pos, glm::vec2 texcoords, glm::vec3 norms)
   : Position(pos), TexCoords(texcoords), Normal(norms) {}
@@ -67,22 +67,17 @@ AAGameObject AAOGLGraphics::loadGameObjectWithAssimp(std::string path)
 {
   Assimp::Importer importer;
   const aiScene* scene = importer.ReadFile(path, 0);
-
+  meshes.clear();
   if (!scene || scene->mFlags & AI_SCENE_FLAGS_INCOMPLETE || !scene->mRootNode)
   {
     std::cout << "ERROR::ASSIMP::" << importer.GetErrorString() << '\n';
-    return;
-    //return AAGameObject(meshes);
+    return AAGameObject(meshes);
   }
 
-  lastDirectory = path.substr(0, path.find_last_of("/\\"));  //http://www.cplusplus.com/reference/string/string/find_last_of/
-
-  meshes.clear();
-  textures.clear();
-
+  lastDirectory = path.substr(0, path.find_last_of("/\\"));  //http://www.cplusplus.com/reference/string/string/find_last_of/     
   processNode(scene->mRootNode, scene);
 
-  return AAGameObject(meshes, textures);
+  return AAGameObject(meshes);
 }
 
 void AAOGLGraphics::processNode(aiNode* node, const aiScene* scene)
@@ -124,15 +119,17 @@ MeshDrawInfo AAOGLGraphics::processMesh(aiMesh* mesh, const aiScene* scene)
     }
   }
 
+  std::vector<TextureInfo> loadedTextures
+    ;
   aiMaterial* material = scene->mMaterials[mesh->mMaterialIndex];
   std::vector<TextureInfo> diffuseMaps = loadMaterialTextures(material, aiTextureType_DIFFUSE, "diffuse");
-  textures.insert(textures.end(), diffuseMaps.begin(), diffuseMaps.end());
+  loadedTextures.insert(loadedTextures.end(), diffuseMaps.begin(), diffuseMaps.end());
   std::vector<TextureInfo> specMaps = loadMaterialTextures(material, aiTextureType_SPECULAR, "specular");
-  textures.insert(textures.end(), specMaps.begin(), specMaps.end());
+  loadedTextures.insert(loadedTextures.end(), specMaps.begin(), specMaps.end());
   std::vector<TextureInfo> normMaps = loadMaterialTextures(material, aiTextureType_HEIGHT, "normal");
-  textures.insert(textures.end(), normMaps.begin(), normMaps.end());
+  loadedTextures.insert(loadedTextures.end(), normMaps.begin(), normMaps.end());
   std::vector<TextureInfo> heightMaps = loadMaterialTextures(material, aiTextureType_AMBIENT, "height");
-  textures.insert(textures.end(), heightMaps.begin(), heightMaps.end());
+  loadedTextures.insert(loadedTextures.end(), heightMaps.begin(), heightMaps.end());
 
   unsigned int VAO, VBO, EBO;
   glGenVertexArrays(1, &VAO);
@@ -157,7 +154,7 @@ MeshDrawInfo AAOGLGraphics::processMesh(aiMesh* mesh, const aiScene* scene)
 
   glBindVertexArray(0);
 
-  return MeshDrawInfo(VAO, VBO, EBO);
+  return MeshDrawInfo(VAO, VBO, EBO, loadedTextures, loadedElements);
 }
 
 std::vector<TextureInfo> AAOGLGraphics::loadMaterialTextures(aiMaterial* mat, aiTextureType type, std::string typeName)
