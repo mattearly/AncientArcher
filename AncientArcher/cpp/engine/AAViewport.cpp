@@ -22,6 +22,12 @@ void AAViewport::updateCameraVectors()
   mUp = glm::normalize(glm::cross(mRight, mFront));
 }
 
+void AAViewport::shiftCurrentPosition(glm::vec3 offset)
+{
+  mPosition += offset;
+  updateCameraVectors();
+}
+
 glm::mat4 AAViewport::getViewMatrix()
 {
   return glm::lookAt(mPosition, mPosition + mFront, mUp);
@@ -39,7 +45,17 @@ glm::mat4 AAViewport::getProjectionMatrix()
   return projection;
 }
 
-glm::vec3 AAViewport::getFront()
+glm::vec3* AAViewport::getPosition()
 {
-  return mFront;
+  return &mPosition;
+}
+
+glm::vec3* AAViewport::getFront()
+{
+  return &mFront;
+}
+
+glm::vec3* AAViewport::getRight()
+{
+  return &mRight;
 }
