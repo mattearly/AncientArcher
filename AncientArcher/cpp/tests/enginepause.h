@@ -16,7 +16,21 @@ void testEnginePause()
   std::shared_ptr<AAMouseInput> mouse = std::make_shared<AAMouseInput>();      // mouseinput for the display
   engine.setMouseStruct(mouse);                                                //
   std::shared_ptr<AAScrollInput> scroll = std::make_shared<AAScrollInput>();   // 
-  engine.setScrollStruct(scroll);                                              //
+  engine.setScrollStruct(scroll);  
+
+  auto deltacout = [](float step) {
+    static float timePassed = 0;
+    timePassed += step;
+    float newcolor = abs(sin(timePassed));
+    AADisplay::getInstance()->setWindowClearColor(
+      glm::vec3(
+        newcolor,
+        newcolor,
+        newcolor
+      )
+    );        // test changing window clear color to random values
+  };
+  engine.addToDeltaUpdate(deltacout);
 
   auto handleKeys = [](std::shared_ptr<AAKeyInput>& keys) {
     if (keys->enter)
