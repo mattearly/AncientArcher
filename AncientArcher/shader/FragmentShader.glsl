@@ -1,7 +1,7 @@
 #version 330 core
 in vec3 FragPos;
-in vec3 Normal;
 in vec2 TexCoords;
+in vec3 Normal;
 
 out vec4 FragColor;
 
@@ -14,10 +14,10 @@ struct Material
 
 struct DirectionalLight
 {
-vec3 direction;
-vec3 ambient;
-vec3 diffuse;
-vec3 specular;
+  vec3 direction;
+  vec3 ambient;
+  vec3 diffuse;
+  vec3 specular;
 };
 
 uniform vec3 viewPos;
@@ -33,7 +33,6 @@ void main()
   vec3 result = CalcDirectionalLight(dirLight, normal, viewDir);
 
   FragColor = vec4(result, 1.0);
- 
 }
 
 vec3 CalcDirectionalLight(DirectionalLight inLight, vec3 inNormal, vec3 inViewDir) {
