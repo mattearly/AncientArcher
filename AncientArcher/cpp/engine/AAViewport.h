@@ -38,7 +38,6 @@ private:
 
   float mRenderDistance = 100.f;
 
-
   std::shared_ptr<Shader> mShader = std::make_shared<Shader>(
     "../AncientArcher/shader/VertexShader.glsl",
     "../AncientArcher/shader/FragmentShader.glsl"

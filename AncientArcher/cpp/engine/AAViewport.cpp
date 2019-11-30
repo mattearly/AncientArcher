@@ -22,10 +22,34 @@ void AAViewport::updateCameraVectors()
   mUp = glm::normalize(glm::cross(mRight, mFront));
 }
 
+void AAViewport::setCurrentPosition(glm::vec3 pos)
+{
+  mPosition = pos;
+  updateCameraVectors();
+}
+
 void AAViewport::shiftCurrentPosition(glm::vec3 offset)
 {
   mPosition += offset;
   updateCameraVectors();
+}
+
+void AAViewport::shiftYawAndPith(float yawOffset, float pitchOffset)
+{
+  mYaw += yawOffset;
+
+  mPitch += pitchOffset;
+  if (mPitch > 89.9f)
+  {
+    mPitch = 89.9f;
+  }
+  else if (mPitch < -89.9f)
+  {
+    mPitch = -89.9f;
+  }
+  updateCameraVectors();
+
+  //std::cout << "yaw: " << mYaw << " pitch: " << mPitch << '\n';
 }
 
 glm::mat4 AAViewport::getViewMatrix()
@@ -58,4 +82,14 @@ glm::vec3* AAViewport::getFront()
 glm::vec3* AAViewport::getRight()
 {
   return &mRight;
+}
+
+float AAViewport::getYaw()
+{
+  return mYaw;
+}
+
+float AAViewport::getPitch()
+{
+  return mPitch;
 }
