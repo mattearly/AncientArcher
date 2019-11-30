@@ -28,18 +28,9 @@ vec3 CalcDirectionalLight(DirectionalLight inLight, vec3 inNormal, vec3 inViewDi
 
 void main()
 {
-
   vec3 normal = normalize(Normal);
   vec3 viewDir = normalize(viewPos - FragPos);
-//  vec3 result = CalcDirectionalLight(dirLight, normal, viewDir);
-  
-  DirectionalLight tmp;
-  tmp.direction = vec3(0,0,0);
-  tmp.ambient = vec3(.5,.5,.5);
-  tmp.diffuse = vec3(.5, .5, .5);
-  tmp.specular = vec3(.1, .1, .1);
-
-  vec3 result = CalcDirectionalLight(tmp, normal, viewDir);
+  vec3 result = CalcDirectionalLight(dirLight, normal, viewDir);
 
   FragColor = vec4(result, 1.0);
 }
