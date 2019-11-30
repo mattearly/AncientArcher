@@ -39,7 +39,7 @@ private:
   glm::vec3 mRight = glm::vec3(1, 0, 0);
   glm::vec3 mUp = glm::vec3(0, 1, 0);
 
-  float mRenderDistance = 100.f;
+  float mRenderDistance = 500.f;
 
   std::shared_ptr<Shader> mShader = std::make_shared<Shader>(
     "../AncientArcher/shader/VertexShader.glsl",

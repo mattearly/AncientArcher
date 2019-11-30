@@ -1,5 +1,4 @@
 #include "AAEngine.h"
-#include <iostream>
 
 AAEngine::~AAEngine()
 {
@@ -8,6 +7,8 @@ AAEngine::~AAEngine()
   onRender.clear();
   onUpdate.clear();
   onKeyHandling.clear();
+  onScrollHandling.clear();
+  onMouseHandling.clear();
 }
 
 int AAEngine::run()

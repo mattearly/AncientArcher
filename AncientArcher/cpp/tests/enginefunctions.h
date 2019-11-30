@@ -11,10 +11,10 @@ void  testStressEngineFunctions()
   glfwSetWindowShouldClose(AADisplay::getInstance()->getWindow(), false);
 
   AADisplay::getInstance()->setWindowTitle("Test Engine Game Objects - Press [ENTER] To Continue");  // test changing window title
-  AADisplay::getInstance()->setWindowClearColor(glm::vec3(.5));        // test changing window clear color
+  //AADisplay::getInstance()->setWindowClearColor(glm::vec3(.5));        // test changing window clear color
 
-  AAEngine engine;                                                             //'
-  AAViewport::getInstance()->setToPerspective();
+  AAEngine engine;                                                             //
+  //AAViewport::getInstance()->setToPerspective();
   std::shared_ptr<AAKeyInput> keys = std::make_shared<AAKeyInput>();           // keyinput set for engine to update
   engine.setKeyStruct(keys);                                                   // set keys to process keys/mouse    
   std::shared_ptr<AAMouseInput> mouse = std::make_shared<AAMouseInput>();      // mouseinput for the display
@@ -22,10 +22,15 @@ void  testStressEngineFunctions()
   std::shared_ptr<AAScrollInput> scroll = std::make_shared<AAScrollInput>();   // 
   engine.setScrollStruct(scroll);                                              //
 
-  std::string model = "C:\\Users\\matt\\Dropbox_me298414\\Dropbox\\My3DModels\\6ColorSquare.obj";
+  auto initfunction = []() {
+    AADisplay::getInstance()->setCursorToDisabled();
+    AAViewport::getInstance()->setToPerspective();
+  };
+  engine.addToOnBegin(initfunction);
 
+  //std::string model = "C:\\Users\\matt\\Dropbox_me298414\\Dropbox\\My3DModels\\6ColorSquare.obj";
+  std::string model = "..\\AncientArcher\\localdata\\6ColorSquare.obj";
   static AAGameObject gameObj = AAOGLGraphics::getInstance()->loadGameObjectWithAssimp(model);
-
   auto drawsquare = []()
   {
     gameObj.draw();
@@ -153,8 +158,7 @@ void  testStressEngineFunctions()
   };
   engine.addToMouseHandling(customMouseInput);
 
-  int engine_ret = engine.run();
-  switch (engine_ret)
+  switch (engine.run())
   {
   case -1:
     std::cout << "Keys not set.\n";
