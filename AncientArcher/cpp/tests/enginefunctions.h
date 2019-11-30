@@ -13,7 +13,8 @@ void  testStressEngineFunctions()
   AADisplay::getInstance()->setWindowTitle("Test Engine Game Objects - Press [ENTER] To Continue");  // test changing window title
   AADisplay::getInstance()->setWindowClearColor(glm::vec3(.5));        // test changing window clear color
 
-  AAEngine engine;                                                             //
+  AAEngine engine;                                                             //'
+  AAViewport::getInstance()->setToPerspective();
   std::shared_ptr<AAKeyInput> keys = std::make_shared<AAKeyInput>();           // keyinput set for engine to update
   engine.setKeyStruct(keys);                                                   // set keys to process keys/mouse    
   std::shared_ptr<AAMouseInput> mouse = std::make_shared<AAMouseInput>();      // mouseinput for the display
@@ -42,7 +43,6 @@ void  testStressEngineFunctions()
       << AAViewport::getInstance()->getPosition()->z << ","
       << AAViewport::getInstance()->getPosition()->y << ")\n";
   };
-
   static auto showPitchAndYaw = []()
   {
     std::cout << "pitch: " << AAViewport::getInstance()->getPitch() << " yaw: " << AAViewport::getInstance()->getYaw() << '\n';
@@ -115,7 +115,6 @@ void  testStressEngineFunctions()
     moveFront = glm::vec3(*AAViewport::getInstance()->getFront());
   };
   engine.addToKeyHandling(customKeyInput);
-
   auto customScrollInput = [](std::shared_ptr<AAScrollInput>& scroll)
   {
     // set flyspeed when mouse wheel moves
@@ -147,15 +146,14 @@ void  testStressEngineFunctions()
     }
   };
   engine.addToScrollHandling(customScrollInput);
-
   auto customMouseInput = [](std::shared_ptr<AAMouseInput>& mouse)
   {
     AAViewport::getInstance()->shiftYawAndPith(mouse->xOffset, mouse->yOffset);
+    showPitchAndYaw();
   };
   engine.addToMouseHandling(customMouseInput);
 
-  int engine_ret = engine.run();                                               // test run (main loop)  
-
+  int engine_ret = engine.run();
   switch (engine_ret)
   {
   case -1:
