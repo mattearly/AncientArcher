@@ -9,6 +9,8 @@ public:
   static AAViewport* getInstance();
   const glm::vec3 WORLD_UP = glm::vec3(0, 1, 0);
 
+  void setToPerspective();
+
   void setCurrentPosition(glm::vec3 pos);
   void shiftCurrentPosition(glm::vec3 offset);
   void shiftYawAndPith(float yawOffset, float pitchOffset);
@@ -20,6 +22,7 @@ public:
   glm::vec3* getRight();
   float getYaw();
   float getPitch();
+
 
   friend class AAGameObject;
   friend class AADisplay;
