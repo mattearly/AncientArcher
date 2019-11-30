@@ -2,10 +2,11 @@
 #include <GLFW\glfw3.h>
 #include "../engine/AADisplay.h"
 #include "../engine/AAEngine.h"
+#include "../engine/AAViewport.h"
 #include <iostream>
 #include <mearly\Random.h>
 
-void  stressEngineFunctions()
+void  testStressEngineFunctions()
 {
   glfwSetWindowShouldClose(AADisplay::getInstance()->getWindow(), false);
 
@@ -34,6 +35,19 @@ void  stressEngineFunctions()
   static float flySpeed = 5.f;
   static float prevFlySpeed = 0.f;
 
+  static auto showLocation = []()
+  {      // debug show location
+    std::cout << "Loc(x,z,y): ("
+      << AAViewport::getInstance()->getPosition()->x << ","
+      << AAViewport::getInstance()->getPosition()->z << ","
+      << AAViewport::getInstance()->getPosition()->y << ")\n";
+  };
+
+  static auto showPitchAndYaw = []()
+  {
+    std::cout << "pitch: " << AAViewport::getInstance()->getPitch() << " yaw: " << AAViewport::getInstance()->getYaw() << '\n';
+  };
+
   auto customKeyInput = [](std::shared_ptr<AAKeyInput>& keys)
   {
     if (keys->enter)
@@ -52,35 +66,35 @@ void  stressEngineFunctions()
     // process wasd
     if (keys->w)
     {
-      // debug show location on W press
-      std::cout << "Loc(x,z,y): ("
-        << AAViewport::getInstance()->getPosition()->x << ","
-        << AAViewport::getInstance()->getPosition()->z << ","
-        << AAViewport::getInstance()->getPosition()->y << ")\n";
-
       directionPlacement += moveFront * fps60velocity;
+      showLocation();
     }
     if (keys->s)
     {
       directionPlacement -= moveFront * fps60velocity;
+      showLocation();
     }
     if (keys->a)
     {
       directionPlacement -= *AAViewport::getInstance()->getRight() * fps60velocity;
+      showLocation();
     }
     if (keys->d)
     {
       directionPlacement += *AAViewport::getInstance()->getRight() * fps60velocity;
+      showLocation();
     }
 
     // process going up and down
     if (!keys->leftShift && keys->spacebar)  // spacebar goes up
     {
       directionPlacement += AAViewport::getInstance()->WORLD_UP * fps60velocity;
+      showLocation();
     }
     if (keys->leftShift && keys->spacebar)   // shift + spacebar goes down
     {
       directionPlacement -= AAViewport::getInstance()->WORLD_UP * fps60velocity;
+      showLocation();
     }
 
     if (keys->n1)
@@ -93,16 +107,6 @@ void  stressEngineFunctions()
       std::cout << "num2 pressed\n";
     }
 
-
-    // update projection matrix on shaders if window was resized  --handled in aadisplay now
-    //if (AADisplay::getInstance()->gWindowRatioChanged)
-    //{
-    //  AAViewport::getInstance()->updateProjectionMatrix(_shader.get());
-    //  AAViewport::getInstance()->updateProjectionMatrix(_animModelShader.get());
-    //  g_projectionResize = !g_projectionResize;
-    //}
-
-    // Set final new position this frame
     AAViewport::getInstance()->shiftCurrentPosition(directionPlacement);
     //_lighting->movePointLight(0, *AAViewport::getInstance()->getPosition(), _shader.get());  // debug point light stays at cam
 
@@ -144,6 +148,11 @@ void  stressEngineFunctions()
   };
   engine.addToScrollHandling(customScrollInput);
 
+  auto customMouseInput = [](std::shared_ptr<AAMouseInput>& mouse)
+  {
+    AAViewport::getInstance()->shiftYawAndPith(mouse->xOffset, mouse->yOffset);
+  };
+  engine.addToMouseHandling(customMouseInput);
 
   int engine_ret = engine.run();                                               // test run (main loop)  
 

@@ -3,7 +3,7 @@
 #include <memory>
 #include <iostream>
 
-void runBaseEngineLoop()
+void testRunBaseEngineLoop()
 {
   glfwSetWindowShouldClose(AADisplay::getInstance()->getWindow(), false);
 

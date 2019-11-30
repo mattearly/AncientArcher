@@ -60,6 +60,7 @@ void AADisplay::reshapeWindowHandler(GLFWwindow* window, int width, int height)
 
 void AADisplay::mouseHandler(GLFWwindow* window, float xpos, float ypos)
 {
+  //std::cout << "mouse movement detected in mouseHandler\n";
   AAControls::getInstance()->mouseMovement(xpos, ypos);
 }
 
