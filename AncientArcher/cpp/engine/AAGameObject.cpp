@@ -10,6 +10,7 @@ void AAGameObject::draw()
 {
   AAViewport::getInstance()->mShader->use();
   AAViewport::getInstance()->mShader->setMat4("view", AAViewport::getInstance()->getViewMatrix());
+  AAViewport::getInstance()->mShader->setMat4("model", mModelMatrix);
 
   glEnable(GL_DEPTH_TEST);
 

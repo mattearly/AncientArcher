@@ -30,4 +30,5 @@ public:
 private:
 
   std::vector<MeshDrawInfo> mMeshes;
+  glm::mat4 mModelMatrix = glm::mat4(1);
 };
