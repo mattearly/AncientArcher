@@ -18,8 +18,9 @@ public:
   void mouseHandler(GLFWwindow* window, float xpos, float ypos);
   void scrollHandler(GLFWwindow* window, float xpos, float ypos);
 
-  void enableCursor();
-  void disableCursor();
+  void setCursorToVisible();
+  void setCursorToHidden();
+  void setCursorToDisabled();
 
   void setWindowTitle(const char* name);
   void setWindowSize(int width, int height, int xpos = 0, int ypos = 0);

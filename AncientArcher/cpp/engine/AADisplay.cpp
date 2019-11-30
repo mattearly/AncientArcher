@@ -34,7 +34,7 @@ AADisplay::AADisplay()
   initReshapeWindowHandler();
   initMouseHandler();
   initMouseScrollHandler();
-  enableCursor();
+  setCursorToVisible();
   setFullscreenToOff();
   if (!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress))  // init glad (for opengl context)
   {
@@ -69,12 +69,17 @@ void AADisplay::scrollHandler(GLFWwindow* window, float xpos, float ypos)
   AAControls::getInstance()->mouseScrollWheelMovement(xpos, ypos);
 }
 
-void AADisplay::enableCursor()
+void AADisplay::setCursorToVisible()
 {
   glfwSetInputMode(mWindow, GLFW_CURSOR, GLFW_CURSOR_NORMAL);
 }
 
-void AADisplay::disableCursor()
+void AADisplay::setCursorToHidden()
+{
+  glfwSetInputMode(mWindow, GLFW_CURSOR, GLFW_CURSOR_HIDDEN);
+}
+
+void AADisplay::setCursorToDisabled()
 {
   glfwSetInputMode(mWindow, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
 }
