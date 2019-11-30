@@ -142,6 +142,9 @@ void AAEngine::update()
     omh(mMouse);
   }
 
+  mMouse->xOffset = 0;
+  mMouse->yOffset = 0;
+
   for (auto u : onUpdate)
   {
     u();
