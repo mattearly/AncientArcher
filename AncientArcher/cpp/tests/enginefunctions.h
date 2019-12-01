@@ -14,7 +14,10 @@ void  testStressEngineFunctions()
   AADisplay::getInstance()->setWindowClearColor(glm::vec3(.5));        // test changing window clear color
 
   AAEngine engine;                                                             //'
+  
   AAViewport::getInstance()->setToPerspective();
+  AADisplay::getInstance()->setCursorToDisabled();
+
   std::shared_ptr<AAKeyInput> keys = std::make_shared<AAKeyInput>();           // keyinput set for engine to update
   engine.setKeyStruct(keys);                                                   // set keys to process keys/mouse    
   std::shared_ptr<AAMouseInput> mouse = std::make_shared<AAMouseInput>();      // mouseinput for the display
@@ -22,10 +25,8 @@ void  testStressEngineFunctions()
   std::shared_ptr<AAScrollInput> scroll = std::make_shared<AAScrollInput>();   // 
   engine.setScrollStruct(scroll);                                              //
 
-  std::string model = "C:\\Users\\matt\\Dropbox_me298414\\Dropbox\\My3DModels\\6ColorSquare.obj";
-
+  std::string model = "..\\AncientArcher\\localdata\\6ColorSquare.obj";
   static AAGameObject gameObj = AAOGLGraphics::getInstance()->loadGameObjectWithAssimp(model);
-
   auto drawsquare = []()
   {
     gameObj.draw();
