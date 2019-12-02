@@ -29,6 +29,7 @@ int AAEngine::run()
 
   begin();
 
+  AADisplay::getInstance()->keepWindowOpen();
   while (!glfwWindowShouldClose(AADisplay::getInstance()->getWindow()))
   {
     static float currentFrame(0.f), deltaTime(0.f), lastFrame(0.f);
