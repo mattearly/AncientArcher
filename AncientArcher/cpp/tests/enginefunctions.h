@@ -4,39 +4,31 @@
 #include "../engine/AAEngine.h"
 #include "../engine/AAViewport.h"
 #include <iostream>
-#include <mearly\Random.h>
 
 void  testStressEngineFunctions()
 {
-  glfwSetWindowShouldClose(AADisplay::getInstance()->getWindow(), false);
-
-  AADisplay::getInstance()->setWindowTitle("Test Engine Game Objects - Press [ENTER] To Continue");  // test changing window title
-  AADisplay::getInstance()->setWindowClearColor(glm::vec3(.5));        // test changing window clear color
+  AADisplay::getInstance()->setWindowTitle("Stress Functions - Press [ENTER] To Quit");
+  AADisplay::getInstance()->setWindowClearColor(glm::vec3(.05, .5, .3));
 
   AAEngine engine;
-
-  AAViewport::getInstance()->setToPerspective();
-  AADisplay::getInstance()->setCursorToDisabled();
-
   std::shared_ptr<AAKeyInput> keys = std::make_shared<AAKeyInput>();           // keyinput set for engine to update
   engine.setKeyStruct(keys);                                                   // set keys to process keys/mouse    
   std::shared_ptr<AAMouseInput> mouse = std::make_shared<AAMouseInput>();      // mouseinput for the display
   engine.setMouseStruct(mouse);                                                //
   std::shared_ptr<AAScrollInput> scroll = std::make_shared<AAScrollInput>();   // 
-  engine.setScrollStruct(scroll);                                              //
+  engine.setScrollStruct(scroll);
 
-  std::string model = "..\\AncientArcher\\localdata\\6ColorSquare.obj";
-  static AAGameObject gameObj = AAOGLGraphics::getInstance()->loadGameObjectWithAssimp(model);
-  auto drawsquare = []()
-  {
-    gameObj.draw();
-  };
-  engine.addToOnRender(drawsquare);
+  AAViewport::getInstance()->setToPerspective();
+  AADisplay::getInstance()->setCursorToDisabled();
 
+  //std::string model = "..\\AncientArcher\\localdata\\6ColorSquare.obj";
+  std::string model_sixColorSquare = "C:\\Users\\matt\\Dropbox_me298414\\Dropbox\\My3DModels\\6ColorSquare.obj";
+  static AAGameObject gameObj = AAOGLGraphics::getInstance()->loadGameObjectWithAssimp(model_sixColorSquare);
   static const float FlyIncrement = 0.4f;
   static float flySpeed = 5.f;
   static float prevFlySpeed = 0.f;
 
+  // funcs we can use in our lambdas
   static auto showLocation = []()
   {      // debug show location
     std::cout << "Loc(x,z,y): ("
@@ -49,6 +41,7 @@ void  testStressEngineFunctions()
     std::cout << "pitch: " << AAViewport::getInstance()->getPitch() << " yaw: " << AAViewport::getInstance()->getYaw() << '\n';
   };
 
+  // lambda funcs for the engine
   auto customKeyInput = [](std::shared_ptr<AAKeyInput>& keys)
   {
     if (keys->enter)
@@ -68,34 +61,28 @@ void  testStressEngineFunctions()
     if (keys->w)
     {
       directionPlacement += moveFront * fps60velocity;
-      showLocation();
     }
     if (keys->s)
     {
       directionPlacement -= moveFront * fps60velocity;
-      showLocation();
     }
     if (keys->a)
     {
       directionPlacement -= *AAViewport::getInstance()->getRight() * fps60velocity;
-      showLocation();
     }
     if (keys->d)
     {
       directionPlacement += *AAViewport::getInstance()->getRight() * fps60velocity;
-      showLocation();
     }
 
     // process going up and down
     if (!keys->leftShift && keys->spacebar)  // spacebar goes up
     {
       directionPlacement += AAViewport::getInstance()->WORLD_UP * fps60velocity;
-      showLocation();
     }
     if (keys->leftShift && keys->spacebar)   // shift + spacebar goes down
     {
       directionPlacement -= AAViewport::getInstance()->WORLD_UP * fps60velocity;
-      showLocation();
     }
 
     if (keys->n1)
@@ -115,7 +102,6 @@ void  testStressEngineFunctions()
     directionPlacement = glm::vec3(0.f, 0.f, 0.f);
     moveFront = glm::vec3(*AAViewport::getInstance()->getFront());
   };
-  engine.addToKeyHandling(customKeyInput);
   auto customScrollInput = [](std::shared_ptr<AAScrollInput>& scroll)
   {
     // set flyspeed when mouse wheel moves
@@ -146,13 +132,27 @@ void  testStressEngineFunctions()
       prevFlySpeed = flySpeed;
     }
   };
-  engine.addToScrollHandling(customScrollInput);
   auto customMouseInput = [](std::shared_ptr<AAMouseInput>& mouse)
   {
     AAViewport::getInstance()->shiftYawAndPith(mouse->xOffset, mouse->yOffset);
-    showPitchAndYaw();
   };
+  auto moveSquare = [](float dt) {
+    gameObj.translate(glm::vec3(sin(dt), sin(dt), sin(dt)));
+  };
+  auto drawsquare = []()
+  {
+    gameObj.draw();
+  };
+
+  // add functions to parts of engine loops
+  engine.addToDeltaUpdate(moveSquare);
+  //engine.addToOnBegin(beginfunc);
+  //engine.addToUpdate(updatefunc);
+  engine.addToKeyHandling(customKeyInput);
+  engine.addToScrollHandling(customScrollInput);
   engine.addToMouseHandling(customMouseInput);
+  engine.addToOnRender(drawsquare);
+
 
   switch (engine.run())
   {
