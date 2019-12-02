@@ -152,6 +152,11 @@ void AAEngine::update()
   {
     u();
   }
+
+  if ((mKeys->leftAlt || mKeys->rightAlt) && mKeys->enter)
+  {
+    AADisplay::getInstance()->toggleFullScreen();
+  }
 }
 
 bool AAEngine::checkIfKeysSet()
