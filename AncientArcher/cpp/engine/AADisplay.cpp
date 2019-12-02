@@ -9,6 +9,16 @@ AADisplay* AADisplay::getInstance()
   return display;
 }
 
+void AADisplay::keepWindowOpen()
+{
+  glfwSetWindowShouldClose(mWindow, false);
+}
+
+void AADisplay::closeWindow()
+{
+  glfwSetWindowShouldClose(mWindow, true);
+}
+
 AADisplay::AADisplay()
 {
   initGLFW(); 

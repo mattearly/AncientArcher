@@ -11,6 +11,9 @@ public:
 
   static AADisplay* getInstance();
 
+  void keepWindowOpen(); 
+  void closeWindow();
+
   AADisplay();
   ~AADisplay();
 
