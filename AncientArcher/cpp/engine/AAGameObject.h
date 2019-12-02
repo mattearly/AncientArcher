@@ -26,6 +26,7 @@ public:
 
   AAGameObject(std::vector<MeshDrawInfo> meshes);
   void draw();
+  void translate(glm::vec3 amt);
 
 private:
 

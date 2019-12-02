@@ -1,7 +1,9 @@
 #include "AAGameObject.h"
 #include "AAViewport.h"
 #include <glad\glad.h>
+#include <glm/glm.hpp>
 #include <iostream>
+#include <glm\gtx\transform.hpp>
 
 AAGameObject::AAGameObject(std::vector<MeshDrawInfo> meshes)
   : mMeshes(meshes) {}
@@ -64,6 +66,11 @@ void AAGameObject::draw()
   glActiveTexture(GL_TEXTURE0);
 
   //std::cout << "drawingmodel\n";
+}
+
+void AAGameObject::translate(glm::vec3 amt)
+{
+  mModelMatrix = glm::translate(mModelMatrix, amt);
 }
 
 MeshDrawInfo::MeshDrawInfo(unsigned int a, unsigned int b, unsigned int e, std::vector<TextureInfo> t, std::vector<unsigned int> el)
