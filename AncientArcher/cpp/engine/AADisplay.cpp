@@ -21,36 +21,44 @@ void AADisplay::closeWindow()
 
 AADisplay::AADisplay()
 {
-  initGLFW(); 
+  initGLFW();
 
+  int mLaunchedMainScreenWindowWidth, mLaunchedMainScreenWindowHeight;
   glfwGetMonitorWorkarea(glfwGetPrimaryMonitor(), &mXPos, &mYPos, &mLaunchedMainScreenWindowWidth, &mLaunchedMainScreenWindowHeight);
 
   mWindow = glfwCreateWindow(
-    mLaunchedMainScreenWindowWidth, 
-    mLaunchedMainScreenWindowHeight, 
-    "AncientArcher", 
-    nullptr, 
+    mLaunchedMainScreenWindowWidth,
+    mLaunchedMainScreenWindowHeight,
+    "AncientArcher",
+    nullptr,
     nullptr
   );
-  if (!mWindow) 
+  if (!mWindow)
   {
     std::cout << "Failed to init GLFW3 window\n";
     glfwTerminate();
   }
 
+  int mWindowFrameSizeLeft, mWindowFrameSizeTop, mWindowFrameSizeRight, mWindowFrameSizeBottom;
   glfwGetWindowFrameSize(mWindow, &mWindowFrameSizeLeft, &mWindowFrameSizeTop, &mWindowFrameSizeRight, &mWindowFrameSizeBottom);
 
   glfwMakeContextCurrent(mWindow);
+
   initReshapeWindowHandler();
+
   initMouseHandler();
+
   initMouseScrollHandler();
-  setCursorToVisible();
-  setFullscreenToOff();
+
+
   if (!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress))  // init glad (for opengl context)
   {
     std::cout << "failed to init glad\n";
     exit(-1);
   }
+
+  setFullscreenToOff();
+
 }
 
 AADisplay::~AADisplay()
@@ -63,6 +71,7 @@ void AADisplay::reshapeWindowHandler(GLFWwindow* window, int width, int height)
   mWindowWidth = width;
   mWindowHeight = height;
   glViewport(mXPos, mYPos, mWindowWidth, mWindowHeight);
+  std::cout << "reshape Window Handler called.\n";
 }
 
 void AADisplay::mouseHandler(GLFWwindow* window, float xpos, float ypos)
@@ -99,15 +108,15 @@ void AADisplay::setWindowSize(int width, int height, int xpos, int ypos)
 {
   mWindowWidth = width;
   mWindowHeight = height;
-  mXPos = (xpos == 0) ? mWindowFrameSizeLeft - mWindowFrameSizeRight : xpos;
-  mYPos = (ypos == 0) ? mWindowFrameSizeTop - mWindowFrameSizeBottom : ypos;
+  mXPos = xpos; // (xpos == 0) ? mWindowFrameSizeLeft - mWindowFrameSizeRight : xpos;
+  mYPos = ypos; // (ypos == 0) ? mWindowFrameSizeTop - mWindowFrameSizeBottom : ypos;
   glfwSetWindowMonitor(
-    mWindow, 
-    nullptr, 
+    mWindow,
+    nullptr,
     mXPos,
     mYPos,
-    mWindowWidth, 
-    mWindowHeight, 
+    mWindowWidth,
+    mWindowHeight,
     0
   );
   mWindowIsFullScreen = false;
@@ -124,18 +133,27 @@ void AADisplay::setWindowClearColor(glm::vec3 rgb)
 
 void AADisplay::setFullscreenToOn()
 {
-  mWindowWidth = 1920;
-  mWindowHeight = 1080;
+  int x, y, w, h;
+  glfwGetMonitorWorkarea(glfwGetPrimaryMonitor(), &x, &y, &w, &h);
+
+  mXPos = x;
+  mYPos = y;
+  mWindowWidth = w;
+  mWindowHeight = h;
+
   glfwSetWindowMonitor(mWindow, glfwGetPrimaryMonitor(), 0, 0, mWindowWidth, mWindowHeight, 0);
+  
+  glViewport(mXPos, mYPos, mWindowWidth, mWindowHeight);
+  
   mWindowIsFullScreen = true;
 }
 
 void AADisplay::setFullscreenToOff()
 {
-  mXPos = mWindowFrameSizeLeft - mWindowFrameSizeRight;
-  mYPos = mWindowFrameSizeTop - mWindowFrameSizeBottom;
-  mWindowWidth = mLaunchedMainScreenWindowWidth;
-  mWindowHeight = mLaunchedMainScreenWindowHeight;
+  //mXPos = 0; // mWindowFrameSizeLeft - mWindowFrameSizeRight;
+  //mYPos = 0; // mWindowFrameSizeTop - mWindowFrameSizeBottom;
+  //mWindowWidth = mLaunchedMainScreenWindowWidth;
+  //mWindowHeight = mLaunchedMainScreenWindowHeight;
   glfwSetWindowMonitor(
     mWindow,
     nullptr,
@@ -145,6 +163,7 @@ void AADisplay::setFullscreenToOff()
     mWindowHeight,
     0
   );
+  glViewport(mXPos, mYPos, mWindowWidth, mWindowHeight);
   mWindowIsFullScreen = false;
 }
 
@@ -177,6 +196,18 @@ bool AADisplay::getIsWindowFullScreen()
 GLFWwindow* AADisplay::getWindow()
 {
   return mWindow;
+}
+
+void AADisplay::toggleFullScreen()
+{
+  if (mWindowIsFullScreen)
+  {
+    setFullscreenToOff();
+  }
+  else
+  {
+    setFullscreenToOn();
+  }
 }
 
 void AADisplay::initGLFW()
