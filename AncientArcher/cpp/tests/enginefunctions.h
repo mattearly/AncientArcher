@@ -13,8 +13,8 @@ void  testStressEngineFunctions()
   AADisplay::getInstance()->setWindowTitle("Test Engine Game Objects - Press [ENTER] To Continue");  // test changing window title
   AADisplay::getInstance()->setWindowClearColor(glm::vec3(.5));        // test changing window clear color
 
-  AAEngine engine;                                                             //'
-  
+  AAEngine engine;
+
   AAViewport::getInstance()->setToPerspective();
   AADisplay::getInstance()->setCursorToDisabled();
 
@@ -154,8 +154,7 @@ void  testStressEngineFunctions()
   };
   engine.addToMouseHandling(customMouseInput);
 
-  int engine_ret = engine.run();
-  switch (engine_ret)
+  switch (engine.run())
   {
   case -1:
     std::cout << "Keys not set.\n";

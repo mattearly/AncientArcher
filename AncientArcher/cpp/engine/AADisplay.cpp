@@ -50,17 +50,13 @@ AADisplay::~AADisplay()
 
 void AADisplay::reshapeWindowHandler(GLFWwindow* window, int width, int height)
 {
-  glViewport(mXPos, mYPos, width, height);
   mWindowWidth = width;
   mWindowHeight = height;
-  gWindowRatioChanged = true;
-  AAViewport::getInstance()->mShader->use();
-  AAViewport::getInstance()->mShader->setMat4("projection", AAViewport::getInstance()->getProjectionMatrix());
+  glViewport(mXPos, mYPos, mWindowWidth, mWindowHeight);
 }
 
 void AADisplay::mouseHandler(GLFWwindow* window, float xpos, float ypos)
 {
-  //std::cout << "mouse movement detected in mouseHandler\n";
   AAControls::getInstance()->mouseMovement(xpos, ypos);
 }
 
@@ -104,7 +100,6 @@ void AADisplay::setWindowSize(int width, int height, int xpos, int ypos)
     mWindowHeight, 
     0
   );
-  gWindowRatioChanged = true;
   mWindowIsFullScreen = false;
 }
 
@@ -122,7 +117,6 @@ void AADisplay::setFullscreenToOn()
   mWindowWidth = 1920;
   mWindowHeight = 1080;
   glfwSetWindowMonitor(mWindow, glfwGetPrimaryMonitor(), 0, 0, mWindowWidth, mWindowHeight, 0);
-  gWindowRatioChanged = true;
   mWindowIsFullScreen = true;
 }
 
@@ -141,13 +135,12 @@ void AADisplay::setFullscreenToOff()
     mWindowHeight,
     0
   );
-  gWindowRatioChanged = true;
   mWindowIsFullScreen = false;
 }
 
 void AADisplay::clearBackBuffer() const
 {
-  glClearColor(mWindowClearColor.x, mWindowClearColor.y, mWindowClearColor.z, 0.0f);  // red
+  glClearColor(mWindowClearColor.x, mWindowClearColor.y, mWindowClearColor.z, 0.0f);
   glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 }
 

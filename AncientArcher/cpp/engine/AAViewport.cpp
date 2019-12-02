@@ -22,11 +22,23 @@ void AAViewport::updateCameraVectors()
   mUp = glm::normalize(glm::cross(mRight, mFront));
 }
 
+void AAViewport::updateViewMatrix()
+{
+  mShader->use();
+  mShader->setMat4("view", getViewMatrix());
+}
+
 void AAViewport::setToPerspective()
 {
-  glm::mat4 projection = glm::perspective(glm::radians(mFieldOfView), (float)AADisplay::getInstance()->getScreenWidth() / (float)AADisplay::getInstance()->getScreenHeight(), 0.01f, mRenderDistance);
+  glm::mat4 projection = glm::perspective(
+    glm::radians(mFieldOfView), 
+    (float)AADisplay::getInstance()->getScreenWidth() / (float)AADisplay::getInstance()->getScreenHeight(), 
+    0.01f, 
+    mRenderDistance
+  );
   mShader->use();
   mShader->setMat4("projection", projection);
+  updateViewMatrix();
 }
 
 void AAViewport::setCurrentPosition(glm::vec3 pos)

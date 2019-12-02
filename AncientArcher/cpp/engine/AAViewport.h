@@ -31,6 +31,8 @@ private:
 
   void updateCameraVectors();
 
+  void updateViewMatrix();
+
   glm::vec3 mPosition = glm::vec3(0);
   float mFieldOfView = 60.f;
   float mYaw = 0.f;

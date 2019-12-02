@@ -31,7 +31,6 @@ public:
   void clearBackBuffer() const;
   void swapWindowBuffers() const;
 
-  bool gWindowRatioChanged = false;
   int getScreenWidth();
   int getScreenHeight();
   bool getIsWindowFullScreen();
