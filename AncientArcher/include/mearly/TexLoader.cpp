@@ -144,7 +144,7 @@ unsigned int TexLoader::textureFromFile(const char* path, const std::string& dir
   glGenTextures(1, &textureID);
 
   int width, height, nrComponents;
-  unsigned char* data = stbi_load(filename.c_str(), &width, &height, &nrComponents, 0);
+  unsigned char* data = stbi_load(path, &width, &height, &nrComponents, 0);
   if (data)
   {
     GLenum format{};
