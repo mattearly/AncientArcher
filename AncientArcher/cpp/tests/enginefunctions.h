@@ -7,7 +7,7 @@
 
 void  testStressEngineFunctions()
 {
-  AADisplay::getInstance()->setWindowTitle("Stress Functions - Press [ENTER] To Quit");
+  AADisplay::getInstance()->setWindowTitle("Stress Functions - Press [ESC] To Quit");
   AADisplay::getInstance()->setWindowClearColor(glm::vec3(.05, .5, .3));
 
   AAEngine engine;
@@ -21,9 +21,15 @@ void  testStressEngineFunctions()
   AAViewport::getInstance()->setToPerspective();
   AADisplay::getInstance()->setCursorToDisabled();
 
-  //std::string model = "..\\AncientArcher\\localdata\\6ColorSquare.obj";
-  std::string model_sixColorSquare = "C:\\Users\\matt\\Dropbox_me298414\\Dropbox\\My3DModels\\6ColorSquare.obj";
-  static AAGameObject gameObj = AAOGLGraphics::getInstance()->loadGameObjectWithAssimp(model_sixColorSquare);
+  std::string model = "..\\AncientArcher\\localdata\\6ColorSquare.obj";
+  std::string model2 = "..\\AncientArcher\\localdata\\qBertSquare.obj";
+  std::string model3 = "..\\AncientArcher\\localdata\\cyl.obj";
+  std::string model4 = "..\\AncientArcher\\localdata\\hello.obj";
+  //std::string model_sixColorSquare = "C:\\Users\\matt\\Dropbox_me298414\\Dropbox\\My3DModels\\6ColorSquare.obj";
+  static AAGameObject gameObj = AAOGLGraphics::getInstance()->loadGameObjectWithAssimp(model);
+  static AAGameObject gameObj2 = AAOGLGraphics::getInstance()->loadGameObjectWithAssimp(model2);
+  static AAGameObject gameObj3 = AAOGLGraphics::getInstance()->loadGameObjectWithAssimp(model3);
+  static AAGameObject gameObj4 = AAOGLGraphics::getInstance()->loadGameObjectWithAssimp(model4);
   static const float FlyIncrement = 0.4f;
   static float flySpeed = 5.f;
   static float prevFlySpeed = 0.f;
@@ -44,7 +50,7 @@ void  testStressEngineFunctions()
   // lambda funcs for the engine
   auto customKeyInput = [](std::shared_ptr<AAKeyInput>& keys)
   {
-    if (keys->enter)
+    if (keys->esc)
     {
       glfwSetWindowShouldClose(AADisplay::getInstance()->getWindow(), true);
     }
@@ -137,11 +143,17 @@ void  testStressEngineFunctions()
     AAViewport::getInstance()->shiftYawAndPith(mouse->xOffset, mouse->yOffset);
   };
   auto moveSquare = [](float dt) {
-    gameObj.translate(glm::vec3(sin(dt), sin(dt), sin(dt)));
+    gameObj.translate(glm::vec3(sin(dt), 0, 0));
+    gameObj2.translate(glm::vec3(-sin(dt), 0, 0));
+    gameObj3.translate(glm::vec3(0, 0, -sin(dt)));
+    gameObj4.translate(glm::vec3(0, 0, sin(dt)));
   };
   auto drawsquare = []()
   {
     gameObj.draw();
+    gameObj2.draw();
+    gameObj3.draw();
+    gameObj4.draw();
   };
 
   // add functions to parts of engine loops
