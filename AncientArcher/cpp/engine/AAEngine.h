@@ -12,6 +12,7 @@ public:
   ~AAEngine();
 
   int run();
+  void shutdown();
 
   void setKeyStruct(std::shared_ptr<AAKeyInput>& keys);
   void setMouseStruct(std::shared_ptr<AAMouseInput>& mouse);

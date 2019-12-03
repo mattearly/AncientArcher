@@ -46,6 +46,11 @@ int AAEngine::run()
   return 0;
 }
 
+void AAEngine::shutdown()
+{
+  AADisplay::getInstance()->closeWindow();
+}
+
 void AAEngine::setKeyStruct(std::shared_ptr<AAKeyInput>& keys)
 {
   mKeys = keys;
