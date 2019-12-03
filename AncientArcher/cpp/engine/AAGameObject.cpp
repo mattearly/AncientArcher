@@ -73,6 +73,11 @@ void AAGameObject::translate(glm::vec3 amt)
   mModelMatrix = glm::translate(mModelMatrix, amt);
 }
 
+void AAGameObject::rotate(float angle, glm::vec3 amt)
+{
+  mModelMatrix *= glm::rotate(angle, amt);
+}
+
 MeshDrawInfo::MeshDrawInfo(unsigned int a, unsigned int b, unsigned int e, std::vector<TextureInfo> t, std::vector<unsigned int> el)
   : vao(a), vbo(b), ebo(e), textures(t), elements(el)
 {

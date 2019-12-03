@@ -27,7 +27,8 @@ public:
   AAGameObject(std::vector<MeshDrawInfo> meshes);
   void draw();
   void translate(glm::vec3 amt);
-
+  void rotate(float angle, glm::vec3 axis);
+  
 private:
 
   std::vector<MeshDrawInfo> mMeshes;
