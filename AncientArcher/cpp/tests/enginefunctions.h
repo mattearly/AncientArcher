@@ -10,7 +10,7 @@ void  testStressEngineFunctions()
   AADisplay::getInstance()->setWindowTitle("Stress Functions - Press [ESC] To Quit");
   AADisplay::getInstance()->setWindowClearColor(glm::vec3(.05, .5, .3));
 
-  AAEngine engine;
+  static AAEngine engine;
   std::shared_ptr<AAKeyInput> keys = std::make_shared<AAKeyInput>();           // keyinput set for engine to update
   engine.setKeyStruct(keys);                                                   // set keys to process keys/mouse    
   std::shared_ptr<AAMouseInput> mouse = std::make_shared<AAMouseInput>();      // mouseinput for the display
@@ -21,15 +21,21 @@ void  testStressEngineFunctions()
   AAViewport::getInstance()->setToPerspective();
   AADisplay::getInstance()->setCursorToDisabled();
 
-  std::string model = "..\\AncientArcher\\localdata\\6ColorSquare.obj";
-  std::string model2 = "..\\AncientArcher\\localdata\\qBertSquare.obj";
-  std::string model3 = "..\\AncientArcher\\localdata\\cyl.obj";
-  std::string model4 = "..\\AncientArcher\\localdata\\hello.obj";
-  //std::string model_sixColorSquare = "C:\\Users\\matt\\Dropbox_me298414\\Dropbox\\My3DModels\\6ColorSquare.obj";
+  //std::string model = "..\\AncientArcher\\localdata\\6ColorSquare.obj";
+  //std::string model2 = "..\\AncientArcher\\localdata\\qBertSquare.obj";
+  //std::string model3 = "..\\AncientArcher\\localdata\\cyl.obj";
+  //std::string model4 = "..\\AncientArcher\\localdata\\hello.obj";
+
+  std::string model = "C:\\Users\\matt\\Dropbox_me298414\\Dropbox\\My3DModels\\6ColorSquare.obj";
+  std::string model2 = "C:\\Users\\matt\\Dropbox_me298414\\Dropbox\\My3DModels\\robot_thing.obj";
+  std::string model3 = "C:\\Users\\matt\\Dropbox_me298414\\Dropbox\\My3DModels\\HeatSink.obj";
+  std::string model4 = "C:\\Users\\matt\\Dropbox_me298414\\Dropbox\\My3DModels\\metaball.obj";
+
   static AAGameObject gameObj = AAOGLGraphics::getInstance()->loadGameObjectWithAssimp(model);
   static AAGameObject gameObj2 = AAOGLGraphics::getInstance()->loadGameObjectWithAssimp(model2);
   static AAGameObject gameObj3 = AAOGLGraphics::getInstance()->loadGameObjectWithAssimp(model3);
   static AAGameObject gameObj4 = AAOGLGraphics::getInstance()->loadGameObjectWithAssimp(model4);
+
   static const float FlyIncrement = 0.4f;
   static float flySpeed = 5.f;
   static float prevFlySpeed = 0.f;
@@ -48,11 +54,15 @@ void  testStressEngineFunctions()
   };
 
   // lambda funcs for the engine
+  auto beginFunc = []() {
+    AAViewport::getInstance()->setCurrentPosition(glm::vec3(5));
+  };
   auto customKeyInput = [](std::shared_ptr<AAKeyInput>& keys)
   {
     if (keys->esc)
     {
-      glfwSetWindowShouldClose(AADisplay::getInstance()->getWindow(), true);
+      //glfwSetWindowShouldClose(AADisplay::getInstance()->getWindow(), true);
+      engine.shutdown();
     }
 
     // this is a debug cam mover with no colliding - called every frame with deltaTime
@@ -142,13 +152,17 @@ void  testStressEngineFunctions()
   {
     AAViewport::getInstance()->shiftYawAndPith(mouse->xOffset, mouse->yOffset);
   };
-  auto moveSquare = [](float dt) {
-    gameObj.translate(glm::vec3(sin(dt), 0, 0));
-    gameObj2.translate(glm::vec3(-sin(dt), 0, 0));
-    gameObj3.translate(glm::vec3(0, 0, -sin(dt)));
-    gameObj4.translate(glm::vec3(0, 0, sin(dt)));
+  auto moveObjects = [](float dt)
+  {
+    static float totalTime = 0;
+    totalTime += dt;
+    gameObj.translate(glm::vec3(dt * .5, 0, 0));
+    gameObj2.translate(glm::vec3(-sin(totalTime), 0, 0));
+    //gameObj3.translate(glm::vec3(0, 0, 0));
+    gameObj3.rotate(dt * .5, glm::vec3(0, 1, 0));
+    gameObj4.translate(glm::vec3(0, 0, sin(totalTime)));
   };
-  auto drawsquare = []()
+  auto drawObjects = []()
   {
     gameObj.draw();
     gameObj2.draw();
@@ -157,14 +171,13 @@ void  testStressEngineFunctions()
   };
 
   // add functions to parts of engine loops
-  engine.addToDeltaUpdate(moveSquare);
-  //engine.addToOnBegin(beginfunc);
-  //engine.addToUpdate(updatefunc);
+  engine.addToOnBegin(beginFunc);
+  engine.addToDeltaUpdate(moveObjects);
+  engine.addToOnRender(drawObjects);
   engine.addToKeyHandling(customKeyInput);
   engine.addToScrollHandling(customScrollInput);
   engine.addToMouseHandling(customMouseInput);
-  engine.addToOnRender(drawsquare);
-
+  //engine.addToUpdate(updatefunc);
 
   switch (engine.run())
   {
