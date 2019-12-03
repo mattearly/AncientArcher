@@ -11,9 +11,6 @@ public:
 
   static AADisplay* getInstance();
 
-  void keepWindowOpen(); 
-  void closeWindow();
-
   AADisplay();
   ~AADisplay();
 
@@ -31,9 +28,6 @@ public:
   void setFullscreenToOn();
   void setFullscreenToOff();
 
-  void clearBackBuffer() const;
-  void swapWindowBuffers() const;
-
   int getScreenWidth();
   int getScreenHeight();
   bool getIsWindowFullScreen();
@@ -46,14 +40,22 @@ private:
 
   void toggleFullScreen();
 
+  void clearBackBuffer() const;
+  void swapWindowBuffers() const;
+
+  void keepWindowOpen();
+  void closeWindow();
+
   bool mWindowIsFullScreen = false;
   int mWindowWidth = 0, mWindowHeight = 0;
   int mXPos = 0, mYPos = 0;
   GLFWmonitor* mMonitor = nullptr;
   GLFWwindow* mWindow = nullptr;
+
   //int mLaunchedMainScreenWindowWidth = 0;
   //int mLaunchedMainScreenWindowHeight = 0;
   //int mWindowFrameSizeLeft = 0, mWindowFrameSizeTop = 0, mWindowFrameSizeRight = 0, mWindowFrameSizeBottom = 0;
+
   glm::vec3 mWindowClearColor = glm::vec3(0.35f, 0.15f, 0.35f);
   void initGLFW();
   void initReshapeWindowHandler();
