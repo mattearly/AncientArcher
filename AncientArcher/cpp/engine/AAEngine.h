@@ -49,4 +49,6 @@ private:
   bool checkIfMouseSet();
   bool checkIfScrollSet();
 
+  float mEngineRunTimer = 0.f;
+
 };

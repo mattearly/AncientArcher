@@ -1,5 +1,4 @@
 #include "AAEngine.h"
-#include <iostream>
 
 AAEngine::~AAEngine()
 {
@@ -36,6 +35,8 @@ int AAEngine::run()
     currentFrame = (float)glfwGetTime();
     deltaTime = currentFrame - lastFrame;
     lastFrame = currentFrame;
+
+    mEngineRunTimer += deltaTime;
 
     update(deltaTime);
 
@@ -158,9 +159,16 @@ void AAEngine::update()
     u();
   }
 
-  if ((mKeys->leftAlt || mKeys->rightAlt) && mKeys->enter)
+  static float checkStamp = 0.f;
+  float passedTime = mEngineRunTimer - checkStamp;
+  static float accumulatedTime = 0.f;
+  accumulatedTime += passedTime;
+
+  if (accumulatedTime > 1.f && (mKeys->leftAlt || mKeys->rightAlt) && mKeys->enter)
   {
     AADisplay::getInstance()->toggleFullScreen();
+    checkStamp = mEngineRunTimer;
+    accumulatedTime = 0.f;
   }
 }
 
