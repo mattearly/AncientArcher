@@ -26,6 +26,8 @@ int AAEngine::run()
     return -3;
   }
 
+  AADisplay::getInstance()->setFullscreenToOn();
+
   begin();
 
   AADisplay::getInstance()->keepWindowOpen();
