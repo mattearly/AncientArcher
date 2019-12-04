@@ -59,7 +59,7 @@ void AAGameObject::draw()
     }
 
     glBindVertexArray(m.vao);
-    glDrawElements(GL_TRIANGLES, m.elements.size(), GL_UNSIGNED_INT, 0);
+    glDrawElements(GL_TRIANGLES, (unsigned int)m.elements.size(), GL_UNSIGNED_INT, 0);
     glBindVertexArray(0);
   }
 
