@@ -30,7 +30,7 @@ int main()
   //testAssimpBaseLoading(model_random1);
   //testAssimpBaseLoading("This/is/a/test/");
 
-  AADisplay::getInstance()->setWindowSize(800, 600, 1920 / 2 - 400, 1080 / 2 - 300);                // test changing window size (and position)
+  //AADisplay::getInstance()->setWindowSize(800, 600, 1920 / 2 - 400, 1080 / 2 - 300);                // test changing window size (and position)
 
   //testLaunchingDisplay();
   //delay(120);
