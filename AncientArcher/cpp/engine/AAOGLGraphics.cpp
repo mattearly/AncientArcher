@@ -1,6 +1,7 @@
 #include "AAOGLGraphics.h"
 #include <assimp/Importer.hpp>
 #include <assimp/scene.h>
+#include <assimp/postprocess.h>
 #include <iostream>
 #include <glm/glm.hpp>
 #include <glm/gtc/quaternion.hpp>
@@ -63,10 +64,17 @@ AAOGLGraphics* AAOGLGraphics::getInstance()
   return graphics;
 }
 
-AAGameObject AAOGLGraphics::loadGameObjectWithAssimp(std::string path)
+AAGameObject AAOGLGraphics::loadGameObjectWithAssimp(std::string path, bool pp_triangulate)
 {
   Assimp::Importer importer;
-  const aiScene* scene = importer.ReadFile(path, 0);
+  //const aiScene* scene = importer.ReadFile(path, 0);
+  int post_processsing_flags = 0;
+  post_processsing_flags |= aiProcess_JoinIdenticalVertices;
+  if (pp_triangulate)
+  {
+    post_processsing_flags |= aiProcess_Triangulate;
+  }
+  const aiScene* scene = importer.ReadFile(path, post_processsing_flags);
   meshes.clear();
   if (!scene || scene->mFlags & AI_SCENE_FLAGS_INCOMPLETE || !scene->mRootNode)
   {
@@ -97,7 +105,7 @@ void AAOGLGraphics::processNode(aiNode* node, const aiScene* scene)
 MeshDrawInfo AAOGLGraphics::processMesh(aiMesh* mesh, const aiScene* scene)
 {
   std::vector<Vertex> loadedVerts;
-  for (int i = 0; i < mesh->mNumVertices; ++i)
+  for (unsigned int i = 0; i < mesh->mNumVertices; ++i)
   {
     glm::vec3 tmpPos = aiVec3_to_glmVec3(mesh->mVertices[i]);
     glm::vec3 tmpNorm = aiVec3_to_glmVec3(mesh->mNormals[i]);
@@ -110,17 +118,16 @@ MeshDrawInfo AAOGLGraphics::processMesh(aiMesh* mesh, const aiScene* scene)
   }
 
   std::vector<unsigned int> loadedElements;
-  for (int i = 0; i < mesh->mNumFaces; ++i)
+  for (unsigned int i = 0; i < mesh->mNumFaces; ++i)
   {
     aiFace face = mesh->mFaces[i];
-    for (int j = 0; j < face.mNumIndices; ++j)
+    for (unsigned int j = 0; j < face.mNumIndices; ++j)
     {
       loadedElements.push_back(face.mIndices[j]);
     }
   }
 
-  std::vector<TextureInfo> loadedTextures
-    ;
+  std::vector<TextureInfo> loadedTextures;
   aiMaterial* material = scene->mMaterials[mesh->mMaterialIndex];
   std::vector<TextureInfo> diffuseMaps = loadMaterialTextures(material, aiTextureType_DIFFUSE, "diffuse");
   loadedTextures.insert(loadedTextures.end(), diffuseMaps.begin(), diffuseMaps.end());
@@ -160,13 +167,13 @@ MeshDrawInfo AAOGLGraphics::processMesh(aiMesh* mesh, const aiScene* scene)
 std::vector<TextureInfo> AAOGLGraphics::loadMaterialTextures(aiMaterial* mat, aiTextureType type, std::string typeName)
 {
   std::vector<TextureInfo> outTexInfo;
-  for (int i = 0; i < mat->GetTextureCount(type); ++i)
+  for (unsigned int i = 0; i < mat->GetTextureCount(type); ++i)
   {
     aiString tmpstr;
     mat->GetTexture(type, i, &tmpstr);
     bool alreadyLoaded = false;
 
-    for (int j = 0; j < mTexturesLoaded.size(); ++j)
+    for (unsigned int j = 0; j < mTexturesLoaded.size(); ++j)
     {
       for (auto p : mTexturesLoaded)
       {

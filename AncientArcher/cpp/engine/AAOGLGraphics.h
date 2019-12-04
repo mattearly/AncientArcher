@@ -20,7 +20,7 @@ public:
 
   static AAOGLGraphics* getInstance();
 
-  AAGameObject loadGameObjectWithAssimp(std::string path);
+  AAGameObject loadGameObjectWithAssimp(std::string path, bool pp_triangulate = false);
 
 private:
 
