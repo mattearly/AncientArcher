@@ -18,7 +18,7 @@ void  testStressEngineFunctions()
   std::shared_ptr<AAScrollInput> scroll = std::make_shared<AAScrollInput>();   // 
   engine.setScrollStruct(scroll);
 
-  AAViewport::getInstance()->setToPerspective();
+  //AAViewport::getInstance()->setToPerspective();
   AADisplay::getInstance()->setCursorToDisabled();
 
   //std::string model = "..\\AncientArcher\\localdata\\6ColorSquare.obj";
@@ -30,11 +30,13 @@ void  testStressEngineFunctions()
   std::string model2 = "C:\\Users\\matt\\Dropbox_me298414\\Dropbox\\My3DModels\\robot_thing.obj";
   std::string model3 = "C:\\Users\\matt\\Dropbox_me298414\\Dropbox\\My3DModels\\HeatSink.obj";
   std::string model4 = "C:\\Users\\matt\\Dropbox_me298414\\Dropbox\\My3DModels\\metaball.obj";
+  std::string model5 = "C:\\Users\\matt\\Dropbox_me298414\\Dropbox\\My3DModels\\susan_not_triangulated.obj";
 
   static AAGameObject gameObj = AAOGLGraphics::getInstance()->loadGameObjectWithAssimp(model);
   static AAGameObject gameObj2 = AAOGLGraphics::getInstance()->loadGameObjectWithAssimp(model2);
   static AAGameObject gameObj3 = AAOGLGraphics::getInstance()->loadGameObjectWithAssimp(model3);
   static AAGameObject gameObj4 = AAOGLGraphics::getInstance()->loadGameObjectWithAssimp(model4);
+  static AAGameObject gameObj5 = AAOGLGraphics::getInstance()->loadGameObjectWithAssimp(model5, true);
 
   static const float FlyIncrement = 0.4f;
   static float flySpeed = 5.f;
@@ -55,7 +57,11 @@ void  testStressEngineFunctions()
 
   // lambda funcs for the engine
   auto beginFunc = []() {
-    AAViewport::getInstance()->setCurrentPosition(glm::vec3(5));
+    AAViewport::getInstance()->setCurrentPosition(glm::vec3(0,5,10));
+    AAViewport::getInstance()->setCurrentPitch(-20.f);
+    AAViewport::getInstance()->setCurrentYaw(270.f);
+    gameObj5.translate(glm::vec3(5,5,-5));
+
   };
   auto customKeyInput = [](std::shared_ptr<AAKeyInput>& keys)
   {
@@ -158,9 +164,10 @@ void  testStressEngineFunctions()
     totalTime += dt;
     gameObj.translate(glm::vec3(dt * .5, 0, 0));
     gameObj2.translate(glm::vec3(-sin(totalTime), 0, 0));
-    //gameObj3.translate(glm::vec3(0, 0, 0));
+    gameObj3.translate(glm::vec3(0, 0, 0));
     gameObj3.rotate(dt * .5, glm::vec3(0, 1, 0));
     gameObj4.translate(glm::vec3(0, 0, sin(totalTime)));
+    gameObj5.rotate(dt * .3f, glm::vec3(0, 1, 0));
   };
   auto drawObjects = []()
   {
@@ -168,6 +175,7 @@ void  testStressEngineFunctions()
     gameObj2.draw();
     gameObj3.draw();
     gameObj4.draw();
+    gameObj5.draw();
   };
 
   // add functions to parts of engine loops
