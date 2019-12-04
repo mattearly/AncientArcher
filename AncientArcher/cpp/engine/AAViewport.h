@@ -10,8 +10,10 @@ public:
   const glm::vec3 WORLD_UP = glm::vec3(0, 1, 0);
 
   void setToPerspective();
-
+  void setRenderDistance(float distance);
   void setCurrentPosition(glm::vec3 pos);
+  void setCurrentPitch(float pitch);
+  void setCurrentYaw(float yaw);
   void shiftCurrentPosition(glm::vec3 offset);
   void shiftYawAndPith(float yawOffset, float pitchOffset);
 
