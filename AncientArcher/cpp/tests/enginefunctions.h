@@ -20,6 +20,7 @@ void  testStressEngineFunctions()
 
   //AAViewport::getInstance()->setToPerspective();
   AADisplay::getInstance()->setCursorToDisabled();
+  AAViewport::getInstance()->setRenderDistance(500.f);
 
   //std::string model = "..\\AncientArcher\\localdata\\6ColorSquare.obj";
   //std::string model2 = "..\\AncientArcher\\localdata\\qBertSquare.obj";
@@ -165,7 +166,7 @@ void  testStressEngineFunctions()
     gameObj.translate(glm::vec3(dt * .5, 0, 0));
     gameObj2.translate(glm::vec3(-sin(totalTime), 0, 0));
     gameObj3.translate(glm::vec3(0, 0, 0));
-    gameObj3.rotate(dt * .5, glm::vec3(0, 1, 0));
+    gameObj3.rotate(dt * .5f, glm::vec3(0, 1, 0));
     gameObj4.translate(glm::vec3(0, 0, sin(totalTime)));
     gameObj5.rotate(dt * .3f, glm::vec3(0, 1, 0));
   };
