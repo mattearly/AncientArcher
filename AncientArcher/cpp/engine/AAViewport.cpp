@@ -24,8 +24,8 @@ void AAViewport::updateCameraVectors()
 
 void AAViewport::updateViewMatrix()
 {
-  mShader->use();
-  mShader->setMat4("view", getViewMatrix());
+  mTexShader->use();
+  mTexShader->setMat4("view", getViewMatrix());
 }
 
 void AAViewport::setToPerspective()
@@ -46,9 +46,9 @@ void AAViewport::setToPerspective()
     mRenderDistance
   );
 
-  mShader->use();
+  mTexShader->use();
 
-  mShader->setMat4("projection", projection);
+  mTexShader->setMat4("projection", projection);
 
   updateViewMatrix();
 }

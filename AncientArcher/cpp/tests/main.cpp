@@ -7,6 +7,7 @@
 #include <thread>
 #include "enginefunctions.h"
 #include "enginedisplay.h"
+#include "workingdir.h"
 
 void delay(int time)
 {
@@ -20,8 +21,12 @@ void holdAtCommandPrompt()
   a = std::cin.get();
 }
 
+
+
 int main()
 {
+
+  std::cout << "local working dir: " << getexepath() << '\n';
   // Test 1 - Pathing to and getting header info to a Model Using Assimp
   //std::string model_sixColorSquare = "C:\\Users\\matt\\Dropbox_me298414\\Dropbox\\My3DModels\\6ColorSquare.obj";
   //std::string model_random1 = "C:\\Users\\matt\\Dropbox_me298414\\Dropbox\\My3DModels\\random1.obj";

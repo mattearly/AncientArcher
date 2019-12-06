@@ -5,14 +5,19 @@
 #include <iostream>
 #include <glm\gtx\transform.hpp>
 
+glm::mat4* AAGameObject::getModelMatrix()
+{
+  return &mModelMatrix;
+}
+
 AAGameObject::AAGameObject(std::vector<MeshDrawInfo> meshes)
   : mMeshes(meshes) {}
 
 void AAGameObject::draw()
 {
-  AAViewport::getInstance()->mShader->use();
-  AAViewport::getInstance()->mShader->setMat4("view", AAViewport::getInstance()->getViewMatrix());
-  AAViewport::getInstance()->mShader->setMat4("model", mModelMatrix);
+  AAViewport::getInstance()->mTexShader->use();
+  AAViewport::getInstance()->mTexShader->setMat4("view", AAViewport::getInstance()->getViewMatrix());
+  AAViewport::getInstance()->mTexShader->setMat4("model", mModelMatrix);
 
   glEnable(GL_DEPTH_TEST);
 
@@ -52,7 +57,7 @@ void AAGameObject::draw()
         std::cout << "error setting tex on mesh render type\n";
       }
 
-      glUniform1i(glGetUniformLocation(AAViewport::getInstance()->mShader->ID, ("material." + texType + texNumber).c_str()), i);
+      glUniform1i(glGetUniformLocation(AAViewport::getInstance()->mTexShader->ID, ("material." + texType + texNumber).c_str()), i);
 
       glBindTexture(GL_TEXTURE_2D, m.textures[i].id);
 

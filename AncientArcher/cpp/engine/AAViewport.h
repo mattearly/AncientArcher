@@ -45,9 +45,15 @@ private:
 
   float mRenderDistance = 100.f;
 
-  std::shared_ptr<Shader> mShader = std::make_shared<Shader>(
+  std::shared_ptr<Shader> mTexShader = std::make_shared<Shader>(
     "../AncientArcher/shader/VertexShader.glsl",
-    "../AncientArcher/shader/FragmentShader.glsl"
+    "../AncientArcher/shader/TexFragShader.glsl"
     );
+
+  std::shared_ptr<Shader> mCellShader = std::make_shared<Shader>(
+    "../AncientArcher/shader/VertexShader.glsl",
+    "../AncientArcher/shader/CellFragShader.glsl"
+    );
+
 };
 

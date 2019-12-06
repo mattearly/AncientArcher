@@ -32,12 +32,16 @@ void  testStressEngineFunctions()
   std::string model3 = "C:\\Users\\matt\\Dropbox_me298414\\Dropbox\\My3DModels\\HeatSink.obj";
   std::string model4 = "C:\\Users\\matt\\Dropbox_me298414\\Dropbox\\My3DModels\\metaball.obj";
   std::string model5 = "C:\\Users\\matt\\Dropbox_me298414\\Dropbox\\My3DModels\\susan_not_triangulated.obj";
+  std::string model6 = "C:/Users/matt/Dropbox_me298414/Dropbox/My3DModels/cone_textured_not_triangulated.obj";
+  std::string model7 = "C:/Users/matt/Dropbox_me298414/Dropbox/My3DModels/water_plane_not_triangulated.obj";
 
   static AAGameObject gameObj = AAOGLGraphics::getInstance()->loadGameObjectWithAssimp(model);
   static AAGameObject gameObj2 = AAOGLGraphics::getInstance()->loadGameObjectWithAssimp(model2);
   static AAGameObject gameObj3 = AAOGLGraphics::getInstance()->loadGameObjectWithAssimp(model3);
   static AAGameObject gameObj4 = AAOGLGraphics::getInstance()->loadGameObjectWithAssimp(model4);
   static AAGameObject gameObj5 = AAOGLGraphics::getInstance()->loadGameObjectWithAssimp(model5, true);
+  static AAGameObject gameObj6 = AAOGLGraphics::getInstance()->loadGameObjectWithAssimp(model6, true);
+  static AAGameObject gameObj7 = AAOGLGraphics::getInstance()->loadGameObjectWithAssimp(model7, true);
 
   static const float FlyIncrement = 0.4f;
   static float flySpeed = 5.f;
@@ -62,6 +66,8 @@ void  testStressEngineFunctions()
     AAViewport::getInstance()->setCurrentPitch(-20.f);
     AAViewport::getInstance()->setCurrentYaw(270.f);
     gameObj5.translate(glm::vec3(5,5,-5));
+    gameObj6.translate(glm::vec3(-5,5,-5));
+    gameObj7.translate(glm::vec3(0,-10,0));
 
   };
   auto customKeyInput = [](std::shared_ptr<AAKeyInput>& keys)
@@ -169,6 +175,7 @@ void  testStressEngineFunctions()
     gameObj3.rotate(dt * .5f, glm::vec3(0, 1, 0));
     gameObj4.translate(glm::vec3(0, 0, sin(totalTime)));
     gameObj5.rotate(dt * .3f, glm::vec3(0, 1, 0));
+    gameObj6.rotate(dt * .6f, glm::vec3(0, 1, 0));
   };
   auto drawObjects = []()
   {
@@ -177,6 +184,8 @@ void  testStressEngineFunctions()
     gameObj3.draw();
     gameObj4.draw();
     gameObj5.draw();
+    gameObj6.draw();
+    gameObj7.draw();
   };
 
   // add functions to parts of engine loops
