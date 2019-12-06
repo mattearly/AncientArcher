@@ -24,6 +24,8 @@ class AAGameObject
 {
 public:
 
+  glm::mat4* getModelMatrix();
+
   AAGameObject(std::vector<MeshDrawInfo> meshes);
   void draw();
   void translate(glm::vec3 amt);
