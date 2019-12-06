@@ -24,15 +24,6 @@ AADisplay::AADisplay()
     exit(-1);
   }
 
-  if (!mWindowIsFullScreen)
-  {
-    setFullscreenToOff();
-  }
-  else
-  {
-    setFullscreenToOn();
-  }
-
   glfwMakeContextCurrent(mWindow);
 
   initReshapeWindowHandler();
@@ -43,7 +34,9 @@ AADisplay::AADisplay()
 
   if (!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress))  // init glad (for opengl context)
   {
-    //std::cout << "failed to init glad\n";
+    std::cout << "failed to init glad\n";
+    char tmp;
+    std::cin >> tmp;
     exit(-1);
   }
 
@@ -76,15 +69,7 @@ void AADisplay::setWindowTitle(const char* name)
 
 void AADisplay::setWindowSize(int width, int height, int xpos, int ypos)
 {
-  glfwSetWindowMonitor(
-    mWindow,
-    nullptr,
-    xpos,
-    ypos,
-    width,
-    height,
-    0
-  );
+  glfwSetWindowMonitor(mWindow, nullptr, xpos, ypos, width, height, 0);
   mWindowIsFullScreen = false;
 }
 
@@ -154,16 +139,18 @@ void AADisplay::setFullscreenToOff()
 {
   int x, y, w, h;
   glfwGetMonitorWorkarea(glfwGetPrimaryMonitor(), &x, &y, &w, &h);
+
   int frameSizeLeft, frameSizeTop, frameSizeRight, frameSizeBot;
   glfwGetWindowFrameSize(mWindow, &frameSizeLeft, &frameSizeTop, &frameSizeRight, &frameSizeBot);
 
-  //int xPos = x;
-  //int yPos = y;
-  //int winWidth = w - frameSizeLeft - frameSizeRight;
-  //int winHeight = h - frameSizeTop - frameSizeBot;
+  mXPos = x;
+  mYPos = y;
+  mWindowWidth = w;
+  mWindowHeight = h;
 
-  glfwSetWindowMonitor(mWindow, nullptr, x, y - frameSizeTop, w, h - frameSizeTop, 0);
-  //glfwMaximizeWindow(mWindow);
+  glfwSetWindowMonitor(mWindow, nullptr, mXPos, mYPos, mWindowWidth, mWindowHeight, 0);
+
+  glfwMaximizeWindow(mWindow);
 
   mWindowIsFullScreen = false;
 }
@@ -206,14 +193,14 @@ void AADisplay::initGLFW()
 
 void AADisplay::reshapeWindowHandler(GLFWwindow* window, int width, int height)
 {
-  //std::cout << "reshape window called: " << width << ", " << height << '\n';
+  std::cout << "reshape window called: " << width << ", " << height << '\n';
 
   mWindowWidth = width;
   mWindowHeight = height;
   glViewport(0, 0, mWindowWidth, mWindowHeight);
   AAViewport::getInstance()->setToPerspective();  // hack
 
-  //std::cout << "reshape window finished: " << mWindowWidth << ", " << mWindowHeight << '\n';
+  std::cout << "reshape window finished: " << mWindowWidth << ", " << mWindowHeight << '\n';
 
 }
 
