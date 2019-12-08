@@ -4,6 +4,7 @@
 #include "../engine/AAEngine.h"
 #include "../engine/AAViewport.h"
 #include <iostream>
+#include "modelPaths.h"
 
 void  testStressEngineFunctions()
 {
@@ -18,30 +19,17 @@ void  testStressEngineFunctions()
   std::shared_ptr<AAScrollInput> scroll = std::make_shared<AAScrollInput>();   // 
   engine.setScrollStruct(scroll);
 
-  //AAViewport::getInstance()->setToPerspective();
   AADisplay::getInstance()->setCursorToDisabled();
   AAViewport::getInstance()->setRenderDistance(500.f);
 
-  //std::string model = "..\\AncientArcher\\localdata\\6ColorSquare.obj";
-  //std::string model2 = "..\\AncientArcher\\localdata\\qBertSquare.obj";
-  //std::string model3 = "..\\AncientArcher\\localdata\\cyl.obj";
-  //std::string model4 = "..\\AncientArcher\\localdata\\hello.obj";
-
-  std::string model = "C:\\Users\\matt\\Dropbox_me298414\\Dropbox\\My3DModels\\6ColorSquare.obj";
-  std::string model2 = "C:\\Users\\matt\\Dropbox_me298414\\Dropbox\\My3DModels\\robot_thing.obj";
-  std::string model3 = "C:\\Users\\matt\\Dropbox_me298414\\Dropbox\\My3DModels\\HeatSink.obj";
-  std::string model4 = "C:\\Users\\matt\\Dropbox_me298414\\Dropbox\\My3DModels\\metaball.obj";
-  std::string model5 = "C:\\Users\\matt\\Dropbox_me298414\\Dropbox\\My3DModels\\susan_not_triangulated.obj";
-  std::string model6 = "C:/Users/matt/Dropbox_me298414/Dropbox/My3DModels/cone_textured_not_triangulated.obj";
-  std::string model7 = "C:/Users/matt/Dropbox_me298414/Dropbox/My3DModels/water_plane_not_triangulated.obj";
-
-  static AAGameObject gameObj = AAOGLGraphics::getInstance()->loadGameObjectWithAssimp(model, false, Shading::CELL);
-  static AAGameObject gameObj2 = AAOGLGraphics::getInstance()->loadGameObjectWithAssimp(model2, false, Shading::CELL);
-  static AAGameObject gameObj3 = AAOGLGraphics::getInstance()->loadGameObjectWithAssimp(model3, false, Shading::CELL);
-  static AAGameObject gameObj4 = AAOGLGraphics::getInstance()->loadGameObjectWithAssimp(model4, false, Shading::CELL);
-  static AAGameObject gameObj5 = AAOGLGraphics::getInstance()->loadGameObjectWithAssimp(model5, true, Shading::CELL);
-  static AAGameObject gameObj6 = AAOGLGraphics::getInstance()->loadGameObjectWithAssimp(model6, true, Shading::IMGTEX);
-  static AAGameObject gameObj7 = AAOGLGraphics::getInstance()->loadGameObjectWithAssimp(model7, true, Shading::IMGTEX);
+  static AAGameObject gameObj = AAOGLGraphics::getInstance()->loadGameObjectWithAssimp(test::model, false, Shading::CELL);
+  static AAGameObject gameObj2 = AAOGLGraphics::getInstance()->loadGameObjectWithAssimp(test::model2, false, Shading::CELL);
+  static AAGameObject gameObj3 = AAOGLGraphics::getInstance()->loadGameObjectWithAssimp(test::model3, false, Shading::CELL);
+  static AAGameObject gameObj4 = AAOGLGraphics::getInstance()->loadGameObjectWithAssimp(test::model4, false, Shading::CELL);
+  static AAGameObject gameObj5 = AAOGLGraphics::getInstance()->loadGameObjectWithAssimp(test::model5, true, Shading::CELL);
+  static AAGameObject gameObj6 = AAOGLGraphics::getInstance()->loadGameObjectWithAssimp(test::model6, true, Shading::IMGTEX);
+  static AAGameObject gameObj7 = AAOGLGraphics::getInstance()->loadGameObjectWithAssimp(test::model7, true, Shading::IMGTEX);
+  static AAGameObject gameObj8 = AAOGLGraphics::getInstance()->loadGameObjectWithAssimp(test::model8, true, Shading::IMGTEX);
 
   static const float FlyIncrement = 0.4f;
   static float flySpeed = 5.f;
@@ -49,7 +37,8 @@ void  testStressEngineFunctions()
 
   // funcs we can use in our lambdas
   static auto showLocation = []()
-  {      // debug show location
+  {
+    // debug show location
     std::cout << "Loc(x,z,y): ("
       << AAViewport::getInstance()->getPosition()->x << ","
       << AAViewport::getInstance()->getPosition()->z << ","
@@ -148,16 +137,14 @@ void  testStressEngineFunctions()
     if (flySpeed >= 10.f)
     {
       flySpeed = 10.f;
-
     }
     if (flySpeed <= 1.f)
     {
       flySpeed = 1.000001f;
     }
-
-    if (flySpeed != prevFlySpeed)  // show flySpeed in debug console if it changed since last frame.
+    if (flySpeed != prevFlySpeed)
     {
-      std::cout << "flySpeed: " << flySpeed << std::endl;
+      std::cout << "flySpeed: " << flySpeed << std::endl;    // show flySpeed in debug console if it changed since last frame.
       prevFlySpeed = flySpeed;
     }
   };
@@ -165,6 +152,7 @@ void  testStressEngineFunctions()
   {
     AAViewport::getInstance()->shiftYawAndPith(mouse->xOffset, mouse->yOffset);
   };
+  
   auto moveObjects = [](float dt)
   {
     static float totalTime = 0;
@@ -179,13 +167,14 @@ void  testStressEngineFunctions()
   };
   auto drawObjects = []()
   {
-    gameObj.draw();
-    gameObj2.draw();
-    gameObj3.draw();
-    gameObj4.draw();
-    gameObj5.draw();
-    gameObj6.draw();
-    gameObj7.draw();
+    //gameObj.draw();
+    //gameObj2.draw();
+    //gameObj3.draw();
+    //gameObj4.draw();
+    //gameObj5.draw();
+    //gameObj6.draw();
+    //gameObj7.draw();
+    gameObj8.draw();
   };
 
   // add functions to parts of engine loops

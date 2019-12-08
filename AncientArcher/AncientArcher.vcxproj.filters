@@ -92,5 +92,8 @@
     <ClInclude Include="cpp\tests\workingdir.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="cpp\tests\modelPaths.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

@@ -178,6 +178,7 @@
     <ClInclude Include="cpp\tests\engineloop.h" />
     <ClInclude Include="cpp\tests\enginepause.h" />
     <ClInclude Include="cpp\tests\model.h" />
+    <ClInclude Include="cpp\tests\modelPaths.h" />
     <ClInclude Include="cpp\tests\workingdir.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
