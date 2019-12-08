@@ -3,11 +3,14 @@
 #include <mearly\Shader.h>
 #include <memory>
 
+enum Shading { NONE, CELL, IMGTEX };
+
 struct TextureInfo
 {
   unsigned int id;
   std::string type;
   std::string path;
+  glm::vec3 color;
 };
 
 struct MeshDrawInfo
@@ -26,7 +29,7 @@ public:
 
   glm::mat4* getModelMatrix();
 
-  AAGameObject(std::vector<MeshDrawInfo> meshes);
+  AAGameObject(std::vector<MeshDrawInfo> meshes, Shading shading);
   void draw();
   void translate(glm::vec3 amt);
   void rotate(float angle, glm::vec3 axis);
@@ -35,4 +38,6 @@ private:
 
   std::vector<MeshDrawInfo> mMeshes;
   glm::mat4 mModelMatrix = glm::mat4(1);
+
+  Shading mModelShaderType = NONE;
 };

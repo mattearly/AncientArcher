@@ -10,14 +10,29 @@ glm::mat4* AAGameObject::getModelMatrix()
   return &mModelMatrix;
 }
 
-AAGameObject::AAGameObject(std::vector<MeshDrawInfo> meshes)
-  : mMeshes(meshes) {}
+AAGameObject::AAGameObject(std::vector<MeshDrawInfo> meshes, Shading shading)
+  : mMeshes(meshes), mModelShaderType(shading) {}
 
 void AAGameObject::draw()
 {
-  AAViewport::getInstance()->mTexShader->use();
-  AAViewport::getInstance()->mTexShader->setMat4("view", AAViewport::getInstance()->getViewMatrix());
-  AAViewport::getInstance()->mTexShader->setMat4("model", mModelMatrix);
+  switch (mModelShaderType)
+  {
+  case NONE:
+    break;
+  case CELL:
+    AAViewport::getInstance()->mCellShader->use();
+    AAViewport::getInstance()->mCellShader->setMat4("view", AAViewport::getInstance()->getViewMatrix());
+    AAViewport::getInstance()->mCellShader->setMat4("model", mModelMatrix);
+    break;
+  case IMGTEX:
+    AAViewport::getInstance()->mTexShader->use();
+    AAViewport::getInstance()->mTexShader->setMat4("view", AAViewport::getInstance()->getViewMatrix());
+    AAViewport::getInstance()->mTexShader->setMat4("model", mModelMatrix);
+    break;
+  default:
+    break;
+  }
+
 
   glEnable(GL_DEPTH_TEST);
 
@@ -28,6 +43,7 @@ void AAGameObject::draw()
 
   for (auto m : mMeshes)
   {
+
     for (unsigned int i = 0; i < m.textures.size(); ++i)
     {
 
@@ -52,6 +68,12 @@ void AAGameObject::draw()
       {
         texNumber = std::to_string(heightNumber++);
       }
+      else if (texType == "color")
+      {
+        std::cout << "setting cell shader color...\n";
+        AAViewport::getInstance()->mCellShader->setVec3("color", m.textures[i].color);
+        break;
+      }
       else
       {
         std::cout << "error setting tex on mesh render type\n";
@@ -62,6 +84,7 @@ void AAGameObject::draw()
       glBindTexture(GL_TEXTURE_2D, m.textures[i].id);
 
     }
+
 
     glBindVertexArray(m.vao);
     glDrawElements(GL_TRIANGLES, (unsigned int)m.elements.size(), GL_UNSIGNED_INT, 0);

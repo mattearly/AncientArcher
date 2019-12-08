@@ -35,13 +35,13 @@ void  testStressEngineFunctions()
   std::string model6 = "C:/Users/matt/Dropbox_me298414/Dropbox/My3DModels/cone_textured_not_triangulated.obj";
   std::string model7 = "C:/Users/matt/Dropbox_me298414/Dropbox/My3DModels/water_plane_not_triangulated.obj";
 
-  static AAGameObject gameObj = AAOGLGraphics::getInstance()->loadGameObjectWithAssimp(model);
-  static AAGameObject gameObj2 = AAOGLGraphics::getInstance()->loadGameObjectWithAssimp(model2);
-  static AAGameObject gameObj3 = AAOGLGraphics::getInstance()->loadGameObjectWithAssimp(model3);
-  static AAGameObject gameObj4 = AAOGLGraphics::getInstance()->loadGameObjectWithAssimp(model4);
-  static AAGameObject gameObj5 = AAOGLGraphics::getInstance()->loadGameObjectWithAssimp(model5, true);
-  static AAGameObject gameObj6 = AAOGLGraphics::getInstance()->loadGameObjectWithAssimp(model6, true);
-  static AAGameObject gameObj7 = AAOGLGraphics::getInstance()->loadGameObjectWithAssimp(model7, true);
+  static AAGameObject gameObj = AAOGLGraphics::getInstance()->loadGameObjectWithAssimp(model, false, Shading::CELL);
+  static AAGameObject gameObj2 = AAOGLGraphics::getInstance()->loadGameObjectWithAssimp(model2, false, Shading::CELL);
+  static AAGameObject gameObj3 = AAOGLGraphics::getInstance()->loadGameObjectWithAssimp(model3, false, Shading::CELL);
+  static AAGameObject gameObj4 = AAOGLGraphics::getInstance()->loadGameObjectWithAssimp(model4, false, Shading::CELL);
+  static AAGameObject gameObj5 = AAOGLGraphics::getInstance()->loadGameObjectWithAssimp(model5, true, Shading::CELL);
+  static AAGameObject gameObj6 = AAOGLGraphics::getInstance()->loadGameObjectWithAssimp(model6, true, Shading::IMGTEX);
+  static AAGameObject gameObj7 = AAOGLGraphics::getInstance()->loadGameObjectWithAssimp(model7, true, Shading::IMGTEX);
 
   static const float FlyIncrement = 0.4f;
   static float flySpeed = 5.f;

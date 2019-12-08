@@ -64,7 +64,7 @@ AAOGLGraphics* AAOGLGraphics::getInstance()
   return graphics;
 }
 
-AAGameObject AAOGLGraphics::loadGameObjectWithAssimp(std::string path, bool pp_triangulate)
+AAGameObject AAOGLGraphics::loadGameObjectWithAssimp(std::string path, bool pp_triangulate, Shading shading)
 {
   Assimp::Importer importer;
   //const aiScene* scene = importer.ReadFile(path, 0);
@@ -79,13 +79,13 @@ AAGameObject AAOGLGraphics::loadGameObjectWithAssimp(std::string path, bool pp_t
   if (!scene || scene->mFlags & AI_SCENE_FLAGS_INCOMPLETE || !scene->mRootNode)
   {
     std::cout << "ERROR::ASSIMP::" << importer.GetErrorString() << '\n';
-    return AAGameObject(meshes);
+    return AAGameObject(meshes, shading);
   }
 
   lastDirectory = path.substr(0, path.find_last_of("/\\"));  //http://www.cplusplus.com/reference/string/string/find_last_of/     
   processNode(scene->mRootNode, scene);
 
-  return AAGameObject(meshes);
+  return AAGameObject(meshes, shading);
 }
 
 void AAOGLGraphics::processNode(aiNode* node, const aiScene* scene)
@@ -137,6 +137,8 @@ MeshDrawInfo AAOGLGraphics::processMesh(aiMesh* mesh, const aiScene* scene)
   loadedTextures.insert(loadedTextures.end(), normMaps.begin(), normMaps.end());
   std::vector<TextureInfo> heightMaps = loadMaterialTextures(material, aiTextureType_AMBIENT, "height");
   loadedTextures.insert(loadedTextures.end(), heightMaps.begin(), heightMaps.end());
+  std::vector<TextureInfo> colorMaps = loadMaterialTextures(material, aiTextureType_BASE_COLOR, "color");
+  loadedTextures.insert(loadedTextures.end(), colorMaps.begin(), colorMaps.end());
 
   unsigned int VAO, VBO, EBO;
   glGenVertexArrays(1, &VAO);
@@ -167,38 +169,59 @@ MeshDrawInfo AAOGLGraphics::processMesh(aiMesh* mesh, const aiScene* scene)
 std::vector<TextureInfo> AAOGLGraphics::loadMaterialTextures(aiMaterial* mat, aiTextureType type, std::string typeName)
 {
   std::vector<TextureInfo> outTexInfo;
-  for (unsigned int i = 0; i < mat->GetTextureCount(type); ++i)
-  {
-    aiString tmpstr;
-    mat->GetTexture(type, i, &tmpstr);
-    bool alreadyLoaded = false;
 
-    for (unsigned int j = 0; j < mTexturesLoaded.size(); ++j)
+  if ("color" == typeName)
+  {
+    TextureInfo tmptex;
+
+    aiColor3D color(0.f, 0.f, 0.f);
+
+    mat->Get(AI_MATKEY_COLOR_DIFFUSE, color);
+    tmptex.id = 0;
+    tmptex.color = glm::vec3(color.r, color.g, color.b);
+
+    std::cout << "retrieved color from model: " << tmptex.color.x << "," << tmptex.color.y << "," << tmptex.color.z << '\n';
+    tmptex.path = "";
+    outTexInfo.push_back(tmptex);
+  }
+  else
+  {
+    for (unsigned int i = 0; i < mat->GetTextureCount(type); ++i)
     {
-      for (auto p : mTexturesLoaded)
+      aiString tmpstr;
+      mat->GetTexture(type, i, &tmpstr);
+      bool alreadyLoaded = false;
+
+      for (unsigned int j = 0; j < mTexturesLoaded.size(); ++j)
       {
-        if (p.path.data() == tmpstr.C_Str())
+        for (auto p : mTexturesLoaded)
         {
-          TextureInfo tmptexinfo;
-          tmptexinfo.id = p.id;
-          tmptexinfo.type = p.type;
-          tmptexinfo.path = "";
-          outTexInfo.push_back(tmptexinfo);
-          alreadyLoaded = true;
+          if (p.path.data() == tmpstr.C_Str())
+          {
+            TextureInfo tmptexinfo;
+            tmptexinfo.id = p.id;
+            tmptexinfo.type = p.type;
+            tmptexinfo.path = "";
+            outTexInfo.push_back(tmptexinfo);
+            alreadyLoaded = true;
+          }
         }
       }
-    }
 
-    if (!alreadyLoaded)
-    {
-      TextureInfo tmptex;
-      tmptex.id = TexLoader::getInstance()->textureFromFile(tmpstr.C_Str(), lastDirectory);
-      tmptex.type = typeName;
-      tmptex.path = tmpstr.C_Str();
-      outTexInfo.push_back(tmptex);
-      mTexturesLoaded.push_back(tmptex);
+      if (!alreadyLoaded)
+      {
+        TextureInfo tmptex;
+        std::cout << "loading texture from a file " << tmpstr.C_Str() << '\n';
+        tmptex.id = TexLoader::getInstance()->textureFromFile(tmpstr.C_Str(), lastDirectory);
+        tmptex.path = tmpstr.C_Str();
+        tmptex.type = typeName;
+        outTexInfo.push_back(tmptex);
+        mTexturesLoaded.push_back(tmptex);
+      }
     }
   }
+
+ 
 
   return outTexInfo;
 }
