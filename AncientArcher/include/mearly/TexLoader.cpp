@@ -5,17 +5,18 @@
 #include <sstream>
 #include <iostream>
 
+
+TexLoader* TexLoader::getInstance()
+{
+  static TexLoader* staticTexLoader = new TexLoader();
+  return staticTexLoader;
+}
+
 /**
  * This code loads in a cube map texture.
  * @param[in] files       to the textures
  * @return    textureID   id to reference the loaded texture
  */
-TexLoader* TexLoader::getInstance()
-{
-  static TexLoader* _TexLoader = new TexLoader();
-  return _TexLoader;
-}
-
 unsigned int TexLoader::loadCubeTexture(const std::vector<std::string>& files)
 {
   if (files.size() != 6)
@@ -60,10 +61,9 @@ unsigned int TexLoader::loadCubeTexture(const std::vector<std::string>& files)
   return texID;
 }
 
-
 /**
  * This code loads in a 2D map texture.
- * @param[in] files to the textures
+ * @param[in] path texture file
  * @return    textureID
  */
 unsigned int TexLoader::load2DTexture(std::string path) {
