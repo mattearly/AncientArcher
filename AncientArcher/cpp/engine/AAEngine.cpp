@@ -13,23 +13,8 @@ AAEngine::~AAEngine()
 
 int AAEngine::run()
 {
-  if (checkIfKeysSet() == false)
-  {
-    return -1;
-  }
-  if (checkIfMouseSet() == false)
-  {
-    return -2;
-  }
-  if (checkIfScrollSet() == false)
-  {
-    return -3;
-  }
-
   begin();
-
   AADisplay::getInstance()->keepWindowOpen();
-
   while (!glfwWindowShouldClose(AADisplay::getInstance()->getWindow()))
   {
     static float currentFrame(0.f), deltaTime(0.f), lastFrame(0.f);
@@ -44,30 +29,14 @@ int AAEngine::run()
     render();
 
     update();
+
   }
   return 0;
 }
 
-void AAEngine::shutdown()
+void AAEngine::shutdownEngine()
 {
   AADisplay::getInstance()->closeWindow();
-}
-
-void AAEngine::setKeyStruct(std::shared_ptr<AAKeyInput>& keys)
-{
-  mKeys = keys;
-}
-
-void AAEngine::setMouseStruct(std::shared_ptr<AAMouseInput>& mouse)
-{
-  mMouse = mouse;
-  AAControls::getInstance()->setMouse(mouse);
-}
-
-void AAEngine::setScrollStruct(std::shared_ptr<AAScrollInput>& scroll)
-{
-  mScroll = scroll;
-  AAControls::getInstance()->setScroll(scroll);
 }
 
 void AAEngine::addToOnBegin(void(*function)())
@@ -80,17 +49,17 @@ void AAEngine::addToUpdate(void(*function)())
   onUpdate.push_back(function);
 }
 
-void AAEngine::addToKeyHandling(void(*function)(std::shared_ptr<AAKeyInput>&))
+void AAEngine::addToKeyHandling(void(*function)(AAKeyBoardInput&))
 {
   onKeyHandling.push_back(function);
 }
 
-void AAEngine::addToScrollHandling(void(*function)(std::shared_ptr<AAScrollInput>&))
+void AAEngine::addToScrollHandling(void(*function)(AAScrollInput&))
 {
   onScrollHandling.push_back(function);
 }
 
-void AAEngine::addToMouseHandling(void(*function)(std::shared_ptr<AAMouseInput>&))
+void AAEngine::addToMouseHandling(void(*function)(AAMouseInput&))
 {
   onMouseHandling.push_back(function);
 }
@@ -108,82 +77,64 @@ void AAEngine::addToDeltaUpdate(void(*function)(float))
 void AAEngine::render()
 {
   AADisplay::getInstance()->clearBackBuffer();
-
-  for (auto ren : onRender)
+  for (auto onRen : onRender)
   {
-    ren();
+    onRen();
   }
-
   AADisplay::getInstance()->swapWindowBuffers();
 }
 
 void AAEngine::begin()
 {
-  for (auto ob : onBegin)
+  for (auto oB : onBegin)
   {
-    ob();
+    oB();
   }
 }
 
 void AAEngine::update(float dt)
 {
-  for (auto ud : onDeltaUpdate)
+  for (auto oDU : onDeltaUpdate)
   {
-    ud(dt);
+    oDU(dt);
   }
 }
 
 void AAEngine::update()
 {
-  glfwPollEvents();
-  AAControls::getInstance()->keyInput(mKeys);
-  for (auto okh : onKeyHandling)
+  AAControls::getInstance()->pullButtonStateEvents();
+
+  for (auto oKH : onKeyHandling)
   {
-    okh(mKeys);
+    oKH(AAControls::getInstance()->mButtonState);
   }
-
-  for (auto osh : onScrollHandling)
+  for (auto oSH : onScrollHandling)
   {
-    osh(mScroll);
+    oSH(AAControls::getInstance()->mMouseWheelScroll);
   }
-
-  for (auto omh : onMouseHandling)
+  for (auto oMH : onMouseHandling)
   {
-    omh(mMouse);
+    oMH(AAControls::getInstance()->mMousePosition);
   }
-
-  mMouse->xOffset = 0;
-  mMouse->yOffset = 0;
-
-  for (auto u : onUpdate)
+  AAControls::getInstance()->mMousePosition.xOffset = 0;
+  AAControls::getInstance()->mMousePosition.yOffset = 0;
+  for (auto oU : onUpdate)
   {
-    u();
+    oU();
   }
+  processSystemHotKeys();
+}
 
+void AAEngine::processSystemHotKeys()
+{
   static float checkStamp = 0.f;
   float passedTime = mEngineRunTimer - checkStamp;
   static float accumulatedTime = 0.f;
   accumulatedTime += passedTime;
-
-  if (accumulatedTime > 1.f && (mKeys->leftAlt || mKeys->rightAlt) && mKeys->enter)
+  if (accumulatedTime > 1.f && (AAControls::getInstance()->mButtonState.leftAlt || AAControls::getInstance()->mButtonState.rightAlt) && AAControls::getInstance()->mButtonState.enter)
   {
     AADisplay::getInstance()->toggleFullScreen();
     checkStamp = mEngineRunTimer;
     accumulatedTime = 0.f;
   }
-}
-
-bool AAEngine::checkIfKeysSet()
-{
-  return mKeys ? true : false;
-}
-
-bool AAEngine::checkIfMouseSet()
-{
-  return mMouse ? true : false;
-}
-
-bool AAEngine::checkIfScrollSet()
-{
-  return mScroll ? true : false;
 }

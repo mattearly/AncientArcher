@@ -8,16 +8,6 @@ AAControls* AAControls::getInstance()
   return controls;
 }
 
-void AAControls::setMouse(std::shared_ptr<AAMouseInput>& mouse)
-{
-  mMouse = mouse;
-}
-
-void AAControls::setScroll(std::shared_ptr<AAScrollInput>& scroll)
-{
-  mScroll = scroll;
-}
-
 void AAControls::mouseMovement(float x, float y)
 {
   //first person
@@ -39,728 +29,730 @@ void AAControls::mouseMovement(float x, float y)
   xOffset *= mMouseSensitivity;
   yOffset *= mMouseSensitivity;
 
-  mMouse->xOffset = xOffset;
-  mMouse->yOffset = yOffset;
+  mMousePosition.xOffset = xOffset;
+  mMousePosition.yOffset = yOffset;
 }
 
 void AAControls::mouseScrollWheelMovement(float x, float y)
 {
-  mScroll->xOffset = x;
-  mScroll->yOffset = y;
+  mMouseWheelScroll.xOffset = x;
+  mMouseWheelScroll.yOffset = y;
 }
 
-void AAControls::keyInput(std::shared_ptr<AAKeyInput>& keyInput)
+void AAControls::pullButtonStateEvents()
 {
+  glfwPollEvents();
+
   // esc
   if (glfwGetKey(AADisplay::getInstance()->getWindow(), GLFW_KEY_ESCAPE) == GLFW_PRESS)
   {
-    keyInput->esc = true;
+    mButtonState.esc = true;
   }
   else if (glfwGetKey(AADisplay::getInstance()->getWindow(), GLFW_KEY_ESCAPE) == GLFW_RELEASE)
   {
-    keyInput->esc = false;
+    mButtonState.esc = false;
   }
   // function keys
   if (glfwGetKey(AADisplay::getInstance()->getWindow(), GLFW_KEY_F1) == GLFW_PRESS)
   {
-    keyInput->f1 = true;
+    mButtonState.f1 = true;
   }
   else if (glfwGetKey(AADisplay::getInstance()->getWindow(), GLFW_KEY_F1) == GLFW_RELEASE)
   {
-    keyInput->f1 = false;
+    mButtonState.f1 = false;
   }
   if (glfwGetKey(AADisplay::getInstance()->getWindow(), GLFW_KEY_F2) == GLFW_PRESS)
   {
-    keyInput->f2 = true;
+    mButtonState.f2 = true;
   }
   else if (glfwGetKey(AADisplay::getInstance()->getWindow(), GLFW_KEY_F2) == GLFW_RELEASE)
   {
-    keyInput->f2 = false;
+    mButtonState.f2 = false;
   }
   if (glfwGetKey(AADisplay::getInstance()->getWindow(), GLFW_KEY_F3) == GLFW_PRESS)
   {
-    keyInput->f3 = true;
+    mButtonState.f3 = true;
   }
   else if (glfwGetKey(AADisplay::getInstance()->getWindow(), GLFW_KEY_F3) == GLFW_RELEASE)
   {
-    keyInput->f3 = false;
+    mButtonState.f3 = false;
   }
   if (glfwGetKey(AADisplay::getInstance()->getWindow(), GLFW_KEY_F4) == GLFW_PRESS)
   {
-    keyInput->f4 = true;
+    mButtonState.f4 = true;
   }
   else if (glfwGetKey(AADisplay::getInstance()->getWindow(), GLFW_KEY_F4) == GLFW_RELEASE)
   {
-    keyInput->f4 = false;
+    mButtonState.f4 = false;
   }
   if (glfwGetKey(AADisplay::getInstance()->getWindow(), GLFW_KEY_F5) == GLFW_PRESS)
   {
-    keyInput->f5 = true;
+    mButtonState.f5 = true;
   }
   else if (glfwGetKey(AADisplay::getInstance()->getWindow(), GLFW_KEY_F5) == GLFW_RELEASE)
   {
-    keyInput->f5 = false;
+    mButtonState.f5 = false;
   }
   if (glfwGetKey(AADisplay::getInstance()->getWindow(), GLFW_KEY_F6) == GLFW_PRESS)
   {
-    keyInput->f6 = true;
+    mButtonState.f6 = true;
   }
   else if (glfwGetKey(AADisplay::getInstance()->getWindow(), GLFW_KEY_F6) == GLFW_RELEASE)
   {
-    keyInput->f6 = false;
+    mButtonState.f6 = false;
   }
   if (glfwGetKey(AADisplay::getInstance()->getWindow(), GLFW_KEY_F7) == GLFW_PRESS)
   {
-    keyInput->f7 = true;
+    mButtonState.f7 = true;
   }
   else if (glfwGetKey(AADisplay::getInstance()->getWindow(), GLFW_KEY_F7) == GLFW_RELEASE)
   {
-    keyInput->f7 = false;
+    mButtonState.f7 = false;
   }
   if (glfwGetKey(AADisplay::getInstance()->getWindow(), GLFW_KEY_F8) == GLFW_PRESS)
   {
-    keyInput->f8 = true;
+    mButtonState.f8 = true;
   }
   else if (glfwGetKey(AADisplay::getInstance()->getWindow(), GLFW_KEY_F8) == GLFW_RELEASE)
   {
-    keyInput->f8 = false;
+    mButtonState.f8 = false;
   }
   if (glfwGetKey(AADisplay::getInstance()->getWindow(), GLFW_KEY_F9) == GLFW_PRESS)
   {
-    keyInput->f9 = true;
+    mButtonState.f9 = true;
   }
   else if (glfwGetKey(AADisplay::getInstance()->getWindow(), GLFW_KEY_F9) == GLFW_RELEASE)
   {
-    keyInput->f9 = false;
+    mButtonState.f9 = false;
   }
   if (glfwGetKey(AADisplay::getInstance()->getWindow(), GLFW_KEY_F10) == GLFW_PRESS)
   {
-    keyInput->f10 = true;
+    mButtonState.f10 = true;
   }
   else if (glfwGetKey(AADisplay::getInstance()->getWindow(), GLFW_KEY_F10) == GLFW_RELEASE)
   {
-    keyInput->f10 = false;
+    mButtonState.f10 = false;
   }
   if (glfwGetKey(AADisplay::getInstance()->getWindow(), GLFW_KEY_F11) == GLFW_PRESS)
   {
-    keyInput->f11 = true;
+    mButtonState.f11 = true;
   }
   else if (glfwGetKey(AADisplay::getInstance()->getWindow(), GLFW_KEY_F11) == GLFW_RELEASE)
   {
-    keyInput->f11 = false;
+    mButtonState.f11 = false;
   }
   if (glfwGetKey(AADisplay::getInstance()->getWindow(), GLFW_KEY_F12) == GLFW_PRESS)
   {
-    keyInput->f12 = true;
+    mButtonState.f12 = true;
   }
   else if (glfwGetKey(AADisplay::getInstance()->getWindow(), GLFW_KEY_F12) == GLFW_RELEASE)
   {
-    keyInput->f12 = false;
+    mButtonState.f12 = false;
   }
   // number key row
   if (glfwGetKey(AADisplay::getInstance()->getWindow(), GLFW_KEY_GRAVE_ACCENT) == GLFW_PRESS)
   {
-    keyInput->graveAccent = true;
+    mButtonState.graveAccent = true;
   }
   else if (glfwGetKey(AADisplay::getInstance()->getWindow(), GLFW_KEY_GRAVE_ACCENT) == GLFW_RELEASE)
   {
-    keyInput->graveAccent = false;
+    mButtonState.graveAccent = false;
   }
   if (glfwGetKey(AADisplay::getInstance()->getWindow(), GLFW_KEY_1) == GLFW_PRESS) 
   {
-    keyInput->n1 = true;
+    mButtonState.n1 = true;
   } 
   else if (glfwGetKey(AADisplay::getInstance()->getWindow(), GLFW_KEY_1) == GLFW_RELEASE)
   {
-    keyInput->n1 = false;
+    mButtonState.n1 = false;
   }  
   if (glfwGetKey(AADisplay::getInstance()->getWindow(), GLFW_KEY_2) == GLFW_PRESS) 
   {
-    keyInput->n2 = true;
+    mButtonState.n2 = true;
   } 
   else if (glfwGetKey(AADisplay::getInstance()->getWindow(), GLFW_KEY_2) == GLFW_RELEASE)
   {
-    keyInput->n2 = false;
+    mButtonState.n2 = false;
   }  
   if (glfwGetKey(AADisplay::getInstance()->getWindow(), GLFW_KEY_3) == GLFW_PRESS) 
   {
-    keyInput->n3 = true;
+    mButtonState.n3 = true;
   } 
   else if (glfwGetKey(AADisplay::getInstance()->getWindow(), GLFW_KEY_3) == GLFW_RELEASE)
   {
-    keyInput->n3 = false;
+    mButtonState.n3 = false;
   }  
   if (glfwGetKey(AADisplay::getInstance()->getWindow(), GLFW_KEY_4) == GLFW_PRESS) 
   {
-    keyInput->n4 = true;
+    mButtonState.n4 = true;
   } 
   else if (glfwGetKey(AADisplay::getInstance()->getWindow(), GLFW_KEY_4) == GLFW_RELEASE)
   {
-    keyInput->n4 = false;
+    mButtonState.n4 = false;
   }  
   if (glfwGetKey(AADisplay::getInstance()->getWindow(), GLFW_KEY_5) == GLFW_PRESS) 
   {
-    keyInput->n5 = true;
+    mButtonState.n5 = true;
   } 
   else if (glfwGetKey(AADisplay::getInstance()->getWindow(), GLFW_KEY_5) == GLFW_RELEASE)
   {
-    keyInput->n5 = false;
+    mButtonState.n5 = false;
   }  
   if (glfwGetKey(AADisplay::getInstance()->getWindow(), GLFW_KEY_6) == GLFW_PRESS) 
   {
-    keyInput->n6 = true;
+    mButtonState.n6 = true;
   } 
   else if (glfwGetKey(AADisplay::getInstance()->getWindow(), GLFW_KEY_6) == GLFW_RELEASE)
   {
-    keyInput->n6 = false;
+    mButtonState.n6 = false;
   }  
   if (glfwGetKey(AADisplay::getInstance()->getWindow(), GLFW_KEY_7) == GLFW_PRESS) 
   {
-    keyInput->n7 = true;
+    mButtonState.n7 = true;
   } 
   else if (glfwGetKey(AADisplay::getInstance()->getWindow(), GLFW_KEY_7) == GLFW_RELEASE)
   {
-    keyInput->n7 = false;
+    mButtonState.n7 = false;
   }  
   if (glfwGetKey(AADisplay::getInstance()->getWindow(), GLFW_KEY_8) == GLFW_PRESS) 
   {
-    keyInput->n8 = true;
+    mButtonState.n8 = true;
   } 
   else if (glfwGetKey(AADisplay::getInstance()->getWindow(), GLFW_KEY_8) == GLFW_RELEASE)
   {
-    keyInput->n8 = false;
+    mButtonState.n8 = false;
   }  
   if (glfwGetKey(AADisplay::getInstance()->getWindow(), GLFW_KEY_9) == GLFW_PRESS) 
   {
-    keyInput->n9 = true;
+    mButtonState.n9 = true;
   } 
   else if (glfwGetKey(AADisplay::getInstance()->getWindow(), GLFW_KEY_9) == GLFW_RELEASE)
   {
-    keyInput->n9 = false;
+    mButtonState.n9 = false;
   }  
   if (glfwGetKey(AADisplay::getInstance()->getWindow(), GLFW_KEY_0) == GLFW_PRESS) 
   {
-    keyInput->n0 = true;
+    mButtonState.n0 = true;
   } 
   else if (glfwGetKey(AADisplay::getInstance()->getWindow(), GLFW_KEY_0) == GLFW_RELEASE)
   {
-    keyInput->n0 = false;
+    mButtonState.n0 = false;
   }
   if (glfwGetKey(AADisplay::getInstance()->getWindow(), GLFW_KEY_MINUS) == GLFW_PRESS)
   {
-    keyInput->minus = true;
+    mButtonState.minus = true;
   }
   else if (glfwGetKey(AADisplay::getInstance()->getWindow(), GLFW_KEY_MINUS) == GLFW_RELEASE)
   {
-    keyInput->minus = false;
+    mButtonState.minus = false;
   }
   if (glfwGetKey(AADisplay::getInstance()->getWindow(), GLFW_KEY_EQUAL) == GLFW_PRESS)
   {
-    keyInput->equal = true;
+    mButtonState.equal = true;
   }
   else if (glfwGetKey(AADisplay::getInstance()->getWindow(), GLFW_KEY_EQUAL) == GLFW_RELEASE)
   {
-    keyInput->equal = false;
+    mButtonState.equal = false;
   }
   if (glfwGetKey(AADisplay::getInstance()->getWindow(), GLFW_KEY_BACKSPACE) == GLFW_PRESS)
   {
-    keyInput->backspace = true;
+    mButtonState.backspace = true;
   }
   else if (glfwGetKey(AADisplay::getInstance()->getWindow(), GLFW_KEY_BACKSPACE) == GLFW_RELEASE)
   {
-    keyInput->backspace = false;
+    mButtonState.backspace = false;
   }
   // alphabet keys
   if (glfwGetKey(AADisplay::getInstance()->getWindow(), GLFW_KEY_A) == GLFW_PRESS) 
   {
-    keyInput->a = true;
+    mButtonState.a = true;
   }
   else if (glfwGetKey(AADisplay::getInstance()->getWindow(), GLFW_KEY_A) == GLFW_RELEASE) 
   {
-    keyInput->a = false;
+    mButtonState.a = false;
   }
   if (glfwGetKey(AADisplay::getInstance()->getWindow(), GLFW_KEY_B) == GLFW_PRESS) 
   {
-    keyInput->b = true;
+    mButtonState.b = true;
   }
   else if (glfwGetKey(AADisplay::getInstance()->getWindow(), GLFW_KEY_B) == GLFW_RELEASE) 
   {
-    keyInput->b = false;
+    mButtonState.b = false;
   }
   if (glfwGetKey(AADisplay::getInstance()->getWindow(), GLFW_KEY_C) == GLFW_PRESS) 
   {
-    keyInput->c = true;
+    mButtonState.c = true;
   }
   else if (glfwGetKey(AADisplay::getInstance()->getWindow(), GLFW_KEY_C) == GLFW_RELEASE) 
   {
-    keyInput->c = false;
+    mButtonState.c = false;
   }
   if (glfwGetKey(AADisplay::getInstance()->getWindow(), GLFW_KEY_D) == GLFW_PRESS) 
   {
-    keyInput->d = true;
+    mButtonState.d = true;
   }
   else if (glfwGetKey(AADisplay::getInstance()->getWindow(), GLFW_KEY_D) == GLFW_RELEASE) 
   {
-    keyInput->d = false;
+    mButtonState.d = false;
   }
   if (glfwGetKey(AADisplay::getInstance()->getWindow(), GLFW_KEY_E) == GLFW_PRESS) 
   {
-    keyInput->e = true;
+    mButtonState.e = true;
   }
   else if (glfwGetKey(AADisplay::getInstance()->getWindow(), GLFW_KEY_E) == GLFW_RELEASE) 
   {
-    keyInput->e = false;
+    mButtonState.e = false;
   }
   if (glfwGetKey(AADisplay::getInstance()->getWindow(), GLFW_KEY_F) == GLFW_PRESS) 
   {
-    keyInput->f = true;
+    mButtonState.f = true;
   }
   else if (glfwGetKey(AADisplay::getInstance()->getWindow(), GLFW_KEY_F) == GLFW_RELEASE) 
   {
-    keyInput->f = false;
+    mButtonState.f = false;
   }
   if (glfwGetKey(AADisplay::getInstance()->getWindow(), GLFW_KEY_G) == GLFW_PRESS) 
   {
-    keyInput->g = true;
+    mButtonState.g = true;
   }
   else if (glfwGetKey(AADisplay::getInstance()->getWindow(), GLFW_KEY_G) == GLFW_RELEASE) 
   {
-    keyInput->g = false;
+    mButtonState.g = false;
   }
   if (glfwGetKey(AADisplay::getInstance()->getWindow(), GLFW_KEY_H) == GLFW_PRESS) 
   {
-    keyInput->h = true;
+    mButtonState.h = true;
   }
   else if (glfwGetKey(AADisplay::getInstance()->getWindow(), GLFW_KEY_H) == GLFW_RELEASE) 
   {
-    keyInput->h = false;
+    mButtonState.h = false;
   }
   if (glfwGetKey(AADisplay::getInstance()->getWindow(), GLFW_KEY_I) == GLFW_PRESS) 
   {
-    keyInput->i = true;
+    mButtonState.i = true;
   }
   else if (glfwGetKey(AADisplay::getInstance()->getWindow(), GLFW_KEY_I) == GLFW_RELEASE) 
   {
-    keyInput->i = false;
+    mButtonState.i = false;
   }
   if (glfwGetKey(AADisplay::getInstance()->getWindow(), GLFW_KEY_J) == GLFW_PRESS) 
   {
-    keyInput->j = true;
+    mButtonState.j = true;
   }
   else if (glfwGetKey(AADisplay::getInstance()->getWindow(), GLFW_KEY_J) == GLFW_RELEASE) 
   {
-    keyInput->j = false;
+    mButtonState.j = false;
   }
   if (glfwGetKey(AADisplay::getInstance()->getWindow(), GLFW_KEY_K) == GLFW_PRESS) 
   {
-    keyInput->k = true;
+    mButtonState.k = true;
   }
   else if (glfwGetKey(AADisplay::getInstance()->getWindow(), GLFW_KEY_K) == GLFW_RELEASE) 
   {
-    keyInput->k = false;
+    mButtonState.k = false;
   }
   if (glfwGetKey(AADisplay::getInstance()->getWindow(), GLFW_KEY_L) == GLFW_PRESS) 
   {
-    keyInput->l = true;
+    mButtonState.l = true;
   }
   else if (glfwGetKey(AADisplay::getInstance()->getWindow(), GLFW_KEY_L) == GLFW_RELEASE) 
   {
-    keyInput->l = false;
+    mButtonState.l = false;
   }
   if (glfwGetKey(AADisplay::getInstance()->getWindow(), GLFW_KEY_M) == GLFW_PRESS) 
   {
-    keyInput->m = true;
+    mButtonState.m = true;
   }
   else if (glfwGetKey(AADisplay::getInstance()->getWindow(), GLFW_KEY_M) == GLFW_RELEASE) 
   {
-    keyInput->m = false;
+    mButtonState.m = false;
   }
   if (glfwGetKey(AADisplay::getInstance()->getWindow(), GLFW_KEY_N) == GLFW_PRESS) 
   {
-    keyInput->n = true;
+    mButtonState.n = true;
   }
   else if (glfwGetKey(AADisplay::getInstance()->getWindow(), GLFW_KEY_N) == GLFW_RELEASE) 
   {
-    keyInput->n = false;
+    mButtonState.n = false;
   }
   if (glfwGetKey(AADisplay::getInstance()->getWindow(), GLFW_KEY_O) == GLFW_PRESS) 
   {
-    keyInput->o = true;
+    mButtonState.o = true;
   }
   else if (glfwGetKey(AADisplay::getInstance()->getWindow(), GLFW_KEY_O) == GLFW_RELEASE) 
   {
-    keyInput->o = false;
+    mButtonState.o = false;
   }
   if (glfwGetKey(AADisplay::getInstance()->getWindow(), GLFW_KEY_P) == GLFW_PRESS) 
   {
-    keyInput->p = true;
+    mButtonState.p = true;
   }
   else if (glfwGetKey(AADisplay::getInstance()->getWindow(), GLFW_KEY_P) == GLFW_RELEASE) 
   {
-    keyInput->p = false;
+    mButtonState.p = false;
   }
   if (glfwGetKey(AADisplay::getInstance()->getWindow(), GLFW_KEY_Q) == GLFW_PRESS) 
   {
-    keyInput->q = true;
+    mButtonState.q = true;
   }
   else if (glfwGetKey(AADisplay::getInstance()->getWindow(), GLFW_KEY_Q) == GLFW_RELEASE) 
   {
-    keyInput->q = false;
+    mButtonState.q = false;
   }
   if (glfwGetKey(AADisplay::getInstance()->getWindow(), GLFW_KEY_R) == GLFW_PRESS) 
   {
-    keyInput->r = true;
+    mButtonState.r = true;
   }
   else if (glfwGetKey(AADisplay::getInstance()->getWindow(), GLFW_KEY_R) == GLFW_RELEASE) 
   {
-    keyInput->r = false;
+    mButtonState.r = false;
   }
   if (glfwGetKey(AADisplay::getInstance()->getWindow(), GLFW_KEY_S) == GLFW_PRESS) 
   {
-    keyInput->s = true;
+    mButtonState.s = true;
   }
   else if (glfwGetKey(AADisplay::getInstance()->getWindow(), GLFW_KEY_S) == GLFW_RELEASE) 
   {
-    keyInput->s = false;
+    mButtonState.s = false;
   }
   if (glfwGetKey(AADisplay::getInstance()->getWindow(), GLFW_KEY_T) == GLFW_PRESS) 
   {
-    keyInput->t = true;
+    mButtonState.t = true;
   }
   else if (glfwGetKey(AADisplay::getInstance()->getWindow(), GLFW_KEY_T) == GLFW_RELEASE) 
   {
-    keyInput->t = false;
+    mButtonState.t = false;
   }
   if (glfwGetKey(AADisplay::getInstance()->getWindow(), GLFW_KEY_U) == GLFW_PRESS) 
   {
-    keyInput->u = true;
+    mButtonState.u = true;
   }
   else if (glfwGetKey(AADisplay::getInstance()->getWindow(), GLFW_KEY_U) == GLFW_RELEASE) 
   {
-    keyInput->u = false;
+    mButtonState.u = false;
   }
   if (glfwGetKey(AADisplay::getInstance()->getWindow(), GLFW_KEY_V) == GLFW_PRESS) 
   {
-    keyInput->v = true;
+    mButtonState.v = true;
   }
   else if (glfwGetKey(AADisplay::getInstance()->getWindow(), GLFW_KEY_V) == GLFW_RELEASE) 
   {
-    keyInput->v = false;
+    mButtonState.v = false;
   }
   if (glfwGetKey(AADisplay::getInstance()->getWindow(), GLFW_KEY_W) == GLFW_PRESS) 
   {
-    keyInput->w = true;
+    mButtonState.w = true;
   }
   else if (glfwGetKey(AADisplay::getInstance()->getWindow(), GLFW_KEY_W) == GLFW_RELEASE) 
   {
-    keyInput->w = false;
+    mButtonState.w = false;
   }
   if (glfwGetKey(AADisplay::getInstance()->getWindow(), GLFW_KEY_X) == GLFW_PRESS) 
   {
-    keyInput->x = true;
+    mButtonState.x = true;
   }
   else if (glfwGetKey(AADisplay::getInstance()->getWindow(), GLFW_KEY_X) == GLFW_RELEASE) 
   {
-    keyInput->x = false;
+    mButtonState.x = false;
   }
   if (glfwGetKey(AADisplay::getInstance()->getWindow(), GLFW_KEY_Y) == GLFW_PRESS) 
   {
-    keyInput->y = true;
+    mButtonState.y = true;
   }
   else if (glfwGetKey(AADisplay::getInstance()->getWindow(), GLFW_KEY_Y) == GLFW_RELEASE) 
   {
-    keyInput->y = false;
+    mButtonState.y = false;
   }
   if (glfwGetKey(AADisplay::getInstance()->getWindow(), GLFW_KEY_Z) == GLFW_PRESS) 
   {
-    keyInput->z = true;
+    mButtonState.z = true;
   }
   else if (glfwGetKey(AADisplay::getInstance()->getWindow(), GLFW_KEY_Z) == GLFW_RELEASE) 
   {
-    keyInput->z = false;
+    mButtonState.z = false;
   }
   // tab-shift-control-alt
   if (glfwGetKey(AADisplay::getInstance()->getWindow(), GLFW_KEY_TAB) == GLFW_PRESS)
   {
-    keyInput->tab = true;
+    mButtonState.tab = true;
   }
   else if (glfwGetKey(AADisplay::getInstance()->getWindow(), GLFW_KEY_TAB) == GLFW_RELEASE)
   {
-    keyInput->tab = false;
+    mButtonState.tab = false;
   }
   if (glfwGetKey(AADisplay::getInstance()->getWindow(), GLFW_KEY_LEFT_SHIFT) == GLFW_PRESS)
   {
-    keyInput->leftShift = true;
+    mButtonState.leftShift = true;
   }
   else if (glfwGetKey(AADisplay::getInstance()->getWindow(), GLFW_KEY_LEFT_SHIFT) == GLFW_RELEASE)
   {
-    keyInput->leftShift = false;
+    mButtonState.leftShift = false;
   }
   if (glfwGetKey(AADisplay::getInstance()->getWindow(), GLFW_KEY_RIGHT_SHIFT) == GLFW_PRESS)
   {
-    keyInput->rightShift = true;
+    mButtonState.rightShift = true;
   }
   else if (glfwGetKey(AADisplay::getInstance()->getWindow(), GLFW_KEY_RIGHT_SHIFT) == GLFW_RELEASE)
   {
-    keyInput->rightShift = false;
+    mButtonState.rightShift = false;
   }
   if (glfwGetKey(AADisplay::getInstance()->getWindow(), GLFW_KEY_LEFT_CONTROL) == GLFW_PRESS)
   {
-    keyInput->leftControl = true;
+    mButtonState.leftControl = true;
   }
   else if (glfwGetKey(AADisplay::getInstance()->getWindow(), GLFW_KEY_LEFT_CONTROL) == GLFW_RELEASE)
   {
-    keyInput->leftControl = false;
+    mButtonState.leftControl = false;
   }
   if (glfwGetKey(AADisplay::getInstance()->getWindow(), GLFW_KEY_RIGHT_CONTROL) == GLFW_PRESS)
   {
-    keyInput->rightControl = true;
+    mButtonState.rightControl = true;
   }
   else if (glfwGetKey(AADisplay::getInstance()->getWindow(), GLFW_KEY_RIGHT_CONTROL) == GLFW_RELEASE)
   {
-    keyInput->rightControl = false;
+    mButtonState.rightControl = false;
   }
   if (glfwGetKey(AADisplay::getInstance()->getWindow(), GLFW_KEY_LEFT_ALT) == GLFW_PRESS)
   {
-    keyInput->leftAlt = true;
+    mButtonState.leftAlt = true;
   }
   else if (glfwGetKey(AADisplay::getInstance()->getWindow(), GLFW_KEY_LEFT_ALT) == GLFW_RELEASE)
   {
-    keyInput->leftAlt = false;
+    mButtonState.leftAlt = false;
   }
   if (glfwGetKey(AADisplay::getInstance()->getWindow(), GLFW_KEY_RIGHT_ALT) == GLFW_PRESS)
   {
-    keyInput->rightAlt = true;
+    mButtonState.rightAlt = true;
   }
   else if (glfwGetKey(AADisplay::getInstance()->getWindow(), GLFW_KEY_RIGHT_ALT) == GLFW_RELEASE)
   {
-    keyInput->rightAlt = false;
+    mButtonState.rightAlt = false;
   }
   if (glfwGetKey(AADisplay::getInstance()->getWindow(), GLFW_KEY_SPACE) == GLFW_PRESS)
   {
-    keyInput->spacebar = true;
+    mButtonState.spacebar = true;
   }
   else if (glfwGetKey(AADisplay::getInstance()->getWindow(), GLFW_KEY_SPACE) == GLFW_RELEASE)
   {
-    keyInput->spacebar = false;
+    mButtonState.spacebar = false;
   }
   // brackets
   if (glfwGetKey(AADisplay::getInstance()->getWindow(), GLFW_KEY_LEFT_BRACKET) == GLFW_PRESS)
   {
-    keyInput->leftSquareBracket = true;
+    mButtonState.leftSquareBracket = true;
   }
   else if (glfwGetKey(AADisplay::getInstance()->getWindow(), GLFW_KEY_LEFT_BRACKET) == GLFW_RELEASE)
   {
-    keyInput->leftSquareBracket = false;
+    mButtonState.leftSquareBracket = false;
   }
   if (glfwGetKey(AADisplay::getInstance()->getWindow(), GLFW_KEY_RIGHT_BRACKET) == GLFW_PRESS)
   {
-    keyInput->rightSquareBracket = true;
+    mButtonState.rightSquareBracket = true;
   }
   else if (glfwGetKey(AADisplay::getInstance()->getWindow(), GLFW_KEY_RIGHT_BRACKET) == GLFW_RELEASE)
   {
-    keyInput->rightSquareBracket = false;
+    mButtonState.rightSquareBracket = false;
   }
   // slash-quote-semicolon-enter
   if (glfwGetKey(AADisplay::getInstance()->getWindow(), GLFW_KEY_BACKSLASH) == GLFW_PRESS)
   {
-    keyInput->backslash = true;
+    mButtonState.backslash = true;
   }
   else if (glfwGetKey(AADisplay::getInstance()->getWindow(), GLFW_KEY_BACKSLASH) == GLFW_RELEASE)
   {
-    keyInput->backslash = false;
+    mButtonState.backslash = false;
   }
   if (glfwGetKey(AADisplay::getInstance()->getWindow(), GLFW_KEY_SEMICOLON) == GLFW_PRESS)
   {
-    keyInput->semiColon = true;
+    mButtonState.semiColon = true;
   }
   else if (glfwGetKey(AADisplay::getInstance()->getWindow(), GLFW_KEY_SEMICOLON) == GLFW_RELEASE)
   {
-    keyInput->semiColon = false;
+    mButtonState.semiColon = false;
   }
   if (glfwGetKey(AADisplay::getInstance()->getWindow(), GLFW_KEY_APOSTROPHE) == GLFW_PRESS)
   {
-    keyInput->apostrophe = true;
+    mButtonState.apostrophe = true;
   }
   else if (glfwGetKey(AADisplay::getInstance()->getWindow(), GLFW_KEY_APOSTROPHE) == GLFW_RELEASE)
   {
-    keyInput->apostrophe = false;
+    mButtonState.apostrophe = false;
   }
   if (glfwGetKey(AADisplay::getInstance()->getWindow(), GLFW_KEY_ENTER) == GLFW_PRESS)
   {
-    keyInput->enter = true;
+    mButtonState.enter = true;
   }
   else if (glfwGetKey(AADisplay::getInstance()->getWindow(), GLFW_KEY_ENTER) == GLFW_RELEASE)
   {
-    keyInput->enter = false;
+    mButtonState.enter = false;
   }
   // comma-period-forwardslash
   if (glfwGetKey(AADisplay::getInstance()->getWindow(), GLFW_KEY_COMMA) == GLFW_PRESS)
   {
-    keyInput->comma = true;
+    mButtonState.comma = true;
   }
   else if (glfwGetKey(AADisplay::getInstance()->getWindow(), GLFW_KEY_COMMA) == GLFW_RELEASE)
   {
-    keyInput->comma = false;
+    mButtonState.comma = false;
   }
   if (glfwGetKey(AADisplay::getInstance()->getWindow(), GLFW_KEY_PERIOD) == GLFW_PRESS)
   {
-    keyInput->period = true;
+    mButtonState.period = true;
   }
   else if (glfwGetKey(AADisplay::getInstance()->getWindow(), GLFW_KEY_PERIOD) == GLFW_RELEASE)
   {
-    keyInput->period = false;
+    mButtonState.period = false;
   }
   if (glfwGetKey(AADisplay::getInstance()->getWindow(), GLFW_KEY_SLASH) == GLFW_PRESS)
   {
-    keyInput->forwardSlash = true;
+    mButtonState.forwardSlash = true;
   }
   else if (glfwGetKey(AADisplay::getInstance()->getWindow(), GLFW_KEY_SLASH) == GLFW_RELEASE)
   {
-    keyInput->forwardSlash = false;
+    mButtonState.forwardSlash = false;
   }
   // printscreen-etc
   if (glfwGetKey(AADisplay::getInstance()->getWindow(), GLFW_KEY_PRINT_SCREEN) == GLFW_PRESS)
   {
-    keyInput->printScreen = true;
+    mButtonState.printScreen = true;
   }
   else if (glfwGetKey(AADisplay::getInstance()->getWindow(), GLFW_KEY_PRINT_SCREEN) == GLFW_RELEASE)
   {
-    keyInput->printScreen = false;
+    mButtonState.printScreen = false;
   }
   if (glfwGetKey(AADisplay::getInstance()->getWindow(), GLFW_KEY_SCROLL_LOCK) == GLFW_PRESS)
   {
-    keyInput->scrollLock = true;
+    mButtonState.scrollLock = true;
   }
   else if (glfwGetKey(AADisplay::getInstance()->getWindow(), GLFW_KEY_SCROLL_LOCK) == GLFW_RELEASE)
   {
-    keyInput->scrollLock = false;
+    mButtonState.scrollLock = false;
   }
   if (glfwGetKey(AADisplay::getInstance()->getWindow(), GLFW_KEY_PAUSE) == GLFW_PRESS)
   {
-    keyInput->pauseBreak = true;
+    mButtonState.pauseBreak = true;
   }
   else if (glfwGetKey(AADisplay::getInstance()->getWindow(), GLFW_KEY_PAUSE) == GLFW_RELEASE)
   {
-    keyInput->pauseBreak = false;
+    mButtonState.pauseBreak = false;
   }
   if (glfwGetKey(AADisplay::getInstance()->getWindow(), GLFW_KEY_INSERT) == GLFW_PRESS)
   {
-    keyInput->insert = true;
+    mButtonState.insert = true;
   }
   else if (glfwGetKey(AADisplay::getInstance()->getWindow(), GLFW_KEY_INSERT) == GLFW_RELEASE)
   {
-    keyInput->insert = false;
+    mButtonState.insert = false;
   }
   if (glfwGetKey(AADisplay::getInstance()->getWindow(), GLFW_KEY_DELETE) == GLFW_PRESS)
   {
-    keyInput->del = true;
+    mButtonState.del = true;
   }
   else if (glfwGetKey(AADisplay::getInstance()->getWindow(), GLFW_KEY_DELETE) == GLFW_RELEASE)
   {
-    keyInput->del = false;
+    mButtonState.del = false;
   }
   if (glfwGetKey(AADisplay::getInstance()->getWindow(), GLFW_KEY_HOME) == GLFW_PRESS)
   {
-    keyInput->home = true;
+    mButtonState.home = true;
   }
   else if (glfwGetKey(AADisplay::getInstance()->getWindow(), GLFW_KEY_HOME) == GLFW_RELEASE)
   {
-    keyInput->home = false;
+    mButtonState.home = false;
   }
   if (glfwGetKey(AADisplay::getInstance()->getWindow(), GLFW_KEY_END) == GLFW_PRESS)
   {
-    keyInput->end = true;
+    mButtonState.end = true;
   }
   else if (glfwGetKey(AADisplay::getInstance()->getWindow(), GLFW_KEY_END) == GLFW_RELEASE)
   {
-    keyInput->end = false;
+    mButtonState.end = false;
   }
   if (glfwGetKey(AADisplay::getInstance()->getWindow(), GLFW_KEY_PAGE_UP) == GLFW_PRESS) {
-    keyInput->pageUp = true;
+    mButtonState.pageUp = true;
   }
   else if (glfwGetKey(AADisplay::getInstance()->getWindow(), GLFW_KEY_PAGE_UP) == GLFW_RELEASE) {
-    keyInput->pageUp = false;
+    mButtonState.pageUp = false;
   }
   if (glfwGetKey(AADisplay::getInstance()->getWindow(), GLFW_KEY_PAGE_DOWN) == GLFW_PRESS) {
-    keyInput->pageDown = true;
+    mButtonState.pageDown = true;
   }
   else if (glfwGetKey(AADisplay::getInstance()->getWindow(), GLFW_KEY_PAGE_DOWN) == GLFW_RELEASE) {
-    keyInput->pageDown = false;
+    mButtonState.pageDown = false;
   }
   // arrows
   if (glfwGetKey(AADisplay::getInstance()->getWindow(), GLFW_KEY_UP) == GLFW_PRESS) {
-    keyInput->upArrow = true;
+    mButtonState.upArrow = true;
   }
   else if (glfwGetKey(AADisplay::getInstance()->getWindow(), GLFW_KEY_UP) == GLFW_RELEASE) {
-    keyInput->upArrow = false;
+    mButtonState.upArrow = false;
   }
   if (glfwGetKey(AADisplay::getInstance()->getWindow(), GLFW_KEY_DOWN) == GLFW_PRESS) {
-    keyInput->downArrow = true;
+    mButtonState.downArrow = true;
   }
   else if (glfwGetKey(AADisplay::getInstance()->getWindow(), GLFW_KEY_DOWN) == GLFW_RELEASE) {
-    keyInput->downArrow = false;
+    mButtonState.downArrow = false;
   }
   if (glfwGetKey(AADisplay::getInstance()->getWindow(), GLFW_KEY_LEFT) == GLFW_PRESS) {
-    keyInput->leftArrow = true;
+    mButtonState.leftArrow = true;
   }
   else if (glfwGetKey(AADisplay::getInstance()->getWindow(), GLFW_KEY_LEFT) == GLFW_RELEASE) {
-    keyInput->leftArrow = false;
+    mButtonState.leftArrow = false;
   }
   if (glfwGetKey(AADisplay::getInstance()->getWindow(), GLFW_KEY_RIGHT) == GLFW_PRESS) {
-    keyInput->rightArrow = true;
+    mButtonState.rightArrow = true;
   }
   else if (glfwGetKey(AADisplay::getInstance()->getWindow(), GLFW_KEY_RIGHT) == GLFW_RELEASE) {
-    keyInput->rightArrow = false;
+    mButtonState.rightArrow = false;
   }
 
   // mouse clicks
   if (glfwGetMouseButton(AADisplay::getInstance()->getWindow(), GLFW_MOUSE_BUTTON_LEFT) == GLFW_PRESS) {
-    keyInput->mouseButton1 = true;
+    mButtonState.mouseButton1 = true;
   }
   else if (glfwGetMouseButton(AADisplay::getInstance()->getWindow(), GLFW_MOUSE_BUTTON_LEFT) == GLFW_RELEASE) {
-    keyInput->mouseButton1 = false;
+    mButtonState.mouseButton1 = false;
   }
   if (glfwGetMouseButton(AADisplay::getInstance()->getWindow(), GLFW_MOUSE_BUTTON_RIGHT) == GLFW_PRESS) {
-    keyInput->mouseButton2 = true;
+    mButtonState.mouseButton2 = true;
   }
   else if (glfwGetMouseButton(AADisplay::getInstance()->getWindow(), GLFW_MOUSE_BUTTON_RIGHT) == GLFW_RELEASE) {
-    keyInput->mouseButton2 = false;
+    mButtonState.mouseButton2 = false;
   }
   if (glfwGetMouseButton(AADisplay::getInstance()->getWindow(), GLFW_MOUSE_BUTTON_MIDDLE) == GLFW_PRESS) {
-    keyInput->mouseButton3 = true;
+    mButtonState.mouseButton3 = true;
   }
   else if (glfwGetMouseButton(AADisplay::getInstance()->getWindow(), GLFW_MOUSE_BUTTON_MIDDLE) == GLFW_RELEASE) {
-    keyInput->mouseButton3 = false;
+    mButtonState.mouseButton3 = false;
   }
   if (glfwGetMouseButton(AADisplay::getInstance()->getWindow(), GLFW_MOUSE_BUTTON_4) == GLFW_PRESS) {
-    keyInput->mouseButton4 = true;
+    mButtonState.mouseButton4 = true;
   }
   else if (glfwGetMouseButton(AADisplay::getInstance()->getWindow(), GLFW_MOUSE_BUTTON_4) == GLFW_RELEASE) {
-    keyInput->mouseButton4 = false;
+    mButtonState.mouseButton4 = false;
   }
   if (glfwGetMouseButton(AADisplay::getInstance()->getWindow(), GLFW_MOUSE_BUTTON_5) == GLFW_PRESS) {
-    keyInput->mousebutton5 = true;
+    mButtonState.mousebutton5 = true;
   }
   else if (glfwGetMouseButton(AADisplay::getInstance()->getWindow(), GLFW_MOUSE_BUTTON_5) == GLFW_RELEASE) {
-    keyInput->mousebutton5 = false;
+    mButtonState.mousebutton5 = false;
   }
   if (glfwGetMouseButton(AADisplay::getInstance()->getWindow(), GLFW_MOUSE_BUTTON_6) == GLFW_PRESS) {
-    keyInput->mouseButton6 = true;
+    mButtonState.mouseButton6 = true;
   }
   else if (glfwGetMouseButton(AADisplay::getInstance()->getWindow(), GLFW_MOUSE_BUTTON_6) == GLFW_RELEASE) {
-    keyInput->mouseButton6 = false;
+    mButtonState.mouseButton6 = false;
   }
   if (glfwGetMouseButton(AADisplay::getInstance()->getWindow(), GLFW_MOUSE_BUTTON_7) == GLFW_PRESS) {
-    keyInput->mousebutton7 = true;
+    mButtonState.mousebutton7 = true;
   }
   else if (glfwGetMouseButton(AADisplay::getInstance()->getWindow(), GLFW_MOUSE_BUTTON_7) == GLFW_RELEASE) {
-    keyInput->mousebutton7 = false;
+    mButtonState.mousebutton7 = false;
   }
   if (glfwGetMouseButton(AADisplay::getInstance()->getWindow(), GLFW_MOUSE_BUTTON_8) == GLFW_PRESS) {
-    keyInput->mouseButton8 = true;
+    mButtonState.mouseButton8 = true;
   }
   else if (glfwGetMouseButton(AADisplay::getInstance()->getWindow(), GLFW_MOUSE_BUTTON_8) == GLFW_RELEASE) {
-    keyInput->mouseButton8 = false;
+    mButtonState.mouseButton8 = false;
   }
 }

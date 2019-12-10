@@ -5,7 +5,9 @@
 
 class AAViewport
 {
+
 public:
+
   static AAViewport* getInstance();
   const glm::vec3 WORLD_UP = glm::vec3(0, 1, 0);
 
@@ -17,14 +19,13 @@ public:
   void shiftCurrentPosition(glm::vec3 offset);
   void shiftYawAndPith(float yawOffset, float pitchOffset);
 
-  glm::mat4 getViewMatrix();
-  glm::mat4 getProjectionMatrix();
-  glm::vec3* getPosition();
-  glm::vec3* getFront();
-  glm::vec3* getRight();
-  float getYaw();
-  float getPitch();
-
+  glm::mat4 getViewMatrix() const;
+  glm::mat4 getProjectionMatrix() const;
+  const glm::vec3* getPosition() const;
+  const glm::vec3* getFront() const;
+  const glm::vec3* getRight() const;
+  float getYaw() const;
+  float getPitch() const;
 
   friend class AAGameObject;
   friend class AADisplay;

@@ -67,7 +67,6 @@ AAOGLGraphics* AAOGLGraphics::getInstance()
 AAGameObject AAOGLGraphics::loadGameObjectWithAssimp(std::string path, bool pp_triangulate, Shading shading)
 {
   Assimp::Importer importer;
-  //const aiScene* scene = importer.ReadFile(path, 0);
   int post_processsing_flags = 0;
   post_processsing_flags |= aiProcess_JoinIdenticalVertices;
   if (pp_triangulate)

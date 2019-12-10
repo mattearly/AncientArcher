@@ -111,12 +111,12 @@ void AAViewport::shiftYawAndPith(float yawOffset, float pitchOffset)
   updateCameraVectors();
 }
 
-glm::mat4 AAViewport::getViewMatrix()
+glm::mat4 AAViewport::getViewMatrix() const
 {
   return glm::lookAt(mPosition, mPosition + mFront, mUp);
 }
 
-glm::mat4 AAViewport::getProjectionMatrix()
+glm::mat4 AAViewport::getProjectionMatrix() const
 {
   glm::mat4 projection = glm::perspective(
     glm::radians(mFieldOfView),
@@ -128,27 +128,27 @@ glm::mat4 AAViewport::getProjectionMatrix()
   return projection;
 }
 
-glm::vec3* AAViewport::getPosition()
+const glm::vec3* AAViewport::getPosition() const
 {
   return &mPosition;
 }
 
-glm::vec3* AAViewport::getFront()
+const glm::vec3* AAViewport::getFront() const
 {
   return &mFront;
 }
 
-glm::vec3* AAViewport::getRight()
+const glm::vec3* AAViewport::getRight() const
 {
   return &mRight;
 }
 
-float AAViewport::getYaw()
+float AAViewport::getYaw() const
 {
   return mYaw;
 }
 
-float AAViewport::getPitch()
+float AAViewport::getPitch() const
 {
   return mPitch;
 }

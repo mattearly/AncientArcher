@@ -17,14 +17,14 @@ void AAGameObject::draw()
 {
   switch (mModelShaderType)
   {
-  case NONE:
+  case Shading::NONE:
     break;
-  case CELL:
+  case Shading::CELL:
     AAViewport::getInstance()->mCellShader->use();
     AAViewport::getInstance()->mCellShader->setMat4("view", AAViewport::getInstance()->getViewMatrix());
     AAViewport::getInstance()->mCellShader->setMat4("model", mModelMatrix);
     break;
-  case IMGTEX:
+  case Shading::IMGTEX:
     AAViewport::getInstance()->mTexShader->use();
     AAViewport::getInstance()->mTexShader->setMat4("view", AAViewport::getInstance()->getViewMatrix());
     AAViewport::getInstance()->mTexShader->setMat4("model", mModelMatrix);

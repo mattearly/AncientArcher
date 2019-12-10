@@ -3,14 +3,14 @@
 #include <mearly\Shader.h>
 #include <memory>
 
-enum Shading { NONE, CELL, IMGTEX };
+enum class Shading { NONE, CELL, IMGTEX };
 
 struct TextureInfo
 {
-  unsigned int id;
+  unsigned int id = 0;
   std::string type;
   std::string path;
-  glm::vec3 color;
+  glm::vec3 color = glm::vec3(0);
 };
 
 struct MeshDrawInfo
@@ -39,5 +39,5 @@ private:
   std::vector<MeshDrawInfo> mMeshes;
   glm::mat4 mModelMatrix = glm::mat4(1);
 
-  Shading mModelShaderType = NONE;
+  Shading mModelShaderType = Shading::NONE;
 };
