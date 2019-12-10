@@ -8,34 +8,28 @@
 
 void  testStressEngineFunctions()
 {
-  AADisplay::getInstance()->setWindowTitle("Stress Functions - Press [ESC] To Quit");
-  AADisplay::getInstance()->setWindowClearColor(glm::vec3(.05, .5, .3));
+  AAEngine engine;
 
-  static AAEngine engine;
-  std::shared_ptr<AAKeyInput> keys = std::make_shared<AAKeyInput>();           // keyinput set for engine to update
-  engine.setKeyStruct(keys);                                                   // set keys to process keys/mouse    
-  std::shared_ptr<AAMouseInput> mouse = std::make_shared<AAMouseInput>();      // mouseinput for the display
-  engine.setMouseStruct(mouse);                                                //
-  std::shared_ptr<AAScrollInput> scroll = std::make_shared<AAScrollInput>();   // 
-  engine.setScrollStruct(scroll);
+  //AADisplay::getInstance()->setWindowTitle("Stress Functions - Press [ESC] To Quit");
+  //AADisplay::getInstance()->setWindowClearColor(glm::vec3(.05, .5, .3));
+  //AADisplay::getInstance()->setCursorToDisabled();
+  //AAViewport::getInstance()->setRenderDistance(500.f);
 
-  AADisplay::getInstance()->setCursorToDisabled();
-  AAViewport::getInstance()->setRenderDistance(500.f);
-
-  static AAGameObject gameObj = AAOGLGraphics::getInstance()->loadGameObjectWithAssimp(test::model, false, Shading::CELL);
+  //static AAGameObject gameObj = AAOGLGraphics::getInstance()->loadGameObjectWithAssimp(test::model, false, Shading::CELL);
   static AAGameObject gameObj2 = AAOGLGraphics::getInstance()->loadGameObjectWithAssimp(test::model2, false, Shading::CELL);
-  static AAGameObject gameObj3 = AAOGLGraphics::getInstance()->loadGameObjectWithAssimp(test::model3, false, Shading::CELL);
-  static AAGameObject gameObj4 = AAOGLGraphics::getInstance()->loadGameObjectWithAssimp(test::model4, false, Shading::CELL);
-  static AAGameObject gameObj5 = AAOGLGraphics::getInstance()->loadGameObjectWithAssimp(test::model5, true, Shading::CELL);
+  //static AAGameObject gameObj3 = AAOGLGraphics::getInstance()->loadGameObjectWithAssimp(test::model3, false, Shading::CELL);
+  //static AAGameObject gameObj4 = AAOGLGraphics::getInstance()->loadGameObjectWithAssimp(test::model4, false, Shading::CELL);
+  //static AAGameObject gameObj5 = AAOGLGraphics::getInstance()->loadGameObjectWithAssimp(test::model5, true, Shading::CELL);
   static AAGameObject gameObj6 = AAOGLGraphics::getInstance()->loadGameObjectWithAssimp(test::model6, true, Shading::IMGTEX);
-  static AAGameObject gameObj7 = AAOGLGraphics::getInstance()->loadGameObjectWithAssimp(test::model7, true, Shading::IMGTEX);
-  static AAGameObject gameObj8 = AAOGLGraphics::getInstance()->loadGameObjectWithAssimp(test::model8, true, Shading::IMGTEX);
+  //static AAGameObject gameObj7 = AAOGLGraphics::getInstance()->loadGameObjectWithAssimp(test::model7, true, Shading::IMGTEX);
+  //static AAGameObject gameObj8 = AAOGLGraphics::getInstance()->loadGameObjectWithAssimp(test::model8, true, Shading::IMGTEX);
+  static AAGameObject gameObj9 = AAOGLGraphics::getInstance()->loadGameObjectWithAssimp(test::model9, true, Shading::IMGTEX);
 
   static const float FlyIncrement = 0.4f;
-  static float flySpeed = 5.f;
+  static float flySpeed = 10.f;
   static float prevFlySpeed = 0.f;
 
-  // funcs we can use in our lambdas
+  // position testing help
   static auto showLocation = []()
   {
     // debug show location
@@ -50,65 +44,109 @@ void  testStressEngineFunctions()
   };
 
   // lambda funcs for the engine
-  auto beginFunc = []() {
-    AAViewport::getInstance()->setCurrentPosition(glm::vec3(0,5,10));
+  auto startFunc = []() {
+    AAViewport::getInstance()->setCurrentPosition(glm::vec3(0, 5, 10));
     AAViewport::getInstance()->setCurrentPitch(-20.f);
     AAViewport::getInstance()->setCurrentYaw(270.f);
-    gameObj5.translate(glm::vec3(5,5,-5));
-    gameObj6.translate(glm::vec3(-5,5,-5));
-    gameObj7.translate(glm::vec3(0,-10,0));
-
+    gameObj2.translate(glm::vec3(0, 22, 10));
+    //gameObj5.translate(glm::vec3(5,5,-5));
+    gameObj6.translate(glm::vec3(0));
+    //gameObj7.translate(glm::vec3(-51.625,0,0));
+    //gameObj8.translate(glm::vec3(0));
+    gameObj9.translate(glm::vec3(0));
+    AAViewport::getInstance()->setToPerspective();
+    AADisplay::getInstance()->setCursorToDisabled();
+    AADisplay::getInstance()->setWindowClearColor(glm::vec3(.18f, .28f, .91f));
   };
-  auto customKeyInput = [](std::shared_ptr<AAKeyInput>& keys)
+  auto escapeTogglesMouseDisplay = [](AAKeyBoardInput& keys)
   {
-    if (keys->esc)
+    static bool isFPS = true;
+    if (keys.esc)
     {
-      //glfwSetWindowShouldClose(AADisplay::getInstance()->getWindow(), true);
-      engine.shutdown();
+      if (isFPS)
+      {
+        AADisplay::getInstance()->setCursorToVisible();
+        isFPS = false;
+      }
+      else
+      {
+        AADisplay::getInstance()->setCursorToDisabled();
+        isFPS = true;
+      }
+    }
+  };
+  auto changeRenderWithPageUpDown = [](AAKeyBoardInput& keys)
+  {
+    static const float MAX_RENDER_DISTANCE = 235.f;
+    static const float MIN_RENDER_DISTANCE = 35.f;
+    static float render_distance = 100.f;
+    static const float INCR = 10.f;
+
+    if (keys.pageUp)
+    {
+      render_distance += INCR;
+    }
+    if (keys.pageDown)
+    {
+      render_distance -= INCR;
     }
 
+    if (render_distance > MAX_RENDER_DISTANCE)
+    {
+      render_distance = MAX_RENDER_DISTANCE;
+    }
+    else if (render_distance < MIN_RENDER_DISTANCE)
+    {
+      render_distance = MIN_RENDER_DISTANCE;
+    }
+
+    AAViewport::getInstance()->setRenderDistance(render_distance);
+
+  };
+  auto fpsKBNoClipFlying = [](AAKeyBoardInput& keys)
+  {
     // this is a debug cam mover with no colliding - called every frame with deltaTime
     static float fps60velocity = 0.f;
     static glm::vec3 directionPlacement = glm::vec3(0.f, 0.f, 0.f);
     static glm::vec3 moveFront = glm::vec3(*AAViewport::getInstance()->getFront());
 
-    // setting our velocity based on 60fps guess (since no delta time avail here)
+    // setting our velocity based on 60fps (a guess since we don't have delta time here)
     fps60velocity = 0.0166f * flySpeed;
 
-    // process wasd
-    if (keys->w)
+    // process WASD movement
+    if (keys.w)
     {
       directionPlacement += moveFront * fps60velocity;
     }
-    if (keys->s)
+    if (keys.s)
     {
       directionPlacement -= moveFront * fps60velocity;
     }
-    if (keys->a)
+    if (keys.a)
     {
       directionPlacement -= *AAViewport::getInstance()->getRight() * fps60velocity;
     }
-    if (keys->d)
+    if (keys.d)
     {
       directionPlacement += *AAViewport::getInstance()->getRight() * fps60velocity;
     }
 
     // process going up and down
-    if (!keys->leftShift && keys->spacebar)  // spacebar goes up
+    if (!keys.leftShift && keys.spacebar)
     {
       directionPlacement += AAViewport::getInstance()->WORLD_UP * fps60velocity;
     }
-    if (keys->leftShift && keys->spacebar)   // shift + spacebar goes down
+    if (keys.leftShift && keys.spacebar)
     {
       directionPlacement -= AAViewport::getInstance()->WORLD_UP * fps60velocity;
     }
 
-    if (keys->n1)
+    if (keys.n1)
     {
       std::cout << "num1 pressed\n";
     }
 
-    if (keys->n2)
+    if (keys.n2)
     {
       std::cout << "num2 pressed\n";
     }
@@ -120,23 +158,23 @@ void  testStressEngineFunctions()
     directionPlacement = glm::vec3(0.f, 0.f, 0.f);
     moveFront = glm::vec3(*AAViewport::getInstance()->getFront());
   };
-  auto customScrollInput = [](std::shared_ptr<AAScrollInput>& scroll)
+  auto fpsScrollChangesMoveSpeed = [](AAScrollInput& scroll)
   {
     // set flyspeed when mouse wheel moves
-    if (scroll->yOffset > 0.1f)
+    if (scroll.yOffset > 0.1f)
     {
       flySpeed += FlyIncrement;
-      scroll->yOffset = 0;
+      scroll.yOffset = 0;
     }
-    if (scroll->yOffset < -0.1f)
+    if (scroll.yOffset < -0.1f)
     {
       flySpeed -= FlyIncrement;
-      scroll->yOffset = 0;
+      scroll.yOffset = 0;
     }
     // cap flyspeed
-    if (flySpeed >= 10.f)
+    if (flySpeed >= 20.f)
     {
-      flySpeed = 10.f;
+      flySpeed = 20.f;
     }
     if (flySpeed <= 1.f)
     {
@@ -148,42 +186,44 @@ void  testStressEngineFunctions()
       prevFlySpeed = flySpeed;
     }
   };
-  auto customMouseInput = [](std::shared_ptr<AAMouseInput>& mouse)
+  auto fpsMouseMovement = [](AAMouseInput& mouse)
   {
-    AAViewport::getInstance()->shiftYawAndPith(mouse->xOffset, mouse->yOffset);
+    AAViewport::getInstance()->shiftYawAndPith(mouse.xOffset, mouse.yOffset);
   };
-  
-  auto moveObjects = [](float dt)
+  auto deltaMoveObjects = [](float dt)
   {
     static float totalTime = 0;
     totalTime += dt;
-    gameObj.translate(glm::vec3(dt * .5, 0, 0));
-    gameObj2.translate(glm::vec3(-sin(totalTime), 0, 0));
-    gameObj3.translate(glm::vec3(0, 0, 0));
-    gameObj3.rotate(dt * .5f, glm::vec3(0, 1, 0));
-    gameObj4.translate(glm::vec3(0, 0, sin(totalTime)));
-    gameObj5.rotate(dt * .3f, glm::vec3(0, 1, 0));
+    //gameObj.translate(glm::vec3(dt * .5, 0, 0));
+    gameObj2.translate(glm::vec3(0, 0, -sin(totalTime)));
+    //gameObj3.translate(glm::vec3(0, 0, 0));
+    //gameObj3.rotate(dt * .5f, glm::vec3(0, 1, 0));
+    //gameObj4.translate(glm::vec3(0, 0, sin(totalTime)));
+    //gameObj5.rotate(dt * .3f, glm::vec3(0, 1, 0));
     gameObj6.rotate(dt * .6f, glm::vec3(0, 1, 0));
   };
   auto drawObjects = []()
   {
     //gameObj.draw();
-    //gameObj2.draw();
+    gameObj2.draw();
     //gameObj3.draw();
     //gameObj4.draw();
     //gameObj5.draw();
-    //gameObj6.draw();
+    gameObj6.draw();
     //gameObj7.draw();
-    gameObj8.draw();
+    //gameObj8.draw();
+    gameObj9.draw();
   };
 
   // add functions to parts of engine loops
-  engine.addToOnBegin(beginFunc);
-  engine.addToDeltaUpdate(moveObjects);
+  engine.addToOnBegin(startFunc);
+  engine.addToDeltaUpdate(deltaMoveObjects);
   engine.addToOnRender(drawObjects);
-  engine.addToKeyHandling(customKeyInput);
-  engine.addToScrollHandling(customScrollInput);
-  engine.addToMouseHandling(customMouseInput);
+  engine.addToKeyHandling(fpsKBNoClipFlying);
+  engine.addToKeyHandling(changeRenderWithPageUpDown);
+  engine.addToKeyHandling(escapeTogglesMouseDisplay);
+  engine.addToScrollHandling(fpsScrollChangesMoveSpeed);
+  engine.addToMouseHandling(fpsMouseMovement);
   //engine.addToUpdate(updatefunc);
 
   switch (engine.run())

@@ -11,12 +11,6 @@ void testEnginePause()
   AADisplay::getInstance()->setWindowClearColor(glm::vec3(.0,.1,.0));        // test changing window clear color
 
   AAEngine engine;
-  std::shared_ptr<AAKeyInput> keys = std::make_shared<AAKeyInput>();           // keyinput set for engine to update
-  engine.setKeyStruct(keys);                                                   // set keys to process keys/mouse    
-  std::shared_ptr<AAMouseInput> mouse = std::make_shared<AAMouseInput>();      // mouseinput for the display
-  engine.setMouseStruct(mouse);                                                //
-  std::shared_ptr<AAScrollInput> scroll = std::make_shared<AAScrollInput>();   // 
-  engine.setScrollStruct(scroll);  
 
   auto deltacout = [](float step) {
     static float timePassed = 0;
@@ -32,8 +26,8 @@ void testEnginePause()
   };
   engine.addToDeltaUpdate(deltacout);
 
-  auto handleKeys = [](std::shared_ptr<AAKeyInput>& keys) {
-    if (keys->enter)
+  auto handleKeys = [](AAKeyBoardInput& keys) {
+    if (keys.enter)
     {
       glfwSetWindowShouldClose(AADisplay::getInstance()->getWindow(), true);
     }
