@@ -1,5 +1,10 @@
 #include "AAEngine.h"
 
+AAEngine::AAEngine()
+{
+  initDisplay();
+}
+
 AAEngine::~AAEngine()
 {
   onBegin.clear();
@@ -137,4 +142,10 @@ void AAEngine::processSystemHotKeys()
     checkStamp = mEngineRunTimer;
     accumulatedTime = 0.f;
   }
+}
+
+void AAEngine::initDisplay()
+{
+  AADisplay::getInstance()->initFromEngine();
+
 }

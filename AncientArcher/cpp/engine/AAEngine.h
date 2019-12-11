@@ -8,6 +8,7 @@ class AAEngine
 {
 public:
 
+  AAEngine();
   ~AAEngine();
 
   int run();
@@ -42,4 +43,6 @@ private:
 
   float mEngineRunTimer = 0.f;
 
+  bool mDisplayInitiated = false;
+  void initDisplay();
 };

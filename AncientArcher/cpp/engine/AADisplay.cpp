@@ -13,35 +13,6 @@ AADisplay* AADisplay::getInstance()
   return display;
 }
 
-AADisplay::AADisplay()
-{
-  initGLFW();
-
-  mWindow = glfwCreateWindow(mWindowWidth, mWindowHeight, "AncientArcher", nullptr, nullptr);
-  if (!mWindow)
-  {
-    glfwTerminate();
-    exit(-1);
-  }
-
-  glfwMakeContextCurrent(mWindow);
-
-  initReshapeWindowHandler();
-
-  initMouseHandler();
-
-  initMouseScrollHandler();
-
-  if (!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress))  // init glad (for opengl context)
-  {
-    std::cout << "failed to init glad\n";
-    char tmp;
-    std::cin >> tmp;
-    exit(-1);
-  }
-
-}
-
 AADisplay::~AADisplay()
 {
   glfwTerminate();
@@ -242,4 +213,33 @@ void AADisplay::initMouseHandler()
 void AADisplay::initMouseScrollHandler()
 {
   ::glfwSetScrollCallback(mWindow, ::scrollCallback);
+}
+
+void AADisplay::initFromEngine()
+{
+  initGLFW();
+
+  mWindow = glfwCreateWindow(mWindowWidth, mWindowHeight, "AncientArcher", nullptr, nullptr);
+  if (!mWindow)
+  {
+    glfwTerminate();
+    exit(-1);
+  }
+
+  glfwMakeContextCurrent(mWindow);
+
+  initReshapeWindowHandler();
+
+  initMouseHandler();
+
+  initMouseScrollHandler();
+
+  if (!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress))  // init glad (for opengl context)
+  {
+    std::cout << "failed to init glad\n";
+    char tmp;
+    std::cin >> tmp;
+    exit(-1);
+  }
+
 }

@@ -11,7 +11,6 @@ public:
 
   static AADisplay* getInstance();
 
-  AADisplay();
   ~AADisplay();
 
   void reshapeWindowHandler(GLFWwindow* window, int width, int height);
@@ -61,5 +60,6 @@ private:
   void initMouseHandler();
   void initMouseScrollHandler();
 
+  void initFromEngine();
 };
 
