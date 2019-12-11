@@ -67,13 +67,16 @@ void  testStressEngineFunctions()
       {
         AADisplay::getInstance()->setCursorToVisible();
         isFPS = false;
+        return true;
       }
       else
       {
         AADisplay::getInstance()->setCursorToDisabled();
         isFPS = true;
+        return true;
       }
     }
+    return false;
   };
   auto changeRenderWithPageUpDown = [](AAKeyBoardInput& keys)
   {
@@ -221,7 +224,7 @@ void  testStressEngineFunctions()
   engine.addToOnRender(drawObjects);
   engine.addToKeyHandling(fpsKBNoClipFlying);
   engine.addToKeyHandling(changeRenderWithPageUpDown);
-  engine.addToKeyHandling(escapeTogglesMouseDisplay);
+  engine.addToTimedOutKeyHandling(escapeTogglesMouseDisplay);
   engine.addToScrollHandling(fpsScrollChangesMoveSpeed);
   engine.addToMouseHandling(fpsMouseMovement);
   //engine.addToUpdate(updatefunc);
