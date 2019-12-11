@@ -107,8 +107,7 @@ void AAEngine::update(float dt)
 
 void AAEngine::update()
 {
-  AAControls::getInstance()->pullButtonStateEvents();
-
+  processSystemKeys();
   for (auto oKH : onKeyHandling)
   {
     oKH(AAControls::getInstance()->mButtonState);
@@ -127,21 +126,25 @@ void AAEngine::update()
   {
     oU();
   }
-  processSystemHotKeys();
 }
 
-void AAEngine::processSystemHotKeys()
+void AAEngine::processSystemKeys()
 {
+  AAControls::getInstance()->pullButtonStateEvents();
+
   static float checkStamp = 0.f;
   float passedTime = mEngineRunTimer - checkStamp;
   static float accumulatedTime = 0.f;
   accumulatedTime += passedTime;
-  if (accumulatedTime > 1.f && (AAControls::getInstance()->mButtonState.leftAlt || AAControls::getInstance()->mButtonState.rightAlt) && AAControls::getInstance()->mButtonState.enter)
+  if (accumulatedTime > 1.f)
   {
-    AADisplay::getInstance()->toggleFullScreen();
-    checkStamp = mEngineRunTimer;
-    accumulatedTime = 0.f;
+    if ((AAControls::getInstance()->mButtonState.leftAlt || AAControls::getInstance()->mButtonState.rightAlt) && AAControls::getInstance()->mButtonState.enter)
+    {
+      AADisplay::getInstance()->toggleFullScreen();
+      accumulatedTime = 0.f;
+    }
   }
+  checkStamp = mEngineRunTimer;
 }
 
 void AAEngine::initDisplay()

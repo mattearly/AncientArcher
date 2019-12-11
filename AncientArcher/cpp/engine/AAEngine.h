@@ -31,7 +31,7 @@ private:
   void render();
   void update();
 
-  void processSystemHotKeys();
+  void processSystemKeys();
 
   std::vector<void (*)()> onBegin;
   std::vector<void (*)(float)> onDeltaUpdate;
