@@ -59,6 +59,11 @@ void AAEngine::addToKeyHandling(void(*function)(AAKeyBoardInput&))
   onKeyHandling.push_back(function);
 }
 
+void AAEngine::addToTimedOutKeyHandling(bool(*function)(AAKeyBoardInput&))
+{
+  onTimeoutKeyHandling.push_back(function);
+}
+
 void AAEngine::addToScrollHandling(void(*function)(AAScrollInput&))
 {
   onScrollHandling.push_back(function);
@@ -108,6 +113,35 @@ void AAEngine::update(float dt)
 void AAEngine::update()
 {
   processSystemKeys();
+
+  static float checkStamp = 0.f;
+  float passedTime = mEngineRunTimer - checkStamp;
+  static float systemKeyTimeOut = 0.f;
+  systemKeyTimeOut += passedTime;
+  if (systemKeyTimeOut > mKeyTimeOutLength)
+  {
+    int buttonUsed = false;
+    if ((AAControls::getInstance()->mButtonState.leftAlt || AAControls::getInstance()->mButtonState.rightAlt) && AAControls::getInstance()->mButtonState.enter)
+    {
+      AADisplay::getInstance()->toggleFullScreen();
+      buttonUsed = true;
+    }
+
+    for (auto oTKH : onTimeoutKeyHandling)
+    {
+      if (oTKH(AAControls::getInstance()->mButtonState))
+      {
+        buttonUsed = true;
+      }
+    }
+
+    if (buttonUsed) {
+      systemKeyTimeOut = 0.f;
+    }
+  }
+
+  checkStamp = mEngineRunTimer;
+
   for (auto oKH : onKeyHandling)
   {
     oKH(AAControls::getInstance()->mButtonState);
@@ -131,24 +165,9 @@ void AAEngine::update()
 void AAEngine::processSystemKeys()
 {
   AAControls::getInstance()->pullButtonStateEvents();
-
-  static float checkStamp = 0.f;
-  float passedTime = mEngineRunTimer - checkStamp;
-  static float accumulatedTime = 0.f;
-  accumulatedTime += passedTime;
-  if (accumulatedTime > 1.f)
-  {
-    if ((AAControls::getInstance()->mButtonState.leftAlt || AAControls::getInstance()->mButtonState.rightAlt) && AAControls::getInstance()->mButtonState.enter)
-    {
-      AADisplay::getInstance()->toggleFullScreen();
-      accumulatedTime = 0.f;
-    }
-  }
-  checkStamp = mEngineRunTimer;
 }
 
 void AAEngine::initDisplay()
 {
   AADisplay::getInstance()->initFromEngine();
-
 }
