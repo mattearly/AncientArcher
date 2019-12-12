@@ -3,12 +3,19 @@
 #include "../engine/AADisplay.h"
 #include "../engine/AAEngine.h"
 #include "../engine/AAViewport.h"
+#include "../engine/AALights.h"
 #include <iostream>
 #include "modelPaths.h"
 
 void  testStressEngineFunctions()
 {
   AAEngine engine;
+
+  static DirectionalLight dirLight;
+  dirLight.Direction = glm::vec3(0.15f, -1.f, 0.15f);
+  dirLight.Ambient = glm::vec3(0.2f);
+  dirLight.Diffuse = glm::vec3(0.5f);
+  dirLight.Specular = glm::vec3(1.f);
 
   //AADisplay::getInstance()->setWindowTitle("Stress Functions - Press [ESC] To Quit");
   //AADisplay::getInstance()->setWindowClearColor(glm::vec3(.05, .5, .3));
@@ -58,6 +65,7 @@ void  testStressEngineFunctions()
     AAViewport::getInstance()->setRenderDistance(500.f);
     AADisplay::getInstance()->setCursorToDisabled();
     AADisplay::getInstance()->setWindowClearColor(glm::vec3(.18f, .28f, .91f));
+    AAViewport::getInstance()->setDirectionalLight(dirLight);
   };
   auto escapeTogglesMouseDisplay = [](AAKeyBoardInput& keys)
   {
