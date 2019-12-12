@@ -1,4 +1,5 @@
 #pragma once
+#include "AALights.h"
 #include <glm/glm.hpp>
 #include <mearly\Shader.h>
 #include <memory>
@@ -18,6 +19,7 @@ public:
   void setCurrentYaw(float yaw);
   void shiftCurrentPosition(glm::vec3 offset);
   void shiftYawAndPith(float yawOffset, float pitchOffset);
+  void setDirectionalLight(DirectionalLight light);
 
   glm::mat4 getViewMatrix() const;
   glm::mat4 getProjectionMatrix() const;

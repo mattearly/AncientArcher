@@ -111,6 +111,15 @@ void AAViewport::shiftYawAndPith(float yawOffset, float pitchOffset)
   updateCameraVectors();
 }
 
+void AAViewport::setDirectionalLight(DirectionalLight light)
+{
+  mTexShader->use();
+  mTexShader->setVec3("dirLight.Direction", light.Direction);
+  mTexShader->setVec3("dirLight.Ambient", light.Ambient);
+  mTexShader->setVec3("dirLight.Diffuse", light.Diffuse);
+  mTexShader->setVec3("dirLight.Specular", light.Specular);
+}
+
 glm::mat4 AAViewport::getViewMatrix() const
 {
   return glm::lookAt(mPosition, mPosition + mFront, mUp);
