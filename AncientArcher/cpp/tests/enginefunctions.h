@@ -55,6 +55,7 @@ void  testStressEngineFunctions()
     //gameObj8.translate(glm::vec3(0));
     gameObj9.translate(glm::vec3(0));
     AAViewport::getInstance()->setToPerspective();
+    AAViewport::getInstance()->setRenderDistance(500.f);
     AADisplay::getInstance()->setCursorToDisabled();
     AADisplay::getInstance()->setWindowClearColor(glm::vec3(.18f, .28f, .91f));
   };
@@ -80,10 +81,11 @@ void  testStressEngineFunctions()
   };
   auto changeRenderWithPageUpDown = [](AAKeyBoardInput& keys)
   {
-    static const float MAX_RENDER_DISTANCE = 235.f;
-    static const float MIN_RENDER_DISTANCE = 35.f;
-    static float render_distance = 100.f;
+    static const float MAX_RENDER_DISTANCE = 500.f;
+    static const float MIN_RENDER_DISTANCE = 65.f;
     static const float INCR = 10.f;
+
+    float render_distance = AAViewport::getInstance()->getRenderDistance();
 
     if (keys.pageUp)
     {
