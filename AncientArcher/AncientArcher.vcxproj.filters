@@ -104,5 +104,8 @@
     <ClInclude Include="cpp\engine\AASkybox.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="cpp\engine\AALights.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>
