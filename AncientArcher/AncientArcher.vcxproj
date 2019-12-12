@@ -152,6 +152,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="cpp\engine\AASkybox.cpp" />
     <ClCompile Include="cpp\engine\AAGameObject.cpp" />
     <ClCompile Include="cpp\engine\AAViewport.cpp" />
     <ClCompile Include="cpp\engine\AAOGLGraphics.cpp" />
@@ -166,6 +167,7 @@
     <ClCompile Include="include\mearly\Shader.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="cpp\engine\AASkybox.h" />
     <ClInclude Include="cpp\engine\AAGameObject.h" />
     <ClInclude Include="cpp\engine\AAViewport.h" />
     <ClInclude Include="cpp\engine\AAOGLGraphics.h" />
