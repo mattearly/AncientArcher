@@ -8,13 +8,20 @@ AAEngine::AAEngine()
 
 
   std::vector<std::string> skybox1 = {
-  "C:/Users/matt/Dropbox_me298414/Dropbox/SkyboxCubemaps/drakeq/right.png",
-  "C:/Users/matt/Dropbox_me298414/Dropbox/SkyboxCubemaps/drakeq/left.png",
-  "C:/Users/matt/Dropbox_me298414/Dropbox/SkyboxCubemaps/drakeq/up.png",
-  "C:/Users/matt/Dropbox_me298414/Dropbox/SkyboxCubemaps/drakeq/down.png",
-  "C:/Users/matt/Dropbox_me298414/Dropbox/SkyboxCubemaps/drakeq/front.png",
-  "C:/Users/matt/Dropbox_me298414/Dropbox/SkyboxCubemaps/drakeq/back.png" };
+  "C:/Users/matt/Dropbox_me298414/Dropbox/SkyboxCubemaps/nordic/right.png",
+  "C:/Users/matt/Dropbox_me298414/Dropbox/SkyboxCubemaps/nordic/left.png",
+  "C:/Users/matt/Dropbox_me298414/Dropbox/SkyboxCubemaps/nordic/up.png",
+  "C:/Users/matt/Dropbox_me298414/Dropbox/SkyboxCubemaps/nordic/down.png",
+  "C:/Users/matt/Dropbox_me298414/Dropbox/SkyboxCubemaps/nordic/front.png",
+  "C:/Users/matt/Dropbox_me298414/Dropbox/SkyboxCubemaps/nordic/back.png" };
 
+  //std::vector<std::string> skybox1 = {
+  //"C:/Users/matt/Dropbox_me298414/Dropbox/SkyboxCubemaps/drakeq/right.png",
+  //"C:/Users/matt/Dropbox_me298414/Dropbox/SkyboxCubemaps/drakeq/left.png",
+  //"C:/Users/matt/Dropbox_me298414/Dropbox/SkyboxCubemaps/drakeq/up.png",
+  //"C:/Users/matt/Dropbox_me298414/Dropbox/SkyboxCubemaps/drakeq/down.png",
+  //"C:/Users/matt/Dropbox_me298414/Dropbox/SkyboxCubemaps/drakeq/front.png",
+  //"C:/Users/matt/Dropbox_me298414/Dropbox/SkyboxCubemaps/drakeq/back.png" };
 
   mSkybox = std::make_unique<AASkybox>(skybox1);
 }
