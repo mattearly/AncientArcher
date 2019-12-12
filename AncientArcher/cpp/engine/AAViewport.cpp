@@ -118,9 +118,18 @@ glm::mat4 AAViewport::getViewMatrix() const
 
 glm::mat4 AAViewport::getProjectionMatrix() const
 {
+  float screen_width = (float)AADisplay::getInstance()->getScreenWidth();
+  float screen_height = (float)AADisplay::getInstance()->getScreenHeight();
+
+  if (screen_width == 0 || screen_height == 0)
+  {
+    std::cout << "perspective setting failed: screen width or height is 0\n";
+    return glm::mat4(0);
+  }
+
   glm::mat4 projection = glm::perspective(
     glm::radians(mFieldOfView),
-    (float)AADisplay::getInstance()->getScreenWidth() / (float)AADisplay::getInstance()->getScreenHeight(),
+    screen_width / screen_height,
     0.01f,
     mRenderDistance
   );
