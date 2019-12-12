@@ -1,8 +1,22 @@
 #include "AAEngine.h"
+#include <vector>
+#include <string>
 
 AAEngine::AAEngine()
 {
   initDisplay();
+
+
+  std::vector<std::string> skybox1 = {
+  "C:/Users/matt/Dropbox_me298414/Dropbox/SkyboxCubemaps/drakeq/right.png",
+  "C:/Users/matt/Dropbox_me298414/Dropbox/SkyboxCubemaps/drakeq/left.png",
+  "C:/Users/matt/Dropbox_me298414/Dropbox/SkyboxCubemaps/drakeq/up.png",
+  "C:/Users/matt/Dropbox_me298414/Dropbox/SkyboxCubemaps/drakeq/down.png",
+  "C:/Users/matt/Dropbox_me298414/Dropbox/SkyboxCubemaps/drakeq/front.png",
+  "C:/Users/matt/Dropbox_me298414/Dropbox/SkyboxCubemaps/drakeq/back.png" };
+
+
+  mSkybox = std::make_unique<AASkybox>(skybox1);
 }
 
 AAEngine::~AAEngine()
@@ -87,10 +101,10 @@ void AAEngine::addToDeltaUpdate(void(*function)(float))
 void AAEngine::render()
 {
   AADisplay::getInstance()->clearBackBuffer();
-  for (auto onRen : onRender)
-  {
-    onRen();
-  }
+
+  for (auto onRen : onRender) { onRen(); }
+  if (mSkybox) { mSkybox->render(); }
+
   AADisplay::getInstance()->swapWindowBuffers();
 }
 

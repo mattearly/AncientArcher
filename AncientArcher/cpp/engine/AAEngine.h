@@ -2,8 +2,10 @@
 #include "AADisplay.h"
 #include "AAInput.h"
 #include "AAViewport.h"
+#include "AASkybox.h"
 #include <vector>
 #include <functional>
+#include <memory>
 class AAEngine
 {
 public:
@@ -49,4 +51,6 @@ private:
 
   bool mDisplayInitiated = false;
   void initDisplay();
+
+  std::unique_ptr<AASkybox> mSkybox;
 };
