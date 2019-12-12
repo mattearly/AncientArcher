@@ -161,3 +161,8 @@ float AAViewport::getPitch() const
 {
   return mPitch;
 }
+
+float AAViewport::getRenderDistance() const
+{
+  return mRenderDistance;
+}

@@ -26,6 +26,7 @@ public:
   const glm::vec3* getRight() const;
   float getYaw() const;
   float getPitch() const;
+  float getRenderDistance() const;
 
   friend class AAGameObject;
   friend class AADisplay;
