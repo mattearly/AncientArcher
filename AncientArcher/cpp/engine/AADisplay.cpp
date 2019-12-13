@@ -98,8 +98,10 @@ void AADisplay::setFullscreenToOn()
 
   mXPos = 0;
   mYPos = 0;
-  mWindowWidth = w + x + frameSizeLeft + frameSizeRight;
-  mWindowHeight = h + y + frameSizeTop + frameSizeBot;
+  //mWindowWidth = w + x + frameSizeLeft + frameSizeRight;
+  mWindowWidth = w + frameSizeLeft + frameSizeRight;
+  //mWindowHeight = h + y + frameSizeTop + frameSizeBot;
+  mWindowHeight = h + frameSizeTop + frameSizeBot;
 
   glfwSetWindowMonitor(mWindow, glfwGetPrimaryMonitor(), mXPos, mYPos, mWindowWidth, mWindowHeight, 0);
 
@@ -112,16 +114,21 @@ void AADisplay::setFullscreenToOff()
   glfwGetMonitorWorkarea(glfwGetPrimaryMonitor(), &x, &y, &w, &h);
 
   int frameSizeLeft, frameSizeTop, frameSizeRight, frameSizeBot;
-  glfwGetWindowFrameSize(mWindow, &frameSizeLeft, &frameSizeTop, &frameSizeRight, &frameSizeBot);
 
-  mXPos = x;
-  mYPos = y;
-  mWindowWidth = w;
-  mWindowHeight = h;
-
+  // turn off fullscreen to get frame sizes
   glfwSetWindowMonitor(mWindow, nullptr, mXPos, mYPos, mWindowWidth, mWindowHeight, 0);
 
-  glfwMaximizeWindow(mWindow);
+  // get frame sizes after turning off full screen
+  glfwGetWindowFrameSize(mWindow, &frameSizeLeft, &frameSizeTop, &frameSizeRight, &frameSizeBot);
+
+  // update window size and positions
+  mXPos = x + frameSizeLeft;
+  mYPos = y + frameSizeTop;
+  mWindowWidth = w - frameSizeLeft - frameSizeRight;
+  mWindowHeight = h - frameSizeTop - frameSizeBot;
+
+  // set to a better size in windowed mode
+  glfwSetWindowMonitor(mWindow, nullptr, mXPos, mYPos, mWindowWidth, mWindowHeight, 0);
 
   mWindowIsFullScreen = false;
 }
