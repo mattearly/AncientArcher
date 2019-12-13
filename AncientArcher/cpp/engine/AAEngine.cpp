@@ -5,25 +5,24 @@
 AAEngine::AAEngine()
 {
   initDisplay();
+  int skybox_choice = 1;
 
+  const int numOptions = 2;
+  std::string name[numOptions] = { "nordic","drakeq" };
+  assert(skybox_choice < numOptions);
+  {
+    // this is all based on where I am storing the data for cubemaps for testing
+    std::string folderpath = "C:/Users/matt/Dropbox_me298414/Dropbox/SkyboxCubemaps/";
+    std::string order[6] = { "/right", "/left", "/up", "/down", "/front", "/back" };
+    std::string extension = ".png";
 
-  std::vector<std::string> skybox1 = {
-  "C:/Users/matt/Dropbox_me298414/Dropbox/SkyboxCubemaps/nordic/right.png",
-  "C:/Users/matt/Dropbox_me298414/Dropbox/SkyboxCubemaps/nordic/left.png",
-  "C:/Users/matt/Dropbox_me298414/Dropbox/SkyboxCubemaps/nordic/up.png",
-  "C:/Users/matt/Dropbox_me298414/Dropbox/SkyboxCubemaps/nordic/down.png",
-  "C:/Users/matt/Dropbox_me298414/Dropbox/SkyboxCubemaps/nordic/front.png",
-  "C:/Users/matt/Dropbox_me298414/Dropbox/SkyboxCubemaps/nordic/back.png" };
-
-  //std::vector<std::string> skybox1 = {
-  //"C:/Users/matt/Dropbox_me298414/Dropbox/SkyboxCubemaps/drakeq/right.png",
-  //"C:/Users/matt/Dropbox_me298414/Dropbox/SkyboxCubemaps/drakeq/left.png",
-  //"C:/Users/matt/Dropbox_me298414/Dropbox/SkyboxCubemaps/drakeq/up.png",
-  //"C:/Users/matt/Dropbox_me298414/Dropbox/SkyboxCubemaps/drakeq/down.png",
-  //"C:/Users/matt/Dropbox_me298414/Dropbox/SkyboxCubemaps/drakeq/front.png",
-  //"C:/Users/matt/Dropbox_me298414/Dropbox/SkyboxCubemaps/drakeq/back.png" };
-
-  mSkybox = std::make_unique<AASkybox>(skybox1);
+    std::vector<std::string> cubemapfiles;
+    for (int j = 0; j < 6; ++j)
+    {
+      cubemapfiles.emplace_back(folderpath + name[skybox_choice] + order[j] + extension);
+    }
+    mSkybox = std::make_unique<AASkybox>(cubemapfiles);
+  }
 }
 
 AAEngine::~AAEngine()
@@ -156,9 +155,11 @@ void AAEngine::update()
       }
     }
 
-    if (buttonUsed) {
+    if (buttonUsed)
+    {
       systemKeyTimeOut = 0.f;
     }
+
   }
 
   checkStamp = mEngineRunTimer;
@@ -167,20 +168,25 @@ void AAEngine::update()
   {
     oKH(AAControls::getInstance()->mButtonState);
   }
+
   for (auto oSH : onScrollHandling)
   {
     oSH(AAControls::getInstance()->mMouseWheelScroll);
   }
+
   for (auto oMH : onMouseHandling)
   {
     oMH(AAControls::getInstance()->mMousePosition);
   }
+
   AAControls::getInstance()->mMousePosition.xOffset = 0;
   AAControls::getInstance()->mMousePosition.yOffset = 0;
+
   for (auto oU : onUpdate)
   {
     oU();
   }
+
 }
 
 void AAEngine::processSystemKeys()
