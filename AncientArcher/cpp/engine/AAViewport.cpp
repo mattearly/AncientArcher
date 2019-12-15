@@ -111,13 +111,25 @@ void AAViewport::shiftYawAndPith(float yawOffset, float pitchOffset)
   updateCameraVectors();
 }
 
-void AAViewport::setDirectionalLight(DirectionalLight light)
+void AAViewport::setDirectionalLight(const DirectionalLight* light, int which)
 {
   mTexShader->use();
-  mTexShader->setVec3("dirLight.Direction", light.Direction);
-  mTexShader->setVec3("dirLight.Ambient", light.Ambient);
-  mTexShader->setVec3("dirLight.Diffuse", light.Diffuse);
-  mTexShader->setVec3("dirLight.Specular", light.Specular);
+
+  std::string direction, ambient, diffuse, specular;
+  direction +=("dirLight[");
+  direction += std::to_string(which);
+  ambient = direction;
+  diffuse = direction;
+  specular = direction;
+  direction += "].Direction";
+  ambient += "].Ambient";
+  diffuse += "].Diffuse";
+  specular += "].Specular";
+
+  mTexShader->setVec3(direction, light[which].Direction);
+  mTexShader->setVec3(ambient, light[which].Ambient);
+  mTexShader->setVec3(diffuse, light[which].Diffuse);
+  mTexShader->setVec3(specular, light[which].Specular);
 }
 
 glm::mat4 AAViewport::getViewMatrix() const
