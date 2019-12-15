@@ -1,21 +1,15 @@
 #pragma once
-#include <GLFW\glfw3.h>
+#include "modelPaths.h"
 #include "../engine/AADisplay.h"
 #include "../engine/AAEngine.h"
 #include "../engine/AAViewport.h"
 #include "../engine/AALights.h"
+#include <GLFW\glfw3.h>
 #include <iostream>
-#include "modelPaths.h"
 
 void  testStressEngineFunctions()
 {
   AAEngine engine;
-
-  static DirectionalLight dirLight;
-  dirLight.Direction = glm::vec3(0.15f, -1.f, 0.15f);
-  dirLight.Ambient = glm::vec3(0.2f);
-  dirLight.Diffuse = glm::vec3(0.5f);
-  dirLight.Specular = glm::vec3(1.f);
 
   //AADisplay::getInstance()->setWindowTitle("Stress Functions - Press [ESC] To Quit");
   //AADisplay::getInstance()->setWindowClearColor(glm::vec3(.05, .5, .3));
@@ -23,7 +17,7 @@ void  testStressEngineFunctions()
   //AAViewport::getInstance()->setRenderDistance(500.f);
 
   //static AAGameObject gameObj = AAOGLGraphics::getInstance()->loadGameObjectWithAssimp(test::model, false, Shading::CELL);
-  static AAGameObject gameObj2 = AAOGLGraphics::getInstance()->loadGameObjectWithAssimp(test::model2, false, Shading::CELL);
+  static AAGameObject gameObj2 = AAOGLGraphics::getInstance()->loadGameObjectWithAssimp(test::model2, false, Shading::IMGTEX);
   //static AAGameObject gameObj3 = AAOGLGraphics::getInstance()->loadGameObjectWithAssimp(test::model3, false, Shading::CELL);
   //static AAGameObject gameObj4 = AAOGLGraphics::getInstance()->loadGameObjectWithAssimp(test::model4, false, Shading::CELL);
   //static AAGameObject gameObj5 = AAOGLGraphics::getInstance()->loadGameObjectWithAssimp(test::model5, true, Shading::CELL);
@@ -55,17 +49,31 @@ void  testStressEngineFunctions()
     AAViewport::getInstance()->setCurrentPosition(glm::vec3(0, 5, 10));
     AAViewport::getInstance()->setCurrentPitch(-20.f);
     AAViewport::getInstance()->setCurrentYaw(270.f);
+
     gameObj2.translate(glm::vec3(0, 22, 10));
     //gameObj5.translate(glm::vec3(5,5,-5));
     gameObj6.translate(glm::vec3(0));
     //gameObj7.translate(glm::vec3(-51.625,0,0));
     //gameObj8.translate(glm::vec3(0));
     gameObj9.translate(glm::vec3(0));
+
     AAViewport::getInstance()->setToPerspective();
     AAViewport::getInstance()->setRenderDistance(500.f);
     AADisplay::getInstance()->setCursorToDisabled();
-    AADisplay::getInstance()->setWindowClearColor(glm::vec3(.18f, .28f, .91f));
-    AAViewport::getInstance()->setDirectionalLight(dirLight);
+
+    DirectionalLight dirLight[2];
+    dirLight[0].Direction = glm::vec3(0.15f, -1.f, 0.15f);
+    dirLight[0].Ambient = glm::vec3(0.2f);
+    dirLight[0].Diffuse = glm::vec3(0.8f);
+    dirLight[0].Specular = glm::vec3(1.0f);
+
+    dirLight[1].Direction = glm::vec3(-0.15f, 1.f, -0.15f);
+    dirLight[1].Ambient = glm::vec3(0.2f);
+    dirLight[1].Diffuse = glm::vec3(0.5f);
+    dirLight[1].Specular = glm::vec3(1.0f);
+
+    AAViewport::getInstance()->setDirectionalLight(dirLight, 0);
+    AAViewport::getInstance()->setDirectionalLight(dirLight, 1);
   };
   auto escapeTogglesMouseDisplay = [](AAKeyBoardInput& keys)
   {
@@ -89,8 +97,8 @@ void  testStressEngineFunctions()
   };
   auto changeRenderWithPageUpDown = [](AAKeyBoardInput& keys)
   {
-    static const float MAX_RENDER_DISTANCE = 500.f;
-    static const float MIN_RENDER_DISTANCE = 65.f;
+    static const float MAX_RENDER_DISTANCE = 550.f;
+    static const float MIN_RENDER_DISTANCE = 55.f;
     static const float INCR = 10.f;
 
     float render_distance = AAViewport::getInstance()->getRenderDistance();
