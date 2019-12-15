@@ -36,7 +36,7 @@ struct SpotLight
 uniform vec3 viewPos;
 
 uniform Material material;
-uniform DirectionalLight dirLight;
+uniform DirectionalLight dirLight[2];
 uniform PointLight pointLight;
 uniform SpotLight spotLight;
 
@@ -49,7 +49,11 @@ void main()
   vec3 normal = normalize(norm);
   vec3 viewDir = normalize(viewPos - fragPos);
 
-  vec3 result = CalcDirectionalLight(dirLight, normal, viewDir, vec3(color.rgb));
+  vec3 result;
+  for (int i = 0; i < 2; ++i)
+  {
+    result += CalcDirectionalLight(dirLight[i], normal, viewDir, vec3(color.rgb));
+  }
   
   fragColor = vec4(result, 1.f);
 }
