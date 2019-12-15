@@ -5,24 +5,6 @@
 AAEngine::AAEngine()
 {
   initDisplay();
-  int skybox_choice = 1;
-
-  const int numOptions = 2;
-  std::string name[numOptions] = { "nordic","drakeq" };
-  assert(skybox_choice < numOptions);
-  {
-    // this is all based on where I am storing the data for cubemaps for testing
-    std::string folderpath = "C:/Users/matt/Dropbox_me298414/Dropbox/SkyboxCubemaps/";
-    std::string order[6] = { "/right", "/left", "/up", "/down", "/front", "/back" };
-    std::string extension = ".png";
-
-    std::vector<std::string> cubemapfiles;
-    for (int j = 0; j < 6; ++j)
-    {
-      cubemapfiles.emplace_back(folderpath + name[skybox_choice] + order[j] + extension);
-    }
-    mSkybox = std::make_unique<AASkybox>(cubemapfiles);
-  }
 }
 
 AAEngine::~AAEngine()
@@ -54,7 +36,6 @@ int AAEngine::run()
     render();
 
     update();
-
   }
   return 0;
 }
@@ -92,6 +73,11 @@ void AAEngine::addToScrollHandling(void(*function)(AAScrollInput&))
 void AAEngine::addToMouseHandling(void(*function)(AAMouseInput&))
 {
   onMouseHandling.push_back(function);
+}
+
+void AAEngine::setSkybox(std::shared_ptr<AASkybox>& skybox)
+{
+  mSkybox = skybox;
 }
 
 void AAEngine::addToOnRender(void(*function)())

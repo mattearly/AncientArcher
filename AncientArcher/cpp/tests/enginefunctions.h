@@ -11,6 +11,26 @@ void  testStressEngineFunctions()
 {
   AAEngine engine;
 
+  {
+    int skybox_choice = 0;
+    const int numOptions = 2;
+    std::string name[numOptions] = { "nordic","drakeq" };
+    assert(skybox_choice < numOptions);
+    {
+      // this is all based on where I am storing the data for cubemaps for testing
+      std::string folderpath = "C:/Users/matt/Dropbox_me298414/Dropbox/SkyboxCubemaps/";
+      std::string order[6] = { "/right", "/left", "/up", "/down", "/front", "/back" };
+      std::string extension = ".png";
+      std::vector<std::string> cubemapfiles;
+      for (int j = 0; j < 6; ++j)
+      {
+        cubemapfiles.emplace_back(folderpath + name[skybox_choice] + order[j] + extension);
+      }
+      std::shared_ptr<AASkybox> skybox = std::make_shared<AASkybox>(cubemapfiles);
+      engine.setSkybox(skybox);
+    }
+  }
+
   //AADisplay::getInstance()->setWindowTitle("Stress Functions - Press [ESC] To Quit");
   //AADisplay::getInstance()->setWindowClearColor(glm::vec3(.05, .5, .3));
   //AADisplay::getInstance()->setCursorToDisabled();
@@ -63,15 +83,13 @@ void  testStressEngineFunctions()
 
     DirectionalLight dirLight[2];
     dirLight[0].Direction = glm::vec3(0.15f, -1.f, 0.15f);
-    dirLight[0].Ambient = glm::vec3(0.2f);
-    dirLight[0].Diffuse = glm::vec3(0.8f);
-    dirLight[0].Specular = glm::vec3(1.0f);
-
+    dirLight[0].Ambient   = glm::vec3(0.2f);
+    dirLight[0].Diffuse   = glm::vec3(0.8f);
+    dirLight[0].Specular  = glm::vec3(1.0f);
     dirLight[1].Direction = glm::vec3(-0.15f, 1.f, -0.15f);
-    dirLight[1].Ambient = glm::vec3(0.2f);
-    dirLight[1].Diffuse = glm::vec3(0.5f);
-    dirLight[1].Specular = glm::vec3(1.0f);
-
+    dirLight[1].Ambient   = glm::vec3(0.2f);
+    dirLight[1].Diffuse   = glm::vec3(0.5f);
+    dirLight[1].Specular  = glm::vec3(1.0f);
     AAViewport::getInstance()->setDirectionalLight(dirLight, 0);
     AAViewport::getInstance()->setDirectionalLight(dirLight, 1);
   };
