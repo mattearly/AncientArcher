@@ -137,14 +137,15 @@ void AAViewport::setPointLight(const PointLight& light)
   mTexShader->use();
 
   std::string position, constant, linear, quadratic, ambient, diffuse, specular;
-  position += ("pointLight");
-  constant = linear = quadratic = ambient = diffuse = specular = position;
-  constant += ".Constant";
-  linear += ".Linear";
+  position  = "pointLight";
+  constant  = linear = quadratic = ambient = diffuse = specular = position;
+  position  += ".Position";
+  constant  += ".Constant";
+  linear    += ".Linear";
   quadratic += ".Quadratic";
-  ambient += ".Ambient";
-  diffuse += ".Diffuse";
-  specular += ".Specular";
+  ambient   += ".Ambient";
+  diffuse   += ".Diffuse";
+  specular  += ".Specular";
 
   mTexShader->setVec3(position,   light.Position);
   mTexShader->setFloat(constant,  light.Constant);
