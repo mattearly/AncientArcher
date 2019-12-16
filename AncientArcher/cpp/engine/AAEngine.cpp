@@ -75,7 +75,7 @@ void AAEngine::addToMouseHandling(void(*function)(AAMouseInput&))
   onMouseHandling.push_back(function);
 }
 
-void AAEngine::setSkybox(std::shared_ptr<AASkybox>& skybox)
+void AAEngine::setSkybox(const std::shared_ptr<AASkybox>& skybox)
 {
   mSkybox = skybox;
 }

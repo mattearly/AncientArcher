@@ -25,7 +25,7 @@ public:
   void addToScrollHandling(void(*function)(AAScrollInput&));
   void addToMouseHandling(void(*function)(AAMouseInput&));
 
-  void setSkybox(std::shared_ptr<AASkybox>& skybox);
+  void setSkybox(const std::shared_ptr<AASkybox>& skybox);
 
   friend class AAControls;
 
@@ -55,4 +55,5 @@ private:
   void initDisplay();
 
   std::shared_ptr<AASkybox> mSkybox;
+
 };
