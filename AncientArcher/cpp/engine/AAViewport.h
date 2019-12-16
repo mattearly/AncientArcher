@@ -19,8 +19,8 @@ public:
   void setCurrentYaw(float yaw);
   void shiftCurrentPosition(glm::vec3 offset);
   void shiftYawAndPith(float yawOffset, float pitchOffset);
-  void setDirectionalLight(const DirectionalLight* light, int which);
-  void setPointLight(const PointLight& light);
+  void setDirectionalLight(const DirectionalLight& light);
+  void setPointLight(const PointLight* light, const int& which);
   void setSpotLight(const SpotLight& light);
 
   glm::mat4 getViewMatrix() const;

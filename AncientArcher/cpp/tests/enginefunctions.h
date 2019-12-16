@@ -65,7 +65,7 @@ void  testStressEngineFunctions()
     std::cout << "pitch: " << AAViewport::getInstance()->getPitch() << " yaw: " << AAViewport::getInstance()->getYaw() << '\n';
   };
 
-  static PointLight pointLight;
+  static PointLight pointLight[4];
 
   // lambda funcs for the engine
   auto startFunc = []()
@@ -87,27 +87,32 @@ void  testStressEngineFunctions()
     AAViewport::getInstance()->setRenderDistance(500.f);
     AADisplay::getInstance()->setCursorToDisabled();
 
-    DirectionalLight dirLight[2];
-    dirLight[0].Direction = glm::vec3(.15f, -1.f, .15f);
-    dirLight[0].Ambient = glm::vec3(.03f);
-    dirLight[0].Diffuse = glm::vec3(.2f);
-    dirLight[0].Specular = glm::vec3(.5f);
-    AAViewport::getInstance()->setDirectionalLight(dirLight, 0);
+    DirectionalLight dirLight;
+    dirLight.Direction = glm::vec3(.15f, -1.f, .15f);
+    dirLight.Ambient = glm::vec3(.03f);
+    dirLight.Diffuse = glm::vec3(.2f);
+    dirLight.Specular = glm::vec3(.5f);
+    AAViewport::getInstance()->setDirectionalLight(dirLight);
 
-    //dirLight[1].Direction = glm::vec3(-.15f, 1.f, -.15f);
-    //dirLight[1].Ambient   = glm::vec3(.05f);
-    //dirLight[1].Diffuse   = glm::vec3(.5f);
-    //dirLight[1].Specular  = glm::vec3(0);
-    //AAViewport::getInstance()->setDirectionalLight(dirLight, 1);
+    glm::vec3 pLpositions[] = {
+      glm::vec3(30,2,-30),
+      glm::vec3(-30,2,-30),
+      glm::vec3(30,2,30),
+      glm::vec3(-30,2,30)
+    };
 
-    pointLight.Position = glm::vec3(0, 0, 0);
-    pointLight.Ambient = glm::vec3(0.9f);
-    pointLight.Diffuse = glm::vec3(0.9f);
-    pointLight.Specular = glm::vec3(1);
-    pointLight.Constant = 1.f;
-    pointLight.Linear = .09f;
-    pointLight.Quadratic = .032f;
-    AAViewport::getInstance()->setPointLight(pointLight);
+    for (int i = 0; i < 4; ++i)
+    {
+      pointLight[i].Ambient = glm::vec3(0.9f);
+      pointLight[i].Diffuse = glm::vec3(0.9f);
+      pointLight[i].Specular = glm::vec3(1);
+      pointLight[i].Constant = 1.f;
+      pointLight[i].Linear = .09f;
+      pointLight[i].Quadratic = .032f;
+      pointLight[i].Position = pLpositions[i];
+      AAViewport::getInstance()->setPointLight(pointLight, i);
+
+    }
 
     SpotLight spotLight;
     spotLight.Position = glm::vec3(0, 5, 8.5);
@@ -273,9 +278,8 @@ void  testStressEngineFunctions()
     //gameObj5.rotate(dt * .3f, glm::vec3(0, 1, 0));
     gameObj6.rotate(dt * .6f, glm::vec3(0, 2.5, 0));
 
-    //pointLight.Position = glm::vec3(0, 0, -sin(totalTime));
-    pointLight.Position = glm::vec3(0, 0, -sin(totalTime) * 10);
-    AAViewport::getInstance()->setPointLight(pointLight);
+    //pointLight.Position = glm::vec3(0, 0, -sin(totalTime) * 10);
+    //AAViewport::getInstance()->setPointLight(pointLight);
 
   };
   auto drawObjects = []()

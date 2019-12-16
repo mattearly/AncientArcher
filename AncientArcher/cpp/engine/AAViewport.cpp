@@ -111,49 +111,47 @@ void AAViewport::shiftYawAndPith(float yawOffset, float pitchOffset)
   updateCameraVectors();
 }
 
-void AAViewport::setDirectionalLight(const DirectionalLight* light, int which)
+void AAViewport::setDirectionalLight(const DirectionalLight& light)
 {
   mTexShader->use();
 
   std::string direction, ambient, diffuse, specular;
-  direction +=("dirLight[");
-  direction += std::to_string(which);
-  ambient = direction;
-  diffuse = direction;
-  specular = direction;
-  direction += "].Direction";
-  ambient += "].Ambient";
-  diffuse += "].Diffuse";
-  specular += "].Specular";
+  direction = "dirLight";
+  ambient = diffuse = specular = direction;
+  direction += ".Direction";
+  ambient += ".Ambient";
+  diffuse += ".Diffuse";
+  specular += ".Specular";
 
-  mTexShader->setVec3(direction, light[which].Direction);
-  mTexShader->setVec3(ambient, light[which].Ambient);
-  mTexShader->setVec3(diffuse, light[which].Diffuse);
-  mTexShader->setVec3(specular, light[which].Specular);
+  mTexShader->setVec3(direction, light.Direction);
+  mTexShader->setVec3(ambient, light.Ambient);
+  mTexShader->setVec3(diffuse, light.Diffuse);
+  mTexShader->setVec3(specular, light.Specular);
 }
 
-void AAViewport::setPointLight(const PointLight& light)
+void AAViewport::setPointLight(const PointLight* light, const int& which)
 {
   mTexShader->use();
 
   std::string position, constant, linear, quadratic, ambient, diffuse, specular;
-  position  = "pointLight";
-  constant  = linear = quadratic = ambient = diffuse = specular = position;
-  position  += ".Position";
-  constant  += ".Constant";
-  linear    += ".Linear";
-  quadratic += ".Quadratic";
-  ambient   += ".Ambient";
-  diffuse   += ".Diffuse";
-  specular  += ".Specular";
+  position = "pointLight[";
+  position += std::to_string(which);
+  constant = linear = quadratic = ambient = diffuse = specular = position;
+  position += "].Position";
+  constant += "].Constant";
+  linear += "].Linear";
+  quadratic += "].Quadratic";
+  ambient += "].Ambient";
+  diffuse += "].Diffuse";
+  specular += "].Specular";
 
-  mTexShader->setVec3(position,   light.Position);
-  mTexShader->setFloat(constant,  light.Constant);
-  mTexShader->setFloat(linear,    light.Linear);
-  mTexShader->setFloat(quadratic, light.Quadratic);
-  mTexShader->setVec3(ambient,    light.Ambient);
-  mTexShader->setVec3(diffuse,    light.Diffuse);
-  mTexShader->setVec3(specular,   light.Specular);
+  mTexShader->setVec3(position,   light[which].Position);
+  mTexShader->setFloat(constant,  light[which].Constant);
+  mTexShader->setFloat(linear,    light[which].Linear);
+  mTexShader->setFloat(quadratic, light[which].Quadratic);
+  mTexShader->setVec3(ambient,    light[which].Ambient);
+  mTexShader->setVec3(diffuse,    light[which].Diffuse);
+  mTexShader->setVec3(specular,   light[which].Specular);
 }
 
 void AAViewport::setSpotLight(const SpotLight& light)
