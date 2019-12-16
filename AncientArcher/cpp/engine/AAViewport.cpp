@@ -132,6 +132,29 @@ void AAViewport::setDirectionalLight(const DirectionalLight* light, int which)
   mTexShader->setVec3(specular, light[which].Specular);
 }
 
+void AAViewport::setPointLight(const PointLight& light)
+{
+  mTexShader->use();
+
+  std::string position, constant, linear, quadratic, ambient, diffuse, specular;
+  position += ("pointLight");
+  constant = linear = quadratic = ambient = diffuse = specular = position;
+  constant += ".Constant";
+  linear += ".Linear";
+  quadratic += ".Quadratic";
+  ambient += ".Ambient";
+  diffuse += ".Diffuse";
+  specular += ".Specular";
+
+  mTexShader->setVec3(position,   light.Position);
+  mTexShader->setFloat(constant,  light.Constant);
+  mTexShader->setFloat(linear,    light.Linear);
+  mTexShader->setFloat(quadratic, light.Quadratic);
+  mTexShader->setVec3(ambient,    light.Ambient);
+  mTexShader->setVec3(diffuse,    light.Diffuse);
+  mTexShader->setVec3(specular,   light.Specular);
+}
+
 glm::mat4 AAViewport::getViewMatrix() const
 {
   return glm::lookAt(mPosition, mPosition + mFront, mUp);

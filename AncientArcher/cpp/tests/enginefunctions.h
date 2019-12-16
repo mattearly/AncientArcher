@@ -12,9 +12,9 @@ void  testStressEngineFunctions()
   AAEngine engine;
 
   {
-    int skybox_choice = 0;
+    int skybox_choice = 1;
     const int numOptions = 2;
-    std::string name[numOptions] = { "nordic","drakeq" };
+    std::string name[numOptions] = { "nordic", "drakeq" };
     assert(skybox_choice < numOptions);
     {
       // this is all based on where I am storing the data for cubemaps for testing
@@ -83,16 +83,27 @@ void  testStressEngineFunctions()
 
     DirectionalLight dirLight[2];
     dirLight[0].Direction = glm::vec3(0.15f, -1.f, 0.15f);
-    dirLight[0].Ambient   = glm::vec3(0.2f);
-    dirLight[0].Diffuse   = glm::vec3(0.8f);
-    dirLight[0].Specular  = glm::vec3(1.0f);
+    dirLight[0].Ambient = glm::vec3(0.2f);
+    dirLight[0].Diffuse = glm::vec3(0.8f);
+    dirLight[0].Specular = glm::vec3(1.0f);
     dirLight[1].Direction = glm::vec3(-0.15f, 1.f, -0.15f);
-    dirLight[1].Ambient   = glm::vec3(0.2f);
-    dirLight[1].Diffuse   = glm::vec3(0.5f);
-    dirLight[1].Specular  = glm::vec3(1.0f);
+    dirLight[1].Ambient = glm::vec3(0.2f);
+    dirLight[1].Diffuse = glm::vec3(0.5f);
+    dirLight[1].Specular = glm::vec3(1.0f);
     AAViewport::getInstance()->setDirectionalLight(dirLight, 0);
     AAViewport::getInstance()->setDirectionalLight(dirLight, 1);
+
+    PointLight pLight;
+    pLight.Position = glm::vec3(0,10,0);
+    pLight.Constant = .5f;
+    pLight.Linear = .3f;
+    pLight.Quadratic = .01f;
+    pLight.Ambient = glm::vec3(.1f);
+    pLight.Diffuse = glm::vec3(.8f);
+    pLight.Specular = glm::vec3(.5f);
+    AAViewport::getInstance()->setPointLight(pLight);
   };
+
   auto escapeTogglesMouseDisplay = [](AAKeyBoardInput& keys)
   {
     static bool isFPS = true;
