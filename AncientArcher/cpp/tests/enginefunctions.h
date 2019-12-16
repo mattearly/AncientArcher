@@ -13,15 +13,15 @@ void  testStressEngineFunctions()
 
 
   {
-    int skybox_choice            = 1;
-    const int numOptions         = 2;
+    int skybox_choice = 1;
+    const int numOptions = 2;
     std::string name[numOptions] = { "nordic", "drakeq" };
     assert(skybox_choice < numOptions);
     {
       // this is all based on where I am storing the data for cubemaps for testing
       std::string folderpath = "C:/Users/matt/Dropbox_me298414/Dropbox/SkyboxCubemaps/";
-      std::string order[6]   = { "/right", "/left", "/up", "/down", "/front", "/back" };
-      std::string extension  = ".png";
+      std::string order[6] = { "/right", "/left", "/up", "/down", "/front", "/back" };
+      std::string extension = ".png";
       std::vector<std::string> cubemapfiles;
       for (int j = 0; j < 6; ++j)
       {
@@ -48,11 +48,11 @@ void  testStressEngineFunctions()
   static AAGameObject gameObj9 = AAOGLGraphics::getInstance()->loadGameObjectWithAssimp(test::model9, true, Shading::IMGTEX);
 
   static const float FlyIncrement = 0.4f;
-  static float flySpeed           = 10.f;
-  static float prevFlySpeed       = 0.f;
+  static float flySpeed = 10.f;
+  static float prevFlySpeed = 0.f;
 
   // position testing help
-  static auto showLocation    = []()
+  static auto showLocation = []()
   {
     // debug show location
     std::cout << "Loc(x,z,y): ("
@@ -64,11 +64,11 @@ void  testStressEngineFunctions()
   {
     std::cout << "pitch: " << AAViewport::getInstance()->getPitch() << " yaw: " << AAViewport::getInstance()->getYaw() << '\n';
   };
-  
+
   static PointLight pointLight;
 
   // lambda funcs for the engine
-  auto startFunc = []() 
+  auto startFunc = []()
   {
     AADisplay::getInstance()->setWindowSize(800, 600, 1000, 200);
 
@@ -78,7 +78,7 @@ void  testStressEngineFunctions()
 
     //gameObj2.translate(glm::vec3(0, 6, 0));
     //gameObj5.translate(glm::vec3(5,5,-5));
-    gameObj6.translate(glm::vec3(0,2,0));
+    gameObj6.translate(glm::vec3(0, 2, 0));
     //gameObj7.translate(glm::vec3(-51.625,0,0));
     //gameObj8.translate(glm::vec3(0));
     gameObj9.translate(glm::vec3(0));
@@ -89,9 +89,9 @@ void  testStressEngineFunctions()
 
     DirectionalLight dirLight[2];
     dirLight[0].Direction = glm::vec3(.15f, -1.f, .15f);
-    dirLight[0].Ambient   = glm::vec3(.03f);
-    dirLight[0].Diffuse   = glm::vec3(.2f);
-    dirLight[0].Specular  = glm::vec3(.5f);
+    dirLight[0].Ambient = glm::vec3(.03f);
+    dirLight[0].Diffuse = glm::vec3(.2f);
+    dirLight[0].Specular = glm::vec3(.5f);
     AAViewport::getInstance()->setDirectionalLight(dirLight, 0);
 
     //dirLight[1].Direction = glm::vec3(-.15f, 1.f, -.15f);
@@ -100,31 +100,31 @@ void  testStressEngineFunctions()
     //dirLight[1].Specular  = glm::vec3(0);
     //AAViewport::getInstance()->setDirectionalLight(dirLight, 1);
 
-    pointLight.Position  = glm::vec3(0,0,0);
-    pointLight.Ambient   = glm::vec3(0.9f);
-    pointLight.Diffuse   = glm::vec3(0.9f);
-    pointLight.Specular  = glm::vec3(1);
-    pointLight.Constant  = 1.f;
-    pointLight.Linear    = .09f;
+    pointLight.Position = glm::vec3(0, 0, 0);
+    pointLight.Ambient = glm::vec3(0.9f);
+    pointLight.Diffuse = glm::vec3(0.9f);
+    pointLight.Specular = glm::vec3(1);
+    pointLight.Constant = 1.f;
+    pointLight.Linear = .09f;
     pointLight.Quadratic = .032f;
     AAViewport::getInstance()->setPointLight(pointLight);
 
-    //SpotLight spotLight;
-    //spotLight.Position = glm::vec3(0,1,0);
-    //spotLight.Direction = glm::vec3(-1, 0, 0);
-    //spotLight.Ambient = glm::vec3(0);
-    //spotLight.Diffuse = glm::vec3(1.f);
-    //spotLight.Specular = glm::vec3(1.f);
-    //spotLight.Constant = 1.f;
-    //spotLight.Linear = .09f;
-    //spotLight.Quadratic = .032f;
-    //spotLight.CutOff = glm::cos(glm::radians(12.5f));
-    //spotLight.OuterCutOff = glm::cos(glm::radians(15.f));
-    //AAViewport::getInstance()->setSpotLight(spotLight);
+    SpotLight spotLight;
+    spotLight.Position = glm::vec3(0, 5, 8.5);
+    spotLight.Direction = glm::vec3(-1, 0, 0);
+    spotLight.Ambient = glm::vec3(0);
+    spotLight.Diffuse = glm::vec3(1.f);
+    spotLight.Specular = glm::vec3(1.f);
+    spotLight.Constant = 1.f;
+    spotLight.Linear = .09f;
+    spotLight.Quadratic = .015f;
+    spotLight.CutOff = glm::cos(glm::radians(15.f));
+    spotLight.OuterCutOff = glm::cos(glm::radians(19.f));
+    AAViewport::getInstance()->setSpotLight(spotLight);
 
   };
 
-  auto escapeTogglesMouseDisplay  = [](AAKeyBoardInput& keys)
+  auto escapeTogglesMouseDisplay = [](AAKeyBoardInput& keys)
   {
     static bool isFPS = true;
     if (keys.esc)
@@ -173,7 +173,7 @@ void  testStressEngineFunctions()
     AAViewport::getInstance()->setRenderDistance(render_distance);
 
   };
-  auto fpsKBNoClipFlying          = [](AAKeyBoardInput& keys)
+  auto fpsKBNoClipFlying = [](AAKeyBoardInput& keys)
   {
     // this is a debug cam mover with no colliding - called every frame with deltaTime
     static float fps60velocity = 0.f;
@@ -229,7 +229,7 @@ void  testStressEngineFunctions()
     directionPlacement = glm::vec3(0.f, 0.f, 0.f);
     moveFront = glm::vec3(*AAViewport::getInstance()->getFront());
   };
-  auto fpsScrollChangesMoveSpeed  = [](AAScrollInput& scroll)
+  auto fpsScrollChangesMoveSpeed = [](AAScrollInput& scroll)
   {
     // set flyspeed when mouse wheel moves
     if (scroll.yOffset > 0.1f)
@@ -257,11 +257,11 @@ void  testStressEngineFunctions()
       prevFlySpeed = flySpeed;
     }
   };
-  auto fpsMouseMovement           = [](AAMouseInput& mouse)
+  auto fpsMouseMovement = [](AAMouseInput& mouse)
   {
     AAViewport::getInstance()->shiftYawAndPith(mouse.xOffset, mouse.yOffset);
   };
-  auto deltaMoveObjects           = [](float dt)
+  auto deltaMoveObjects = [](float dt)
   {
     static float totalTime = 0;
     totalTime += dt;
@@ -274,7 +274,7 @@ void  testStressEngineFunctions()
     gameObj6.rotate(dt * .6f, glm::vec3(0, 2.5, 0));
 
     //pointLight.Position = glm::vec3(0, 0, -sin(totalTime));
-    pointLight.Position = glm::vec3(0, 0, -sin(totalTime)* 10);
+    pointLight.Position = glm::vec3(0, 0, -sin(totalTime) * 10);
     AAViewport::getInstance()->setPointLight(pointLight);
 
   };

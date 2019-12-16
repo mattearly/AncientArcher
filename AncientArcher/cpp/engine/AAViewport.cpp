@@ -156,6 +156,34 @@ void AAViewport::setPointLight(const PointLight& light)
   mTexShader->setVec3(specular,   light.Specular);
 }
 
+void AAViewport::setSpotLight(const SpotLight& light)
+{
+  mTexShader->use();
+  std::string position, ambient, constant, cutoff, ocutoff, diffuse, direction, linear, quadrat, specular;
+  position = "spotLight";
+  ambient = constant = cutoff = ocutoff = diffuse = direction = linear = quadrat = specular = position;
+  position += ".Position";
+  constant += ".Constant";
+  cutoff += ".CutOff";
+  ocutoff += ".OuterCutOff";
+  direction += ".Direction";
+  linear += ".Linear";
+  quadrat += ".Quadratic";
+  ambient += ".Ambient";
+  diffuse += ".Diffuse";
+  specular += ".Specular";
+
+  mTexShader->setVec3(position, light.Position);
+  mTexShader->setFloat(cutoff, light.CutOff);
+  mTexShader->setFloat(ocutoff, light.OuterCutOff);
+  mTexShader->setVec3(direction, light.Direction);
+  mTexShader->setFloat(linear, light.Linear);
+  mTexShader->setFloat(quadrat, light.Quadratic);
+  mTexShader->setVec3(ambient, light.Ambient);
+  mTexShader->setVec3(diffuse, light.Diffuse);
+  mTexShader->setVec3(specular, light.Specular);
+}
+
 glm::mat4 AAViewport::getViewMatrix() const
 {
   return glm::lookAt(mPosition, mPosition + mFront, mUp);

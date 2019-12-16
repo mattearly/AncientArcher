@@ -21,6 +21,7 @@ public:
   void shiftYawAndPith(float yawOffset, float pitchOffset);
   void setDirectionalLight(const DirectionalLight* light, int which);
   void setPointLight(const PointLight& light);
+  void setSpotLight(const SpotLight& light);
 
   glm::mat4 getViewMatrix() const;
   glm::mat4 getProjectionMatrix() const;
