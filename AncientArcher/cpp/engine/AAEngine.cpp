@@ -16,6 +16,7 @@ AAEngine::~AAEngine()
   onKeyHandling.clear();
   onScrollHandling.clear();
   onMouseHandling.clear();
+  glfwDestroyWindow(AADisplay::getInstance()->getWindow());
 }
 
 int AAEngine::run()
