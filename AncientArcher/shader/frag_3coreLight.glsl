@@ -7,7 +7,7 @@ out vec4 fragColor;
 
 struct Material
 {
-  sampler2D diffuse1;
+  sampler2D diffuse;
 //  vec4 Gloss; // xyz = norm, w = gloss
   float Gloss;
   sampler2D Specular;
@@ -46,7 +46,7 @@ vec3 CalcSpotLight(SpotLight light, vec3 normal, vec3 fragP, vec3 viewDir);
 
 void main()
 {
-//  vec4 color = texture(material.diffuse1, texUV);
+//  vec4 color = texture(material.diffuse, texUV);
 
   vec3 normal = normalize(norm);
   vec3 viewDir = normalize(viewPos - fragPos);
@@ -73,8 +73,8 @@ vec3 CalcDirectionalLight(DirectionalLight light, vec3 normal, vec3 viewDir)
 //  float spec = pow(max(dot(viewDir, reflectDir), 0.0), material.Gloss);
 //  float spec = pow(max(dot(viewDir, reflectDir), 0.0), 0.0);
 
-  vec3 ambient = light.Ambient * texture(material.diffuse1, texUV).rgb;
-  vec3 diffuse = light.Diffuse * diff * texture(material.diffuse1, texUV).rgb;
+  vec3 ambient = light.Ambient * texture(material.diffuse, texUV).rgb;
+  vec3 diffuse = light.Diffuse * diff * texture(material.diffuse, texUV).rgb;
 //  vec3 specular = light.Specular * spec * vec3(texture(material.Specular, texUV);
 
   return (ambient + diffuse /*+ specular*/);
@@ -91,8 +91,8 @@ vec3 CalcPointLight(PointLight light, vec3 normal, vec3 fragP, vec3 viewDir)
   float dist = length(light.Position - fragP);
   float attenuation = 1.0 / (light.Constant + light.Linear * dist + light.Quadratic * (dist * dist));
 
-  vec3 ambient = light.Ambient * texture(material.diffuse1, texUV).rgb;
-  vec3 diffuse = light.Diffuse * diff * texture(material.diffuse1, texUV).rgb;
+  vec3 ambient = light.Ambient * texture(material.diffuse, texUV).rgb;
+  vec3 diffuse = light.Diffuse * diff * texture(material.diffuse, texUV).rgb;
 //  vec3 specular = light.Specular * spec * vec3(texture(material.Specular, texUV);
 
   ambient *= attenuation;
@@ -117,8 +117,8 @@ vec3 CalcSpotLight(SpotLight light, vec3 normal, vec3 fragP, vec3 viewDir)
   float epsilon = light.CutOff - light.OuterCutOff;
   float intensity = clamp((theta - light.OuterCutOff) / epsilon, 0.0, 1.0);
 
-  vec3 ambient = light.Ambient * texture(material.diffuse1, texUV).rgb;
-  vec3 diffuse = light.Diffuse * diff * texture(material.diffuse1, texUV).rgb;
+  vec3 ambient = light.Ambient * texture(material.diffuse, texUV).rgb;
+  vec3 diffuse = light.Diffuse * diff * texture(material.diffuse, texUV).rgb;
 //  vec3 specular = light.Specular * spec * vec3(texture(material.Specular, texUV);
 
   ambient *= attenuation * intensity;
