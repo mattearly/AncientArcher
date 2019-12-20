@@ -159,6 +159,7 @@
     <ClCompile Include="cpp\engine\AAEngine.cpp" />
     <ClCompile Include="cpp\engine\AAControls.cpp" />
     <ClCompile Include="cpp\engine\AADisplay.cpp" />
+    <ClCompile Include="cpp\engine\AAShaderManager.cpp" />
     <ClCompile Include="cpp\tests\main.cpp" />
     <ClCompile Include="include\glad\glad.c" />
     <ClCompile Include="include\mearly\Random.cpp" />
@@ -176,6 +177,9 @@
     <ClInclude Include="cpp\engine\AAControls.h" />
     <ClInclude Include="cpp\engine\AADisplay.h" />
     <ClInclude Include="cpp\engine\AAInput.h" />
+    <ClInclude Include="cpp\tests\addgodmovement.h" />
+    <ClInclude Include="cpp\tests\addskybox.h" />
+    <ClInclude Include="cpp\engine\AAShaderManager.h" />
     <ClInclude Include="cpp\tests\engineBaseCase.h" />
     <ClInclude Include="cpp\tests\enginedisplay.h" />
     <ClInclude Include="cpp\tests\enginefunctions.h" />
@@ -183,6 +187,7 @@
     <ClInclude Include="cpp\tests\enginepause.h" />
     <ClInclude Include="cpp\tests\model.h" />
     <ClInclude Include="cpp\tests\modelPaths.h" />
+    <ClInclude Include="cpp\tests\WeirdLevel.h" />
     <ClInclude Include="cpp\tests\workingdir.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
