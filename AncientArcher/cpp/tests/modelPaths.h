@@ -16,4 +16,5 @@ namespace test {
   std::string model7 = "C:/Users/matt/Dropbox_me298414/Dropbox/My3DModels/water_plane_not_triangulated.obj";
   std::string model8 = "C:/Users/matt/Dropbox_me298414/Dropbox/My3DModels/street_scene_not_triangulated.obj";
   std::string model9 = "C:/Users/matt/Dropbox_me298414/Dropbox/My3DModels/street_scene_2_not_triangulated.obj";
+  std::string model10 = "C:/Users/matt/Dropbox_me298414/Dropbox/My3DModels/terrain1_not_triangulated.obj";
 } // end namespace test
