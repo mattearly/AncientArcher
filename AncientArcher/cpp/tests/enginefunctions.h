@@ -6,31 +6,12 @@
 #include "../engine/AALights.h"
 #include <GLFW\glfw3.h>
 #include <iostream>
+#include "addskybox.h"
 
 void  testStressEngineFunctions()
 {
   AAEngine engine;
-
-
-  {
-    int skybox_choice = 1;
-    const int numOptions = 2;
-    std::string name[numOptions] = { "nordic", "drakeq" };
-    assert(skybox_choice < numOptions);
-    {
-      // this is all based on where I am storing the data for cubemaps for testing
-      std::string folderpath = "C:/Users/matt/Dropbox_me298414/Dropbox/SkyboxCubemaps/";
-      std::string order[6] = { "/right", "/left", "/up", "/down", "/front", "/back" };
-      std::string extension = ".png";
-      std::vector<std::string> cubemapfiles;
-      for (int j = 0; j < 6; ++j)
-      {
-        cubemapfiles.emplace_back(folderpath + name[skybox_choice] + order[j] + extension);
-      }
-      std::shared_ptr<AASkybox> skybox = std::make_shared<AASkybox>(cubemapfiles);
-      engine.setSkybox(skybox);
-    }
-  }
+  addskybox(engine, "drakeq");
 
   //AADisplay::getInstance()->setWindowTitle("Stress Functions - Press [ESC] To Quit");
   //AADisplay::getInstance()->setWindowClearColor(glm::vec3(.05, .5, .3));
@@ -42,10 +23,13 @@ void  testStressEngineFunctions()
   //static AAGameObject gameObj3 = AAOGLGraphics::getInstance()->loadGameObjectWithAssimp(test::model3, false, Shading::CELL);
   //static AAGameObject gameObj4 = AAOGLGraphics::getInstance()->loadGameObjectWithAssimp(test::model4, false, Shading::CELL);
   //static AAGameObject gameObj5 = AAOGLGraphics::getInstance()->loadGameObjectWithAssimp(test::model5, true, Shading::CELL);
-  static AAGameObject gameObj6 = AAOGLGraphics::getInstance()->loadGameObjectWithAssimp(test::model6, true, Shading::IMGTEX);
+  
+  static AAGameObject gameObj6 = AAOGLGraphics::getInstance()->loadGameObjectWithAssimp(test::model6, true);
+
   //static AAGameObject gameObj7 = AAOGLGraphics::getInstance()->loadGameObjectWithAssimp(test::model7, true, Shading::IMGTEX);
   //static AAGameObject gameObj8 = AAOGLGraphics::getInstance()->loadGameObjectWithAssimp(test::model8, true, Shading::IMGTEX);
-  static AAGameObject gameObj9 = AAOGLGraphics::getInstance()->loadGameObjectWithAssimp(test::model9, true, Shading::IMGTEX);
+  
+  static AAGameObject gameObj9 = AAOGLGraphics::getInstance()->loadGameObjectWithAssimp(test::model9, true);
 
   static const float FlyIncrement = 0.4f;
   static float flySpeed = 10.f;
@@ -83,7 +67,6 @@ void  testStressEngineFunctions()
     //gameObj8.translate(glm::vec3(0));
     gameObj9.translate(glm::vec3(0));
 
-    AAViewport::getInstance()->setToPerspective();
     AAViewport::getInstance()->setRenderDistance(500.f);
     AADisplay::getInstance()->setCursorToDisabled();
 
@@ -92,7 +75,7 @@ void  testStressEngineFunctions()
     dirLight.Ambient = glm::vec3(.03f);
     dirLight.Diffuse = glm::vec3(.2f);
     dirLight.Specular = glm::vec3(.5f);
-    AAViewport::getInstance()->setDirectionalLight(dirLight);
+    //setDirectionalLight(dirLight, g_TriLight);
 
     glm::vec3 pLpositions[] = {
       glm::vec3(30,2,-30),
@@ -110,8 +93,7 @@ void  testStressEngineFunctions()
       pointLight[i].Linear = .09f;
       pointLight[i].Quadratic = .032f;
       pointLight[i].Position = pLpositions[i];
-      AAViewport::getInstance()->setPointLight(pointLight, i);
-
+      //setPointLight(pointLight, i, g_TriLight);
     }
 
     SpotLight spotLight;
@@ -125,10 +107,9 @@ void  testStressEngineFunctions()
     spotLight.Quadratic = .015f;
     spotLight.CutOff = glm::cos(glm::radians(15.f));
     spotLight.OuterCutOff = glm::cos(glm::radians(19.f));
-    AAViewport::getInstance()->setSpotLight(spotLight);
+    //setSpotLight(spotLight, g_TriLight);
 
   };
-
   auto escapeTogglesMouseDisplay = [](AAKeyBoardInput& keys)
   {
     static bool isFPS = true;
@@ -289,10 +270,10 @@ void  testStressEngineFunctions()
     //gameObj3.draw();
     //gameObj4.draw();
     //gameObj5.draw();
-    gameObj6.draw();
+    //gameObj6.draw(g_TriLight);
     //gameObj7.draw();
     //gameObj8.draw();
-    gameObj9.draw();
+    //gameObj9.draw(g_TriLight);
   };
 
   // add functions to parts of engine loops
