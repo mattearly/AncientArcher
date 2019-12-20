@@ -10,10 +10,11 @@
 #include "workingdir.h"
 #include "modelPaths.h"
 #include "engineBaseCase.h"
+#include "WeirdLevel.h"
 
-void delay(int time)
+void delay(int ms)
 {
-  std::this_thread::sleep_for(std::chrono::milliseconds(time));
+  std::this_thread::sleep_for(std::chrono::milliseconds(ms));
 }
 
 void holdAtCommandPrompt()
@@ -25,6 +26,9 @@ void holdAtCommandPrompt()
 
 int main()
 {
+
+
+
   //std::cout << "local working dir: " << getexepath() << '\n';
 
   //testAssimpBaseLoading(test::model);
@@ -43,10 +47,14 @@ int main()
   //testRunBaseEngineLoop();
   //delay(120);
 
-  //testEngineBaseCase();
-  //delay(120);
-  testStressEngineFunctions();
+  testEngineBaseCase();
+  delay(120);
+  testWeirdLevel();
 
+
+
+  //testStressEngineFunctions();
+  
   //delay(120);
   //testEnginePause();
   //delay(120);
