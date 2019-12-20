@@ -22,45 +22,30 @@ void AAViewport::updateCameraVectors()
   mUp = glm::normalize(glm::cross(mRight, mFront));
 }
 
-void AAViewport::updateViewMatrix()
+void AAViewport::updateViewMatrix(const Shader& shader)
 {
-  mTexShader->use();
-  mTexShader->setMat4("view", getViewMatrix());
-  mCellShader->use();
-  mCellShader->setMat4("view", getViewMatrix());
+  shader.use();
+  shader.setMat4("view", getViewMatrix());
 }
 
-void AAViewport::setToPerspective()
+void AAViewport::updateProjectionMatrix(const Shader& shader)
 {
-  float screen_width = (float)AADisplay::getInstance()->getScreenWidth();
-  float screen_height = (float)AADisplay::getInstance()->getScreenHeight();
+  shader.use();
+  shader.setMat4("projection", getProjectionMatrix());
+}
 
-  if (screen_width == 0 || screen_height == 0)
-  {
-    std::cout << "perspective setting failed: screen width or height is 0\n";
-    return;
-  }
-
-  glm::mat4 projection = glm::perspective(
-    glm::radians(mFieldOfView),
-    screen_width / screen_height,
-    0.01f,
-    mRenderDistance
-  );
-
-  mTexShader->use();
-  mTexShader->setMat4("projection", projection);
-  mCellShader->use();
-  mCellShader->setMat4("projection", projection);
-
-  updateViewMatrix();
+void AAViewport::setToPerspective(const Shader& shader)
+{
+  updateProjectionMatrix(shader);
+  updateViewMatrix(shader);
 }
 
 void AAViewport::setRenderDistance(float distance)
 {
   mRenderDistance = distance;
+  std::cout << "mRenderDistance changed: check function @" << __FILE__ << " : " << __LINE__ << '\n';
 
-  setToPerspective();
+  //setToPerspective(); // need to update projection matrix after a render distance change
 
 }
 
@@ -109,77 +94,6 @@ void AAViewport::shiftYawAndPith(float yawOffset, float pitchOffset)
     mPitch = -89.9f;
   }
   updateCameraVectors();
-}
-
-void AAViewport::setDirectionalLight(const DirectionalLight& light)
-{
-  mTexShader->use();
-
-  std::string direction, ambient, diffuse, specular;
-  direction = "dirLight";
-  ambient = diffuse = specular = direction;
-  direction += ".Direction";
-  ambient += ".Ambient";
-  diffuse += ".Diffuse";
-  specular += ".Specular";
-
-  mTexShader->setVec3(direction, light.Direction);
-  mTexShader->setVec3(ambient, light.Ambient);
-  mTexShader->setVec3(diffuse, light.Diffuse);
-  mTexShader->setVec3(specular, light.Specular);
-}
-
-void AAViewport::setPointLight(const PointLight* light, const int& which)
-{
-  mTexShader->use();
-
-  std::string position, constant, linear, quadratic, ambient, diffuse, specular;
-  position = "pointLight[";
-  position += std::to_string(which);
-  constant = linear = quadratic = ambient = diffuse = specular = position;
-  position += "].Position";
-  constant += "].Constant";
-  linear += "].Linear";
-  quadratic += "].Quadratic";
-  ambient += "].Ambient";
-  diffuse += "].Diffuse";
-  specular += "].Specular";
-
-  mTexShader->setVec3(position,   light[which].Position);
-  mTexShader->setFloat(constant,  light[which].Constant);
-  mTexShader->setFloat(linear,    light[which].Linear);
-  mTexShader->setFloat(quadratic, light[which].Quadratic);
-  mTexShader->setVec3(ambient,    light[which].Ambient);
-  mTexShader->setVec3(diffuse,    light[which].Diffuse);
-  mTexShader->setVec3(specular,   light[which].Specular);
-}
-
-void AAViewport::setSpotLight(const SpotLight& light)
-{
-  mTexShader->use();
-  std::string position, ambient, constant, cutoff, ocutoff, diffuse, direction, linear, quadrat, specular;
-  position = "spotLight";
-  ambient = constant = cutoff = ocutoff = diffuse = direction = linear = quadrat = specular = position;
-  position += ".Position";
-  constant += ".Constant";
-  cutoff += ".CutOff";
-  ocutoff += ".OuterCutOff";
-  direction += ".Direction";
-  linear += ".Linear";
-  quadrat += ".Quadratic";
-  ambient += ".Ambient";
-  diffuse += ".Diffuse";
-  specular += ".Specular";
-
-  mTexShader->setVec3(position, light.Position);
-  mTexShader->setFloat(cutoff, light.CutOff);
-  mTexShader->setFloat(ocutoff, light.OuterCutOff);
-  mTexShader->setVec3(direction, light.Direction);
-  mTexShader->setFloat(linear, light.Linear);
-  mTexShader->setFloat(quadrat, light.Quadratic);
-  mTexShader->setVec3(ambient, light.Ambient);
-  mTexShader->setVec3(diffuse, light.Diffuse);
-  mTexShader->setVec3(specular, light.Specular);
 }
 
 glm::mat4 AAViewport::getViewMatrix() const

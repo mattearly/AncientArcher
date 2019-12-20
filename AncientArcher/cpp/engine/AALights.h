@@ -1,5 +1,6 @@
 #pragma once
 #include <glm/glm.hpp>
+#include <mearly/Shader.h>
 
 struct DirectionalLight
 {
@@ -20,3 +21,75 @@ struct SpotLight
   float Constant, Linear, Quadratic;
   glm::vec3 Ambient, Diffuse, Specular;
 };
+
+static void setDirectionalLight(const DirectionalLight& light, const Shader& shader)
+{
+  shader.use();
+
+  std::string direction, ambient, diffuse, specular;
+  direction = "dirLight";
+  ambient = diffuse = specular = direction;
+  direction += ".Direction";
+  ambient += ".Ambient";
+  diffuse += ".Diffuse";
+  specular += ".Specular";
+
+  shader.setVec3(direction, light.Direction);
+  shader.setVec3(ambient, light.Ambient);
+  shader.setVec3(diffuse, light.Diffuse);
+  shader.setVec3(specular, light.Specular);
+}
+
+
+static void setPointLight(const PointLight* light, const int& which, const Shader& shader)
+{
+  shader.use();
+
+  std::string position, constant, linear, quadratic, ambient, diffuse, specular;
+  position = "pointLight[";
+  position += std::to_string(which);
+  constant = linear = quadratic = ambient = diffuse = specular = position;
+  position += "].Position";
+  constant += "].Constant";
+  linear += "].Linear";
+  quadratic += "].Quadratic";
+  ambient += "].Ambient";
+  diffuse += "].Diffuse";
+  specular += "].Specular";
+
+  shader.setVec3(position, light[which].Position);
+  shader.setFloat(constant, light[which].Constant);
+  shader.setFloat(linear, light[which].Linear);
+  shader.setFloat(quadratic, light[which].Quadratic);
+  shader.setVec3(ambient, light[which].Ambient);
+  shader.setVec3(diffuse, light[which].Diffuse);
+  shader.setVec3(specular, light[which].Specular);
+}
+
+static void setSpotLight(const SpotLight& light, const Shader& shader)
+{
+  shader.use();
+  std::string position, ambient, constant, cutoff, ocutoff, diffuse, direction, linear, quadrat, specular;
+  position = "spotLight";
+  ambient = constant = cutoff = ocutoff = diffuse = direction = linear = quadrat = specular = position;
+  position += ".Position";
+  constant += ".Constant";
+  cutoff += ".CutOff";
+  ocutoff += ".OuterCutOff";
+  direction += ".Direction";
+  linear += ".Linear";
+  quadrat += ".Quadratic";
+  ambient += ".Ambient";
+  diffuse += ".Diffuse";
+  specular += ".Specular";
+
+  shader.setVec3(position,  light.Position);
+  shader.setFloat(cutoff,   light.CutOff);
+  shader.setFloat(ocutoff,  light.OuterCutOff);
+  shader.setVec3(direction, light.Direction);
+  shader.setFloat(linear,   light.Linear);
+  shader.setFloat(quadrat,  light.Quadratic);
+  shader.setVec3(ambient,   light.Ambient);
+  shader.setVec3(diffuse,   light.Diffuse);
+  shader.setVec3(specular,  light.Specular);
+}

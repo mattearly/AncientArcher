@@ -171,14 +171,14 @@ void AADisplay::initGLFW()
 
 void AADisplay::reshapeWindowHandler(GLFWwindow* window, int width, int height)
 {
-  std::cout << "reshape window called: " << width << ", " << height << '\n';
+  //std::cout << "reshape window called: " << width << ", " << height << '\n';
 
   mWindowWidth = width;
   mWindowHeight = height;
   glViewport(0, 0, mWindowWidth, mWindowHeight);
-  AAViewport::getInstance()->setToPerspective();  // hack
+  //AAViewport::getInstance()->setToPerspective();  // hack  todo
 
-  std::cout << "reshape window finished: " << mWindowWidth << ", " << mWindowHeight << '\n';
+  //std::cout << "reshape window finished: " << mWindowWidth << ", " << mWindowHeight << '\n';
 
 }
 

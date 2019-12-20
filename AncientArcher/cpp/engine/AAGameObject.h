@@ -2,8 +2,9 @@
 #include <vector>
 #include <mearly\Shader.h>
 #include <memory>
-
-enum class Shading { NONE, CELL, IMGTEX };
+#include <string>
+#include <glm/glm.hpp>
+#include <glm\gtx\transform.hpp>
 
 struct TextureInfo
 {
@@ -29,15 +30,15 @@ public:
 
   glm::mat4* getModelMatrix();
 
-  AAGameObject(std::vector<MeshDrawInfo> meshes, Shading shading);
-  void draw();
+  AAGameObject(std::vector<MeshDrawInfo> meshes);
+
+  void draw(const Shader& shader);
   void translate(glm::vec3 amt);
   void rotate(float angle, glm::vec3 axis);
-  
+
 private:
 
   std::vector<MeshDrawInfo> mMeshes;
   glm::mat4 mModelMatrix = glm::mat4(1);
 
-  Shading mModelShaderType = Shading::NONE;
 };

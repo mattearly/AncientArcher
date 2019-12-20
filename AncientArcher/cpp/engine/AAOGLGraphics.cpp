@@ -64,7 +64,7 @@ AAOGLGraphics* AAOGLGraphics::getInstance()
   return graphics;
 }
 
-AAGameObject AAOGLGraphics::loadGameObjectWithAssimp(std::string path, bool pp_triangulate, Shading shading)
+AAGameObject AAOGLGraphics::loadGameObjectWithAssimp(std::string path, bool pp_triangulate)
 {
   Assimp::Importer importer;
   int post_processsing_flags = 0;
@@ -78,13 +78,13 @@ AAGameObject AAOGLGraphics::loadGameObjectWithAssimp(std::string path, bool pp_t
   if (!scene || scene->mFlags & AI_SCENE_FLAGS_INCOMPLETE || !scene->mRootNode)
   {
     std::cout << "ERROR::ASSIMP::" << importer.GetErrorString() << '\n';
-    return AAGameObject(meshes, shading);
+    return AAGameObject(meshes);
   }
 
   lastDirectory = path.substr(0, path.find_last_of("/\\"));  //http://www.cplusplus.com/reference/string/string/find_last_of/     
   processNode(scene->mRootNode, scene);
 
-  return AAGameObject(meshes, shading);
+  return AAGameObject(meshes);
 }
 
 void AAOGLGraphics::processNode(aiNode* node, const aiScene* scene)

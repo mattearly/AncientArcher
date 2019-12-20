@@ -20,7 +20,7 @@ public:
 
   static AAOGLGraphics* getInstance();
 
-  AAGameObject loadGameObjectWithAssimp(std::string path, bool postTriangulate = false, Shading shading = Shading::NONE);
+  AAGameObject loadGameObjectWithAssimp(std::string path, bool pp_triangulate);
 
 private:
 

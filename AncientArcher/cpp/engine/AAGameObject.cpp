@@ -1,90 +1,41 @@
 #include "AAGameObject.h"
 #include "AAViewport.h"
 #include <glad\glad.h>
-#include <glm/glm.hpp>
+#include <mearly/Shader.h>
 #include <iostream>
-#include <glm\gtx\transform.hpp>
 
 glm::mat4* AAGameObject::getModelMatrix()
 {
   return &mModelMatrix;
 }
 
-AAGameObject::AAGameObject(std::vector<MeshDrawInfo> meshes, Shading shading)
-  : mMeshes(meshes), mModelShaderType(shading) {}
+AAGameObject::AAGameObject(std::vector<MeshDrawInfo> meshes)
+  : mMeshes(meshes) {}
 
-void AAGameObject::draw()
+void AAGameObject::draw(const Shader& shader)
 {
-  switch (mModelShaderType)
-  {
-  case Shading::NONE:
-    break;
-  case Shading::CELL:
-    AAViewport::getInstance()->mCellShader->use();
-    AAViewport::getInstance()->mCellShader->setMat4("view", AAViewport::getInstance()->getViewMatrix());
-    AAViewport::getInstance()->mCellShader->setMat4("model", mModelMatrix);
-    break;
-  case Shading::IMGTEX:
-    AAViewport::getInstance()->mTexShader->use();
-    AAViewport::getInstance()->mTexShader->setMat4("view", AAViewport::getInstance()->getViewMatrix());
-    AAViewport::getInstance()->mTexShader->setMat4("model", mModelMatrix);
-    break;
-  default:
-    break;
-  }
+
+  shader.use();
+  shader.setMat4("view", AAViewport::getInstance()->getViewMatrix());
+  shader.setMat4("model", mModelMatrix);
 
 
   glEnable(GL_DEPTH_TEST);
 
-  unsigned int diffuseNumber = 1;
-  unsigned int specNumber = 1;
-  unsigned int normNumber = 1;
-  unsigned int heightNumber = 1;
-
   for (auto m : mMeshes)
   {
-
     for (unsigned int i = 0; i < m.textures.size(); ++i)
     {
-
       glActiveTexture(GL_TEXTURE0 + i);
-      std::string texType = m.textures[i].type;
+      std::string texType = m.textures[i].type;  // single instance ver should be diffuse tex only
 
-      std::string texNumber;
+      shader.use();
+      glUniform1i(glGetUniformLocation(shader.ID, ("material." + texType).c_str()), i);
 
-      if (texType == "diffuse")
-      {
-        texNumber = std::to_string(diffuseNumber++);
-      }
-      else if (texType == "specular")
-      {
-        texNumber = std::to_string(specNumber++);
-      }
-      else if (texType == "normal")
-      {
-        texNumber = std::to_string(normNumber++);
-      }
-      else if (texType == "height")
-      {
-        texNumber = std::to_string(heightNumber++);
-      }
-      else if (texType == "color")
-      {
-        std::cout << "setting cell shader color...\n";
-        AAViewport::getInstance()->mCellShader->setVec3("color", m.textures[i].color);
-        break;
-      }
-      else
-      {
-        std::cout << "error setting tex on mesh render type\n";
-      }
-
-      glUniform1i(glGetUniformLocation(AAViewport::getInstance()->mTexShader->ID, ("material." + texType + texNumber).c_str()), i);
 
       glBindTexture(GL_TEXTURE_2D, m.textures[i].id);
 
     }
-
 
     glBindVertexArray(m.vao);
     glDrawElements(GL_TRIANGLES, (unsigned int)m.elements.size(), GL_UNSIGNED_INT, 0);
@@ -93,7 +44,6 @@ void AAGameObject::draw()
 
   glActiveTexture(GL_TEXTURE0);
 
-  //std::cout << "drawingmodel\n";
 }
 
 void AAGameObject::translate(glm::vec3 amt)
