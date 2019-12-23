@@ -5,12 +5,10 @@
 
 void testEnginePause()
 {
-  glfwSetWindowShouldClose(AADisplay::getInstance()->getWindow(), false);
+  AAEngine engine;
 
   AADisplay::getInstance()->setWindowTitle("Engine Pause - Press [ENTER] To Continue");  // test changing window title
-  AADisplay::getInstance()->setWindowClearColor(glm::vec3(.0,.1,.0));        // test changing window clear color
-
-  AAEngine engine;
+  AADisplay::getInstance()->setWindowClearColor(glm::vec3(.0, .1, .0));        // test changing window clear color
 
   auto deltacout = [](float step) {
     static float timePassed = 0;

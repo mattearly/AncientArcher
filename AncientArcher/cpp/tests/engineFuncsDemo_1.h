@@ -1,14 +1,12 @@
 #pragma once
-#include "modelPaths.h"
-#include "../engine/AADisplay.h"
-#include "../engine/AAEngine.h"
-#include "../engine/AAViewport.h"
-#include "../engine/AALights.h"
 #include <GLFW\glfw3.h>
-#include <iostream>
-#include "addskybox.h"
+#include "../engine/AAEngine.h"
+#include "dry/addSkybox.h"
+#include "../engine/AAGameObject.h"
+#include "../engine/AAOGLGraphics.h"
+#include "localModelPaths.h"
 
-void  testStressEngineFunctions()
+void  testEngineFuncsDemo_1()
 {
   AAEngine engine;
   addskybox(engine, "drakeq");
@@ -110,6 +108,7 @@ void  testStressEngineFunctions()
     //setSpotLight(spotLight, g_TriLight);
 
   };
+
   auto escapeTogglesMouseDisplay = [](AAKeyBoardInput& keys)
   {
     static bool isFPS = true;
@@ -130,6 +129,7 @@ void  testStressEngineFunctions()
     }
     return false;
   };
+
   auto changeRenderWithPageUpDown = [](AAKeyBoardInput& keys)
   {
     static const float MAX_RENDER_DISTANCE = 550.f;
@@ -159,6 +159,7 @@ void  testStressEngineFunctions()
     AAViewport::getInstance()->setRenderDistance(render_distance);
 
   };
+
   auto fpsKBNoClipFlying = [](AAKeyBoardInput& keys)
   {
     // this is a debug cam mover with no colliding - called every frame with deltaTime
@@ -215,6 +216,7 @@ void  testStressEngineFunctions()
     directionPlacement = glm::vec3(0.f, 0.f, 0.f);
     moveFront = glm::vec3(*AAViewport::getInstance()->getFront());
   };
+
   auto fpsScrollChangesMoveSpeed = [](AAScrollInput& scroll)
   {
     // set flyspeed when mouse wheel moves
@@ -243,10 +245,12 @@ void  testStressEngineFunctions()
       prevFlySpeed = flySpeed;
     }
   };
+
   auto fpsMouseMovement = [](AAMouseInput& mouse)
   {
     AAViewport::getInstance()->shiftYawAndPith(mouse.xOffset, mouse.yOffset);
   };
+
   auto deltaMoveObjects = [](float dt)
   {
     static float totalTime = 0;
@@ -263,6 +267,7 @@ void  testStressEngineFunctions()
     //AAViewport::getInstance()->setPointLight(pointLight);
 
   };
+
   auto drawObjects = []()
   {
     //gameObj.draw();

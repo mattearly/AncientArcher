@@ -1,67 +1,39 @@
-#include "model.h"
-#include "engineloop.h"
-#include <glm/glm.hpp>
-#include "enginepause.h"
-#include <iostream>
-#include <chrono>
-#include <thread>
-#include "enginefunctions.h"
-#include "enginedisplay.h"
-#include "workingdir.h"
-#include "modelPaths.h"
 #include "engineBaseCase.h"
-#include "WeirdLevel.h"
+#include "engineAllFuncBaseCase.h"
+#include "enginePauseBaseCase.h"
+#include "engineFuncsDemo_1.h"
+#include "engineFuncsDemo_2.h"
+#include <mearly/delay.h>
+#include "assimpModel.h"
 
-void delay(int ms)
-{
-  std::this_thread::sleep_for(std::chrono::milliseconds(ms));
-}
 
-void holdAtCommandPrompt()
-{
-  std::cout << "Press Enter To Continue\n";
-  char a;
-  a = std::cin.get();
+int runAllTests() {
+  testAssimpBaseLoading(test::model1);
+  testAssimpBaseLoading(test::model2);
+  testAssimpBaseLoading(test::model3);
+  testAssimpBaseLoading(test::model4);
+  testAssimpBaseLoading(test::model5);
+  testAssimpBaseLoading(test::model6);
+  testAssimpBaseLoading(test::model7);
+  testAssimpBaseLoading(test::model8);
+  testAssimpBaseLoading(test::model9);
+  testAssimpBaseLoading(test::model10);
+  testAssimpBaseLoading(test::model11);
+  testAssimpBaseLoading(test::model12);
+  testAssimpBaseLoading(test::model13);
+  testEngineBaseCase();
+  delay(120);
+  testEngineFuncsBaseCase();
+  delay(120);
+  testEnginePause();
+  delay(120);
+  testEngineFuncsDemo_1();
+  delay(120);
+  testEngineFuncsDemo_2();
+  return 0;
 }
 
 int main()
 {
-
-
-
-  //std::cout << "local working dir: " << getexepath() << '\n';
-
-  //testAssimpBaseLoading(test::model);
-  //testAssimpBaseLoading(test::model2);
-  //testAssimpBaseLoading(test::model3);
-  //testAssimpBaseLoading(test::model4);
-  //testAssimpBaseLoading(test::model5);
-  //testAssimpBaseLoading(test::model6);
-  //testAssimpBaseLoading(test::model7);
-  //testAssimpBaseLoading("This/is/a/test/");
-
-  //AADisplay::getInstance()->setWindowSize(800, 600, 1920 / 2 - 400, 1080 / 2 - 300);                // test changing window size (and position)
-
-  //testLaunchingDisplay();
-  //delay(120);
-  //testRunBaseEngineLoop();
-  //delay(120);
-
-  testEngineBaseCase();
-  delay(120);
-  testWeirdLevel();
-
-
-
-  //testStressEngineFunctions();
-  
-  //delay(120);
-  //testEnginePause();
-  //delay(120);
-
-
-  //holdAtCommandPrompt();
-  return 0;
-
+  return runAllTests();
 }
-

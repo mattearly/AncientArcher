@@ -1,6 +1,6 @@
 #pragma once
-#include "../engine/AAInput.h"
-#include "../engine/AAEngine.h"
+#include <glm\ext\vector_float3.hpp>
+#include "../../engine/AAEngine.h"
 
 void addgodmovement(AAEngine& engine)
 {  

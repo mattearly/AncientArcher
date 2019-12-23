@@ -3,8 +3,8 @@
 #include <cassert>
 #include <vector>
 #include <memory>
-#include "../engine/AASkybox.h"
-#include "../engine/AAEngine.h"
+
+#include "../../engine/AAEngine.h"
 
 
 void addskybox(AAEngine& engine, const std::string& n)

@@ -74,34 +74,10 @@
     <ClInclude Include="cpp\engine\AAViewport.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="cpp\tests\model.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="cpp\engine\AAInput.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="cpp\tests\engineloop.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="cpp\engine\AAGameObject.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="cpp\tests\enginepause.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="cpp\tests\enginefunctions.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="cpp\tests\enginedisplay.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="cpp\tests\workingdir.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="cpp\tests\modelPaths.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="cpp\tests\engineBaseCase.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="cpp\engine\AASkybox.h">
@@ -110,16 +86,40 @@
     <ClInclude Include="cpp\engine\AALights.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="cpp\tests\WeirdLevel.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="cpp\tests\addskybox.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="cpp\tests\addgodmovement.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="cpp\engine\AAShaderManager.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="cpp\tests\dry\addGodMovement.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="cpp\tests\dry\addPreferedDefaults.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="cpp\tests\dry\addSkybox.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="cpp\tests\dry\addToggleMouseDisplay.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="cpp\tests\engineBaseCase.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="cpp\tests\engineAllFuncBaseCase.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="cpp\tests\assimpModel.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="cpp\tests\enginePauseBaseCase.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="cpp\tests\engineFuncsDemo_2.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="cpp\tests\engineFuncsDemo_1.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="cpp\tests\localModelPaths.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
