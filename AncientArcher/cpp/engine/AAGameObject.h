@@ -35,6 +35,7 @@ public:
   void draw(const Shader& shader);
   void translate(glm::vec3 amt);
   void rotate(float angle, glm::vec3 axis);
+  void scale(glm::vec3 amt);
 
 private:
 
