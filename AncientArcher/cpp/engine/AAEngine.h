@@ -49,7 +49,7 @@ private:
 
   float mEngineRunTimer = 0.f;
 
-  const float mKeyTimeOutLength = 1.021f;
+  const float mKeyTimeOutLength = 0.91333f;
 
   bool mDisplayInitiated = false;
   void initDisplay();
