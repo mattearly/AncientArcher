@@ -49,11 +49,13 @@ private:
 
   float mEngineRunTimer = 0.f;
 
-  const float mKeyTimeOutLength = 0.91333f;
-
   bool mDisplayInitiated = false;
   void initDisplay();
 
   std::shared_ptr<AASkybox> mSkybox;
+
+  const float mKeyTimeOutLength = 0.56667f;
+  float mTimeOutCheckStamp = 0.f;
+  float mSystemTimeOutTimeSoFar = 0.f;
 
 };

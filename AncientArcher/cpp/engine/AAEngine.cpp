@@ -121,11 +121,9 @@ void AAEngine::update()
 {
   processSystemKeys();
 
-  static float checkStamp = 0.f;
-  float passedTime = mEngineRunTimer - checkStamp;
-  static float systemKeyTimeOut = 0.f;
-  systemKeyTimeOut += passedTime;
-  if (systemKeyTimeOut > mKeyTimeOutLength)
+  float passedTime = mEngineRunTimer - mTimeOutCheckStamp;
+  mSystemTimeOutTimeSoFar += passedTime;
+  if (mSystemTimeOutTimeSoFar > mKeyTimeOutLength)
   {
     int buttonUsed = false;
     if ((AAControls::getInstance()->mButtonState.leftAlt || AAControls::getInstance()->mButtonState.rightAlt) && AAControls::getInstance()->mButtonState.enter)
@@ -144,12 +142,12 @@ void AAEngine::update()
 
     if (buttonUsed)
     {
-      systemKeyTimeOut = 0.f;
+      mSystemTimeOutTimeSoFar = 0.f;
     }
 
   }
 
-  checkStamp = mEngineRunTimer;
+  mTimeOutCheckStamp = mEngineRunTimer;
 
   for (auto oKH : onKeyHandling)
   {
