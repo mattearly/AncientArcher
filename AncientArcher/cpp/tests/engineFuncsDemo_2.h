@@ -12,16 +12,14 @@ void testEngineFuncsDemo_2()
   AAEngine engine;
 
   addSkybox(engine, "nordic");
-
   addGodMovement(engine);
-
   addPreferredDefaults(engine);
 
   // add shaders to use
   static AAShaderManager shaderMan;
   static int noLightShader = shaderMan.addShader("../AncientArcher/shader/vert_textured.glsl", "../AncientArcher/shader/frag_noLight.glsl");
    
-  // add object to draw
+  // add object to draw  -- SRT
   static AAGameObject mountainGround = AAOGLGraphics::getInstance()->loadGameObjectWithAssimp(test::model10, true);
   mountainGround.translate(glm::vec3(0.f, -20.f, 0));
   static AAGameObject streetArea = AAOGLGraphics::getInstance()->loadGameObjectWithAssimp(test::model9, true);
@@ -33,8 +31,8 @@ void testEngineFuncsDemo_2()
   static AAGameObject dirtArea = AAOGLGraphics::getInstance()->loadGameObjectWithAssimp(test::model12, true);
   dirtArea.translate(glm::vec3(0.f, -20.f, -220.f));
   static AAGameObject brickArea = AAOGLGraphics::getInstance()->loadGameObjectWithAssimp(test::model13, true);
-  brickArea.translate(glm::vec3(0.f, -200.f, -220.f));
-  brickArea.scale(glm::vec3(20.f, 0.f, 20.f));
+  brickArea.scale(glm::vec3(20.f, 20.f, 20.f));
+  brickArea.translate(glm::vec3(0.f, -50.f, 0.f));
 
   auto drawObjects = []()
   {
