@@ -5,10 +5,12 @@
 
 void addGodMovement(AAEngine& engine)
 {  
+  AADisplay::getInstance()->setCursorToDisabled();
+
   static const float MAXFLYSPEED = 400.f;
-  static float currFlySpeed = 20.f;  
+  static float currFlySpeed = 30.f;  
   static float prevFlySpeed = 0.f;
-  static const float FlyIncrement = 9.f;  
+  static const float FlyIncrement = 8.5f;  
 
   // position testing help
   static auto showLocation = []()
@@ -60,26 +62,6 @@ void addGodMovement(AAEngine& engine)
     if (keys.leftShift && keys.spacebar)
     {
       directionPlacement -= AAViewport::getInstance()->WORLD_UP * fps60velocity;
-    }
-
-    if (keys.n1)
-    {
-
-    }
-
-    if (keys.n2)
-    {
-
-    }
-
-    if (keys.mouseButton1)
-    {
-
-    }
-
-    if (keys.mouseButton3)
-    {
-
     }
 
     AAViewport::getInstance()->shiftCurrentPosition(directionPlacement);
