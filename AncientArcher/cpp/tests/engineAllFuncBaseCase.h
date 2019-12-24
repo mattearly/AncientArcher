@@ -7,15 +7,16 @@ void testEngineFuncsBaseCase()
 {
   AAEngine engine;
 
-  auto begincout = []() {
+  //1 on begin test
+  auto myOnBeginFunc = []() {
 
-    AADisplay::getInstance()->setWindowTitle("all functions loop - close window to continue");  // test changing window title
-    AADisplay::getInstance()->setWindowClearColor(glm::vec3(0));        // test changing window clear color
-    std::cout << "->One Time Begin Run\n"; 
+    AADisplay::getInstance()->setWindowTitle("all functions loop TEST - close this window to continue");  // test changing window title
+    std::cout << "+++One Time Begin Run -> TESTING ALL ENGINE FUNCTION LOOPS\n";
   };
-  engine.addToOnBegin(begincout);
+  engine.addToOnBegin(myOnBeginFunc);
 
-  auto deltaChangeClearColor = [](float step) {
+  //2 on delta test
+  auto myChangeBackgroundBasedOnDeltaFunc = [](float step) {
     static float timePassed = 0;
     timePassed += step;
     float newcolor = abs(sin(timePassed));
@@ -25,24 +26,43 @@ void testEngineFuncsBaseCase()
         newcolor,
         newcolor
       )
-    );        // test changing window clear color to random values
+    );
   };
-  engine.addToDeltaUpdate(deltaChangeClearColor);
+  engine.addToDeltaUpdate(myChangeBackgroundBasedOnDeltaFunc);
+  auto myDeltaCoutFunc = [](float step) {
+    std::cout << ".      process delta update: " << step << '\n'; };
+  engine.addToDeltaUpdate(myDeltaCoutFunc);
 
-  auto deltacout = [](float step) {std::cout << ".    process delta update: " << step << '\n'; };
-  engine.addToDeltaUpdate(deltacout);
+  //3 on render test
+  auto myRenderCoutFunc = []() {
+    std::cout << "..     process render\n"; };
+  engine.addToOnRender(myRenderCoutFunc);
 
-  auto rendercout = []() {std::cout << "..   process render\n"; };
-  engine.addToOnRender(rendercout);
+  //4 on timeout input test
+  auto timedKeys = [](AAKeyBoardInput& keys) {
+    std::cout << "...    90ms timedout keyboard/mouse\n"; return false;  };
+  engine.addToTimedOutKeyHandling(timedKeys);
 
-  auto customhandleinput = [](AAKeyBoardInput& keys) {
-    std::cout << "...  process keyboard/mouse \n";
-  };
-  engine.addToKeyHandling(customhandleinput);
+  //4 on input test
+  auto myButtonInputHandlerFunc = [](AAKeyBoardInput& keys) {
+    std::cout << "....   process keyboard/mouse \n";  };
+  engine.addToKeyHandling(myButtonInputHandlerFunc);
 
-  addGodMovement(engine);
+  //5 on mouse scroll test
+  auto myMouseScrollWheelHandlerFunc = [](AAScrollInput& scroll) {
+    std::cout << ".....  process mouse scroll: X:" << scroll.xOffset << " Y:" << scroll.yOffset << '\n'; };
+  engine.addToScrollHandling(myMouseScrollWheelHandlerFunc);
 
-  auto updatecout = []() {std::cout << ".... process update\n"; };
+  //6 mouse movement test
+  auto myMouseMovementFunc = [](AAMouseInput& pointer) {
+    std::cout << "...... process mouse pointer: X:" << pointer.xOffset << " Y:" << pointer.yOffset << '\n';  };
+  engine.addToMouseHandling(myMouseMovementFunc);
+
+
+
+  //8 update
+  auto updatecout = []() {
+    std::cout << ".......process final update -- END LOOP\n"; };
   engine.addToUpdate(updatecout);
 
   switch (engine.run())
