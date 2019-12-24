@@ -25,6 +25,7 @@ public:
   void setWindowSize(int width, int height, int xpos = 0, int ypos = 0);
   void setWindowTitle(const char* name);
   
+  void toggleCursor();
   void closeWindow();
 
   friend class AAEngine;
@@ -34,6 +35,8 @@ public:
   void scrollHandler(GLFWwindow* window, float xpos, float ypos);
 
 private:
+
+  enum class CursorMode { VISIBLE, HIDDEN, FPS } mCursorMode;
 
   void toggleFullScreen();
   void setFullscreenToOn();

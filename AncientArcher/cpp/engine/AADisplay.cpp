@@ -50,16 +50,21 @@ GLFWwindow* AADisplay::getWindow()
 void AADisplay::setCursorToVisible()
 {
   glfwSetInputMode(mWindow, GLFW_CURSOR, GLFW_CURSOR_NORMAL);
+  mCursorMode = CursorMode::VISIBLE;
 }
 
 void AADisplay::setCursorToHidden()
 {
   glfwSetInputMode(mWindow, GLFW_CURSOR, GLFW_CURSOR_HIDDEN);
+  mCursorMode = CursorMode::HIDDEN;
+
 }
 
 void AADisplay::setCursorToDisabled()
 {
   glfwSetInputMode(mWindow, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
+  mCursorMode = CursorMode::FPS;
+
 }
 
 void AADisplay::setWindowTitle(const char* name)
@@ -146,6 +151,22 @@ void AADisplay::swapWindowBuffers() const
 void AADisplay::keepWindowOpen()
 {
   glfwSetWindowShouldClose(mWindow, false);
+}
+
+void AADisplay::toggleCursor()
+{
+  switch (mCursorMode)
+  {
+  case CursorMode::FPS:
+    this->setCursorToVisible();
+    break;
+  case CursorMode::VISIBLE:
+    this->setCursorToDisabled();
+    break;
+  default:
+    break;
+  }
+
 }
 
 void AADisplay::closeWindow()

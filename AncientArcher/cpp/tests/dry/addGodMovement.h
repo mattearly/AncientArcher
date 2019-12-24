@@ -131,21 +131,11 @@ void addGodMovement(AAEngine& engine)
 
   auto escapeTogglesMouseDisplay = [](AAKeyBoardInput& keys)
   {
-    static bool mouseLocked = true;
+    bool mouseLocked = true;
     if (keys.esc)
     {
-      if (mouseLocked)
-      {
-        AADisplay::getInstance()->setCursorToVisible();
-        mouseLocked = false;
-        return true;
-      }
-      else
-      {
-        AADisplay::getInstance()->setCursorToDisabled();
-        mouseLocked = true;
-        return true;
-      }
+      AADisplay::getInstance()->toggleCursor();
+      return true;
     }
     return false;
   };
