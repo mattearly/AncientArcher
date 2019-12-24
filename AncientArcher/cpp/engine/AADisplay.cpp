@@ -18,32 +18,6 @@ AADisplay::~AADisplay()
   glfwTerminate();
 }
 
-void AADisplay::setCursorToVisible()
-{
-  glfwSetInputMode(mWindow, GLFW_CURSOR, GLFW_CURSOR_NORMAL);
-}
-
-void AADisplay::setCursorToHidden()
-{
-  glfwSetInputMode(mWindow, GLFW_CURSOR, GLFW_CURSOR_HIDDEN);
-}
-
-void AADisplay::setCursorToDisabled()
-{
-  glfwSetInputMode(mWindow, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
-}
-
-void AADisplay::setWindowTitle(const char* name)
-{
-  glfwSetWindowTitle(mWindow, name);
-}
-
-void AADisplay::setWindowSize(int width, int height, int xpos, int ypos)
-{
-  glfwSetWindowMonitor(mWindow, nullptr, xpos, ypos, width, height, 0);
-  mWindowIsFullScreen = false;
-}
-
 void AADisplay::setWindowClearColor(glm::vec3 rgb)
 {
   if (rgb.x < 0.f || rgb.x > 1.0f || rgb.y < 0.f || rgb.y > 1.0f || rgb.z < 0.f || rgb.z > 1.0f)
@@ -73,6 +47,31 @@ GLFWwindow* AADisplay::getWindow()
   return mWindow;
 }
 
+void AADisplay::setCursorToVisible()
+{
+  glfwSetInputMode(mWindow, GLFW_CURSOR, GLFW_CURSOR_NORMAL);
+}
+
+void AADisplay::setCursorToHidden()
+{
+  glfwSetInputMode(mWindow, GLFW_CURSOR, GLFW_CURSOR_HIDDEN);
+}
+
+void AADisplay::setCursorToDisabled()
+{
+  glfwSetInputMode(mWindow, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
+}
+
+void AADisplay::setWindowTitle(const char* name)
+{
+  glfwSetWindowTitle(mWindow, name);
+}
+
+void AADisplay::setWindowSize(int width, int height, int xpos, int ypos)
+{
+  glfwSetWindowMonitor(mWindow, nullptr, xpos, ypos, width, height, 0);
+  mWindowIsFullScreen = false;
+}
 // -----------------
 // Private Functions
 // -----------------

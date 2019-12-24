@@ -13,18 +13,19 @@ public:
 
   ~AADisplay();
 
-  void setCursorToVisible();
-  void setCursorToHidden();
-  void setCursorToDisabled();
-
-  void setWindowTitle(const char* name);
-  void setWindowSize(int width, int height, int xpos = 0, int ypos = 0);
-  void setWindowClearColor(glm::vec3 rgb);
-
   int getScreenWidth();
   int getScreenHeight();
   bool getIsWindowFullScreen();
   GLFWwindow* getWindow();
+
+  void setCursorToVisible();
+  void setCursorToHidden();
+  void setCursorToDisabled();
+  void setWindowClearColor(glm::vec3 rgb);
+  void setWindowSize(int width, int height, int xpos = 0, int ypos = 0);
+  void setWindowTitle(const char* name);
+  
+  void closeWindow();
 
   friend class AAEngine;
 
@@ -39,7 +40,6 @@ private:
   void setFullscreenToOff();
 
   void keepWindowOpen();
-  void closeWindow();
 
   void clearBackBuffer() const;
   void swapWindowBuffers() const;
