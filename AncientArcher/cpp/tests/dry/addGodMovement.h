@@ -1,13 +1,29 @@
 #pragma once
 #include <glm\ext\vector_float3.hpp>
 #include "../../engine/AAEngine.h"
+#include <iostream>
 
-void addgodmovement(AAEngine& engine)
+void addGodMovement(AAEngine& engine)
 {  
-  static float flySpeed = 20.f;  
+  static const float MAXFLYSPEED = 200.f;
+  static float currFlySpeed = 20.f;  
   static float prevFlySpeed = 0.f;
-  static const float FlyIncrement = 0.4f;  
+  static const float FlyIncrement = 10.f;  
 
+  // position testing help
+  static auto showLocation = []()
+  {
+    // show camera location
+    std::cout << "X: " << AAViewport::getInstance()->getPosition()->x
+      << "  Z: " << AAViewport::getInstance()->getPosition()->z
+      << "  Y: " << AAViewport::getInstance()->getPosition()->y << '\n';
+  };
+  static auto showPitchAndYaw = []()
+  {
+    std::cout << "PITCH: " << AAViewport::getInstance()->getPitch()
+      << "  YAW: " << AAViewport::getInstance()->getYaw() << '\n';
+
+  };
   auto fpsKBNoClipFlying = [](AAKeyBoardInput& keys)
   {
     // this is a debug cam mover with no colliding - called every frame with deltaTime
@@ -16,7 +32,7 @@ void addgodmovement(AAEngine& engine)
     static glm::vec3 moveFront = glm::vec3(*AAViewport::getInstance()->getFront());
 
     // setting our velocity based on 60fps (a guess since we don't have delta time here)
-    fps60velocity = 0.0166f * flySpeed;
+    fps60velocity = 0.0166f * currFlySpeed;
 
     // process WASD movement
     if (keys.w)
@@ -67,7 +83,6 @@ void addgodmovement(AAEngine& engine)
     }
 
     AAViewport::getInstance()->shiftCurrentPosition(directionPlacement);
-    //_lighting->movePointLight(0, *AAViewport::getInstance()->getPosition(), _shader.get());  // debug point light stays at cam
 
     // reset local variables for next frame processing
     directionPlacement = glm::vec3(0.f, 0.f, 0.f);
@@ -86,46 +101,49 @@ void addgodmovement(AAEngine& engine)
     // set flyspeed when mouse wheel moves
     if (scroll.yOffset > 0.1f)
     {
-      flySpeed += FlyIncrement;
+      currFlySpeed += FlyIncrement;
       scroll.yOffset = 0;
     }
     if (scroll.yOffset < -0.1f)
     {
-      flySpeed -= FlyIncrement;
+      currFlySpeed -= FlyIncrement;
       scroll.yOffset = 0;
     }
     // cap flyspeed
-    if (flySpeed >= 20.f)
+    if (currFlySpeed >= MAXFLYSPEED)
     {
-      flySpeed = 20.f;
+      currFlySpeed = MAXFLYSPEED;
     }
-    if (flySpeed <= 1.f)
+    if (currFlySpeed <= 1.f)
     {
-      flySpeed = 1.000001f;
+      currFlySpeed = 1.000001f;
     }
-    if (flySpeed != prevFlySpeed)
+    if (currFlySpeed != prevFlySpeed)
     {
-      //std::cout << "flySpeed: " << flySpeed << std::endl;    // show flySpeed in debug console if it changed since last frame.
-      prevFlySpeed = flySpeed;
+      std::cout << "+++\n";
+      std::cout << "FLYSPEED: " << currFlySpeed << std::endl;    // show flySpeed in debug console if it changed since last frame.
+      showLocation();
+      showPitchAndYaw();
+      prevFlySpeed = currFlySpeed;
     }
   };
   engine.addToScrollHandling(fpsScrollChangesMoveSpeed);
 
   auto escapeTogglesMouseDisplay = [](AAKeyBoardInput& keys)
   {
-    static bool isFPS = true;
+    static bool mouseLocked = true;
     if (keys.esc)
     {
-      if (isFPS)
+      if (mouseLocked)
       {
         AADisplay::getInstance()->setCursorToVisible();
-        isFPS = false;
+        mouseLocked = false;
         return true;
       }
       else
       {
         AADisplay::getInstance()->setCursorToDisabled();
-        isFPS = true;
+        mouseLocked = true;
         return true;
       }
     }
