@@ -41,29 +41,28 @@ static void setDirectionalLight(const DirectionalLight& light, const Shader& sha
 }
 
 
-static void setPointLight(const PointLight* light, const int& which, const Shader& shader)
+static void setPointLight(const PointLight& light, const Shader& shader)
 {
   shader.use();
 
   std::string position, constant, linear, quadratic, ambient, diffuse, specular;
-  position = "pointLight[";
-  position += std::to_string(which);
+  position = "pointLight";
   constant = linear = quadratic = ambient = diffuse = specular = position;
-  position += "].Position";
-  constant += "].Constant";
-  linear += "].Linear";
-  quadratic += "].Quadratic";
-  ambient += "].Ambient";
-  diffuse += "].Diffuse";
-  specular += "].Specular";
+  position  += ".Position";
+  constant  += ".Constant";
+  linear    += ".Linear";
+  quadratic += ".Quadratic";
+  ambient   += ".Ambient";
+  diffuse   += ".Diffuse";
+  specular  += ".Specular";
 
-  shader.setVec3(position, light[which].Position);
-  shader.setFloat(constant, light[which].Constant);
-  shader.setFloat(linear, light[which].Linear);
-  shader.setFloat(quadratic, light[which].Quadratic);
-  shader.setVec3(ambient, light[which].Ambient);
-  shader.setVec3(diffuse, light[which].Diffuse);
-  shader.setVec3(specular, light[which].Specular);
+  shader.setVec3(position,   light.Position);
+  shader.setFloat(constant,  light.Constant);
+  shader.setFloat(linear,    light.Linear);
+  shader.setFloat(quadratic, light.Quadratic);
+  shader.setVec3(ambient,    light.Ambient);
+  shader.setVec3(diffuse,    light.Diffuse);
+  shader.setVec3(specular,   light.Specular);
 }
 
 static void setSpotLight(const SpotLight& light, const Shader& shader)
