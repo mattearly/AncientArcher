@@ -57,14 +57,12 @@ void AADisplay::setCursorToHidden()
 {
   glfwSetInputMode(mWindow, GLFW_CURSOR, GLFW_CURSOR_HIDDEN);
   mCursorMode = CursorMode::HIDDEN;
-
 }
 
 void AADisplay::setCursorToDisabled()
 {
   glfwSetInputMode(mWindow, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
   mCursorMode = CursorMode::FPS;
-
 }
 
 void AADisplay::setWindowTitle(const char* name)
@@ -166,7 +164,6 @@ void AADisplay::toggleCursor()
   default:
     break;
   }
-
 }
 
 void AADisplay::closeWindow()
