@@ -1,19 +1,33 @@
 #pragma once
 #include "../engine/AAEngine.h"
-#include <memory>
 #include <iostream>
+#include "dry/addGodMovement.h"
 
 void testEngineFuncsBaseCase()
 {
-  glfwSetWindowShouldClose(AADisplay::getInstance()->getWindow(), false);
-
-  AADisplay::getInstance()->setWindowTitle("Test Engine Function in Loops - Press [ENTER] To Continue");  // test changing window title
-  AADisplay::getInstance()->setWindowClearColor(glm::vec3(0));        // test changing window clear color
-
   AAEngine engine;
 
-  auto begincout = []() {std::cout << "->One Time Begin Run\n"; };                             // test adding functions to the 4 engine function lists
+  auto begincout = []() {
+
+    AADisplay::getInstance()->setWindowTitle("all functions loop - close window to continue");  // test changing window title
+    AADisplay::getInstance()->setWindowClearColor(glm::vec3(0));        // test changing window clear color
+    std::cout << "->One Time Begin Run\n"; 
+  };
   engine.addToOnBegin(begincout);
+
+  auto deltaChangeClearColor = [](float step) {
+    static float timePassed = 0;
+    timePassed += step;
+    float newcolor = abs(sin(timePassed));
+    AADisplay::getInstance()->setWindowClearColor(
+      glm::vec3(
+        newcolor,
+        newcolor,
+        newcolor
+      )
+    );        // test changing window clear color to random values
+  };
+  engine.addToDeltaUpdate(deltaChangeClearColor);
 
   auto deltacout = [](float step) {std::cout << ".    process delta update: " << step << '\n'; };
   engine.addToDeltaUpdate(deltacout);
@@ -23,12 +37,10 @@ void testEngineFuncsBaseCase()
 
   auto customhandleinput = [](AAKeyBoardInput& keys) {
     std::cout << "...  process keyboard/mouse \n";
-    if (keys.enter)
-    {
-      glfwSetWindowShouldClose(AADisplay::getInstance()->getWindow(), true);
-    }
   };
   engine.addToKeyHandling(customhandleinput);
+
+  addGodMovement(engine);
 
   auto updatecout = []() {std::cout << ".... process update\n"; };
   engine.addToUpdate(updatecout);

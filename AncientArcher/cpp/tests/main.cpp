@@ -21,6 +21,8 @@ int runAllTests() {
   testAssimpBaseLoading(test::model11);
   testAssimpBaseLoading(test::model12);
   testAssimpBaseLoading(test::model13);
+
+  delay(120);
   testEngineBaseCase();
   delay(120);
   testEngineFuncsBaseCase();
@@ -30,6 +32,8 @@ int runAllTests() {
   testEngineFuncsDemo_1();
   delay(120);
   testEngineFuncsDemo_2();
+
+
   return 0;
 }
 

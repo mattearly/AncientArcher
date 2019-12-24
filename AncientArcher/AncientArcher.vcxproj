@@ -181,7 +181,6 @@
     <ClInclude Include="cpp\tests\dry\addPreferedDefaults.h" />
     <ClInclude Include="cpp\tests\dry\addSkybox.h" />
     <ClInclude Include="cpp\engine\AAShaderManager.h" />
-    <ClInclude Include="cpp\tests\dry\addToggleMouseDisplay.h" />
     <ClInclude Include="cpp\tests\engineBaseCase.h" />
     <ClInclude Include="cpp\tests\engineFuncsDemo_1.h" />
     <ClInclude Include="cpp\tests\engineAllFuncBaseCase.h" />

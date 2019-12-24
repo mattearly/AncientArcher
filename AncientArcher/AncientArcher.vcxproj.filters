@@ -98,9 +98,6 @@
     <ClInclude Include="cpp\tests\dry\addSkybox.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="cpp\tests\dry\addToggleMouseDisplay.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="cpp\tests\engineBaseCase.h">
       <Filter>Header Files</Filter>
     </ClInclude>

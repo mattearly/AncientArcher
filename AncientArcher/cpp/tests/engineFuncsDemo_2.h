@@ -4,7 +4,6 @@
 #include "../engine/AAShaderManager.h"
 #include "../engine/AADisplay.h"
 #include "dry/addGodMovement.h"
-#include "dry/addToggleMouseDisplay.h"
 #include "dry/addPreferedDefaults.h"
 #include "../engine/AAOGLGraphics.h"
 #include "dry/addSkybox.h"
@@ -12,18 +11,15 @@ void testEngineFuncsDemo_2()
 {
   AAEngine engine;
 
-  addskybox(engine, "nordic");
+  addSkybox(engine, "nordic");
 
-  addgodmovement(engine);
-
-  addEscTogglesMouseDisplay(engine);
+  addGodMovement(engine);
 
   addPreferredDefaults(engine);
 
   // add shaders to use
   static AAShaderManager shaderMan;
   static int noLightShader = shaderMan.addShader("../AncientArcher/shader/vert_textured.glsl", "../AncientArcher/shader/frag_noLight.glsl");
-  //static int triLightShader = shaderMan.addShader("../AncientArcher/shader/vert_textured.glsl", "../AncientArcher/shader/frag_3coreLight.glsl");
    
   // add object to draw
   static AAGameObject mountainGround = AAOGLGraphics::getInstance()->loadGameObjectWithAssimp(test::model10, true);
@@ -35,8 +31,7 @@ void testEngineFuncsDemo_2()
   static AAGameObject charredArea = AAOGLGraphics::getInstance()->loadGameObjectWithAssimp(test::model11, true);
   charredArea.translate(glm::vec3(0.f, -20.f, 220.f));
   static AAGameObject dirtArea = AAOGLGraphics::getInstance()->loadGameObjectWithAssimp(test::model12, true);
-  dirtArea.translate(glm::vec3(0.f, -20.f, -220.f));  
-
+  dirtArea.translate(glm::vec3(0.f, -20.f, -220.f));
   static AAGameObject brickArea = AAOGLGraphics::getInstance()->loadGameObjectWithAssimp(test::model13, true);
   brickArea.translate(glm::vec3(0.f, -200.f, -220.f));
   brickArea.scale(glm::vec3(20.f, 0.f, 20.f));
@@ -59,7 +54,6 @@ void testEngineFuncsDemo_2()
   };
   engine.addToUpdate(updateShaders);
 
-  // run engine
   engine.run();
 
 }

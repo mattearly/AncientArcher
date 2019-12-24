@@ -7,7 +7,7 @@
 #include "../../engine/AAEngine.h"
 
 
-void addskybox(AAEngine& engine, const std::string& n)
+void addSkybox(AAEngine& engine, const std::string& n)
 {
   int skybox_choice = 0;
   const int numOptions = 2;
