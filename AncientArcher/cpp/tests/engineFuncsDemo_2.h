@@ -31,8 +31,8 @@ void testEngineFuncsDemo_2()
   static AAGameObject dirtArea = AAOGLGraphics::getInstance()->loadGameObjectWithAssimp(test::model12, true);
   dirtArea.translate(glm::vec3(0.f, -20.f, -220.f));
   static AAGameObject brickArea = AAOGLGraphics::getInstance()->loadGameObjectWithAssimp(test::model13, true);
-  brickArea.scale(glm::vec3(20.f, 20.f, 20.f));
-  brickArea.translate(glm::vec3(0.f, -50.f, 0.f));
+  brickArea.scale(glm::vec3(5));
+  brickArea.translate(glm::vec3(0.f, -10.f, 0.f));
 
   auto drawObjects = []()
   {
