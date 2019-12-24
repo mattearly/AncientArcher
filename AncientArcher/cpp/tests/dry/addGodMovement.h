@@ -5,10 +5,10 @@
 
 void addGodMovement(AAEngine& engine)
 {  
-  static const float MAXFLYSPEED = 200.f;
+  static const float MAXFLYSPEED = 400.f;
   static float currFlySpeed = 20.f;  
   static float prevFlySpeed = 0.f;
-  static const float FlyIncrement = 10.f;  
+  static const float FlyIncrement = 9.f;  
 
   // position testing help
   static auto showLocation = []()
