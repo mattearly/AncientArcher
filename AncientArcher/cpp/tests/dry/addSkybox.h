@@ -6,12 +6,11 @@
 
 #include "../../engine/AAEngine.h"
 
-
 void addSkybox(AAEngine& engine, const std::string& n)
 {
   int skybox_choice = 0;
-  const int numOptions = 2;
-  std::string name[numOptions] = { "nordic", "drakeq" };
+  const int numOptions = 3;
+  std::string name[numOptions] = { "nordic", "drakeq", "normandy" };
   if (n == "nordic")
   {
     skybox_choice = 0;
@@ -19,6 +18,10 @@ void addSkybox(AAEngine& engine, const std::string& n)
   else if (n == "drakeq")
   {
     skybox_choice = 1;
+  }
+  else if (n == "normandy")
+  {
+    skybox_choice = 2;
   }
   assert(skybox_choice < numOptions);
   {
