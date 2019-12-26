@@ -182,6 +182,36 @@ void AADisplay::initGLFW()
 #endif
 }
 
+void AADisplay::initFromEngine()
+{
+  initGLFW();
+
+  mWindow = glfwCreateWindow(mWindowWidth, mWindowHeight, "AncientArcher", nullptr, nullptr);
+  if (!mWindow)
+  {
+    glfwTerminate();
+    exit(-1);
+  }
+
+  glfwMakeContextCurrent(mWindow);
+
+  setReshapeWindowHandler();
+
+  //setCurorPosToPerspectiveCalc();
+  setCurorPosToStandardCalc();
+
+  setScrollWheelHandler();
+
+  if (!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress))  // init glad (for opengl context)
+  {
+    std::cout << "failed to init glad\n";
+    char tmp;
+    std::cin >> tmp;
+    exit(-1);
+  }
+
+}
+
 // ---------------
 // GLFW3 callbacks
 // ---------------
@@ -198,72 +228,50 @@ void AADisplay::reshapeWindowHandler(GLFWwindow* window, int width, int height)
   //std::cout << "reshape window finished: " << mWindowWidth << ", " << mWindowHeight << '\n';
 
 }
-
-void AADisplay::mouseHandler(GLFWwindow* window, float xpos, float ypos)
+extern "C" void reshapeCallback(GLFWwindow * window, int w, int h)
 {
-  AAControls::getInstance()->mouseMovement(xpos, ypos);
+  AADisplay::getInstance()->reshapeWindowHandler(window, w, h);
+}
+void AADisplay::setReshapeWindowHandler()
+{
+  ::glfwSetFramebufferSizeCallback(mWindow, ::reshapeCallback);
+}
+
+void AADisplay::perspectiveMouseHandler(GLFWwindow* window, float xpos, float ypos)
+{
+  AAControls::getInstance()->perspectiveMouseMovement(xpos, ypos);
+}
+extern "C" void perspectiveMouseCallback(GLFWwindow * window, double xpos, double ypos)
+{
+  AADisplay::getInstance()->perspectiveMouseHandler(window, (float)xpos, (float)ypos);
+}
+void AADisplay::setCurorPosToPerspectiveCalc()
+{
+  ::glfwSetCursorPosCallback(mWindow, ::perspectiveMouseCallback);
+}
+
+void AADisplay::standardMouseHandler(GLFWwindow* window, float xpos, float ypos)
+{
+  AAControls::getInstance()->standardMouseMovement(xpos, ypos);
+}
+extern "C" void standardMouseCallback(GLFWwindow * window, double xpos, double ypos)
+{
+  AADisplay::getInstance()->standardMouseHandler(window, (float)xpos, (float)ypos);
+}
+void AADisplay::setCurorPosToStandardCalc()
+{
+  ::glfwSetCursorPosCallback(mWindow, ::standardMouseCallback);
 }
 
 void AADisplay::scrollHandler(GLFWwindow* window, float xpos, float ypos)
 {
   AAControls::getInstance()->mouseScrollWheelMovement(xpos, ypos);
 }
-
-extern "C" void reshapeCallback(GLFWwindow * window, int w, int h)
-{
-  AADisplay::getInstance()->reshapeWindowHandler(window, w, h);
-}
-
-extern "C" void mouseCallback(GLFWwindow * window, double xpos, double ypos)
-{
-  AADisplay::getInstance()->mouseHandler(window, (float)xpos, (float)ypos);
-}
-
 extern "C" void scrollCallback(GLFWwindow * window, double xpos, double ypos)
 {
   AADisplay::getInstance()->scrollHandler(window, (float)xpos, (float)ypos);
 }
-
-void AADisplay::initReshapeWindowHandler()
-{
-  ::glfwSetFramebufferSizeCallback(mWindow, ::reshapeCallback);
-}
-
-void AADisplay::initMouseHandler()
-{
-  ::glfwSetCursorPosCallback(mWindow, ::mouseCallback);
-}
-
-void AADisplay::initMouseScrollHandler()
+void AADisplay::setScrollWheelHandler()
 {
   ::glfwSetScrollCallback(mWindow, ::scrollCallback);
-}
-
-void AADisplay::initFromEngine()
-{
-  initGLFW();
-
-  mWindow = glfwCreateWindow(mWindowWidth, mWindowHeight, "AncientArcher", nullptr, nullptr);
-  if (!mWindow)
-  {
-    glfwTerminate();
-    exit(-1);
-  }
-
-  glfwMakeContextCurrent(mWindow);
-
-  initReshapeWindowHandler();
-
-  initMouseHandler();
-
-  initMouseScrollHandler();
-
-  if (!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress))  // init glad (for opengl context)
-  {
-    std::cout << "failed to init glad\n";
-    char tmp;
-    std::cin >> tmp;
-    exit(-1);
-  }
-
 }

@@ -20,7 +20,8 @@ private:
 
   float mMouseSensitivity = 0.1f;
 
-  void mouseMovement(float xpos, float ypos);
+  void perspectiveMouseMovement(float xpos, float ypos);
+  void standardMouseMovement(float xpos, float ypos);
   void mouseScrollWheelMovement(float xpos, float ypos);
 
 };

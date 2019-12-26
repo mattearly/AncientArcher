@@ -1,6 +1,7 @@
 #include "AAEngine.h"
 #include <vector>
 #include <string>
+#include <iostream>
 
 AAEngine::AAEngine()
 {
@@ -22,7 +23,6 @@ AAEngine::~AAEngine()
 int AAEngine::run()
 {
   begin();
-  AADisplay::getInstance()->keepWindowOpen();
   while (!glfwWindowShouldClose(AADisplay::getInstance()->getWindow()))
   {
     static float currentFrame(0.f), deltaTime(0.f), lastFrame(0.f);
@@ -81,6 +81,32 @@ void AAEngine::setSkybox(const std::shared_ptr<AASkybox>& skybox)
   mSkybox = skybox;
 }
 
+void AAEngine::setToPerspectiveMouseHandling()
+{
+  if (mMouseReporting != MouseReporting::PERSPECTIVE)
+  {
+    mMouseReporting = MouseReporting::PERSPECTIVE;
+    AADisplay::getInstance()->setCurorPosToPerspectiveCalc();
+  }
+  else
+  {
+    std::cout << "engine already in PERSPECTIVE mouse calc\n";
+  }
+}
+
+void AAEngine::setToStandardMouseHandling()
+{
+  if (mMouseReporting != MouseReporting::STANDARD)
+  {
+    mMouseReporting = MouseReporting::STANDARD;
+    AADisplay::getInstance()->setCurorPosToStandardCalc();
+  }
+  else
+  {
+    std::cout << "engine already in STANDARD mouse calc\n";
+  }
+}
+
 void AAEngine::addToOnRender(void(*function)())
 {
   onRender.push_back(function);
@@ -103,6 +129,8 @@ void AAEngine::render()
 
 void AAEngine::begin()
 {
+  AADisplay::getInstance()->keepWindowOpen();
+
   for (auto oB : onBegin)
   {
     oB();
@@ -159,13 +187,19 @@ void AAEngine::update()
     oSH(AAControls::getInstance()->mMouseWheelScroll);
   }
 
+  AAControls::getInstance()->mMouseWheelScroll.xOffset = 0;
+  AAControls::getInstance()->mMouseWheelScroll.yOffset = 0;
+
   for (auto oMH : onMouseHandling)
   {
     oMH(AAControls::getInstance()->mMousePosition);
   }
 
-  AAControls::getInstance()->mMousePosition.xOffset = 0;
-  AAControls::getInstance()->mMousePosition.yOffset = 0;
+  if (mMouseReporting == MouseReporting::PERSPECTIVE)
+  {
+    AAControls::getInstance()->mMousePosition.xOffset = 0;
+    AAControls::getInstance()->mMousePosition.yOffset = 0;
+  }
 
   for (auto oU : onUpdate)
   {

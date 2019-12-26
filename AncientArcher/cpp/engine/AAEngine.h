@@ -26,6 +26,8 @@ public:
   void addToMouseHandling(void(*function)(AAMouseInput&));
 
   void setSkybox(const std::shared_ptr<AASkybox>& skybox);
+  void setToPerspectiveMouseHandling();
+  void setToStandardMouseHandling();
 
   friend class AAControls;
 
@@ -57,5 +59,7 @@ private:
   const float mKeyTimeOutLength = 0.56667f;
   float mTimeOutCheckStamp = 0.f;
   float mSystemTimeOutTimeSoFar = 0.f;
+
+  enum class MouseReporting { STANDARD, PERSPECTIVE } mMouseReporting = MouseReporting::STANDARD;
 
 };

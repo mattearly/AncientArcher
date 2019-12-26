@@ -28,11 +28,14 @@ public:
   void toggleCursor();
   void closeWindow();
 
-  friend class AAEngine;
-
   void reshapeWindowHandler(GLFWwindow* window, int width, int height);
-  void mouseHandler(GLFWwindow* window, float xpos, float ypos);
+  
+  void perspectiveMouseHandler(GLFWwindow* window, float xpos, float ypos);
+  void standardMouseHandler(GLFWwindow* window, float xpos, float ypos);
+
   void scrollHandler(GLFWwindow* window, float xpos, float ypos);
+
+  friend class AAEngine;
 
 private:
 
@@ -54,10 +57,15 @@ private:
   GLFWwindow* mWindow = nullptr;
   glm::vec3 mWindowClearColor = glm::vec3(0.35f, 0.15f, 0.35f);
   
+  void setReshapeWindowHandler();
+
+  void setCurorPosToPerspectiveCalc();
+  void setCurorPosToStandardCalc();
+
+  void setScrollWheelHandler();
+
   void initGLFW();
-  void initReshapeWindowHandler();
-  void initMouseHandler();
-  void initMouseScrollHandler();
+
   void initFromEngine();
 
 };

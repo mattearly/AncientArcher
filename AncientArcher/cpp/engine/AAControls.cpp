@@ -8,7 +8,7 @@ AAControls* AAControls::getInstance()
   return controls;
 }
 
-void AAControls::mouseMovement(float x, float y)
+void AAControls::perspectiveMouseMovement(float x, float y)
 {
   //first person
   static bool firstMouse = true;
@@ -31,6 +31,13 @@ void AAControls::mouseMovement(float x, float y)
 
   mMousePosition.xOffset = xOffset;
   mMousePosition.yOffset = yOffset;
+
+}
+
+void AAControls::standardMouseMovement(float xpos, float ypos)
+{
+  mMousePosition.xOffset = xpos;
+  mMousePosition.yOffset = ypos;
 }
 
 void AAControls::mouseScrollWheelMovement(float x, float y)
