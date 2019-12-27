@@ -62,10 +62,10 @@ void  testEngineFuncsDemo_1()
     spotLight.Diffuse = glm::vec3(1.f);
     spotLight.Specular = glm::vec3(1.f);
     spotLight.Constant = 1.f;
-    spotLight.Linear = .09f;
-    spotLight.Quadratic = .015f;
-    spotLight.CutOff = glm::cos(glm::radians(15.f));
-    spotLight.OuterCutOff = glm::cos(glm::radians(19.f));
+    spotLight.Linear = .08f;
+    spotLight.Quadratic = .025f;
+    spotLight.CutOff = glm::cos(glm::radians(19.f));
+    spotLight.OuterCutOff = glm::cos(glm::radians(24.f));
     setSpotLight(spotLight, shaderMan.getShader(triLightShader));
 
   };
@@ -107,6 +107,11 @@ void  testEngineFuncsDemo_1()
   {
     shaderMan.updateProjectionMatrices();
     shaderMan.updateViewMatrices();
+    spotLight.Position = *AAViewport::getInstance()->getPosition();
+    spotLight.Direction = *AAViewport::getInstance()->getFront();
+    setSpotLight(spotLight, shaderMan.getShader(triLightShader));
+
+
   };
   engine.addToUpdate(updateShaders);
 
