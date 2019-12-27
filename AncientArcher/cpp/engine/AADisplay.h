@@ -22,7 +22,8 @@ public:
   void setCursorToHidden();
   void setCursorToDisabled();
   void setWindowClearColor(glm::vec3 rgb);
-  void setWindowSize(int width, int height, int xpos = 0, int ypos = 0);
+  void setWindowSize(int width, int height, int xpos, int ypos);
+  void setWindowSize(int width, int height, bool center = true);
   void setWindowTitle(const char* name);
   
   void toggleCursor();

@@ -75,6 +75,28 @@ void AADisplay::setWindowSize(int width, int height, int xpos, int ypos)
   glfwSetWindowMonitor(mWindow, nullptr, xpos, ypos, width, height, 0);
   mWindowIsFullScreen = false;
 }
+
+void AADisplay::setWindowSize(int width, int height, bool center)
+{
+
+  // turn off fullscreen to get frame sizes
+  glfwSetWindowMonitor(mWindow, nullptr, mXPos, mYPos, mWindowWidth, mWindowHeight, 0);
+
+  // get work area sizes after turning off full screen
+  int x, y, w, h;
+  glfwGetMonitorWorkarea(glfwGetPrimaryMonitor(), &x, &y, &w, &h);
+
+  // get frame sizes after turning off full screen
+  int frameSizeLeft, frameSizeTop, frameSizeRight, frameSizeBot;
+  glfwGetWindowFrameSize(mWindow, &frameSizeLeft, &frameSizeTop, &frameSizeRight, &frameSizeBot);
+
+  int xPos = (w / 2) - (width / 2) + ((frameSizeLeft + frameSizeRight) / 2);
+  int yPos = (h / 2) - (height /2) + ((frameSizeTop + frameSizeBot) / 2);
+
+  glfwSetWindowMonitor(mWindow, nullptr, xPos, yPos, width, height, 0);
+  mWindowIsFullScreen = false;
+}
+
 // -----------------
 // Private Functions
 // -----------------
@@ -100,9 +122,7 @@ void AADisplay::setFullscreenToOn()
 
   mXPos = 0;
   mYPos = 0;
-  //mWindowWidth = w + x + frameSizeLeft + frameSizeRight;
   mWindowWidth = w + frameSizeLeft + frameSizeRight;
-  //mWindowHeight = h + y + frameSizeTop + frameSizeBot;
   mWindowHeight = h + frameSizeTop + frameSizeBot;
 
   glfwSetWindowMonitor(mWindow, glfwGetPrimaryMonitor(), mXPos, mYPos, mWindowWidth, mWindowHeight, 0);
@@ -112,15 +132,15 @@ void AADisplay::setFullscreenToOn()
 
 void AADisplay::setFullscreenToOff()
 {
-  int x, y, w, h;
-  glfwGetMonitorWorkarea(glfwGetPrimaryMonitor(), &x, &y, &w, &h);
-
-  int frameSizeLeft, frameSizeTop, frameSizeRight, frameSizeBot;
-
   // turn off fullscreen to get frame sizes
   glfwSetWindowMonitor(mWindow, nullptr, mXPos, mYPos, mWindowWidth, mWindowHeight, 0);
 
+  // get work area sizes after turning off full screen
+  int x, y, w, h;
+  glfwGetMonitorWorkarea(glfwGetPrimaryMonitor(), &x, &y, &w, &h);
+
   // get frame sizes after turning off full screen
+  int frameSizeLeft, frameSizeTop, frameSizeRight, frameSizeBot;
   glfwGetWindowFrameSize(mWindow, &frameSizeLeft, &frameSizeTop, &frameSizeRight, &frameSizeBot);
 
   // update window size and positions
