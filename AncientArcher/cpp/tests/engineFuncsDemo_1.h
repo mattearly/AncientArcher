@@ -43,7 +43,7 @@ void  testEngineFuncsDemo_1()
     DirectionalLight dirLight;
     dirLight.Direction = glm::vec3(.15f, -1.f, .15f);
     dirLight.Ambient = glm::vec3(.03f);
-    dirLight.Diffuse = glm::vec3(.2f);
+    dirLight.Diffuse = glm::vec3(.05f);
     dirLight.Specular = glm::vec3(.5f);
     setDirectionalLight(dirLight, shaderMan.getShader(triLightShader));
 
@@ -58,14 +58,14 @@ void  testEngineFuncsDemo_1()
 
     spotLight.Position = glm::vec3(0, 5, 8.5);
     spotLight.Direction = glm::vec3(-1, 0, 0);
-    spotLight.Ambient = glm::vec3(0);
+    spotLight.Ambient = glm::vec3(0.f);
     spotLight.Diffuse = glm::vec3(1.f);
     spotLight.Specular = glm::vec3(1.f);
     spotLight.Constant = 1.f;
-    spotLight.Linear = .08f;
-    spotLight.Quadratic = .025f;
-    spotLight.CutOff = glm::cos(glm::radians(19.f));
-    spotLight.OuterCutOff = glm::cos(glm::radians(24.f));
+    spotLight.Linear = .09f;
+    spotLight.Quadratic = .009f;
+    spotLight.CutOff = glm::cos(glm::radians(28.f));
+    spotLight.OuterCutOff = glm::cos(glm::radians(35.f));
     setSpotLight(spotLight, shaderMan.getShader(triLightShader));
 
   };
@@ -110,8 +110,6 @@ void  testEngineFuncsDemo_1()
     spotLight.Position = *AAViewport::getInstance()->getPosition();
     spotLight.Direction = *AAViewport::getInstance()->getFront();
     setSpotLight(spotLight, shaderMan.getShader(triLightShader));
-
-
   };
   engine.addToUpdate(updateShaders);
 
