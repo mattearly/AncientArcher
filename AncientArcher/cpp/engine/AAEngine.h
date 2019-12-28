@@ -19,11 +19,11 @@ public:
   void addToOnBegin(void(*function)());
   void addToDeltaUpdate(void(*function)(float));
   void addToOnRender(void(*function)());
-  void addToUpdate(void(*function)());
-  void addToKeyHandling(void(*function)(AAKeyBoardInput&));
   void addToTimedOutKeyHandling(bool(*function)(AAKeyBoardInput&));
+  void addToKeyHandling(void(*function)(AAKeyBoardInput&));
   void addToScrollHandling(void(*function)(AAScrollInput&));
   void addToMouseHandling(void(*function)(AAMouseInput&));
+  void addToUpdate(void(*function)());
 
   void setSkybox(const std::shared_ptr<AASkybox>& skybox);
   void setToPerspectiveMouseHandling();
@@ -51,7 +51,6 @@ private:
 
   float mEngineRunTimer = 0.f;
 
-  bool mDisplayInitiated = false;
   void initDisplay();
 
   std::shared_ptr<AASkybox> mSkybox;
