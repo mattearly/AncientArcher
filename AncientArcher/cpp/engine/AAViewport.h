@@ -14,6 +14,8 @@ public:
   void setRenderDistance(float distance);
   void setToPerspective();
   void setToOrtho();
+  void setOrthoFieldSize(float left, float right, float bottom, float top);
+  void setOrthoFieldSize(glm::vec4 lrbt);
 
   void setCurrentPosition(glm::vec3 pos);
   void setCurrentPitch(float pitch);
@@ -51,6 +53,7 @@ private:
 
   float mRenderDistance = 100.f;
 
+  glm::vec4 mOrthoFieldSize = glm::vec4(-10.f, 10.f, -10.f, 10.f);
   enum class RenderProjection { ORTHO, PERSPECTIVE } mRenderProjection = RenderProjection::PERSPECTIVE;
 
   void resetViewportVars();

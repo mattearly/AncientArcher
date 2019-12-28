@@ -57,6 +57,16 @@ void AAViewport::setToOrtho()
   mRenderProjection = RenderProjection::ORTHO;
 }
 
+void AAViewport::setOrthoFieldSize(float left, float right, float bottom, float top)
+{
+  mOrthoFieldSize = glm::vec4(left, right, bottom, top);
+}
+
+void AAViewport::setOrthoFieldSize(glm::vec4 lrbt)
+{
+  mOrthoFieldSize = lrbt;
+}
+
 void AAViewport::setRenderDistance(float distance)
 {
   mRenderDistance = distance;
@@ -137,12 +147,18 @@ glm::mat4 AAViewport::getProjectionMatrix() const
     projection = glm::perspective(glm::radians(mFieldOfView), screen_width / screen_height, 0.01f, mRenderDistance);
     break;
   case RenderProjection::ORTHO:
-    projection = glm::ortho(-10.f, 10.f, -10.f, 10.f, .01f, mRenderDistance);
+    projection = glm::ortho(
+      mOrthoFieldSize.x, 
+      mOrthoFieldSize.y, 
+      mOrthoFieldSize.z, 
+      mOrthoFieldSize.w, 
+      .01f, 
+      mRenderDistance
+    );
     break;
   default:
     break;
   }
-
 
   return projection;
 }
