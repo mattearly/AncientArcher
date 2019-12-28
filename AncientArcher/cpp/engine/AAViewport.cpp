@@ -34,10 +34,27 @@ void AAViewport::updateProjectionMatrix(const Shader& shader)
   shader.setMat4("projection", getProjectionMatrix());
 }
 
-void AAViewport::setToPerspective(const Shader& shader)
+void AAViewport::resetViewportVars()
 {
-  updateProjectionMatrix(shader);
-  updateViewMatrix(shader);
+  mPosition = glm::vec3(0);
+  mFieldOfView = 60.f;
+  mYaw = 0.f;
+  mPitch = 0.f;
+  mFront = glm::vec3(0, 0, -1);
+  mRight = glm::vec3(1, 0, 0);
+  mUp = glm::vec3(0, 1, 0);
+  mRenderDistance = 100.f;
+  mRenderProjection = RenderProjection::PERSPECTIVE;
+}
+
+void AAViewport::setToPerspective()
+{
+  mRenderProjection = RenderProjection::PERSPECTIVE;
+}
+
+void AAViewport::setToOrtho()
+{
+  mRenderProjection = RenderProjection::ORTHO;
 }
 
 void AAViewport::setRenderDistance(float distance)
@@ -108,16 +125,24 @@ glm::mat4 AAViewport::getProjectionMatrix() const
 
   if (screen_width == 0 || screen_height == 0)
   {
-    std::cout << "perspective setting failed: screen width or height is 0\n";
+    std::cout << "Projection setting failed. File: " << __FILE__ << " Line: " << __LINE__ << "  -Screen width or height is 0.\n";
     return glm::mat4(0);
   }
 
-  glm::mat4 projection = glm::perspective(
-    glm::radians(mFieldOfView),
-    screen_width / screen_height,
-    0.01f,
-    mRenderDistance
-  );
+  glm::mat4 projection = glm::mat4(1);
+
+  switch (mRenderProjection)
+  {
+  case RenderProjection::PERSPECTIVE:
+    projection = glm::perspective(glm::radians(mFieldOfView), screen_width / screen_height, 0.01f, mRenderDistance);
+    break;
+  case RenderProjection::ORTHO:
+    projection = glm::ortho(-10.f, 10.f, -10.f, 10.f, .01f, mRenderDistance);
+    break;
+  default:
+    break;
+  }
+
 
   return projection;
 }

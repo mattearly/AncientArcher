@@ -230,6 +230,8 @@ void AADisplay::initFromEngine()
     exit(-1);
   }
 
+  AAViewport::getInstance()->resetViewportVars();
+
 }
 
 // ---------------

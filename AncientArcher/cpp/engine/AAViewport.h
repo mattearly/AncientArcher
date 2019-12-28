@@ -12,6 +12,9 @@ public:
   const glm::vec3 WORLD_UP = glm::vec3(0, 1, 0);
 
   void setRenderDistance(float distance);
+  void setToPerspective();
+  void setToOrtho();
+
   void setCurrentPosition(glm::vec3 pos);
   void setCurrentPitch(float pitch);
   void setCurrentYaw(float yaw);
@@ -38,8 +41,6 @@ private:
 
   void updateProjectionMatrix(const Shader& shader);
 
-  void setToPerspective(const Shader& shader);
-
   glm::vec3 mPosition = glm::vec3(0);
   float mFieldOfView = 60.f;
   float mYaw = 0.f;
@@ -50,5 +51,8 @@ private:
 
   float mRenderDistance = 100.f;
 
+  enum class RenderProjection { ORTHO, PERSPECTIVE } mRenderProjection = RenderProjection::PERSPECTIVE;
+
+  void resetViewportVars();
 };
 
