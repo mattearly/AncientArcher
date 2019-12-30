@@ -81,7 +81,7 @@ void  testEngineFuncsDemo_1()
     //gameObj3.rotate(dt * .5f, glm::vec3(0, 1, 0));
     //gameObj4.translate(glm::vec3(0, 0, sin(totalTime)));
     //gameObj5.rotate(dt * .3f, glm::vec3(0, 1, 0));
-    gameObj6.rotate(dt * .6f, glm::vec3(0, 2.5, 0));
+    gameObj6.advanceRotation(glm::radians(dt * 5));
 
     //pointLight.Position = glm::vec3(0, 0, -sin(totalTime) * 10);
     //AAViewport::getInstance()->setPointLight(pointLight);
