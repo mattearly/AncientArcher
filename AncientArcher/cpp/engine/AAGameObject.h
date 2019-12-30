@@ -38,6 +38,10 @@ public:
   void rotate(float angle, glm::vec3 axis);
   void translate(glm::vec3 amt);
 
+  void advanceScale(glm::vec3 amt);
+  void advanceRotation(float angleAmtRadians);
+  void advanceTranslate(glm::vec3 amt);
+
 private:
 
   std::vector<MeshDrawInfo> mMeshes;

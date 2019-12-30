@@ -58,6 +58,24 @@ void AAGameObject::translate(glm::vec3 amt)
   updateModelMatrix();
 }
 
+void AAGameObject::advanceScale(glm::vec3 amt)
+{
+  scale(mScale + amt);
+}
+
+void AAGameObject::advanceRotation(float angleAmtRadians)
+{
+
+  rotate(mRotateAngle + angleAmtRadians, mRotate);
+  
+  //mRotate = axis; //test this - will mess up previous rotations probably
+}
+
+void AAGameObject::advanceTranslate(glm::vec3 amt)
+{
+  translate(mTranslate + amt);
+}
+
 void AAGameObject::updateModelMatrix()
 {
   mModelMatrix = glm::mat4(1);
