@@ -41,13 +41,14 @@ public:
   void advanceScale(glm::vec3 amt);
   void advanceRotation(float angleAmtRadians);
   void advanceTranslate(glm::vec3 amt);
+  void changeRotateAxis(glm::vec3 axis);
 
 private:
 
   std::vector<MeshDrawInfo> mMeshes;
 
   glm::vec3 mScale = glm::vec3(1);
-  glm::vec3 mRotate = glm::vec3(1);
+  glm::vec3 mRotateAxis = glm::vec3(1);
   float mRotateAngle = 0.f;
   glm::vec3 mTranslate = glm::vec3(1);
 

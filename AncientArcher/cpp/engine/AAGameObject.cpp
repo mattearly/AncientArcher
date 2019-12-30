@@ -48,7 +48,7 @@ void AAGameObject::scale(glm::vec3 amt)
 void AAGameObject::rotate(float radianAngle, glm::vec3 which)
 {
   mRotateAngle = radianAngle;
-  mRotate = which;
+  mRotateAxis = which;
   updateModelMatrix();
 }
 
@@ -66,7 +66,7 @@ void AAGameObject::advanceScale(glm::vec3 amt)
 void AAGameObject::advanceRotation(float angleAmtRadians)
 {
 
-  rotate(mRotateAngle + angleAmtRadians, mRotate);
+  rotate(mRotateAngle + angleAmtRadians, mRotateAxis);
   
   //mRotate = axis; //test this - will mess up previous rotations probably
 }
@@ -74,6 +74,11 @@ void AAGameObject::advanceRotation(float angleAmtRadians)
 void AAGameObject::advanceTranslate(glm::vec3 amt)
 {
   translate(mTranslate + amt);
+}
+
+void AAGameObject::changeRotateAxis(glm::vec3 axis)
+{
+  mRotateAxis = axis;
 }
 
 void AAGameObject::updateModelMatrix()
@@ -88,7 +93,7 @@ void AAGameObject::updateModelMatrix()
   // Order that seems to work logically and does what is expected: Translate, Scale, Rotate
   mModelMatrix = glm::translate(mModelMatrix, mTranslate);
   mModelMatrix = glm::scale(mModelMatrix, mScale);
-  mModelMatrix = glm::rotate(mModelMatrix, mRotateAngle, mRotate);
+  mModelMatrix = glm::rotate(mModelMatrix, mRotateAngle, mRotateAxis);
 }
 
 MeshDrawInfo::MeshDrawInfo(unsigned int a, unsigned int b, unsigned int e, std::vector<TextureInfo> t, std::vector<unsigned int> el)
