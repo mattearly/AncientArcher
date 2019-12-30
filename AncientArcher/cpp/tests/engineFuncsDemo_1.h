@@ -11,7 +11,6 @@
 
 void  testEngineFuncsDemo_1()
 {
-
   AAEngine engine;
 
   addSkybox(engine, "drakeq");
@@ -19,6 +18,8 @@ void  testEngineFuncsDemo_1()
   addPreferredDefaults(engine);
 
   static AAGameObject gameObj6 = AAOGLGraphics::getInstance()->loadGameObjectWithAssimp(test::model6, true);
+  gameObj6.changeRotateAxis(glm::vec3(0,1,0));
+
   static AAGameObject gameObj9 = AAOGLGraphics::getInstance()->loadGameObjectWithAssimp(test::model9, true);
 
   static AAShaderManager shaderMan;
@@ -35,7 +36,7 @@ void  testEngineFuncsDemo_1()
 
     //gameObj2.translate(glm::vec3(0, 6, 0));
     //gameObj5.translate(glm::vec3(5,5,-5));
-    gameObj6.translate(glm::vec3(0, 2, 0));
+    gameObj6.translate(glm::vec3(0, 4, 0));
     //gameObj7.translate(glm::vec3(-51.625,0,0));
     //gameObj8.translate(glm::vec3(0));
     gameObj9.translate(glm::vec3(0));
@@ -75,6 +76,7 @@ void  testEngineFuncsDemo_1()
   {
     static float totalTime = 0;
     totalTime += dt;
+
     //gameObj.translate(glm::vec3(dt * .5, 0, 0));
     //gameObj2.translate(glm::vec3(0, 0, -sin(totalTime)));
     //gameObj3.translate(glm::vec3(0, 0, 0));
