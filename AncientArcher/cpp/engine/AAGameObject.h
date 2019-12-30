@@ -33,13 +33,22 @@ public:
   AAGameObject(std::vector<MeshDrawInfo> meshes);
 
   void draw(const Shader& shader);
-  void translate(glm::vec3 amt);
-  void rotate(float angle, glm::vec3 axis);
+
   void scale(glm::vec3 amt);
+  void rotate(float angle, glm::vec3 axis);
+  void translate(glm::vec3 amt);
 
 private:
 
   std::vector<MeshDrawInfo> mMeshes;
+
+  glm::vec3 mScale = glm::vec3(1);
+  glm::vec3 mRotate = glm::vec3(1);
+  float mRotateAngle = 0.f;
+  glm::vec3 mTranslate = glm::vec3(1);
+
+  void updateModelMatrix();
+
   glm::mat4 mModelMatrix = glm::mat4(1);
 
 };
