@@ -24,6 +24,7 @@ public:
   void addToScrollHandling(void(*function)(AAScrollInput&));
   void addToMouseHandling(void(*function)(AAMouseInput&));
   void addToUpdate(void(*function)());
+  void addToSlowUpdate(void(*function)());
 
   void setSkybox(const std::shared_ptr<AASkybox>& skybox);
   void setToPerspectiveMouseHandling();
@@ -48,6 +49,7 @@ private:
   std::vector<void (*)(AAScrollInput&)> onScrollHandling;
   std::vector<void (*)(AAMouseInput&)> onMouseHandling;
   std::vector<void (*)()> onUpdate;
+  std::vector<void (*)()> onSlowUpdate;
 
   float mEngineRunTimer = 0.f;
 
@@ -55,9 +57,8 @@ private:
 
   std::shared_ptr<AASkybox> mSkybox;
 
+  float mSlowUpdateDelay = 1.f;
   const float mKeyTimeOutLength = 0.56667f;
-  float mTimeOutCheckStamp = 0.f;
-  float mSystemTimeOutTimeSoFar = 0.f;
 
   enum class MouseReporting { STANDARD, PERSPECTIVE } mMouseReporting = MouseReporting::STANDARD;
 

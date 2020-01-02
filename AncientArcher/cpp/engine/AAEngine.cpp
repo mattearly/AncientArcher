@@ -56,6 +56,11 @@ void AAEngine::addToUpdate(void(*function)())
   onUpdate.push_back(function);
 }
 
+void AAEngine::addToSlowUpdate(void(*function)())
+{
+  onSlowUpdate.push_back(function);
+}
+
 void AAEngine::addToKeyHandling(void(*function)(AAKeyBoardInput&))
 {
   onKeyHandling.push_back(function);
@@ -148,10 +153,12 @@ void AAEngine::update(float dt)
 void AAEngine::update()
 {
   processSystemKeys();
+  static float timeOutCheckStamp = 0.f;
+  float passedTime = mEngineRunTimer - timeOutCheckStamp;
 
-  float passedTime = mEngineRunTimer - mTimeOutCheckStamp;
-  mSystemTimeOutTimeSoFar += passedTime;
-  if (mSystemTimeOutTimeSoFar > mKeyTimeOutLength)
+  static float buttonTimeOutSoFar = 0;
+  buttonTimeOutSoFar += passedTime;
+  if (buttonTimeOutSoFar > mKeyTimeOutLength)
   {
     int buttonUsed = false;
     if ((AAControls::getInstance()->mButtonState.leftAlt || AAControls::getInstance()->mButtonState.rightAlt) && AAControls::getInstance()->mButtonState.enter)
@@ -170,12 +177,9 @@ void AAEngine::update()
 
     if (buttonUsed)
     {
-      mSystemTimeOutTimeSoFar = 0.f;
+      buttonTimeOutSoFar = 0.f;
     }
-
   }
-
-  mTimeOutCheckStamp = mEngineRunTimer;
 
   for (auto oKH : onKeyHandling)
   {
@@ -205,6 +209,19 @@ void AAEngine::update()
   {
     oU();
   }
+
+  static float worldUpdateTimeOutSoFar = 0;
+  worldUpdateTimeOutSoFar += passedTime;
+  if (worldUpdateTimeOutSoFar > mSlowUpdateDelay)
+  {
+    for (auto oSU : onSlowUpdate)
+    {
+      oSU();
+    }
+    worldUpdateTimeOutSoFar = 0.f;
+  }
+
+  timeOutCheckStamp = mEngineRunTimer;
 
 }
 
