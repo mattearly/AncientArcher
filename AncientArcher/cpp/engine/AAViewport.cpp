@@ -47,6 +47,24 @@ void AAViewport::resetViewportVars()
   mRenderProjection = RenderProjection::PERSPECTIVE;
 }
 
+void AAViewport::windowSizeChanged()
+{
+  switch (mRenderProjection)
+  {
+  case RenderProjection::PERSPECTIVE:
+
+    break;
+  case RenderProjection::ORTHO:
+    AAViewport::getInstance()->setOrthoFieldSize(
+      glm::vec4(
+        0, AADisplay::getInstance()->getWindowWidth(),
+        0, AADisplay::getInstance()->getWindowHeight()
+      )
+    );
+    break;
+  }
+}
+
 void AAViewport::setToPerspective()
 {
   mRenderProjection = RenderProjection::PERSPECTIVE;
@@ -54,6 +72,13 @@ void AAViewport::setToPerspective()
 
 void AAViewport::setToOrtho()
 {
+  AAViewport::getInstance()->setOrthoFieldSize(
+    glm::vec4(
+      0, AADisplay::getInstance()->getWindowWidth(),
+      0, AADisplay::getInstance()->getWindowHeight()
+    )
+  );
+
   mRenderProjection = RenderProjection::ORTHO;
 }
 
@@ -130,8 +155,8 @@ glm::mat4 AAViewport::getViewMatrix() const
 
 glm::mat4 AAViewport::getProjectionMatrix() const
 {
-  float screen_width = (float)AADisplay::getInstance()->getScreenWidth();
-  float screen_height = (float)AADisplay::getInstance()->getScreenHeight();
+  float screen_width = (float)AADisplay::getInstance()->getWindowWidth();
+  float screen_height = (float)AADisplay::getInstance()->getWindowHeight();
 
   if (screen_width == 0 || screen_height == 0)
   {
