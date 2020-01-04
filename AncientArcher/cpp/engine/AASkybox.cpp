@@ -18,11 +18,11 @@ AASkybox::AASkybox(std::vector<std::string> incomingSkymapFiles)
 
   loadSkybox();
 
-
   cubemapTexture = TexLoader::getInstance()->loadCubeTexture(incomingSkymapFiles);
 
   skyboxShader->use();
   skyboxShader->setInt("skybox", 0);
+  skyboxShader->stop();
 }
 
 /**
@@ -43,6 +43,7 @@ void AASkybox::render()
   glDrawArrays(GL_TRIANGLES, 0, 36);
   glBindVertexArray(0);
   glDepthFunc(GL_LESS); // set depth function back to default
+  skyboxShader->stop();
 }
 
 /**

@@ -1,6 +1,7 @@
 #include "AAGameObject.h"
 #include "AAViewport.h"
 #include <glad\glad.h>
+#include <iostream>
 
 glm::mat4* AAGameObject::getModelMatrix()
 {
@@ -37,6 +38,7 @@ void AAGameObject::draw(const Shader& shader)
   }
 
   glActiveTexture(GL_TEXTURE0);
+  shader.stop();
 }
 
 void AAGameObject::scale(glm::vec3 amt)
@@ -47,6 +49,12 @@ void AAGameObject::scale(glm::vec3 amt)
 
 void AAGameObject::rotate(float radianAngle, glm::vec3 which)
 {
+  if (which.x == 0.f && which.y == 0.f && which.z == 0.f)
+  {
+    std::cout << "rotation axis setting can't be all 0's\n";
+    return;
+  }
+
   mRotateAngle = radianAngle;
   mRotateAxis = which;
   updateModelMatrix();
@@ -65,10 +73,7 @@ void AAGameObject::advanceScale(glm::vec3 amt)
 
 void AAGameObject::advanceRotation(float angleAmtRadians)
 {
-
   rotate(mRotateAngle + angleAmtRadians, mRotateAxis);
-  
-  //mRotate = axis; //test this - will mess up previous rotations probably
 }
 
 void AAGameObject::advanceTranslate(glm::vec3 amt)
@@ -78,6 +83,12 @@ void AAGameObject::advanceTranslate(glm::vec3 amt)
 
 void AAGameObject::changeRotateAxis(glm::vec3 axis)
 {
+  if (axis.x == 0.f && axis.y == 0.f && axis.z == 0.f)
+  {
+    std::cout << "rotation axis setting can't be all 0's\n";
+    return;
+  }
+
   mRotateAxis = axis;
 }
 
