@@ -27,12 +27,12 @@ void AADisplay::setWindowClearColor(glm::vec3 rgb)
   mWindowClearColor = rgb;
 }
 
-int AADisplay::getScreenWidth()
+int AADisplay::getWindowWidth()
 {
   return mWindowWidth;
 }
 
-int AADisplay::getScreenHeight()
+int AADisplay::getWindowHeight()
 {
   return mWindowHeight;
 }
@@ -245,6 +245,7 @@ void AADisplay::reshapeWindowHandler(GLFWwindow* window, int width, int height)
   mWindowWidth = width;
   mWindowHeight = height;
   glViewport(0, 0, mWindowWidth, mWindowHeight);
+  AAViewport::getInstance()->windowSizeChanged();
   //AAViewport::getInstance()->setToPerspective();  // hack  todo
 
   //std::cout << "reshape window finished: " << mWindowWidth << ", " << mWindowHeight << '\n';

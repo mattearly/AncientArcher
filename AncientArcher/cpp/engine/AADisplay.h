@@ -13,8 +13,8 @@ public:
 
   ~AADisplay();
 
-  int getScreenWidth();
-  int getScreenHeight();
+  int getWindowWidth();
+  int getWindowHeight();
   bool getIsWindowFullScreen();
   GLFWwindow* getWindow();
 
