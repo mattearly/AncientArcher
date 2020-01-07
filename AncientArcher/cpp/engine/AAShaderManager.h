@@ -7,6 +7,9 @@ class AAShaderManager
 {
 public:
 
+  void setPath(std::string path);
+  void clearPath();
+
   int addShader(const char* vertfile, const char* fragfile);
   void updateViewMatrices();
   void updateProjectionMatrices();
@@ -14,7 +17,7 @@ public:
   const Shader& getShader(int id) const;
 
 private:
-
+  std::string mPath;
   std::map<int, Shader> mShaders;
 
 };
