@@ -32,8 +32,8 @@ void AASkybox::render()
 {
   glDepthFunc(GL_LEQUAL);  // change depth function so depth test passes when values are equal to depth buffer's content
 
-  loadProjectionMatrix();
-  loadViewMatrix();
+  loadProjectionMatrix();  // todo: only update when required (screen size change, projection change in general)
+  loadViewMatrix();        // todo: only update when camera moved
 
   glBindVertexArray(skyboxVAO);
 
@@ -98,6 +98,7 @@ void AASkybox::loadSkybox()
      SIZE, -SIZE,  SIZE
   };
 
+  //todo: use element buffers
   glGenVertexArrays(1, &skyboxVAO);
   glGenBuffers(1, &skyboxVBO);
   glBindVertexArray(skyboxVAO);
@@ -117,6 +118,7 @@ void AASkybox::loadProjectionMatrix()
   glm::mat4 projectionMatrix = AAViewport::getInstance()->getProjectionMatrix();
   skyboxShader->use();
   skyboxShader->setMat4("projection", projectionMatrix);
+  skyboxShader->stop();
 }
 
 /**
@@ -128,4 +130,5 @@ void AASkybox::loadViewMatrix()
   glm::mat4 viewMatrix = glm::mat4(glm::mat3(AAViewport::getInstance()->getViewMatrix())); // skybox never appears to move https://learnopengl.com/Advanced-OpenGL/Cubemaps
   skyboxShader->use();
   skyboxShader->setMat4("view", viewMatrix);
+  skyboxShader->stop();
 }
