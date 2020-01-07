@@ -26,12 +26,14 @@ void AAViewport::updateViewMatrix(const Shader& shader)
 {
   shader.use();
   shader.setMat4("view", getViewMatrix());
+  shader.stop();
 }
 
 void AAViewport::updateProjectionMatrix(const Shader& shader)
 {
   shader.use();
   shader.setMat4("projection", getProjectionMatrix());
+  shader.stop();
 }
 
 void AAViewport::resetViewportVars()
