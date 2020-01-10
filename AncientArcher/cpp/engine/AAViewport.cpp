@@ -26,14 +26,12 @@ void AAViewport::updateViewMatrix(const Shader& shader)
 {
   shader.use();
   shader.setMat4("view", getViewMatrix());
-  shader.stop();
 }
 
 void AAViewport::updateProjectionMatrix(const Shader& shader)
 {
   shader.use();
   shader.setMat4("projection", getProjectionMatrix());
-  shader.stop();
 }
 
 void AAViewport::resetViewportVars()
@@ -42,9 +40,7 @@ void AAViewport::resetViewportVars()
   mFieldOfView = 60.f;
   mYaw = 0.f;
   mPitch = 0.f;
-  mFront = glm::vec3(0, 0, -1);
-  mRight = glm::vec3(1, 0, 0);
-  mUp = glm::vec3(0, 1, 0);
+  updateCameraVectors();
   mRenderDistance = 100.f;
   mRenderProjection = RenderProjection::PERSPECTIVE;
 }

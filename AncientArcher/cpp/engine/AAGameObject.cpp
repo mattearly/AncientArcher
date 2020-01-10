@@ -26,7 +26,7 @@ void AAGameObject::draw(const Shader& shader)
       glActiveTexture(GL_TEXTURE0 + i);
       std::string texType = m.textures[i].type;  // single instance ver should be diffuse tex only
 
-      shader.use();
+      //shader.use();
       glUniform1i(glGetUniformLocation(shader.ID, ("material." + texType).c_str()), i);
 
       glBindTexture(GL_TEXTURE_2D, m.textures[i].id);
@@ -38,7 +38,6 @@ void AAGameObject::draw(const Shader& shader)
   }
 
   glActiveTexture(GL_TEXTURE0);
-  shader.stop();
 }
 
 void AAGameObject::scale(glm::vec3 amt)
