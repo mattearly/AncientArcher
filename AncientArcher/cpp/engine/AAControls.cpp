@@ -8,6 +8,16 @@ AAControls* AAControls::getInstance()
   return controls;
 }
 
+float AAControls::getMouseSensitivity() const
+{
+  return mMouseSensitivity;
+}
+
+void AAControls::setMouseSensitivity(float sensitivity)
+{
+  mMouseSensitivity = sensitivity;
+}
+
 void AAControls::perspectiveMouseMovement(float x, float y)
 {
   //first person
@@ -44,6 +54,11 @@ void AAControls::mouseScrollWheelMovement(float x, float y)
 {
   mMouseWheelScroll.xOffset = x;
   mMouseWheelScroll.yOffset = y;
+}
+
+void AAControls::resetControlVars()
+{
+  mMouseSensitivity = 0.1f;
 }
 
 void AAControls::pullButtonStateEvents()

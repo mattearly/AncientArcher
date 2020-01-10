@@ -7,12 +7,15 @@ public:
 
   static AAControls* getInstance();
 
-  void pullButtonStateEvents();
+  float getMouseSensitivity() const;
+  void setMouseSensitivity(float sensitivity);
 
   friend class AADisplay;  // for access to mouseMovement and mouseScrollWheelMovement
   friend class AAEngine;   // for access to Input 
 
 private:
+
+  void pullButtonStateEvents();
 
   AAKeyBoardInput mButtonState;
   AAMouseInput    mMousePosition;
@@ -24,4 +27,5 @@ private:
   void standardMouseMovement(float xpos, float ypos);
   void mouseScrollWheelMovement(float xpos, float ypos);
 
+  void resetControlVars();
 };
