@@ -6,6 +6,11 @@
 #include <vector>
 #include <functional>
 #include <memory>
+
+#define VIEWPORT AAViewport::getInstance()
+#define DISPLAY AADisplay::getInstance()
+#define CONTROLS AAControls::getInstance()
+
 class AAEngine
 {
 public:

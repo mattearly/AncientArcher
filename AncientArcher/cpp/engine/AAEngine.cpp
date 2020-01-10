@@ -17,13 +17,14 @@ AAEngine::~AAEngine()
   onKeyHandling.clear();
   onScrollHandling.clear();
   onMouseHandling.clear();
-  glfwDestroyWindow(AADisplay::getInstance()->getWindow());
+  DISPLAY->resetStateDataToDefault();
+
 }
 
 int AAEngine::run()
 {
   begin();
-  while (!glfwWindowShouldClose(AADisplay::getInstance()->getWindow()))
+  while (!glfwWindowShouldClose(DISPLAY->getWindow()))
   {
     static float currentFrame(0.f), deltaTime(0.f), lastFrame(0.f);
     currentFrame = (float)glfwGetTime();
@@ -43,7 +44,7 @@ int AAEngine::run()
 
 void AAEngine::shutdownEngine()
 {
-  AADisplay::getInstance()->closeWindow();
+  DISPLAY->closeWindow();
 }
 
 void AAEngine::addToOnBegin(void(*function)())
@@ -91,7 +92,7 @@ void AAEngine::setToPerspectiveMouseHandling()
   if (mMouseReporting != MouseReporting::PERSPECTIVE)
   {
     mMouseReporting = MouseReporting::PERSPECTIVE;
-    AADisplay::getInstance()->setCurorPosToPerspectiveCalc();
+    DISPLAY->setCurorPosToPerspectiveCalc();
   }
   else
   {
@@ -104,7 +105,7 @@ void AAEngine::setToStandardMouseHandling()
   if (mMouseReporting != MouseReporting::STANDARD)
   {
     mMouseReporting = MouseReporting::STANDARD;
-    AADisplay::getInstance()->setCurorPosToStandardCalc();
+    DISPLAY->setCurorPosToStandardCalc();
   }
   else
   {
@@ -124,17 +125,17 @@ void AAEngine::addToDeltaUpdate(void(*function)(float))
 
 void AAEngine::render()
 {
-  AADisplay::getInstance()->clearBackBuffer();
+  DISPLAY->clearBackBuffer();
 
   for (auto onRen : onRender) { onRen(); }
   if (mSkybox) { mSkybox->render(); }
 
-  AADisplay::getInstance()->swapWindowBuffers();
+  DISPLAY->swapWindowBuffers();
 }
 
 void AAEngine::begin()
 {
-  AADisplay::getInstance()->keepWindowOpen();
+  DISPLAY->keepWindowOpen();
 
   for (auto oB : onBegin)
   {
@@ -163,7 +164,7 @@ void AAEngine::update()
     int buttonUsed = false;
     if ((AAControls::getInstance()->mButtonState.leftAlt || AAControls::getInstance()->mButtonState.rightAlt) && AAControls::getInstance()->mButtonState.enter)
     {
-      AADisplay::getInstance()->toggleFullScreen();
+      DISPLAY->toggleFullScreen();
       buttonUsed = true;
     }
 
@@ -232,5 +233,5 @@ void AAEngine::processSystemKeys()
 
 void AAEngine::initDisplay()
 {
-  AADisplay::getInstance()->initFromEngine();
+  DISPLAY->initFromEngine();
 }
