@@ -6,10 +6,11 @@
 
 class AADisplay
 {
-
 public:
 
   static AADisplay* getInstance();
+
+  friend class AAEngine;
 
   ~AADisplay();
 
@@ -29,19 +30,20 @@ public:
   void toggleCursor();
   void closeWindow();
 
+  // window handler(s)
   void reshapeWindowHandler(GLFWwindow* window, int width, int height);
   
+  // mouse handler(s)
   void perspectiveMouseHandler(GLFWwindow* window, float xpos, float ypos);
   void standardMouseHandler(GLFWwindow* window, float xpos, float ypos);
 
+  // scroll handlers(s)
   void scrollHandler(GLFWwindow* window, float xpos, float ypos);
 
-  friend class AAEngine;
 
 private:
 
-  enum class CursorMode { VISIBLE, HIDDEN, FPS } mCursorMode;
-
+  // internal functions 
   void toggleFullScreen();
   void setFullscreenToOn();
   void setFullscreenToOff();
@@ -51,16 +53,10 @@ private:
   void clearBackBuffer() const;
   void swapWindowBuffers() const;
 
-  bool mWindowIsFullScreen = false;
-  int mWindowWidth = 800, mWindowHeight = 600;
-  int mXPos = 0, mYPos = 0;
-  
-  GLFWwindow* mWindow = nullptr;
-  glm::vec3 mWindowClearColor = glm::vec3(0.35f, 0.15f, 0.35f);
-  
   void setReshapeWindowHandler();
 
   void setCurorPosToPerspectiveCalc();
+
   void setCurorPosToStandardCalc();
 
   void setScrollWheelHandler();
@@ -68,5 +64,17 @@ private:
   void initGLFW();
 
   void initFromEngine();
+
+  void resetStateDataToDefault();
+
+  // state data
+  enum class CursorMode { VISIBLE, HIDDEN, FPS } mCursorMode = CursorMode::VISIBLE;
+
+  bool mWindowIsFullScreen = false;
+  int mWindowWidth = 800, mWindowHeight = 600;
+  int mXPos = 0, mYPos = 0;
+  glm::vec3 mWindowClearColor = glm::vec3(0.35f, 0.15f, 0.35f);
+
+  GLFWwindow* mWindow = nullptr;
 
 };

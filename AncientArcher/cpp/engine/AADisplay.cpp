@@ -3,6 +3,8 @@
 #include "AAViewport.h"
 #include <iostream>
 
+#define VIEWPORT AAViewport::getInstance()
+
 // --------------
 // Public Methods
 // --------------
@@ -232,6 +234,19 @@ void AADisplay::initFromEngine()
 
   AAViewport::getInstance()->resetViewportVars();
 
+}
+
+void AADisplay::resetStateDataToDefault()
+{
+  mCursorMode = CursorMode::VISIBLE;
+  mWindowIsFullScreen = false;
+  mWindowWidth = 800;
+  mWindowHeight = 600;
+  mXPos = 0;
+  mYPos = 0;
+  mWindowClearColor = glm::vec3(0.35f, 0.15f, 0.35f);
+  glfwDestroyWindow(mWindow);
+  VIEWPORT->resetViewportVars();
 }
 
 // ---------------
