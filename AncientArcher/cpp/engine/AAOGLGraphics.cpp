@@ -220,7 +220,7 @@ std::vector<TextureInfo> AAOGLGraphics::loadMaterialTextures(aiMaterial* mat, ai
     }
   }
 
- 
+
 
   return outTexInfo;
 }

@@ -171,11 +171,11 @@ glm::mat4 AAViewport::getProjectionMatrix() const
     break;
   case RenderProjection::ORTHO:
     projection = glm::ortho(
-      mOrthoFieldSize.x, 
-      mOrthoFieldSize.y, 
-      mOrthoFieldSize.z, 
-      mOrthoFieldSize.w, 
-      .01f, 
+      mOrthoFieldSize.x,
+      mOrthoFieldSize.y,
+      mOrthoFieldSize.z,
+      mOrthoFieldSize.w,
+      .01f,
       mRenderDistance
     );
     break;

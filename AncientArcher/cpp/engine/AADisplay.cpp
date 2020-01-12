@@ -93,7 +93,7 @@ void AADisplay::setWindowSize(int width, int height, bool center)
   glfwGetWindowFrameSize(mWindow, &frameSizeLeft, &frameSizeTop, &frameSizeRight, &frameSizeBot);
 
   int xPos = (w / 2) - (width / 2) + ((frameSizeLeft + frameSizeRight) / 2);
-  int yPos = (h / 2) - (height /2) + ((frameSizeTop + frameSizeBot) / 2);
+  int yPos = (h / 2) - (height / 2) + ((frameSizeTop + frameSizeBot) / 2);
 
   glfwSetWindowMonitor(mWindow, nullptr, xPos, yPos, width, height, 0);
   mWindowIsFullScreen = false;

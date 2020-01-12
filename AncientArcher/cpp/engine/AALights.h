@@ -48,21 +48,21 @@ static void setPointLight(const PointLight& light, const Shader& shader)
   std::string position, constant, linear, quadratic, ambient, diffuse, specular;
   position = "pointLight";
   constant = linear = quadratic = ambient = diffuse = specular = position;
-  position  += ".Position";
-  constant  += ".Constant";
-  linear    += ".Linear";
+  position += ".Position";
+  constant += ".Constant";
+  linear += ".Linear";
   quadratic += ".Quadratic";
-  ambient   += ".Ambient";
-  diffuse   += ".Diffuse";
-  specular  += ".Specular";
+  ambient += ".Ambient";
+  diffuse += ".Diffuse";
+  specular += ".Specular";
 
-  shader.setVec3(position,   light.Position);
-  shader.setFloat(constant,  light.Constant);
-  shader.setFloat(linear,    light.Linear);
+  shader.setVec3(position, light.Position);
+  shader.setFloat(constant, light.Constant);
+  shader.setFloat(linear, light.Linear);
   shader.setFloat(quadratic, light.Quadratic);
-  shader.setVec3(ambient,    light.Ambient);
-  shader.setVec3(diffuse,    light.Diffuse);
-  shader.setVec3(specular,   light.Specular);
+  shader.setVec3(ambient, light.Ambient);
+  shader.setVec3(diffuse, light.Diffuse);
+  shader.setVec3(specular, light.Specular);
 }
 
 static void setSpotLight(const SpotLight& light, const Shader& shader)
@@ -82,13 +82,13 @@ static void setSpotLight(const SpotLight& light, const Shader& shader)
   diffuse += ".Diffuse";
   specular += ".Specular";
 
-  shader.setVec3(position,  light.Position);
-  shader.setFloat(cutoff,   light.CutOff);
-  shader.setFloat(ocutoff,  light.OuterCutOff);
+  shader.setVec3(position, light.Position);
+  shader.setFloat(cutoff, light.CutOff);
+  shader.setFloat(ocutoff, light.OuterCutOff);
   shader.setVec3(direction, light.Direction);
-  shader.setFloat(linear,   light.Linear);
-  shader.setFloat(quadrat,  light.Quadratic);
-  shader.setVec3(ambient,   light.Ambient);
-  shader.setVec3(diffuse,   light.Diffuse);
-  shader.setVec3(specular,  light.Specular);
+  shader.setFloat(linear, light.Linear);
+  shader.setFloat(quadrat, light.Quadratic);
+  shader.setVec3(ambient, light.Ambient);
+  shader.setVec3(diffuse, light.Diffuse);
+  shader.setVec3(specular, light.Specular);
 }

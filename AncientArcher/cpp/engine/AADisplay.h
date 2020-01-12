@@ -26,13 +26,13 @@ public:
   void setWindowSize(int width, int height, int xpos, int ypos);
   void setWindowSize(int width, int height, bool center = true);
   void setWindowTitle(const char* name);
-  
+
   void toggleCursor();
   void closeWindow();
 
   // window handler(s)
   void reshapeWindowHandler(GLFWwindow* window, int width, int height);
-  
+
   // mouse handler(s)
   void perspectiveMouseHandler(GLFWwindow* window, float xpos, float ypos);
   void standardMouseHandler(GLFWwindow* window, float xpos, float ypos);

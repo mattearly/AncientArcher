@@ -180,82 +180,82 @@ void AAControls::pullButtonStateEvents()
   {
     mButtonState.graveAccent = false;
   }
-  if (glfwGetKey(AADisplay::getInstance()->getWindow(), GLFW_KEY_1) == GLFW_PRESS) 
+  if (glfwGetKey(AADisplay::getInstance()->getWindow(), GLFW_KEY_1) == GLFW_PRESS)
   {
     mButtonState.n1 = true;
-  } 
+  }
   else if (glfwGetKey(AADisplay::getInstance()->getWindow(), GLFW_KEY_1) == GLFW_RELEASE)
   {
     mButtonState.n1 = false;
-  }  
-  if (glfwGetKey(AADisplay::getInstance()->getWindow(), GLFW_KEY_2) == GLFW_PRESS) 
+  }
+  if (glfwGetKey(AADisplay::getInstance()->getWindow(), GLFW_KEY_2) == GLFW_PRESS)
   {
     mButtonState.n2 = true;
-  } 
+  }
   else if (glfwGetKey(AADisplay::getInstance()->getWindow(), GLFW_KEY_2) == GLFW_RELEASE)
   {
     mButtonState.n2 = false;
-  }  
-  if (glfwGetKey(AADisplay::getInstance()->getWindow(), GLFW_KEY_3) == GLFW_PRESS) 
+  }
+  if (glfwGetKey(AADisplay::getInstance()->getWindow(), GLFW_KEY_3) == GLFW_PRESS)
   {
     mButtonState.n3 = true;
-  } 
+  }
   else if (glfwGetKey(AADisplay::getInstance()->getWindow(), GLFW_KEY_3) == GLFW_RELEASE)
   {
     mButtonState.n3 = false;
-  }  
-  if (glfwGetKey(AADisplay::getInstance()->getWindow(), GLFW_KEY_4) == GLFW_PRESS) 
+  }
+  if (glfwGetKey(AADisplay::getInstance()->getWindow(), GLFW_KEY_4) == GLFW_PRESS)
   {
     mButtonState.n4 = true;
-  } 
+  }
   else if (glfwGetKey(AADisplay::getInstance()->getWindow(), GLFW_KEY_4) == GLFW_RELEASE)
   {
     mButtonState.n4 = false;
-  }  
-  if (glfwGetKey(AADisplay::getInstance()->getWindow(), GLFW_KEY_5) == GLFW_PRESS) 
+  }
+  if (glfwGetKey(AADisplay::getInstance()->getWindow(), GLFW_KEY_5) == GLFW_PRESS)
   {
     mButtonState.n5 = true;
-  } 
+  }
   else if (glfwGetKey(AADisplay::getInstance()->getWindow(), GLFW_KEY_5) == GLFW_RELEASE)
   {
     mButtonState.n5 = false;
-  }  
-  if (glfwGetKey(AADisplay::getInstance()->getWindow(), GLFW_KEY_6) == GLFW_PRESS) 
+  }
+  if (glfwGetKey(AADisplay::getInstance()->getWindow(), GLFW_KEY_6) == GLFW_PRESS)
   {
     mButtonState.n6 = true;
-  } 
+  }
   else if (glfwGetKey(AADisplay::getInstance()->getWindow(), GLFW_KEY_6) == GLFW_RELEASE)
   {
     mButtonState.n6 = false;
-  }  
-  if (glfwGetKey(AADisplay::getInstance()->getWindow(), GLFW_KEY_7) == GLFW_PRESS) 
+  }
+  if (glfwGetKey(AADisplay::getInstance()->getWindow(), GLFW_KEY_7) == GLFW_PRESS)
   {
     mButtonState.n7 = true;
-  } 
+  }
   else if (glfwGetKey(AADisplay::getInstance()->getWindow(), GLFW_KEY_7) == GLFW_RELEASE)
   {
     mButtonState.n7 = false;
-  }  
-  if (glfwGetKey(AADisplay::getInstance()->getWindow(), GLFW_KEY_8) == GLFW_PRESS) 
+  }
+  if (glfwGetKey(AADisplay::getInstance()->getWindow(), GLFW_KEY_8) == GLFW_PRESS)
   {
     mButtonState.n8 = true;
-  } 
+  }
   else if (glfwGetKey(AADisplay::getInstance()->getWindow(), GLFW_KEY_8) == GLFW_RELEASE)
   {
     mButtonState.n8 = false;
-  }  
-  if (glfwGetKey(AADisplay::getInstance()->getWindow(), GLFW_KEY_9) == GLFW_PRESS) 
+  }
+  if (glfwGetKey(AADisplay::getInstance()->getWindow(), GLFW_KEY_9) == GLFW_PRESS)
   {
     mButtonState.n9 = true;
-  } 
+  }
   else if (glfwGetKey(AADisplay::getInstance()->getWindow(), GLFW_KEY_9) == GLFW_RELEASE)
   {
     mButtonState.n9 = false;
-  }  
-  if (glfwGetKey(AADisplay::getInstance()->getWindow(), GLFW_KEY_0) == GLFW_PRESS) 
+  }
+  if (glfwGetKey(AADisplay::getInstance()->getWindow(), GLFW_KEY_0) == GLFW_PRESS)
   {
     mButtonState.n0 = true;
-  } 
+  }
   else if (glfwGetKey(AADisplay::getInstance()->getWindow(), GLFW_KEY_0) == GLFW_RELEASE)
   {
     mButtonState.n0 = false;
@@ -285,211 +285,211 @@ void AAControls::pullButtonStateEvents()
     mButtonState.backspace = false;
   }
   // alphabet keys
-  if (glfwGetKey(AADisplay::getInstance()->getWindow(), GLFW_KEY_A) == GLFW_PRESS) 
+  if (glfwGetKey(AADisplay::getInstance()->getWindow(), GLFW_KEY_A) == GLFW_PRESS)
   {
     mButtonState.a = true;
   }
-  else if (glfwGetKey(AADisplay::getInstance()->getWindow(), GLFW_KEY_A) == GLFW_RELEASE) 
+  else if (glfwGetKey(AADisplay::getInstance()->getWindow(), GLFW_KEY_A) == GLFW_RELEASE)
   {
     mButtonState.a = false;
   }
-  if (glfwGetKey(AADisplay::getInstance()->getWindow(), GLFW_KEY_B) == GLFW_PRESS) 
+  if (glfwGetKey(AADisplay::getInstance()->getWindow(), GLFW_KEY_B) == GLFW_PRESS)
   {
     mButtonState.b = true;
   }
-  else if (glfwGetKey(AADisplay::getInstance()->getWindow(), GLFW_KEY_B) == GLFW_RELEASE) 
+  else if (glfwGetKey(AADisplay::getInstance()->getWindow(), GLFW_KEY_B) == GLFW_RELEASE)
   {
     mButtonState.b = false;
   }
-  if (glfwGetKey(AADisplay::getInstance()->getWindow(), GLFW_KEY_C) == GLFW_PRESS) 
+  if (glfwGetKey(AADisplay::getInstance()->getWindow(), GLFW_KEY_C) == GLFW_PRESS)
   {
     mButtonState.c = true;
   }
-  else if (glfwGetKey(AADisplay::getInstance()->getWindow(), GLFW_KEY_C) == GLFW_RELEASE) 
+  else if (glfwGetKey(AADisplay::getInstance()->getWindow(), GLFW_KEY_C) == GLFW_RELEASE)
   {
     mButtonState.c = false;
   }
-  if (glfwGetKey(AADisplay::getInstance()->getWindow(), GLFW_KEY_D) == GLFW_PRESS) 
+  if (glfwGetKey(AADisplay::getInstance()->getWindow(), GLFW_KEY_D) == GLFW_PRESS)
   {
     mButtonState.d = true;
   }
-  else if (glfwGetKey(AADisplay::getInstance()->getWindow(), GLFW_KEY_D) == GLFW_RELEASE) 
+  else if (glfwGetKey(AADisplay::getInstance()->getWindow(), GLFW_KEY_D) == GLFW_RELEASE)
   {
     mButtonState.d = false;
   }
-  if (glfwGetKey(AADisplay::getInstance()->getWindow(), GLFW_KEY_E) == GLFW_PRESS) 
+  if (glfwGetKey(AADisplay::getInstance()->getWindow(), GLFW_KEY_E) == GLFW_PRESS)
   {
     mButtonState.e = true;
   }
-  else if (glfwGetKey(AADisplay::getInstance()->getWindow(), GLFW_KEY_E) == GLFW_RELEASE) 
+  else if (glfwGetKey(AADisplay::getInstance()->getWindow(), GLFW_KEY_E) == GLFW_RELEASE)
   {
     mButtonState.e = false;
   }
-  if (glfwGetKey(AADisplay::getInstance()->getWindow(), GLFW_KEY_F) == GLFW_PRESS) 
+  if (glfwGetKey(AADisplay::getInstance()->getWindow(), GLFW_KEY_F) == GLFW_PRESS)
   {
     mButtonState.f = true;
   }
-  else if (glfwGetKey(AADisplay::getInstance()->getWindow(), GLFW_KEY_F) == GLFW_RELEASE) 
+  else if (glfwGetKey(AADisplay::getInstance()->getWindow(), GLFW_KEY_F) == GLFW_RELEASE)
   {
     mButtonState.f = false;
   }
-  if (glfwGetKey(AADisplay::getInstance()->getWindow(), GLFW_KEY_G) == GLFW_PRESS) 
+  if (glfwGetKey(AADisplay::getInstance()->getWindow(), GLFW_KEY_G) == GLFW_PRESS)
   {
     mButtonState.g = true;
   }
-  else if (glfwGetKey(AADisplay::getInstance()->getWindow(), GLFW_KEY_G) == GLFW_RELEASE) 
+  else if (glfwGetKey(AADisplay::getInstance()->getWindow(), GLFW_KEY_G) == GLFW_RELEASE)
   {
     mButtonState.g = false;
   }
-  if (glfwGetKey(AADisplay::getInstance()->getWindow(), GLFW_KEY_H) == GLFW_PRESS) 
+  if (glfwGetKey(AADisplay::getInstance()->getWindow(), GLFW_KEY_H) == GLFW_PRESS)
   {
     mButtonState.h = true;
   }
-  else if (glfwGetKey(AADisplay::getInstance()->getWindow(), GLFW_KEY_H) == GLFW_RELEASE) 
+  else if (glfwGetKey(AADisplay::getInstance()->getWindow(), GLFW_KEY_H) == GLFW_RELEASE)
   {
     mButtonState.h = false;
   }
-  if (glfwGetKey(AADisplay::getInstance()->getWindow(), GLFW_KEY_I) == GLFW_PRESS) 
+  if (glfwGetKey(AADisplay::getInstance()->getWindow(), GLFW_KEY_I) == GLFW_PRESS)
   {
     mButtonState.i = true;
   }
-  else if (glfwGetKey(AADisplay::getInstance()->getWindow(), GLFW_KEY_I) == GLFW_RELEASE) 
+  else if (glfwGetKey(AADisplay::getInstance()->getWindow(), GLFW_KEY_I) == GLFW_RELEASE)
   {
     mButtonState.i = false;
   }
-  if (glfwGetKey(AADisplay::getInstance()->getWindow(), GLFW_KEY_J) == GLFW_PRESS) 
+  if (glfwGetKey(AADisplay::getInstance()->getWindow(), GLFW_KEY_J) == GLFW_PRESS)
   {
     mButtonState.j = true;
   }
-  else if (glfwGetKey(AADisplay::getInstance()->getWindow(), GLFW_KEY_J) == GLFW_RELEASE) 
+  else if (glfwGetKey(AADisplay::getInstance()->getWindow(), GLFW_KEY_J) == GLFW_RELEASE)
   {
     mButtonState.j = false;
   }
-  if (glfwGetKey(AADisplay::getInstance()->getWindow(), GLFW_KEY_K) == GLFW_PRESS) 
+  if (glfwGetKey(AADisplay::getInstance()->getWindow(), GLFW_KEY_K) == GLFW_PRESS)
   {
     mButtonState.k = true;
   }
-  else if (glfwGetKey(AADisplay::getInstance()->getWindow(), GLFW_KEY_K) == GLFW_RELEASE) 
+  else if (glfwGetKey(AADisplay::getInstance()->getWindow(), GLFW_KEY_K) == GLFW_RELEASE)
   {
     mButtonState.k = false;
   }
-  if (glfwGetKey(AADisplay::getInstance()->getWindow(), GLFW_KEY_L) == GLFW_PRESS) 
+  if (glfwGetKey(AADisplay::getInstance()->getWindow(), GLFW_KEY_L) == GLFW_PRESS)
   {
     mButtonState.l = true;
   }
-  else if (glfwGetKey(AADisplay::getInstance()->getWindow(), GLFW_KEY_L) == GLFW_RELEASE) 
+  else if (glfwGetKey(AADisplay::getInstance()->getWindow(), GLFW_KEY_L) == GLFW_RELEASE)
   {
     mButtonState.l = false;
   }
-  if (glfwGetKey(AADisplay::getInstance()->getWindow(), GLFW_KEY_M) == GLFW_PRESS) 
+  if (glfwGetKey(AADisplay::getInstance()->getWindow(), GLFW_KEY_M) == GLFW_PRESS)
   {
     mButtonState.m = true;
   }
-  else if (glfwGetKey(AADisplay::getInstance()->getWindow(), GLFW_KEY_M) == GLFW_RELEASE) 
+  else if (glfwGetKey(AADisplay::getInstance()->getWindow(), GLFW_KEY_M) == GLFW_RELEASE)
   {
     mButtonState.m = false;
   }
-  if (glfwGetKey(AADisplay::getInstance()->getWindow(), GLFW_KEY_N) == GLFW_PRESS) 
+  if (glfwGetKey(AADisplay::getInstance()->getWindow(), GLFW_KEY_N) == GLFW_PRESS)
   {
     mButtonState.n = true;
   }
-  else if (glfwGetKey(AADisplay::getInstance()->getWindow(), GLFW_KEY_N) == GLFW_RELEASE) 
+  else if (glfwGetKey(AADisplay::getInstance()->getWindow(), GLFW_KEY_N) == GLFW_RELEASE)
   {
     mButtonState.n = false;
   }
-  if (glfwGetKey(AADisplay::getInstance()->getWindow(), GLFW_KEY_O) == GLFW_PRESS) 
+  if (glfwGetKey(AADisplay::getInstance()->getWindow(), GLFW_KEY_O) == GLFW_PRESS)
   {
     mButtonState.o = true;
   }
-  else if (glfwGetKey(AADisplay::getInstance()->getWindow(), GLFW_KEY_O) == GLFW_RELEASE) 
+  else if (glfwGetKey(AADisplay::getInstance()->getWindow(), GLFW_KEY_O) == GLFW_RELEASE)
   {
     mButtonState.o = false;
   }
-  if (glfwGetKey(AADisplay::getInstance()->getWindow(), GLFW_KEY_P) == GLFW_PRESS) 
+  if (glfwGetKey(AADisplay::getInstance()->getWindow(), GLFW_KEY_P) == GLFW_PRESS)
   {
     mButtonState.p = true;
   }
-  else if (glfwGetKey(AADisplay::getInstance()->getWindow(), GLFW_KEY_P) == GLFW_RELEASE) 
+  else if (glfwGetKey(AADisplay::getInstance()->getWindow(), GLFW_KEY_P) == GLFW_RELEASE)
   {
     mButtonState.p = false;
   }
-  if (glfwGetKey(AADisplay::getInstance()->getWindow(), GLFW_KEY_Q) == GLFW_PRESS) 
+  if (glfwGetKey(AADisplay::getInstance()->getWindow(), GLFW_KEY_Q) == GLFW_PRESS)
   {
     mButtonState.q = true;
   }
-  else if (glfwGetKey(AADisplay::getInstance()->getWindow(), GLFW_KEY_Q) == GLFW_RELEASE) 
+  else if (glfwGetKey(AADisplay::getInstance()->getWindow(), GLFW_KEY_Q) == GLFW_RELEASE)
   {
     mButtonState.q = false;
   }
-  if (glfwGetKey(AADisplay::getInstance()->getWindow(), GLFW_KEY_R) == GLFW_PRESS) 
+  if (glfwGetKey(AADisplay::getInstance()->getWindow(), GLFW_KEY_R) == GLFW_PRESS)
   {
     mButtonState.r = true;
   }
-  else if (glfwGetKey(AADisplay::getInstance()->getWindow(), GLFW_KEY_R) == GLFW_RELEASE) 
+  else if (glfwGetKey(AADisplay::getInstance()->getWindow(), GLFW_KEY_R) == GLFW_RELEASE)
   {
     mButtonState.r = false;
   }
-  if (glfwGetKey(AADisplay::getInstance()->getWindow(), GLFW_KEY_S) == GLFW_PRESS) 
+  if (glfwGetKey(AADisplay::getInstance()->getWindow(), GLFW_KEY_S) == GLFW_PRESS)
   {
     mButtonState.s = true;
   }
-  else if (glfwGetKey(AADisplay::getInstance()->getWindow(), GLFW_KEY_S) == GLFW_RELEASE) 
+  else if (glfwGetKey(AADisplay::getInstance()->getWindow(), GLFW_KEY_S) == GLFW_RELEASE)
   {
     mButtonState.s = false;
   }
-  if (glfwGetKey(AADisplay::getInstance()->getWindow(), GLFW_KEY_T) == GLFW_PRESS) 
+  if (glfwGetKey(AADisplay::getInstance()->getWindow(), GLFW_KEY_T) == GLFW_PRESS)
   {
     mButtonState.t = true;
   }
-  else if (glfwGetKey(AADisplay::getInstance()->getWindow(), GLFW_KEY_T) == GLFW_RELEASE) 
+  else if (glfwGetKey(AADisplay::getInstance()->getWindow(), GLFW_KEY_T) == GLFW_RELEASE)
   {
     mButtonState.t = false;
   }
-  if (glfwGetKey(AADisplay::getInstance()->getWindow(), GLFW_KEY_U) == GLFW_PRESS) 
+  if (glfwGetKey(AADisplay::getInstance()->getWindow(), GLFW_KEY_U) == GLFW_PRESS)
   {
     mButtonState.u = true;
   }
-  else if (glfwGetKey(AADisplay::getInstance()->getWindow(), GLFW_KEY_U) == GLFW_RELEASE) 
+  else if (glfwGetKey(AADisplay::getInstance()->getWindow(), GLFW_KEY_U) == GLFW_RELEASE)
   {
     mButtonState.u = false;
   }
-  if (glfwGetKey(AADisplay::getInstance()->getWindow(), GLFW_KEY_V) == GLFW_PRESS) 
+  if (glfwGetKey(AADisplay::getInstance()->getWindow(), GLFW_KEY_V) == GLFW_PRESS)
   {
     mButtonState.v = true;
   }
-  else if (glfwGetKey(AADisplay::getInstance()->getWindow(), GLFW_KEY_V) == GLFW_RELEASE) 
+  else if (glfwGetKey(AADisplay::getInstance()->getWindow(), GLFW_KEY_V) == GLFW_RELEASE)
   {
     mButtonState.v = false;
   }
-  if (glfwGetKey(AADisplay::getInstance()->getWindow(), GLFW_KEY_W) == GLFW_PRESS) 
+  if (glfwGetKey(AADisplay::getInstance()->getWindow(), GLFW_KEY_W) == GLFW_PRESS)
   {
     mButtonState.w = true;
   }
-  else if (glfwGetKey(AADisplay::getInstance()->getWindow(), GLFW_KEY_W) == GLFW_RELEASE) 
+  else if (glfwGetKey(AADisplay::getInstance()->getWindow(), GLFW_KEY_W) == GLFW_RELEASE)
   {
     mButtonState.w = false;
   }
-  if (glfwGetKey(AADisplay::getInstance()->getWindow(), GLFW_KEY_X) == GLFW_PRESS) 
+  if (glfwGetKey(AADisplay::getInstance()->getWindow(), GLFW_KEY_X) == GLFW_PRESS)
   {
     mButtonState.x = true;
   }
-  else if (glfwGetKey(AADisplay::getInstance()->getWindow(), GLFW_KEY_X) == GLFW_RELEASE) 
+  else if (glfwGetKey(AADisplay::getInstance()->getWindow(), GLFW_KEY_X) == GLFW_RELEASE)
   {
     mButtonState.x = false;
   }
-  if (glfwGetKey(AADisplay::getInstance()->getWindow(), GLFW_KEY_Y) == GLFW_PRESS) 
+  if (glfwGetKey(AADisplay::getInstance()->getWindow(), GLFW_KEY_Y) == GLFW_PRESS)
   {
     mButtonState.y = true;
   }
-  else if (glfwGetKey(AADisplay::getInstance()->getWindow(), GLFW_KEY_Y) == GLFW_RELEASE) 
+  else if (glfwGetKey(AADisplay::getInstance()->getWindow(), GLFW_KEY_Y) == GLFW_RELEASE)
   {
     mButtonState.y = false;
   }
-  if (glfwGetKey(AADisplay::getInstance()->getWindow(), GLFW_KEY_Z) == GLFW_PRESS) 
+  if (glfwGetKey(AADisplay::getInstance()->getWindow(), GLFW_KEY_Z) == GLFW_PRESS)
   {
     mButtonState.z = true;
   }
-  else if (glfwGetKey(AADisplay::getInstance()->getWindow(), GLFW_KEY_Z) == GLFW_RELEASE) 
+  else if (glfwGetKey(AADisplay::getInstance()->getWindow(), GLFW_KEY_Z) == GLFW_RELEASE)
   {
     mButtonState.z = false;
   }
