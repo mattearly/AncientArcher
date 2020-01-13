@@ -12,8 +12,8 @@
 AASkybox::AASkybox(std::vector<std::string> incomingSkymapFiles)
 {
   skyboxShader = std::make_unique< Shader >(
-    "../AncientArcher/shader/SkyboxVertexShader.glsl",
-    "../AncientArcher/shader/SkyboxFragShader.glsl"
+    "../AncientArcher/shader/vert_skybox.glsl",
+    "../AncientArcher/shader/frag_skybox.glsl"
     );
 
   loadSkybox();
@@ -22,6 +22,11 @@ AASkybox::AASkybox(std::vector<std::string> incomingSkymapFiles)
 
   skyboxShader->use();
   skyboxShader->setInt("skybox", 0);
+
+
+  loadProjectionMatrix();  // todo: only update when required (screen size change, projection change in general)
+
+
 }
 
 /**
@@ -31,10 +36,9 @@ void AASkybox::render()
 {
   glDepthFunc(GL_LEQUAL);  // change depth function so depth test passes when values are equal to depth buffer's content
 
-  loadProjectionMatrix();  // todo: only update when required (screen size change, projection change in general)
   loadViewMatrix();        // todo: only update when camera moved
 
-  glBindVertexArray(skyboxVAO);
+  glBindVertexArray(mSkyboxVAO);
 
   glActiveTexture(GL_TEXTURE0);
   glBindTexture(GL_TEXTURE_CUBE_MAP, cubemapTexture);
@@ -49,7 +53,7 @@ void AASkybox::render()
  */
 void AASkybox::loadSkybox()
 {
-  const auto SIZE = 1.f;
+  const float SIZE = 1.f;
 
   float skyboxVertices[] = {
     // positions          
@@ -97,9 +101,12 @@ void AASkybox::loadSkybox()
   };
 
   //todo: use element buffers
-  glGenVertexArrays(1, &skyboxVAO);
+  glGenVertexArrays(1, &mSkyboxVAO);
+
+  unsigned int skyboxVBO = 0;
+
   glGenBuffers(1, &skyboxVBO);
-  glBindVertexArray(skyboxVAO);
+  glBindVertexArray(mSkyboxVAO);
   glBindBuffer(GL_ARRAY_BUFFER, skyboxVBO);
   glBufferData(GL_ARRAY_BUFFER, sizeof(skyboxVertices), &skyboxVertices, GL_STATIC_DRAW);
   glEnableVertexAttribArray(0);

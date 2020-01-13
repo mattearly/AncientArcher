@@ -17,8 +17,7 @@ public:
 
 private:
 
-  unsigned int skyboxVAO = 0;
-  unsigned int skyboxVBO = 0;
+  unsigned int mSkyboxVAO = 0;
   void loadSkybox();
 
   unsigned int cubemapTexture = 0;
