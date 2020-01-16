@@ -31,6 +31,7 @@ public:
   float getYaw() const;
   float getPitch() const;
   float getRenderDistance() const;
+  bool hasViewportChanged() const;
 
   friend class AADisplay;
   friend class AAShaderManager;
@@ -52,11 +53,14 @@ private:
   glm::vec3 mUp = glm::vec3(0, 1, 0);
 
   float mRenderDistance = 100.f;
-
+  bool mProjectionChanged = false;
   glm::vec4 mOrthoFieldSize = glm::vec4(-1, 1, -1, 1);
   enum class RenderProjection { ORTHO, PERSPECTIVE } mRenderProjection = RenderProjection::PERSPECTIVE;
 
+  void windowViewportChanged();
+  void windowViewportChangeProcessed();
+
   void resetViewportVars();
-  void windowSizeChanged();
+
 };
 

@@ -43,24 +43,18 @@ void AAViewport::resetViewportVars()
   updateCameraVectors();
   mRenderDistance = 100.f;
   mRenderProjection = RenderProjection::PERSPECTIVE;
+  mProjectionChanged = false;
+  mOrthoFieldSize = glm::vec4(-1, 1, -1, 1);
 }
 
-void AAViewport::windowSizeChanged()
+void AAViewport::windowViewportChanged()
 {
-  switch (mRenderProjection)
-  {
-  case RenderProjection::PERSPECTIVE:
+  mProjectionChanged = true;
+}
 
-    break;
-  case RenderProjection::ORTHO:
-    AAViewport::getInstance()->setOrthoFieldSize(
-      glm::vec4(
-        0, AADisplay::getInstance()->getWindowWidth(),
-        0, AADisplay::getInstance()->getWindowHeight()
-      )
-    );
-    break;
-  }
+void AAViewport::windowViewportChangeProcessed()
+{
+  mProjectionChanged = false;
 }
 
 void AAViewport::setToPerspective()
@@ -70,12 +64,12 @@ void AAViewport::setToPerspective()
 
 void AAViewport::setToOrtho()
 {
-  AAViewport::getInstance()->setOrthoFieldSize(
-    glm::vec4(
-      0, AADisplay::getInstance()->getWindowWidth(),
-      0, AADisplay::getInstance()->getWindowHeight()
-    )
-  );
+  //AAViewport::getInstance()->setOrthoFieldSize(
+  //  glm::vec4(
+  //    0, AADisplay::getInstance()->getWindowWidth(),
+  //    0, AADisplay::getInstance()->getWindowHeight()
+  //  )
+  //);
 
   mRenderProjection = RenderProjection::ORTHO;
 }
@@ -93,10 +87,7 @@ void AAViewport::setOrthoFieldSize(glm::vec4 lrbt)
 void AAViewport::setRenderDistance(float distance)
 {
   mRenderDistance = distance;
-  std::cout << "mRenderDistance changed: check function @" << __FILE__ << " : " << __LINE__ << '\n';
-
-  //setToPerspective(); // need to update projection matrix after a render distance change
-
+  windowViewportChanged();
 }
 
 void AAViewport::setCurrentPosition(glm::vec3 pos)
@@ -178,6 +169,7 @@ glm::mat4 AAViewport::getProjectionMatrix() const
       .01f,
       mRenderDistance
     );
+    //std::cout << "projection matrix not given for ortho\n";
     break;
   default:
     break;
@@ -214,4 +206,9 @@ float AAViewport::getPitch() const
 float AAViewport::getRenderDistance() const
 {
   return mRenderDistance;
+}
+
+bool AAViewport::hasViewportChanged() const
+{
+  return mProjectionChanged;
 }

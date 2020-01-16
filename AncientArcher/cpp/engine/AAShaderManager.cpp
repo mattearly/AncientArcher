@@ -46,6 +46,7 @@ void AAShaderManager::updateProjectionMatrices()
   {
     AAViewport::getInstance()->updateProjectionMatrix(s.second);
   }
+  AAViewport::getInstance()->windowViewportChangeProcessed();
 }
 
 const Shader& AAShaderManager::getShader(int id) const

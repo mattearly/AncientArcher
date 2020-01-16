@@ -255,21 +255,17 @@ void AADisplay::resetStateDataToDefault()
 
 void AADisplay::reshapeWindowHandler(GLFWwindow* window, int width, int height)
 {
-  //std::cout << "reshape window called: " << width << ", " << height << '\n';
-
   mWindowWidth = width;
   mWindowHeight = height;
   glViewport(0, 0, mWindowWidth, mWindowHeight);
-  AAViewport::getInstance()->windowSizeChanged();
-  //AAViewport::getInstance()->setToPerspective();  // hack  todo
-
-  //std::cout << "reshape window finished: " << mWindowWidth << ", " << mWindowHeight << '\n';
-
+  AAViewport::getInstance()->windowViewportChanged();
 }
+
 extern "C" void reshapeCallback(GLFWwindow * window, int w, int h)
 {
   AADisplay::getInstance()->reshapeWindowHandler(window, w, h);
 }
+
 void AADisplay::setReshapeWindowHandler()
 {
   ::glfwSetFramebufferSizeCallback(mWindow, ::reshapeCallback);

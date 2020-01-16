@@ -23,9 +23,7 @@ AASkybox::AASkybox(std::vector<std::string> incomingSkymapFiles)
   skyboxShader->use();
   skyboxShader->setInt("skybox", 0);
 
-
-  loadProjectionMatrix();  // todo: only update when required (screen size change, projection change in general)
-
+  loadProjectionMatrix(); 
 
 }
 
@@ -36,6 +34,12 @@ void AASkybox::render()
 {
   glDepthFunc(GL_LEQUAL);  // change depth function so depth test passes when values are equal to depth buffer's content
 
+  if (AAViewport::getInstance()->hasViewportChanged())
+  {
+    loadProjectionMatrix();
+  }
+
+  
   loadViewMatrix();        // todo: only update when camera moved
 
   glBindVertexArray(mSkyboxVAO);
