@@ -44,13 +44,14 @@ private:
 
   void updateProjectionMatrix(const Shader& shader);
 
+  glm::vec3 mFront;
+  glm::vec3 mRight;
+  glm::vec3 mUp;
+
   glm::vec3 mPosition = glm::vec3(0);
   float mFieldOfView = 60.f;
   float mYaw = 0.f;
   float mPitch = 0.f;
-  glm::vec3 mFront = glm::vec3(0, 0, -1);
-  glm::vec3 mRight = glm::vec3(1, 0, 0);
-  glm::vec3 mUp = glm::vec3(0, 1, 0);
 
   float mRenderDistance = 100.f;
   bool mProjectionChanged = false;
