@@ -109,8 +109,8 @@ void  testEngineFuncsDemo_1()
   {
     shaderMan.updateProjectionMatrices();
     shaderMan.updateViewMatrices();
-    spotLight.Position = *AAViewport::getInstance()->getPosition();
-    spotLight.Direction = *AAViewport::getInstance()->getFront();
+    spotLight.Position = *VIEWPORT->getPosition();
+    spotLight.Direction = *VIEWPORT->getFront();
     setSpotLight(spotLight, shaderMan.getShader(triLightShader));
   };
   engine.addToUpdate(updateShaders);
