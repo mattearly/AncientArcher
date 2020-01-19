@@ -89,9 +89,8 @@ void AAEngine::setSkybox(const std::shared_ptr<AASkybox>& skybox)
 
 void AAEngine::setToPerspectiveMouseHandling()
 {
-  if (mMouseReporting != MouseReporting::PERSPECTIVE)
+  if (getMouseHandlingType() != MouseReporting::PERSPECTIVE)
   {
-    mMouseReporting = MouseReporting::PERSPECTIVE;
     DISPLAY->setCurorPosToPerspectiveCalc();
   }
   else
@@ -102,15 +101,19 @@ void AAEngine::setToPerspectiveMouseHandling()
 
 void AAEngine::setToStandardMouseHandling()
 {
-  if (mMouseReporting != MouseReporting::STANDARD)
+  if (getMouseHandlingType() != MouseReporting::STANDARD)
   {
-    mMouseReporting = MouseReporting::STANDARD;
     DISPLAY->setCurorPosToStandardCalc();
   }
   else
   {
     std::cout << "engine already in STANDARD mouse calc\n";
   }
+}
+
+MouseReporting AAEngine::getMouseHandlingType()
+{
+  return DISPLAY->mMouseReporting;
 }
 
 void AAEngine::addToOnRender(void(*function)())
@@ -157,9 +160,9 @@ void AAEngine::update()
   static float timeOutCheckStamp = 0.f;
   float passedTime = mEngineRunTimer - timeOutCheckStamp;
 
-  static float buttonTimeOutSoFar = 0;
+  static float buttonTimeOutSoFar = 0;  
   buttonTimeOutSoFar += passedTime;
-  if (buttonTimeOutSoFar > mKeyTimeOutLength)
+  if (buttonTimeOutSoFar > mKeyTimeOutLength)   //todo: move to delta update
   {
     int buttonUsed = false;
     if ((AAControls::getInstance()->mButtonState.leftAlt || AAControls::getInstance()->mButtonState.rightAlt) && AAControls::getInstance()->mButtonState.enter)
@@ -200,7 +203,7 @@ void AAEngine::update()
     oMH(AAControls::getInstance()->mMousePosition);
   }
 
-  if (mMouseReporting == MouseReporting::PERSPECTIVE)
+  if (getMouseHandlingType() == MouseReporting::PERSPECTIVE)
   {
     AAControls::getInstance()->mMousePosition.xOffset = 0;
     AAControls::getInstance()->mMousePosition.yOffset = 0;
@@ -211,11 +214,11 @@ void AAEngine::update()
     oU();
   }
 
-  static float worldUpdateTimeOutSoFar = 0;
+  static float worldUpdateTimeOutSoFar = 0;  
   worldUpdateTimeOutSoFar += passedTime;
-  if (worldUpdateTimeOutSoFar > mSlowUpdateDelay)
+  if (worldUpdateTimeOutSoFar > mSlowUpdateDelay)    
   {
-    for (auto oSU : onSlowUpdate)
+    for (auto oSU : onSlowUpdate)// todo: move to delta update
     {
       oSU();
     }

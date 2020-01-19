@@ -35,6 +35,8 @@ public:
   void setToPerspectiveMouseHandling();
   void setToStandardMouseHandling();
 
+  MouseReporting getMouseHandlingType();
+
   friend class AAControls;
 
 private:
@@ -65,6 +67,5 @@ private:
   float mSlowUpdateDelay = 1.f;
   const float mKeyTimeOutLength = 0.56667f;
 
-  enum class MouseReporting { STANDARD, PERSPECTIVE } mMouseReporting = MouseReporting::STANDARD;
 
 };

@@ -245,6 +245,7 @@ void AADisplay::resetStateDataToDefault()
   mXPos = 0;
   mYPos = 0;
   mWindowClearColor = glm::vec3(0.35f, 0.15f, 0.35f);
+  mMouseReporting = MouseReporting::STANDARD;
   glfwDestroyWindow(mWindow);
   VIEWPORT->resetViewportVars();
 }
@@ -281,6 +282,7 @@ extern "C" void perspectiveMouseCallback(GLFWwindow * window, double xpos, doubl
 }
 void AADisplay::setCurorPosToPerspectiveCalc()
 {
+  mMouseReporting = MouseReporting::PERSPECTIVE;
   ::glfwSetCursorPosCallback(mWindow, ::perspectiveMouseCallback);
 }
 
@@ -294,6 +296,7 @@ extern "C" void standardMouseCallback(GLFWwindow * window, double xpos, double y
 }
 void AADisplay::setCurorPosToStandardCalc()
 {
+  mMouseReporting = MouseReporting::STANDARD;
   ::glfwSetCursorPosCallback(mWindow, ::standardMouseCallback);
 }
 

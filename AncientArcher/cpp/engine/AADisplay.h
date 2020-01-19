@@ -4,6 +4,8 @@
 #include <GLFW/glfw3.h>
 #include <glm\ext\vector_float3.hpp>
 
+enum class MouseReporting { STANDARD, PERSPECTIVE };
+
 class AADisplay
 {
 public:
@@ -40,7 +42,6 @@ public:
   // scroll handlers(s)
   void scrollHandler(GLFWwindow* window, float xpos, float ypos);
 
-
 private:
 
   // internal functions 
@@ -69,6 +70,8 @@ private:
 
   // state data
   enum class CursorMode { VISIBLE, HIDDEN, FPS } mCursorMode = CursorMode::VISIBLE;
+
+  MouseReporting mMouseReporting = MouseReporting::STANDARD;
 
   bool mWindowIsFullScreen = false;
   int mWindowWidth = 800, mWindowHeight = 600;
