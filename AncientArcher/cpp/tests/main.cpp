@@ -6,8 +6,8 @@
 #include <mearly/delay.h>
 #include "assimpModel.h"
 
-
-int runAllTests() {
+int runAllTests()
+{
   testAssimpBaseLoading(test::model1);
   testAssimpBaseLoading(test::model2);
   testAssimpBaseLoading(test::model3);
@@ -38,5 +38,9 @@ int runAllTests() {
 
 int main()
 {
-  return runAllTests();
+
+  runAllTests();
+
+  //holdAtCommandPrompt();
+
 }
