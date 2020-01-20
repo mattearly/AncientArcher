@@ -82,8 +82,8 @@
     <RunCodeAnalysis>true</RunCodeAnalysis>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
-    <IncludePath>$(SolutionDir)AncientArcher\inc;$(IncludePath)</IncludePath>
-    <LibraryPath>$(SolutionDir)AncientArcher\lib;$(LibraryPath)</LibraryPath>
+    <IncludePath>$(SolutionDir)AncientArcher\include;$(IncludePath)</IncludePath>
+    <LibraryPath>$(SolutionDir)AncientArcher\library;$(LibraryPath)</LibraryPath>
     <CodeAnalysisRuleSet>NativeRecommendedRules.ruleset</CodeAnalysisRuleSet>
     <RunCodeAnalysis>true</RunCodeAnalysis>
   </PropertyGroup>
