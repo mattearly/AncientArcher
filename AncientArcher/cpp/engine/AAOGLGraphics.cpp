@@ -169,22 +169,22 @@ std::vector<TextureInfo> AAOGLGraphics::loadMaterialTextures(aiMaterial* mat, ai
 {
   std::vector<TextureInfo> outTexInfo;
 
-  if ("color" == typeName)
-  {
-    TextureInfo tmptex;
+  //if ("color" == typeName)
+  //{
+  //  TextureInfo tmptex;
 
-    aiColor3D color(0.f, 0.f, 0.f);
+  //  aiColor3D color(0.f, 0.f, 0.f);
 
-    mat->Get(AI_MATKEY_COLOR_DIFFUSE, color);
-    tmptex.id = 0;
-    tmptex.color = glm::vec3(color.r, color.g, color.b);
+  //  mat->Get(AI_MATKEY_COLOR_DIFFUSE, color);
+  //  tmptex.id = 0;
+  //  tmptex.color = glm::vec3(color.r, color.g, color.b);
 
-    std::cout << "retrieved color from model: " << tmptex.color.x << "," << tmptex.color.y << "," << tmptex.color.z << '\n';
-    tmptex.path = "";
-    outTexInfo.push_back(tmptex);
-  }
-  else
-  {
+  //  std::cout << "retrieved color from model: " << tmptex.color.x << "," << tmptex.color.y << "," << tmptex.color.z << '\n';
+  //  tmptex.path = "";
+  //  outTexInfo.push_back(tmptex);
+  //}
+  //else
+  //{
     for (unsigned int i = 0; i < mat->GetTextureCount(type); ++i)
     {
       aiString tmpstr;
