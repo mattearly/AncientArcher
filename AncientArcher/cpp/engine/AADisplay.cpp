@@ -1,6 +1,7 @@
 #include "AADisplay.h"
 #include <glm/glm.hpp>
 #include "AAViewport.h"
+#include <iostream>
 
 #define VIEWPORT AAViewport::getInstance()
 
@@ -195,17 +196,23 @@ void AADisplay::setWindowToMaximized()
 
 void AADisplay::setWindowToFullscreenBorderless()
 {
+	if (mWindowIsFullScreen)
+	{
+		toggleFullScreen();
+	}
 
 	auto monitor = glfwGetPrimaryMonitor();
 	const GLFWvidmode* mode = glfwGetVideoMode(monitor);
 
-	glfwWindowHint(GLFW_RED_BITS, mode->redBits);
-	glfwWindowHint(GLFW_GREEN_BITS, mode->greenBits);
-	glfwWindowHint(GLFW_BLUE_BITS, mode->blueBits);
-	glfwWindowHint(GLFW_REFRESH_RATE, mode->refreshRate);
+	mXPos = mYPos = 0;
+	mWindowHeight = mode->height;
+	mWindowWidth = mode->width;
 
-	mWindow = glfwCreateWindow(mode->width, mode->height, "My Title", monitor, NULL);
-	glfwSetWindowMonitor(mWindow, nullptr, mXPos, mYPos, mWindowWidth, mWindowHeight, 0);
+	glfwSetWindowMonitor(mWindow, nullptr, mXPos, mYPos, mWindowWidth, mWindowHeight, mode->refreshRate);
+	mWindowIsFullScreen = true;
+
+
+
 }
 
 void AADisplay::clearBackBuffer() const
