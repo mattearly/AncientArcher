@@ -218,7 +218,7 @@ std::vector<TextureInfo> AAOGLGraphics::loadMaterialTextures(aiMaterial* mat, ai
         mTexturesLoaded.push_back(tmptex);
       }
     }
-  }
+  //}
 
 
 
