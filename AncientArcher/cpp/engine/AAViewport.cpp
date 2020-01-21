@@ -169,7 +169,6 @@ glm::mat4 AAViewport::getProjectionMatrix() const
       .01f,
       mRenderDistance
     );
-    //std::cout << "projection matrix not given for ortho\n";
     break;
   default:
     break;
