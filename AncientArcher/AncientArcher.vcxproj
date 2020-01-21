@@ -178,12 +178,15 @@
     <ClInclude Include="cpp\engine\AADisplay.h" />
     <ClInclude Include="cpp\engine\AAInput.h" />
     <ClInclude Include="cpp\tests\dry\addGodMovement.h" />
-    <ClInclude Include="cpp\tests\dry\addPreferedDefaults.h" />
+    <ClInclude Include="cpp\tests\dry\setWindowToMaximized.h" />
     <ClInclude Include="cpp\tests\dry\addSkybox.h" />
     <ClInclude Include="cpp\engine\AAShaderManager.h" />
+    <ClInclude Include="cpp\tests\dry\setWindowToBorderless.h" />
+    <ClInclude Include="cpp\tests\engine.h" />
     <ClInclude Include="cpp\tests\engineBaseCase.h" />
     <ClInclude Include="cpp\tests\engineFuncsDemo_1.h" />
     <ClInclude Include="cpp\tests\engineAllFuncBaseCase.h" />
+    <ClInclude Include="cpp\tests\engineFuncsDemo_3.h" />
     <ClInclude Include="cpp\tests\enginePauseBaseCase.h" />
     <ClInclude Include="cpp\tests\assimpModel.h" />
     <ClInclude Include="cpp\tests\localModelPaths.h" />

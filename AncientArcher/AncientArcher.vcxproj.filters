@@ -92,9 +92,6 @@
     <ClInclude Include="cpp\tests\dry\addGodMovement.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="cpp\tests\dry\addPreferedDefaults.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="cpp\tests\dry\addSkybox.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -117,6 +114,18 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="cpp\tests\localModelPaths.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="cpp\tests\engine.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="cpp\tests\dry\setWindowToBorderless.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="cpp\tests\dry\setWindowToMaximized.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="cpp\tests\engineFuncsDemo_3.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
