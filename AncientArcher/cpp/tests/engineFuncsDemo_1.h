@@ -3,7 +3,6 @@
 #include "localModelPaths.h"
 #include "dry/addSkybox.h"
 #include "dry/addGodMovement.h"
-#include "dry/addPreferedDefaults.h"
 #include "../engine/AAEngine.h"
 #include "../engine/AAGameObject.h"
 #include "../engine/AAOGLGraphics.h"
@@ -15,7 +14,6 @@ void  testEngineFuncsDemo_1()
 
   addSkybox(engine, "drakeq");
   addGodMovement(engine);
-  addPreferredDefaults(engine);
 
   static AAGameObject gameObj6 = AAOGLGraphics::getInstance()->loadGameObjectWithAssimp(test::model6, true);
   gameObj6.changeRotateAxis(glm::vec3(0,1,0));
