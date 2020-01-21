@@ -3,6 +3,7 @@
 #include "enginePauseBaseCase.h"
 #include "engineFuncsDemo_1.h"
 #include "engineFuncsDemo_2.h"
+#include "engineFuncsDemo_3.h"
 #include <mearly/delay.h>
 #include "assimpModel.h"
 
@@ -32,15 +33,14 @@ int runAllTests()
   testEngineFuncsDemo_1();
   delay(120);
   testEngineFuncsDemo_2();
+  delay(120);
+  testEngineFuncsDemo_3();
 
   return 0;
 }
 
 int main()
 {
-
   runAllTests();
-
-  //holdAtCommandPrompt();
-
+  holdAtCommandPrompt();
 }
