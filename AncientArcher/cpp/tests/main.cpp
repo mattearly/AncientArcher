@@ -4,6 +4,7 @@
 #include "engineFuncsDemo_1.h"
 #include "engineFuncsDemo_2.h"
 #include "engineFuncsDemo_3.h"
+#include "engineFuncsDemo_4.h"
 #include <mearly/delay.h>
 #include "assimpModel.h"
 
@@ -35,6 +36,8 @@ int runAllTests()
   testEngineFuncsDemo_2();
   delay(120);
   testEngineFuncsDemo_3();
+  delay(120);
+  testEngineFuncsDemo_4();
 
   return 0;
 }

@@ -128,5 +128,8 @@
     <ClInclude Include="cpp\tests\engineFuncsDemo_3.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="cpp\tests\engineFuncsDemo_4.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

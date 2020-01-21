@@ -187,6 +187,7 @@
     <ClInclude Include="cpp\tests\engineFuncsDemo_1.h" />
     <ClInclude Include="cpp\tests\engineAllFuncBaseCase.h" />
     <ClInclude Include="cpp\tests\engineFuncsDemo_3.h" />
+    <ClInclude Include="cpp\tests\engineFuncsDemo_4.h" />
     <ClInclude Include="cpp\tests\enginePauseBaseCase.h" />
     <ClInclude Include="cpp\tests\assimpModel.h" />
     <ClInclude Include="cpp\tests\localModelPaths.h" />
