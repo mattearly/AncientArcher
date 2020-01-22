@@ -1,9 +1,6 @@
-/* 
-
-  tests loading an object that uses colors exported from blender (not an image such as with the tests before) 
-
+/*
+  Tests loading a first person world and changing shaders (key 1 and 2).
 */
-
 
 #pragma once
 #include <GLFW\glfw3.h>
@@ -19,7 +16,7 @@
 void  testEngineFuncsDemo_3()
 {
   LoadableAssets objs;
-  objs.updateListOfModelsFromConfig("../AncientArcher/config/models.txt");
+  objs.loadConfig("../AncientArcher/config/models.txt");
 
   AAEngine engine;
 
@@ -27,14 +24,20 @@ void  testEngineFuncsDemo_3()
   addGodMovement(engine);
   setWindowToMaximized();
 
-  static AAGameObject gameObj6 = AAOGLGraphics::getInstance()->loadGameObjectWithAssimp(objs.get(7), true);
+  static AAGameObject gameObj6 = AAOGLGraphics::getInstance()->loadGameObjectWithAssimp(objs.getModel(7), true);
   gameObj6.changeRotateAxis(glm::vec3(0, 1, 0));
 
-  static AAGameObject gameObj9 = AAOGLGraphics::getInstance()->loadGameObjectWithAssimp(objs.get(8), true);
+  static AAGameObject gameObj9 = AAOGLGraphics::getInstance()->loadGameObjectWithAssimp(objs.getModel(8), true);
 
   static AAShaderManager shaderMan;
-  static int triLightShader = shaderMan.addShader("../AncientArcher/shader/vert_textured.glsl", "../AncientArcher/shader/frag_3coreLight.glsl");
-  static int noLightShader = shaderMan.addShader("../AncientArcher/shader/vert_textured.glsl", "../AncientArcher/shader/frag_noLight.glsl");
+  static int triLightShader = shaderMan.addShader(
+    "../AncientArcher/shader/vert_textured.glsl",
+    "../AncientArcher/shader/frag_3coreLight.glsl"
+  );
+  static int noLightShader = shaderMan.addShader(
+    "../AncientArcher/shader/vert_textured.glsl",
+    "../AncientArcher/shader/frag_noLight.glsl"
+  );
 
   static bool sceneLighting = true;
 

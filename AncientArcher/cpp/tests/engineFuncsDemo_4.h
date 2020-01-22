@@ -1,5 +1,5 @@
 /*
-  test building a small world
+  Test building a small world with different shaders.
 */
 #pragma once
 #include "../engine/AAEngine.h"
@@ -12,7 +12,8 @@
 void  testEngineFuncsDemo_4()
 {
   LoadableAssets objs;
-  objs.updateListOfModelsFromConfig("../AncientArcher/config/models.txt");
+  objs.loadConfig("../AncientArcher/config/models.txt");
+  objs.loadConfig("../AncientArcher/config/sounds.txt");
 
   AAEngine engine;
 
@@ -20,14 +21,20 @@ void  testEngineFuncsDemo_4()
   addGodMovement(engine);
   //setWindowToMaximized();
 
-  static AAGameObject gameObj6 = AAOGLGraphics::getInstance()->loadGameObjectWithAssimp(objs.get(5), true);
+  static AAGameObject gameObj6 = AAOGLGraphics::getInstance()->loadGameObjectWithAssimp(objs.getModel(5), true);
   gameObj6.changeRotateAxis(glm::vec3(0, 1, 0));
 
-  static AAGameObject gameObj9 = AAOGLGraphics::getInstance()->loadGameObjectWithAssimp(objs.get(6), true);
+  static AAGameObject gameObj9 = AAOGLGraphics::getInstance()->loadGameObjectWithAssimp(objs.getModel(6), true);
 
   static AAShaderManager shaderMan;
-  static int triLightShader = shaderMan.addShader("../AncientArcher/shader/vert_textured.glsl", "../AncientArcher/shader/frag_3coreLight.glsl");
-  static int noLightShader = shaderMan.addShader("../AncientArcher/shader/vert_textured.glsl", "../AncientArcher/shader/frag_noLight.glsl");
+  static int triLightShader = shaderMan.addShader(
+    "../AncientArcher/shader/vert_textured.glsl", 
+    "../AncientArcher/shader/frag_3coreLight.glsl"
+  );
+  static int noLightShader = shaderMan.addShader(
+    "../AncientArcher/shader/vert_textured.glsl", 
+    "../AncientArcher/shader/frag_noLight.glsl"
+  );
 
   static bool sceneLighting = true;
 

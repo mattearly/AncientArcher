@@ -1,4 +1,4 @@
-/* random tests - much like demo 1 tests */
+/* Tests loading a first person world with no lighting. */
 
 #pragma once
 #include "../engine/AAEngine.h"
@@ -13,7 +13,7 @@ void testEngineFuncsDemo_2()
 {
 
 	LoadableAssets objs;
-	objs.updateListOfModelsFromConfig("../AncientArcher/config/models.txt");
+	objs.loadConfig("../AncientArcher/config/models.txt");
 
 	AAEngine engine;
 
@@ -23,7 +23,10 @@ void testEngineFuncsDemo_2()
 
 	// add shaders to use
 	static AAShaderManager shaderMan;
-	static int noLightShader = shaderMan.addShader("../AncientArcher/shader/vert_textured.glsl", "../AncientArcher/shader/frag_noLight.glsl");
+	static int noLightShader = shaderMan.addShader(
+		"../AncientArcher/shader/vert_textured.glsl", 
+		"../AncientArcher/shader/frag_noLight.glsl"
+	);
 
 	auto setProjectionMatrices = []() {
 		shaderMan.updateProjectionMatrices();
@@ -31,17 +34,17 @@ void testEngineFuncsDemo_2()
 	engine.addToOnBegin(setProjectionMatrices);
 
 	// add object to draw  -- SRT
-	static AAGameObject mountainGround = AAOGLGraphics::getInstance()->loadGameObjectWithAssimp(objs.get(0), true);
+	static AAGameObject mountainGround = AAOGLGraphics::getInstance()->loadGameObjectWithAssimp(objs.getModel(0), true);
 	mountainGround.translate(glm::vec3(0.f, -20.f, 0));
-	static AAGameObject streetArea = AAOGLGraphics::getInstance()->loadGameObjectWithAssimp(objs.get(1), true);
+	static AAGameObject streetArea = AAOGLGraphics::getInstance()->loadGameObjectWithAssimp(objs.getModel(1), true);
 	streetArea.translate(glm::vec3(220.f, -20.f, 0));
-	static AAGameObject waterArea = AAOGLGraphics::getInstance()->loadGameObjectWithAssimp(objs.get(2), true);
+	static AAGameObject waterArea = AAOGLGraphics::getInstance()->loadGameObjectWithAssimp(objs.getModel(2), true);
 	waterArea.translate(glm::vec3(-220.f, -20.f, 0));
-	static AAGameObject charredArea = AAOGLGraphics::getInstance()->loadGameObjectWithAssimp(objs.get(3), true);
+	static AAGameObject charredArea = AAOGLGraphics::getInstance()->loadGameObjectWithAssimp(objs.getModel(3), true);
 	charredArea.translate(glm::vec3(0.f, -20.f, 220.f));
-	static AAGameObject dirtArea = AAOGLGraphics::getInstance()->loadGameObjectWithAssimp(objs.get(4), true);
+	static AAGameObject dirtArea = AAOGLGraphics::getInstance()->loadGameObjectWithAssimp(objs.getModel(4), true);
 	dirtArea.translate(glm::vec3(0.f, -20.f, -220.f));
-	static AAGameObject brickArea = AAOGLGraphics::getInstance()->loadGameObjectWithAssimp(objs.get(5), true);
+	static AAGameObject brickArea = AAOGLGraphics::getInstance()->loadGameObjectWithAssimp(objs.getModel(5), true);
 	brickArea.scale(glm::vec3(2));
 	brickArea.translate(glm::vec3(0.f, -20.f, 0.f));
 
