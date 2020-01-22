@@ -1,6 +1,6 @@
 /*
-  Loads the models from your config file @ config/models.txt
-  The goal is to have an easier setup for updating your list of assets
+  Stores a list of your files. Based on config files @ config/*.txt
+  The goal is to have an automatic setup for updating your list of usable assets.
 */
 #pragma once;
 #include <fstream>
@@ -10,15 +10,20 @@
 class LoadableAssets {
 public:
 
-  std::string get(std::string objname);
-  std::string get(int which);
-  std::string operator[] (int which);
+  std::string getModel(std::string objname) const;
+  std::string getModel(int which) const;
 
-  void updateListOfModelsFromConfig(std::string pathtoconfig);
+  std::string getSound(std::string soundname) const;
+  std::string getSound(int which) const;
+
+  void loadConfig(std::string pathtoconfig);
 
 private:
 
-  std::vector<std::string> mFilenames;
+  std::string mModelFiledir;
+  std::vector<std::string> mModels;
 
-  std::string mFiledir;
+  std::string mSoundFiledir;
+  std::vector<std::string> mSounds;
+
 };

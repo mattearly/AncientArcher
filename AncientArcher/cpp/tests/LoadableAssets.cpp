@@ -1,76 +1,123 @@
 #include "LoadableAssets.h"
 #include <iostream>
+#include <mearly/getFilenamesWithinFolder.h>
 
-std::string LoadableAssets::get(std::string objname)
+std::string LoadableAssets::getModel(std::string objname) const
 {
-  if (mFilenames.empty())
-    return "no filenames :(";
+  if (mModels.empty())
+    return "no model filenames :(";
 
-  for (auto name : mFilenames)
+  for (auto name : mModels)
   {
     if (name == objname)
     {
-      return mFiledir + name;
+      return mModelFiledir + name;
     }
   }
 
-  return "file not found :(";
+  return "model file not found :(";
 }
 
-std::string LoadableAssets::get(int which)
+std::string LoadableAssets::getModel(int which) const
 {
-  if (which > mFilenames.size())
+  if (which > mModels.size())
     return "out of range";
 
-  return mFiledir + mFilenames.at(which);
+  return mModelFiledir + mModels.at(which);
 }
 
-std::string LoadableAssets::operator[](int which)
+std::string LoadableAssets::getSound(std::string soundname) const
 {
-  if (which > mFilenames.size())
+  if (mSounds.empty())
+    return "no sound filenames :(";
+
+  for (auto name : mSounds)
+  {
+    if (name == soundname)
+    {
+      return mSoundFiledir + name;
+    }
+  }
+
+  return "sound file not found :(";
+}
+
+std::string LoadableAssets::getSound(int which) const
+{
+  if (which > mSounds.size())
     return "out of range";
 
-  return mFilenames.at(which);
+  return mSoundFiledir + mSounds.at(which);
 }
 
-void LoadableAssets::updateListOfModelsFromConfig(std::string pathtoconfig)
+void LoadableAssets::loadConfig(std::string pathtoconfig)
 {
   {
-
     // open file
     std::ifstream ins(pathtoconfig);
     if (ins.is_open())
     {
-      // clear both lists
-      mFilenames.clear();
-      mFiledir.clear();
-
-      // parse
-      std::string aLine;
-      // get path
-      getline(ins, aLine);
-      mFiledir = aLine;
-
-      // debug: show filedir
-      std::cout << "filedir: " << mFiledir << '\n';
-
-      // get the model paths
-      do
+      std::string lineBuf;
+      std::string aType;
+      getline(ins, aType);   // LINE 1 -- asset type
+      if (aType == "models")
       {
-        getline(ins, aLine);
-        if (aLine.size() > 1)
+        mModels.clear();
+        mModelFiledir.clear();
+        getline(ins, mModelFiledir);   // LINE 2 -- path to storage folder
+        
+        std::vector<std::string> all_files = get_all_files_names_within_folder(mModelFiledir);
+
+        getline(ins, lineBuf);  // LINE 3 -- asset extension
+
+        // only save files of specified asset extension
+        for (auto filename : all_files)
         {
-          mFilenames.push_back(aLine);
+          if (filename.find(lineBuf) != std::string::npos)
+          {
+            mModels.push_back(filename);
+          }
         }
 
-      } while (!ins.eof());
 
-      // debug: show all the models
-      std::cout << "all the models:\n\n";
-      for (auto name : mFilenames)
-      {
-        std::cout << '\t' << name << '\n';
+        // debug: show all the models
+        std::cout << "List of loadable models:\n\n";
+        int count = 0;
+        for (auto name : mModels)
+        {
+          std::cout << '\t' << count++ << ". " << name << '\n';
+        }
       }
+      else if (aType == "sounds")
+      {
+        mSounds.clear();
+        mSoundFiledir.clear();
+        getline(ins, mSoundFiledir);   // LINE 2 -- path to storage folder
+        getline(ins, lineBuf);  // LINE 3 -- end file type
+
+        std::vector<std::string> all_files = get_all_files_names_within_folder(mSoundFiledir);
+
+        getline(ins, lineBuf);  // LINE 3 -- asset extension
+
+        // only save files of specified asset extension
+        for (auto filename : all_files)
+        {
+          if (filename.find(lineBuf) != std::string::npos)
+          {
+            mSounds.push_back(filename);
+          }
+        }
+
+        // debug: show all the sounds
+        std::cout << "List of loadable sounds:\n\n";
+        int count = 0;
+        for (auto name : mSounds)
+        {
+          std::cout << '\t' << count++ << ". " << name << '\n';
+        }
+      }
+
+
     }
     else
     {
