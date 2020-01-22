@@ -144,6 +144,7 @@
       <SDLCheck>true</SDLCheck>
       <ConformanceMode>true</ConformanceMode>
       <EnablePREfast>true</EnablePREfast>
+      <LanguageStandard>stdcpp17</LanguageStandard>
     </ClCompile>
     <Link>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
@@ -163,6 +164,7 @@
     <ClCompile Include="cpp\tests\LoadableAssets.cpp" />
     <ClCompile Include="cpp\tests\main.cpp" />
     <ClCompile Include="include\glad\glad.c" />
+    <ClCompile Include="include\mearly\getFilenamesWithinFolder.cpp" />
     <ClCompile Include="include\mearly\Random.cpp" />
     <ClCompile Include="include\mearly\TexLoader.cpp" />
     <ClCompile Include="include\stb_image\stb_image.cpp" />
@@ -183,7 +185,6 @@
     <ClInclude Include="cpp\tests\dry\addSkybox.h" />
     <ClInclude Include="cpp\engine\AAShaderManager.h" />
     <ClInclude Include="cpp\tests\dry\setWindowToBorderless.h" />
-    <ClInclude Include="cpp\tests\engine.h" />
     <ClInclude Include="cpp\tests\engineBaseCase.h" />
     <ClInclude Include="cpp\tests\engineFuncsDemo_1.h" />
     <ClInclude Include="cpp\tests\engineAllFuncBaseCase.h" />
@@ -193,9 +194,6 @@
     <ClInclude Include="cpp\tests\assimpModel.h" />
     <ClInclude Include="cpp\tests\LoadableAssets.h" />
     <ClInclude Include="cpp\tests\engineFuncsDemo_2.h" />
-  </ItemGroup>
-  <ItemGroup>
-    <Text Include="config\models.txt" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

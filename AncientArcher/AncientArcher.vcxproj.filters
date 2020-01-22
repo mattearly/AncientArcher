@@ -60,6 +60,9 @@
     <ClCompile Include="cpp\tests\LoadableAssets.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="include\mearly\getFilenamesWithinFolder.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="cpp\engine\AADisplay.h">
@@ -116,9 +119,6 @@
     <ClInclude Include="cpp\tests\engineFuncsDemo_1.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="cpp\tests\engine.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="cpp\tests\dry\setWindowToBorderless.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -134,8 +134,5 @@
     <ClInclude Include="cpp\tests\LoadableAssets.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-  </ItemGroup>
-  <ItemGroup>
-    <Text Include="config\models.txt" />
   </ItemGroup>
 </Project>
