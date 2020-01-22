@@ -23,6 +23,7 @@ void addGodMovement(AAEngine& engine)
 {
 	AADisplay::getInstance()->setCursorToDisabled();
 	engine.setToPerspectiveMouseHandling();
+	VIEWPORT->setRenderDistance(10000.f);
 
 	static const float MAXFLYSPEED = 400.f;
 	static float currFlySpeed = 30.f;
