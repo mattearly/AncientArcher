@@ -11,18 +11,19 @@
 
 void  testEngineFuncsDemo_4()
 {
+  LoadableAssets objs;
+  objs.updateListOfModelsFromConfig("../AncientArcher/config/models.txt");
+
   AAEngine engine;
 
   //addSkybox(engine, "drakeq");
   addGodMovement(engine);
   //setWindowToMaximized();
 
-  std::string obj6path = "C:/Users/Test/3D Objects/hello.dae";
-  static AAGameObject gameObj6 = AAOGLGraphics::getInstance()->loadGameObjectWithAssimp(obj6path, true);
+  static AAGameObject gameObj6 = AAOGLGraphics::getInstance()->loadGameObjectWithAssimp(objs.get(5), true);
   gameObj6.changeRotateAxis(glm::vec3(0, 1, 0));
 
-  std::string obj9path = "C:/Users/Test/3D Objects/hello.obj";
-  static AAGameObject gameObj9 = AAOGLGraphics::getInstance()->loadGameObjectWithAssimp(obj9path, true);
+  static AAGameObject gameObj9 = AAOGLGraphics::getInstance()->loadGameObjectWithAssimp(objs.get(6), true);
 
   static AAShaderManager shaderMan;
   static int triLightShader = shaderMan.addShader("../AncientArcher/shader/vert_textured.glsl", "../AncientArcher/shader/frag_3coreLight.glsl");

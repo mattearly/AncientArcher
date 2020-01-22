@@ -11,6 +11,10 @@
 #include "dry/setWindowToBorderless.h"
 void testEngineFuncsDemo_2()
 {
+
+	LoadableAssets objs;
+	objs.updateListOfModelsFromConfig("../AncientArcher/config/models.txt");
+
 	AAEngine engine;
 
 	addSkybox(engine, "nordic");
@@ -27,17 +31,17 @@ void testEngineFuncsDemo_2()
 	engine.addToOnBegin(setProjectionMatrices);
 
 	// add object to draw  -- SRT
-	static AAGameObject mountainGround = AAOGLGraphics::getInstance()->loadGameObjectWithAssimp(test::model10, true);
+	static AAGameObject mountainGround = AAOGLGraphics::getInstance()->loadGameObjectWithAssimp(objs.get(0), true);
 	mountainGround.translate(glm::vec3(0.f, -20.f, 0));
-	static AAGameObject streetArea = AAOGLGraphics::getInstance()->loadGameObjectWithAssimp(test::model9, true);
+	static AAGameObject streetArea = AAOGLGraphics::getInstance()->loadGameObjectWithAssimp(objs.get(1), true);
 	streetArea.translate(glm::vec3(220.f, -20.f, 0));
-	static AAGameObject waterArea = AAOGLGraphics::getInstance()->loadGameObjectWithAssimp(test::model7, true);
+	static AAGameObject waterArea = AAOGLGraphics::getInstance()->loadGameObjectWithAssimp(objs.get(2), true);
 	waterArea.translate(glm::vec3(-220.f, -20.f, 0));
-	static AAGameObject charredArea = AAOGLGraphics::getInstance()->loadGameObjectWithAssimp(test::model11, true);
+	static AAGameObject charredArea = AAOGLGraphics::getInstance()->loadGameObjectWithAssimp(objs.get(3), true);
 	charredArea.translate(glm::vec3(0.f, -20.f, 220.f));
-	static AAGameObject dirtArea = AAOGLGraphics::getInstance()->loadGameObjectWithAssimp(test::model12, true);
+	static AAGameObject dirtArea = AAOGLGraphics::getInstance()->loadGameObjectWithAssimp(objs.get(4), true);
 	dirtArea.translate(glm::vec3(0.f, -20.f, -220.f));
-	static AAGameObject brickArea = AAOGLGraphics::getInstance()->loadGameObjectWithAssimp(test::model13, true);
+	static AAGameObject brickArea = AAOGLGraphics::getInstance()->loadGameObjectWithAssimp(objs.get(5), true);
 	brickArea.scale(glm::vec3(2));
 	brickArea.translate(glm::vec3(0.f, -20.f, 0.f));
 

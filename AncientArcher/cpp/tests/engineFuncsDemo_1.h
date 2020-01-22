@@ -1,6 +1,6 @@
 #pragma once
 #include <GLFW\glfw3.h>
-#include "localModelPaths.h"
+#include "LoadableAssets.h"
 #include "dry/addSkybox.h"
 #include "dry/addGodMovement.h"
 #include "../engine/AAEngine.h"
@@ -10,15 +10,18 @@
 
 void  testEngineFuncsDemo_1()
 {
+  LoadableAssets objs;
+  objs.updateListOfModelsFromConfig("../AncientArcher/config/models.txt");
+ 
   AAEngine engine;
 
   addSkybox(engine, "drakeq");
   addGodMovement(engine);
 
-  static AAGameObject gameObj6 = AAOGLGraphics::getInstance()->loadGameObjectWithAssimp(test::model6, true);
+  static AAGameObject gameObj6 = AAOGLGraphics::getInstance()->loadGameObjectWithAssimp(objs.get("street_scene_2_not_triangulated.obj"), true);
   gameObj6.changeRotateAxis(glm::vec3(0,1,0));
 
-  static AAGameObject gameObj9 = AAOGLGraphics::getInstance()->loadGameObjectWithAssimp(test::model9, true);
+  static AAGameObject gameObj9 = AAOGLGraphics::getInstance()->loadGameObjectWithAssimp(objs.get("dirt_mound_not_triangulated.obj"), true);
 
   static AAShaderManager shaderMan;
   static int triLightShader = shaderMan.addShader("../AncientArcher/shader/vert_textured.glsl", "../AncientArcher/shader/frag_3coreLight.glsl");
