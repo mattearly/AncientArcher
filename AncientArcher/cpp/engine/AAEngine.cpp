@@ -157,12 +157,10 @@ void AAEngine::update(float dt)
 void AAEngine::update()
 {
   processSystemKeys();
-  static float timeOutCheckStamp = 0.f;
-  float passedTime = mEngineRunTimer - timeOutCheckStamp;
+  float passedTime = mEngineRunTimer - mTimeOutCheckStamp;
 
-  static float buttonTimeOutSoFar = 0;  
-  buttonTimeOutSoFar += passedTime;
-  if (buttonTimeOutSoFar > mKeyTimeOutLength)   //todo: move to delta update
+  mButtonTimeOutSoFar += passedTime;
+  if (mButtonTimeOutSoFar > mKeyTimeOutLength)   //todo: move to delta update
   {
     int buttonUsed = false;
     if ((AAControls::getInstance()->mButtonState.leftAlt || AAControls::getInstance()->mButtonState.rightAlt) && AAControls::getInstance()->mButtonState.enter)
@@ -181,7 +179,7 @@ void AAEngine::update()
 
     if (buttonUsed)
     {
-      buttonTimeOutSoFar = 0.f;
+      mButtonTimeOutSoFar = 0.f;
     }
   }
 
@@ -225,7 +223,7 @@ void AAEngine::update()
     worldUpdateTimeOutSoFar = 0.f;
   }
 
-  timeOutCheckStamp = mEngineRunTimer;
+  mTimeOutCheckStamp = mEngineRunTimer;
 
 }
 

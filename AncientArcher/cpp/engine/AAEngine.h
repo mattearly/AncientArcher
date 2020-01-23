@@ -66,6 +66,10 @@ private:
 
   float mSlowUpdateDelay = 1.f;
   const float mKeyTimeOutLength = 0.56667f;
+  
+  float mTimeOutCheckStamp = 0.f;
+
+  float mButtonTimeOutSoFar = 0.f;
 
 
 };
