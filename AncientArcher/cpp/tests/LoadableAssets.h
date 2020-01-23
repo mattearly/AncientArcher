@@ -15,6 +15,7 @@ public:
 
   std::string getSound(std::string soundname) const;
   std::string getSound(int which) const;
+  std::vector<std::string> getAllSounds() const;
 
   void loadConfig(std::string pathtoconfig);
 

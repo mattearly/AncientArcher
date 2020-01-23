@@ -50,6 +50,18 @@ std::string LoadableAssets::getSound(int which) const
   return mSoundFiledir + mSounds.at(which);
 }
 
+std::vector<std::string> LoadableAssets::getAllSounds() const
+{
+  std::vector<std::string> pathedSounds;
+
+  for (auto s : mSounds)
+  {
+    pathedSounds.push_back(mSoundFiledir + s);
+  }
+  
+  return pathedSounds;
+}
+
 void LoadableAssets::loadConfig(std::string pathtoconfig)
 {
   {
