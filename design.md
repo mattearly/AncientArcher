@@ -33,7 +33,7 @@ Dates: April 28, 2019 - July 7, 2019
 9. museum, how many effects
 10. acid frog
 
-#### The Solutions
+#### The Solution
 
 Continue expanding and improving Ancient Archer Game Engine.
 * Programming Language: C++ std17
@@ -54,9 +54,9 @@ Ancient Archer should allow for games to be built on it with relative ease.
 #### Testability, Monitoring and Alerting
 
 * Comes with prebuilt examples and tests, built and expanded as features are added.
-* logging sytem TBA
+* Logging System TBA
 
 
 #### Detailed Scoping and Timeline
 
-* Quarterly updates. Timelines TBA
+* Timelines TBA
