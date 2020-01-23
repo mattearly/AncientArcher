@@ -1,5 +1,6 @@
 /*
   Test building a small world with different shaders.
+  Test basic sound effects functionality.
 */
 #pragma once
 #include "../engine/AAEngine.h"
