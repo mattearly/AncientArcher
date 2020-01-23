@@ -21,9 +21,9 @@
 
 void addGodMovement(AAEngine& engine)
 {
-	AADisplay::getInstance()->setCursorToDisabled();
 	engine.setToPerspectiveMouseHandling();
 	VIEWPORT->setRenderDistance(10000.f);
+	DISPLAY->setCursorToDisabled();
 
 	static const float MAXFLYSPEED = 400.f;
 	static float currFlySpeed = 30.f;
@@ -131,10 +131,9 @@ void addGodMovement(AAEngine& engine)
 
 	auto escapeTogglesMouseDisplay = [](AAKeyBoardInput& keys)
 	{
-		bool mouseLocked = true;
 		if (keys.esc)
 		{
-			AADisplay::getInstance()->toggleCursor();
+			DISPLAY->toggleCursor();
 			return true;
 		}
 		return false;
