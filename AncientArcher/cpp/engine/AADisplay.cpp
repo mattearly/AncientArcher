@@ -51,28 +51,21 @@ GLFWwindow* AADisplay::getWindow()
 
 void AADisplay::setCursorToVisible()
 {
-  if (mCursorMode != CursorMode::VISIBLE) {
-    glfwSetInputMode(mWindow, GLFW_CURSOR, GLFW_CURSOR_NORMAL);
-    mCursorMode = CursorMode::VISIBLE;
-  }
+  glfwSetInputMode(mWindow, GLFW_CURSOR, GLFW_CURSOR_NORMAL);
+  mCursorMode = CursorMode::VISIBLE;
 }
 
 void AADisplay::setCursorToHidden()
 {
-  if (mCursorMode != CursorMode::HIDDEN)
-  {
-    glfwSetInputMode(mWindow, GLFW_CURSOR, GLFW_CURSOR_HIDDEN);
-    mCursorMode = CursorMode::HIDDEN;
-  }
+  glfwSetInputMode(mWindow, GLFW_CURSOR, GLFW_CURSOR_HIDDEN);
+  mCursorMode = CursorMode::HIDDEN;
+
 }
 
 void AADisplay::setCursorToDisabled()
 {
-  if (mCursorMode != CursorMode::FPS)
-  {
-    glfwSetInputMode(mWindow, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
-    mCursorMode = CursorMode::FPS;
-  }
+  glfwSetInputMode(mWindow, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
+  mCursorMode = CursorMode::FPS;
 }
 
 void AADisplay::setWindowTitle(const char* name)
