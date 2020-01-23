@@ -10,20 +10,18 @@ Ancient Archer is Closed Source Game Engine in development.
 
 #### Context
 
-Inlcudes 3D/2D, Renderering, Math, Controls, Displays, Cameras, Lighting, and a Packaging system to build in custom modules.
+Includes 3D/2D Renderering, Math, Controls, Display, Cameras, Shaders, Lighting, and Sound. A user can script modules into games or anything desired using their custom assets.
 
 #### Goals
-
-Ancient Archer is a work in progress. 
 
 Metrics: How many games have been built with it? How much functionality does it encompass? How stable is it? Does it have tests? Is it ready for use? Is it properly licensed? Is it properly accredited?
 
 #### Milestones
 
-Ancient Archer is being used for a sequence of custom games to be built. It should be a new animal by the end of this 10 game project. One game is being worked on per week.
+Quarterly Release Update Planned for the future. TBA
 
-Start Date: April 28, 2019
-
+Attempted to build 10 demos with it at below dates (game a week challenge)
+Dates: April 28, 2019 - July 7, 2019
 1. tactics
 2. rats scavaging
 3. ENDLESS RUNNER
@@ -35,13 +33,10 @@ Start Date: April 28, 2019
 9. museum, how many effects
 10. acid frog
 
-End Date: July 7, 2019
+#### The Solutions
 
-#### Existing Solutions
-
-My partially built engine AncientArcher
-
-* Programming Language: C++ std14
+Continue expanding and improving Ancient Archer Game Engine.
+* Programming Language: C++ std17
 * Additional Libraries: 
     * glad for OpenGL 3.30 graphics pipeline
     * glfw3 for windowing and input
@@ -49,10 +44,6 @@ My partially built engine AncientArcher
     * glm for 3d math
     * stb_image to load texture
     * assimp to load meshes and models
-
-#### Proposed Solution
-
-Countine on Ancient Archer OpenGL project.
 
 Ancient Archer should allow for games to be built on it with relative ease.
 
@@ -62,8 +53,10 @@ Ancient Archer should allow for games to be built on it with relative ease.
 
 #### Testability, Monitoring and Alerting
 
-* ToDo
+* Comes with prebuilt examples and tests, built and expanded as features are added.
+* logging sytem TBA
+
 
 #### Detailed Scoping and Timeline
 
-* ToDo
+* Quarterly updates. Timelines TBA
