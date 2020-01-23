@@ -4,10 +4,10 @@
 #pragma once
 #include "../engine/AAEngine.h"
 #include "dry/addGodMovement.h"
-#include "dry/setWindowToMaximized.h"
 #include "../engine/AAGameObject.h"
 #include "../engine/AAOGLGraphics.h"
 #include "../engine/AAShaderManager.h"
+#include "../engine/AASound.h"
 
 void  testEngineFuncsDemo_4()
 {
@@ -19,7 +19,9 @@ void  testEngineFuncsDemo_4()
 
   //addSkybox(engine, "drakeq");
   addGodMovement(engine);
-  //setWindowToMaximized();
+
+  static AASound sound;
+  sound.addSoundEffects(objs.getAllSounds());
 
   static AAGameObject gameObj6 = AAOGLGraphics::getInstance()->loadGameObjectWithAssimp(objs.getModel(5), true);
   gameObj6.changeRotateAxis(glm::vec3(0, 1, 0));
@@ -28,11 +30,11 @@ void  testEngineFuncsDemo_4()
 
   static AAShaderManager shaderMan;
   static int triLightShader = shaderMan.addShader(
-    "../AncientArcher/shader/vert_textured.glsl", 
+    "../AncientArcher/shader/vert_textured.glsl",
     "../AncientArcher/shader/frag_3coreLight.glsl"
   );
   static int noLightShader = shaderMan.addShader(
-    "../AncientArcher/shader/vert_textured.glsl", 
+    "../AncientArcher/shader/vert_textured.glsl",
     "../AncientArcher/shader/frag_noLight.glsl"
   );
 
@@ -132,18 +134,75 @@ void  testEngineFuncsDemo_4()
   };
   engine.addToUpdate(updateShaders);
 
-  auto lightChange = [](AAKeyBoardInput& keys)
+  auto lightingHotkeys = [](AAKeyBoardInput& keys)
   {
-    if (keys.n1)
+    if (keys.k)
     {
       sceneLighting = true;
     }
-    if (keys.n2)
+    if (keys.l)
     {
       sceneLighting = false;
     }
   };
-  engine.addToKeyHandling(lightChange);
+  engine.addToKeyHandling(lightingHotkeys);
+
+  auto soundHotkeys = [](AAKeyBoardInput& keys)
+  {
+    if (keys.n1)
+    {
+      sound.playSoundEffect(0);
+      return true;
+    }
+    if (keys.n2)
+    {
+      sound.playSoundEffect(1);
+      return true;
+    }
+    if (keys.n3)
+    {
+      sound.playSoundEffect(2);
+      return true;
+    }
+    if (keys.n4)
+    {
+      sound.playSoundEffect(3);
+      return true;
+    }
+    if (keys.n5)
+    {
+      sound.playSoundEffect(4);
+      return true;
+    }
+    if (keys.n6)
+    {
+      sound.playSoundEffect(5);
+      return true;
+    }
+    if (keys.n7)
+    {
+      sound.playSoundEffect(6);
+      return true;
+    }
+    if (keys.n8)
+    {
+      sound.playSoundEffect(7);
+      return true;
+    }      
+    if (keys.n9)
+    {
+      sound.playSoundEffect(8);
+      return true;
+    }       
+    if (keys.n0)
+    {
+      sound.playSoundEffect(9);
+      return true;
+    }
+    return false;
+  };
+  engine.addToTimedOutKeyHandling(soundHotkeys);
+
 
   switch (engine.run())
   {
