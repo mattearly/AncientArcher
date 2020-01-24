@@ -20,7 +20,7 @@ std::string LoadableAssets::getModel(std::string objname) const
 
 std::string LoadableAssets::getModel(int which) const
 {
-  if (which > mModels.size())
+  if (which > mModels.size() - 1)
     return "out of range";
 
   return mModelFiledir + mModels.at(which);
@@ -44,7 +44,7 @@ std::string LoadableAssets::getSound(std::string soundname) const
 
 std::string LoadableAssets::getSound(int which) const
 {
-  if (which > mSounds.size())
+  if (which > mSounds.size() - 1)
     return "out of range";
 
   return mSoundFiledir + mSounds.at(which);
