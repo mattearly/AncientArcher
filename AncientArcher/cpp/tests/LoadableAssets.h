@@ -12,6 +12,7 @@ public:
 
   std::string getModel(std::string objname) const;
   std::string getModel(int which) const;
+  std::vector<std::string> getAllModels() const;
 
   std::string getSound(std::string soundname) const;
   std::string getSound(int which) const;

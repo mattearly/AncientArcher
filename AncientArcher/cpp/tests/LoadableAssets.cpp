@@ -26,6 +26,18 @@ std::string LoadableAssets::getModel(int which) const
   return mModelFiledir + mModels.at(which);
 }
 
+std::vector<std::string> LoadableAssets::getAllModels() const
+{
+  std::vector<std::string> pathedModels;
+
+  for (auto s : mModels)
+  {
+    pathedModels.push_back(mModelFiledir + s);
+  }
+
+  return pathedModels;
+}
+
 std::string LoadableAssets::getSound(std::string soundname) const
 {
   if (mSounds.empty())
