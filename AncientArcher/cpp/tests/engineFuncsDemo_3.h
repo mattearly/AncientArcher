@@ -1,5 +1,6 @@
 /*
   Tests loading a first person world and changing shaders (key 1 and 2).
+  Tests loading all model assets.
 */
 
 #pragma once
@@ -11,7 +12,6 @@
 #include "../engine/AAGameObject.h"
 #include "../engine/AAOGLGraphics.h"
 #include "../engine/AAShaderManager.h"
-#include "dry/setWindowToMaximized.h"
 
 void  testEngineFuncsDemo_3()
 {
@@ -20,14 +20,8 @@ void  testEngineFuncsDemo_3()
 
   AAEngine engine;
 
-  //addSkybox(engine, "drakeq");
+  addSkybox(engine, "drakeq");
   addGodMovement(engine);
-  setWindowToMaximized();
-
-  static AAGameObject gameObj6 = AAOGLGraphics::getInstance()->loadGameObjectWithAssimp(objs.getModel(7), true);
-  gameObj6.changeRotateAxis(glm::vec3(0, 1, 0));
-
-  static AAGameObject gameObj9 = AAOGLGraphics::getInstance()->loadGameObjectWithAssimp(objs.getModel(8), true);
 
   static AAShaderManager shaderMan;
   static int triLightShader = shaderMan.addShader(
@@ -39,25 +33,32 @@ void  testEngineFuncsDemo_3()
     "../AncientArcher/shader/frag_noLight.glsl"
   );
 
-  static bool sceneLighting = true;
+  static std::vector<AAGameObject> gameObjects;
+  for (auto obj : objs.getAllModels())
+  {
+    AAGameObject tmpObj = AAOGLGraphics::getInstance()->loadGameObjectWithAssimp(obj, true);
+    gameObjects.push_back(tmpObj);
+  }
+
+  static bool sceneLighting = false;
 
   static PointLight pointLight;
   static SpotLight spotLight;
 
   auto startFunc = []()
   {
-    AAViewport::getInstance()->setCurrentPosition(glm::vec3(0, 5, 10));
+    AAViewport::getInstance()->setCurrentPosition(glm::vec3(20));
     AAViewport::getInstance()->setCurrentPitch(-20.f);
     AAViewport::getInstance()->setCurrentYaw(270.f);
 
     shaderMan.updateProjectionMatrices();
 
-    //gameObj2.translate(glm::vec3(0, 6, 0));
-    //gameObj5.translate(glm::vec3(5,5,-5));
-    gameObj6.translate(glm::vec3(0, 4, 0));
-    //gameObj7.translate(glm::vec3(-51.625,0,0));
-    //gameObj8.translate(glm::vec3(0));
-    gameObj9.translate(glm::vec3(0));
+    glm::vec3 loc(0);
+    for (auto& a : gameObjects)
+    {
+      a.translate(loc);
+      loc += 5;
+    }
 
     DirectionalLight dirLight;
     dirLight.Direction = glm::vec3(.15f, -1.f, .15f);
@@ -95,13 +96,13 @@ void  testEngineFuncsDemo_3()
     static float totalTime = 0;
     totalTime += dt;
 
-    //gameObj.translate(glm::vec3(dt * .5, 0, 0));
+    //gameObj1.translate(glm::vec3(dt * .5, 0, 0));
     //gameObj2.translate(glm::vec3(0, 0, -sin(totalTime)));
     //gameObj3.translate(glm::vec3(0, 0, 0));
     //gameObj3.rotate(dt * .5f, glm::vec3(0, 1, 0));
     //gameObj4.translate(glm::vec3(0, 0, sin(totalTime)));
     //gameObj5.rotate(dt * .3f, glm::vec3(0, 1, 0));
-    gameObj6.advanceRotation(glm::radians(dt * 5));
+    //gameObj6.advanceRotation(glm::radians(dt * 5));
 
     //pointLight.Position = glm::vec3(0, 0, -sin(totalTime) * 10);
     //AAViewport::getInstance()->setPointLight(pointLight);
@@ -112,13 +113,17 @@ void  testEngineFuncsDemo_3()
   auto drawObjects = []()
   {
     if (sceneLighting) {
-      gameObj6.draw(shaderMan.getShader(triLightShader));
-      gameObj9.draw(shaderMan.getShader(triLightShader));
+      for (auto obj : gameObjects)
+      {
+        obj.draw(shaderMan.getShader(triLightShader));
+      }
     }
     else
     {
-      gameObj6.draw(shaderMan.getShader(noLightShader));
-      gameObj9.draw(shaderMan.getShader(noLightShader));
+      for (auto obj : gameObjects)
+      {
+        obj.draw(shaderMan.getShader(noLightShader));
+      }
     }
   };
   engine.addToOnRender(drawObjects);
