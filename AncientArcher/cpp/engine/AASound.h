@@ -21,7 +21,7 @@ public:
 private:
 
   std::vector<Mix_Chunk*> mSoundEffects;
-  std::vector<Mix_Music*> mMusicTrack;
+  std::vector<Mix_Music*> mMusicTracks;
 
   bool mMusicPlaying = false;
   bool mMusicPaused = false;

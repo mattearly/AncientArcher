@@ -38,7 +38,7 @@ void AASound::addSoundEffects(std::vector<std::string> paths)
   for (auto p : paths)
   {
     Mix_Chunk* tmpchunk = Mix_LoadWAV(p.c_str());
-
+    // check that sound load succeed before adding to list
     if (tmpchunk != nullptr)
     {
       mSoundEffects.push_back(tmpchunk);
@@ -49,20 +49,41 @@ void AASound::addSoundEffects(std::vector<std::string> paths)
         "Couldn't load audio: %s",
         Mix_GetError());
     }
-
   }
 
-  // check all sound effects after loading them
+  //output list of sound effects
   int count = 0;
+  std::cout << "Sound Effects\n";
   for (auto se : mSoundEffects)
   {
-    std::cout << count++ << ". sound passed check\n";
+    std::cout << '\t' << count++ << ". " << se << '\n';
   }
 }
 
 void AASound::addMusicTracks(std::vector<std::string> paths)
 {
-  //todo
+  for (auto p : paths)
+  {
+    Mix_Music* tmpchunk = Mix_LoadMUS(p.c_str());
+    // check that sound load succeed before adding to list
+    if (tmpchunk != nullptr)
+    {
+      mMusicTracks.push_back(tmpchunk);
+    }
+    else
+    {
+      SDL_LogError(SDL_LOG_CATEGORY_APPLICATION,
+        "Couldn't load audio: %s",
+        Mix_GetError());
+    }
+  }
+
+  int count = 0;
+  std::cout << "Music Tracks\n";
+  for (auto mt : mMusicTracks)
+  {
+    std::cout << '\t' << count++ << ". " << mt << '\n';
+  }
 }
 
 void AASound::playSoundEffect(int which)
@@ -81,14 +102,14 @@ void AASound::playSoundEffect(int which)
 
 void AASound::playMusicTrack(int which)
 {
-  if (which > mMusicTrack.size())
+  if (which > mMusicTracks.size())
   {
     // out of range -- don't attempt to play music
     return;
   }
 
   if (!mMusicPlaying && !mMusicPaused) {
-    Mix_PlayMusic(mMusicTrack[which], -1);
+    Mix_PlayMusic(mMusicTracks[which], -1);
     mMusicPlaying = true;
   }
   else if (mMusicPlaying && !mMusicPaused) {
