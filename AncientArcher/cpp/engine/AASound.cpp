@@ -86,7 +86,7 @@ void AASound::addMusicTracks(std::vector<std::string> paths)
   }
 }
 
-void AASound::playSoundEffect(int which)
+void AASound::playSoundEffect(int which) const
 {
   if (which > mSoundEffects.size() - 1)
   {
@@ -100,7 +100,7 @@ void AASound::playSoundEffect(int which)
 
 }
 
-void AASound::playMusicTrack(int which)
+void AASound::playMusicTrack(int which) const
 {
   if (which > mMusicTracks.size())
   {
