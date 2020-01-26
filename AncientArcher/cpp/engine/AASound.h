@@ -16,7 +16,7 @@ public:
   void addMusicTracks(std::vector<std::string> paths);
 
   void playSoundEffect(int which) const;
-  void playMusicTrack(int which) const;
+  void playMusicTrack(int which);
 
 private:
 

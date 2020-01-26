@@ -122,7 +122,7 @@ void AASound::playSoundEffect(int which) const
 
 }
 
-void AASound::playMusicTrack(int which) const
+void AASound::playMusicTrack(int which) 
 {
   if (which > mMusicTracks.size())
   {
