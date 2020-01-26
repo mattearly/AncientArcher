@@ -185,39 +185,39 @@ std::vector<TextureInfo> AAOGLGraphics::loadMaterialTextures(aiMaterial* mat, ai
   //}
   //else
   //{
-    for (unsigned int i = 0; i < mat->GetTextureCount(type); ++i)
-    {
-      aiString tmpstr;
-      mat->GetTexture(type, i, &tmpstr);
-      bool alreadyLoaded = false;
+  for (unsigned int i = 0; i < mat->GetTextureCount(type); ++i)
+  {
+    aiString tmpstr;
+    mat->GetTexture(type, i, &tmpstr);
+    bool alreadyLoaded = false;
 
-      for (unsigned int j = 0; j < mTexturesLoaded.size(); ++j)
+    for (unsigned int j = 0; j < mTexturesLoaded.size(); ++j)
+    {
+      for (auto p : mTexturesLoaded)
       {
-        for (auto p : mTexturesLoaded)
+        if (p.path.data() == tmpstr.C_Str())
         {
-          if (p.path.data() == tmpstr.C_Str())
-          {
-            TextureInfo tmptexinfo;
-            tmptexinfo.id = p.id;
-            tmptexinfo.type = p.type;
-            tmptexinfo.path = "";
-            outTexInfo.push_back(tmptexinfo);
-            alreadyLoaded = true;
-          }
+          TextureInfo tmptexinfo;
+          tmptexinfo.id = p.id;
+          tmptexinfo.type = p.type;
+          tmptexinfo.path = "";
+          outTexInfo.push_back(tmptexinfo);
+          alreadyLoaded = true;
         }
       }
-
-      if (!alreadyLoaded)
-      {
-        TextureInfo tmptex;
-        std::cout << "loading texture from a file " << tmpstr.C_Str() << '\n';
-        tmptex.id = TexLoader::getInstance()->textureFromFile(tmpstr.C_Str(), lastDirectory);
-        tmptex.path = tmpstr.C_Str();
-        tmptex.type = typeName;
-        outTexInfo.push_back(tmptex);
-        mTexturesLoaded.push_back(tmptex);
-      }
     }
+
+    if (!alreadyLoaded)
+    {
+      TextureInfo tmptex;
+      std::cout << "loading texture from a file " << tmpstr.C_Str() << '\n';
+      tmptex.id = TexLoader::getInstance()->textureFromFile(tmpstr.C_Str(), lastDirectory);
+      tmptex.path = tmpstr.C_Str();
+      tmptex.type = typeName;
+      outTexInfo.push_back(tmptex);
+      mTexturesLoaded.push_back(tmptex);
+    }
+  }
   //}
 
 

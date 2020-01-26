@@ -23,7 +23,7 @@ AASkybox::AASkybox(std::vector<std::string> incomingSkymapFiles)
   skyboxShader->use();
   skyboxShader->setInt("skybox", 0);
 
-  loadProjectionMatrix(); 
+  loadProjectionMatrix();
 
 }
 
@@ -39,7 +39,7 @@ void AASkybox::render()
     loadProjectionMatrix();
   }
 
-  
+
   loadViewMatrix();        // todo: only update when camera moved
 
   glBindVertexArray(mSkyboxVAO);

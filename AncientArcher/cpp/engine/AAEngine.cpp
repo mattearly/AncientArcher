@@ -212,9 +212,9 @@ void AAEngine::update()
     oU();
   }
 
-  static float worldUpdateTimeOutSoFar = 0;  
+  static float worldUpdateTimeOutSoFar = 0;
   worldUpdateTimeOutSoFar += passedTime;
-  if (worldUpdateTimeOutSoFar > mSlowUpdateDelay)    
+  if (worldUpdateTimeOutSoFar > mSlowUpdateDelay)
   {
     for (auto oSU : onSlowUpdate)// todo: move to delta update
     {

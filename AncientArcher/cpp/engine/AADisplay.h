@@ -10,78 +10,78 @@ class AADisplay
 {
 public:
 
-	static AADisplay* getInstance();
+  static AADisplay* getInstance();
 
-	friend class AAEngine;
+  friend class AAEngine;
 
-	~AADisplay();
+  ~AADisplay();
 
-	int getWindowWidth();
-	int getWindowHeight();
-	bool getIsWindowFullScreen();
-	GLFWwindow* getWindow();
+  int getWindowWidth();
+  int getWindowHeight();
+  bool getIsWindowFullScreen();
+  GLFWwindow* getWindow();
 
-	void setCursorToVisible();
-	void setCursorToHidden();
-	void setCursorToDisabled();
-	void setWindowClearColor(glm::vec3 rgb);
-	void setWindowSize(int width, int height, int xpos, int ypos);
-	void setWindowSize(int width, int height, bool center = true);
-	void setWindowSize(const char to);
-	void setWindowTitle(const char* name);
+  void setCursorToVisible();
+  void setCursorToHidden();
+  void setCursorToDisabled();
+  void setWindowClearColor(glm::vec3 rgb);
+  void setWindowSize(int width, int height, int xpos, int ypos);
+  void setWindowSize(int width, int height, bool center = true);
+  void setWindowSize(const char to);
+  void setWindowTitle(const char* name);
 
-	void toggleCursor();
-	void closeWindow();
+  void toggleCursor();
+  void closeWindow();
 
-	// window handler(s)
-	void reshapeWindowHandler(GLFWwindow* window, int width, int height);
+  // window handler(s)
+  void reshapeWindowHandler(GLFWwindow* window, int width, int height);
 
-	// mouse handler(s)
-	void perspectiveMouseHandler(GLFWwindow* window, float xpos, float ypos);
-	void standardMouseHandler(GLFWwindow* window, float xpos, float ypos);
+  // mouse handler(s)
+  void perspectiveMouseHandler(GLFWwindow* window, float xpos, float ypos);
+  void standardMouseHandler(GLFWwindow* window, float xpos, float ypos);
 
-	// scroll handlers(s)
-	void scrollHandler(GLFWwindow* window, float xpos, float ypos);
+  // scroll handlers(s)
+  void scrollHandler(GLFWwindow* window, float xpos, float ypos);
 
 private:
 
-	// internal functions 
-	void toggleFullScreen();
-	void setWindowToFullscreen();
-	void setFullscreenToOff();
+  // internal functions 
+  void toggleFullScreen();
+  void setWindowToFullscreen();
+  void setFullscreenToOff();
 
-	void setWindowToMaximized();
-	void setWindowToFullscreenBorderless();
+  void setWindowToMaximized();
+  void setWindowToFullscreenBorderless();
 
-	void keepWindowOpen();
+  void keepWindowOpen();
 
-	void clearBackBuffer() const;
-	void swapWindowBuffers() const;
+  void clearBackBuffer() const;
+  void swapWindowBuffers() const;
 
-	void setReshapeWindowHandler();
+  void setReshapeWindowHandler();
 
-	void setCurorPosToPerspectiveCalc();
+  void setCurorPosToPerspectiveCalc();
 
-	void setCurorPosToStandardCalc();
+  void setCurorPosToStandardCalc();
 
-	void setScrollWheelHandler();
+  void setScrollWheelHandler();
 
-	void initGLFW();
+  void initGLFW();
 
-	void initFromEngine();
+  void initFromEngine();
 
-	void resetStateDataToDefault();
+  void resetStateDataToDefault();
 
-	// state data
-	enum class CursorMode { VISIBLE, HIDDEN, FPS } mCursorMode = CursorMode::VISIBLE;
+  // state data
+  enum class CursorMode { VISIBLE, HIDDEN, FPS } mCursorMode = CursorMode::VISIBLE;
 
-	MouseReporting mMouseReporting = MouseReporting::STANDARD;
+  MouseReporting mMouseReporting = MouseReporting::STANDARD;
 
-	bool mWindowIsFullScreen = false;
-	int mWindowWidth = 800, mWindowHeight = 600;
-	int mXPos = 0, mYPos = 0;
-	glm::vec3 mWindowClearColor = glm::vec3(0.35f, 0.15f, 0.35f);
+  bool mWindowIsFullScreen = false;
+  int mWindowWidth = 800, mWindowHeight = 600;
+  int mXPos = 0, mYPos = 0;
+  glm::vec3 mWindowClearColor = glm::vec3(0.35f, 0.15f, 0.35f);
 
-	GLFWwindow* mWindow = nullptr;
+  GLFWwindow* mWindow = nullptr;
 
 };
