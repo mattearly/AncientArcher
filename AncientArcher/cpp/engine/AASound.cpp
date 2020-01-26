@@ -25,12 +25,34 @@ AASound::~AASound()
 
 void AASound::addSoundEffect(std::string path)
 {
-  //todo
+  Mix_Chunk* tmpchunk = Mix_LoadWAV(path.c_str());
+  // check that sound load succeed before adding to list
+  if (tmpchunk != nullptr)
+  {
+    mSoundEffects.push_back(tmpchunk);
+  }
+  else
+  {
+    SDL_LogError(SDL_LOG_CATEGORY_APPLICATION,
+      "Couldn't load audio: %s",
+      Mix_GetError());
+  }
 }
 
 void AASound::addMusicTrack(std::string path)
 {
-  //todo
+  Mix_Music* tmpchunk = Mix_LoadMUS(path.c_str());
+  // check that sound load succeed before adding to list
+  if (tmpchunk != nullptr)
+  {
+    mMusicTracks.push_back(tmpchunk);
+  }
+  else
+  {
+    SDL_LogError(SDL_LOG_CATEGORY_APPLICATION,
+      "Couldn't load audio: %s",
+      Mix_GetError());
+  }
 }
 
 void AASound::addSoundEffects(std::vector<std::string> paths)
