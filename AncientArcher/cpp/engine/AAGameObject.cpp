@@ -33,7 +33,8 @@ void AAGameObject::draw(const Shader& shader)
     }
 
     glBindVertexArray(m.vao);
-    glDrawElements(GL_TRIANGLES, static_cast<unsigned int>(m.elements.size()), GL_UNSIGNED_INT, nullptr);
+    const GLsizei count = m.elements.size();
+    glDrawElements(GL_TRIANGLES, count, GL_UNSIGNED_INT, nullptr);
     glBindVertexArray(0);
   }
 
