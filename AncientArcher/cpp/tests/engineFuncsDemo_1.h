@@ -17,6 +17,8 @@ void  testEngineFuncsDemo_1()
  
   AAEngine engine;
 
+  DISPLAY->setWindowTitle("AA Demo 1 - Close Window To Continue");
+
   addSkybox(engine, "drakeq");
   addGodMovement(engine);
 

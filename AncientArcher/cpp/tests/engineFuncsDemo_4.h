@@ -17,6 +17,7 @@ void  testEngineFuncsDemo_4()
   objs.loadConfig("../AncientArcher/config/sounds.txt");
 
   AAEngine engine;
+  DISPLAY->setWindowTitle("AA Demo 4 - Close Window To Continue");
 
   //addSkybox(engine, "drakeq");
   addGodMovement(engine);

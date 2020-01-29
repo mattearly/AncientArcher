@@ -16,6 +16,7 @@ void testEngineFuncsDemo_2()
 	objs.loadConfig("../AncientArcher/config/models.txt");
 
 	AAEngine engine;
+	DISPLAY->setWindowTitle("AA Demo 2 - Close Window To Continue");
 
 	addSkybox(engine, "nordic");
 	addGodMovement(engine);

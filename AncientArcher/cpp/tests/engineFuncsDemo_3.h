@@ -19,6 +19,7 @@ void  testEngineFuncsDemo_3()
   objs.loadConfig("../AncientArcher/config/models.txt");
 
   AAEngine engine;
+  DISPLAY->setWindowTitle("AA Demo 3 - Close Window To Continue");
 
   addSkybox(engine, "drakeq");
   addGodMovement(engine);

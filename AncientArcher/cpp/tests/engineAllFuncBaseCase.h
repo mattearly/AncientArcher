@@ -6,11 +6,11 @@
 void testEngineFuncsBaseCase()
 {
   AAEngine engine;
+  DISPLAY->setWindowTitle("AA Loop Test - Close Window To Continue");
 
   //1 on begin test
   auto myOnBeginFunc = []() {
 
-    DISPLAY->setWindowTitle("AA Loop Test - Close Window To Continue");
     std::cout << "+++One Time Begin Run -> TESTING ALL ENGINE FUNCTION LOOPS\n";
   };
   engine.addToOnBegin(myOnBeginFunc);
