@@ -7,7 +7,7 @@ void testEnginePause()
 {
   AAEngine engine;
 
-  AADisplay::getInstance()->setWindowTitle("PAUSE - close window to continue");  // test changing window title
+  DISPLAY->setWindowTitle("AA Pause Test - Close Window To Continue");
   AADisplay::getInstance()->setWindowClearColor(glm::vec3(.0, .1, .0));        // test changing window clear color
 
   switch (engine.run())

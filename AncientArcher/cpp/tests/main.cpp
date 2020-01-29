@@ -26,10 +26,10 @@ int runAllTests()
 
   delay(120);
   testEngineBaseCase();
+  delay(120); 
+  testEnginePause();
   delay(120);
   testEngineFuncsBaseCase();
-  delay(120);
-  testEnginePause();
   delay(120);
   testEngineFuncsDemo_1();
   delay(120);

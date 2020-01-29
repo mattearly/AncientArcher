@@ -10,12 +10,12 @@ void testEngineFuncsBaseCase()
   //1 on begin test
   auto myOnBeginFunc = []() {
 
-    AADisplay::getInstance()->setWindowTitle("all functions loop TEST - close this window to continue");  // test changing window title
+    DISPLAY->setWindowTitle("AA Loop Test - Close Window To Continue");
     std::cout << "+++One Time Begin Run -> TESTING ALL ENGINE FUNCTION LOOPS\n";
   };
   engine.addToOnBegin(myOnBeginFunc);
 
-  //2 on delta test
+  //2 on delta test1
   auto myChangeBackgroundBasedOnDeltaFunc = [](float step) {
     static float timePassed = 0;
     timePassed += step;
