@@ -6,7 +6,7 @@
 class AASound
 {
 public:
-  AASound();
+  AASound() noexcept;
   ~AASound();
 
   void addSoundEffect(std::string path);
@@ -27,4 +27,3 @@ private:
   bool mMusicPaused = false;
 
 };
-
