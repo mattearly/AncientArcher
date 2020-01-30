@@ -11,10 +11,7 @@
 #include <cstddef>
 #include "AAViewport.h"
 
-std::string lastDirectory;
-std::vector<MeshDrawInfo> meshes;
-
-Vertex::Vertex(glm::vec3 pos, glm::vec2 texcoords, glm::vec3 norms)
+Vertex::Vertex(glm::vec3 pos, glm::vec2 texcoords, glm::vec3 norms) noexcept
   : Position(pos), TexCoords(texcoords), Normal(norms) {}
 
 glm::mat4 aiMat4_to_glmMat4(const aiMatrix4x4& inMat)
@@ -39,7 +36,7 @@ glm::mat4 aiMat4_to_glmMat4(const aiMatrix4x4& inMat)
   return outMat;
 }
 
-glm::vec3 aiVec3_to_glmVec3(const aiVector3D& inVec)
+glm::vec3 aiVec3_to_glmVec3(const aiVector3D& inVec) noexcept
 {
   glm::vec3 outVec;
   outVec.x = inVec.x;
@@ -48,7 +45,7 @@ glm::vec3 aiVec3_to_glmVec3(const aiVector3D& inVec)
   return outVec;
 }
 
-glm::quat aiQuat_to_glmQuat(const aiQuaternion& inQuat)
+glm::quat aiQuat_to_glmQuat(const aiQuaternion& inQuat) noexcept
 {
   glm::quat outQuat;
   outQuat.w = inQuat.w;
@@ -74,17 +71,17 @@ AAGameObject AAOGLGraphics::loadGameObjectWithAssimp(std::string path, bool pp_t
     post_processsing_flags |= aiProcess_Triangulate;
   }
   const aiScene* scene = importer.ReadFile(path, post_processsing_flags);
-  meshes.clear();
+  mMeshDrawInfo.clear();
   if (!scene || scene->mFlags & AI_SCENE_FLAGS_INCOMPLETE || !scene->mRootNode)
   {
     std::cout << "ERROR::ASSIMP::" << importer.GetErrorString() << '\n';
-    return AAGameObject(meshes);
+    return AAGameObject(mMeshDrawInfo);
   }
 
-  lastDirectory = path.substr(0, path.find_last_of("/\\"));  //http://www.cplusplus.com/reference/string/string/find_last_of/     
+  mLastDir = path.substr(0, path.find_last_of("/\\"));  //http://www.cplusplus.com/reference/string/string/find_last_of/     
   processNode(scene->mRootNode, scene);
 
-  return AAGameObject(meshes);
+  return AAGameObject(mMeshDrawInfo);
 }
 
 void AAOGLGraphics::processNode(aiNode* node, const aiScene* scene)
@@ -92,7 +89,7 @@ void AAOGLGraphics::processNode(aiNode* node, const aiScene* scene)
   for (unsigned int i = 0; i < node->mNumMeshes; ++i)
   {
     aiMesh* mesh = scene->mMeshes[node->mMeshes[i]];
-    meshes.push_back(processMesh(mesh, scene));
+    mMeshDrawInfo.push_back(processMesh(mesh, scene));
   }
 
   for (unsigned int i = 0; i < node->mNumChildren; ++i)
@@ -194,7 +191,7 @@ std::vector<TextureInfo> AAOGLGraphics::loadMaterialTextures(aiMaterial* mat, ai
     if (!alreadyLoaded)
     {
       TextureInfo tmptex;
-      tmptex.id = TexLoader::getInstance()->textureFromFile(tmpstr.C_Str(), lastDirectory);
+      tmptex.id = TexLoader::getInstance()->textureFromFile(tmpstr.C_Str(), mLastDir);
       tmptex.path = tmpstr.C_Str();
       tmptex.type = typeName;
       outTexInfo.push_back(tmptex);
