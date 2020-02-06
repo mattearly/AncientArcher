@@ -1,3 +1,0 @@
-models
-C:/Users/matt/Dropbox_me298414/Dropbox/My3DModels/
-.obj
