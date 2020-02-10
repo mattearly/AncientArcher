@@ -5,7 +5,10 @@
 
 namespace mearly
 {
-// returns a double between zero and one randomly
+
+/**
+ * Produces a random double between zero and one.
+ */
 double Random::ZTOR()
 {
   // initialize the random number generator with time-dependent seed
@@ -17,7 +20,9 @@ double Random::ZTOR()
   return unif(mgen);
 }
 
-// returns integer zero or one randomly [true / false]
+/**
+ * Produces a random integer zero or one.
+ */
 int Random::ZOOR()
 {
   static uint64_t timeSeed = std::chrono::high_resolution_clock::now().time_since_epoch().count();
@@ -28,26 +33,66 @@ int Random::ZOOR()
   return dist2(mgen);
 }
 
-// returns a interger between n and k randomly
+/**
+ * Produces and random integer with the bounds n and k.
+ */
 int Random::NTKR(int n, int k)
 {
   static uint64_t timeSeed = std::chrono::high_resolution_clock::now().time_since_epoch().count();
   static std::seed_seq ss{ uint32_t(timeSeed & 0xffffffff), uint32_t(timeSeed >> 32) };
   static std::mt19937 mgen(ss);
 
-  std::uniform_int_distribution<std::mt19937::result_type> ntkd(n, k);
-  return ntkd(mgen);
+  // check if user put n <= k to process bounds
+  if (n <= k) {
+    std::uniform_int_distribution<std::mt19937::result_type> ntkd(n, k);
+    return ntkd(mgen);
+  }
+  else // else n > k, still functions as bounds k to n
+  {
+    std::uniform_int_distribution<std::mt19937::result_type> ntkd(k, n);
+    return ntkd(mgen);
+  }
 }
 
-// returns a float between n and k randomly
+/**
+ * Produces a random float with the bounds n and k.
+ */
 float Random::NTKR(float n, float k)
 {
   static uint64_t timeSeed = std::chrono::high_resolution_clock::now().time_since_epoch().count();
   static std::seed_seq ss{ uint32_t(timeSeed & 0xffffffff), uint32_t(timeSeed >> 32) };
   static std::mt19937 mgen(ss);
 
-  std::uniform_real_distribution<float> ntkd(n, k);
-  return ntkd(mgen);
+  // check if user put n <= k to process bounds
+  if (n <= k) {
+    std::uniform_real_distribution<float> ntkd(n, k);
+    return ntkd(mgen);
+  }
+  else // else n > k, still functions as bounds k to n
+  {
+    std::uniform_real_distribution<float> ntkd(k, n);
+    return ntkd(mgen);
+  }
+}
+/**
+ * Produces a random double with the bounds n and k.
+ */
+double Random::NTKR(double n, double k)
+{
+  static uint64_t timeSeed = std::chrono::high_resolution_clock::now().time_since_epoch().count();
+  static std::seed_seq ss{ uint32_t(timeSeed & 0xffffffff), uint32_t(timeSeed >> 32) };
+  static std::mt19937 mgen(ss);
+
+  // check if user put n <= k to process bounds
+  if (n <= k) {
+    std::uniform_real_distribution<double> ntkd(n, k);
+    return ntkd(mgen);
+  }
+  else // else n > k, still functions as bounds k to n
+  {
+    std::uniform_real_distribution<double> ntkd(k, n);
+    return ntkd(mgen);
+  }
 }
 
 }
