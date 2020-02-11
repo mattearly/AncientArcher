@@ -15,9 +15,6 @@
 
 
 #pragma once
-#include "../world/AAWorld.h"
-#include <glm/glm.hpp>
-#include <iostream>
 
 void addGodMovement(AAWorld& engine)
 {

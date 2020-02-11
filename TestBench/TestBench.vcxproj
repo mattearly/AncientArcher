@@ -89,8 +89,8 @@
     <RunCodeAnalysis>true</RunCodeAnalysis>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
-    <IncludePath>$(SolutionDir)TestBench\include;$(IncludePath)</IncludePath>
-    <LibraryPath>$(SolutionDir)TestBench\library;$(LibraryPath)</LibraryPath>
+    <IncludePath>$(IncludePath)</IncludePath>
+    <LibraryPath>$(SolutionDir)libraries;$(LibraryPath)</LibraryPath>
     <CodeAnalysisRuleSet>coreguidelines.ruleset</CodeAnalysisRuleSet>
     <RunCodeAnalysis>true</RunCodeAnalysis>
   </PropertyGroup>
@@ -146,7 +146,7 @@
       <ConformanceMode>true</ConformanceMode>
       <EnablePREfast>true</EnablePREfast>
       <LanguageStandard>stdcpp17</LanguageStandard>
-      <AdditionalIncludeDirectories>$(SolutionDir)Engine;$(SolutionDir)mearlyUtils;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)Engine;$(SolutionDir)MearlyUtils;$(SolutionDir)includes;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
     </ClCompile>
     <Link>
@@ -159,46 +159,47 @@
     </Lib>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="cpp\tests\dry\LoadableAssets.cpp" />
-    <ClCompile Include="cpp\tests\glad.c" />
-    <ClCompile Include="cpp\tests\main.cpp" />
-    <ClCompile Include="cpp\world\AAControls.cpp" />
-    <ClCompile Include="cpp\world\AADisplay.cpp" />
-    <ClCompile Include="cpp\world\AAGameObject.cpp" />
-    <ClCompile Include="cpp\world\AAOGLGraphics.cpp" />
-    <ClCompile Include="cpp\world\AAShaderManager.cpp" />
-    <ClCompile Include="cpp\world\AASkybox.cpp" />
-    <ClCompile Include="cpp\world\AASound.cpp" />
-    <ClCompile Include="cpp\world\AAViewport.cpp" />
-    <ClCompile Include="cpp\world\AAWorld.cpp" />
-    <ClCompile Include="include\stb_image\stb_image.cpp" />
+    <ClCompile Include="tests\dry\LoadableAssets.cpp" />
+    <ClCompile Include="world\glad.c" />
+    <ClCompile Include="tests\main.cpp" />
+    <ClCompile Include="world\AAControls.cpp" />
+    <ClCompile Include="world\AADisplay.cpp" />
+    <ClCompile Include="world\AAGameObject.cpp" />
+    <ClCompile Include="world\AAOGLGraphics.cpp" />
+    <ClCompile Include="world\AAShaderManager.cpp" />
+    <ClCompile Include="world\AASkybox.cpp" />
+    <ClCompile Include="world\AASound.cpp" />
+    <ClCompile Include="world\AAViewport.cpp" />
+    <ClCompile Include="world\AAWorld.cpp" />
+    <ClCompile Include="world\stb_image.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="cpp\tests\assimpModel.h" />
-    <ClInclude Include="cpp\tests\dry\addGodMovement.h" />
-    <ClInclude Include="cpp\tests\dry\addSkybox.h" />
-    <ClInclude Include="cpp\tests\dry\delay.h" />
-    <ClInclude Include="cpp\tests\dry\LoadableAssets.h" />
-    <ClInclude Include="cpp\tests\dry\setWindowToBorderless.h" />
-    <ClInclude Include="cpp\tests\dry\setWindowToMaximized.h" />
-    <ClInclude Include="cpp\tests\engineAllFuncBaseCase.h" />
-    <ClInclude Include="cpp\tests\engineBaseCase.h" />
-    <ClInclude Include="cpp\tests\engineFuncsDemo_1.h" />
-    <ClInclude Include="cpp\tests\engineFuncsDemo_2.h" />
-    <ClInclude Include="cpp\tests\engineFuncsDemo_3.h" />
-    <ClInclude Include="cpp\tests\engineFuncsDemo_4.h" />
-    <ClInclude Include="cpp\tests\enginePauseBaseCase.h" />
-    <ClInclude Include="cpp\world\AAControls.h" />
-    <ClInclude Include="cpp\world\AADisplay.h" />
-    <ClInclude Include="cpp\world\AAGameObject.h" />
-    <ClInclude Include="cpp\world\AAInput.h" />
-    <ClInclude Include="cpp\world\AALights.h" />
-    <ClInclude Include="cpp\world\AAOGLGraphics.h" />
-    <ClInclude Include="cpp\world\AAShaderManager.h" />
-    <ClInclude Include="cpp\world\AASkybox.h" />
-    <ClInclude Include="cpp\world\AASound.h" />
-    <ClInclude Include="cpp\world\AAViewport.h" />
-    <ClInclude Include="cpp\world\AAWorld.h" />
+    <ClInclude Include="tests\assimpModel.h" />
+    <ClInclude Include="tests\dry\addGodMovement.h" />
+    <ClInclude Include="tests\dry\addRandomColliderWorld.h" />
+    <ClInclude Include="tests\dry\addSkybox.h" />
+    <ClInclude Include="tests\dry\delay.h" />
+    <ClInclude Include="tests\dry\LoadableAssets.h" />
+    <ClInclude Include="tests\dry\setWindowToBorderless.h" />
+    <ClInclude Include="tests\dry\setWindowToMaximized.h" />
+    <ClInclude Include="tests\engineAllFuncBaseCase.h" />
+    <ClInclude Include="tests\engineBaseCase.h" />
+    <ClInclude Include="tests\engineFuncsDemo_1.h" />
+    <ClInclude Include="tests\engineFuncsDemo_2.h" />
+    <ClInclude Include="tests\engineFuncsDemo_3.h" />
+    <ClInclude Include="tests\engineFuncsDemo_4.h" />
+    <ClInclude Include="tests\enginePauseBaseCase.h" />
+    <ClInclude Include="world\AAControls.h" />
+    <ClInclude Include="world\AADisplay.h" />
+    <ClInclude Include="world\AAGameObject.h" />
+    <ClInclude Include="world\AAInput.h" />
+    <ClInclude Include="world\AALights.h" />
+    <ClInclude Include="world\AAOGLGraphics.h" />
+    <ClInclude Include="world\AAShaderManager.h" />
+    <ClInclude Include="world\AASkybox.h" />
+    <ClInclude Include="world\AASound.h" />
+    <ClInclude Include="world\AAViewport.h" />
+    <ClInclude Include="world\AAWorld.h" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Engine\Engine.vcxproj">

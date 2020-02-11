@@ -15,10 +15,12 @@ public:
   std::string getModel(std::string objname) const;
   std::string getModel(int which) const;
   std::vector<std::string> getAllModels() const;
+  unsigned int getNumLoadableModels() const;
 
   std::string getSound(std::string soundname) const;
   std::string getSound(int which) const;
   std::vector<std::string> getAllSounds() const;
+  unsigned int getNumLoadableSounds() const;
 
   void loadConfig(std::string pathtoconfig);
 

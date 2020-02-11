@@ -1,9 +1,4 @@
 #pragma once
-#include "../world/AAWorld.h"
-#include <string>
-#include <cassert>
-#include <vector>
-#include <memory>
 
 void addSkybox(AAWorld& engine, const std::string& n)
 {

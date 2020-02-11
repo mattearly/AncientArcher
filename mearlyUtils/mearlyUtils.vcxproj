@@ -19,9 +19,13 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="ColliderBox.cpp" />
+    <ClCompile Include="CollisionHandler.cpp" />
     <ClCompile Include="Random.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="ColliderBox.h" />
+    <ClInclude Include="CollisionHandler.h" />
     <ClInclude Include="Random.h" />
     <ClInclude Include="workingdir.h" />
   </ItemGroup>
@@ -99,6 +103,7 @@
       <ConformanceMode>true</ConformanceMode>
       <LanguageStandard>stdcpp17</LanguageStandard>
       <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
+      <AdditionalIncludeDirectories>$(SolutionDir)includes;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>

@@ -7,6 +7,7 @@
 #include "engineFuncsDemo_3.h"
 #include "engineFuncsDemo_4.h"
 #include <testlib.h>
+#include "assimpModel.h"
 int runAllTests()
 {
   //testAssimpBaseLoading(test::model1);
@@ -27,25 +28,27 @@ int runAllTests()
 
   delay(120);
   testEngineBaseCase();
-  //delay(120); 
-  //testEnginePause();
+  delay(120); 
+  testEnginePause();
   delay(120);
   testEngineFuncsBaseCase();
-  //delay(120);
-  //testEngineFuncsDemo_1();
-  //delay(120);
-  //testEngineFuncsDemo_2();
-  //delay(120);
-  ////testEngineFuncsDemo_3();
-  //delay(120);
-  //testEngineFuncsDemo_4();
+  delay(120);
+  testEngineFuncsDemo_1();
+  delay(120);
+  testEngineFuncsDemo_2();
+  delay(120);
+  testEngineFuncsDemo_3();
+  delay(120);
+  testEngineFuncsDemo_4();
 
   return 0;
 }
 
 int main()
 {
-  runAllTests();
+  //runAllTests();
+
+  testEngineFuncsDemo_4();
   
   holdAtCommandPrompt();
 }

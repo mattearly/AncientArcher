@@ -2,13 +2,10 @@
 #include <assimp/Importer.hpp>
 #include <assimp/scene.h>
 #include <assimp/postprocess.h>
-#include <iostream>
 #include <glm/glm.hpp>
 #include <glm/gtc/quaternion.hpp>
 #include <string>
-#include <glad\glad.h>
 #include <cstddef>
-#include "AAViewport.h"
 #include <stb_image/stb_image.h>
 #include <glad/glad.h>
 #include <sstream>

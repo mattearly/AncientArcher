@@ -1,6 +1,4 @@
 #pragma once
-#include "../world/AAWorld.h"
-#include "dry/addGodMovement.h"
 #include <iostream>
 
 void testEngineFuncsBaseCase()

@@ -38,6 +38,11 @@ std::vector<std::string> LoadableAssets::getAllModels() const
   return pathedModels;
 }
 
+unsigned int LoadableAssets::getNumLoadableModels() const
+{
+  return mModels.size();
+}
+
 std::string LoadableAssets::getSound(std::string soundname) const
 {
   if (mSounds.empty())
@@ -72,6 +77,11 @@ std::vector<std::string> LoadableAssets::getAllSounds() const
   }
   
   return pathedSounds;
+}
+
+unsigned int LoadableAssets::getNumLoadableSounds() const
+{
+  return mSounds.size();
 }
 
 void LoadableAssets::loadConfig(std::string pathtoconfig)
