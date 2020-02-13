@@ -182,13 +182,8 @@
     <ClInclude Include="tests\dry\LoadableAssets.h" />
     <ClInclude Include="tests\dry\setWindowToBorderless.h" />
     <ClInclude Include="tests\dry\setWindowToMaximized.h" />
-    <ClInclude Include="tests\engineAllFuncBaseCase.h" />
-    <ClInclude Include="tests\engineBaseCase.h" />
-    <ClInclude Include="tests\engineFuncsDemo_1.h" />
-    <ClInclude Include="tests\engineFuncsDemo_2.h" />
-    <ClInclude Include="tests\engineFuncsDemo_3.h" />
-    <ClInclude Include="tests\engineFuncsDemo_4.h" />
-    <ClInclude Include="tests\enginePauseBaseCase.h" />
+    <ClInclude Include="tests\engineLoopBase.h" />
+    <ClInclude Include="tests\engineDemoWorld.h" />
     <ClInclude Include="world\AAControls.h" />
     <ClInclude Include="world\AADisplay.h" />
     <ClInclude Include="world\AAGameObject.h" />

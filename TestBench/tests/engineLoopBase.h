@@ -1,7 +1,8 @@
 #pragma once
 #include <iostream>
+#include "../world/AAWorld.h"
 
-void testEngineFuncsBaseCase()
+void testEngineLoopBase()
 {
   AAWorld engine;
   DISPLAY->setWindowTitle("AA Loop Test - Close Window To Continue");

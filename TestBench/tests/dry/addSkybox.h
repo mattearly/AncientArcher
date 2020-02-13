@@ -1,6 +1,7 @@
 #pragma once
-
-void addSkybox(AAWorld& engine, const std::string& n)
+#include <iostream>
+#include "../../world/AAWorld.h"
+void addDemoSkybox(AAWorld& engine)
 {
 
 	// this function is based off having skyboxes in an asset path with the name of the skybox being the folder name and the files within containg 
@@ -9,40 +10,48 @@ void addSkybox(AAWorld& engine, const std::string& n)
 		// skybox files: back.png left.png front.png right.png
 		//                                 down.png
 
-
-	int skybox_choice = 0;
-	const int numOptions = 3;
-	std::string name[numOptions] = { "nordic", "drakeq", "normandy" };
-
-	if (n == "nordic")
 	{
-		skybox_choice = 0;
-	}
-	else if (n == "drakeq")
-	{
-		skybox_choice = 1;
-	}
-	else if (n == "normandy")
-	{
-		skybox_choice = 2;
-	}
-	assert(skybox_choice < numOptions);
-	{
-		// this is all based on where I am storing the data for cubemaps for testing
-		std::string folderpath = "C:/Users/matt/Dropbox_me298414/Dropbox/SkyboxCubemaps/";  // my skybox asset path
+		//1 get the path ot the demo skyboxes
+			// get path to demo files
+		std::string thisFilePath = __FILE__;
+#ifdef _WIN32
+		thisFilePath.erase(thisFilePath.find_last_of("\\"));
+		thisFilePath.erase(thisFilePath.find_last_of("\\"));
+		thisFilePath.erase(thisFilePath.find_last_of("\\"));
+		thisFilePath.erase(thisFilePath.find_last_of("\\") + 1);
+		thisFilePath.append("assets\\drakeq\\");
+#elif __linux__
+		//todo
+#else
+		//todo
+#endif
 
+		std::cout << "demo skybox path: " << thisFilePath << '\n';
 
+		// skybox file name order
+		std::string order[6] = { "right", "left", "up", "down", "front", "back" };
 
-		// my skybox file names
-		std::string order[6] = { "/right", "/left", "/up", "/down", "/front", "/back" };
+		const std::string extension = ".png";
 
-		std::string extension = ".png";
 		std::vector<std::string> cubemapfiles;
+
 		for (int j = 0; j < 6; ++j)
 		{
-			cubemapfiles.emplace_back(folderpath + name[skybox_choice] + order[j] + extension);
+			cubemapfiles.emplace_back(thisFilePath + order[j] + extension);
+			std::cout << "\t" << j << ". " << cubemapfiles.at(j) << '\n';
 		}
-		std::shared_ptr<AASkybox> skybox = std::make_shared<AASkybox>(cubemapfiles);
+
+		std::cout << "cubemapfiles size: " << cubemapfiles.size() << '\n';
+		
+		
+		if (cubemapfiles.size() != 6)
+			return;
+
+
+		const std::shared_ptr<AASkybox> skybox = std::make_shared<AASkybox>(cubemapfiles);
+		
+		
 		engine.setSkybox(skybox);
+
 	}
 }

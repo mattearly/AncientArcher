@@ -120,6 +120,11 @@ void AAWorld::setToStandardMouseHandling()
   }
 }
 
+void AAWorld::setKeyTimeoutLength(float time)
+{
+  mKeyTimeOutLength = time;
+}
+
 MouseReporting AAWorld::getMouseHandlingType()
 {
   return DISPLAY->mMouseReporting;

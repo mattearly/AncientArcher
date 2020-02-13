@@ -2,8 +2,9 @@
 #include "LoadableAssets.h"
 #include "../../world/AAGameObject.h"
 #include "../../world/AAOGLGraphics.h"
+#include "../../world/AASound.h"
 
-void addRandomColliderworld(AAWorld& worldEngine)
+void addRandomWorld(AAWorld& worldEngine)
 {
   static AAShaderManager shaderMan;
   static int triLightShader = shaderMan.addShader(
@@ -15,11 +16,27 @@ void addRandomColliderworld(AAWorld& worldEngine)
     "../shaders/frag_noLight.glsl"
   );
 
-  LoadableAssets objs;
-  objs.loadConfig("../TestBench/models.txt");
-  static AAGameObject gameObj6 = AAOGLGraphics::getInstance()->loadGameObjectWithAssimp(objs.getModel(5), true);
+  LoadableAssets assets;
+  assets.loadDemoConfig();
+  static AAGameObject gameObj6 = AAOGLGraphics::getInstance()->loadGameObjectWithAssimp(assets.getModel("6ColorSquare.obj"), true);
   gameObj6.changeRotateAxis(glm::vec3(0, 1, 0));
-  static AAGameObject gameObj9 = AAOGLGraphics::getInstance()->loadGameObjectWithAssimp(objs.getModel(6), true);
+  //static AAGameObject gameObj9 = AAOGLGraphics::getInstance()->loadGameObjectWithAssimp(objs.getModel(6), true);
+
+  static AASound sound;
+  sound.addSoundEffects(assets.getAllSounds());
+
+  worldEngine.setKeyTimeoutLength(.1f);
+
+  auto soundHotkeys = [](AAKeyBoardInput& keys)
+  {
+    if (keys.mouseButton1)
+    {
+      sound.playSoundEffect(0);
+      return true;
+    }
+    return false;
+  };
+  worldEngine.addToTimedOutKeyHandling(soundHotkeys);
 
   static bool sceneLighting = true;
 
@@ -39,7 +56,7 @@ void addRandomColliderworld(AAWorld& worldEngine)
     gameObj6.translate(glm::vec3(0, 4, 0));
     //gameObj7.translate(glm::vec3(-51.625,0,0));
     //gameObj8.translate(glm::vec3(0));
-    gameObj9.translate(glm::vec3(0));
+    //gameObj9.translate(glm::vec3(0));
 
     DirectionalLight dirLight;
     dirLight.Direction = glm::vec3(.15f, -1.f, .15f);
@@ -83,7 +100,7 @@ void addRandomColliderworld(AAWorld& worldEngine)
     //gameObj3.rotate(dt * .5f, glm::vec3(0, 1, 0));
     //gameObj4.translate(glm::vec3(0, 0, sin(totalTime)));
     //gameObj5.rotate(dt * .3f, glm::vec3(0, 1, 0));
-    //gameObj6.advanceRotation(glm::radians(dt * 5));
+    gameObj6.advanceRotation(glm::radians(dt * 5));
 
     //pointLight.Position = glm::vec3(0, 0, -sin(totalTime) * 10);
     //AAViewport::getInstance()->setPointLight(pointLight);
@@ -95,12 +112,12 @@ void addRandomColliderworld(AAWorld& worldEngine)
   {
     if (sceneLighting) {
       gameObj6.draw(shaderMan.getShader(triLightShader));
-      gameObj9.draw(shaderMan.getShader(triLightShader));
+      //gameObj9.draw(shaderMan.getShader(triLightShader));
     }
     else
     {
       gameObj6.draw(shaderMan.getShader(noLightShader));
-      gameObj9.draw(shaderMan.getShader(noLightShader));
+      //gameObj9.draw(shaderMan.getShader(noLightShader));
     }
   };
   worldEngine.addToOnRender(drawObjects);

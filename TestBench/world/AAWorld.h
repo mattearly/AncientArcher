@@ -40,6 +40,7 @@ public:
   void setSkybox(const std::shared_ptr<AASkybox>& skybox);
   void setToPerspectiveMouseHandling();
   void setToStandardMouseHandling();
+  void setKeyTimeoutLength(float time);
 
   MouseReporting getMouseHandlingType();
 

@@ -80,27 +80,6 @@
     <ClInclude Include="tests\assimpModel.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="tests\engineAllFuncBaseCase.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="tests\engineBaseCase.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="tests\engineFuncsDemo_1.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="tests\engineFuncsDemo_2.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="tests\engineFuncsDemo_3.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="tests\engineFuncsDemo_4.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="tests\enginePauseBaseCase.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="world\AAControls.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -132,6 +111,12 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="world\AAWorld.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="tests\engineDemoWorld.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="tests\engineLoopBase.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

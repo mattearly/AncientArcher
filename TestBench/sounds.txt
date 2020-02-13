@@ -1,3 +1,0 @@
-sounds
-C:/Users/matt/Dropbox_me298414/Dropbox/SoundEffects/
-.wav
