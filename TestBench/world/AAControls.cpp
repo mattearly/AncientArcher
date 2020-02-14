@@ -5,8 +5,8 @@
 
 AAControls* AAControls::getInstance()
 {
-  static AAControls* controls = new AAControls();
-  return controls;
+  static std::unique_ptr<AAControls> controls = std::make_unique<AAControls>();
+  return controls.get();
 }
 
 float AAControls::getMouseSensitivity() const
