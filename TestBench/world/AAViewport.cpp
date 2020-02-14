@@ -41,22 +41,22 @@ void AAViewport::resetViewportVars()
   mOrthoFieldSize = glm::vec4(-1, 1, -1, 1);
 }
 
-void AAViewport::windowViewportChanged()
+void AAViewport::windowViewportChanged() noexcept
 {
   mProjectionChanged = true;
 }
 
-void AAViewport::windowViewportChangeProcessed()
+void AAViewport::windowViewportChangeProcessed() noexcept
 {
   mProjectionChanged = false;
 }
 
-void AAViewport::setToPerspective()
+void AAViewport::setToPerspective() noexcept
 {
   mRenderProjection = RenderProjection::PERSPECTIVE;
 }
 
-void AAViewport::setToOrtho()
+void AAViewport::setToOrtho() noexcept
 {
   //AAViewport::getInstance()->setOrthoFieldSize(
   //  glm::vec4(
@@ -68,12 +68,12 @@ void AAViewport::setToOrtho()
   mRenderProjection = RenderProjection::ORTHO;
 }
 
-void AAViewport::setOrthoFieldSize(float left, float right, float bottom, float top)
+void AAViewport::setOrthoFieldSize(float left, float right, float bottom, float top) noexcept
 {
   mOrthoFieldSize = glm::vec4(left, right, bottom, top);
 }
 
-void AAViewport::setOrthoFieldSize(glm::vec4 lrbt)
+void AAViewport::setOrthoFieldSize(glm::vec4 lrbt) noexcept
 {
   mOrthoFieldSize = lrbt;
 }
@@ -84,7 +84,7 @@ AAViewport* AAViewport::getInstance()
   return viewport.get();
 }
 
-void AAViewport::setRenderDistance(float distance)
+void AAViewport::setRenderDistance(float distance) noexcept
 {
   mRenderDistance = distance;
   windowViewportChanged();
@@ -144,8 +144,8 @@ glm::mat4 AAViewport::getViewMatrix() const
 
 glm::mat4 AAViewport::getProjectionMatrix() const
 {
-  float screen_width = (float)AADisplay::getInstance()->getWindowWidth();
-  float screen_height = (float)AADisplay::getInstance()->getWindowHeight();
+  const float screen_width = static_cast<float>(AADisplay::getInstance()->getWindowWidth());
+  const float screen_height = static_cast<float>(AADisplay::getInstance()->getWindowHeight());
 
   if (screen_width == 0 || screen_height == 0)
   {
@@ -177,37 +177,37 @@ glm::mat4 AAViewport::getProjectionMatrix() const
   return projection;
 }
 
-const glm::vec3* AAViewport::getPosition() const
+const glm::vec3* AAViewport::getPosition() const noexcept
 {
   return &mPosition;
 }
 
-const glm::vec3* AAViewport::getFront() const
+const glm::vec3* AAViewport::getFront() const noexcept
 {
   return &mFront;
 }
 
-const glm::vec3* AAViewport::getRight() const
+const glm::vec3* AAViewport::getRight() const noexcept
 {
   return &mRight;
 }
 
-float AAViewport::getYaw() const
+float AAViewport::getYaw() const noexcept
 {
   return mYaw;
 }
 
-float AAViewport::getPitch() const
+float AAViewport::getPitch() const noexcept
 {
   return mPitch;
 }
 
-float AAViewport::getRenderDistance() const
+float AAViewport::getRenderDistance() const noexcept
 {
   return mRenderDistance;
 }
 
-bool AAViewport::hasViewportChanged() const
+bool AAViewport::hasViewportChanged() const noexcept
 {
   return mProjectionChanged;
 }

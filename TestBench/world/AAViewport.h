@@ -11,11 +11,11 @@ public:
 
   const glm::vec3 WORLD_UP = glm::vec3(0, 1, 0);
 
-  void setRenderDistance(float distance);
-  void setToPerspective();
-  void setToOrtho();
-  void setOrthoFieldSize(float left, float right, float bottom, float top);
-  void setOrthoFieldSize(glm::vec4 lrbt);
+  void setRenderDistance(float distance) noexcept;
+  void setToPerspective() noexcept;
+  void setToOrtho() noexcept;
+  void setOrthoFieldSize(float left, float right, float bottom, float top) noexcept;
+  void setOrthoFieldSize(glm::vec4 lrbt) noexcept;
 
   void setCurrentPosition(glm::vec3 pos);
   void setCurrentPitch(float pitch);
@@ -25,13 +25,13 @@ public:
 
   glm::mat4 getViewMatrix() const;
   glm::mat4 getProjectionMatrix() const;
-  const glm::vec3* getPosition() const;
-  const glm::vec3* getFront() const;
-  const glm::vec3* getRight() const;
-  float getYaw() const;
-  float getPitch() const;
-  float getRenderDistance() const;
-  bool hasViewportChanged() const;
+  const glm::vec3* getPosition() const noexcept;
+  const glm::vec3* getFront() const noexcept;
+  const glm::vec3* getRight() const noexcept;
+  float getYaw() const noexcept;
+  float getPitch() const noexcept;
+  float getRenderDistance() const noexcept;
+  bool hasViewportChanged() const noexcept;
 
   friend class AADisplay;
   friend class AAShaderManager;
@@ -58,8 +58,8 @@ private:
   glm::vec4 mOrthoFieldSize = glm::vec4(-1, 1, -1, 1);
   enum class RenderProjection { ORTHO, PERSPECTIVE } mRenderProjection = RenderProjection::PERSPECTIVE;
 
-  void windowViewportChanged();
-  void windowViewportChangeProcessed();
+  void windowViewportChanged() noexcept;
+  void windowViewportChangeProcessed() noexcept;
 
   void resetViewportVars();
 
