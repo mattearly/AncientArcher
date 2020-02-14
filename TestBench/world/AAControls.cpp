@@ -9,17 +9,17 @@ AAControls* AAControls::getInstance()
   return controls.get();
 }
 
-float AAControls::getMouseSensitivity() const
+float AAControls::getMouseSensitivity() const noexcept
 {
   return mMouseSensitivity;
 }
 
-void AAControls::setMouseSensitivity(float sensitivity)
+void AAControls::setMouseSensitivity(float sensitivity) noexcept
 {
   mMouseSensitivity = sensitivity;
 }
 
-void AAControls::perspectiveMouseMovement(float x, float y)
+void AAControls::perspectiveMouseMovement(float x, float y) noexcept
 {
   //first person
   static bool firstMouse = true;
@@ -45,19 +45,19 @@ void AAControls::perspectiveMouseMovement(float x, float y)
 
 }
 
-void AAControls::standardMouseMovement(float xpos, float ypos)
+void AAControls::standardMouseMovement(float xpos, float ypos) noexcept
 {
   mMousePosition.xOffset = xpos;
   mMousePosition.yOffset = ypos;
 }
 
-void AAControls::mouseScrollWheelMovement(float x, float y)
+void AAControls::mouseScrollWheelMovement(float x, float y) noexcept
 {
   mMouseWheelScroll.xOffset = x;
   mMouseWheelScroll.yOffset = y;
 }
 
-void AAControls::resetControlVars()
+void AAControls::resetControlVars() noexcept
 {
   mMouseSensitivity = 0.1f;
 }

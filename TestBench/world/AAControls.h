@@ -7,8 +7,8 @@ public:
 
   static AAControls* getInstance();
 
-  float getMouseSensitivity() const;
-  void setMouseSensitivity(float sensitivity);
+  float getMouseSensitivity() const noexcept;
+  void setMouseSensitivity(float sensitivity) noexcept;
 
   friend class AADisplay;  // for access to mouseMovement and mouseScrollWheelMovement
   friend class AAWorld;   // for access to Input
@@ -23,10 +23,10 @@ private:
 
   float mMouseSensitivity = 0.1f;
 
-  void perspectiveMouseMovement(float xpos, float ypos);
-  void standardMouseMovement(float xpos, float ypos);
-  void mouseScrollWheelMovement(float xpos, float ypos);
+  void perspectiveMouseMovement(float xpos, float ypos) noexcept;
+  void standardMouseMovement(float xpos, float ypos) noexcept;
+  void mouseScrollWheelMovement(float xpos, float ypos) noexcept;
 
-  void resetControlVars();
+  void resetControlVars() noexcept;
 
 };
