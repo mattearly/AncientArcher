@@ -1,7 +1,8 @@
 #include "AAControls.h"
 #include "AADisplay.h"
-#include <iostream>
 #include <GLFW\glfw3.h>
+#include <memory>
+#include <iostream>
 
 AAControls* AAControls::getInstance()
 {
