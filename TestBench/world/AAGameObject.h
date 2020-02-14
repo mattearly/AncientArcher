@@ -28,7 +28,7 @@ class AAGameObject
 {
 public:
 
-  glm::mat4* getModelMatrix();
+  glm::mat4* getModelMatrix() noexcept;
 
   AAGameObject(std::vector<MeshDrawInfo> meshes);
 

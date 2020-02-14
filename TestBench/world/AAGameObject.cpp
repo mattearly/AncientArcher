@@ -3,7 +3,7 @@
 #include <glad\glad.h>
 #include <iostream>
 
-glm::mat4* AAGameObject::getModelMatrix()
+glm::mat4* AAGameObject::getModelMatrix() noexcept
 {
   return &mModelMatrix;
 }
