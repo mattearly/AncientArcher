@@ -2,12 +2,18 @@
 #include "AADisplay.h"
 #include "AAViewport.h"
 #include "AAControls.h"
+#include <memory>
 #include <iostream>
 
 AADisplay* AADisplay::getInstance()
 {
-  static AADisplay* display = new AADisplay();
-  return display;
+  static std::unique_ptr<AADisplay> display = std::make_unique<AADisplay>();
+  return display.get();
+}
+
+AADisplay::AADisplay()
+{
+
 }
 
 AADisplay::~AADisplay()
@@ -15,7 +21,7 @@ AADisplay::~AADisplay()
   glfwTerminate();
 }
 
-void AADisplay::setWindowClearColor(glm::vec3 rgb)
+void AADisplay::setWindowClearColor(glm::vec3 rgb) noexcept
 {
   if (rgb.x < 0.f || rgb.x > 1.0f || rgb.y < 0.f || rgb.y > 1.0f || rgb.z < 0.f || rgb.z > 1.0f)
   {
@@ -24,57 +30,57 @@ void AADisplay::setWindowClearColor(glm::vec3 rgb)
   mWindowClearColor = rgb;
 }
 
-int AADisplay::getWindowWidth()
+int AADisplay::getWindowWidth() noexcept
 {
   return mWindowWidth;
 }
 
-int AADisplay::getWindowHeight()
+int AADisplay::getWindowHeight() noexcept
 {
   return mWindowHeight;
 }
 
-bool AADisplay::getIsWindowFullScreen()
+bool AADisplay::getIsWindowFullScreen() noexcept
 {
   return mWindowIsFullScreen;
 }
 
-GLFWwindow* AADisplay::getWindow()
+GLFWwindow* AADisplay::getWindow() noexcept
 {
   return mWindow;
 }
 
-void AADisplay::setCursorToVisible()
+void AADisplay::setCursorToVisible() noexcept
 {
   glfwSetInputMode(mWindow, GLFW_CURSOR, GLFW_CURSOR_NORMAL);
   mCursorMode = CursorMode::VISIBLE;
 }
 
-void AADisplay::setCursorToHidden()
+void AADisplay::setCursorToHidden() noexcept
 {
   glfwSetInputMode(mWindow, GLFW_CURSOR, GLFW_CURSOR_HIDDEN);
   mCursorMode = CursorMode::HIDDEN;
 
 }
 
-void AADisplay::setCursorToDisabled()
+void AADisplay::setCursorToDisabled() noexcept
 {
   glfwSetInputMode(mWindow, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
   mCursorMode = CursorMode::FPS;
 }
 
-void AADisplay::setWindowTitle(const char* name)
+void AADisplay::setWindowTitle(const char* name) noexcept
 {
   glfwSetWindowTitle(mWindow, name);
 }
 
-void AADisplay::setWindowSize(int width, int height, int xpos, int ypos)
+void AADisplay::setWindowSize(int width, int height, int xpos, int ypos) noexcept
 {
   glfwSetWindowMonitor(mWindow, nullptr, xpos, ypos, width, height, 0);
   mWindowIsFullScreen = false;
 }
 
-void AADisplay::setWindowSize(int width, int height, bool center)
+void AADisplay::setWindowSize(int width, int height, bool center) noexcept
 {
 
   // turn off fullscreen to get frame sizes
@@ -88,8 +94,8 @@ void AADisplay::setWindowSize(int width, int height, bool center)
   int frameSizeLeft, frameSizeTop, frameSizeRight, frameSizeBot;
   glfwGetWindowFrameSize(mWindow, &frameSizeLeft, &frameSizeTop, &frameSizeRight, &frameSizeBot);
 
-  int xPos = (w / 2) - (width / 2) + ((frameSizeLeft + frameSizeRight) / 2);
-  int yPos = (h / 2) - (height / 2) + ((frameSizeTop + frameSizeBot) / 2);
+  const int xPos = (w / 2) - (width / 2) + ((frameSizeLeft + frameSizeRight) / 2);
+  const int yPos = (h / 2) - (height / 2) + ((frameSizeTop + frameSizeBot) / 2);
 
   glfwSetWindowMonitor(mWindow, nullptr, xPos, yPos, width, height, 0);
   mWindowIsFullScreen = false;
@@ -138,7 +144,7 @@ void AADisplay::toggleFullScreen()
   }
 }
 
-void AADisplay::setWindowToFullscreen()
+void AADisplay::setWindowToFullscreen() noexcept
 {
   int x, y, w, h;
   glfwGetMonitorWorkarea(glfwGetPrimaryMonitor(), &x, &y, &w, &h);
@@ -155,7 +161,7 @@ void AADisplay::setWindowToFullscreen()
   mWindowIsFullScreen = true;
 }
 
-void AADisplay::setFullscreenToOff()
+void AADisplay::setFullscreenToOff() noexcept
 {
   // turn off fullscreen to get frame sizes
   glfwSetWindowMonitor(mWindow, nullptr, mXPos, mYPos, mWindowWidth, mWindowHeight, 0);
@@ -180,7 +186,7 @@ void AADisplay::setFullscreenToOff()
   mWindowIsFullScreen = false;
 }
 
-void AADisplay::setWindowToMaximized()
+void AADisplay::setWindowToMaximized() noexcept
 {
   // turn off fullscreen so the maximize works (glfw specification)
   if (mWindowIsFullScreen) {
@@ -211,18 +217,18 @@ void AADisplay::setWindowToFullscreenBorderless()
 
 }
 
-void AADisplay::clearBackBuffer() const
+void AADisplay::clearBackBuffer() const noexcept
 {
   glClearColor(mWindowClearColor.x, mWindowClearColor.y, mWindowClearColor.z, 0.0f);
   glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 }
 
-void AADisplay::swapWindowBuffers() const
+void AADisplay::swapWindowBuffers() const noexcept
 {
   glfwSwapBuffers(mWindow);
 }
 
-void AADisplay::keepWindowOpen()
+void AADisplay::keepWindowOpen() noexcept
 {
   glfwSetWindowShouldClose(mWindow, false);
 }
@@ -242,12 +248,12 @@ void AADisplay::toggleCursor()
   }
 }
 
-void AADisplay::closeWindow()
+void AADisplay::closeWindow() noexcept
 {
   glfwSetWindowShouldClose(mWindow, true);
 }
 
-void AADisplay::initGLFW()
+void AADisplay::initGLFW() noexcept
 {
   glfwInit();
   glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
@@ -322,7 +328,7 @@ extern "C" void reshapeCallback(GLFWwindow * window, int w, int h)
   AADisplay::getInstance()->reshapeWindowHandler(window, w, h);
 }
 
-void AADisplay::setReshapeWindowHandler()
+void AADisplay::setReshapeWindowHandler() noexcept
 {
   ::glfwSetFramebufferSizeCallback(mWindow, ::reshapeCallback);
 }
@@ -335,7 +341,7 @@ extern "C" void perspectiveMouseCallback(GLFWwindow * window, double xpos, doubl
 {
   AADisplay::getInstance()->perspectiveMouseHandler(window, (float)xpos, (float)ypos);
 }
-void AADisplay::setCurorPosToPerspectiveCalc()
+void AADisplay::setCurorPosToPerspectiveCalc() noexcept
 {
   mMouseReporting = MouseReporting::PERSPECTIVE;
   ::glfwSetCursorPosCallback(mWindow, ::perspectiveMouseCallback);
@@ -349,7 +355,7 @@ extern "C" void standardMouseCallback(GLFWwindow * window, double xpos, double y
 {
   AADisplay::getInstance()->standardMouseHandler(window, (float)xpos, (float)ypos);
 }
-void AADisplay::setCurorPosToStandardCalc()
+void AADisplay::setCurorPosToStandardCalc() noexcept
 {
   mMouseReporting = MouseReporting::STANDARD;
   ::glfwSetCursorPosCallback(mWindow, ::standardMouseCallback);
@@ -363,7 +369,7 @@ extern "C" void scrollCallback(GLFWwindow * window, double xpos, double ypos)
 {
   AADisplay::getInstance()->scrollHandler(window, (float)xpos, (float)ypos);
 }
-void AADisplay::setScrollWheelHandler()
+void AADisplay::setScrollWheelHandler() noexcept
 {
   ::glfwSetScrollCallback(mWindow, ::scrollCallback);
 }
