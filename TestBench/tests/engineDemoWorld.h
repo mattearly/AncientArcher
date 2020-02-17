@@ -14,7 +14,7 @@
 void  testEngineDemoWorld()
 {
   AAWorld worldEngine;
-  DISPLAY->setWindowTitle("AA Demo 4 - Close Window To Continue");
+  DISPLAY->setWindowTitle("testEngineDemoWorld, use ALT+F4 to quit");
 
   addDemoSkybox(worldEngine);
 
