@@ -6,8 +6,7 @@
 #include <fstream>
 #include <vector>
 #include <string>
-
-std::vector<std::string> get_all_files_names_within_folder(std::string folder);
+#include <filesystem>
 
 class LoadableAssets {
 public:
@@ -34,3 +33,8 @@ private:
   std::vector<std::string> mSounds;
 
 };
+
+
+// helper functions
+std::vector<std::string> win_GetAllFileNamesInFolder(std::string folder);
+std::vector<std::filesystem::path> cpp17_GetAllFileNamesInFolder(std::filesystem::path path);
