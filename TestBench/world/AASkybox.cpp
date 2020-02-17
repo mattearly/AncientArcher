@@ -7,7 +7,7 @@
 /**
  * Custom skymap constructor. Loads up the files in the path and skymap shader.
  *
- * @param incomingSkymapFiles  A six image cube map texture.
+ * @param incomingSkymapFiles  A six png image cube map texture. The order must be: "right", "left", "up", "down", "front", "back"
  */
 AASkybox::AASkybox(std::vector<std::string> incomingSkymapFiles)
 {
@@ -36,7 +36,7 @@ void AASkybox::render()
 
   //if (AAViewport::getInstance()->hasViewportChanged())
   //{
-    loadProjectionMatrix();
+  loadProjectionMatrix();
   //}
 
   loadViewMatrix();        // todo: only update when camera moved

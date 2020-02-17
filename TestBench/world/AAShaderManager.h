@@ -1,8 +1,8 @@
 #pragma once
+#include <glm/glm.hpp>
 #include <memory>
 #include <map>
 #include <string>
-#include <glm/glm.hpp>
 
 class Shader
 {
