@@ -25,7 +25,7 @@ void addRandomWorld(AAWorld& worldEngine)
   static AASound sound;
   sound.addSoundEffects(assets.getAllSounds());
 
-  worldEngine.setKeyTimeoutLength(.1f);
+  worldEngine.setKeyTimeoutLength(.3f);
 
   auto soundHotkeys = [](AAKeyBoardInput& keys)
   {
