@@ -1,10 +1,10 @@
 #pragma once
+#include "AAShaderManager.h"
+#include <glm/glm.hpp>
+#include <glm\gtx\transform.hpp>
 #include <vector>
 #include <memory>
 #include <string>
-#include <glm/glm.hpp>
-#include <glm\gtx\transform.hpp>
-#include "AAShaderManager.h"
 
 struct TextureInfo
 {

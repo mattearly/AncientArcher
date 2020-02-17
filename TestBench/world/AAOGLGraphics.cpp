@@ -4,19 +4,18 @@
 #include <assimp/postprocess.h>
 #include <glm/glm.hpp>
 #include <glm/gtc/quaternion.hpp>
-#include <string>
-#include <cstddef>
 #include <stb_image/stb_image.h>
 #include <glad/glad.h>
 #include <sstream>
 #include <iostream>
-
-//////////////////////AAOGLGRAPHICS//////////////////////////
+#include <memory>
+#include <string>
+#include <cstddef>
 
 AAOGLGraphics* AAOGLGraphics::getInstance()
 {
-  static AAOGLGraphics* graphics = new AAOGLGraphics();
-  return graphics;
+  static std::unique_ptr<AAOGLGraphics> graphics = std::make_unique<AAOGLGraphics>();
+  return graphics.get();
 }
 
 AAGameObject AAOGLGraphics::loadGameObjectWithAssimp(std::string path, bool pp_triangulate)
@@ -36,7 +35,8 @@ AAGameObject AAOGLGraphics::loadGameObjectWithAssimp(std::string path, bool pp_t
     return AAGameObject(mMeshDrawInfo);
   }
 
-  mLastDir = path.substr(0, path.find_last_of("/\\"));  //http://www.cplusplus.com/reference/string/string/find_last_of/     
+  mLastDir = path.substr(0, path.find_last_of("/\\") + 1);
+
   processNode(scene->mRootNode, scene);
 
   return AAGameObject(mMeshDrawInfo);
@@ -81,8 +81,26 @@ MeshDrawInfo AAOGLGraphics::processMesh(aiMesh* mesh, const aiScene* scene)
     }
   }
 
-  std::vector<TextureInfo> loadedTextures;
   aiMaterial* material = scene->mMaterials[mesh->mMaterialIndex];
+  std::vector<TextureInfo> loadedTextures;
+
+
+  aiColor4D diffuse;
+  if (AI_SUCCESS == aiGetMaterialColor(material, AI_MATKEY_COLOR_DIFFUSE, &diffuse))
+  {
+    //unsigned int id = 0;
+    //std::string type;
+    //std::string path;
+    //glm::vec3 color = glm::vec3(0);
+    glm::vec3 color = glm::vec3(diffuse.r, diffuse.g, diffuse.b);
+    TextureInfo rawColorMap;
+    rawColorMap.id = 0;
+    rawColorMap.type = "color";
+    rawColorMap.path = "";
+    rawColorMap.color = color;
+    loadedTextures.push_back(rawColorMap);
+  }
+
   std::vector<TextureInfo> diffuseMaps = loadMaterialTextures(material, aiTextureType_DIFFUSE, "diffuse");
   loadedTextures.insert(loadedTextures.end(), diffuseMaps.begin(), diffuseMaps.end());
   std::vector<TextureInfo> specMaps = loadMaterialTextures(material, aiTextureType_SPECULAR, "specular");
@@ -91,7 +109,7 @@ MeshDrawInfo AAOGLGraphics::processMesh(aiMesh* mesh, const aiScene* scene)
   loadedTextures.insert(loadedTextures.end(), normMaps.begin(), normMaps.end());
   std::vector<TextureInfo> heightMaps = loadMaterialTextures(material, aiTextureType_AMBIENT, "height");
   loadedTextures.insert(loadedTextures.end(), heightMaps.begin(), heightMaps.end());
-  std::vector<TextureInfo> colorMaps = loadMaterialTextures(material, aiTextureType_BASE_COLOR, "color");
+  std::vector<TextureInfo> colorMaps = loadMaterialTextures(material, aiTextureType_BASE_COLOR, "base color");
   loadedTextures.insert(loadedTextures.end(), colorMaps.begin(), colorMaps.end());
 
   unsigned int VAO, VBO, EBO;
@@ -122,8 +140,8 @@ MeshDrawInfo AAOGLGraphics::processMesh(aiMesh* mesh, const aiScene* scene)
 
 std::vector<TextureInfo> AAOGLGraphics::loadMaterialTextures(aiMaterial* mat, aiTextureType type, std::string typeName)
 {
-  std::vector<TextureInfo> outTexInfo;
 
+  std::vector<TextureInfo> outTexInfo;
   for (unsigned int i = 0; i < mat->GetTextureCount(type); ++i)
   {
     aiString tmpstr;
@@ -145,18 +163,18 @@ std::vector<TextureInfo> AAOGLGraphics::loadMaterialTextures(aiMaterial* mat, ai
         }
       }
     }
-
     if (!alreadyLoaded)
     {
       TextureInfo tmptex;
-      tmptex.id = TexLoader::getInstance()->textureFromFile(tmpstr.C_Str(), mLastDir);
+      //tmptex.id = TexLoader::getInstance()->textureFromFile(tmpstr.C_Str(), mLastDir);
+      std::string tmpPath = mLastDir + tmpstr.C_Str();
+      tmptex.id = TexLoader::getInstance()->textureFromFile(tmpPath.c_str());
       tmptex.path = tmpstr.C_Str();
       tmptex.type = typeName;
       outTexInfo.push_back(tmptex);
       mTexturesLoaded.push_back(tmptex);
     }
   }
-
   return outTexInfo;
 }
 
@@ -219,90 +237,15 @@ unsigned int TexLoader::loadCubeTexture(const std::vector<std::string>& files)
   return texID;
 }
 
-/**
- * This code loads in a 2D map texture.
- * @param[in] path texture file
- * @return    textureID
- */
-unsigned int TexLoader::load2DTexture(std::string path) {
-
-  // makes it so the use gets this message instead of loading more than MAXTEXTURES textures
-  //if (numberOfLoadedTextures >= MAXTEXTURES) {
-  //  std::cout << "Maximum number of textures have been loaded (" << numberOfLoadedTextures << ") ... Aborting texture load for '" << path << "'\n";
-  //  return;
-  //}
-  unsigned int texID;
-  //glGenTextures(1, &texture[num_textures]);
-  glGenTextures(1, &texID);
-  //texBankShader.use();
-
-  //if (!initiated) {
-    //glGenTextures(MAXTEXTURES, textureIDs);
-  //}
-  //glActiveTexture(GL_TEXTURE0 + numberOfLoadedTextures);
-
-  glBindTexture(GL_TEXTURE_2D, texID); // all upcoming GL_TEXTURE_2D operations now have effect on this texture object
-
-  // UNCOMMENT BELOW FOR GL_REPEAT
-  glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);	// set texture wrapping to GL_REPEAT (default wrapping method)
-  glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);	// set texture wrapping to GL_REPEAT (default wrapping method)
-
-  // UNCOMMENT BELOW FOR GL_MIRROR_REPEAT
-  //glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_MIRRORED_REPEAT);
-  //glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_MIRRORED_REPEAT);
-
-  // UNCOMMENT BELOW FOR GL_CLAMP_TO_EDGE
-  //glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
-  //glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
-
-  // UNCOMMENT BELOW FOR GL_CLAMP_TO_BORDER
-  //glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_BORDER);
-  //glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_BORDER);
-  //float borderColor[] = { 1.0f, 1.0f, 0.0f, 1.0f };
-  //glTexParameterfv(GL_TEXTURE_2D, GL_TEXTURE_BORDER_COLOR, borderColor);
-
-  // NEEDS TO HAVE A ONE MIN_FILTER AND ONE MAG_FILTER
-  //glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
-  //glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-  //glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-  //glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-
-  glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
-  glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-
-  // load image, create texture and generate mipmaps
-  stbi_set_flip_vertically_on_load(true); // tell stb_image.h to flip loaded texture's on the y-axis.
-  int width, height, nrChannel;
-
-  unsigned char* data = stbi_load(path.c_str(), &width, &height, &nrChannel, 0);
-  if (data)
-  {
-    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, width, height, 0, GL_RGBA, GL_UNSIGNED_BYTE, data);
-    glGenerateMipmap(GL_TEXTURE_2D);
-  }
-  else
-  {
-    std::cout << "Failed to load texture at path: " << path << std::endl;
-    stbi_image_free(data);
-  }
-  stbi_image_free(data);
-
-  return texID;
-}
-
-
-unsigned int TexLoader::textureFromFile(const char* path, const std::string& directory, bool gamma)
+unsigned int TexLoader::textureFromFile(const char* filepath, bool gamma)
 {
   stbi_set_flip_vertically_on_load(false); // tell stb_image.h to flip loaded texture's on the y-axis.
-
-  std::string filename = std::string(path);
-  filename = directory + '/' + filename;
 
   unsigned int textureID;
   glGenTextures(1, &textureID);
 
   int width, height, nrComponents;
-  unsigned char* data = stbi_load(path, &width, &height, &nrComponents, 0);
+  unsigned char* data = stbi_load(filepath, &width, &height, &nrComponents, 0);
   if (data)
   {
     GLenum format{};
@@ -332,7 +275,7 @@ unsigned int TexLoader::textureFromFile(const char* path, const std::string& dir
   }
   else
   {
-    std::cout << "Texture failed to load at path: " << path << std::endl;
+    std::cout << "Texture failed to load at path: " << filepath << std::endl;
     stbi_image_free(data);
   }
 

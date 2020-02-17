@@ -27,7 +27,14 @@ void AAGameObject::draw(const Shader& shader)
       std::string texType = m.textures[i].type;  // single instance ver should be diffuse tex only
 
       //shader.use();
-      glUniform1i(glGetUniformLocation(shader.ID, ("material." + texType).c_str()), i);
+      if (texType == "color")
+      {
+        shader.setVec3("material.color", m.textures[i].color);
+      }
+      else
+      {
+        glUniform1i(glGetUniformLocation(shader.ID, ("material." + texType).c_str()), i);
+      }
 
       glBindTexture(GL_TEXTURE_2D, m.textures[i].id);
     }

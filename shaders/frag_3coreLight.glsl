@@ -8,6 +8,7 @@ out vec4 fragColor;
 struct Material
 {
   sampler2D diffuse;
+  vec3 color;
 };
 
 struct DirectionalLight
@@ -43,18 +44,21 @@ vec3 CalcSpotLight(SpotLight light, vec3 normal, vec3 viewDir);
 
 void main()
 {
-//  vec4 color = texture(material.diffuse, texUV);
+//  vec4 color1 = texture(material.diffuse, texUV);
 
   vec3 normal = normalize(norm);
   vec3 viewDir = normalize(viewPos - fragPos);
 
   vec3 result;
-
+  
   result += CalcDirectionalLight(dirLight, normal, viewDir);
 
   result += CalcPointLight(pointLight, normal, viewDir);
 
   result += CalcSpotLight(spotLight, normal, viewDir);
+
+  result *= material.color;
+//  result += material.color;
 
   fragColor = vec4(result, 1.0);
 }

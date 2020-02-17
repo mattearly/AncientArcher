@@ -1,10 +1,7 @@
 #pragma once
-#include <glm/glm.hpp>
-#include <string>
-#include <map>
-#include <vector>
-#include <assimp/scene.h>
 #include "AAGameObject.h"
+#include <glm/glm.hpp>
+#include <assimp/scene.h>
 #include <vector>
 #include <string>
 
@@ -17,8 +14,7 @@ class TexLoader
 public:
   static TexLoader* getInstance();
   unsigned int loadCubeTexture(const std::vector<std::string>& files);
-  unsigned int load2DTexture(std::string path);
-  unsigned int textureFromFile(const char* path, const std::string& directory, bool gamma = false);
+  unsigned int textureFromFile(const char* filepath, bool gamma = false);
 };
 
 struct Vertex
@@ -40,11 +36,10 @@ private:
 
   void processNode(aiNode* node, const aiScene* scene);
   MeshDrawInfo processMesh(aiMesh* mesh, const aiScene* scene);
-
   std::vector<TextureInfo> loadMaterialTextures(aiMaterial* mat, aiTextureType type, std::string typeName);
-  std::vector<std::string> mPathsLoaded;
-  std::vector<TextureInfo> mTexturesLoaded;
 
-  std::string mLastDir;
+  // holder vars
+  std::string mLastDir = "";
+  std::vector<TextureInfo> mTexturesLoaded;
   std::vector<MeshDrawInfo> mMeshDrawInfo;
 };
