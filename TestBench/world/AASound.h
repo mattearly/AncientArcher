@@ -12,7 +12,7 @@ public:
   void addSoundEffect(std::string path);
   void addMusicTrack(std::string path);
 
-  void addSoundEffects(std::vector<std::string> paths);
+  void addSoundEffects(const std::string& dir, const std::vector<std::string>& paths);
   void addMusicTracks(std::vector<std::string> paths);
 
   void playSoundEffect(int which) const;

@@ -54,11 +54,12 @@ void AASound::addMusicTrack(std::string path)
   }
 }
 
-void AASound::addSoundEffects(std::vector<std::string> paths)
+void AASound::addSoundEffects(const std::string& dir, const std::vector<std::string>& paths)
 {
   for (auto p : paths)
   {
-    Mix_Chunk* tmpchunk = Mix_LoadWAV(p.c_str());
+    std::string soundPath = dir + p;
+    Mix_Chunk* tmpchunk = Mix_LoadWAV(soundPath.c_str());
     // check that sound load succeed before adding to list
     if (tmpchunk != nullptr)
     {
