@@ -15,19 +15,23 @@ void addRandomWorld(AAWorld& worldEngine)
     "../shaders/vert_textured.glsl",
     "../shaders/frag_noLight.glsl"
   );
+  
+  std::string assetDir;
+  std::vector<std::string> loadableModels;
+  std::vector<std::string> loadableSounds;
 
-  LoadableAssets assets;
-  assets.loadDemoConfig();
-  static AAGameObject gameObj6 = AAOGLGraphics::getInstance()->loadGameObjectWithAssimp(assets.getModel("6ColorSquare.obj"), true);
-  gameObj6.changeRotateAxis(glm::vec3(0, 1, 0));
-  //static AAGameObject gameObj9 = AAOGLGraphics::getInstance()->loadGameObjectWithAssimp(objs.getModel(6), true);
+  LoadableAssets::loadDemoConfig(assetDir, loadableModels, loadableSounds);
+  static AAGameObject obj00 = AAOGLGraphics::getInstance()->loadGameObjectWithAssimp(assetDir + loadableModels.at(0), true);
+  obj00.changeRotateAxis(glm::vec3(0, 1, 0));
+  static AAGameObject obj01 = AAOGLGraphics::getInstance()->loadGameObjectWithAssimp(assetDir + loadableModels.at(1), true);
+  obj01.changeRotateAxis(glm::vec3(0, 0, 1));
 
   static AASound sound;
-  sound.addSoundEffects(assets.getAllSounds());
+  sound.addSoundEffects(assetDir, loadableSounds);
 
   worldEngine.setKeyTimeoutLength(.3f);
 
-  auto soundHotkeys = [](AAKeyBoardInput& keys)
+  const auto soundHotkeys = [](AAKeyBoardInput& keys)
   {
     if (keys.mouseButton1)
     {
@@ -43,9 +47,9 @@ void addRandomWorld(AAWorld& worldEngine)
   static PointLight pointLight;
   static SpotLight spotLight;
 
-  auto startFunc = []()
+  const auto startFunc = []()
   {
-    AAViewport::getInstance()->setCurrentPosition(glm::vec3(0, 5, 10));
+    AAViewport::getInstance()->setCurrentPosition(glm::vec3(0, 10, 10));
     AAViewport::getInstance()->setCurrentPitch(-20.f);
     AAViewport::getInstance()->setCurrentYaw(270.f);
 
@@ -53,8 +57,8 @@ void addRandomWorld(AAWorld& worldEngine)
 
     //gameObj2.translate(glm::vec3(0, 6, 0));
     //gameObj5.translate(glm::vec3(5,5,-5));
-    gameObj6.translate(glm::vec3(0, 4, 0));
-    //gameObj7.translate(glm::vec3(-51.625,0,0));
+    obj00.translate(glm::vec3(0, 4, 0));
+    obj01.translate(glm::vec3(-7,0,0));
     //gameObj8.translate(glm::vec3(0));
     //gameObj9.translate(glm::vec3(0));
 
@@ -89,7 +93,7 @@ void addRandomWorld(AAWorld& worldEngine)
   };
   worldEngine.addToOnBegin(startFunc);
 
-  auto deltaMoveObjects = [](float dt)
+  const auto deltaMoveObjects = [](float dt)
   {
     static float totalTime = 0;
     totalTime += dt;
@@ -100,7 +104,8 @@ void addRandomWorld(AAWorld& worldEngine)
     //gameObj3.rotate(dt * .5f, glm::vec3(0, 1, 0));
     //gameObj4.translate(glm::vec3(0, 0, sin(totalTime)));
     //gameObj5.rotate(dt * .3f, glm::vec3(0, 1, 0));
-    gameObj6.advanceRotation(glm::radians(dt * 5));
+    obj00.advanceRotation(glm::radians(dt * 5));
+    obj01.advanceRotation(glm::radians(dt * 10));
 
     //pointLight.Position = glm::vec3(0, 0, -sin(totalTime) * 10);
     //AAViewport::getInstance()->setPointLight(pointLight);
@@ -108,21 +113,23 @@ void addRandomWorld(AAWorld& worldEngine)
   };
   worldEngine.addToDeltaUpdate(deltaMoveObjects);
 
-  auto drawObjects = []()
+  const auto drawObjects = []()
   {
     if (sceneLighting) {
-      gameObj6.draw(shaderMan.getShader(triLightShader));
+      obj00.draw(shaderMan.getShader(triLightShader));
+      obj01.draw(shaderMan.getShader(triLightShader));
       //gameObj9.draw(shaderMan.getShader(triLightShader));
     }
     else
     {
-      gameObj6.draw(shaderMan.getShader(noLightShader));
+      obj00.draw(shaderMan.getShader(noLightShader));
+      obj01.draw(shaderMan.getShader(noLightShader));
       //gameObj9.draw(shaderMan.getShader(noLightShader));
     }
   };
   worldEngine.addToOnRender(drawObjects);
 
-  auto updateShaders = []()
+  const auto updateShaders = []()
   {
     //shaderMan.updateProjectionMatrices();  //done once and on viewport resize
 
@@ -134,7 +141,7 @@ void addRandomWorld(AAWorld& worldEngine)
   };
   worldEngine.addToUpdate(updateShaders);
 
-  auto lightingHotkeys = [](AAKeyBoardInput& keys)
+  const auto lightingHotkeys = [](AAKeyBoardInput& keys)
   {
     if (keys.k)
     {
