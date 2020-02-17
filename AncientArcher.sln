@@ -11,7 +11,7 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "TestBench", "TestBench\Test
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "MearlyUtils", "mearlyUtils\mearlyUtils.vcxproj", "{BCC58A58-C6A2-45AF-BA93-546DFFE74439}"
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Engine", "Engine\Engine.vcxproj", "{DEBCBF40-65AA-47A3-86CA-5CB50A24D7A8}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "AssetLoading", "AssetLoading\AssetLoading.vcxproj", "{DEBCBF40-65AA-47A3-86CA-5CB50A24D7A8}"
 	ProjectSection(ProjectDependencies) = postProject
 		{BCC58A58-C6A2-45AF-BA93-546DFFE74439} = {BCC58A58-C6A2-45AF-BA93-546DFFE74439}
 	EndProjectSection

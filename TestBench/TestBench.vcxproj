@@ -50,7 +50,7 @@
     <UseDebugLibraries>false</UseDebugLibraries>
     <PlatformToolset>v142</PlatformToolset>
     <WholeProgramOptimization>true</WholeProgramOptimization>
-    <CharacterSet>MultiByte</CharacterSet>
+    <CharacterSet>Unicode</CharacterSet>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
   <ImportGroup Label="ExtensionSettings">
@@ -146,7 +146,7 @@
       <ConformanceMode>true</ConformanceMode>
       <EnablePREfast>true</EnablePREfast>
       <LanguageStandard>stdcpp17</LanguageStandard>
-      <AdditionalIncludeDirectories>$(SolutionDir)Engine;$(SolutionDir)MearlyUtils;$(SolutionDir)includes;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)AssetLoading;$(SolutionDir)MearlyUtils;$(SolutionDir)includes;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
     </ClCompile>
     <Link>
@@ -159,7 +159,6 @@
     </Lib>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="tests\dry\LoadableAssets.cpp" />
     <ClCompile Include="world\glad.c" />
     <ClCompile Include="tests\main.cpp" />
     <ClCompile Include="world\AAControls.cpp" />
@@ -179,7 +178,6 @@
     <ClInclude Include="tests\dry\addRandomColliderWorld.h" />
     <ClInclude Include="tests\dry\addSkybox.h" />
     <ClInclude Include="tests\dry\delay.h" />
-    <ClInclude Include="tests\dry\LoadableAssets.h" />
     <ClInclude Include="tests\dry\setWindowToBorderless.h" />
     <ClInclude Include="tests\dry\setWindowToMaximized.h" />
     <ClInclude Include="tests\engineLoopBase.h" />
@@ -197,7 +195,7 @@
     <ClInclude Include="world\AAWorld.h" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Engine\Engine.vcxproj">
+    <ProjectReference Include="..\AssetLoading\AssetLoading.vcxproj">
       <Project>{debcbf40-65aa-47a3-86ca-5cb50a24d7a8}</Project>
     </ProjectReference>
     <ProjectReference Include="..\mearlyUtils\mearlyUtils.vcxproj">
