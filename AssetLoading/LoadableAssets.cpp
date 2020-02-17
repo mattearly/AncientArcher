@@ -4,7 +4,7 @@
  *  Prepares the demo files in this project for loading.
  *  based on the assets folder at the root of this project: $(ProjectDir)assets
  */
-void LoadableAssets::loadDemoConfig(std::string& return_dir, std::vector<std::string>& model_return_list, std::vector<std::string>& sound_return_list)
+void LoadableAssets::getDemoConfig(std::string& return_dir, std::vector<std::string>& model_return_list, std::vector<std::string>& sound_return_list)
 {
   std::filesystem::path demoFilePath = "../assets/";  // asset path
   const std::size_t PATHSIZE = demoFilePath.string().size();
@@ -63,6 +63,47 @@ void LoadableAssets::loadDemoConfig(std::string& return_dir, std::vector<std::st
     }
   }
 }
+
+///**
+// *  Populates return_dir and return_file_list with the skybox file stuff.
+// */
+//void LoadableAssets::getSkyboxCubeMapFiles(const std::string& containingFolderPath, std::string& return_dir, std::vector<std::string>& return_file_list)
+//{
+//  std::filesystem::path skyboxFilePath = containingFolderPath;  // asset path
+//  const std::size_t PATHSIZE = skyboxFilePath.string().size();
+//  if (std::filesystem::exists(skyboxFilePath))
+//  {
+//    return_dir = skyboxFilePath.string();
+//  }
+//  else
+//  {
+//    return;  //todo: log error
+//  }
+//
+//  std::vector<std::filesystem::path> all_files = cpp17_GetAllFileNamesInFolder(skyboxFilePath);  // all the files in the path
+//
+//  if (all_files.size() != 6)
+//  {
+//    return;  //todo: log error
+//  }
+//  else  // populate legal assets paths
+//  {
+//    // scope to populate mModels with the .obj paths in demoFilePath
+//    {
+//      std::string assetExtension = ".png";
+//
+//      // only save files of specified asset extension
+//      for (const auto& filepath : all_files)
+//      {
+//        std::string filename = filepath.string().substr(PATHSIZE);
+//        if (filename.find(assetExtension) != std::string::npos)
+//        {
+//          return_file_list.push_back(filename);
+//        }
+//      }
+//    }
+//  }
+//}
 
 //#ifdef WIN32
 //static std::vector<std::string> win_GetAllFileNamesInFolder(std::string path)

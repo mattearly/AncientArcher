@@ -11,7 +11,8 @@
 class LoadableAssets {
 public:
 
-  static void loadDemoConfig(std::string& return_dir, std::vector<std::string>& model_return_list, std::vector<std::string>& sound_return_list);
+  static void getDemoConfig(std::string& return_dir, std::vector<std::string>& return_model_list, std::vector<std::string>& return_sound_list);
+  //static void getSkyboxCubeMapFiles(const std::string& containingFolderPath, std::string& return_dir, std::vector<std::string>& return_file_list);
   //static void loadConfig(const std::string& pathtoconfig, std::string& return_dir, std::vector<std::string>& return_list);
 
 private:

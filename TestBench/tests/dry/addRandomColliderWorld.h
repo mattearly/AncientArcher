@@ -20,7 +20,7 @@ void addRandomWorld(AAWorld& worldEngine)
   std::vector<std::string> loadableModels;
   std::vector<std::string> loadableSounds;
 
-  LoadableAssets::loadDemoConfig(assetDir, loadableModels, loadableSounds);
+  LoadableAssets::getDemoConfig(assetDir, loadableModels, loadableSounds);
   static AAGameObject obj00 = AAOGLGraphics::getInstance()->loadGameObjectWithAssimp(assetDir + loadableModels.at(0), true);
   obj00.changeRotateAxis(glm::vec3(0, 1, 0));
   static AAGameObject obj01 = AAOGLGraphics::getInstance()->loadGameObjectWithAssimp(assetDir + loadableModels.at(1), true);
@@ -146,12 +146,15 @@ void addRandomWorld(AAWorld& worldEngine)
     if (keys.k)
     {
       sceneLighting = true;
+      return true;
     }
     if (keys.l)
     {
       sceneLighting = false;
+      return true;
     }
+    return false;
   };
-  worldEngine.addToKeyHandling(lightingHotkeys);
+  worldEngine.addToTimedOutKeyHandling(lightingHotkeys);
 
 }
