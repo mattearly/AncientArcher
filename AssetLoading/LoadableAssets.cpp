@@ -1,16 +1,17 @@
 #include "LoadableAssets.h"
+#include <iostream>
 
 /**
  *  Prepares the demo files in this project for loading.
  *  based on the assets folder at the root of this project: $(ProjectDir)assets
  */
-void LoadableAssets::getDemoConfig(std::string& return_dir, std::vector<std::string>& model_return_list, std::vector<std::string>& sound_return_list)
+void LoadableAssets::getDemoConfig(std::string& out_dir, std::vector<std::string>& out_model_list, std::vector<std::string>& out_sound_list)
 {
   std::filesystem::path demoFilePath = "../assets/";  // asset path
   const std::size_t PATHSIZE = demoFilePath.string().size();
   if (std::filesystem::exists(demoFilePath))
   {
-    return_dir = demoFilePath.string();
+    out_dir = demoFilePath.string();
   }
   else
   {
@@ -35,7 +36,7 @@ void LoadableAssets::getDemoConfig(std::string& return_dir, std::vector<std::str
         std::string filename = filepath.string().substr(PATHSIZE);
         if (filename.find(assetExtension) != std::string::npos)
         {
-          model_return_list.push_back(filename);
+          out_model_list.push_back(filename);
         }
       }
     }
@@ -48,7 +49,7 @@ void LoadableAssets::getDemoConfig(std::string& return_dir, std::vector<std::str
         std::string filename = filepath.string().substr(PATHSIZE);
         if (filename.find(assetExtension) != std::string::npos)
         {
-          sound_return_list.push_back(filename);
+          out_sound_list.push_back(filename);
         }
       }
       assetExtension = ".mp3";
@@ -57,7 +58,7 @@ void LoadableAssets::getDemoConfig(std::string& return_dir, std::vector<std::str
         std::string filename = filepath.string().substr(PATHSIZE);
         if (filename.find(assetExtension) != std::string::npos)
         {
-          sound_return_list.push_back(filename);
+          out_sound_list.push_back(filename);
         }
       }
     }
