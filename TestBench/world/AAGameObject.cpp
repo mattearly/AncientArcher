@@ -9,7 +9,17 @@ glm::mat4* AAGameObject::getModelMatrix() noexcept
 }
 
 AAGameObject::AAGameObject(std::vector<MeshDrawInfo> meshes)
-  : mMeshes(meshes) {}
+  : mMeshes(meshes)
+{
+  mImpedes = false;
+}
+
+AAGameObject::AAGameObject(std::vector<MeshDrawInfo> meshes, glm::vec3 collider_loc, glm::vec3 collider_sz)
+  : mMeshes(meshes)
+{
+  mColliderBox = std::make_unique<mearly::ColliderBox>(collider_loc, collider_sz);
+  mImpedes = true;
+}
 
 void AAGameObject::draw(const Shader& shader)
 {

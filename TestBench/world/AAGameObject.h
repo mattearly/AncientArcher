@@ -5,6 +5,7 @@
 #include <vector>
 #include <memory>
 #include <string>
+#include <ColliderBox.h>
 
 struct TextureInfo
 {
@@ -31,6 +32,7 @@ public:
   glm::mat4* getModelMatrix() noexcept;
 
   AAGameObject(std::vector<MeshDrawInfo> meshes);
+  AAGameObject(std::vector<MeshDrawInfo> meshes, glm::vec3 collider_loc, glm::vec3 collider_sz);
 
   void draw(const Shader& shader);
 
@@ -42,6 +44,7 @@ public:
   void advanceRotation(float angleAmtRadians);
   void advanceTranslate(glm::vec3 amt);
   void changeRotateAxis(glm::vec3 axis);
+
 
 private:
 
@@ -55,5 +58,8 @@ private:
   void updateModelMatrix();
 
   glm::mat4 mModelMatrix = glm::mat4(1);
+
+  std::unique_ptr<mearly::ColliderBox> mColliderBox;
+  bool mImpedes = false;
 
 };
