@@ -7,8 +7,10 @@
 #pragma once
 #include "AADisplay.h"
 #include "AAInput.h"
+#include "AAControls.h"
 #include "AAViewport.h"
 #include "AASkybox.h"
+#include "AAGameObject.h"
 #include <vector>
 #include <functional>
 #include <memory>
@@ -63,7 +65,7 @@ private:
   float mTimeOutCheckStamp;
   float mButtonTimeOutSoFar;
 
-  glm::mat4 m_WorldTransform;
+  std::vector<AAGameObject* > mObjects;
 
   std::vector<void (*)()> onBegin;
   std::vector<void (*)(float)> onDeltaUpdate;
