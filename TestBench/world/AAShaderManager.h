@@ -41,7 +41,6 @@ class AAShaderManager
 public:
 
   void setPath(std::string path);
-  void clearPath();
 
   int addShader(const char* vertfile, const char* fragfile);
   void updateViewMatrices();
@@ -52,5 +51,7 @@ public:
 private:
   std::string mPath;
   std::map<int, Shader> mShaders;
+
+  void clearPath() noexcept;
 
 };

@@ -11,7 +11,7 @@ void AAShaderManager::setPath(std::string path)
   mPath = path;
 }
 
-void AAShaderManager::clearPath()
+void AAShaderManager::clearPath() noexcept
 {
   mPath.clear();
 }
