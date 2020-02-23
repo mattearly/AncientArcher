@@ -29,7 +29,17 @@ void LoadableAssets::getDemoConfig(std::string& out_dir, std::vector<std::string
     // scope to populate mModels with the .obj paths in demoFilePath
     {
       std::string assetExtension = ".obj";
+      // only save files of specified asset extension
+      for (const auto& filepath : all_files)
+      {
+        std::string filename = filepath.string().substr(PATHSIZE);
+        if (filename.find(assetExtension) != std::string::npos)
+        {
+          out_model_list.push_back(filename);
+        }
+      }
 
+      assetExtension = ".dae";
       // only save files of specified asset extension
       for (const auto& filepath : all_files)
       {
