@@ -21,11 +21,13 @@
   <ItemGroup>
     <ClCompile Include="ColliderBox.cpp" />
     <ClCompile Include="CollisionHandler.cpp" />
+    <ClCompile Include="Conversions.cpp" />
     <ClCompile Include="Random.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="ColliderBox.h" />
     <ClInclude Include="CollisionHandler.h" />
+    <ClInclude Include="Conversions.h" />
     <ClInclude Include="Random.h" />
     <ClInclude Include="workingdir.h" />
   </ItemGroup>
