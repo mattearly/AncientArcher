@@ -16,7 +16,7 @@ namespace mearly
 #define rolld20 Random::NTKR(1, 20)
 #define rolld30 Random::NTKR(1, 30)
 #define rolld34 Random::NTKR(1, 34)
-#define rolld34 Random::NTKR(1, 40)
+#define rolld40 Random::NTKR(1, 40)
 #define rolld60 Random::NTKR(1, 60)
 #define rolld100 Random::NTKR(1, 100)
 #define rolld120 Random::NTKR(1, 120)
