@@ -12,7 +12,6 @@ public:
 
   friend class AAEngine;
 
-  AADisplay();
   ~AADisplay();
 
   int getWindowWidth() noexcept;
@@ -26,10 +25,10 @@ public:
   void setWindowClearColor(glm::vec3 rgb) noexcept;
   void setWindowSize(int width, int height, int xpos, int ypos) noexcept;
   void setWindowSize(int width, int height, bool center = true) noexcept;
-  void setWindowSize(const char to);
+  void setWindowSize(const char to) noexcept;
   void setWindowTitle(const char* name) noexcept;
 
-  void toggleCursor();
+  void toggleCursor()noexcept;
   void closeWindow() noexcept;
 
   // window handler(s)
@@ -47,12 +46,12 @@ public:
 private:
 
   // internal functions 
-  void toggleFullScreen();
+  void toggleFullScreen() noexcept;
   void setWindowToFullscreen() noexcept;
   void setFullscreenToOff() noexcept;
 
   void setWindowToMaximized() noexcept;
-  void setWindowToFullscreenBorderless();
+  void setWindowToFullscreenBorderless() noexcept;
 
   void keepWindowOpen() noexcept;
 
@@ -60,17 +59,12 @@ private:
   void swapWindowBuffers() const noexcept;
 
   void setReshapeWindowHandler() noexcept;
-
   void setCurorPosToPerspectiveCalc() noexcept;
-
   void setCurorPosToStandardCalc() noexcept;
-
   void setScrollWheelHandler() noexcept;
 
   void initGLFW() noexcept;
-
   void initFromEngine();
-
   void resetStateDataToDefault();
 
   // state data

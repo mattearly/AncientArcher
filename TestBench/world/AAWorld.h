@@ -1,6 +1,6 @@
 /***
  * AAWorld class - AKA the World Data Cruncher!
- * bringing it all together in loops to represent time passing and 
+ * bringing it all together in loops to represent time passing and
  * processing time options during the loop.
 **/
 
@@ -24,10 +24,11 @@ class AAWorld
 public:
 
   AAWorld();
+  AAWorld(const char* title);
   ~AAWorld();
 
   int run();
-  void shutdownEngine();
+  void shutdown();
 
   void addToOnBegin(void(*function)());
   void addToDeltaUpdate(void(*function)(float));
@@ -42,7 +43,9 @@ public:
   void setSkybox(const std::shared_ptr<AASkybox>& skybox);
   void setToPerspectiveMouseHandling();
   void setToStandardMouseHandling();
-  void setKeyTimeoutLength(float time);
+  void setKeyTimeoutLength(float time) noexcept;
+  void setWindowTitle(const char* title);
+  void setRenderDistance(const float& to);
 
   MouseReporting getMouseHandlingType();
 
@@ -77,6 +80,7 @@ private:
   std::vector<void (*)()> onUpdate;
   std::vector<void (*)()> onSlowUpdate;
 
+  void initEngine();
   void initDisplay();
-
+  void stop();
 };

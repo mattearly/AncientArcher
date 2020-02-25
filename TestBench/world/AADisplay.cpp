@@ -11,12 +11,7 @@ AADisplay* AADisplay::getInstance()
   return display.get();
 }
 
-AADisplay::AADisplay()
-{
-
-}
-
-AADisplay::~AADisplay()
+AADisplay::~AADisplay()  // breaks rule of 5
 {
   glfwTerminate();
 }
@@ -101,7 +96,7 @@ void AADisplay::setWindowSize(int width, int height, bool center) noexcept
   mWindowIsFullScreen = false;
 }
 
-void AADisplay::setWindowSize(const char to)
+void AADisplay::setWindowSize(const char to) noexcept
 {
   switch (to)
   {
@@ -126,13 +121,7 @@ void AADisplay::setWindowSize(const char to)
   }
 }
 
-
-
-// -----------------
-// Private Functions
-// -----------------
-
-void AADisplay::toggleFullScreen()
+void AADisplay::toggleFullScreen() noexcept
 {
   if (mWindowIsFullScreen)
   {
@@ -196,7 +185,7 @@ void AADisplay::setWindowToMaximized() noexcept
   glfwMaximizeWindow(mWindow);
 }
 
-void AADisplay::setWindowToFullscreenBorderless()
+void AADisplay::setWindowToFullscreenBorderless() noexcept
 {
   if (mWindowIsFullScreen)
   {
@@ -233,7 +222,7 @@ void AADisplay::keepWindowOpen() noexcept
   glfwSetWindowShouldClose(mWindow, false);
 }
 
-void AADisplay::toggleCursor()
+void AADisplay::toggleCursor()noexcept
 {
   switch (mCursorMode)
   {

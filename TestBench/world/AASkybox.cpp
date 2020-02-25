@@ -1,8 +1,9 @@
+// derived from https://learnopengl.com/Advanced-OpenGL/Cubemaps
 #include "AASkybox.h"
+#include "AAOGLGraphics.h"
 #include <glad/glad.h>
 #include <glm/glm.hpp>
 #include <iostream>
-#include "AAOGLGraphics.h"
 
 /**
  * Custom skymap constructor. Loads up the files in the path and skymap shader.
@@ -15,16 +16,11 @@ AASkybox::AASkybox(std::vector<std::string> incomingSkymapFiles)
     "../shaders/vert_skybox.glsl",
     "../shaders/frag_skybox.glsl"
     );
-
   loadSkybox();
-
   cubemapTexture = TexLoader::getInstance()->loadCubeTexture(incomingSkymapFiles);
-
   skyboxShader->use();
   skyboxShader->setInt("skybox", 0);
-
   loadProjectionMatrix();
-
 }
 
 /**
@@ -134,7 +130,7 @@ void AASkybox::loadProjectionMatrix()
  */
 void AASkybox::loadViewMatrix()
 {
-  glm::mat4 viewMatrix = glm::mat4(glm::mat3(AAViewport::getInstance()->getViewMatrix())); // skybox never appears to move https://learnopengl.com/Advanced-OpenGL/Cubemaps
+  const glm::mat4 viewMatrix = glm::mat4(glm::mat3(AAViewport::getInstance()->getViewMatrix()));
   skyboxShader->use();
   skyboxShader->setMat4("view", viewMatrix);
 }

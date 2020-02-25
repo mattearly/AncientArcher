@@ -7,27 +7,18 @@
 
 AAWorld::AAWorld()
 {
-  mEngineRunTimer = 0.f;
-  mSlowUpdateDelay = 1.f;
-  mKeyTimeOutLength = 0.56667f;
+  initEngine();
+}
 
-  mTimeOutCheckStamp = 0.f;
-
-  mButtonTimeOutSoFar = 0.f;
-
-  initDisplay();
+AAWorld::AAWorld(const char* title)
+{
+  initEngine();
+  setWindowTitle(title);
 }
 
 AAWorld::~AAWorld()
 {
-  onBegin.clear();
-  onDeltaUpdate.clear();
-  onRender.clear();
-  onUpdate.clear();
-  onKeyHandling.clear();
-  onScrollHandling.clear();
-  onMouseHandling.clear();
-  DISPLAY->resetStateDataToDefault();
+  stop();
 }
 
 int AAWorld::run()
@@ -51,7 +42,7 @@ int AAWorld::run()
   return 0;
 }
 
-void AAWorld::shutdownEngine()
+void AAWorld::shutdown()
 {
   DISPLAY->closeWindow();
 }
@@ -120,9 +111,19 @@ void AAWorld::setToStandardMouseHandling()
   }
 }
 
-void AAWorld::setKeyTimeoutLength(float time)
+void AAWorld::setKeyTimeoutLength(float time) noexcept
 {
-  mKeyTimeOutLength = time;
+  mKeyTimeOutLength = time < 0.f ? 0.0001f : time;
+}
+
+void AAWorld::setWindowTitle(const char* title)
+{
+  DISPLAY->setWindowTitle(title);
+}
+
+void AAWorld::setRenderDistance(const float& to)
+{
+  VIEWPORT->setRenderDistance(to);
 }
 
 MouseReporting AAWorld::getMouseHandlingType()
@@ -246,7 +247,32 @@ void AAWorld::processSystemKeys()
   AAControls::getInstance()->pullButtonStateEvents();
 }
 
+void AAWorld::initEngine()
+{
+  mEngineRunTimer = 0.f;
+  mSlowUpdateDelay = 1.f;
+  mKeyTimeOutLength = 0.56667f;
+
+  mTimeOutCheckStamp = 0.f;
+
+  mButtonTimeOutSoFar = 0.f;
+
+  initDisplay();
+}
+
 void AAWorld::initDisplay()
 {
-  AADisplay::getInstance()->initFromEngine();
+  DISPLAY->initFromEngine();
+}
+
+void AAWorld::stop()
+{
+  onBegin.clear();
+  onDeltaUpdate.clear();
+  onRender.clear();
+  onUpdate.clear();
+  onKeyHandling.clear();
+  onScrollHandling.clear();
+  onMouseHandling.clear();
+  DISPLAY->resetStateDataToDefault();
 }
