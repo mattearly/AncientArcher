@@ -11,6 +11,9 @@
 #include <memory>
 #include <string>
 #include <cstddef>
+#include <Conversions.h>
+
+using namespace mearly;
 
 AAOGLGraphics* AAOGLGraphics::getInstance()
 {
@@ -34,11 +37,8 @@ AAGameObject AAOGLGraphics::loadGameObjectWithAssimp(std::string path, bool pp_t
     std::cout << "ERROR::ASSIMP::" << importer.GetErrorString() << '\n';
     return AAGameObject(mMeshDrawInfo);
   }
-
   mLastDir = path.substr(0, path.find_last_of("/\\") + 1);
-
   processNode(scene->mRootNode, scene);
-
   return AAGameObject(mMeshDrawInfo);
 }
 
@@ -61,8 +61,8 @@ MeshDrawInfo AAOGLGraphics::processMesh(aiMesh* mesh, const aiScene* scene)
   std::vector<Vertex> loadedVerts;
   for (unsigned int i = 0; i < mesh->mNumVertices; ++i)
   {
-    glm::vec3 tmpPos = aiVec3_to_glmVec3(mesh->mVertices[i]);
-    glm::vec3 tmpNorm = aiVec3_to_glmVec3(mesh->mNormals[i]);
+    glm::vec3 tmpPos = Conversions::aiVec3_to_glmVec3(mesh->mVertices[i]);
+    glm::vec3 tmpNorm = Conversions::aiVec3_to_glmVec3(mesh->mNormals[i]);
     glm::vec2 tmpTexCoords(0);
     if (mesh->mTextureCoords[0] != nullptr)
     {
@@ -83,8 +83,6 @@ MeshDrawInfo AAOGLGraphics::processMesh(aiMesh* mesh, const aiScene* scene)
 
   aiMaterial* material = scene->mMaterials[mesh->mMaterialIndex];
   std::vector<TextureInfo> loadedTextures;
-
-
   aiColor4D diffuse;
   if (AI_SUCCESS == aiGetMaterialColor(material, AI_MATKEY_COLOR_DIFFUSE, &diffuse))
   {
@@ -147,7 +145,6 @@ std::vector<TextureInfo> AAOGLGraphics::loadMaterialTextures(aiMaterial* mat, ai
     aiString tmpstr;
     mat->GetTexture(type, i, &tmpstr);
     bool alreadyLoaded = false;
-
     for (unsigned int j = 0; j < mTexturesLoaded.size(); ++j)
     {
       for (auto p : mTexturesLoaded)
@@ -286,46 +283,3 @@ unsigned int TexLoader::textureFromFile(const char* filepath, bool gamma)
 
 Vertex::Vertex(glm::vec3 pos, glm::vec2 texcoords, glm::vec3 norms) noexcept
   : Position(pos), TexCoords(texcoords), Normal(norms) {}
-
-//////////////////ASSIMP->GLM CONVERSIONS//////////////////////
-
-glm::mat4 aiMat4_to_glmMat4(const aiMatrix4x4& inMat)
-{
-  glm::mat4 outMat;
-  outMat[0][0] = inMat.a1;
-  outMat[1][0] = inMat.b1;
-  outMat[2][0] = inMat.c1;
-  outMat[3][0] = inMat.d1;
-  outMat[0][1] = inMat.a2;
-  outMat[1][1] = inMat.b2;
-  outMat[2][1] = inMat.c2;
-  outMat[3][1] = inMat.d2;
-  outMat[0][2] = inMat.a3;
-  outMat[1][2] = inMat.b3;
-  outMat[2][2] = inMat.c3;
-  outMat[3][2] = inMat.d3;
-  outMat[0][3] = inMat.a4;
-  outMat[1][3] = inMat.b4;
-  outMat[2][3] = inMat.c4;
-  outMat[3][3] = inMat.d4;
-  return outMat;
-}
-
-glm::vec3 aiVec3_to_glmVec3(const aiVector3D& inVec) noexcept
-{
-  glm::vec3 outVec;
-  outVec.x = inVec.x;
-  outVec.y = inVec.y;
-  outVec.z = inVec.z;
-  return outVec;
-}
-
-glm::quat aiQuat_to_glmQuat(const aiQuaternion& inQuat) noexcept
-{
-  glm::quat outQuat;
-  outQuat.w = inQuat.w;
-  outQuat.x = inQuat.x;
-  outQuat.y = inQuat.y;
-  outQuat.z = inQuat.z;
-  return outQuat;
-}
