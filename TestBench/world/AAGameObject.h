@@ -45,6 +45,10 @@ public:
   void advanceTranslate(glm::vec3 amt);
   void changeRotateAxis(glm::vec3 axis);
 
+  const glm::vec3& getLocation() const noexcept;
+
+  bool mImpedes = false;
+
 
 private:
 
@@ -60,6 +64,5 @@ private:
   glm::mat4 mModelMatrix = glm::mat4(1);
 
   std::unique_ptr<mearly::ColliderBox> mColliderBox;
-  bool mImpedes = false;
 
 };

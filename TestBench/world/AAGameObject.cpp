@@ -109,6 +109,11 @@ void AAGameObject::changeRotateAxis(glm::vec3 axis)
   mRotateAxis = axis;
 }
 
+const glm::vec3& AAGameObject::getLocation() const noexcept
+{
+  return mTranslate;
+}
+
 void AAGameObject::updateModelMatrix()
 {
   mModelMatrix = glm::mat4(1);

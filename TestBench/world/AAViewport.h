@@ -33,6 +33,8 @@ public:
   float getRenderDistance() const noexcept;
   bool hasViewportChanged() const noexcept;
 
+  const glm::vec3& getLocation() const noexcept;
+
   friend class AADisplay;
   friend class AAShaderManager;
 

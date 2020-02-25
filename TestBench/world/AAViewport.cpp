@@ -211,3 +211,8 @@ bool AAViewport::hasViewportChanged() const noexcept
 {
   return mProjectionChanged;
 }
+
+const glm::vec3& AAViewport::getLocation() const noexcept
+{
+  return mPosition;
+}
