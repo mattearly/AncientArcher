@@ -22,6 +22,7 @@
     <ClCompile Include="ColliderBox.cpp" />
     <ClCompile Include="CollisionHandler.cpp" />
     <ClCompile Include="Conversions.cpp" />
+    <ClCompile Include="Filesystem.cpp" />
     <ClCompile Include="Random.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -29,7 +30,7 @@
     <ClInclude Include="CollisionHandler.h" />
     <ClInclude Include="Conversions.h" />
     <ClInclude Include="Random.h" />
-    <ClInclude Include="workingdir.h" />
+    <ClInclude Include="Filesystem.h" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>16.0</VCProjectVersion>

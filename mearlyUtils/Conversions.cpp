@@ -1,8 +1,7 @@
 #include "Conversions.h"
-
 namespace mearly
 {
-glm::mat4 aiMat4_to_glmMat4(const aiMatrix4x4& inMat)
+glm::mat4 Conversions::aiMat4_to_glmMat4(const aiMatrix4x4& inMat)
 {
   glm::mat4 outMat;
   outMat[0][0] = inMat.a1;
@@ -24,7 +23,7 @@ glm::mat4 aiMat4_to_glmMat4(const aiMatrix4x4& inMat)
   return outMat;
 }
 
-glm::vec3 aiVec3_to_glmVec3(const aiVector3D& inVec) noexcept
+glm::vec3 Conversions::aiVec3_to_glmVec3(const aiVector3D& inVec) noexcept
 {
   glm::vec3 outVec;
   outVec.x = inVec.x;
@@ -33,7 +32,7 @@ glm::vec3 aiVec3_to_glmVec3(const aiVector3D& inVec) noexcept
   return outVec;
 }
 
-glm::quat aiQuat_to_glmQuat(const aiQuaternion& inQuat) noexcept
+glm::quat Conversions::aiQuat_to_glmQuat(const aiQuaternion& inQuat) noexcept
 {
   glm::quat outQuat;
   outQuat.w = inQuat.w;

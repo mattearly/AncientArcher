@@ -30,7 +30,8 @@ void testAssimpBaseLoading(std::string path)
   {
     std::cout << "could not openfile at " << path << '\n';
   }
-  else {
+  else 
+  {
     demoModel.numNodes = scene->mRootNode->mNumChildren;
     demoModel.numMeshes = scene->mNumMeshes;
     demoModel.numTextures = scene->mNumTextures;

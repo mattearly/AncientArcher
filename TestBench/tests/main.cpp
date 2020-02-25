@@ -5,18 +5,15 @@
 
 int runAllTests()
 {
-  //testAssimpBaseLoading("../assets/6ColorSquare.obj");
-  //delay(120);
-  //testEngineLoopBase();
+  int result = 0;
+  result = testEngineLoopBase();
   delay(120);
-  testEngineDemoWorld();
+  result = testEngineDemoWorld();
 
-  return 0;
+  return result;
 }
 
 int main()
 {
-  runAllTests();
-
-  holdAtCommandPrompt();
+  return runAllTests();
 }

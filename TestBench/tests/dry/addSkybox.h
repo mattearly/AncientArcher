@@ -1,8 +1,8 @@
 #pragma once
 #include "../../world/AAWorld.h"
 
-/** 
- *  * This function is based off having skyboxes in an asset path with the name of the skybox being the folder name and the files within containg 
+/**
+ *  * This function is based off having skyboxes in an asset path with the name of the skybox being the folder name and the files within containg
  *  *                                 up.png
  *  * skybox files: back.png left.png front.png right.png
  *  *                                 down.png

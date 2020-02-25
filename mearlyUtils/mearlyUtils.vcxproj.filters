@@ -27,12 +27,12 @@
     <ClCompile Include="Conversions.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="Filesystem.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Random.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="workingdir.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="CollisionHandler.h">
@@ -42,6 +42,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Conversions.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Filesystem.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

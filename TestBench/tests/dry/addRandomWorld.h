@@ -3,9 +3,12 @@
 #include "../../world/AAGameObject.h"
 #include "../../world/AAOGLGraphics.h"
 #include "../../world/AASound.h"
+#include <math.h>
+#include <Random.h>
 
 void addRandomWorld(AAWorld& worldEngine)
 {
+  static int i;
   static AAShaderManager shaderMan;
   static int triLightShader = shaderMan.addShader(
     "../shaders/vert_textured.glsl",
@@ -15,22 +18,28 @@ void addRandomWorld(AAWorld& worldEngine)
     "../shaders/vert_textured.glsl",
     "../shaders/frag_noLight.glsl"
   );
-  
+
+
+  // see what demo files we have
   std::string assetDir;
   std::vector<std::string> loadableModels;
   std::vector<std::string> loadableSounds;
-
-  LoadableAssets::getDemoConfig(assetDir, loadableModels, loadableSounds);
-  static AAGameObject obj00 = AAOGLGraphics::getInstance()->loadGameObjectWithAssimp(assetDir + loadableModels.at(0), true);
-  obj00.changeRotateAxis(glm::vec3(0, 1, 0));
-  static AAGameObject obj01 = AAOGLGraphics::getInstance()->loadGameObjectWithAssimp(assetDir + loadableModels.at(1), true);
-  obj01.changeRotateAxis(glm::vec3(0, 0, 1));
+  LoadableAssets loadableObjects;
+  loadableObjects.getDemoConfig(assetDir, loadableModels, loadableSounds);
+  static const int num3DObjects = loadableModels.size();
+  static std::vector< AAGameObject > objs;
+  if (num3DObjects != 0)
+  {
+    for (i = 0; i < num3DObjects; ++i)
+    {
+      objs.push_back(AAOGLGraphics::getInstance()->loadGameObjectWithAssimp(assetDir + loadableModels.at(i), true));
+    }
+  }
 
   static AASound sound;
   sound.addSoundEffects(assetDir, loadableSounds);
 
   worldEngine.setKeyTimeoutLength(.3f);
-
   const auto soundHotkeys = [](AAKeyBoardInput& keys)
   {
     if (keys.mouseButton1)
@@ -42,23 +51,44 @@ void addRandomWorld(AAWorld& worldEngine)
   };
   worldEngine.addToTimedOutKeyHandling(soundHotkeys);
 
-  static bool sceneLighting = true;
+  static bool sceneLighting = false;
 
   static PointLight pointLight;
   static SpotLight spotLight;
 
   const auto startFunc = []()
   {
-    AAViewport::getInstance()->setCurrentPosition(glm::vec3(0, 10, 10));
-    AAViewport::getInstance()->setCurrentPitch(-20.f);
-    AAViewport::getInstance()->setCurrentYaw(270.f);
+    AAViewport::getInstance()->setCurrentPosition(glm::vec3(-12, 10, 7));
+    AAViewport::getInstance()->setCurrentPitch(-35.f);
+    AAViewport::getInstance()->setCurrentYaw(330.f);
 
     shaderMan.updateProjectionMatrices();
 
+    // random object placement
+    if (num3DObjects != 0)
+    {
+      for (i = 0; i < num3DObjects; ++i)
+      {
+        // random rotation axis
+        objs.at(i).changeRotateAxis(glm::vec3(
+          mearly::roll1d3 == 1 ? 1 : 0, 
+          mearly::roll1d3 == 2 ? 1 : 0,
+          mearly::roll1d3 == 3 ? 1 : 0)
+        );
+
+        // random starting location
+        objs.at(i).translate(glm::vec3(
+          mearly::rolld20,
+          mearly::rolld20,
+          mearly::rolld20)
+        );
+      }
+    }
+
     //gameObj2.translate(glm::vec3(0, 6, 0));
     //gameObj5.translate(glm::vec3(5,5,-5));
-    obj00.translate(glm::vec3(0, 4, 0));
-    obj01.translate(glm::vec3(-7,0,0));
+    //obj00.translate(glm::vec3(0, 4, 0));
+    //obj01.translate(glm::vec3(-7, 0, 0));
     //gameObj8.translate(glm::vec3(0));
     //gameObj9.translate(glm::vec3(0));
 
@@ -95,17 +125,31 @@ void addRandomWorld(AAWorld& worldEngine)
 
   const auto deltaMoveObjects = [](float dt)
   {
-    static float totalTime = 0;
-    totalTime += dt;
+    if (num3DObjects != 0)
+    {
+      for (i = 0; i < num3DObjects; ++i)
+      {
+        //  rotate 
+        objs.at(i).advanceRotation(glm::radians(dt * 10));
 
+        // move towards player
+        glm::vec3 objToPlayerDir = glm::normalize(objs.at(i).getLocation() - AAViewport::getInstance()->getLocation());  //direction from object to player
+        objs.at(i).advanceTranslate(dt * objToPlayerDir);
+
+        // grow in size over time
+        objs.at(i).advanceScale(glm::vec3(dt, dt, dt));
+      }
+    }
+    //static float totalTime = 0;
+    //totalTime += dt;
     //gameObj.translate(glm::vec3(dt * .5, 0, 0));
     //gameObj2.translate(glm::vec3(0, 0, -sin(totalTime)));
     //gameObj3.translate(glm::vec3(0, 0, 0));
     //gameObj3.rotate(dt * .5f, glm::vec3(0, 1, 0));
     //gameObj4.translate(glm::vec3(0, 0, sin(totalTime)));
     //gameObj5.rotate(dt * .3f, glm::vec3(0, 1, 0));
-    obj00.advanceRotation(glm::radians(dt * 5));
-    obj01.advanceRotation(glm::radians(dt * 10));
+    //obj00.advanceRotation(glm::radians(dt * 5));
+    //obj01.advanceRotation(glm::radians(dt * 10));
 
     //pointLight.Position = glm::vec3(0, 0, -sin(totalTime) * 10);
     //AAViewport::getInstance()->setPointLight(pointLight);
@@ -116,15 +160,17 @@ void addRandomWorld(AAWorld& worldEngine)
   const auto drawObjects = []()
   {
     if (sceneLighting) {
-      obj00.draw(shaderMan.getShader(triLightShader));
-      obj01.draw(shaderMan.getShader(triLightShader));
-      //gameObj9.draw(shaderMan.getShader(triLightShader));
+      for (i = 0; i < num3DObjects; ++i)
+      {
+        objs.at(i).draw(shaderMan.getShader(triLightShader));
+      }
     }
     else
     {
-      obj00.draw(shaderMan.getShader(noLightShader));
-      obj01.draw(shaderMan.getShader(noLightShader));
-      //gameObj9.draw(shaderMan.getShader(noLightShader));
+      for (i = 0; i < num3DObjects; ++i)
+      {
+        objs.at(i).draw(shaderMan.getShader(noLightShader));
+      }
     }
   };
   worldEngine.addToOnRender(drawObjects);

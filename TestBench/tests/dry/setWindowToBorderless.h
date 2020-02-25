@@ -2,5 +2,5 @@
 
 void setWindowToBorderless()
 {
-	DISPLAY->setWindowSize('b');
+  DISPLAY->setWindowSize('b');
 }

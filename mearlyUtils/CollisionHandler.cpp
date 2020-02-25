@@ -1,5 +1,4 @@
 #include "CollisionHandler.h"
-
 namespace mearly
 {
 

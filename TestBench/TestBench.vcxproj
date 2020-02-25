@@ -159,6 +159,8 @@
     </Lib>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="tests\dry\LoadableAssets.cpp" />
+    <ClCompile Include="tests\dry\LoadOBJ.cpp" />
     <ClCompile Include="world\glad.c" />
     <ClCompile Include="tests\main.cpp" />
     <ClCompile Include="world\AAControls.cpp" />
@@ -175,11 +177,12 @@
   <ItemGroup>
     <ClInclude Include="tests\assimpModel.h" />
     <ClInclude Include="tests\dry\addGodMovement.h" />
-    <ClInclude Include="tests\dry\addRandomColliderWorld.h" />
+    <ClInclude Include="tests\dry\addRandomWorld.h" />
     <ClInclude Include="tests\dry\addSkybox.h" />
     <ClInclude Include="tests\dry\delay.h" />
+    <ClInclude Include="tests\dry\LoadableAssets.h" />
+    <ClInclude Include="tests\dry\LoadOBJ.h" />
     <ClInclude Include="tests\dry\setWindowToBorderless.h" />
-    <ClInclude Include="tests\dry\setWindowToMaximized.h" />
     <ClInclude Include="tests\engineLoopBase.h" />
     <ClInclude Include="tests\engineDemoWorld.h" />
     <ClInclude Include="world\AAControls.h" />
@@ -195,9 +198,6 @@
     <ClInclude Include="world\AAWorld.h" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\AssetLoading\AssetLoading.vcxproj">
-      <Project>{debcbf40-65aa-47a3-86ca-5cb50a24d7a8}</Project>
-    </ProjectReference>
     <ProjectReference Include="..\mearlyUtils\mearlyUtils.vcxproj">
       <Project>{bcc58a58-c6a2-45af-ba93-546dffe74439}</Project>
     </ProjectReference>

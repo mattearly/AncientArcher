@@ -1,8 +1,6 @@
-#pragma once
 #include "Random.h"
 #include <random>
 #include <chrono>
-
 namespace mearly
 {
 

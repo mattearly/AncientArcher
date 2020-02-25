@@ -51,12 +51,15 @@
     <ClCompile Include="world\stb_image.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="tests\dry\LoadableAssets.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="tests\dry\LoadOBJ.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="tests\dry\addGodMovement.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="tests\dry\addRandomColliderWorld.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="tests\dry\addSkybox.h">
@@ -66,9 +69,6 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="tests\dry\setWindowToBorderless.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="tests\dry\setWindowToMaximized.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="tests\assimpModel.h">
@@ -111,6 +111,15 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="tests\engineLoopBase.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="tests\dry\addRandomWorld.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="tests\dry\LoadableAssets.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="tests\dry\LoadOBJ.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

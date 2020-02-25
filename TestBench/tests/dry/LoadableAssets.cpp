@@ -1,5 +1,7 @@
 #include "LoadableAssets.h"
+#include "Filesystem.h"
 #include <iostream>
+#include <filesystem>
 
 /**
  *  Prepares the demo files in this project for loading.
@@ -18,7 +20,7 @@ void LoadableAssets::getDemoConfig(std::string& out_dir, std::vector<std::string
     return;  //todo: log error
   }
 
-  std::vector<std::filesystem::path> all_files = cpp17_GetAllFileNamesInFolder(demoFilePath);  // all the files in the path
+  std::vector<std::filesystem::path> all_files = mearly::FileSystem::cpp17_GetAllFileNamesInFolder(demoFilePath);  // all the files in the path
 
   if (all_files.size() == 0)
   {
@@ -137,23 +139,3 @@ void LoadableAssets::getDemoConfig(std::string& out_dir, std::vector<std::string
 //}
 //#endif
 
-/**
- * Access all the file names in a folder (non-recursively) and return a vector full of all the paths.
- * Returns an empty vector if the path doesn't exist or if there are no items in the directory.
- */
-static std::vector<std::filesystem::path> cpp17_GetAllFileNamesInFolder(std::filesystem::path path)
-{
-  std::vector<std::filesystem::path> fileNamePaths;
-
-  if (!exists(path))
-  {
-    return fileNamePaths;  // no items within just a empty vector
-  }
-
-  for (const auto& entry : std::filesystem::directory_iterator(path))
-  {
-    fileNamePaths.push_back(entry);
-  }
-
-  return fileNamePaths;
-}

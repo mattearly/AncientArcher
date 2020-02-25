@@ -11,7 +11,7 @@
 class LoadableAssets {
 public:
 
-  static void getDemoConfig(std::string& return_dir, std::vector<std::string>& return_model_list, std::vector<std::string>& return_sound_list);
+  void getDemoConfig(std::string& return_dir, std::vector<std::string>& return_model_list, std::vector<std::string>& return_sound_list);
   //static void getSkyboxCubeMapFiles(const std::string& containingFolderPath, std::string& return_dir, std::vector<std::string>& return_file_list);
   //static void loadConfig(const std::string& pathtoconfig, std::string& return_dir, std::vector<std::string>& return_list);
 
@@ -21,4 +21,3 @@ private:
 
 // helper functions
 //static std::vector<std::string> win_GetAllFileNamesInFolder(std::string folder);
-static std::vector<std::filesystem::path> cpp17_GetAllFileNamesInFolder(std::filesystem::path path);
