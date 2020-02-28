@@ -14,10 +14,8 @@
 int testEngineDemoWorld()
 {
   AAWorld worldEngine("Test Engine Demo World");
-  addDemoSkybox(worldEngine);
+  addCubeSkybox(worldEngine);
   addGodMovement(worldEngine);
-
-
   addRandomWorld(worldEngine);
   return worldEngine.run();
 }

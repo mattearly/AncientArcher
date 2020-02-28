@@ -19,7 +19,6 @@ struct ModelHeader
 
 void testAssimpBaseLoading(std::string path)
 {
-
   ModelHeader demoModel;
   demoModel.modelPath = path;
 
@@ -54,5 +53,4 @@ void testAssimpBaseLoading(std::string path)
       << "faces: " << demoModel.numFaces << '\n'
       << "bones: " << demoModel.numBones << '\n';
   }
-
 }

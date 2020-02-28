@@ -1,7 +1,6 @@
 #include "LoadableAssets.h"
 #include "Filesystem.h"
 #include <iostream>
-#include <filesystem>
 
 /**
  *  Prepares the demo files in this project for loading.

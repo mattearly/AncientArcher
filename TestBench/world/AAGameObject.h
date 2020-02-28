@@ -12,7 +12,7 @@ struct TextureInfo
   unsigned int id = 0;
   std::string type;
   std::string path;
-  glm::vec3 color = glm::vec3(0);
+  glm::vec3 color = glm::vec3(1);
 };
 
 struct MeshDrawInfo

@@ -7,7 +7,7 @@
  *  * skybox files: back.png left.png front.png right.png
  *  *                                 down.png
  */
-void addDemoSkybox(AAWorld& engine)
+void addCubeSkybox(AAWorld& engine)
 {
   {
     //std::string skybox_dir;

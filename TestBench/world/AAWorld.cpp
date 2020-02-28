@@ -27,7 +27,7 @@ int AAWorld::run()
   while (!glfwWindowShouldClose(DISPLAY->getWindow()))
   {
     static float currentFrame(0.f), deltaTime(0.f), lastFrame(0.f);
-    currentFrame = (float)glfwGetTime();
+    currentFrame = static_cast<float>(glfwGetTime());
     deltaTime = currentFrame - lastFrame;
     lastFrame = currentFrame;
 
@@ -249,15 +249,12 @@ void AAWorld::processSystemKeys()
 
 void AAWorld::initEngine()
 {
+  initDisplay();
   mEngineRunTimer = 0.f;
   mSlowUpdateDelay = 1.f;
   mKeyTimeOutLength = 0.56667f;
-
   mTimeOutCheckStamp = 0.f;
-
   mButtonTimeOutSoFar = 0.f;
-
-  initDisplay();
 }
 
 void AAWorld::initDisplay()
