@@ -19,7 +19,6 @@ void addRandomWorld(AAWorld& worldEngine)
     "../shaders/frag_noLight.glsl"
   );
 
-
   // see what demo files we have
   std::string assetDir;
   std::vector<std::string> loadableModels;
@@ -51,17 +50,13 @@ void addRandomWorld(AAWorld& worldEngine)
   };
   worldEngine.addToTimedOutKeyHandling(soundHotkeys);
 
-  static bool sceneLighting = false;
+  static bool sceneLighting = true;
 
   static PointLight pointLight;
   static SpotLight spotLight;
 
   const auto startFunc = []()
   {
-    AAViewport::getInstance()->setCurrentPosition(glm::vec3(-12, 10, 7));
-    AAViewport::getInstance()->setCurrentPitch(-35.f);
-    AAViewport::getInstance()->setCurrentYaw(330.f);
-
     shaderMan.updateProjectionMatrices();
 
     // random object placement
@@ -94,7 +89,7 @@ void addRandomWorld(AAWorld& worldEngine)
 
     DirectionalLight dirLight;
     dirLight.Direction = glm::vec3(.15f, -1.f, .15f);
-    dirLight.Ambient = glm::vec3(.03f);
+    dirLight.Ambient = glm::vec3(.6333f);
     dirLight.Diffuse = glm::vec3(.05f);
     dirLight.Specular = glm::vec3(.5f);
     setDirectionalLight(dirLight, shaderMan.getShader(triLightShader));
@@ -110,14 +105,14 @@ void addRandomWorld(AAWorld& worldEngine)
 
     spotLight.Position = glm::vec3(0, 5, 8.5);
     spotLight.Direction = glm::vec3(-1, 0, 0);
-    spotLight.Ambient = glm::vec3(0.f);
-    spotLight.Diffuse = glm::vec3(1.f);
+    spotLight.Ambient = glm::vec3(0.3f);
+    spotLight.Diffuse = glm::vec3(.9f);
     spotLight.Specular = glm::vec3(1.f);
-    spotLight.Constant = 1.f;
-    spotLight.Linear = .09f;
+    spotLight.Constant = 1.0f;
+    spotLight.Linear = .7f;
     spotLight.Quadratic = .009f;
-    spotLight.CutOff = glm::cos(glm::radians(28.f));
-    spotLight.OuterCutOff = glm::cos(glm::radians(35.f));
+    spotLight.CutOff = glm::cos(glm::radians(25.f));
+    spotLight.OuterCutOff = glm::cos(glm::radians(38.f));
     setSpotLight(spotLight, shaderMan.getShader(triLightShader));
 
   };
@@ -133,7 +128,7 @@ void addRandomWorld(AAWorld& worldEngine)
         objs.at(i).advanceRotation(glm::radians(dt * 10));
 
         // move towards player
-        glm::vec3 objToPlayerDir = glm::normalize(objs.at(i).getLocation() - AAViewport::getInstance()->getLocation());  //direction from object to player
+        const glm::vec3 objToPlayerDir = glm::normalize(objs.at(i).getLocation() - AAViewport::getInstance()->getLocation());  //direction from object to player
         objs.at(i).advanceTranslate(dt * objToPlayerDir);
 
         // grow in size over time
