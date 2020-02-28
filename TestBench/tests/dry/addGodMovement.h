@@ -6,9 +6,9 @@
     MOUSE - look
     WASD - move
     SPACE - up
-    CTRL+SPACE - down
+    LSHIFT+SPACE - down
     MOUSEWHEEL - change move speed
-    ESC - toggle cursor
+    TAB - toggle cursor
 */
 #pragma once
 
@@ -19,10 +19,10 @@ void addGodMovement(AAWorld& engine)
   //VIEWPORT->setRenderDistance(10000.f);
   DISPLAY->setCursorToDisabled();
 
-  static const float MAXFLYSPEED = 400.f;
+  static constexpr float MAXFLYSPEED = 400.f;
   static float currFlySpeed = 37.5f;
   static float prevFlySpeed = 37.5f;
-  static const float FlyIncrement = 2.5f;
+  static constexpr float FlyIncrement = 2.5f;
 
   // position testing help
   static auto showLocation = []()
@@ -125,7 +125,7 @@ void addGodMovement(AAWorld& engine)
 
   const auto escapeTogglesMouseDisplay = [](AAKeyBoardInput& keys)
   {
-    if (keys.esc)
+    if (keys.tab)
     {
       DISPLAY->toggleCursor();
       return true;
