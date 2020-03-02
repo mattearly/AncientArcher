@@ -1,6 +1,5 @@
 #pragma once
 #include <glm/glm.hpp>
-#include "AAShaderManager.h"
 
 struct DirectionalLight
 {
@@ -22,7 +21,7 @@ struct SpotLight
   glm::vec3 Ambient, Diffuse, Specular;
 };
 
-static void setDirectionalLight(const DirectionalLight& light, const Shader& shader)
+static void setDirectionalLight(const DirectionalLight& light, const AAOGLShader& shader)
 {
   shader.use();
 
@@ -41,7 +40,7 @@ static void setDirectionalLight(const DirectionalLight& light, const Shader& sha
 }
 
 
-static void setPointLight(const PointLight& light, const Shader& shader)
+static void setPointLight(const PointLight& light, const AAOGLShader& shader)
 {
   shader.use();
 
@@ -65,7 +64,7 @@ static void setPointLight(const PointLight& light, const Shader& shader)
   shader.setVec3(specular, light.Specular);
 }
 
-static void setSpotLight(const SpotLight& light, const Shader& shader)
+static void setSpotLight(const SpotLight& light, const AAOGLShader& shader)
 {
   shader.use();
   std::string position, ambient, constant, cutoff, ocutoff, diffuse, direction, linear, quadrat, specular;

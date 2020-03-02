@@ -1,9 +1,9 @@
 // derived from https://learnopengl.com/Advanced-OpenGL/Cubemaps
 #include "AASkybox.h"
-#include "AAOGLGraphics.h"
 #include <glad/glad.h>
 #include <glm/glm.hpp>
 #include <iostream>
+#include "AAOGLGraphics.h"
 
 /**
  * Custom skymap constructor. Loads up the files in the path and skymap shader.
@@ -12,30 +12,30 @@
  */
 AASkybox::AASkybox(std::vector<std::string> incomingSkymapFiles)
 {
-  skyboxShader = std::make_unique< Shader >(
+  skyboxShader = std::make_unique<AAOGLShader>(
     "../shaders/vert_skybox.glsl",
     "../shaders/frag_skybox.glsl"
-    );
+  );
   loadSkybox();
   cubemapTexture = TexLoader::getInstance()->loadCubeTexture(incomingSkymapFiles);
   skyboxShader->use();
   skyboxShader->setInt("skybox", 0);
-  loadProjectionMatrix();
+  //loadProjectionMatrix();  //does on first render
 }
 
 /**
  * Renders the skybox behind all other visable objects.
  */
-void AASkybox::render()
+void AASkybox::render(const AACamera& cam)
 {
   glDepthFunc(GL_LEQUAL);  // change depth function so depth test passes when values are equal to depth buffer's content
 
   //if (AAViewport::getInstance()->hasViewportChanged())
   //{
-  loadProjectionMatrix();
+  loadProjectionMatrix(cam);
   //}
 
-  loadViewMatrix();        // todo: only update when camera moved
+  loadViewMatrix(cam);        // todo: only update when camera moved
 
   glBindVertexArray(mSkyboxVAO);
 
@@ -114,23 +114,23 @@ void AASkybox::loadSkybox()
 }
 
 /**
- * Sets the projection matrix value on the skyboxShader from the getProjectionMatrix() function in AAViewport.
- * skyboxShader is in use after this call completes.
- */
-void AASkybox::loadProjectionMatrix()
-{
-  glm::mat4 projectionMatrix = AAViewport::getInstance()->getProjectionMatrix();
-  skyboxShader->use();
-  skyboxShader->setMat4("projection", projectionMatrix);
-}
-
-/**
  * Sets the view matrix value on the skyboxShader from the getViewMatrix() function in AAViewport.
  * skyboxShader is in use after this call completes.
  */
-void AASkybox::loadViewMatrix()
+void AASkybox::loadViewMatrix(const AACamera& cam)
 {
-  const glm::mat4 viewMatrix = glm::mat4(glm::mat3(AAViewport::getInstance()->getViewMatrix()));
+  const glm::mat4 viewMatrix = glm::mat4(glm::mat3(cam.getViewMatrix()));
   skyboxShader->use();
   skyboxShader->setMat4("view", viewMatrix);
+}
+
+/**
+ * Sets the projection matrix value on the skyboxShader from the getProjectionMatrix() function in AAViewport.
+ * skyboxShader is in use after this call completes.
+ */
+void AASkybox::loadProjectionMatrix(const AACamera& cam)
+{
+  glm::mat4 projectionMatrix = cam.getProjectionMatrix();
+  skyboxShader->use();
+  skyboxShader->setMat4("projection", projectionMatrix);
 }

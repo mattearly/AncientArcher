@@ -1,9 +1,10 @@
 #pragma once
-#include "AAGameObject.h"
 #include <glm/glm.hpp>
 #include <assimp/scene.h>
 #include <vector>
 #include <string>
+#include "AAGameObject.h"
+#include "shaderSys/AAOGLShader.h"
 
 class TexLoader
 {
@@ -26,7 +27,7 @@ class AAOGLGraphics
 public:
 
   static AAOGLGraphics* getInstance();
-  AAGameObject loadGameObjectWithAssimp(std::string path, bool pp_triangulate);
+  std::vector<MeshDrawInfo> loadGameObjectWithAssimp(std::string path, bool pp_triangulate);
 
 private:
 

@@ -1,5 +1,7 @@
 #pragma once
-#include "../../world/AAWorld.h"
+#include "../../AAEngine.h"
+
+extern AAWorld mainWorld;
 
 /**
  *  * This function is based off having skyboxes in an asset path with the name of the skybox being the folder name and the files within containg
@@ -7,7 +9,7 @@
  *  * skybox files: back.png left.png front.png right.png
  *  *                                 down.png
  */
-void addCubeSkybox(AAWorld& engine)
+void addCubeSkybox()
 {
   {
     //std::string skybox_dir;
@@ -25,6 +27,6 @@ void addCubeSkybox(AAWorld& engine)
     }
 
     const std::shared_ptr<AASkybox> skybox = std::make_shared<AASkybox>(cubemapfiles);
-    engine.setSkybox(skybox);
+    mainWorld.setSkybox(skybox);
   }
 }

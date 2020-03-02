@@ -11,39 +11,54 @@
     TAB - toggle cursor
 */
 #pragma once
+#include <iostream>
+#include "FPPWorldLocation.h"
+#include "../../AAEngine.h"
 
-void addGodMovement(AAWorld& engine)
+#define UP mearly::FPPWorldLocation::getWorldUp()
+
+const float startingSpeed = 33.5f;
+
+extern AAWorld mainWorld;
+
+// returns unique cam id
+int setGodCamWithMovement()
 {
-  engine.setToPerspectiveMouseHandling();
-  engine.setRenderDistance(10000.f);
-  //VIEWPORT->setRenderDistance(10000.f);
-  DISPLAY->setCursorToDisabled();
+  mainWorld.setToPerspectiveMouseHandling();
+  mainWorld.setCursorToDisabled();
+
+  static int mainCamId;
+  mainCamId = mainWorld.addCamera();
+
+  mainWorld.setRenderDistance(mainCamId, 10000.f);
 
   static constexpr float MAXFLYSPEED = 400.f;
-  static float currFlySpeed = 37.5f;
-  static float prevFlySpeed = 37.5f;
+  static float currFlySpeed = startingSpeed;
+  static float prevFlySpeed = startingSpeed;
   static constexpr float FlyIncrement = 2.5f;
 
   // position testing help
   static auto showLocation = []()
   {
     // show camera location
-    std::cout << "X: " << AAViewport::getInstance()->getPosition()->x
-      << "  Z: " << AAViewport::getInstance()->getPosition()->z
-      << "  Y: " << AAViewport::getInstance()->getPosition()->y << '\n';
+    //std::cout << "X: " << AAViewport::getInstance()->getPosition()->x
+    //  << "  Z: " << AAViewport::getInstance()->getPosition()->z
+    //  << "  Y: " << AAViewport::getInstance()->getPosition()->y << '\n';
+    std::cout << "location info of camera turned off in code\n";
   };
   static auto showPitchAndYaw = []()
   {
-    std::cout << "PITCH: " << AAViewport::getInstance()->getPitch()
-      << "  YAW: " << AAViewport::getInstance()->getYaw() << '\n';
+    //std::cout << "PITCH: " << AAViewport::getInstance()->getPitch()
+    //  << "  YAW: " << AAViewport::getInstance()->getYaw() << '\n';
+    std::cout << "pitch yaw loc turned off in code\n";
   };
 
   const auto fpsKBNoClipFlying = [](AAKeyBoardInput& keys)
   {
-    // this is a debug cam mover with no colliding - called every frame with deltaTime
+    // this is a debug cam mover with no colliding
     static float fps60velocity = 0.f;
     static glm::vec3 directionPlacement = glm::vec3(0.f, 0.f, 0.f);
-    static glm::vec3 moveFront = glm::vec3(*AAViewport::getInstance()->getFront());
+    static glm::vec3 moveFront = glm::vec3(*mainWorld.getCamera(mainCamId).getFront());
 
     // setting our velocity based on 60fps (a guess since we don't have delta time here)
     fps60velocity = 0.0166f * currFlySpeed;
@@ -59,36 +74,37 @@ void addGodMovement(AAWorld& engine)
     }
     if (keys.a)
     {
-      directionPlacement -= *AAViewport::getInstance()->getRight() * fps60velocity;
+      directionPlacement -= *mainWorld.getCamera(mainCamId).getRight() * fps60velocity;
     }
     if (keys.d)
     {
-      directionPlacement += *AAViewport::getInstance()->getRight() * fps60velocity;
+      directionPlacement += *mainWorld.getCamera(mainCamId).getRight() * fps60velocity;
     }
 
     // process going up and down
     if (!keys.leftShift && keys.spacebar)
     {
-      directionPlacement += AAViewport::getInstance()->WORLD_UP * fps60velocity;
+                              //world up
+      directionPlacement += UP * fps60velocity;
     }
     if (keys.leftShift && keys.spacebar)
     {
-      directionPlacement -= AAViewport::getInstance()->WORLD_UP * fps60velocity;
+      directionPlacement -= UP * fps60velocity;
     }
 
-    AAViewport::getInstance()->shiftCurrentPosition(directionPlacement);
+    mainWorld.getCamera(mainCamId).shiftCurrentPosition(directionPlacement);
 
     // reset local variables for next frame processing
     directionPlacement = glm::vec3(0.f, 0.f, 0.f);
-    moveFront = glm::vec3(*AAViewport::getInstance()->getFront());
+    moveFront = glm::vec3(*mainWorld.getCamera(mainCamId).getFront());
   };
-  engine.addToKeyHandling(fpsKBNoClipFlying);
+  mainWorld.addToKeyHandling(fpsKBNoClipFlying);
 
   auto fpsMouseMovement = [](AAMouseInput& mouse)
   {
-    AAViewport::getInstance()->shiftYawAndPith(mouse.xOffset, mouse.yOffset);
+    mainWorld.getCamera(mainCamId).shiftYawAndPith(mouse.xOffset, mouse.yOffset);
   };
-  engine.addToMouseHandling(fpsMouseMovement);
+  mainWorld.addToMouseHandling(fpsMouseMovement);
 
   auto fpsScrollChangesMoveSpeed = [](AAScrollInput& scroll)
   {
@@ -121,7 +137,7 @@ void addGodMovement(AAWorld& engine)
       prevFlySpeed = currFlySpeed;
     }
   };
-  engine.addToScrollHandling(fpsScrollChangesMoveSpeed);
+  mainWorld.addToScrollHandling(fpsScrollChangesMoveSpeed);
 
   const auto escapeTogglesMouseDisplay = [](AAKeyBoardInput& keys)
   {
@@ -132,5 +148,8 @@ void addGodMovement(AAWorld& engine)
     }
     return false;
   };
-  engine.addToTimedOutKeyHandling(escapeTogglesMouseDisplay);
+  mainWorld.addToTimedOutKeyHandling(escapeTogglesMouseDisplay);
+
+
+  return mainCamId;
 }

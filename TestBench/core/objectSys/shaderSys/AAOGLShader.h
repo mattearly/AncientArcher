@@ -1,17 +1,13 @@
 #pragma once
-#include <glm/glm.hpp>
-#include <memory>
-#include <map>
 #include <string>
-
-class Shader
+#include <ColliderBox.h>
+class AAOGLShader
 {
 public:
 
-  unsigned int ID;
 
-  Shader(const char* vertex_file, const char* fragment_file);
-  Shader(const char* vertex_file, const char* fragment_file, const char* geometry_file);
+  AAOGLShader(const char* vertex_file, const char* fragment_file);
+  AAOGLShader(const char* vertex_file, const char* fragment_file, const char* geometry_file);
 
   void use() const noexcept;
   void stop() const noexcept;
@@ -29,29 +25,12 @@ public:
   void setMat3(const std::string& name, const glm::mat3& mat) const noexcept;
   void setMat4(const std::string& name, const glm::mat4& mat) const noexcept;
 
+  const int getID() const;
+
 private:
-  Shader() = delete;
+  AAOGLShader() = delete;
+
+  unsigned int ID;
 
 };
 
-
-
-class AAShaderManager
-{
-public:
-
-  void setPath(std::string path);
-
-  int addShader(const char* vertfile, const char* fragfile);
-  void updateViewMatrices();
-  void updateProjectionMatrices();
-
-  const Shader& getShader(int id) const;
-
-private:
-  std::string mPath;
-  std::map<int, Shader> mShaders;
-
-  void clearPath() noexcept;
-
-};

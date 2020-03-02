@@ -12,6 +12,7 @@
 #include <string>
 #include <cstddef>
 #include <Conversions.h>
+#include "AAGameObject.h"
 
 using namespace mearly;
 
@@ -21,7 +22,7 @@ AAOGLGraphics* AAOGLGraphics::getInstance()
   return graphics.get();
 }
 
-AAGameObject AAOGLGraphics::loadGameObjectWithAssimp(std::string path, bool pp_triangulate)
+std::vector<MeshDrawInfo> AAOGLGraphics::loadGameObjectWithAssimp(std::string path, bool pp_triangulate)
 {
   Assimp::Importer importer;
   int post_processsing_flags = 0;
@@ -35,11 +36,11 @@ AAGameObject AAOGLGraphics::loadGameObjectWithAssimp(std::string path, bool pp_t
   if (!scene || scene->mFlags & AI_SCENE_FLAGS_INCOMPLETE || !scene->mRootNode)
   {
     std::cout << "ERROR::ASSIMP::" << importer.GetErrorString() << '\n';
-    return AAGameObject(mMeshDrawInfo);
+    return mMeshDrawInfo;
   }
   mLastDir = path.substr(0, path.find_last_of("/\\") + 1);
   processNode(scene->mRootNode, scene);
-  return AAGameObject(mMeshDrawInfo);
+  return mMeshDrawInfo;
 }
 
 void AAOGLGraphics::processNode(aiNode* node, const aiScene* scene)
@@ -133,7 +134,7 @@ MeshDrawInfo AAOGLGraphics::processMesh(aiMesh* mesh, const aiScene* scene)
 
   glBindVertexArray(0);
 
-  return MeshDrawInfo(VAO, VBO, EBO, loadedTextures, loadedElements);
+  return MeshDrawInfo(VAO, /*VBO, EBO,*/ loadedTextures, loadedElements);
 }
 
 std::vector<TextureInfo> AAOGLGraphics::loadMaterialTextures(aiMaterial* mat, aiTextureType type, std::string typeName)

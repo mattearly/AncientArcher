@@ -1,66 +1,11 @@
-#include "AAShaderManager.h"
-#include <utility>
-#include "AAViewport.h"
-#include <glad/glad.h>
+#include "AAOGLShader.h"
+#include <glad\glad.h>
 #include <fstream>
 #include <sstream>
-#include <iostream>
-
-void AAShaderManager::setPath(std::string path)
-{
-  mPath = path;
-}
-
-void AAShaderManager::clearPath() noexcept
-{
-  mPath.clear();
-}
-
-int AAShaderManager::addShader(const char* vertfile, const char* fragfile)
-{
-  static int shaderManagerID = 0;
-  shaderManagerID++;
-  if (!mPath.empty())
-  {
-    std::string pathedVertfile = mPath + vertfile;
-    std::string pathedFragfile = mPath + fragfile;
-    std::pair<int, Shader> newPair = std::make_pair(shaderManagerID, Shader{ pathedVertfile.c_str(), pathedFragfile.c_str() });
-    mShaders.emplace(newPair);
-    return shaderManagerID;
-  }
-  else
-  {
-    std::pair<int, Shader> newPair = std::make_pair(shaderManagerID, Shader{ vertfile, fragfile });
-    mShaders.emplace(newPair);
-    return shaderManagerID;
-  }
-}
-
-void AAShaderManager::updateViewMatrices()
-{
-  for (auto s : mShaders)
-  {
-    AAViewport::getInstance()->updateViewMatrix(s.second);
-  }
-}
-
-void AAShaderManager::updateProjectionMatrices()
-{
-  for (auto s : mShaders)
-  {
-    AAViewport::getInstance()->updateProjectionMatrix(s.second);
-  }
-  AAViewport::getInstance()->windowViewportChangeProcessed();
-}
-
-const Shader& AAShaderManager::getShader(int id) const
-{
-  return mShaders.at(id);
-}
 
 ////////////////////SHADER/////////////////
 
-Shader::Shader(const char* vertex_file, const char* fragment_file)
+AAOGLShader::AAOGLShader(const char* vertex_file, const char* fragment_file)
 {
 
   std::string vertexCode;
@@ -90,7 +35,7 @@ Shader::Shader(const char* vertex_file, const char* fragment_file)
   }
   catch (std::ifstream::failure e)
   {
-    std::cout << "ERROR::SHADER::FILE_NOT_SUCCESFULLY_READ" << std::endl;
+    //std::cout << "ERROR::SHADER::FILE_NOT_SUCCESFULLY_READ" << std::endl;
   }
 
   const char* vertexShaderSource = vertexCode.c_str();
@@ -108,9 +53,9 @@ Shader::Shader(const char* vertex_file, const char* fragment_file)
   if (!v_success)
   {
     glGetShaderInfoLog(vertexShader, 512, nullptr, v_infoLog);
-    std::cout << "error in vertex shader, compilation failed: " << v_infoLog << std::endl;
+    //std::cout << "error in vertex shader, compilation failed: " << v_infoLog << std::endl;
     char a;
-    std::cin >> a;
+    //std::cin >> a;
     exit(-1);
   }
 
@@ -126,9 +71,9 @@ Shader::Shader(const char* vertex_file, const char* fragment_file)
   if (!f_success)
   {
     glGetShaderInfoLog(fragmentShader, 512, nullptr, f_infoLog);
-    std::cout << "error in fragment shader, compilation failed: " << f_infoLog << std::endl;
+    //std::cout << "error in fragment shader, compilation failed: " << f_infoLog << std::endl;
     char a;
-    std::cin >> a;
+    //std::cin >> a;
     exit(-1);
   }
 
@@ -145,9 +90,9 @@ Shader::Shader(const char* vertex_file, const char* fragment_file)
   if (!p_success)
   {
     glGetProgramInfoLog(ID, 512, nullptr, p_infoLog);
-    std::cout << "error in ID: " << p_infoLog << std::endl;
+    //std::cout << "error in ID: " << p_infoLog << std::endl;
     char a;
-    std::cin >> a;
+    //std::cin >> a;
     exit(-1);
   }
 
@@ -155,10 +100,10 @@ Shader::Shader(const char* vertex_file, const char* fragment_file)
   glDeleteShader(vertexShader);
   glDeleteShader(fragmentShader);
 
-  std::cout << "debug: shader ID = " << ID << std::endl;
+  //std::cout << "debug: shader ID = " << ID << std::endl;
 }
 
-Shader::Shader(const char* vertex_file, const char* fragment_file, const char* geometry_file)
+AAOGLShader::AAOGLShader(const char* vertex_file, const char* fragment_file, const char* geometry_file)
 {
 
   std::string vertexCode;
@@ -196,7 +141,7 @@ Shader::Shader(const char* vertex_file, const char* fragment_file, const char* g
   }
   catch (std::ifstream::failure e)
   {
-    std::cout << "ERROR::SHADER::FILE_NOT_SUCCESFULLY_READ" << std::endl;
+    //std::cout << "ERROR::SHADER::FILE_NOT_SUCCESFULLY_READ" << std::endl;
   }
 
   const char* vertexShaderSource = vertexCode.c_str();
@@ -215,9 +160,9 @@ Shader::Shader(const char* vertex_file, const char* fragment_file, const char* g
   if (!v_success)
   {
     glGetShaderInfoLog(vertexShader, 512, nullptr, v_infoLog);
-    std::cout << "error in vertex shader, compilation failed: " << v_infoLog << std::endl;
+    //std::cout << "error in vertex shader, compilation failed: " << v_infoLog << std::endl;
     char a;
-    std::cin >> a;
+    //std::cin >> a;
     exit(-1);
   }
 
@@ -233,9 +178,9 @@ Shader::Shader(const char* vertex_file, const char* fragment_file, const char* g
   if (!f_success)
   {
     glGetShaderInfoLog(fragmentShader, 512, nullptr, f_infoLog);
-    std::cout << "error in fragment shader, compilation failed: " << f_infoLog << std::endl;
+    //std::cout << "error in fragment shader, compilation failed: " << f_infoLog << std::endl;
     char a;
-    std::cin >> a;
+    //std::cin >> a;
     exit(-1);
   }
 
@@ -251,9 +196,9 @@ Shader::Shader(const char* vertex_file, const char* fragment_file, const char* g
   if (!g_success)
   {
     glGetShaderInfoLog(geometryShader, 512, nullptr, g_infoLog);
-    std::cout << "error in geometry shader, compilation failed: " << g_infoLog << std::endl;
+    //std::cout << "error in geometry shader, compilation failed: " << g_infoLog << std::endl;
     char a;
-    std::cin >> a;
+    //std::cin >> a;
     exit(-1);
   }
 
@@ -271,9 +216,9 @@ Shader::Shader(const char* vertex_file, const char* fragment_file, const char* g
   if (!p_success)
   {
     glGetProgramInfoLog(ID, 512, nullptr, p_infoLog);
-    std::cout << "error in ID: " << p_infoLog << std::endl;
+    //std::cout << "error in ID: " << p_infoLog << std::endl;
     char a;
-    std::cin >> a;
+    //std::cin >> a;
     exit(-1);
   }
 
@@ -285,76 +230,81 @@ Shader::Shader(const char* vertex_file, const char* fragment_file, const char* g
 
 }
 
-void Shader::use() const noexcept
+void AAOGLShader::use() const noexcept
 {
   glUseProgram(ID);
 }
 
-void Shader::stop() const noexcept
+void AAOGLShader::stop() const noexcept
 {
   glUseProgram(0);
 }
 
-void Shader::setBool(const std::string& name, bool value) const noexcept
+void AAOGLShader::setBool(const std::string& name, bool value) const noexcept
 {
   glUniform1i(glGetUniformLocation(ID, name.c_str()), (int)value);
 }
 
-void Shader::setInt(const std::string& name, int value) const noexcept
+void AAOGLShader::setInt(const std::string& name, int value) const noexcept
 {
   glUniform1i(glGetUniformLocation(ID, name.c_str()), value);
 }
 
-void Shader::setUint(const std::string& name, unsigned int value) const noexcept
+void AAOGLShader::setUint(const std::string& name, unsigned int value) const noexcept
 {
   glUniform1ui(glGetUniformLocation(ID, name.c_str()), value);
 }
-void Shader::setFloat(const std::string& name, float value) const noexcept
+void AAOGLShader::setFloat(const std::string& name, float value) const noexcept
 {
   glUniform1f(glGetUniformLocation(ID, name.c_str()), value);
 }
 
-void Shader::setVec2(const std::string& name, glm::vec2& value) const noexcept
+void AAOGLShader::setVec2(const std::string& name, glm::vec2& value) const noexcept
 {
   glUniform2fv(glGetUniformLocation(ID, name.c_str()), 1, &value[0]);
 }
 
-void Shader::setVec2(const std::string& name, float x, float y) const noexcept
+void AAOGLShader::setVec2(const std::string& name, float x, float y) const noexcept
 {
   glUniform2f(glGetUniformLocation(ID, name.c_str()), x, y);
 }
 
-void Shader::setVec3(const std::string& name, const glm::vec3& value) const noexcept
+void AAOGLShader::setVec3(const std::string& name, const glm::vec3& value) const noexcept
 {
   glUniform3fv(glGetUniformLocation(ID, name.c_str()), 1, &value[0]);
 }
 
-void Shader::setVec3(const std::string& name, float x, float y, float z) const noexcept
+void AAOGLShader::setVec3(const std::string& name, float x, float y, float z) const noexcept
 {
   glUniform3f(glGetUniformLocation(ID, name.c_str()), x, y, z);
 }
 
-void Shader::setVec4(const std::string& name, glm::vec4& value) const noexcept
+void AAOGLShader::setVec4(const std::string& name, glm::vec4& value) const noexcept
 {
   glUniform4fv(glGetUniformLocation(ID, name.c_str()), 1, &value[0]);
 }
 
-void Shader::setVec4(const std::string& name, float x, float y, float z, float w) const noexcept
+void AAOGLShader::setVec4(const std::string& name, float x, float y, float z, float w) const noexcept
 {
   glUniform4f(glGetUniformLocation(ID, name.c_str()), x, y, z, w);
 }
 
-void Shader::setMat2(const std::string& name, const glm::mat2& mat) const noexcept
+void AAOGLShader::setMat2(const std::string& name, const glm::mat2& mat) const noexcept
 {
   glUniformMatrix2fv(glGetUniformLocation(ID, name.c_str()), 1, GL_FALSE, &mat[0][0]);
 }
 
-void Shader::setMat3(const std::string& name, const glm::mat3& mat) const noexcept
+void AAOGLShader::setMat3(const std::string& name, const glm::mat3& mat) const noexcept
 {
   glUniformMatrix3fv(glGetUniformLocation(ID, name.c_str()), 1, GL_FALSE, &mat[0][0]);
 }
 
-void Shader::setMat4(const std::string& name, const glm::mat4& mat) const noexcept
+void AAOGLShader::setMat4(const std::string& name, const glm::mat4& mat) const noexcept
 {
   glUniformMatrix4fv(glGetUniformLocation(ID, name.c_str()), 1, GL_FALSE, &mat[0][0]);
+}
+
+const int AAOGLShader::getID() const
+{
+  return ID;
 }

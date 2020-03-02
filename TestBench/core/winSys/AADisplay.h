@@ -19,6 +19,7 @@ public:
   bool getIsWindowFullScreen() noexcept;
   GLFWwindow* getWindow() noexcept;
 
+  void setCursorToEnabled() noexcept;
   void setCursorToVisible() noexcept;
   void setCursorToHidden() noexcept;
   void setCursorToDisabled() noexcept;
@@ -28,7 +29,7 @@ public:
   void setWindowSize(const char to) noexcept;
   void setWindowTitle(const char* name) noexcept;
 
-  void toggleCursor()noexcept;
+  void toggleCursor() noexcept;
   void closeWindow() noexcept;
 
   // window handler(s)

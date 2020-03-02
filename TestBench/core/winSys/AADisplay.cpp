@@ -1,9 +1,6 @@
-#include <glad/glad.h>
 #include "AADisplay.h"
-#include "AAViewport.h"
 #include "AAControls.h"
 #include <memory>
-#include <iostream>
 
 AADisplay* AADisplay::getInstance()
 {
@@ -43,6 +40,11 @@ bool AADisplay::getIsWindowFullScreen() noexcept
 GLFWwindow* AADisplay::getWindow() noexcept
 {
   return mWindow;
+}
+
+void AADisplay::setCursorToEnabled() noexcept
+{
+  setCursorToVisible();
 }
 
 void AADisplay::setCursorToVisible() noexcept
@@ -201,9 +203,6 @@ void AADisplay::setWindowToFullscreenBorderless() noexcept
 
   glfwSetWindowMonitor(mWindow, nullptr, mXPos, mYPos, mWindowWidth, mWindowHeight, mode->refreshRate);
   mWindowIsFullScreen = true;
-
-
-
 }
 
 void AADisplay::clearBackBuffer() const noexcept
@@ -244,7 +243,7 @@ void AADisplay::closeWindow() noexcept
 
 void AADisplay::initGLFW() noexcept
 {
-  glfwInit();
+  glfwInit();   //todo
   glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
   glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
   glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
@@ -273,16 +272,14 @@ void AADisplay::initFromEngine()
 
   setScrollWheelHandler();
 
-  if (!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress))  // init glad (for opengl context)
-  {
-    //todo: logging without iostream
-    //std::cout << "failed to init glad\n";
-    //char tmp;
-    //std::cin >> tmp;
-    exit(-1);
-  }
-
-  AAViewport::getInstance()->resetViewportVars();
+  //if (!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress))  // init glad (for opengl context)
+  //{
+  //  //todo: logging without iostream
+  //  //std::cout << "failed to init glad\n";
+  //  //char tmp;
+  //  //std::cin >> tmp;
+  //  exit(-1);
+  //}
 
 }
 
@@ -297,7 +294,6 @@ void AADisplay::resetStateDataToDefault()
   mWindowClearColor = glm::vec3(0.35f, 0.15f, 0.35f);
   mMouseReporting = MouseReporting::STANDARD;
   glfwDestroyWindow(mWindow);
-  AAViewport::getInstance()->resetViewportVars();
 }
 
 // ---------------
@@ -309,7 +305,7 @@ void AADisplay::reshapeWindowHandler(GLFWwindow* window, int width, int height)
   mWindowWidth = width;
   mWindowHeight = height;
   glViewport(0, 0, mWindowWidth, mWindowHeight);
-  AAViewport::getInstance()->windowViewportChanged();
+  //AAViewport::getInstance()->windowViewportChanged();  //todo: make this work with context viewports
 }
 
 extern "C" void reshapeCallback(GLFWwindow * window, int w, int h)

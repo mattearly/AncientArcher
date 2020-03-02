@@ -1,31 +1,65 @@
 #include "AAGameObject.h"
-#include "AAViewport.h"
+#include "AAOGLGraphics.h"
+#include "../cameraSys/AACamera.h"
 #include <glad\glad.h>
 #include <iostream>
+#include <ColliderBox.h>
 
-glm::mat4* AAGameObject::getModelMatrix() noexcept
+#define assLoad AAOGLGraphics::getInstance()->loadGameObjectWithAssimp
+
+static int uniqueIDs = 0;
+
+//glm::mat4* AAGameObject::getModelMatrix() noexcept
+//{
+//  return &mModelMatrix;
+//}
+
+const glm::mat4& AAGameObject::getModelMatrix() const noexcept
 {
-  return &mModelMatrix;
+  // TODO: insert return statement here
+  return mModelMatrix;
 }
 
-AAGameObject::AAGameObject(std::vector<MeshDrawInfo> meshes)
-  : mMeshes(meshes)
+const int AAGameObject::getShaderId() const noexcept
 {
-  mImpedes = false;
+  return mShaderID;
+}
+const int AAGameObject::getCameraId() const noexcept
+{
+  return mCameraID;
+}
+const int AAGameObject::getObjectId() const noexcept
+{
+  return mObjectID;
 }
 
-AAGameObject::AAGameObject(std::vector<MeshDrawInfo> meshes, glm::vec3 collider_loc, glm::vec3 collider_sz)
-  : mMeshes(meshes)
+//AAGameObject::AAGameObject(std::vector<MeshDrawInfo> meshes) : mMeshes(meshes)
+//{
+//}
+
+AAGameObject::AAGameObject(const char* path, int camId, int shadId)
 {
-  mColliderBox = std::make_unique<mearly::ColliderBox>(collider_loc, collider_sz);
-  mImpedes = true;
+  std::vector<MeshDrawInfo> meshes = assLoad(path, false);  // no triangulate
+
+  mMeshes = meshes;
+  mCameraID = camId;
+  mShaderID = shadId;
+  mObjectID = uniqueIDs++;
 }
 
-void AAGameObject::draw(const Shader& shader)
+void AAGameObject::setCamera(int id) noexcept
 {
-  shader.use();
-  shader.setMat4("view", AAViewport::getInstance()->getViewMatrix());
-  shader.setMat4("model", mModelMatrix);
+  mCameraID = id;
+}
+
+void AAGameObject::setShader(int id) noexcept
+{
+  mShaderID = id;
+}
+
+void AAGameObject::draw(const AAOGLShader& modelShader) const
+{
+  modelShader.setMat4("model", mModelMatrix);
 
   glEnable(GL_DEPTH_TEST);
 
@@ -39,11 +73,11 @@ void AAGameObject::draw(const Shader& shader)
       //shader.use();
       if (texType == "color")
       {
-        shader.setVec3("material.color", m.textures[i].color);
+        modelShader.setVec3("material.color", m.textures[i].color);
       }
       else
       {
-        glUniform1i(glGetUniformLocation(shader.ID, ("material." + texType).c_str()), i);
+        glUniform1i(glGetUniformLocation(modelShader.getID(), ("material." + texType).c_str()), i);
       }
 
       glBindTexture(GL_TEXTURE_2D, m.textures[i].id);
@@ -129,7 +163,7 @@ void AAGameObject::updateModelMatrix()
   mModelMatrix = glm::rotate(mModelMatrix, mRotateAngle, mRotateAxis);
 }
 
-MeshDrawInfo::MeshDrawInfo(unsigned int a, unsigned int b, unsigned int e, std::vector<TextureInfo> t, std::vector<unsigned int> el)
-  : vao(a), vbo(b), ebo(e), textures(t), elements(el)
+MeshDrawInfo::MeshDrawInfo(unsigned int a,/* unsigned int b, unsigned int e,*/ std::vector<TextureInfo> t, std::vector<unsigned int> el)
+  : vao(a),/* vbo(b), ebo(e),*/ textures(t), elements(el)
 {
 }

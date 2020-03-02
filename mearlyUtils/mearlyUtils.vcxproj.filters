@@ -30,6 +30,9 @@
     <ClCompile Include="Filesystem.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="FPPWorldLocation.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Random.h">
@@ -45,6 +48,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Filesystem.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="FPPWorldLocation.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

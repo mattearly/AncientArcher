@@ -18,43 +18,40 @@
     <ClCompile Include="tests\main.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="world\AAControls.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="world\AADisplay.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="world\AAGameObject.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="world\AAOGLGraphics.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="world\AAShaderManager.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="world\AASkybox.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="world\AASound.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="world\AAViewport.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="world\AAWorld.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="world\glad.c">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="world\stb_image.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="tests\dry\LoadableAssets.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="tests\dry\LoadOBJ.cpp">
+    <ClCompile Include="core\cameraSys\AACamera.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="core\objectSys\AAGameObject.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="core\objectSys\AAOGLGraphics.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="core\objectSys\AASkybox.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="core\winSys\AAControls.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="core\winSys\AADisplay.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="core\soundPlugin\AASound.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="core\worldLoop\AAWorld.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="core\objectSys\stb_image.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="core\objectSys\shaderSys\AAOGLShader.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="core\objectSys\glad.c">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -68,58 +65,52 @@
     <ClInclude Include="tests\dry\delay.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="tests\dry\setWindowToBorderless.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="tests\assimpModel.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="world\AAControls.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="world\AADisplay.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="world\AAGameObject.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="world\AAInput.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="world\AALights.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="world\AAOGLGraphics.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="world\AAShaderManager.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="world\AASkybox.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="world\AASound.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="world\AAViewport.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="world\AAWorld.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="tests\engineDemoWorld.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="tests\engineLoopBase.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="tests\dry\addRandomWorld.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="tests\dry\LoadableAssets.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="tests\dry\LoadOBJ.h">
+    <ClInclude Include="tests\coreTests.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="tests\dry\ModelHeader.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="core\cameraSys\AACamera.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="core\objectSys\AAGameObject.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="core\objectSys\AAOGLGraphics.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="core\objectSys\AASkybox.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="core\winSys\AAControls.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="core\winSys\AADisplay.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="core\winSys\AAInput.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="core\soundPlugin\AASound.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="core\worldLoop\AAWorld.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="core\objectSys\shaderSys\AALights.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="core\objectSys\shaderSys\AAOGLShader.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="AAEngine.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
