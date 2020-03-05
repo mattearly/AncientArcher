@@ -26,54 +26,77 @@ struct MeshDrawInfo
   std::vector<unsigned int> elements;
 };
 
+struct InstanceDetails
+{
+  void updateModelMatrix();
+  glm::mat4 ModelMatrix = glm::mat4(1);
+
+  InstanceDetails();
+  InstanceDetails(glm::vec3 scale, glm::vec3 rotAx, glm::vec3 transl, float rotAng);
+  // updateModelMatrix uses these
+  glm::vec3 Scale = glm::vec3(1);
+  glm::vec3 RotationAxis = glm::vec3(1);
+  glm::vec3 Translate = glm::vec3(0);
+  float RotationAngle = 0.f;
+};
+
 class AAGameObject
 {
 public:
-  // must manually set ethe cam and shader id if using this one
-  //AAGameObject(std::vector<MeshDrawInfo> meshes);
 
   AAGameObject(const char* path, int camId, int shadId);
-
-  //void draw();
+  AAGameObject(const char* path, int camId, int shadId, std::vector<InstanceDetails> details);
 
   // getters
-  const glm::vec3& getLocation() const noexcept;
-  const glm::mat4& getModelMatrix() const noexcept;
+
+  const glm::vec3& getLocation() const;
+  const glm::vec3& getLocation(int which) const;
+  const glm::mat4& getModelMatrix() const;
+  const glm::mat4& getModelMatrix(int which) const;
   const int getShaderId() const noexcept;
   const int getCameraId() const noexcept;
   const int getObjectId() const noexcept;
+  int getInstanceCount() const noexcept;
 
   // setters
+
   void setCamera(int id) noexcept;
   void setShader(int id) noexcept;
 
+  // modifiers
+
+  void scale(glm::vec3 amt, int which);
   void scale(glm::vec3 amt);
+  void rotate(float angle, glm::vec3 axis, int which);
   void rotate(float angle, glm::vec3 axis);
-  void translate(glm::vec3 amt);
+  void translateTo(glm::vec3 amt, int which);
+  void translateTo(glm::vec3 amt);
   void advanceScale(glm::vec3 amt);
+  void advanceScale(glm::vec3 amt, int which);
   void advanceRotation(float angleAmtRadians);
+  void advanceRotation(float angleAmtRadians, int which);
   void advanceTranslate(glm::vec3 amt);
+  void advanceTranslate(glm::vec3 amt, int which);
   void changeRotateAxis(glm::vec3 axis);
+  void changeRotateAxis(glm::vec3 axis, int which);
+
+  bool isSingleInstance() const;
 
   friend class AAWorld;
 
 private:
 
   // only AAWorld can call draw
-  void draw(const AAOGLShader& modelShader) const;
+  void draw(const AAOGLShader& modelShader);
 
   int mCameraID = -1;
   int mShaderID = -1;
   int mObjectID = -1;
 
   std::vector<MeshDrawInfo> mMeshes;
+  std::vector<InstanceDetails> mInstanceDetails;  // for instancing multiple objects, sized to the number of this object in our world
 
-  glm::vec3 mScale         = glm::vec3(1);
-  glm::vec3 mRotateAxis    = glm::vec3(1);
-  float mRotateAngle       = 0.f;
-  glm::vec3 mTranslate     = glm::vec3(1);
+  // helpers
+  void updateModelMatrix(int which);
 
-  void updateModelMatrix();
-
-  glm::mat4 mModelMatrix   = glm::mat4(1);
 };

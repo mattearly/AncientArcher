@@ -19,7 +19,8 @@ void LoadableAssets::getDemoConfig(std::string& out_dir, std::vector<std::string
     return;  //todo: log error
   }
 
-  std::vector<std::filesystem::path> all_files = mearly::FileSystem::cpp17_GetAllFileNamesInFolder(demoFilePath);  // all the files in the path
+  // all the files in the path
+  std::vector<std::filesystem::path> all_files = mearly::FileSystem::cpp17_GetAllFileNamesInFolder(demoFilePath);
 
   if (all_files.size() == 0)
   {

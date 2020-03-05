@@ -2,21 +2,22 @@
 in vec3 fragPos;
 in vec2 texUV;
 in vec3 norm; //unused
+in vec3 color;
 
 out vec4 fragColor;
 
 struct Material
 {
   sampler2D diffuse;
-  vec3 color;
 };
 
 uniform Material material;
 
 void main()
 {
-  vec3 result = texture(material.diffuse, texUV).rgb;
-  result *= material.color;
-//  result += material.color;
-  fragColor = vec4(result, 1.0);
+ // const vec4 ambient(.2, .2, .2, 1.0); 
+  vec4 result =  texture(material.diffuse, texUV);
+//  result *= ambient;
+  
+  fragColor = result;
 }

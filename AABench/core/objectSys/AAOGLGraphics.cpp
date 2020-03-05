@@ -84,21 +84,21 @@ MeshDrawInfo AAOGLGraphics::processMesh(aiMesh* mesh, const aiScene* scene)
 
   aiMaterial* material = scene->mMaterials[mesh->mMaterialIndex];
   std::vector<TextureInfo> loadedTextures;
-  aiColor4D diffuse;
-  if (AI_SUCCESS == aiGetMaterialColor(material, AI_MATKEY_COLOR_DIFFUSE, &diffuse))
-  {
-    //unsigned int id = 0;
-    //std::string type;
-    //std::string path;
-    //glm::vec3 color = glm::vec3(0);
-    glm::vec3 color = glm::vec3(diffuse.r, diffuse.g, diffuse.b);
-    TextureInfo rawColorMap;
-    rawColorMap.id = 0;
-    rawColorMap.type = "color";
-    rawColorMap.path = "";
-    rawColorMap.color = color;
-    loadedTextures.push_back(rawColorMap);
-  }
+  //aiColor4D diffuse;
+  //if (AI_SUCCESS == aiGetMaterialColor(material, AI_MATKEY_COLOR_DIFFUSE, &diffuse))
+  //{
+  //  //unsigned int id = 0;
+  //  //std::string type;
+  //  //std::string path;
+  //  //glm::vec3 color = glm::vec3(0);
+  //  glm::vec3 color = glm::vec3(diffuse.r, diffuse.g, diffuse.b);
+  //  TextureInfo rawColorMap;
+  //  rawColorMap.id = 0;
+  //  rawColorMap.type = "color";
+  //  rawColorMap.path = "";
+  //  rawColorMap.color = color;
+  //  loadedTextures.push_back(rawColorMap);
+  //}
 
   std::vector<TextureInfo> diffuseMaps = loadMaterialTextures(material, aiTextureType_DIFFUSE, "diffuse");
   loadedTextures.insert(loadedTextures.end(), diffuseMaps.begin(), diffuseMaps.end());

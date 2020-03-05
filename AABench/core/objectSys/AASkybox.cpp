@@ -47,6 +47,11 @@ void AASkybox::render(const AACamera& cam)
   glDepthFunc(GL_LESS); // set depth function back to default
 }
 
+void AASkybox::setProjectionMatrix(const AACamera& cam)
+{
+  loadProjectionMatrix(cam);
+}
+
 /**
  * Loads up a cube that is pushed to the graphics card. skyboxVAO and skyboxVBO are populated with IDs.
  */

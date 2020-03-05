@@ -19,6 +19,9 @@ public:
 
   //void render(const AAOGLShader& shader);
 
+  // to be manually called as needed
+  void setProjectionMatrix(const AACamera& cam);
+
 private:
 
   void loadSkybox();

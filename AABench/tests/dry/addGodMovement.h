@@ -17,7 +17,7 @@
 
 #define UP mearly::FPPWorldLocation::getWorldUp()
 
-const float startingSpeed = 33.5f;
+const float startingSpeed = 10.5f;
 
 extern AAWorld mainWorld;
 
@@ -29,29 +29,12 @@ int setGodCamWithMovement()
 
   static int mainCamId;
   mainCamId = mainWorld.addCamera();
-
   mainWorld.setRenderDistance(mainCamId, 10000.f);
 
   static constexpr float MAXFLYSPEED = 400.f;
   static float currFlySpeed = startingSpeed;
   static float prevFlySpeed = startingSpeed;
   static constexpr float FlyIncrement = 2.5f;
-
-  // position testing help
-  static auto showLocation = []()
-  {
-    // show camera location
-    //std::cout << "X: " << AAViewport::getInstance()->getPosition()->x
-    //  << "  Z: " << AAViewport::getInstance()->getPosition()->z
-    //  << "  Y: " << AAViewport::getInstance()->getPosition()->y << '\n';
-    std::cout << "location info of camera turned off in code\n";
-  };
-  static auto showPitchAndYaw = []()
-  {
-    //std::cout << "PITCH: " << AAViewport::getInstance()->getPitch()
-    //  << "  YAW: " << AAViewport::getInstance()->getYaw() << '\n';
-    std::cout << "pitch yaw loc turned off in code\n";
-  };
 
   const auto fpsKBNoClipFlying = [](AAKeyBoardInput& keys)
   {
@@ -84,7 +67,6 @@ int setGodCamWithMovement()
     // process going up and down
     if (!keys.leftShift && keys.spacebar)
     {
-                              //world up
       directionPlacement += UP * fps60velocity;
     }
     if (keys.leftShift && keys.spacebar)
@@ -106,7 +88,7 @@ int setGodCamWithMovement()
   };
   mainWorld.addToMouseHandling(fpsMouseMovement);
 
-  auto fpsScrollChangesMoveSpeed = [](AAScrollInput& scroll)
+  auto scrollChangesMoveSpeed = [](AAScrollInput& scroll)
   {
     // set flyspeed when mouse wheel moves
     if (scroll.yOffset > 0.1f)
@@ -130,14 +112,10 @@ int setGodCamWithMovement()
     }
     if (currFlySpeed != prevFlySpeed)
     {
-      std::cout << "+++\n";
-      std::cout << "FLYSPEED: " << currFlySpeed << std::endl;    // show flySpeed in debug console if it changed since last frame.
-      showLocation();
-      showPitchAndYaw();
       prevFlySpeed = currFlySpeed;
     }
   };
-  mainWorld.addToScrollHandling(fpsScrollChangesMoveSpeed);
+  mainWorld.addToScrollHandling(scrollChangesMoveSpeed);
 
   const auto escapeTogglesMouseDisplay = [](AAKeyBoardInput& keys)
   {
@@ -149,7 +127,6 @@ int setGodCamWithMovement()
     return false;
   };
   mainWorld.addToTimedOutKeyHandling(escapeTogglesMouseDisplay);
-
 
   return mainCamId;
 }

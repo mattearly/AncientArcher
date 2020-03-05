@@ -27,10 +27,8 @@ public:
   // getters
   const AACamera& getCamera(int camId) const;
   AACamera& getCamera(int camId);
-
   const AAOGLShader& getShader(int shadId) const;
   AAOGLShader& getShader(int shadId);
-
   const AAGameObject& getGameObject(int objId) const;
   AAGameObject& getGameObject(int objId);
 
@@ -38,6 +36,7 @@ public:
   int addCamera();
   int addShader(const char* vert_path, const char* frag_path);
   int addObject(const char* path, int cam_id, int shad_id);
+  int addObject(const char* path, int cam_id, int shad_id, const std::vector<InstanceDetails>& details);
 
   // functions the engine loops through
   void addToOnBegin(void(*function)());
@@ -64,7 +63,7 @@ public:
   void setCursorToDisabled();
   void setCursorToEnabled();
   void setRenderDistance(int camId, float amt);
-  void setProjectionMatrix(int camId, int shadId);
+  void setProjectionMatrix(int shadId, int camId);
 
   friend class AAControls;
 
@@ -85,18 +84,18 @@ private:
   float mTimeOutCheckStamp;
   float mButtonTimeOutSoFar;
 
-  std::vector<AACamera> mCameras;
-  std::vector<AAOGLShader> mShaders;
+  std::vector<AACamera>     mCameras;
+  std::vector<AAOGLShader>  mShaders;
   std::vector<AAGameObject> mGameObjects;
 
-  std::vector<void (*)()> onBegin;
-  std::vector<void (*)(float)> onDeltaUpdate;
+  std::vector<void (*)()>                 onBegin;
+  std::vector<void (*)(float)>            onDeltaUpdate;
   std::vector<void (*)(AAKeyBoardInput&)> onKeyHandling;
   std::vector<bool (*)(AAKeyBoardInput&)> onTimeoutKeyHandling;
-  std::vector<void (*)(AAScrollInput&)> onScrollHandling;
-  std::vector<void (*)(AAMouseInput&)> onMouseHandling;
-  std::vector<void (*)()> onUpdate;
-  std::vector<void (*)()> onSlowUpdate;
+  std::vector<void (*)(AAScrollInput&)>   onScrollHandling;
+  std::vector<void (*)(AAMouseInput&)>    onMouseHandling;
+  std::vector<void (*)()>                 onUpdate;
+  std::vector<void (*)()>                 onSlowUpdate;
 
   void initEngine();
   void initDisplay();
