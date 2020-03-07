@@ -1,17 +1,12 @@
 #pragma once
 #include "LoadableAssets.h"
 #include <math.h>
-#include <Random.h>
+#include "Random.h"
 #include "../../AAEngine.h"
 #include "../../core/soundPlugin/AASound.h"
 #include "../../core/objectSys/shaderSys/AALights.h"
-#include "Random.h"
-
-using namespace mearly;
 
 static int i = 0;
-#define fo(i, n) for(i=0; i<n; ++i)
-#define log(x) std::cout << #x << " = " << x << '\n';
 
 extern AAWorld mainWorld;
 
@@ -38,20 +33,44 @@ void addRandomWorld(int cam_id)
     constexpr int ceilingHeight = 40.f;
 
     // for each loadable model detected
-    fo(i, numLoadableModels)
+    for (i = 0; i < numLoadableModels; ++i)
     {
-      // add an object
-      mainWorld.addObject(std::string(assetDir + loadableModels.at(i)).c_str(), camID, mainShaderId);
-      // place in a random x/z location within room width
-      mainWorld.getGameObject(i).translateTo(
-        glm::vec3(
-          Random::NTKR(-roomWidth, roomWidth),
-          floorHeight,
-          Random::NTKR(-roomWidth, roomWidth)
-        )
-      );
-    }
+      // ------------ multi instance example ---------------------------------
+      // add multiple obects by giving a vec of instance details
+      constexpr int num_instances = 100;
+      // make some details for the object instances
+      std::vector<InstanceDetails> details;
+      for (int j = 0; j < num_instances; ++j)
+      {
+        const InstanceDetails inst;
+        //inst.Translate = glm::vec3(mearly::Random::NTKR(-roomWidth, roomWidth), floorHeight, mearly::Random::NTKR(-roomWidth, roomWidth));
+        details.push_back(inst);
+      }
 
+      // add the object along with a detail vector
+      mainWorld.addObject(std::string(assetDir + loadableModels.at(i)).c_str(), camID, mainShaderId, details);
+
+      // translate the objects around randomly
+      for (int j = 0; j < num_instances; ++j) {
+        mainWorld.getGameObject(i).translateTo(
+          glm::vec3(mearly::Random::NTKR(-roomWidth, roomWidth), floorHeight, mearly::Random::NTKR(-roomWidth, roomWidth)),
+          j
+        );
+      }
+
+
+      // ---------------------- single instance exmaple -------------------
+      //// add an object
+      //mainWorld.addObject(std::string(assetDir + loadableModels.at(i)).c_str(), camID, mainShaderId);
+      //// place in a random x/z location within room width
+      //mainWorld.getGameObject(i).translateTo(
+      //  glm::vec3(
+      //    mearly::Random::NTKR(-roomWidth, roomWidth),
+      //    floorHeight,
+      //    mearly::Random::NTKR(-roomWidth, roomWidth)
+      //  )
+      //);
+    }
   }
 
   static AASound sound;
