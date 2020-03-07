@@ -12,7 +12,6 @@ public:
   void updateCameraVectors();
 
   // setters
-  void setRenderDistance(float distance) noexcept;
   void setToPerspective() noexcept;
   void setCurrentPosition(glm::vec3 pos);
   void setCurrentPitch(float pitch);
@@ -37,9 +36,7 @@ public:
   float getRenderDistance() const noexcept;
   const int& getID() const noexcept;
 
-  bool hasViewportChanged() const noexcept;
-
-  friend class AAShaderManager;
+  friend class AAWorld;
   
 private:
 
@@ -56,8 +53,8 @@ private:
   int              mUniqueViewportID;
   RenderProjection mRenderProjection;
 
-  void windowViewportChanged() noexcept;
-  void windowViewportChangeProcessed() noexcept;
-
   void resetViewportVars();
+
+  void setRenderDistance(float distance) noexcept;
+
 };

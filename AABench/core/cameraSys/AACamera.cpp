@@ -71,16 +71,6 @@ void AACamera::resetViewportVars()
   mUp = glm::normalize(mUp);
 }
 
-void AACamera::windowViewportChanged() noexcept
-{
-  mProjectionChanged = true;
-}
-
-void AACamera::windowViewportChangeProcessed() noexcept
-{
-  mProjectionChanged = false;
-}
-
 void AACamera::setToPerspective() noexcept
 {
   mRenderProjection = RenderProjection::PERSPECTIVE;
@@ -111,7 +101,7 @@ void AACamera::setOrthoFieldSize(glm::vec4 lrbt) noexcept
 void AACamera::setRenderDistance(float distance) noexcept
 {
   mRenderDistance = distance;
-  windowViewportChanged();
+  //updateViewport();
 }
 
 void AACamera::setCurrentPosition(glm::vec3 pos)
@@ -232,11 +222,6 @@ float AACamera::getPitch() const noexcept
 float AACamera::getRenderDistance() const noexcept
 {
   return mRenderDistance;
-}
-
-bool AACamera::hasViewportChanged() const noexcept
-{
-  return mProjectionChanged;
 }
 
 const int& AACamera::getID() const noexcept
