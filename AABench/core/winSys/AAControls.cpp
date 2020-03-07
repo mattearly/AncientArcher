@@ -24,7 +24,8 @@ void AAControls::perspectiveMouseMovement(float x, float y) noexcept
 {
   //first person
   static bool firstMouse = true;
-  static float lastX(0.f), lastY(0.f), xOffset(0.f), yOffset(0.f);
+  static float lastX(0.f), lastY(0.f);
+  float xOffset(0.f), yOffset(0.f);
   if (firstMouse)
   {
     lastX = x;
@@ -48,8 +49,10 @@ void AAControls::perspectiveMouseMovement(float x, float y) noexcept
 
 void AAControls::standardMouseMovement(float xpos, float ypos) noexcept
 {
-  mMousePosition.xOffset = xpos;
-  mMousePosition.yOffset = ypos;
+  const float c_xpos = xpos / AADisplay::getInstance()->getWindowWidth();
+  const float c_ypos = ypos / AADisplay::getInstance()->getWindowHeight();
+  mMousePosition.xOffset = c_xpos;
+  mMousePosition.yOffset = c_ypos;
 }
 
 void AAControls::mouseScrollWheelMovement(float x, float y) noexcept

@@ -57,7 +57,6 @@ void addRandomWorld(int cam_id)
   static AASound sound;
   sound.addSoundEffects(assetDir, loadableSounds);
 
-  mainWorld.setKeyTimeoutLength(.3f);
   const auto soundHotkeys = [](AAKeyBoardInput& keys)
   {
     if (keys.mouseButton1)
