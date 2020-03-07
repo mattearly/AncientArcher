@@ -6,7 +6,7 @@
 #include "../../core/soundPlugin/AASound.h"
 #include "../../core/objectSys/shaderSys/AALights.h"
 
-static int i = 0;
+//static int i = 0;
 
 extern AAWorld mainWorld;
 
@@ -33,7 +33,7 @@ void addRandomWorld(int cam_id)
     constexpr int ceilingHeight = 40.f;
 
     // for each loadable model detected
-    for (i = 0; i < numLoadableModels; ++i)
+    for (int i = 0; i < numLoadableModels; ++i)
     {
       // ------------ multi instance example ---------------------------------
       // add multiple obects by giving a vec of instance details
