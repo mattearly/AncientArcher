@@ -56,7 +56,7 @@ public:
   const int getShaderId() const noexcept;
   const int getCameraId() const noexcept;
   const int getObjectId() const noexcept;
-  int getInstanceCount() const noexcept;
+  const int getInstanceCount() const noexcept;
 
   // setters
 

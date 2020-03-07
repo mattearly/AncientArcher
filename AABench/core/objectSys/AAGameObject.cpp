@@ -9,11 +9,6 @@
 
 static int uniqueIDs = 0;
 
-//glm::mat4* AAGameObject::getModelMatrix() noexcept
-//{
-//  return &mModelMatrix;
-//}
-
 const glm::mat4& AAGameObject::getModelMatrix() const
 {
   return getModelMatrix(0);
@@ -24,6 +19,7 @@ const glm::mat4& AAGameObject::getModelMatrix(int which) const
   if (which < getInstanceCount()) {
     return mInstanceDetails.at(which).ModelMatrix;
   }
+  // produces warning, but don't worry, it can't get here by design
 }
 
 const int AAGameObject::getShaderId() const noexcept
@@ -40,14 +36,10 @@ const int AAGameObject::getObjectId() const noexcept
 }
 
 // returns the size of the InstanceDetails vector. a size of 1 would indicate a single instance of the object, accessable at location 0. a size of 0 should never be seen
-int AAGameObject::getInstanceCount() const noexcept
+const int AAGameObject::getInstanceCount() const noexcept
 {
-  return mInstanceDetails.size();
+  return static_cast<int>(mInstanceDetails.size());
 }
-
-//AAGameObject::AAGameObject(std::vector<MeshDrawInfo> meshes) : mMeshes(meshes)
-//{
-//}
 
 AAGameObject::AAGameObject(const char* path, int camId, int shadId)
 {
@@ -102,22 +94,10 @@ void AAGameObject::draw(const AAOGLShader& modelShader)
 
       //might not need shader.use() here but leaving it to be
       modelShader.use();
-      
+
       // tell opengl to bind the texture to a model shader uniform var
       glUniform1i(glGetUniformLocation(modelShader.getID(), ("material." + texType).c_str()), i);
       glBindTexture(GL_TEXTURE_2D, m.textures[i].id);
-
-      //if (texType == "color")
-      //{
-      //  //std::cout << " setting color\n";
-      //  // set color vec3 as it registers as a texture type
-      //  modelShader.setVec3("material.color", m.textures[i].color);
-      //}
-      //else
-      //{
-
-      //}
-
     }
 
     // bind verts
@@ -163,6 +143,7 @@ void AAGameObject::rotate(float angle, glm::vec3 axis, int which)
     mInstanceDetails.at(which).RotationAngle = angle;
     mInstanceDetails.at(which).RotationAxis = axis;
   }
+
   updateModelMatrix(which);
 }
 
@@ -258,6 +239,7 @@ const glm::vec3& AAGameObject::getLocation(int which) const
   if (which < getInstanceCount()) {
     return mInstanceDetails.at(which).Translate;
   }
+  // produces warning, but don't worry, it can't get here by design
 }
 
 // the one true call
@@ -276,7 +258,7 @@ MeshDrawInfo::MeshDrawInfo(unsigned int a,/* unsigned int b, unsigned int e,*/ s
 void InstanceDetails::updateModelMatrix()
 {
   // reset ModelMatrix
-  ModelMatrix = glm::mat4(1);  
+  ModelMatrix = glm::mat4(1);
 
   // INTERNET SAYS: Scale, Rotate, Translate [SRT], however this does all kinds of weird sh*t in our case.
   //mModelMatrix = glm::scale(mModelMatrix, mScale);
@@ -303,7 +285,7 @@ InstanceDetails::InstanceDetails()
 InstanceDetails::InstanceDetails(glm::vec3 scale, glm::vec3 rotAx, glm::vec3 transl, float rotAng)
 {
   Scale = scale;
-  
+
   // if invalid rotation axis entry
   if (rotAx.x == 0 && rotAx.y == 0 && rotAx.z == 0)
   {
@@ -317,7 +299,6 @@ InstanceDetails::InstanceDetails(glm::vec3 scale, glm::vec3 rotAx, glm::vec3 tra
 
   Translate = transl;
   RotationAngle = rotAng;
-
 
   updateModelMatrix();
 
