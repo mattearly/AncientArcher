@@ -6,14 +6,14 @@
 #include "../../core/soundPlugin/AASound.h"
 #include "../../core/objectSys/shaderSys/AALights.h"
 
-//static int i = 0;
-
 extern AAWorld mainWorld;
 
 void addRandomWorld(int cam_id)
 {
   static int camID = cam_id;
-  static int mainShaderId = mainWorld.addShader("../shaders/vert_default.glsl", "../shaders/frag_noLight.glsl");  // shader with pure diffuse on textures
+
+  // shader with pure diffuse on textures
+  static int mainShaderId = mainWorld.addShader("../shaders/vert_default.glsl", "../shaders/frag_noLight.glsl");
 
   // see what demo files we have in our data dir
   std::string assetDir;
@@ -22,29 +22,26 @@ void addRandomWorld(int cam_id)
 
   LoadableAssets pathsToLoadables;
   pathsToLoadables.getDemoConfig(assetDir, loadableModels, loadableSounds);
-  static const int numLoadableModels = loadableModels.size();
-  log(numLoadableModels);
+  static const int numLoadableModels = loadableModels.size();  // produces warning
 
   if (numLoadableModels > 0)
   {
     // vars to use
-    constexpr int floorHeight = -10.f;
-    constexpr int roomWidth = 40.f;
-    constexpr int ceilingHeight = 40.f;
+    constexpr float floorHeight = -10.f; 
+    constexpr float roomWidth = 40.f;
+    constexpr float ceilingHeight = 40.f;
 
     // for each loadable model detected
     for (int i = 0; i < numLoadableModels; ++i)
     {
       // ------------ multi instance example ---------------------------------
-      // add multiple obects by giving a vec of instance details
+      // add multiple objects by giving a vec of instance details
       constexpr int num_instances = 100;
       // make some details for the object instances
       std::vector<InstanceDetails> details;
       for (int j = 0; j < num_instances; ++j)
       {
-        const InstanceDetails inst;
-        //inst.Translate = glm::vec3(mearly::Random::NTKR(-roomWidth, roomWidth), floorHeight, mearly::Random::NTKR(-roomWidth, roomWidth));
-        details.push_back(inst);
+        details.push_back(InstanceDetails());
       }
 
       // add the object along with a detail vector
