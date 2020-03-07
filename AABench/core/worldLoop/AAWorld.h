@@ -32,8 +32,8 @@ public:
   const AAGameObject& getGameObject(int objId) const;
   AAGameObject& getGameObject(int objId);
 
-  MouseReporting getMouseReportingMode() const noexcept;
-  int getCursorMode() const noexcept;
+  const MouseReporting getMouseReportingMode() const;
+  const int getCursorMode() const;
 
   // add to the world to use while processing data, these return a unique id each add for the object type
   int addCamera();

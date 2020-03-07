@@ -3,9 +3,7 @@
 #include <GLFW/glfw3.h>
 #include <vector>
 #include <string>
-#include <iostream>
-
-#define deb(x) std::cout << #x << " = " << x << '\n';
+//#include <iostream>
 
 int AAWorld::runMainLoop()
 {
@@ -26,7 +24,6 @@ int AAWorld::runMainLoop()
 
 void AAWorld::shutdown()
 {
-  //resetData();
   //DISPLAY->resetStateDataToDefault();
   DISPLAY->closeWindow();
 }
@@ -47,7 +44,6 @@ void AAWorld::render()
 
     // switch to the shader
     getShader(shaderID).use();
-
 
     // get the camera id for this object
     const int cameraID = obj.getCameraId();
@@ -83,10 +79,10 @@ void AAWorld::setProjectionMatToAllShadersFromFirstCam_hack()
   {
     //shad.setMat4("projection", mCameras.front().getProjectionMatrix());
     const int sID = shad.getID();
-    std::cout << "shad id: " << sID << '\n';
+    //std::cout << "shad id: " << sID << '\n';
 
     const int cID = mCameras.front().getID();
-    std::cout << "shad id: " << sID << '\n';
+    //std::cout << "shad id: " << sID << '\n';
 
     setProjectionMatrix(sID, cID);  //set shader (sID) from cam (cID)
   }
@@ -158,9 +154,9 @@ void AAWorld::update()
   // Snap cursor to the middle of the screen if it is in perspective and cursor is disabled (FPP mode)
   if (getMouseReportingMode() == MouseReporting::PERSPECTIVE && getCursorMode() == GLFW_CURSOR_DISABLED)
   {
-    std::cout << " in perspective calc \n";
-    deb(CONTROLS->mMousePosition.xOffset);
-    deb(CONTROLS->mMousePosition.yOffset);
+    //std::cout << " in perspective calc \n";
+    //deb(CONTROLS->mMousePosition.xOffset);
+    //deb(CONTROLS->mMousePosition.yOffset);
 
     CONTROLS->mMousePosition.xOffset = 0; 
     CONTROLS->mMousePosition.yOffset = 0;
@@ -168,9 +164,9 @@ void AAWorld::update()
   else if (getMouseReportingMode() == MouseReporting::STANDARD && getCursorMode() == GLFW_CURSOR_NORMAL) // standard and normal
   {
     // dont snap the position
-    std::cout << " in standard mouse reporting calc\n";
-    deb(CONTROLS->mMousePosition.xOffset);
-    deb(CONTROLS->mMousePosition.yOffset);
+    //std::cout << " in standard mouse reporting calc\n";
+    //deb(CONTROLS->mMousePosition.xOffset);
+    //deb(CONTROLS->mMousePosition.yOffset);
   }
 
   // run through user prefered updates
@@ -206,7 +202,7 @@ void AAWorld::initEngine()
   // Init OpenGL
   if (!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress))  // init glad (for opengl context) -- must be after initDisplay
   {
-    std::cout << "failed to init glad @ file " __FILE__ << " line " << __LINE__ << '\n';
+    //std::cout << "failed to init glad @ file " __FILE__ << " line " << __LINE__ << '\n';
     exit(-1);
   }
 }
@@ -263,8 +259,8 @@ int AAWorld::addObject(const char* path, int cam_id, int shad_id, const std::vec
 {
   // todo: optimize. check if it is an object we already have loaded and use it again if so
 
-
   AAGameObject tmpObject(path, cam_id, shad_id, details);
+
   const int return_id = tmpObject.getObjectId();
 
   mGameObjects.push_back(tmpObject);
@@ -301,7 +297,7 @@ const AACamera& AAWorld::getCamera(int camId) const
   }
 
   // if it didn't find it and return above ^^^^^^^^  show error message in console
-  std::cout << "cam ID by the ID [" << camId << "] was not found. unable to get const AACamera\n";
+  //std::cout << "cam ID by the ID [" << camId << "] was not found. unable to get const AACamera\n";
   exit(-1);
 }
 
@@ -316,7 +312,7 @@ AACamera& AAWorld::getCamera(int camId)
   }
 
   // if it didn't find it and return above ^^^^^^^^  show error message in console
-  std::cout << "cam ID by the ID [" << camId << "] was not found. unable to get AACamera\n";
+  //std::cout << "cam ID by the ID [" << camId << "] was not found. unable to get AACamera\n";
   exit(-1);
 }
 
@@ -331,7 +327,7 @@ const AAOGLShader& AAWorld::getShader(int shadId) const
   }
 
   // if it didn't find it and return above ^^^^^^^^  show error message in console
-  std::cout << "shad ID by the ID [" << shadId << "] was not found.\n";
+  //std::cout << "shad ID by the ID [" << shadId << "] was not found.\n";
   exit(-1);
 }
 
@@ -346,7 +342,7 @@ AAOGLShader& AAWorld::getShader(int shadId)
   }
 
   // if it didn't find it and return above ^^^^^^^^  show error message in console
-  std::cout << "shad ID by the ID [" << shadId << "] was not found.\n";
+  //std::cout << "shad ID by the ID [" << shadId << "] was not found.\n";
   exit(-1);
 }
 
@@ -361,7 +357,7 @@ const AAGameObject& AAWorld::getGameObject(int objId) const
   }
 
   // if it didn't find it and return above ^^^^^^^^  show error message in console
-  std::cout << "game object ID by the ID [" << objId << "] was not found.\n";
+  //std::cout << "game object ID by the ID [" << objId << "] was not found.\n";
   exit(-1);
 }
 
@@ -376,16 +372,16 @@ AAGameObject& AAWorld::getGameObject(int objId)
   }
 
   // if it didn't find it and return above ^^^^^^^^  show error message in console
-  std::cout << "game object ID by the ID [" << objId << "] was not found.\n";
+  //std::cout << "game object ID by the ID [" << objId << "] was not found.\n";
   exit(-1);
 }
 
-MouseReporting AAWorld::getMouseReportingMode() const noexcept
+const MouseReporting AAWorld::getMouseReportingMode() const
 {
   return DISPLAY->mMouseReporting;
 }
 
-int AAWorld::getCursorMode() const noexcept
+const int AAWorld::getCursorMode() const
 {
   return DISPLAY->getCursorMode();
 }
@@ -490,7 +486,7 @@ void AAWorld::setRenderDistance(int camId, float amt)
   }
 
   // if code gets here there is an error, camId not found
-  std::cout << "cam not found for id [" << camId << "].\n";
+  //std::cout << "cam not found for id [" << camId << "].\n";
 }
 
 void AAWorld::setProjectionMatrix(int shadId, int camId)
