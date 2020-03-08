@@ -32,6 +32,18 @@ glm::vec3 Conversions::aiVec3_to_glmVec3(const aiVector3D& inVec) noexcept
   return outVec;
 }
 
+glm::vec4 Conversions::aiColor4_to_glmVec4(const aiColor4D& inVec) noexcept
+{
+  glm::vec4 outVec;
+  
+  outVec.x = inVec.r;
+  outVec.y = inVec.g;
+  outVec.z = inVec.b;
+  outVec.w = inVec.a;
+
+  return outVec;
+}
+
 glm::quat Conversions::aiQuat_to_glmQuat(const aiQuaternion& inQuat) noexcept
 {
   glm::quat outQuat;

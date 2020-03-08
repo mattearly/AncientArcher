@@ -1,40 +1,33 @@
-// Vertex Shader
-precision mediump int;
-precision mediump float;
+#version 330 core
+layout(location = 0) in vec3 inPos;
+layout(location = 1) in vec3 inNorm;
+layout(location = 2) in vec4 inColor;
+layout(location = 3) in vec2 inTexUV;
 
-// Scene transformations
-uniform mat4 u_PVM_transform; // Projection, view, model transform
-uniform mat4 u_VM_transform;  // View, model transform
+out vec3 pass_Pos;
+out vec3 pass_Norm;
+out vec4 pass_Color;
+out vec2 pass_TexUV;
 
-// Light model
-uniform vec3 u_Light_position;
-uniform vec3 u_Light_color;
-uniform float u_Shininess;
-uniform vec3 u_Ambient_color;
+uniform mat4 projection;
+uniform mat4 model;
+uniform mat4 view;
 
-// Original model data
-attribute vec3 a_Vertex;
-attribute vec3 a_Color;
-attribute vec3 a_Vertex_normal;
-
-// Data (to be interpolated) that is passed on to the fragment shader
-varying vec3 v_Vertex;
-varying vec4 v_Color;
-varying vec3 v_Normal;
-
-void main() {
-
+void main() 
+{
+  mat4 ViewModel = view * model;
   // Perform the model and view transformations on the vertex and pass this
   // location to the fragment shader.
-  v_Vertex = vec3( u_VM_transform * vec4(a_Vertex, 1.0) );
-
+  pass_Pos = vec3(ViewModel * vec4(inPos, 1.0) );
   // Perform the model and view transformations on the vertex's normal vector
   // and pass this normal vector to the fragment shader.
-  v_Normal = vec3( u_VM_transform * vec4(a_Vertex_normal, 0.0) );
-
+  pass_Norm = vec3(ViewModel * vec4(inNorm, 0.0) );
   // Pass the vertex's color to the fragment shader.
-  v_Color = vec4(a_Color, 1.0);
+  pass_Color = inColor;
+  // Pass the vertex's texture coords to the fragment shader.
+  pass_TexUV = inTexUV;
 
+  mat4 ProjViewModel = projection * view * model;
   // Transform the location of the vertex for the rest of the graphics pipeline
-  gl_Position = u_PVM_transform * vec4(a_Vertex, 1.0);
+  gl_Position = ProjViewModel * vec4(inPos, 1.0);
 }

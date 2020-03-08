@@ -1,74 +1,135 @@
-// Fragment shader program
-precision mediump int;
-precision mediump float;
+#version 330 core
+in vec3 pass_Pos;
+in vec3 pass_Norm;
+in vec4 pass_Color;
+in vec2 pass_TexUV;
 
-// Light model
-uniform vec3 u_Light_position;
-uniform vec3 u_Light_color;
-uniform float u_Shininess;
-uniform vec3 u_Ambient_color;
+out vec4 out_Color;
 
-// Data coming from the vertex shader
-varying vec3 v_Vertex;
-varying vec4 v_Color;
-varying vec3 v_Normal;
+struct Material
+{
+  sampler2D diffuse;
+};
+
+struct DirectionalLight
+{
+  vec3 Direction;
+  vec3 Ambient;
+  vec3 Diffuse;
+  vec3 Specular;
+};
+
+struct PointLight
+{
+  vec3 Position;
+  float Constant, Linear, Quadratic;
+  vec3 Ambient, Diffuse, Specular;
+};
+
+struct SpotLight
+{
+  vec3 Position, Direction;
+  float CutOff, OuterCutOff;
+  float Constant, Linear, Quadratic;
+  vec3 Ambient, Diffuse, Specular;
+};
+
+vec3 CalcDirectionalLight(DirectionalLight light, vec3 normal, vec3 viewDir);
+vec3 CalcPointLight(PointLight light, vec3 normal, vec3 viewDir);
+vec3 CalcSpotLight(SpotLight light, vec3 normal, vec3 viewDir);
+
+const int MAXPOINTLIGHTS = 20;
+const int MAXSPOTLIGHTS = 10;
+
+uniform vec3           viewPos;
+uniform Material       material;
+
+uniform DirectionalLight directionalLight;
+uniform PointLight       pointLight[20];
+uniform SpotLight        spotLight[10];
+
+uniform int pointLightsInUse;
+uniform int spotLightsInUse;
 
 void main()
 {
+  vec3 normal = normalize(pass_Norm);
+  vec3 viewDir = normalize(viewPos - pass_Pos);
 
-  vec3 to_light;
-  vec3 vertex_normal;
-  vec3 reflection;
-  vec3 to_camera;
-  float cos_angle;
-  vec3 diffuse_color;
-  vec3 specular_color;
-  vec3 ambient_color;
-  vec3 color;
+  vec3 result = vec3(.15, .15, .15);  // default ambient lighting
+  
+  result += CalcDirectionalLight(directionalLight, normal, viewDir);
 
-  // Calculate the ambient color as a percentage of the surface color
-  ambient_color = u_Ambient_color * vec3(v_Color);
+  for (int i = 0; i < pointLightsInUse; i++)
+    result += CalcPointLight(pointLight[i], normal, viewDir);
 
-  // Calculate a vector from the fragment location to the light source
-  to_light = u_Light_position - v_Vertex;
-  to_light = normalize( to_light );
+  for (int i = 0; i < spotLightsInUse; i++) 
+    result += CalcSpotLight(spotLight[i], normal, viewDir);
 
-  // The vertex's normal vector is being interpolated across the primitive
-  // which can make it un-normalized. So normalize the vertex's normal vector.
-  vertex_normal = normalize( v_Normal );
+  result *= pass_Color.rgb;
 
-  // Calculate the cosine of the angle between the vertex's normal vector
-  // and the vector going to the light.
-  cos_angle = dot(vertex_normal, to_light);
-  cos_angle = clamp(cos_angle, 0.0, 1.0);
+  out_Color = vec4(result, 1.0);
+}
 
-  // Scale the color of this fragment based on its angle to the light.
-  diffuse_color = vec3(v_Color) * cos_angle;
+vec3 CalcDirectionalLight(DirectionalLight light, vec3 normal, vec3 viewDir)
+{
+  vec3 lightDir = normalize(-light.Direction);
+  float diff = max(dot(normal, lightDir), 0.0);
+  vec3 reflectDir = reflect(-lightDir, normal);
+//  float spec = pow(max(dot(viewDir, reflectDir), 0.0), material.Gloss);
+//  float spec = pow(max(dot(viewDir, reflectDir), 0.0), 0.0);
 
-  // Calculate the reflection vector
-  reflection = 2.0 * dot(vertex_normal,to_light) * vertex_normal - to_light;
+  vec3 ambient = light.Ambient * texture(material.diffuse, pass_TexUV).rgb;
+  vec3 diffuse = light.Diffuse * diff * texture(material.diffuse, pass_TexUV).rgb;
+//  vec3 specular = light.Specular * spec * vec3(texture(material.Specular, pass_TexUV);
 
-  // Calculate a vector from the fragment location to the camera.
-  // The camera is at the origin, so negating the vertex location gives the vector
-  to_camera = -1.0 * v_Vertex;
+  return (ambient + diffuse /*+ specular*/);
+}
 
-  // Calculate the cosine of the angle between the reflection vector
-  // and the vector going to the camera.
-  reflection = normalize( reflection );
-  to_camera = normalize( to_camera );
-  cos_angle = dot(reflection, to_camera);
-  cos_angle = clamp(cos_angle, 0.0, 1.0);
-  cos_angle = pow(cos_angle, u_Shininess);
+vec3 CalcPointLight(PointLight light, vec3 normal, vec3 viewDir)
+{
+  vec3 lightDir = normalize(light.Position - pass_Pos);
+  float diff = max(dot(normal, lightDir), 0.0);
+  vec3 reflectDir = reflect(-lightDir, normal);
+//  float spec = pow(max(dot(viewDir, reflectDir), 0.0), material.Gloss);
+//  float spec = pow(max(dot(viewDir, reflectDir), 0.0), 0.0);
 
-  // The specular color is from the light source, not the object
-  if (cos_angle > 0.0) {
-    specular_color = u_Light_color * cos_angle;
-    diffuse_color = diffuse_color * (1.0 - cos_angle);
-  } else {
-    specular_color = vec3(0.0, 0.0, 0.0);
-  }
+  float dist = length(light.Position - pass_Pos);
+  float attenuation = 1.0 / (light.Constant + light.Linear * dist + light.Quadratic * (dist * dist));
 
-  color = ambient_color + diffuse_color + specular_color;
+  vec3 ambient = light.Ambient * texture(material.diffuse, pass_TexUV).rgb;
+  vec3 diffuse = light.Diffuse * diff * texture(material.diffuse, pass_TexUV).rgb;
+//  vec3 specular = light.Specular * spec * vec3(texture(material.Specular, pass_TexUV);
 
-  gl_FragColor = vec4(color, v_Color.a);
+  ambient *= attenuation;
+  diffuse *= attenuation;
+//  specular *= attenuation;
+
+  return (ambient + diffuse /*+ specular*/);
+}
+
+vec3 CalcSpotLight(SpotLight light, vec3 normal, vec3 viewDir)
+{
+  vec3 lightDir = normalize(light.Position - pass_Pos);
+  float diff = max(dot(normal, lightDir), 0.0);
+  vec3 reflectDir = reflect(-lightDir, normal);
+//  float spec = pow(max(dot(viewDir, reflectDir), 0.0), material.Gloss);
+//  float spec = pow(max(dot(viewDir, reflectDir), 0.0), 0.0);
+
+  float dist = length(light.Position - pass_Pos); 
+  float attenuation  = 1.0 / (light.Constant + light.Linear * dist + light.Quadratic * (dist * dist));  
+
+  float theta = dot(lightDir, normalize(-light.Direction));
+  float epsilon = light.CutOff - light.OuterCutOff;
+  float intensity = clamp((theta - light.OuterCutOff) / epsilon, 0.0, 1.0);
+
+  vec3 ambient = light.Ambient * texture(material.diffuse, pass_TexUV).rgb;
+  vec3 diffuse = light.Diffuse * diff * texture(material.diffuse, pass_TexUV).rgb;
+//  vec3 specular = light.Specular * spec * vec3(texture(material.Specular, pass_TexUV);
+
+  ambient *= attenuation * intensity;
+  diffuse *= attenuation * intensity;
+//  specular *= attenuation * intensity;
+
+  return (ambient + diffuse /*+ specular*/);
 }
