@@ -178,14 +178,14 @@ glm::mat4 AACamera::getProjectionMatrix() const
     break;
   case RenderProjection::ORTHO:
     // todo: test and fix ortho
-    projection = glm::ortho(
-      mOrthoFieldSize.x,
-      mOrthoFieldSize.y,
-      mOrthoFieldSize.z,
-      mOrthoFieldSize.w,
-      .01f,
-      mRenderDistance
-    );
+    //projection = glm::ortho(
+    //  mOrthoFieldSize.x,
+    //  mOrthoFieldSize.y,
+    //  mOrthoFieldSize.z,
+    //  mOrthoFieldSize.w,
+    //  .01f,
+    //  mRenderDistance
+    //);
     break;
   default:
     break;
