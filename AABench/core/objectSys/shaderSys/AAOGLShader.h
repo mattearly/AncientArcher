@@ -27,6 +27,8 @@ public:
 
   const int getID() const;
 
+  int getAndCheckShaderUniform(const std::string& name) const noexcept;
+
 private:
   AAOGLShader() = delete;
 
