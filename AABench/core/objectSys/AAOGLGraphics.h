@@ -28,16 +28,16 @@ class AAOGLGraphics
 public:
 
   static AAOGLGraphics* getInstance();
-  std::vector<MeshDrawInfo> loadGameObjectWithAssimp(std::string path, bool pp_triangulate);
+  bool loadGameObjectWithAssimp(std::string path, bool pp_triangulate, std::vector<MeshDrawInfo>& out_);
+
+  void processNode(aiNode* node, const aiScene* scene, std::vector<MeshDrawInfo>& out_);
 
 private:
 
-  void processNode(aiNode* node, const aiScene* scene);
   MeshDrawInfo processMesh(aiMesh* mesh, const aiScene* scene);
-  std::vector<TextureInfo> loadMaterialTextures(aiMaterial* mat, aiTextureType type, std::string typeName);
+  bool loadMaterialTextures(aiMaterial* mat, aiTextureType type, std::string typeName, std::vector<TextureInfo>& out_texInfo);
 
   // holder vars
   std::string mLastDir = "";
   std::vector<TextureInfo> mTexturesLoaded;
-  std::vector<MeshDrawInfo> mMeshDrawInfo;
 };

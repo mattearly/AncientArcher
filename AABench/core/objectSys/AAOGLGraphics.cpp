@@ -22,7 +22,7 @@ AAOGLGraphics* AAOGLGraphics::getInstance()
   return graphics.get();
 }
 
-std::vector<MeshDrawInfo> AAOGLGraphics::loadGameObjectWithAssimp(std::string path, bool pp_triangulate)
+bool AAOGLGraphics::loadGameObjectWithAssimp(std::string path, bool pp_triangulate, std::vector<MeshDrawInfo>& out_)
 {
   Assimp::Importer importer;
   int post_processsing_flags = 0;
@@ -32,28 +32,30 @@ std::vector<MeshDrawInfo> AAOGLGraphics::loadGameObjectWithAssimp(std::string pa
     post_processsing_flags |= aiProcess_Triangulate;
   }
   const aiScene* scene = importer.ReadFile(path, post_processsing_flags);
-  mMeshDrawInfo.clear();
+  //mMeshDrawInfo.clear();
   if (!scene || scene->mFlags & AI_SCENE_FLAGS_INCOMPLETE || !scene->mRootNode)
   {
     std::cout << "ERROR::ASSIMP::" << importer.GetErrorString() << '\n';
-    return mMeshDrawInfo;
+    //return mMeshDrawInfo;
+    return false;
   }
   mLastDir = path.substr(0, path.find_last_of("/\\") + 1);
-  processNode(scene->mRootNode, scene);
-  return mMeshDrawInfo;
+  processNode(scene->mRootNode, scene, out_);
+  //return mMeshDrawInfo;
+  return true;
 }
 
-void AAOGLGraphics::processNode(aiNode* node, const aiScene* scene)
+void AAOGLGraphics::processNode(aiNode* node, const aiScene* scene, std::vector<MeshDrawInfo>& out_)
 {
   for (unsigned int i = 0; i < node->mNumMeshes; ++i)
   {
     aiMesh* mesh = scene->mMeshes[node->mMeshes[i]];
-    mMeshDrawInfo.push_back(processMesh(mesh, scene));
+    out_.push_back(processMesh(mesh, scene));
   }
 
   for (unsigned int i = 0; i < node->mNumChildren; ++i)
   {
-    processNode(node->mChildren[i], scene);
+    processNode(node->mChildren[i], scene, out_);
   }
 }
 
@@ -85,6 +87,7 @@ MeshDrawInfo AAOGLGraphics::processMesh(aiMesh* mesh, const aiScene* scene)
 
   aiMaterial* material = scene->mMaterials[mesh->mMaterialIndex];
   std::vector<TextureInfo> loadedTextures;
+
   //aiColor4D diffuse;
   //if (AI_SUCCESS == aiGetMaterialColor(material, AI_MATKEY_COLOR_DIFFUSE, &diffuse))
   //{
@@ -101,15 +104,24 @@ MeshDrawInfo AAOGLGraphics::processMesh(aiMesh* mesh, const aiScene* scene)
   //  loadedTextures.push_back(rawColorMap);
   //}
 
-  std::vector<TextureInfo> diffuseMaps = loadMaterialTextures(material, aiTextureType_DIFFUSE, "diffuse");
+  std::vector<TextureInfo> diffuseMaps;  
+  loadMaterialTextures(material, aiTextureType_DIFFUSE, "diffuse", diffuseMaps);
   loadedTextures.insert(loadedTextures.end(), diffuseMaps.begin(), diffuseMaps.end());
-  std::vector<TextureInfo> specMaps = loadMaterialTextures(material, aiTextureType_SPECULAR, "specular");
+
+  std::vector<TextureInfo> specMaps;
+  loadMaterialTextures(material, aiTextureType_SPECULAR, "specular", specMaps);
   loadedTextures.insert(loadedTextures.end(), specMaps.begin(), specMaps.end());
-  std::vector<TextureInfo> normMaps = loadMaterialTextures(material, aiTextureType_HEIGHT, "normal");
+
+  std::vector<TextureInfo> normMaps;
+  loadMaterialTextures(material, aiTextureType_HEIGHT, "normal", normMaps);
   loadedTextures.insert(loadedTextures.end(), normMaps.begin(), normMaps.end());
-  std::vector<TextureInfo> heightMaps = loadMaterialTextures(material, aiTextureType_AMBIENT, "height");
+
+  std::vector<TextureInfo> heightMaps;
+  loadMaterialTextures(material, aiTextureType_AMBIENT, "height", heightMaps);
   loadedTextures.insert(loadedTextures.end(), heightMaps.begin(), heightMaps.end());
-  std::vector<TextureInfo> colorMaps = loadMaterialTextures(material, aiTextureType_BASE_COLOR, "base color");
+
+  std::vector<TextureInfo> colorMaps;
+  loadMaterialTextures(material, aiTextureType_BASE_COLOR, "base color", colorMaps);
   loadedTextures.insert(loadedTextures.end(), colorMaps.begin(), colorMaps.end());
 
   unsigned int VAO, VBO, EBO;
@@ -125,26 +137,26 @@ MeshDrawInfo AAOGLGraphics::processMesh(aiMesh* mesh, const aiScene* scene)
   glBufferData(GL_ELEMENT_ARRAY_BUFFER, loadedElements.size() * sizeof(unsigned int), &loadedElements[0], GL_STATIC_DRAW);
 
   glEnableVertexAttribArray(0);
-  glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void*)offsetof(Vertex, Position));
+  //glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void*)(offsetof(Vertex, Position)));
+  glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), (const void*)(offsetof(Vertex, Position)));
 
   glEnableVertexAttribArray(1);
-  glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void*)offsetof(Vertex, Normal));
+  glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), (const void*)offsetof(Vertex, Normal));
 
   glEnableVertexAttribArray(2);
-  glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void*)offsetof(Vertex, TexCoords));
+  glVertexAttribPointer(2, 4, GL_FLOAT, GL_FALSE, sizeof(Vertex), (const void*)offsetof(Vertex, Color));
 
   glEnableVertexAttribArray(3);
-  glVertexAttribPointer(3, 4, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void*)offsetof(Vertex, Color));
+  glVertexAttribPointer(3, 2, GL_FLOAT, GL_FALSE, sizeof(Vertex), (const void*)offsetof(Vertex, TexCoords));
+
    
   glBindVertexArray(0);
 
   return MeshDrawInfo(VAO, /*VBO, EBO,*/ loadedTextures, loadedElements);
 }
 
-std::vector<TextureInfo> AAOGLGraphics::loadMaterialTextures(aiMaterial* mat, aiTextureType type, std::string typeName)
+bool AAOGLGraphics::loadMaterialTextures(aiMaterial* mat, aiTextureType type, std::string typeName, std::vector<TextureInfo>& out_texInfo)
 {
-
-  std::vector<TextureInfo> outTexInfo;
   for (unsigned int i = 0; i < mat->GetTextureCount(type); ++i)
   {
     aiString tmpstr;
@@ -160,7 +172,7 @@ std::vector<TextureInfo> AAOGLGraphics::loadMaterialTextures(aiMaterial* mat, ai
           tmptexinfo.id = p.id;
           tmptexinfo.type = p.type;
           tmptexinfo.path = "";
-          outTexInfo.push_back(tmptexinfo);
+          out_texInfo.push_back(tmptexinfo);
           alreadyLoaded = true;
         }
       }
@@ -173,11 +185,11 @@ std::vector<TextureInfo> AAOGLGraphics::loadMaterialTextures(aiMaterial* mat, ai
       tmptex.id = TexLoader::getInstance()->textureFromFile(tmpPath.c_str());
       tmptex.path = tmpstr.C_Str();
       tmptex.type = typeName;
-      outTexInfo.push_back(tmptex);
+      out_texInfo.push_back(tmptex);
       mTexturesLoaded.push_back(tmptex);
     }
   }
-  return outTexInfo;
+  return true;
 }
 
 ///////////////////////TEXLOADER//////////////////////

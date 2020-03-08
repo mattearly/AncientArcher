@@ -44,10 +44,11 @@ const int AAGameObject::getInstanceCount() const noexcept
 AAGameObject::AAGameObject(const char* path, int camId, int shadId)
 {
   //std::vector<MeshDrawInfo> meshes = assLoad(path, false);  // no triangulate
-  std::vector<MeshDrawInfo> meshes = assLoad(path, true);  // yes triangulate
+  assLoad(path, true, mMeshes);  // yes triangulate
 
   mInstanceDetails.push_back(InstanceDetails());
-  mMeshes = meshes;
+
+  //mMeshes = meshes;
   mCameraID = camId;
   mShaderID = shadId;
   mObjectID = uniqueIDs++;
@@ -56,10 +57,11 @@ AAGameObject::AAGameObject(const char* path, int camId, int shadId)
 AAGameObject::AAGameObject(const char* path, int camId, int shadId, std::vector<InstanceDetails> details)
 {
   //std::vector<MeshDrawInfo> meshes = assLoad(path, false);  // no triangulate
-  std::vector<MeshDrawInfo> meshes = assLoad(path, true);  // yes triangulate
+  assLoad(path, true, mMeshes);  // yes triangulate
 
   mInstanceDetails = details;
-  mMeshes = meshes;
+
+  //mMeshes = meshes;
   mCameraID = camId;
   mShaderID = shadId;
   mObjectID = uniqueIDs++;
@@ -92,7 +94,7 @@ void AAGameObject::draw(const AAOGLShader& modelShader)
       // get the type
       const std::string texType = m.textures[i].type;
 
-      //might not need shader.use() here but leaving it to be
+      //might not need shader.use() here but leaving it to be safe
       modelShader.use();
 
       // tell opengl to bind the texture to a model shader uniform var
