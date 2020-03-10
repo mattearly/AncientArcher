@@ -1,15 +1,3 @@
-/*
-  This file is for setting up defaults and movement commands on a First Person Perspective Camera.
-  It is intended for testing moving around your scene while building it.
-  After calling this on your engine, the camera will be able to fly freely.
-  Hotkeys:
-    MOUSE          :  look
-    WASD           :  move
-    SPACE          :  up
-    LSHIFT+SPACE   :  down
-    MOUSEWHEEL+/-  :  change move speed
-    TAB            :  toggle mouse cursor
-*/
 #pragma once
 #include <iostream>
 #include "FPPWorldLocation.h"
@@ -17,11 +5,23 @@
 
 #define UP mearly::FPPWorldLocation::getWorldUp()
 
-const float startingSpeed = 10.5f;
+static constexpr float startingSpeed = 10.5f;
+static constexpr float MAXFLYSPEED = 400.f;
+static constexpr float FlyIncrement = 1.f;
 
 extern AAWorld mainWorld;
 
-// returns unique cam id
+/**
+ * setGodCamWithMovement is for setting up defaults and movement commands on a First Person Perspective Camera.
+ * * After calling this, the camera view will be able to fly freely.
+ * Hotkeys:
+ * * MOUSE          :  look
+ * * WASD           :  move
+ * * SPACE          :  up
+ * * LSHIFT+SPACE   :  down
+ * * MOUSEWHEEL+/-  :  change move speed
+ * * TAB            :  toggle mouse cursor mode
+*/
 int setGodCamWithMovement()
 {
   mainWorld.setCursorToDisabled();
@@ -29,13 +29,11 @@ int setGodCamWithMovement()
 
   static int mainCamId;
   mainCamId = mainWorld.addCamera();
-  mainWorld.setRenderDistance(mainCamId, 10000.f);
 
-  static constexpr float MAXFLYSPEED = 400.f;
   static float currFlySpeed = startingSpeed;
   static float prevFlySpeed = startingSpeed;
-  static constexpr float FlyIncrement = 2.5f;
 
+  // allows wasd too move you around basedon the direction the cam is facing
   const auto flying_wasd = [](AAKeyBoardInput& keys)
   {
     // this is a debug cam mover with no colliding
@@ -43,49 +41,48 @@ int setGodCamWithMovement()
     static glm::vec3 directionPlacement = glm::vec3(0.f, 0.f, 0.f);
     static glm::vec3 moveFront = glm::vec3(*mainWorld.getCamera(mainCamId).getFront());
 
-    if (mainWorld.getMouseReportingMode() == MouseReporting::PERSPECTIVE)
+    // setting our velocity based on 60fps (a guess since we don't have delta time here)
+    fps60velocity = 0.0166f * currFlySpeed;
+
+    // process WASD movement
+    if (keys.w)
     {
-      // setting our velocity based on 60fps (a guess since we don't have delta time here)
-      fps60velocity = 0.0166f * currFlySpeed;
-
-      // process WASD movement
-      if (keys.w)
-      {
-        directionPlacement += moveFront * fps60velocity;
-      }
-      if (keys.s)
-      {
-        directionPlacement -= moveFront * fps60velocity;
-      }
-      if (keys.a)
-      {
-        directionPlacement -= *mainWorld.getCamera(mainCamId).getRight() * fps60velocity;
-      }
-      if (keys.d)
-      {
-        directionPlacement += *mainWorld.getCamera(mainCamId).getRight() * fps60velocity;
-      }
-
-      // process going up and down
-      if (!keys.leftShift && keys.spacebar)
-      {
-        directionPlacement += UP * fps60velocity;
-      }
-      if (keys.leftShift && keys.spacebar)
-      {
-        directionPlacement -= UP * fps60velocity;
-      }
-
-      mainWorld.getCamera(mainCamId).shiftCurrentPosition(directionPlacement);
-
-      // reset local variables for next frame processing
-      directionPlacement = glm::vec3(0.f, 0.f, 0.f);
-      moveFront = glm::vec3(*mainWorld.getCamera(mainCamId).getFront());
+      directionPlacement += moveFront * fps60velocity;
     }
+    if (keys.s)
+    {
+      directionPlacement -= moveFront * fps60velocity;
+    }
+    if (keys.a)
+    {
+      directionPlacement -= *mainWorld.getCamera(mainCamId).getRight() * fps60velocity;
+    }
+    if (keys.d)
+    {
+      directionPlacement += *mainWorld.getCamera(mainCamId).getRight() * fps60velocity;
+    }
+
+    // process going up and down
+    if (!keys.leftShift && keys.spacebar)
+    {
+      directionPlacement += UP * fps60velocity;
+    }
+    if (keys.leftShift && keys.spacebar)
+    {
+      directionPlacement -= UP * fps60velocity;
+    }
+
+    mainWorld.getCamera(mainCamId).shiftCurrentPosition(directionPlacement);
+
+    // reset local variables for next frame processing
+    directionPlacement = glm::vec3(0.f, 0.f, 0.f);
+    moveFront = glm::vec3(*mainWorld.getCamera(mainCamId).getFront());
+
   };
   mainWorld.addToKeyHandling(flying_wasd);
 
-  auto fps_or_standard_togglable = [](AAMouseInput& mouse)
+  // allows mouse movement to change the cam look direction while the mouse cursor is disabled
+  const auto mouse_movement_look_while_cursor_disabled = [](AAMouseInput& mouse)
   {
     if (mainWorld.getMouseReportingMode() == MouseReporting::PERSPECTIVE)
     {
@@ -96,9 +93,10 @@ int setGodCamWithMovement()
       // dont change the cam location
     }
   };
-  mainWorld.addToMouseHandling(fps_or_standard_togglable);
+  mainWorld.addToMouseHandling(mouse_movement_look_while_cursor_disabled);
 
-  auto scrollChangesMoveSpeed = [](AAScrollInput& scroll)
+  // allows mouse scroll wheel to adjust move speed
+  const auto mouse_scroll_changes_wasd_speed = [](AAScrollInput& scroll)
   {
     // set flyspeed when mouse wheel moves
     if (scroll.yOffset > 0.1f)
@@ -125,9 +123,10 @@ int setGodCamWithMovement()
       prevFlySpeed = currFlySpeed;
     }
   };
-  mainWorld.addToScrollHandling(scrollChangesMoveSpeed);
+  mainWorld.addToScrollHandling(mouse_scroll_changes_wasd_speed);
 
-  const auto escapeTogglesMouseDisplay = [](AAKeyBoardInput& keys)
+  // allows tab to toggle the cursor from disabled(fpp movement mode) or visible(inventory mode)
+  const auto tab_toggles_cursor_disabled_or_visible = [](AAKeyBoardInput& keys)
   {
     if (keys.tab)
     {
@@ -152,7 +151,8 @@ int setGodCamWithMovement()
     }
     return false;
   };
-  mainWorld.addToTimedOutKeyHandling(escapeTogglesMouseDisplay);
+  mainWorld.addToTimedOutKeyHandling(tab_toggles_cursor_disabled_or_visible);
 
   return mainCamId;
+
 }
