@@ -51,9 +51,11 @@ void AAWorld::render()
     // set the view matrix from the cam for this object
     getShader(shaderID).setMat4("view", getCamera(cameraID).getViewMatrix());
 
+    // draw using the shader for it
     obj.draw(getShader(shaderID));
   }
 
+  // draw skybox if one was specified
   if (mSkybox) { mSkybox->render(mCameras.front()); }
 
   DISPLAY->swapWindowBuffers();
