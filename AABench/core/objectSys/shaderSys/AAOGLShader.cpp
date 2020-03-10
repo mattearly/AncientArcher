@@ -323,7 +323,7 @@ int AAOGLShader::getAndCheckShaderUniform(const std::string& name) const noexcep
       " id: " << ID << '\n' <<
       " error: " << shader_var_id << '\n' <<
       "-----------------------------------\n";
-    return -1;
+    return shader_var_id;
   }
   else
   {
