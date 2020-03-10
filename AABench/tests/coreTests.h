@@ -31,6 +31,7 @@ int testEngineLoopBase()
 int testEngineDemoWorld()
 {
   mainWorld.setWindowTitle("Test Engine Demo World");
+  DISPLAY->setWindowSize(800, 600, 910, 160);
   const int cameraId = setGodCamWithMovement();
   addRandomWorld(cameraId);
   addCubeSkybox();
