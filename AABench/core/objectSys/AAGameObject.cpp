@@ -2,24 +2,23 @@
 #include "AAOGLGraphics.h"
 #include "../cameraSys/AACamera.h"
 #include <glad\glad.h>
-#include <iostream>
 #include <ColliderBox.h>
 
 #define assLoad AAOGLGraphics::getInstance()->loadGameObjectWithAssimp
 
 static int uniqueIDs = 0;
 
-const glm::mat4& AAGameObject::getModelMatrix() const
+int AAGameObject::getModelMatrix(const int& which, glm::mat4& out_mat4) const
 {
-  return getModelMatrix(0);
-}
-
-const glm::mat4& AAGameObject::getModelMatrix(int which) const
-{
-  if (which < getInstanceCount()) {
-    return mInstanceDetails.at(which).ModelMatrix;
+  if (which < getInstanceCount()) 
+  {
+    out_mat4 = mInstanceDetails.at(which).ModelMatrix;
+    return 0;
   }
-  // produces warning, but don't worry, it can't get here by design
+
+  // out of range
+  return -1;
+
 }
 
 const int AAGameObject::getShaderId() const noexcept
@@ -36,9 +35,9 @@ const int AAGameObject::getObjectId() const noexcept
 }
 
 // returns the size of the InstanceDetails vector. a size of 1 would indicate a single instance of the object, accessable at location 0. a size of 0 should never be seen
-const int AAGameObject::getInstanceCount() const noexcept
+const std::size_t AAGameObject::getInstanceCount() const noexcept
 {
-  return static_cast<int>(mInstanceDetails.size());
+  return mInstanceDetails.size();
 }
 
 AAGameObject::AAGameObject(const char* path, int camId, int shadId)
@@ -65,6 +64,7 @@ AAGameObject::AAGameObject(const char* path, int camId, int shadId, std::vector<
   mCameraID = camId;
   mShaderID = shadId;
   mObjectID = uniqueIDs++;
+
 }
 
 void AAGameObject::setCamera(int id) noexcept
@@ -85,17 +85,17 @@ void AAGameObject::draw(const AAOGLShader& modelShader)
   // go through all meshes in the this
   for (auto m : mMeshes)
   {
-    // go through all textures
+    // go through all textures in this mesh
     for (unsigned int i = 0; i < m.textures.size(); ++i)
     {
       // activate each texture
       glActiveTexture(GL_TEXTURE0 + i);
 
-      // get the type
+      // get the texture type
       const std::string texType = m.textures[i].type;
 
       //might not need shader.use() here but leaving it to be safe
-      modelShader.use();
+      //modelShader.use();
 
       // tell opengl to bind the texture to a model shader uniform var
       glUniform1i(glGetUniformLocation(modelShader.getID(), ("material." + texType).c_str()), i);
@@ -137,7 +137,8 @@ void AAGameObject::rotate(float angle, glm::vec3 axis, int which)
 {
   if (axis.x == 0.f && axis.y == 0.f && axis.z == 0.f)
   {
-    std::cout << "rotation axis setting can't be all 0's, unable to process rotate func\n";
+    //std::cout << "rotation axis setting can't be all 0's, unable to process rotate func\n";
+    // rotation axis needs set
     return;
   }
 
@@ -145,14 +146,14 @@ void AAGameObject::rotate(float angle, glm::vec3 axis, int which)
     mInstanceDetails.at(which).RotationAngle = angle;
     mInstanceDetails.at(which).RotationAxis = axis;
   }
-
   updateModelMatrix(which);
+
 }
 
 void AAGameObject::rotate(float radianAngle, glm::vec3 axis)
 {
   rotate(radianAngle, axis, 0);
-}
+} 
 
 void AAGameObject::translateTo(glm::vec3 to, int which)
 {
@@ -215,7 +216,8 @@ void AAGameObject::changeRotateAxis(glm::vec3 axis, int which)
 {
   if (axis.x == 0.f && axis.y == 0.f && axis.z == 0.f)
   {
-    std::cout << "rotation axis setting can't be all 0's\n";
+    // std::cout << "rotation axis setting can't be all 0's\n";
+    // set a rotation angle axis needs set
     return;
   }
 
@@ -241,13 +243,14 @@ const glm::vec3& AAGameObject::getLocation(int which) const
   if (which < getInstanceCount()) {
     return mInstanceDetails.at(which).Translate;
   }
-  // produces warning, but don't worry, it can't get here by design
+
 }
 
 // the one true call
 void AAGameObject::updateModelMatrix(int which)
 {
-  if (which < getInstanceCount()) {
+  if (which < getInstanceCount())
+  {
     mInstanceDetails.at(which).updateModelMatrix();
   }
 }

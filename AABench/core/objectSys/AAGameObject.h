@@ -29,7 +29,6 @@ struct MeshDrawInfo
 struct InstanceDetails
 {
   void updateModelMatrix();
-  glm::mat4 ModelMatrix = glm::mat4(1);
 
   InstanceDetails();
   InstanceDetails(glm::vec3 scale, glm::vec3 rotAx, glm::vec3 transl, float rotAng);
@@ -38,6 +37,9 @@ struct InstanceDetails
   glm::vec3 RotationAxis = glm::vec3(1);
   glm::vec3 Translate = glm::vec3(0);
   float RotationAngle = 0.f;
+
+  glm::mat4 ModelMatrix = glm::mat4(1);
+
 };
 
 class AAGameObject
@@ -51,12 +53,11 @@ public:
 
   const glm::vec3& getLocation() const;
   const glm::vec3& getLocation(int which) const;
-  const glm::mat4& getModelMatrix() const;
-  const glm::mat4& getModelMatrix(int which) const;
+  int getModelMatrix(const int& which, glm::mat4& out_mat4) const;
   const int getShaderId() const noexcept;
   const int getCameraId() const noexcept;
   const int getObjectId() const noexcept;
-  const int getInstanceCount() const noexcept;
+  const std::size_t getInstanceCount() const noexcept;
 
   // setters
 
