@@ -101,14 +101,14 @@ private:
 
   std::shared_ptr<AASkybox> mSkybox;
 
-  std::vector<void (*)()>                 onBegin;
-  std::vector<void (*)(float)>            onDeltaUpdate;
-  std::vector<void (*)()>                 onSlowDeltaUpdate;
-  std::vector<void (*)()>                 onUpdate;
-  std::vector<void (*)(AAKeyBoardInput&)> onKeyHandling;
-  std::vector<void (*)(AAScrollInput&)>   onScrollHandling;
-  std::vector<void (*)(AAMouseInput&)>    onMouseHandling;
-  std::vector<bool (*)(AAKeyBoardInput&)> onTimeoutKeyHandling;
+  std::vector<std::function<void()> >                 onBegin;
+  std::vector<std::function<void(float)> >            onDeltaUpdate;
+  std::vector<std::function<void()> >                 onSlowDeltaUpdate;
+  std::vector<std::function<void()> >                 onUpdate;
+  std::vector<std::function<void(AAKeyBoardInput&)> > onKeyHandling;
+  std::vector<std::function<void(AAScrollInput&)> >   onScrollHandling;
+  std::vector<std::function<void(AAMouseInput&)> >    onMouseHandling;
+  std::vector<std::function<bool(AAKeyBoardInput&)> > onTimeoutKeyHandling;
 
   // helpers
   void initEngine();
