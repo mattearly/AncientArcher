@@ -12,25 +12,23 @@ AAControls* AAControls::getInstance()
 
 float AAControls::getMouseSensitivity() const noexcept
 {
-  return mMouseSensitivity;
+  return mFirstPersonPerspectiveMouseSensitivity;
 }
 
 void AAControls::setMouseSensitivity(float sensitivity) noexcept
 {
-  mMouseSensitivity = sensitivity;
+  mFirstPersonPerspectiveMouseSensitivity = sensitivity;
 }
 
 void AAControls::perspectiveMouseMovement(float x, float y) noexcept
 {
-  //first person
-  static bool firstMouse = true;
-  static float lastX(0.f), lastY(0.f);
-  float xOffset(0.f), yOffset(0.f);
-  if (firstMouse)
+  float xOffset = 0, yOffset = 0;
+  static float lastX, lastY;
+  if (mRenewPerspective)
   {
     lastX = x;
     lastY = y;
-    firstMouse = false;
+    mRenewPerspective = false;
   }
 
   xOffset = x - lastX;
@@ -39,17 +37,20 @@ void AAControls::perspectiveMouseMovement(float x, float y) noexcept
   lastX = x;
   lastY = y;
 
-  xOffset *= mMouseSensitivity;
-  yOffset *= mMouseSensitivity;
+  xOffset *= mFirstPersonPerspectiveMouseSensitivity;
+  yOffset *= mFirstPersonPerspectiveMouseSensitivity;
 
   mMousePosition.xOffset = xOffset;
   mMousePosition.yOffset = yOffset;
 
 }
-
-void AAControls::standardMouseMovement(float xpos, float ypos) noexcept
+/**
+ * Reports the mouse in x y space on the screen: bottom left should be 0,0
+ */
+void AAControls::standardMouseMovement(float xpos, float ypos)
 {
-  const float c_xpos = xpos / AADisplay::getInstance()->getWindowWidth();
+
+  const float c_xpos = -(xpos / AADisplay::getInstance()->getWindowWidth());
   const float c_ypos = ypos / AADisplay::getInstance()->getWindowHeight();
   mMousePosition.xOffset = c_xpos;
   mMousePosition.yOffset = c_ypos;
@@ -63,7 +64,7 @@ void AAControls::mouseScrollWheelMovement(float x, float y) noexcept
 
 void AAControls::resetControlVars() noexcept
 {
-  mMouseSensitivity = 0.1f;
+  mFirstPersonPerspectiveMouseSensitivity = 0.1f;
 }
 
 void AAControls::pullButtonStateEvents()

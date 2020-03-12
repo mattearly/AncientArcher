@@ -21,10 +21,11 @@ private:
   AAMouseInput    mMousePosition;
   AAScrollInput   mMouseWheelScroll;
 
-  float mMouseSensitivity = 0.1f;
+  float mFirstPersonPerspectiveMouseSensitivity = 0.1f;  ///< mouse sensitivity while in first person perspective
+  bool mRenewPerspective = true;
 
   void perspectiveMouseMovement(float xpos, float ypos) noexcept;
-  void standardMouseMovement(float xpos, float ypos) noexcept;
+  void standardMouseMovement(float xpos, float ypos);
   void mouseScrollWheelMovement(float xpos, float ypos) noexcept;
 
   void resetControlVars() noexcept;
