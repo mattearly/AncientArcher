@@ -4,33 +4,36 @@
 #include <memory>
 #include <iostream>
 
+#define Window_W AADisplay::getInstance()->getWindowWidth()
+#define Window_H AADisplay::getInstance()->getWindowHeight()
+
 AAControls* AAControls::getInstance()
 {
   static std::unique_ptr<AAControls> controls = std::make_unique<AAControls>();
   return controls.get();
 }
 
-float AAControls::getMouseSensitivity() const noexcept
+float AAControls::getFPPMouseSensitivity() const noexcept
 {
-  return mFirstPersonPerspectiveMouseSensitivity;
+  return mFPPMouseSensitivity;
 }
 
-void AAControls::setMouseSensitivity(float sensitivity) noexcept
+void AAControls::setFPPMouseSensitivity(float sensitivity) noexcept
 {
-  mFirstPersonPerspectiveMouseSensitivity = sensitivity;
+  mFPPMouseSensitivity = sensitivity;
 }
 
 void AAControls::perspectiveMouseMovement(float x, float y) noexcept
 {
   float xOffset = 0, yOffset = 0;
   static float lastX, lastY;
-  if (mRenewPerspective)
+  if (mRenewFPP)
   {
     mMousePosition.xOffset = 0;
     mMousePosition.yOffset = 0;
     lastX = x;
     lastY = y;
-    mRenewPerspective = false;
+    mRenewFPP = false;
   }
 
   xOffset = x - lastX;
@@ -39,8 +42,8 @@ void AAControls::perspectiveMouseMovement(float x, float y) noexcept
   lastX = x;
   lastY = y;
 
-  xOffset *= mFirstPersonPerspectiveMouseSensitivity;
-  yOffset *= mFirstPersonPerspectiveMouseSensitivity;
+  xOffset *= mFPPMouseSensitivity;
+  yOffset *= mFPPMouseSensitivity;
 
   mMousePosition.xOffset = xOffset;
   mMousePosition.yOffset = yOffset;
@@ -51,11 +54,43 @@ void AAControls::perspectiveMouseMovement(float x, float y) noexcept
  */
 void AAControls::standardMouseMovement(float xpos, float ypos)
 {
-
-  const float c_xpos = -(xpos / AADisplay::getInstance()->getWindowWidth());
-  const float c_ypos = ypos / AADisplay::getInstance()->getWindowHeight();
-  mMousePosition.xOffset = c_xpos;
-  mMousePosition.yOffset = c_ypos;
+  switch (mStandardMouseZeros)
+  {
+  case STANDARDMOUSEZEROS::BOT_LEFT_0_to_1:
+  {
+    const float c_xpos = xpos / Window_W;
+    const float c_ypos = -(ypos - Window_H) / Window_H;
+    mMousePosition.xOffset = c_xpos;
+    mMousePosition.yOffset = c_ypos;
+  }
+  break;
+  case STANDARDMOUSEZEROS::TOP_LEFT_0_to_1:
+  {
+    const float c_xpos = xpos / AADisplay::getInstance()->getWindowWidth();
+    const float c_ypos = ypos / AADisplay::getInstance()->getWindowHeight();
+    mMousePosition.xOffset = c_xpos;
+    mMousePosition.yOffset = c_ypos;
+  }
+  break;
+  case STANDARDMOUSEZEROS::BOT_LEFT_FULL_RANGE:
+  {
+    const float c_xpos = xpos;
+    const float c_ypos = -(ypos - Window_H);
+    mMousePosition.xOffset = c_xpos;
+    mMousePosition.yOffset = c_ypos;
+  }
+  break;
+  case STANDARDMOUSEZEROS::TOP_LEFT_FULL_RANGE:
+  {
+    const float c_xpos = xpos;
+    const float c_ypos = ypos;
+    mMousePosition.xOffset = c_xpos;
+    mMousePosition.yOffset = c_ypos;
+  }
+  break;
+  default:
+    std::cout << "case not handled in standard mouse zeros\n";
+  }
 }
 
 void AAControls::mouseScrollWheelMovement(float x, float y) noexcept
@@ -66,7 +101,7 @@ void AAControls::mouseScrollWheelMovement(float x, float y) noexcept
 
 void AAControls::resetControlVars() noexcept
 {
-  mFirstPersonPerspectiveMouseSensitivity = 0.1f;
+  mFPPMouseSensitivity = 0.1f;
 }
 
 void AAControls::pullButtonStateEvents()
