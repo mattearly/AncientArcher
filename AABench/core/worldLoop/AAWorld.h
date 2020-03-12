@@ -1,9 +1,3 @@
-/***
- * AAWorld class - AKA the World Data Cruncher!
- * bringing it all together in loops to represent time passing and
- * processing time options during the loop.
-**/
-
 #pragma once
 #include <glad\glad.h>
 #include "../winSys/AADisplay.h"
@@ -58,16 +52,12 @@ public:
   int runMainLoop();
   void shutdown();
 
-
   // call as needed during the world run
   void setCursorToDisabled();
   void setToPerspectiveMouseHandling();
-
   void setCursorToEnabled(bool isHardwareRendered = false);
   void setToStandardMouseHandling();
-
   void setWindowTitle(const char* title);
-
   void setRenderDistance(int camId, float amt);
   void setProjectionMatrix(int shadId, int camId);
 
@@ -75,45 +65,37 @@ public:
 
 private:
 
-  void begin(); // ran once on run
+  float mLastFrame;               ///< keeps track of the previous frame's time
+  float mCurrentFrame;            ///< keeps track of the current frame's time
+  float mDeltaTime;               ///< the delta difference between previous and current frame
+  float mNonSpammableKeysTimeout; ///< keeps track of how long the keys have timed out
+  float mNoSpamWaitLength;        ///< how long the non-spammable keys are to time out for at least
+  float mSlowUpdateTimeout;       ///< keeps track of how how long the slow update has been timed out
+  float mSlowUpdateWaitLength;    ///< ms length the slow update times out for at least
 
-  void setProjectionMatToAllShadersFromFirstCam_hack();  //used for testing purposes until more elegant solution appears
+  std::vector<AACamera>     mCameras;     ///< list of available cameras
+  std::vector<AAOGLShader>  mShaders;     ///< list of available shaders
+  std::vector<AAGameObject> mGameObjects; ///< list of available objects
+  std::shared_ptr<AASkybox> mSkybox;      ///< the main skybox
 
-  // used in main loop
-  void update(float dt);
+  std::vector<std::function<void()> >                 onBegin;              ///< list of functions to run once when runMainLoop is called
+  std::vector<std::function<void(float)> >            onDeltaUpdate;        ///< list of functions that rely on deltatime in the main loop
+  std::vector<std::function<void()> >                 onUpdate;             ///< list of functions that run every frame in the main loop
+  std::vector<std::function<void()> >                 onSlowDeltaUpdate;    ///< list of functions to run every only every mSlowUpdateWaitLength in the main loop
+  std::vector<std::function<void(AAKeyBoardInput&)> > onKeyHandling;        ///< list of functions to handle keypresses every frame in the main loop
+  std::vector<std::function<void(AAScrollInput&)> >   onScrollHandling;     ///< list of functions to handle mouse wheel scroll every frame in the main loop
+  std::vector<std::function<void(AAMouseInput&)> >    onMouseHandling;      ///< list of functions to handle mouse movement every frame in the main loop
+  std::vector<std::function<bool(AAKeyBoardInput&)> > onTimeoutKeyHandling; ///< list of functions to handle key presses that time out for mNoSpamWaitLength after press
+
+  void begin();
+  void deltaUpdate();
   void render();
-  void update();
-  void processSystemKeys();
-
-  // mNonSpammableKeysTimeout keeps track of how long the keys have timed out
-  float mNonSpammableKeysTimeout;
-  // how long the non-spammable keys are to time out for at least
-  float mNoSpamWaitLength;
-
-  // mSlowUpdateTimeout keeps track of how how long the slow update has been timed out
-  float mSlowUpdateTimeout;
-  // how long the slow update times out for at least
-  float mSlowUpdateWaitLength;
-
-  std::vector<AACamera>     mCameras;
-  std::vector<AAOGLShader>  mShaders;
-  std::vector<AAGameObject> mGameObjects;
-
-  std::shared_ptr<AASkybox> mSkybox;
-
-  std::vector<std::function<void()> >                 onBegin;
-  std::vector<std::function<void(float)> >            onDeltaUpdate;
-  std::vector<std::function<void()> >                 onSlowDeltaUpdate;
-  std::vector<std::function<void()> >                 onUpdate;
-  std::vector<std::function<void(AAKeyBoardInput&)> > onKeyHandling;
-  std::vector<std::function<void(AAScrollInput&)> >   onScrollHandling;
-  std::vector<std::function<void(AAMouseInput&)> >    onMouseHandling;
-  std::vector<std::function<bool(AAKeyBoardInput&)> > onTimeoutKeyHandling;
+  void afterRenderUpdate();
 
   // helpers
   void initEngine();
-  void initDisplay();
   void resetEngine() noexcept;
+  void setProjectionMatToAllShadersFromFirstCam_hack();  //used for testing purposes until more elegant solution appears
 
 };
 

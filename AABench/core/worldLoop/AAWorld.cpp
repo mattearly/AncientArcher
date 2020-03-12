@@ -10,15 +10,11 @@ int AAWorld::runMainLoop()
   begin();
   while (!glfwWindowShouldClose(DISPLAY->getWindow()))
   {
-    static float lastFrame(0.f);
-    const float currentFrame = static_cast<float>(glfwGetTime());
-    const float deltaTime = currentFrame - lastFrame;
-    lastFrame = currentFrame;
-    update(deltaTime);
+    deltaUpdate();
     render();
-    update();
+    afterRenderUpdate();
   }
-  resetEngine();
+  //resetEngine();
   return 0;
 }
 
@@ -31,6 +27,93 @@ void AAWorld::shutdown()
 void AAWorld::addToDeltaUpdate(void(*function)(float))
 {
   onDeltaUpdate.push_back(function);
+}
+
+void AAWorld::deltaUpdate()
+{
+  mCurrentFrame = static_cast<float>(glfwGetTime());
+  mDeltaTime = mCurrentFrame - mLastFrame;
+  mLastFrame = mCurrentFrame;
+
+  for (auto& oDU : onDeltaUpdate)
+  {
+    oDU(mDeltaTime);
+  }
+
+  // absorb keyboard buttons
+  for (auto& oKH : onKeyHandling) { oKH(CONTROLS->mButtonState); }
+
+  // absorb scroll wheel
+  for (auto& oSH : onScrollHandling) { oSH(CONTROLS->mMouseWheelScroll); }
+  // reset scroll wheel to 0's after processing
+  CONTROLS->mMouseWheelScroll.xOffset = 0;
+  CONTROLS->mMouseWheelScroll.yOffset = 0;
+
+  // handle mouse position
+  for (auto& oMH : onMouseHandling) { oMH(CONTROLS->mMousePosition); }
+  // Snap cursor to the middle of the screen if it is in perspective and cursor is disabled (FPP mode)
+  if (getMouseReportingMode() == MouseReporting::PERSPECTIVE && getCursorMode() == GLFW_CURSOR_DISABLED)
+  {
+    //std::cout << " in perspective calc \n";
+    //deb(CONTROLS->mMousePosition.xOffset);
+    //deb(CONTROLS->mMousePosition.yOffset);
+
+    CONTROLS->mMousePosition.xOffset = 0;
+    CONTROLS->mMousePosition.yOffset = 0;
+  }
+  else if (getMouseReportingMode() == MouseReporting::STANDARD && getCursorMode() == GLFW_CURSOR_NORMAL) // standard and normal
+  {
+    // dont snap the position
+    //std::cout << " in standard mouse reporting calc\n";
+    //deb(CONTROLS->mMousePosition.xOffset);
+    //deb(CONTROLS->mMousePosition.yOffset);
+  }
+
+  // run through user prefered updates
+  for (auto& oU : onUpdate) { oU(); }
+
+  // delayed updates for things you don't want spammed.
+  // update accum time for delayed updates
+  mSlowUpdateTimeout += mDeltaTime;
+  // check to see if its time to process delayed updates
+  if (mSlowUpdateTimeout > mSlowUpdateWaitLength)
+  {
+    // process all delayed updates
+    for (auto& oSU : onSlowDeltaUpdate)
+    {
+      oSU();
+    }
+    // we should also process whether the window size changed here
+    if (DISPLAY->mWindowSizeChanged)
+    {
+      // notify shader/cams
+      setProjectionMatToAllShadersFromFirstCam_hack();
+
+      // don't process again
+      DISPLAY->mWindowSizeChanged = false;
+    }
+    // reset timeout length to 0
+    mSlowUpdateTimeout = 0.f;
+  }
+
+  // needs updated, we'll use it in update with keyboard functions before the loop is done. 
+  // note that the keyboard processing cant be here because we have yet to run processSystemKeys()
+  mNonSpammableKeysTimeout += mDeltaTime;
+
+  // only be executable after a timeout has been met, sort of like a cooldown
+  if (mNonSpammableKeysTimeout > mNoSpamWaitLength)
+  {
+    // process unspammable keys
+    for (auto& oTOK : onTimeoutKeyHandling)
+    {
+      // if we get a true we stop processing
+      if (oTOK(CONTROLS->mButtonState)) {
+        //std::cout << "timeout key press detected. reseting timeoutkeytimer\n";
+        mNonSpammableKeysTimeout = 0.f;
+        break;
+      }
+    }
+  }
 }
 
 void AAWorld::render()
@@ -101,105 +184,17 @@ void AAWorld::setProjectionMatToAllShadersFromFirstCam_hack()
 
 }
 
-void AAWorld::update(float dt)
-{
-  for (auto& oDU : onDeltaUpdate)
-  {
-    oDU(dt);
-  }
-
-  // delayed updates for things you don't want spammed.
-  // update accum time for delayed updates
-  mSlowUpdateTimeout += dt;
-  // check to see if its time to process delayed updates
-  if (mSlowUpdateTimeout > mSlowUpdateWaitLength)
-  {
-    // process all delayed updates
-    for (auto& oSU : onSlowDeltaUpdate)
-    {
-      oSU();
-    }
-    // we should also process whether the window size changed here
-    if (DISPLAY->mWindowSizeChanged)
-    {
-      // notify shader/cams
-      setProjectionMatToAllShadersFromFirstCam_hack();
-
-      // don't process again
-      DISPLAY->mWindowSizeChanged = false;
-    }
-    // reset timeout length to 0
-    mSlowUpdateTimeout = 0.f;
-  }
-
-  // needs updated, we'll use it in update with keyboard functions before the loop is done. 
-  // note that the keyboard processing cant be here because we have yet to run processSystemKeys()
-  mNonSpammableKeysTimeout += dt;
-
-}
-
-void AAWorld::update()
-{
-  processSystemKeys();
-
-  // absorb keyboard buttons
-  for (auto& oKH : onKeyHandling) {oKH(CONTROLS->mButtonState);}
-
-  // absorb scroll wheel
-  for (auto& oSH : onScrollHandling) {oSH(CONTROLS->mMouseWheelScroll);}
-  // reset scroll wheel to 0's after processing
-  CONTROLS->mMouseWheelScroll.xOffset = 0;
-  CONTROLS->mMouseWheelScroll.yOffset = 0;
-
-  // handle mouse position
-  for (auto& oMH : onMouseHandling) {oMH(CONTROLS->mMousePosition);}
-  // Snap cursor to the middle of the screen if it is in perspective and cursor is disabled (FPP mode)
-  if (getMouseReportingMode() == MouseReporting::PERSPECTIVE && getCursorMode() == GLFW_CURSOR_DISABLED)
-  {
-    //std::cout << " in perspective calc \n";
-    //deb(CONTROLS->mMousePosition.xOffset);
-    //deb(CONTROLS->mMousePosition.yOffset);
-
-    CONTROLS->mMousePosition.xOffset = 0; 
-    CONTROLS->mMousePosition.yOffset = 0;
-  }
-  else if (getMouseReportingMode() == MouseReporting::STANDARD && getCursorMode() == GLFW_CURSOR_NORMAL) // standard and normal
-  {
-    // dont snap the position
-    //std::cout << " in standard mouse reporting calc\n";
-    //deb(CONTROLS->mMousePosition.xOffset);
-    //deb(CONTROLS->mMousePosition.yOffset);
-  }
-
-  // run through user prefered updates
-  for (auto& oU : onUpdate) {oU();}
-
-  // only be executable after a timeout has been met, sort of like a cooldown
-  if (mNonSpammableKeysTimeout > mNoSpamWaitLength)
-  {
-    // process unspammable keys
-    for (auto& oTOK : onTimeoutKeyHandling)
-    {
-      // if we get a true we stop processing
-      if (oTOK(CONTROLS->mButtonState)) {
-        //std::cout << "timeout key press detected. reseting timeoutkeytimer\n";
-        mNonSpammableKeysTimeout = 0.f;
-        break;
-      }
-    }
-  }
-}
-
-void AAWorld::processSystemKeys()
+void AAWorld::afterRenderUpdate()
 {
   CONTROLS->pullButtonStateEvents();
+
 }
 
 void AAWorld::initEngine()
 {
   resetEngine();
 
-  initDisplay();
+  DISPLAY->initFromEngine();
 
   // Init OpenGL
   if (!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress))  // init glad (for opengl context) -- must be after initDisplay
@@ -207,11 +202,6 @@ void AAWorld::initEngine()
     //std::cout << "failed to init glad @ file " __FILE__ << " line " << __LINE__ << '\n';
     exit(-1);
   }
-}
-
-void AAWorld::initDisplay()
-{
-  DISPLAY->initFromEngine();
 }
 
 void AAWorld::resetEngine() noexcept
@@ -234,6 +224,10 @@ void AAWorld::resetEngine() noexcept
   mSlowUpdateTimeout = 0.f;
   mNoSpamWaitLength = .5667f;
   mSlowUpdateWaitLength = .5667f;
+
+  mLastFrame = 0.f;
+  mCurrentFrame = 0.f;
+  mDeltaTime = 0.f;
 }
 
 AAWorld::AAWorld()
