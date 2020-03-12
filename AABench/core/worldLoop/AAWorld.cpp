@@ -3,7 +3,9 @@
 #include <GLFW/glfw3.h>
 #include <vector>
 #include <string>
-//#include <iostream>
+#include <iostream>
+
+#define deb(x) std::cout << #x << " " << x << '\n';
 
 int AAWorld::runMainLoop()
 {
@@ -65,8 +67,8 @@ void AAWorld::deltaUpdate()
   {
     // dont snap the position
     //std::cout << " in standard mouse reporting calc\n";
-    //deb(CONTROLS->mMousePosition.xOffset);
-    //deb(CONTROLS->mMousePosition.yOffset);
+    deb(CONTROLS->mMousePosition.xOffset);
+    deb(CONTROLS->mMousePosition.yOffset);
   }
 
   // run through user prefered updates
