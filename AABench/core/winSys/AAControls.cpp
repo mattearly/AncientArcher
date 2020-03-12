@@ -26,6 +26,8 @@ void AAControls::perspectiveMouseMovement(float x, float y) noexcept
   static float lastX, lastY;
   if (mRenewPerspective)
   {
+    mMousePosition.xOffset = 0;
+    mMousePosition.yOffset = 0;
     lastX = x;
     lastY = y;
     mRenewPerspective = false;
