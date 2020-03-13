@@ -87,7 +87,6 @@ private:
   void begin();
   void deltaUpdate();
   void render();
-  void afterRenderUpdate();
 
   // helpers
   void initEngine();

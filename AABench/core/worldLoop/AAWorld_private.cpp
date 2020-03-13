@@ -20,6 +20,9 @@ void AAWorld::begin()
 
 void AAWorld::deltaUpdate()
 {
+
+  CONTROLS->pullButtonStateEvents();
+
   // update engine run delta times
   mCurrentFrameTime = static_cast<float>(glfwGetTime());
   mDeltaTime = mCurrentFrameTime - mLastFrameTime;
@@ -133,12 +136,6 @@ void AAWorld::render()
   if (mSkybox) { mSkybox->render(mCameras.front()); }
 
   DISPLAY->swapWindowBuffers();
-}
-
-void AAWorld::afterRenderUpdate()
-{
-  CONTROLS->pullButtonStateEvents();
-
 }
 
 void AAWorld::initEngine()

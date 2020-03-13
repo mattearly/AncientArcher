@@ -11,9 +11,7 @@ int AAWorld::runMainLoop()
   {
     deltaUpdate();
     render();
-    afterRenderUpdate();
   }
-  //resetEngine();
   return 0;
 }
 
