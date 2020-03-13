@@ -39,7 +39,7 @@ extern "C" void perspectiveMouseCallback(GLFWwindow * window, double xpos, doubl
 }
 void AADisplay::setCurorPosToPerspectiveCalc() noexcept
 {
-  AAControls::getInstance()->mRenewPerspective = true;
+  AAControls::getInstance()->mRenewFPP = true;
   ::glfwSetCursorPosCallback(mWindow, ::perspectiveMouseCallback);
   mMouseReporting = MouseReporting::PERSPECTIVE;
 }
