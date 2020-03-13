@@ -169,6 +169,7 @@
   <ItemGroup>
     <ClCompile Include="core\objectSys\shaderSys\AAOGLShader.cpp" />
     <ClCompile Include="core\winSys\AADisplayCallbacks.cpp" />
+    <ClCompile Include="core\worldLoop\AAWorld_private.cpp" />
     <ClCompile Include="tests\dry\LoadableAssets.cpp" />
     <ClCompile Include="core\objectSys\glad.c" />
     <ClCompile Include="tests\main.cpp" />
