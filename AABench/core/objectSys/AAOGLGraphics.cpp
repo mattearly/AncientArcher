@@ -39,9 +39,9 @@ bool AAOGLGraphics::loadGameObjectWithAssimp(std::string path, bool pp_triangula
   }
 
   mLastDir = path.substr(0, path.find_last_of("/\\") + 1);
-  
+
   processNode(scene->mRootNode, scene, out_MeshInfo);
-  
+
   return true;
 }
 
@@ -61,27 +61,32 @@ void AAOGLGraphics::processNode(aiNode* node, const aiScene* scene, std::vector<
 
 MeshDrawInfo AAOGLGraphics::processMesh(aiMesh* mesh, const aiScene* scene)
 {
+  // get all vertex data for this mesh
   std::vector<Vertex> loadedVerts;
-
   for (unsigned int i = 0; i < mesh->mNumVertices; ++i)
   {
     glm::vec3 tmpPos = Conversions::aiVec3_to_glmVec3(mesh->mVertices[i]);
-    
+
     glm::vec3 tmpNorm = Conversions::aiVec3_to_glmVec3(mesh->mNormals[i]);
 
-    //glm::vec4 tmpColor = Conversions::aiColor4_to_glmVec4(mesh->mColors[i]);
-    
+    glm::vec4 tmpColor(1,0,0,1);
+    if (mesh->mColors[0])
+    {
+      tmpColor = Conversions::aiColor4_to_glmVec4(mesh->mColors[0][i]);
+      std::cout << "tmp color loaded: " << tmpColor.r << " " << tmpColor.g << " " << tmpColor.b << " " << tmpColor.a << '\n';
+    }
+
     glm::vec2 tmpTexCoords(0);
     if (mesh->mTextureCoords[0] != nullptr)
     {
       tmpTexCoords = glm::vec2(mesh->mTextureCoords[0][i].x, mesh->mTextureCoords[0][i].y);
     }
-
-    loadedVerts.emplace_back(Vertex(tmpPos, tmpTexCoords, tmpNorm));
+    loadedVerts.emplace_back(Vertex(tmpPos, tmpNorm, tmpColor, tmpTexCoords));
   }
 
-  std::vector<unsigned int> loadedElements;
 
+  // get the indices to draw triangle faces with
+  std::vector<unsigned int> loadedElements;
   for (unsigned int i = 0; i < mesh->mNumFaces; ++i)
   {
     aiFace face = mesh->mFaces[i];
@@ -91,13 +96,19 @@ MeshDrawInfo AAOGLGraphics::processMesh(aiMesh* mesh, const aiScene* scene)
     }
   }
 
+
+  // get the materials
   aiMaterial* material = scene->mMaterials[mesh->mMaterialIndex];
   std::vector<TextureInfo> loadedTextures;
 
   std::vector<TextureInfo> textureUnitMaps;
-  loadMaterialTextures(material, aiTextureType_DIFFUSE, "TextureUnit", textureUnitMaps);
-
-  loadedTextures.insert(loadedTextures.end(), textureUnitMaps.begin(), textureUnitMaps.end());
+  if (loadMaterialTextures(material, aiTextureType_DIFFUSE, "TextureUnit", textureUnitMaps) == 0) // if succeeds in loading texture add it to loaded texutres
+  {
+    loadedTextures.insert(loadedTextures.end(), textureUnitMaps.begin(), textureUnitMaps.end());
+  }
+  else {
+    std::cout << "failed to load aiTextureType_DIFFUSE\n";
+  }
 
   //std::vector<TextureInfo> specMaps;
   //loadMaterialTextures(material, aiTextureType_SPECULAR, "specular", specMaps);
@@ -145,7 +156,7 @@ MeshDrawInfo AAOGLGraphics::processMesh(aiMesh* mesh, const aiScene* scene)
   return MeshDrawInfo(VAO, /*VBO, EBO,*/ loadedTextures, loadedElements);
 }
 
-bool AAOGLGraphics::loadMaterialTextures(aiMaterial* mat, aiTextureType type, std::string typeName, std::vector<TextureInfo>& out_texInfo)
+int AAOGLGraphics::loadMaterialTextures(aiMaterial* mat, aiTextureType type, std::string typeName, std::vector<TextureInfo>& out_texInfo)
 {
   for (unsigned int i = 0; i < mat->GetTextureCount(type); ++i)
   {
@@ -166,6 +177,7 @@ bool AAOGLGraphics::loadMaterialTextures(aiMaterial* mat, aiTextureType type, st
           tmptexinfo.path = "";
           out_texInfo.push_back(tmptexinfo);
           alreadyLoaded = true;
+          std::cout << "Texture [" << p.path.data() << "] already loaded.\n";
         }
       }
     }
@@ -176,15 +188,20 @@ bool AAOGLGraphics::loadMaterialTextures(aiMaterial* mat, aiTextureType type, st
       TextureInfo tmptex;
       std::string tmpPath = mLastDir + tmpstr.C_Str();
       tmptex.id = TexLoader::getInstance()->textureFromFile(tmpPath.c_str());
-      tmptex.path = tmpstr.C_Str();
-      tmptex.type = typeName;
-      out_texInfo.push_back(tmptex);
-      mTexturesLoaded.push_back(tmptex);
+      if (tmptex.id != 0)
+      {
+        tmptex.path = tmpstr.C_Str();
+        tmptex.type = typeName;
+        out_texInfo.push_back(tmptex);
+        mTexturesLoaded.push_back(tmptex);
+      }
+      else
+      {
+        return -1; // failed to load new texture
+      }
     }
   }
-
-
-  return true;
+  return 0;
 }
 
 ///////////////////////TEXLOADER//////////////////////
@@ -298,5 +315,10 @@ unsigned int TexLoader::textureFromFile(const char* filepath, bool gamma)
 
 ///////////////////VERTEX CONSTRUCTOR///////////////////////////
 
-Vertex::Vertex(glm::vec3 pos, glm::vec2 texcoords, glm::vec3 norms) noexcept
-  : Position(pos), TexCoords(texcoords), Normal(norms) {}
+Vertex::Vertex(glm::vec3 pos, glm::vec3 norms, glm::vec2 texcoords) noexcept
+  : Position(pos), Normal(norms), TexCoords(texcoords) {}
+
+
+Vertex::Vertex(glm::vec3 pos, glm::vec3 norms, glm::vec4 colors, glm::vec2 texcoords) noexcept
+  : Position(pos), Normal(norms), Color(colors), TexCoords(texcoords) {}
+

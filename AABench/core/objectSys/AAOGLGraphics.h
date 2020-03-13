@@ -16,7 +16,8 @@ public:
 
 struct Vertex
 {
-  Vertex(glm::vec3 pos, glm::vec2 texcoords, glm::vec3 norms) noexcept;
+  Vertex(glm::vec3 pos, glm::vec3 norms, glm::vec2 texcoords) noexcept;
+  Vertex(glm::vec3 pos, glm::vec3 norms, glm::vec4 colors, glm::vec2 texcoords) noexcept;
   glm::vec3 Position;
   glm::vec2 TexCoords;
   glm::vec3 Normal;
@@ -35,7 +36,7 @@ public:
 private:
 
   MeshDrawInfo processMesh(aiMesh* mesh, const aiScene* scene);
-  bool loadMaterialTextures(aiMaterial* mat, aiTextureType type, std::string typeName, std::vector<TextureInfo>& out_texInfo);
+  int loadMaterialTextures(aiMaterial* mat, aiTextureType type, std::string typeName, std::vector<TextureInfo>& out_texInfo);
 
   // holder vars
   std::string mLastDir = "";
