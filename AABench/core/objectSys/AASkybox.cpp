@@ -13,8 +13,8 @@
 AASkybox::AASkybox(std::vector<std::string> incomingSkymapFiles)
 {
   skyboxShader = std::make_unique<AAOGLShader>(
-    "../shaders/vert_skybox.glsl",
-    "../shaders/frag_skybox.glsl"
+    "../shaders/skycube.vert",
+    "../shaders/skycube.frag"
   );
   loadSkybox();
   cubemapTexture = TexLoader::getInstance()->loadCubeTexture(incomingSkymapFiles);
