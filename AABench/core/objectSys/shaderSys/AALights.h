@@ -2,10 +2,10 @@
 #include <glm/glm.hpp>
 #include <sstream>
 
-const int MAXPOINTLIGHTS = 20;
-const int MAXSPOTLIGHTS = 10;
-static int numPointLightsInUse = 0;
-static int numSpotLightsInUse = 0;
+const int MAXPOINTLIGHTS = 50;
+const int MAXSPOTLIGHTS = 25;
+static int NUM_POINT_LIGHTS = 0;
+static int NUM_SPOT_LIGHTS = 0;
 
 struct DirectionalLight
 {
@@ -55,7 +55,7 @@ static void setPointLight(const PointLight& light, const int which, const AAOGLS
     return;
   }
   
-  if (which >= numPointLightsInUse)
+  if (which >= NUM_POINT_LIGHTS)
   {
     std::cout << "couldn't set PointLight light, not enough in use\n";
     return;
@@ -63,7 +63,7 @@ static void setPointLight(const PointLight& light, const int which, const AAOGLS
 
   shader.use();
 
-  shader.setInt("pointLightsInUse", numPointLightsInUse);
+  shader.setInt("pointLightsInUse", NUM_POINT_LIGHTS);
 
   std::string position, constant, linear, quadratic, ambient, diffuse, specular;  
   constant = linear = quadratic = ambient = diffuse = specular = position = "pointLight[";
@@ -112,7 +112,7 @@ static void setSpotLight(const SpotLight& light, const int which, const AAOGLSha
     return;
   }
 
-  if (which >= numSpotLightsInUse)
+  if (which >= NUM_SPOT_LIGHTS)
   {
     std::cout << "couldn't set SpotLight light, not enough in use\n";
     return;
@@ -120,7 +120,7 @@ static void setSpotLight(const SpotLight& light, const int which, const AAOGLSha
 
   shader.use();
 
-  shader.setInt("spotLightsInUse", numSpotLightsInUse);
+  shader.setInt("spotLightsInUse", NUM_SPOT_LIGHTS);
 
   std::string position, ambient, constant, cutoff, ocutoff, diffuse, direction, linear, quadrat, specular;
   ambient = constant = cutoff = ocutoff = diffuse = direction = linear = quadrat = specular = position = "spotLight[";

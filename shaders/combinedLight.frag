@@ -1,112 +1,123 @@
-#version 330 core
-layout(location = 0) out vec3 pass_Pos;
-layout(location = 1) out vec3 pass_Norm;
+#version 430 core
+// passing in from combinedLight.vert
+layout(location = 0) out vec4 pass_Pos;
+layout(location = 1) out vec4 pass_Norm;
 layout(location = 2) out vec4 pass_Color;
 layout(location = 3) out vec2 pass_TexUV;
 
+// final out pixel color
 out vec4 out_Color;
 
+// ------------ STRUCT DECLARACTIONS
 struct Material
 {
   sampler2D TextureUnit;
-  int TextureCount;
-  vec4 Diffuse;
-  vec4 Ambient;
+  // int TextureCount;
+  // vec4 Diffuse;
+  // vec4 Ambient;
   vec4 Specular;
-  vec4 Emissive;
+  // vec4 Emissive;
   float Shininess;
 };
 
 struct DirectionalLight
 {
-  vec3 Direction;
-  vec3 Ambient;
-  vec3 Diffuse;
-  vec3 Specular; 
+  vec4 Direction;
+  vec4 Ambient;
+  vec4 Diffuse;
+  vec4 Specular; 
 };
 
 struct PointLight
 {
-  vec3 Position;
+  vec4 Position;
   float Constant, Linear, Quadratic;
-  vec3 Ambient, Diffuse, Specular;
+  vec4 Ambient, Diffuse, Specular;
 };
 
 struct SpotLight
 {
-  vec3 Position, Direction;
+  vec4 Position, Direction;
   float CutOff, OuterCutOff;
   float Constant, Linear, Quadratic;
-  vec3 Ambient, Diffuse, Specular;
+  vec4 Ambient, Diffuse, Specular;
 };
 
-vec3 CalcDirectionalLight(DirectionalLight light, vec3 normal, vec3 viewDir);
-vec3 CalcPointLight(PointLight light, vec3 normal, vec3 viewDir);
-vec3 CalcSpotLight(SpotLight light, vec3 normal, vec3 viewDir);
+//  constants
+const int MAXPOINTLIGHTS = 50;
+const int MAXSPOTLIGHTS = 25;
 
-const int MAXPOINTLIGHTS = 20;
-const int MAXSPOTLIGHTS = 10;
-
-uniform vec3           viewPos;
+// ----------- UNIFORM DECLARATIONS
+uniform vec4           viewPos;
 uniform Material       material;
 
 uniform DirectionalLight directionalLight;
-uniform PointLight       pointLight[20];
-uniform SpotLight        spotLight[10];
+uniform PointLight       pointLight[MAXPOINTLIGHTS];
+uniform SpotLight        spotLight[MAXSPOTLIGHTS];
 
-uniform int pointLightsInUse;
-uniform int spotLightsInUse;
+uniform int NUM_POINT_LIGHTS;
+uniform int NUM_SPOT_LIGHTS;
 
+
+// ---------- FUNCTION DELCARATIONS
+vec4 CalcDirectionalLight(vec4 normal, vec4 viewDir);
+vec4 CalcPointLight(PointLight light, vec4 normal, vec4 viewDir);
+vec4 CalcSpotLight(SpotLight light, vec4 normal, vec4 viewDir);
+
+
+// --------- MAIN
 void main()
 {
-  vec3 normal = normalize(pass_Norm);
-  vec3 viewDir = normalize(viewPos - pass_Pos);
+  vec4 normal = normalize(pass_Norm);
+  vec4 viewDir = normalize(viewPos - pass_Pos);
 
-  vec3 result;
+  vec4 result;
   
  // calc directional light on fragment
-  result += CalcDirectionalLight(directionalLight, normal, viewDir);
+  result += CalcDirectionalLight(normal, viewDir);
 
   // calc point lights on fragments
-  for (int i = 0; i < pointLightsInUse; i++)
+  for (int i = 0; i < NUM_POINT_LIGHTS; i++)
     result += CalcPointLight(pointLight[i], normal, viewDir);
 
   // calc spot lights on the fragments
-  for (int i = 0; i < spotLightsInUse; i++) 
+  for (int i = 0; i < NUM_SPOT_LIGHTS
+; i++) 
     result += CalcSpotLight(spotLight[i], normal, viewDir);
 
-  out_Color = vec4(result, 1.0);
+  out_Color = result;
 }
 
-vec3 CalcDirectionalLight(DirectionalLight light, vec3 normal, vec3 viewDir)
+
+// -------- FUNCTION DEFINITIONS
+vec4 CalcDirectionalLight(vec4 normal, vec4 viewDir)
 {
-  vec3 lightDir = normalize(-light.Direction);
+  vec4 lightDir = normalize(-directionalLight.Direction);
   float diff = max(dot(normal, lightDir), 0.0);
-  vec3 reflectDir = reflect(-lightDir, normal);
-//  float spec = pow(max(dot(viewDir, reflectDir), 0.0), material.Gloss);
+  vec4 reflectDir = reflect(-lightDir, normal);
+  float spec = pow(max(dot(viewDir, reflectDir), 0.0), material.Shininess);
 
-  vec3 ambient = light.Ambient * texture(material.TextureUnit, pass_TexUV).rgb;
-  vec3 diffuse = light.Diffuse * diff * texture(material.TextureUnit, pass_TexUV).rgb;
+  vec4 ambient = directionalLight.Ambient * texture(material.TextureUnit, pass_TexUV).rgba;
+  vec4 diffuse = directionalLight.Diffuse * diff * texture(material.TextureUnit, pass_TexUV).rgba;
 
-  // vec3 specular = light.Specular * spec * vec3(texture(material.Specular, pass_TexUV));
+  // vec4 specular = light.Specular * spec * vec4(texture(material.Specular, pass_TexUV));
 
   return (ambient + diffuse /*+ specular*/);
 }
 
-vec3 CalcPointLight(PointLight light, vec3 normal, vec3 viewDir)
+vec4 CalcPointLight(PointLight light, vec4 normal, vec4 viewDir)
 {
-  vec3 lightDir = normalize(light.Position - pass_Pos);
+  vec4 lightDir = normalize(light.Position - pass_Pos);
   float diff = max(dot(normal, lightDir), 0.0);
-  vec3 reflectDir = reflect(-lightDir, normal);
-//  float spec = pow(max(dot(viewDir, reflectDir), 0.0), material.Gloss);
-//  float spec = pow(max(dot(viewDir, reflectDir), 0.0), 0.0);
+  vec4 reflectDir = reflect(-lightDir, normal);
+  float spec = pow(max(dot(viewDir, reflectDir), 0.0), material.Shininess);
 
   float dist = length(light.Position - pass_Pos);
   float attenuation = 1.0 / (light.Constant + light.Linear * dist + light.Quadratic * (dist * dist));
 
-  vec3 ambient = light.Ambient * texture(material.TextureUnit, pass_TexUV).rgb;
-  vec3 diffuse = light.Diffuse * diff * texture(material.TextureUnit, pass_TexUV).rgb;
-//  vec3 specular = light.Specular * spec * vec3(texture(material.Specular, pass_TexUV);
+  vec4 ambient = light.Ambient * texture(material.TextureUnit, pass_TexUV).rgba;
+  vec4 diffuse = light.Diffuse * diff * texture(material.TextureUnit, pass_TexUV).rgba;
+//  vec4 specular = light.Specular * spec * vec4(texture(material.Specular, pass_TexUV);
 
   ambient *= attenuation;
   diffuse *= attenuation;
@@ -115,12 +126,12 @@ vec3 CalcPointLight(PointLight light, vec3 normal, vec3 viewDir)
   return (ambient + diffuse /*+ specular*/);
 }
 
-vec3 CalcSpotLight(SpotLight light, vec3 normal, vec3 viewDir)
+vec4 CalcSpotLight(SpotLight light, vec4 normal, vec4 viewDir)
 {
-  vec3 lightDir = normalize(light.Position - pass_Pos);
+  vec4 lightDir = normalize(light.Position - pass_Pos);
   float diff = max(dot(normal, lightDir), 0.0);
-  vec3 reflectDir = reflect(-lightDir, normal);
-//  float spec = pow(max(dot(viewDir, reflectDir), 0.0), material.Gloss);
+  vec4 reflectDir = reflect(-lightDir, normal);
+  float spec = pow(max(dot(viewDir, reflectDir), 0.0), material.Shininess);
 
   float dist = length(light.Position - pass_Pos); 
   float attenuation  = 1.0 / (light.Constant + light.Linear * dist + light.Quadratic * (dist * dist));  
@@ -129,10 +140,10 @@ vec3 CalcSpotLight(SpotLight light, vec3 normal, vec3 viewDir)
   float epsilon = light.CutOff - light.OuterCutOff;
   float intensity = clamp((theta - light.OuterCutOff) / epsilon, 0.0, 1.0);
 
-  vec3 ambient = light.Ambient * texture(material.TextureUnit, pass_TexUV).rgb;
-  vec3 diffuse = light.Diffuse * diff * texture(material.TextureUnit, pass_TexUV).rgb;
+  vec4 ambient = light.Ambient * texture(material.TextureUnit, pass_TexUV).rgba;
+  vec4 diffuse = light.Diffuse * diff * texture(material.TextureUnit, pass_TexUV).rgba;
 
-//  vec3 specular = light.Specular * spec * vec3(texture(material.Specular, pass_TexUV);
+//  vec4 specular = light.Specular * spec * vec4(texture(material.Specular, pass_TexUV);
 
   ambient *= attenuation * intensity;
   diffuse *= attenuation * intensity;

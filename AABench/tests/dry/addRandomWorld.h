@@ -16,13 +16,13 @@ void addRandomWorld(int cam_id)
 
   static int mainShaderId = mainWorld.addShader("../shaders/combinedLight.vert", "../shaders/combinedLight.frag");
 
-//const auto updateShaders = []()
-//{
-//  spotLight.Position = *mainWorld.getCamera(camID).getPosition();
-//  spotLight.Direction = *mainWorld.getCamera(camID).getFront();
-//  setSpotLight(spotLight, mainWorld.getShader(mainShaderId));
-//};
-//mainWorld.addToUpdate(updateShaders);
+  //const auto updateShaders = []()
+  //{
+  //  spotLight.Position = *mainWorld.getCamera(camID).getPosition();
+  //  spotLight.Direction = *mainWorld.getCamera(camID).getFront();
+  //  setSpotLight(spotLight, mainWorld.getShader(mainShaderId));
+  //};
+  //mainWorld.addToUpdate(updateShaders);
 
   // see what demo files we have in our data dir
   std::string assetDir;
@@ -114,8 +114,8 @@ void addRandomWorld(int cam_id)
       point_lights[i].Linear = .09f;
       point_lights[i].Quadratic = .032f;
       point_lights[i].Position = glm::vec3(0 + i, 0, 0 + i);
-      numPointLightsInUse++;
-      std::cout << "point light: " << numPointLightsInUse << '\n';
+      NUM_POINT_LIGHTS++;
+      std::cout << "point light: " << NUM_POINT_LIGHTS << '\n';
       setPointLight(point_lights[i], i, mainWorld.getShader(mainShaderId));
     }
 
@@ -131,8 +131,8 @@ void addRandomWorld(int cam_id)
       spot_lights[i].Quadratic = .009f;
       spot_lights[i].CutOff = glm::cos(glm::radians(25.f));
       spot_lights[i].OuterCutOff = glm::cos(glm::radians(38.f));
-      numSpotLightsInUse++;
-      std::cout << "spot light: " << numSpotLightsInUse << '\n';
+      NUM_SPOT_LIGHTS++;
+      std::cout << "spot light: " << NUM_SPOT_LIGHTS << '\n';
       setSpotLight(spot_lights[i], i, mainWorld.getShader(mainShaderId));
     }
   };

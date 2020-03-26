@@ -1,8 +1,6 @@
 #include "AAGameObject.h"
 #include "AAOGLGraphics.h"
 #include "../cameraSys/AACamera.h"
-#include <glad\glad.h>
-#include <ColliderBox.h>
 
 #define assLoad AAOGLGraphics::getInstance()->loadGameObjectWithAssimp
 
@@ -39,24 +37,22 @@ const std::size_t AAGameObject::getInstanceCount() const noexcept
 {
   return mInstanceDetails.size();
 }
-
 AAGameObject::AAGameObject(const char* path, int camId, int shadId)
 {
   //std::vector<MeshDrawInfo> meshes = assLoad(path, false);  // no triangulate
-  assLoad(path, true, mMeshes);  // yes triangulate
+  assLoad(mMeshes, path, true);  // yes triangulate
 
   mInstanceDetails.push_back(InstanceDetails());
-
+   
   //mMeshes = meshes;
   mCameraID = camId;
   mShaderID = shadId;
   mObjectID = uniqueIDs++;
 }
-
 AAGameObject::AAGameObject(const char* path, int camId, int shadId, std::vector<InstanceDetails> details)
 {
   //std::vector<MeshDrawInfo> meshes = assLoad(path, false);  // no triangulate
-  assLoad(path, true, mMeshes);  // yes triangulate
+  assLoad(mMeshes, path, true);  // yes triangulate
 
   mInstanceDetails = details;
 
@@ -66,60 +62,18 @@ AAGameObject::AAGameObject(const char* path, int camId, int shadId, std::vector<
   mObjectID = uniqueIDs++;
 
 }
-
 void AAGameObject::setCamera(int id) noexcept
 {
   mCameraID = id;
 }
-
 void AAGameObject::setShader(int id) noexcept
 {
   mShaderID = id;
 }
-
 void AAGameObject::draw(const AAOGLShader& modelShader)
 {
-  // turn on depth test in case something else turned it off
-  glEnable(GL_DEPTH_TEST);
-
-  // go through all meshes in the this
-  for (auto m : mMeshes)
-  {
-    // go through all textures in this mesh
-    for (unsigned int i = 0; i < m.textures.size(); ++i)
-    {
-      // activate each texture
-      glActiveTexture(GL_TEXTURE0 + i);
-
-      // get the texture type
-      const std::string texType = m.textures[i].type;
-
-      //might not need shader.use() here but leaving it to be safe
-      //modelShader.use();
-
-      // tell opengl to bind the texture to a model shader uniform var
-      glUniform1i(glGetUniformLocation(modelShader.getID(), ("material." + texType).c_str()), i);
-      glBindTexture(GL_TEXTURE_2D, m.textures[i].id);
-    }
-
-    // bind verts
-    glBindVertexArray(m.vao);
-    const GLsizei count = (GLsizei)m.elements.size();
-
-    // draw all the instances with their differing model matrices
-    for (const auto& instance : mInstanceDetails)
-    {
-      modelShader.setMat4("model", instance.ModelMatrix);
-      glDrawElements(GL_TRIANGLES, count, GL_UNSIGNED_INT, nullptr);
-    }
-  }
-
-  // unbind vert array
-  glBindVertexArray(0);
-  // reset to first texture
-  glActiveTexture(GL_TEXTURE0);
+  AAOGLGraphics::getInstance()->Render(mMeshes, mInstanceDetails, modelShader);
 }
-
 void AAGameObject::scale(glm::vec3 amt, int which)
 {
   if (which < getInstanceCount()) {
@@ -127,12 +81,10 @@ void AAGameObject::scale(glm::vec3 amt, int which)
     updateModelMatrix(which);
   }
 }
-
 void AAGameObject::scale(glm::vec3 amt)
 {
   scale(amt, 0);
 }
-
 void AAGameObject::rotate(float angle, glm::vec3 axis, int which)
 {
   if (axis.x == 0.f && axis.y == 0.f && axis.z == 0.f)
@@ -149,12 +101,10 @@ void AAGameObject::rotate(float angle, glm::vec3 axis, int which)
   updateModelMatrix(which);
 
 }
-
 void AAGameObject::rotate(float radianAngle, glm::vec3 axis)
 {
   rotate(radianAngle, axis, 0);
 } 
-
 void AAGameObject::translateTo(glm::vec3 to, int which)
 {
   if (which < getInstanceCount()) {
@@ -162,17 +112,14 @@ void AAGameObject::translateTo(glm::vec3 to, int which)
   }
   updateModelMatrix(which);
 }
-
 void AAGameObject::translateTo(glm::vec3 to)
 {
   translateTo(to, 0);
 }
-
 void AAGameObject::advanceScale(glm::vec3 amt)
 {
   advanceScale(amt, 0);
 }
-
 void AAGameObject::advanceScale(glm::vec3 amt, int which)
 {
   if (which < getInstanceCount()) {
@@ -180,12 +127,10 @@ void AAGameObject::advanceScale(glm::vec3 amt, int which)
 
   }
 }
-
 void AAGameObject::advanceRotation(float angleAmtRadians)
 {
   advanceRotation(angleAmtRadians, 0);
 }
-
 void AAGameObject::advanceRotation(float angleAmtRadians, int which)
 {
   if (which < getInstanceCount()) {
@@ -193,12 +138,10 @@ void AAGameObject::advanceRotation(float angleAmtRadians, int which)
     updateModelMatrix(which);
   }
 }
-
 void AAGameObject::advanceTranslate(glm::vec3 amt)
 {
   advanceTranslate(amt, 0);
 }
-
 void AAGameObject::advanceTranslate(glm::vec3 amt, int which)
 {
   if (which < getInstanceCount()) {
@@ -206,12 +149,10 @@ void AAGameObject::advanceTranslate(glm::vec3 amt, int which)
     updateModelMatrix(which);
   }
 }
-
 void AAGameObject::changeRotateAxis(glm::vec3 axis)
 {
   changeRotateAxis(axis, 0);
 }
-
 void AAGameObject::changeRotateAxis(glm::vec3 axis, int which)
 {
   if (axis.x == 0.f && axis.y == 0.f && axis.z == 0.f)
@@ -227,17 +168,14 @@ void AAGameObject::changeRotateAxis(glm::vec3 axis, int which)
   }
 
 }
-
 bool AAGameObject::isSingleInstance() const
 {
   return mInstanceDetails.size() == 1;
 }
-
 const glm::vec3& AAGameObject::getLocation() const
 {
   return getLocation(0);
 }
-
 const glm::vec3& AAGameObject::getLocation(int which) const
 {
   if (which < getInstanceCount()) {
@@ -245,8 +183,6 @@ const glm::vec3& AAGameObject::getLocation(int which) const
   }
 
 }
-
-// the one true call
 void AAGameObject::updateModelMatrix(int which)
 {
   if (which < getInstanceCount())
@@ -254,12 +190,10 @@ void AAGameObject::updateModelMatrix(int which)
     mInstanceDetails.at(which).updateModelMatrix();
   }
 }
-
-MeshDrawInfo::MeshDrawInfo(unsigned int a,/* unsigned int b, unsigned int e,*/ std::vector<TextureInfo> t, std::vector<unsigned int> el)
-  : vao(a),/* vbo(b), ebo(e),*/ textures(t), elements(el)
-{
-}
-
+//MeshDrawInfo::MeshDrawInfo(unsigned int a,/* unsigned int b, unsigned int e,*/ std::vector<TextureInfo> t, std::vector<unsigned int> el)
+//  : vao(a),/* vbo(b), ebo(e),*/ textures(t), elements(el)
+//{
+//}
 void InstanceDetails::updateModelMatrix()
 {
   // reset ModelMatrix
@@ -277,7 +211,6 @@ void InstanceDetails::updateModelMatrix()
   ModelMatrix = glm::rotate(ModelMatrix, RotationAngle, RotationAxis);
 
 }
-
 InstanceDetails::InstanceDetails()
 {
   Scale = glm::vec3(1);
@@ -286,7 +219,6 @@ InstanceDetails::InstanceDetails()
   RotationAngle = 0.f;
   updateModelMatrix();
 }
-
 InstanceDetails::InstanceDetails(glm::vec3 scale, glm::vec3 rotAx, glm::vec3 transl, float rotAng)
 {
   Scale = scale;

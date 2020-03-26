@@ -13,6 +13,7 @@
 #include <cstddef>
 #include <Conversions.h>
 #include "AAGameObject.h"
+#include "Vertex.h"
 
 using namespace mearly;
 
@@ -22,7 +23,7 @@ AAOGLGraphics* AAOGLGraphics::getInstance()
   return graphics.get();
 }
 
-bool AAOGLGraphics::loadGameObjectWithAssimp(std::string path, bool pp_triangulate, std::vector<MeshDrawInfo>& out_MeshInfo)
+int AAOGLGraphics::loadGameObjectWithAssimp(std::vector<MeshDrawInfo>& out_MeshInfo, std::string path, bool pp_triangulate)
 {
   Assimp::Importer importer;
   int post_processsing_flags = 0;
@@ -35,14 +36,14 @@ bool AAOGLGraphics::loadGameObjectWithAssimp(std::string path, bool pp_triangula
   if (!scene || scene->mFlags & AI_SCENE_FLAGS_INCOMPLETE || !scene->mRootNode)
   {
     std::cout << "ERROR::ASSIMP::" << importer.GetErrorString() << '\n';
-    return false;
+    return -1;  // failed to load scene
   }
 
-  mLastDir = path.substr(0, path.find_last_of("/\\") + 1);
+  //mLastDir = path.substr(0, path.find_last_of("/\\") + 1);  // get the beginning of the filename before the last / or \\
 
   processNode(scene->mRootNode, scene, out_MeshInfo);
 
-  return true;
+  return 0;
 }
 
 void AAOGLGraphics::processNode(aiNode* node, const aiScene* scene, std::vector<MeshDrawInfo>& out_MeshInfo)
@@ -65,11 +66,9 @@ MeshDrawInfo AAOGLGraphics::processMesh(aiMesh* mesh, const aiScene* scene)
   std::vector<Vertex> loadedVerts;
   for (unsigned int i = 0; i < mesh->mNumVertices; ++i)
   {
-    glm::vec3 tmpPos = Conversions::aiVec3_to_glmVec3(mesh->mVertices[i]);
-
-    glm::vec3 tmpNorm = Conversions::aiVec3_to_glmVec3(mesh->mNormals[i]);
-
-    glm::vec4 tmpColor(1,0,0,1);
+    const glm::vec4 tmpPos = glm::vec4(Conversions::aiVec3_to_glmVec3(mesh->mVertices[i]), 0.f);
+    const glm::vec4 tmpNorm = glm::vec4(Conversions::aiVec3_to_glmVec3(mesh->mNormals[i]), 0.f);
+    glm::vec4 tmpColor(1, 0, 0, 1);
     if (mesh->mColors[0])
     {
       tmpColor = Conversions::aiColor4_to_glmVec4(mesh->mColors[0][i]);
@@ -98,15 +97,18 @@ MeshDrawInfo AAOGLGraphics::processMesh(aiMesh* mesh, const aiScene* scene)
 
 
   // get the materials
-  aiMaterial* material = scene->mMaterials[mesh->mMaterialIndex];
+  const aiMaterial* material = scene->mMaterials[mesh->mMaterialIndex];
+
   std::vector<TextureInfo> loadedTextures;
 
   std::vector<TextureInfo> textureUnitMaps;
+
   if (loadMaterialTextures(material, aiTextureType_DIFFUSE, "TextureUnit", textureUnitMaps) == 0) // if succeeds in loading texture add it to loaded texutres
   {
     loadedTextures.insert(loadedTextures.end(), textureUnitMaps.begin(), textureUnitMaps.end());
   }
-  else {
+  else
+  {
     std::cout << "failed to load aiTextureType_DIFFUSE\n";
   }
 
@@ -125,6 +127,31 @@ MeshDrawInfo AAOGLGraphics::processMesh(aiMesh* mesh, const aiScene* scene)
   //std::vector<TextureInfo> colorMaps;
   //loadMaterialTextures(material, aiTextureType_BASE_COLOR, "base color", colorMaps);
   //loadedTextures.insert(loadedTextures.end(), colorMaps.begin(), colorMaps.end());
+
+  float shine;
+  if (AI_SUCCESS != aiGetMaterialFloat(material, AI_MATKEY_SHININESS, &shine))
+  {
+    shine = .5f;
+    std::cout << "didn't get material shininess, set to .5f\n";
+  }
+  else  // success
+  {
+    std::cout << "material shininess found! set to: " << shine << '\n';
+  }
+
+  aiColor4D spec;
+  if (AI_SUCCESS != aiGetMaterialColor(material, AI_MATKEY_COLOR_SPECULAR, &spec))
+  {
+    spec = aiColor4D(1.f, 1.f, 1.f, 1.f);
+    std::cout << "didn't get material specular, set to 1,1,1,1\n";
+  }
+  else  // success
+  {
+    std::cout << "material specular found!\n";
+  }
+
+  glm::vec4 specular = Conversions::aiColor4_to_glmVec4(spec);
+
 
   unsigned int VAO, VBO, EBO;
   glGenVertexArrays(1, &VAO);
@@ -153,10 +180,10 @@ MeshDrawInfo AAOGLGraphics::processMesh(aiMesh* mesh, const aiScene* scene)
 
   glBindVertexArray(0);
 
-  return MeshDrawInfo(VAO, /*VBO, EBO,*/ loadedTextures, loadedElements);
+  return MeshDrawInfo(VAO, loadedElements, loadedTextures, shine, specular);
 }
 
-int AAOGLGraphics::loadMaterialTextures(aiMaterial* mat, aiTextureType type, std::string typeName, std::vector<TextureInfo>& out_texInfo)
+int AAOGLGraphics::loadMaterialTextures(const aiMaterial* mat, aiTextureType type, std::string typeName, std::vector<TextureInfo>& out_texInfo)
 {
   for (unsigned int i = 0; i < mat->GetTextureCount(type); ++i)
   {
@@ -186,7 +213,7 @@ int AAOGLGraphics::loadMaterialTextures(aiMaterial* mat, aiTextureType type, std
     if (!alreadyLoaded)
     {
       TextureInfo tmptex;
-      std::string tmpPath = mLastDir + tmpstr.C_Str();
+      std::string tmpPath =/* mLastDir +*/ tmpstr.C_Str();
       tmptex.id = TexLoader::getInstance()->textureFromFile(tmpPath.c_str());
       if (tmptex.id != 0)
       {
@@ -202,6 +229,56 @@ int AAOGLGraphics::loadMaterialTextures(aiMaterial* mat, aiTextureType type, std
     }
   }
   return 0;
+}
+
+/** Render the meshes with the shader. Assumes Camera View Matrix is already set.
+ *  @param[in] meshes to draw.
+ *  @param[in] details about instances of the mesh to also render.
+ *  @param[in] shader to use for mesh rendering pipeline.
+ */
+void AAOGLGraphics::Render(const std::vector<MeshDrawInfo>& meshes, const std::vector<InstanceDetails>& details, const AAOGLShader& modelShader)
+{
+  // turn on depth test in case something else turned it off
+  glEnable(GL_DEPTH_TEST);
+
+  // go through all meshes in the this
+  for (auto m : meshes)
+  {
+    // go through all textures in this mesh
+    for (unsigned int i = 0; i < m.textures.size(); ++i)
+    {
+      // activate each texture
+      glActiveTexture(GL_TEXTURE0 + i);
+      // get the texture type
+      const std::string texType = m.textures[i].type;
+
+      //might not need shader.use() here
+      //modelShader.use();
+
+      // tell opengl to bind the texture to a model shader uniform var
+      glUniform1i(glGetUniformLocation(modelShader.getID(), ("material." + texType).c_str()), i);
+      glBindTexture(GL_TEXTURE_2D, m.textures[i].id);
+    }
+
+    modelShader.setFloat("material.Shininess", m.shininess);
+    modelShader.setVec4("material.Specular", m.specular);
+
+    // bind verts
+    glBindVertexArray(m.vao);
+    const GLsizei count = (GLsizei)m.elements.size();
+
+    // draw all the instances with their differing model matrices
+    for (const auto& instance : details)
+    {
+      modelShader.setMat4("model", instance.ModelMatrix);
+      glDrawElements(GL_TRIANGLES, count, GL_UNSIGNED_INT, nullptr);
+    }
+  }
+
+  // unbind vert array
+  glBindVertexArray(0);
+  // reset to first texture
+  glActiveTexture(GL_TEXTURE0);
 }
 
 ///////////////////////TEXLOADER//////////////////////
@@ -227,6 +304,11 @@ unsigned int TexLoader::loadCubeTexture(const std::vector<std::string>& files)
   unsigned int texID;
   glGenTextures(1, &texID);
   glBindTexture(GL_TEXTURE_CUBE_MAP, texID);
+  glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+  glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+  glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
+  glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
+  glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_R, GL_CLAMP_TO_EDGE);
   stbi_set_flip_vertically_on_load(false); // tell stb_image.h to not flip loaded texture's on the y-axis.
   int width, height, nrChannel;
   std::size_t size = files.size();
@@ -255,11 +337,7 @@ unsigned int TexLoader::loadCubeTexture(const std::vector<std::string>& files)
       return 0;
     }
   }
-  glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-  glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-  glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
-  glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
-  glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_R, GL_CLAMP_TO_EDGE);
+
   return texID;
 }
 
@@ -312,13 +390,4 @@ unsigned int TexLoader::textureFromFile(const char* filepath, bool gamma)
 
   return out_texID;
 }
-
-///////////////////VERTEX CONSTRUCTOR///////////////////////////
-
-Vertex::Vertex(glm::vec3 pos, glm::vec3 norms, glm::vec2 texcoords) noexcept
-  : Position(pos), Normal(norms), TexCoords(texcoords) {}
-
-
-Vertex::Vertex(glm::vec3 pos, glm::vec3 norms, glm::vec4 colors, glm::vec2 texcoords) noexcept
-  : Position(pos), Normal(norms), Color(colors), TexCoords(texcoords) {}
 

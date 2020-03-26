@@ -25,8 +25,10 @@ public:
 
   const AACamera& getCamera(int camId) const;
   AACamera& getCamera(int camId);
+
   const AAOGLShader& getShader(int shadId) const;
   AAOGLShader& getShader(int shadId);
+
   const AAGameObject& getGameObject(int objId) const;
   AAGameObject& getGameObject(int objId);
 

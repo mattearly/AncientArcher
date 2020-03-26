@@ -25,6 +25,7 @@
     <ClCompile Include="Filesystem.cpp" />
     <ClCompile Include="FPPWorldLocation.cpp" />
     <ClCompile Include="Random.cpp" />
+    <ClCompile Include="Vertex.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="ColliderBox.h" />
@@ -33,6 +34,7 @@
     <ClInclude Include="FPPWorldLocation.h" />
     <ClInclude Include="Random.h" />
     <ClInclude Include="Filesystem.h" />
+    <ClInclude Include="Vertex.h" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>16.0</VCProjectVersion>

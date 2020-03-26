@@ -5,6 +5,8 @@
 #include <string>
 #include "AAGameObject.h"
 #include "shaderSys/AAOGLShader.h"
+#include "MeshDrawInfo.h"
+#include "InstanceDetails.h"
 
 class TexLoader
 {
@@ -14,31 +16,24 @@ public:
   unsigned int textureFromFile(const char* filepath, bool gamma = false);
 };
 
-struct Vertex
-{
-  Vertex(glm::vec3 pos, glm::vec3 norms, glm::vec2 texcoords) noexcept;
-  Vertex(glm::vec3 pos, glm::vec3 norms, glm::vec4 colors, glm::vec2 texcoords) noexcept;
-  glm::vec3 Position;
-  glm::vec2 TexCoords;
-  glm::vec3 Normal;
-  glm::vec4 Color;
-};
-
 class AAOGLGraphics
 {
 public:
 
   static AAOGLGraphics* getInstance();
-  bool loadGameObjectWithAssimp(std::string path, bool pp_triangulate, std::vector<MeshDrawInfo>& out_);
-
+  int loadGameObjectWithAssimp(std::vector<MeshDrawInfo>& out_MeshInfo, std::string path, bool pp_triangulate);
   void processNode(aiNode* node, const aiScene* scene, std::vector<MeshDrawInfo>& out_);
 
+  friend class AAGameObject;
 private:
 
   MeshDrawInfo processMesh(aiMesh* mesh, const aiScene* scene);
-  int loadMaterialTextures(aiMaterial* mat, aiTextureType type, std::string typeName, std::vector<TextureInfo>& out_texInfo);
+  int loadMaterialTextures(const aiMaterial* mat, aiTextureType type, std::string typeName, std::vector<TextureInfo>& out_texInfo);
+
+  void Render(const std::vector<MeshDrawInfo>& meshes, const std::vector<InstanceDetails>& details, const AAOGLShader& modelShader);
 
   // holder vars
   std::string mLastDir = "";
   std::vector<TextureInfo> mTexturesLoaded;
+
 };

@@ -167,6 +167,7 @@
     </Lib>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="core\objectSys\MeshDrawInfo.cpp" />
     <ClCompile Include="core\objectSys\shaderSys\AAOGLShader.cpp" />
     <ClCompile Include="core\winSys\AADisplayCallbacks.cpp" />
     <ClCompile Include="core\worldLoop\AAWorld_private.cpp" />
@@ -185,6 +186,8 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="AAEngine.h" />
+    <ClInclude Include="core\objectSys\InstanceDetails.h" />
+    <ClInclude Include="core\objectSys\MeshDrawInfo.h" />
     <ClInclude Include="core\objectSys\shaderSys\AAOGLShader.h" />
     <ClInclude Include="tests\dry\addGodMovement.h" />
     <ClInclude Include="tests\dry\addRandomWorld.h" />

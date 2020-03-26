@@ -1,7 +1,6 @@
 #define STB_IMAGE_IMPLEMENTATION
 
-
-// png's only
+// png's and jpegs only
 
 //#define STBI_NO_JPEG
 //#define STBI_NO_PNG
@@ -11,14 +10,13 @@
 #define STBI_NO_GIF
 #define STBI_NO_HDR
 #define STBI_NO_PIC
-#define STBI_NO_PNM   (.ppm and .pgm)
-
-//#define STBI_ONLY_PNG
+#define STBI_NO_PNM  (.ppm and .pgm)
 
 #define STBI_WINDOWS_UTF8
 
 #define STBI_NO_FAILURE_STRINGS
 
+//#define STBI_ONLY_PNG
 
 //#define STBI_ASSERT(x)
 
