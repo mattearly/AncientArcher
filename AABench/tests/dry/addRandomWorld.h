@@ -99,21 +99,21 @@ void addRandomWorld(int cam_id)
   const auto begin = []()
   { 
     std::cout << "onBegin\n";
-    directional_light.Direction = glm::vec3(-.15f, -1.f, -.15f);
-    directional_light.Ambient = glm::vec3(.35f);
-    directional_light.Diffuse = glm::vec3(.35f);
-    directional_light.Specular = glm::vec3(1.0f);
+    directional_light.Direction = glm::vec4(-.15f, -1.f, -.15f, 0.f);
+    directional_light.Ambient = glm::vec4(.35f);
+    directional_light.Diffuse = glm::vec4(.35f);
+    directional_light.Specular = glm::vec4(1.0f);
     setDirectionalLight(directional_light, mainWorld.getShader(mainShaderId));
 
     for (int i = 0; i < MAXPOINTLIGHTS; i++)
     {
-      point_lights[i].Ambient = glm::vec3(0.9f);
-      point_lights[i].Diffuse = glm::vec3(0.9f);
-      point_lights[i].Specular = glm::vec3(1);
+      point_lights[i].Ambient = glm::vec4(0.9f);
+      point_lights[i].Diffuse = glm::vec4(0.9f);
+      point_lights[i].Specular = glm::vec4(1);
       point_lights[i].Constant = 1.f;
       point_lights[i].Linear = .09f;
       point_lights[i].Quadratic = .032f;
-      point_lights[i].Position = glm::vec3(0 + i, 0, 0 + i);
+      point_lights[i].Position = glm::vec4(0 + i, 0, 0 + i, 0);
       NUM_POINT_LIGHTS++;
       std::cout << "point light: " << NUM_POINT_LIGHTS << '\n';
       setPointLight(point_lights[i], i, mainWorld.getShader(mainShaderId));
@@ -121,11 +121,11 @@ void addRandomWorld(int cam_id)
 
     for (int i = 0; i < MAXSPOTLIGHTS; i++)
     {
-      spot_lights[i].Position = glm::vec3(0 + i, 5, 8.5);
-      spot_lights[i].Direction = glm::vec3(-1, 0, 0);
-      spot_lights[i].Ambient = glm::vec3(0.3f);
-      spot_lights[i].Diffuse = glm::vec3(.9f);
-      spot_lights[i].Specular = glm::vec3(1.f);
+      spot_lights[i].Position = glm::vec4(0 + i, 5, 8.5, 0);
+      spot_lights[i].Direction = glm::vec4(-1, 0, 0, 0);
+      spot_lights[i].Ambient = glm::vec4(0.3f);
+      spot_lights[i].Diffuse = glm::vec4(.9f);
+      spot_lights[i].Specular = glm::vec4(1.f);
       spot_lights[i].Constant = 1.0f;
       spot_lights[i].Linear = .7f;
       spot_lights[i].Quadratic = .009f;

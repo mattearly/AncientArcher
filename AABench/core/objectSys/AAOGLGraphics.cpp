@@ -260,8 +260,8 @@ void AAOGLGraphics::Render(const std::vector<MeshDrawInfo>& meshes, const std::v
       glBindTexture(GL_TEXTURE_2D, m.textures[i].id);
     }
 
-    modelShader.setFloat("material.Shininess", m.shininess);
-    modelShader.setVec4("material.Specular", m.specular);
+    //modelShader.setFloat("material.Shininess", m.shininess);
+    //modelShader.setVec4("material.Specular", m.specular);
 
     // bind verts
     glBindVertexArray(m.vao);

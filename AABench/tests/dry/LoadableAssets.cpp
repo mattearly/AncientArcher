@@ -31,14 +31,14 @@ void LoadableAssets::getDemoConfig(std::string& out_dir, std::vector<std::string
     // scope to populate mModels
     {
       std::string assetExtension = ".obj";
-      for (const auto& filepath : all_files)
-      {
-        std::string filename = filepath.string().substr(PATHSIZE);
-        if (filename.find(assetExtension) != std::string::npos)
-        {
-          out_model_list.push_back(filename);
-        }
-      }
+      //for (const auto& filepath : all_files)
+      //{
+      //  std::string filename = filepath.string().substr(PATHSIZE);
+      //  if (filename.find(assetExtension) != std::string::npos)
+      //  {
+      //    out_model_list.push_back(filename);
+      //  }
+      //}
 
       //assetExtension = ".dae";
       //for (const auto& filepath : all_files)
@@ -50,15 +50,15 @@ void LoadableAssets::getDemoConfig(std::string& out_dir, std::vector<std::string
       //  }
       //}
 
-      //assetExtension = ".fbx";
-      //for (const auto& filepath : all_files)
-      //{
-      //  std::string filename = filepath.string().substr(PATHSIZE);
-      //  if (filename.find(assetExtension) != std::string::npos)
-      //  {
-      //    out_model_list.push_back(filename);
-      //  }
-      //}
+      assetExtension = ".fbx";
+      for (const auto& filepath : all_files)
+      {
+        std::string filename = filepath.string().substr(PATHSIZE);
+        if (filename.find(assetExtension) != std::string::npos)
+        {
+          out_model_list.push_back(filename);
+        }
+      }
 
       //assetExtension = ".gltf";
       //for (const auto& filepath : all_files)

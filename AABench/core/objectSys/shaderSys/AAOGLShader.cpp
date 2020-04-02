@@ -242,66 +242,66 @@ void AAOGLShader::stop() const noexcept
   glUseProgram(0);
 }
 
-void AAOGLShader::setBool(const std::string& name, bool value) const noexcept
+void AAOGLShader::setBool(const std::string& name, bool value) const
 {
-  glUniform1i(glGetUniformLocation(ID, name.c_str()), (int)value);
+  glUniform1i(getAndCheckShaderUniform(name), (int)value);
 }
 
-void AAOGLShader::setInt(const std::string& name, int value) const noexcept
+void AAOGLShader::setInt(const std::string& name, int value) const
 {
   glUniform1i(getAndCheckShaderUniform(name), value);
 }
 
-void AAOGLShader::setUint(const std::string& name, unsigned int value) const noexcept
+void AAOGLShader::setUint(const std::string& name, unsigned int value) const
 {
   glUniform1ui(getAndCheckShaderUniform(name), value);
 }
-void AAOGLShader::setFloat(const std::string& name, float value) const noexcept
+void AAOGLShader::setFloat(const std::string& name, float value) const
 {
   glUniform1f(getAndCheckShaderUniform(name), value);
 }
 
-void AAOGLShader::setVec2(const std::string& name, glm::vec2& value) const noexcept
+void AAOGLShader::setVec2(const std::string& name, const glm::vec2& value) const
 {
   glUniform2fv(getAndCheckShaderUniform(name), 1, &value[0]);
 }
 
-void AAOGLShader::setVec2(const std::string& name, float x, float y) const noexcept
+void AAOGLShader::setVec2(const std::string& name, float x, float y) const
 {
   glUniform2f(getAndCheckShaderUniform(name), x, y);
 }
 
-void AAOGLShader::setVec3(const std::string& name, const glm::vec3& value) const noexcept
+void AAOGLShader::setVec3(const std::string& name, const glm::vec3& value) const
 {
   glUniform3fv(getAndCheckShaderUniform(name), 1, &value[0]);
 }
 
-void AAOGLShader::setVec3(const std::string& name, float x, float y, float z) const noexcept
+void AAOGLShader::setVec3(const std::string& name, float x, float y, float z) const
 {
   glUniform3f(getAndCheckShaderUniform(name), x, y, z);
 }
 
-void AAOGLShader::setVec4(const std::string& name, glm::vec4& value) const noexcept
+void AAOGLShader::setVec4(const std::string& name, const glm::vec4& value) const
 {
   glUniform4fv(getAndCheckShaderUniform(name), 1, &value[0]);
 }
 
-void AAOGLShader::setVec4(const std::string& name, float x, float y, float z, float w) const noexcept
+void AAOGLShader::setVec4(const std::string& name, float x, float y, float z, float w) const
 {
   glUniform4f(getAndCheckShaderUniform(name), x, y, z, w);
 }
 
-void AAOGLShader::setMat2(const std::string& name, const glm::mat2& mat) const noexcept
+void AAOGLShader::setMat2(const std::string& name, const glm::mat2& mat) const 
 {
   glUniformMatrix2fv(getAndCheckShaderUniform(name), 1, GL_FALSE, &mat[0][0]);
 }
 
-void AAOGLShader::setMat3(const std::string& name, const glm::mat3& mat) const noexcept
+void AAOGLShader::setMat3(const std::string& name, const glm::mat3& mat) const
 {
   glUniformMatrix3fv(getAndCheckShaderUniform(name), 1, GL_FALSE, &mat[0][0]);
 }
 
-void AAOGLShader::setMat4(const std::string& name, const glm::mat4& mat) const noexcept
+void AAOGLShader::setMat4(const std::string& name, const glm::mat4& mat) const
 {
   glUniformMatrix4fv(getAndCheckShaderUniform(name), 1, GL_FALSE, &mat[0][0]);
 }
@@ -311,24 +311,20 @@ const int AAOGLShader::getID() const
   return ID;
 }
 
-int AAOGLShader::getAndCheckShaderUniform(const std::string& name) const noexcept
+int AAOGLShader::getAndCheckShaderUniform(const std::string& name) const
 {
-  int shader_var_id = glGetUniformLocation(ID, name.c_str());
+  const int shader_var_id = glGetUniformLocation(ID, name.c_str());
 
   if (shader_var_id < 0)
   {
     std::cout <<
       "!!!SETTINGS SHADER UNIFORM VARIABLE ERROR!!!\n"
       " name: " << name << '\n' <<
-      " id: " << ID << '\n' <<
+      " id: " << ID << '\n' << 
       " error: " << shader_var_id << '\n' <<
       "-----------------------------------\n";
-    return shader_var_id;
   }
-  else
-  {
-    return shader_var_id;
-  }
+
   return shader_var_id;
 }
 

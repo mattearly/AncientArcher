@@ -37,7 +37,7 @@ public:
   const int& getID() const noexcept;
 
   friend class AAWorld;
-  
+
 private:
 
   glm::vec3        mFront;

@@ -100,7 +100,7 @@ vec4 CalcDirectionalLight(vec4 normal, vec4 viewDir)
   vec4 ambient = directionalLight.Ambient * texture(material.TextureUnit, pass_TexUV).rgba;
   vec4 diffuse = directionalLight.Diffuse * diff * texture(material.TextureUnit, pass_TexUV).rgba;
 
-  // vec4 specular = light.Specular * spec * vec4(texture(material.Specular, pass_TexUV));
+  // vec4 specular = directionalLight.Specular * spec * texture(material.Specular, pass_TexUV).rgba;
 
   return (ambient + diffuse /*+ specular*/);
 }

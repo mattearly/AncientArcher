@@ -1,8 +1,6 @@
 #include "Random.h"
 #include <random>
 #include <chrono>
-namespace mearly
-{
 
 /**
  * Produces a random double between zero and one.
@@ -91,6 +89,4 @@ double Random::NTKR(double n, double k)
     std::uniform_real_distribution<double> ntkd(k, n);
     return ntkd(mgen);
   }
-}
-
 }
