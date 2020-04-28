@@ -44,47 +44,47 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #include "../winSys/Input.h"
 #include "../fbxLoader/FBXManager.h"
 
-int testFBXLoader(AA::Loop& loop)
+int testFBXLoader()
 {
-
+  std::cout << "testFBXLoader() error 404: code not found. - no really this needs written\n";
   return 0;
 }
 
-int testEngineLoopBase(AA::Loop& loop)
+int testEngineLoopBase()
 {
-  loop.setWindowTitle("demo loop base");
+  LOOP->setWindowTitle("demo loop base");
 
   // Add to loop functions.
-  loop.addToOnBegin([]()noexcept {printf("World Started. timestamp: %s \n", __TIMESTAMP__); });
-  loop.addToDeltaUpdate([](float step)noexcept {
+  LOOP->addToOnBegin([]()noexcept {printf("World Started. timestamp: %s \n", __TIMESTAMP__); });
+  LOOP->addToDeltaUpdate([](float step)noexcept {
     static float timePassed = 0; timePassed += step; const float newcolor = abs(sin(timePassed));
-    AA::DISPLAY->setWindowClearColor(glm::vec3(newcolor, newcolor, newcolor)); 
+    DISPLAY->setWindowClearColor(glm::vec3(newcolor, newcolor, newcolor)); 
     });
-  loop.addToDeltaUpdate([](float step) {std::cout << ".      process delta update: " << step << '\n'; });
-  loop.addToTimedOutKeyHandling([](AA::KeyboardInput& keys)noexcept {printf("..     %fms timedout keyboard/mouse\n", 90.f); return false;  });
-  loop.addToKeyHandling([](AA::KeyboardInput& keys) {std::cout << "...    process keyboard/mouse \n";  });
-  loop.addToScrollHandling([](AA::ScrollInput& scroll) {std::cout << "....   process mouse scroll: X:" << scroll.xOffset << " Y:" << scroll.yOffset << '\n'; });
-  loop.addToMouseHandling([](AA::MouseInput& pointer) {std::cout << ".....  process mouse pointer: X:" << pointer.xOffset << " Y:" << pointer.yOffset << '\n';  });
-  loop.addToUpdate([]() {std::cout << "...... process update\n"; });
+  LOOP->addToDeltaUpdate([](float step) {std::cout << ".      process delta update: " << step << '\n'; });
+  LOOP->addToTimedOutKeyHandling([](AA::KeyboardInput& keys)noexcept {printf("..     %fms timedout keyboard/mouse\n", 90.f); return false;  });
+  LOOP->addToKeyHandling([](AA::KeyboardInput& keys) {std::cout << "...    process keyboard/mouse \n";  });
+  LOOP->addToScrollHandling([](AA::ScrollInput& scroll) {std::cout << "....   process mouse scroll: X:" << scroll.xOffset << " Y:" << scroll.yOffset << '\n'; });
+  LOOP->addToMouseHandling([](AA::MouseInput& pointer) {std::cout << ".....  process mouse pointer: X:" << pointer.xOffset << " Y:" << pointer.yOffset << '\n';  });
+  LOOP->addToUpdate([]() {std::cout << "...... process update\n"; });
 
-  return loop.runMainLoop();
+  return LOOP->runMainLoop();
 }
 
-int testEngineDemoWorld(AA::Loop& loop)
+int testEngineDemoWorld()
 {
-  loop.setWindowTitle("Test Engine Demo World");
-  AA::DISPLAY->setWindowSize(800, 600, 910, 160);
+  LOOP->setWindowTitle("Test Engine Demo World");
+  DISPLAY->setWindowSize(800, 600, 910, 160);
   const int cameraId = setGodCamWithMovement();
   addRandomWorld(cameraId);
   addCubeSkybox();
-  return loop.runMainLoop();
+  return LOOP->runMainLoop();
 }
 
-int runAllCoreTests(AA::Loop& loop)
+int runAllCoreTests()
 {
   int result = 0;
-  result = testFBXLoader(loop);
-  result = testEngineLoopBase(loop);
-  result = testEngineDemoWorld(loop);
+  result = testFBXLoader();
+  result = testEngineLoopBase();
+  result = testEngineDemoWorld();
   return result;
 }

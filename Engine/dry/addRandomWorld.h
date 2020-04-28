@@ -32,15 +32,19 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 #pragma once
 #include "LoadableAssets.h"
+#include "../Random.h"
+#include "../Sound.h"
+#include "../Loop.h"
 #include <math.h>
+#include "../shaderSys/Lights.h"
 
-void addRandomWorld(AA::Loop& loop, int cam_id)
+void addRandomWorld(int cam_id)
 {
   static int camID = cam_id;
  
-  loop.setRenderDistance(camID, 10000.f);
+  LOOP->setRenderDistance(camID, 10000.f);
 
-  static int mainShaderId = loop.addShader("../shaders/combinedLight.vert", "../shaders/combinedLight.frag");
+  static int mainShaderId = LOOP->addShader("../shaders/combinedLight.vert", "../shaders/combinedLight.frag");
 
   //const auto updateShaders = []()
   //{
@@ -80,11 +84,11 @@ void addRandomWorld(AA::Loop& loop, int cam_id)
       }
 
       // add the object along with a detail vector
-      loop.addObject(std::string(assetDir + loadableModels.at(i)).c_str(), camID, mainShaderId, details);
+      LOOP->addObject(std::string(assetDir + loadableModels.at(i)).c_str(), camID, mainShaderId, details);
 
       // translate the objects around randomly
       for (int j = 0; j < num_instances; ++j) {
-        loop.getGameObject(i).translateTo(
+        LOOP->getGameObject(i).translateTo(
           glm::vec3(
             AA::Random::NTKR(-roomWidth, roomWidth), 
             floorHeight, 
@@ -119,7 +123,7 @@ void addRandomWorld(AA::Loop& loop, int cam_id)
     }
     return false;
   };
-  loop.addToTimedOutKeyHandling(soundHotkeys);
+  LOOP->addToTimedOutKeyHandling(soundHotkeys);
 
 
   static AA::DirectionalLight directional_light;
@@ -132,7 +136,7 @@ void addRandomWorld(AA::Loop& loop, int cam_id)
     directional_light.Ambient = glm::vec4(.35f);
     directional_light.Diffuse = glm::vec4(.35f);
     directional_light.Specular = glm::vec4(1.0f);
-    setDirectionalLight(directional_light, loop.getShader(mainShaderId));
+    setDirectionalLight(directional_light, LOOP->getShader(mainShaderId));
 
     for (int i = 0; i < AA::MAXPOINTLIGHTS; i++)
     {
@@ -145,7 +149,7 @@ void addRandomWorld(AA::Loop& loop, int cam_id)
       point_lights[i].Position = glm::vec4(0 + i, 0, 0 + i, 0);
       AA::NUM_POINT_LIGHTS++;
       std::cout << "point light: " << AA::NUM_POINT_LIGHTS << '\n';
-      setPointLight(point_lights[i], i, loop.getShader(mainShaderId));
+      setPointLight(point_lights[i], i, LOOP->getShader(mainShaderId));
     }
 
     for (int i = 0; i < AA::MAXSPOTLIGHTS; i++)
@@ -162,8 +166,8 @@ void addRandomWorld(AA::Loop& loop, int cam_id)
       spot_lights[i].OuterCutOff = glm::cos(glm::radians(38.f));
       AA::NUM_SPOT_LIGHTS++;
       std::cout << "spot light: " << AA::NUM_SPOT_LIGHTS << '\n';
-      setSpotLight(spot_lights[i], i, loop.getShader(mainShaderId));
+      setSpotLight(spot_lights[i], i, LOOP->getShader(mainShaderId));
     }
   };
-  loop.addToOnBegin(begin);
+  LOOP->addToOnBegin(begin);
 }

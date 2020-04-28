@@ -38,7 +38,7 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *  * skybox files: back.png left.png front.png right.png
  *  *                                 down.png
  */
-void addCubeSkybox(AA::Loop& loop)
+void addCubeSkybox()
 {
   {
     //std::string skybox_dir;
@@ -56,6 +56,6 @@ void addCubeSkybox(AA::Loop& loop)
     }
 
     const std::shared_ptr<AA::Skybox> skybox = std::make_shared<AA::Skybox>(cubemapfiles);
-    loop.setSkybox(skybox);
+    LOOP->setSkybox(skybox);
   }
 }
