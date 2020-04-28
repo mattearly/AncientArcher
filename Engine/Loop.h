@@ -43,15 +43,19 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #include <functional>
 #include <memory>
 
+#define LOOP           AA::Loop::getMainLoop()
+#define DISPLAY        AA::Display::getInstance()
+#define CONTROLS       AA::Controls::getInstance()
+#define PointerXOffset AA::Controls::getInstance()->mMousePosition.xOffset
+#define PointerYOffset AA::Controls::getInstance()->mMousePosition.yOffset
+
 namespace AA
 {
-#define DISPLAY        Display::getInstance()
-#define CONTROLS       Controls::getInstance()
-#define PointerXOffset Controls::getInstance()->mMousePosition.xOffset
-#define PointerYOffset Controls::getInstance()->mMousePosition.yOffset
+
 class Loop
 {
 public:
+  static Loop* getMainLoop();
   int runMainLoop();
   void shutdown();
 

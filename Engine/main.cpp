@@ -36,10 +36,7 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 int main()
 {
-  AA::Loop testLoopA;
-
-  return runAllCoreTests(testLoopA);
-
+  return runAllCoreTests();
 }
 
 //////// FBX DEMO

@@ -41,7 +41,11 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 namespace AA
 {
-
+Loop* Loop::getMainLoop()
+{
+  static Loop* loop = new Loop();
+  return loop;
+}
 int Loop::runMainLoop()
 {
   begin();
