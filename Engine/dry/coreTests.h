@@ -43,11 +43,20 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #include "../Loop.h"
 #include "../winSys/Input.h"
 #include "../fbxLoader/FBXManager.h"
+#include "FBXPrint.h"
 
 int testFBXLoader()
 {
-  std::cout << "testFBXLoader() error 404: code not found. - no really this needs written\n";
-  return 0;
+  bool ret_code;
+  FBXManager fbxmanager;
+  ret_code = fbxmanager.LoadFBX("../assets/erikaarcher/erika_archer_bow_arrow.fbx");
+  
+  for (const auto& t : fbxmanager.mScenes)
+  {
+    PrintNode(t->GetRootNode());
+  }
+
+  return ret_code;
 }
 
 int testEngineLoopBase()

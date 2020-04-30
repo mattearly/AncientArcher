@@ -157,6 +157,7 @@
     <ClInclude Include="dry\addSkybox.h" />
     <ClInclude Include="Conversions.h" />
     <ClInclude Include="dry\delay.h" />
+    <ClInclude Include="dry\FBXPrint.h" />
     <ClInclude Include="dry\Filesystem.h" />
     <ClInclude Include="dry\LoadableAssets.h" />
     <ClInclude Include="dry\ModelHeader.h" />
@@ -168,6 +169,7 @@
     <ClInclude Include="shaderSys\Lights.h" />
     <ClInclude Include="shaderSys\OGLShader.h" />
     <ClInclude Include="Skybox.h" />
+    <ClInclude Include="TexLoader.h" />
     <ClInclude Include="Vertex.h" />
     <ClInclude Include="Random.h" />
     <ClInclude Include="RandomNumbers.h" />
@@ -194,6 +196,7 @@
     <ClCompile Include="shaderSys\OGLShader.cpp" />
     <ClCompile Include="Skybox.cpp" />
     <ClCompile Include="stb_image.cpp" />
+    <ClCompile Include="TexLoader.cpp" />
     <ClCompile Include="Vertex.cpp" />
     <ClCompile Include="RandomNumbers.cpp" />
     <ClCompile Include="Sound.cpp" />

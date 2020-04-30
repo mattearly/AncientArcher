@@ -105,6 +105,12 @@
     <ClInclude Include="dry\coreTests.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="TexLoader.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="dry\FBXPrint.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -171,6 +177,9 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="shaderSys\OGLShader.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="TexLoader.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

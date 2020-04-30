@@ -42,14 +42,6 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 namespace AA
 {
-class TexLoader
-{
-public:
-  static TexLoader* getInstance();
-  unsigned int loadCubeTexture(const std::vector<std::string>& files);
-  unsigned int textureFromFile(const char* filepath, bool gamma = false);
-};
-
 class OGLGraphics
 {
 public:

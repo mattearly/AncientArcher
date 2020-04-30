@@ -41,6 +41,8 @@ public:
   ~FBXManager();
 
   bool LoadFBX(const char* filename);
+
+  std::vector<FbxScene*> mScenes;
   
 private:
 
@@ -48,13 +50,6 @@ private:
   FbxIOSettings* mIos = nullptr;
   FbxImporter* mImporter = nullptr;
 
-  std::vector<FbxScene*> mScenes;
 
-  // for debug
-  int numTabs = 0;
-  void PrintTabs();
-  FbxString GetAttributeTypeName(FbxNodeAttribute::EType type);
-  void PrintAttribute(FbxNodeAttribute* attribute);
-  void PrintNode(FbxNode* node);
 };
 
