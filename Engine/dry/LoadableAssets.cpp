@@ -38,9 +38,9 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *  Prepares the demo files in this project for loading.
  *  based on the assets folder at the root of this project: $(ProjectDir)assets
  */
-void LoadableAssets::getDemoConfig(std::string& out_dir, std::vector<std::string>& out_model_list, std::vector<std::string>& out_sound_list)
+void LoadableAssets::getDemoConfig(std::string& out_dir, std::vector<std::string>& out_model_list, std::vector<std::string>& out_sound_list, const std::string assetPath)
 {
-  std::filesystem::path demoFilePath = "../assets/";  // asset path
+  std::filesystem::path demoFilePath = assetPath;
   const std::size_t PATHSIZE = demoFilePath.string().size();
   if (std::filesystem::exists(demoFilePath))
   {

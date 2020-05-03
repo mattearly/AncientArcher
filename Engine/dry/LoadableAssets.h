@@ -45,7 +45,12 @@ extern std::vector<std::filesystem::path> cpp17_GetAllFileNamesInFolder(std::fil
 class LoadableAssets {
 public:
 
-  void getDemoConfig(std::string& return_dir, std::vector<std::string>& return_model_list, std::vector<std::string>& return_sound_list);
+  void getDemoConfig(
+    std::string& return_dir, 
+    std::vector<std::string>& return_model_list, 
+    std::vector<std::string>& return_sound_list, 
+    const std::string assetPath = "../assets/");
+
   //static void getSkyboxCubeMapFiles(const std::string& containingFolderPath, std::string& return_dir, std::vector<std::string>& return_file_list);
   //static void loadConfig(const std::string& pathtoconfig, std::string& return_dir, std::vector<std::string>& return_list);
 
