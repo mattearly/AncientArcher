@@ -111,11 +111,11 @@
     <ClInclude Include="dry\FBXPrint.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="loader\SceneLoader.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="main.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="dry\LoadableAssets.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -180,6 +180,12 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="TexLoader.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="main.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="loader\SceneLoader.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
