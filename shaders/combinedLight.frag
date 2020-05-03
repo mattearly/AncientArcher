@@ -78,12 +78,15 @@ void main()
 
   // calc point lights on fragments
   for (int i = 0; i < NUM_POINT_LIGHTS; i++)
+  {
     result += CalcPointLight(pointLight[i], normal, viewDir);
+  }
 
   // calc spot lights on the fragments
-  for (int i = 0; i < NUM_SPOT_LIGHTS
-; i++) 
+  for (int i = 0; i < NUM_SPOT_LIGHTS; i++)
+  {
     result += CalcSpotLight(spotLight[i], normal, viewDir);
+  }
 
   out_Color = result;
 }
