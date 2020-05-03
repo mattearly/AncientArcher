@@ -34,6 +34,8 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #include <vector>
 #include <string>
 #include <fbxsdk.h>
+namespace AA
+{
 class FBXManager
 {
 public:
@@ -43,7 +45,7 @@ public:
   bool LoadFBX(const char* filename);
 
   std::vector<FbxScene*> mScenes;
-  
+
 private:
 
   FbxManager* mSdkManager = nullptr;
@@ -53,3 +55,4 @@ private:
 
 };
 
+} // end namespace AA

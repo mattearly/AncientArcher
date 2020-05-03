@@ -31,7 +31,8 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 ----------------------------------------------------------------------
 */
 #include "FBXManager.h"
-
+namespace AA
+{
 FBXManager::FBXManager()
 {
   mSdkManager = FbxManager::Create();
@@ -66,3 +67,4 @@ bool FBXManager::LoadFBX(const char* filename)
 
 }
 
+} // end namespace AA
