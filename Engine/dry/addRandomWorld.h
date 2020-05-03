@@ -60,7 +60,7 @@ void addRandomWorld(int cam_id)
   std::vector<std::string> loadableSounds;
 
   LoadableAssets pathsToLoadables;
-  pathsToLoadables.getDemoConfig(assetDir, loadableModels, loadableSounds);
+  pathsToLoadables.getDemoConfig(assetDir, loadableModels, loadableSounds, "../assets/old/");
   static const int numLoadableModels = (int)loadableModels.size();  // produces warning
 
   if (numLoadableModels > 0)

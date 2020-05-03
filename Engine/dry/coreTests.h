@@ -48,9 +48,9 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 int testFBXLoader()
 {
   bool ret_code;
-  FBXManager fbxmanager;
+  AA::FBXManager fbxmanager;
   ret_code = fbxmanager.LoadFBX("../assets/erikaarcher/erika_archer_bow_arrow.fbx");
-  
+
   for (const auto& t : fbxmanager.mScenes)
   {
     PrintNode(t->GetRootNode());
@@ -66,9 +66,12 @@ int testEngineLoopBase()
   // Add to loop functions.
   LOOP->addToOnBegin([]()noexcept {printf("World Started. timestamp: %s \n", __TIMESTAMP__); });
   LOOP->addToDeltaUpdate([](float step)noexcept {
-    static float timePassed = 0; timePassed += step; const float newcolor = abs(sin(timePassed));
-    DISPLAY->setWindowClearColor(glm::vec3(newcolor, newcolor, newcolor)); 
-    });
+    static float timePassed = 0;
+    timePassed += step;
+    const float newcolor = abs(sin(timePassed));
+    DISPLAY->setWindowClearColor(glm::vec3(newcolor, newcolor, newcolor));
+    }
+  );
   LOOP->addToDeltaUpdate([](float step) {std::cout << ".      process delta update: " << step << '\n'; });
   LOOP->addToTimedOutKeyHandling([](AA::KeyboardInput& keys)noexcept {printf("..     %fms timedout keyboard/mouse\n", 90.f); return false;  });
   LOOP->addToKeyHandling([](AA::KeyboardInput& keys) {std::cout << "...    process keyboard/mouse \n";  });
@@ -89,11 +92,12 @@ int testEngineDemoWorld()
   return LOOP->runMainLoop();
 }
 
+/// run this
 int runAllCoreTests()
 {
   int result = 0;
-  result = testFBXLoader();
-  result = testEngineLoopBase();
+  //result = testFBXLoader();
+  //result = testEngineLoopBase();
   result = testEngineDemoWorld();
   return result;
 }
