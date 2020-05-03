@@ -33,11 +33,10 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #include "GameObject.h"
 #include "OGLGraphics.h"
 #include "Camera.h"
+#include "loader/SceneLoader.h"
 
 namespace AA
 {
-
-#define assLoad OGLGraphics::getInstance()->loadGameObjectWithAssimp
 
 static int uniqueIDs = 0;
 
@@ -75,19 +74,26 @@ const std::size_t GameObject::getInstanceCount() const noexcept
 GameObject::GameObject(const char* path, int camId, int shadId)
 {
   //std::vector<MeshDrawInfo> meshes = assLoad(path, false);  // no triangulate
-  assLoad(mMeshes, path, true);  // yes triangulate
+  //assLoad(mMeshes, path, true);  // yes triangulate
+
+  SceneLoader sceneLoader;
+  sceneLoader.loadGameObjectWithAssimp(mMeshes, path, true); 
 
   mInstanceDetails.push_back(InstanceDetails());
-   
+
   //mMeshes = meshes;
   mCameraID = camId;
   mShaderID = shadId;
   mObjectID = uniqueIDs++;
 }
+
 GameObject::GameObject(const char* path, int camId, int shadId, std::vector<InstanceDetails> details)
 {
   //std::vector<MeshDrawInfo> meshes = assLoad(path, false);  // no triangulate
-  assLoad(mMeshes, path, true);  // yes triangulate
+  //assLoad(mMeshes, path, true);  // yes triangulate
+  
+  SceneLoader sceneLoader;
+  sceneLoader.loadGameObjectWithAssimp(mMeshes, path, true);
 
   mInstanceDetails = details;
 
@@ -97,6 +103,7 @@ GameObject::GameObject(const char* path, int camId, int shadId, std::vector<Inst
   mObjectID = uniqueIDs++;
 
 }
+
 void GameObject::setCamera(int id) noexcept
 {
   mCameraID = id;
@@ -107,7 +114,7 @@ void GameObject::setShader(int id) noexcept
 }
 void GameObject::draw(const OGLShader& modelShader)
 {
-  //OGLGraphics::getInstance()->Render(mMeshes, mInstanceDetails, modelShader);
+  OGLGraphics::getInstance()->Render(mMeshes, mInstanceDetails, modelShader);
 }
 void GameObject::scale(glm::vec3 amt, int which)
 {

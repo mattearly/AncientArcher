@@ -33,7 +33,7 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #pragma once
 #include <string>
 #include <vector>
-#include <glm\ext\vector_float4.hpp>
+#include <glm\glm.hpp>
 namespace AA
 {
 
@@ -44,9 +44,9 @@ struct TextureInfo
   std::string path;
 };
 
-struct MeshDrawInfo
+struct MeshDrawInfo   // NodeDrawInfo a better name?
 {
-  MeshDrawInfo(unsigned int a, std::vector<unsigned int> el, std::vector<TextureInfo> t, float shine, glm::vec4 spec);
+  MeshDrawInfo(unsigned int a, std::vector<unsigned int> el, std::vector<TextureInfo> t, float shine, glm::vec4 spec, glm::mat4 trans);
   unsigned int vao = 0;
   //unsigned int vbo = 0;
   //unsigned int ebo = 0;
@@ -54,5 +54,6 @@ struct MeshDrawInfo
   float shininess;
   glm::vec4 specular;
   std::vector<unsigned int> elements;
+  glm::mat4 transformation;
 };
 }  // end namespace AA

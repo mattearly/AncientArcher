@@ -32,7 +32,6 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 #pragma once
 #include <glm/glm.hpp>
-//#include <assimp/scene.h>
 #include <vector>
 #include <string>
 #include "GameObject.h"
@@ -47,20 +46,12 @@ class OGLGraphics
 public:
 
   static OGLGraphics* getInstance();
-  int loadGameObjectWithAssimp(std::vector<MeshDrawInfo>& out_MeshInfo, std::string path, bool pp_triangulate);
-  //void processNode(aiNode* node, const aiScene* scene, std::vector<MeshDrawInfo>& out_);
 
   friend class GameObject;
+
 private:
 
-  //MeshDrawInfo processMesh(aiMesh* mesh, const aiScene* scene);
-  //int loadMaterialTextures(const aiMaterial* mat, aiTextureType type, std::string typeName, std::vector<TextureInfo>& out_texInfo);
-
-  //void Render(const std::vector<MeshDrawInfo>& meshes, const std::vector<InstanceDetails>& details, const OGLShader& modelShader);
-
-  // holder vars
-  std::string mLastDir = "";
-  std::vector<TextureInfo> mTexturesLoaded;
+  void Render(const std::vector<MeshDrawInfo>& meshes, const std::vector<InstanceDetails>& details, const OGLShader& modelShader);
 
 };
 
