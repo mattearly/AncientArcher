@@ -31,7 +31,8 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 ----------------------------------------------------------------------
 */
 #include "Sound.h"
-#include <SDL2/SDL.h>
+#include <SDL.h>
+#include <iostream>
 namespace AA
 {
 
@@ -145,9 +146,9 @@ void Sound::addMusicTracks(std::vector<std::string> paths)
 
 void Sound::playSoundEffect(int which) const
 {
-  if (which > mSoundEffects.size() - 1)
+  if (which > mSoundEffects.size() - 1 || mSoundEffects.size() == 0)
   {
-    // out of range -- don't attempt to play sound
+    // out of range or no sounds loaded -- don't attempt to play sound
     //std::cout << "Sound out of range: " << which << " > " << mSoundEffects.size() - 1 << '\n';
     return;
   }
@@ -158,9 +159,9 @@ void Sound::playSoundEffect(int which) const
 
 void Sound::playMusicTrack(int which)
 {
-  if (which > mMusicTracks.size())
+  if (which > mMusicTracks.size() || mMusicTracks.size() == 0)
   {
-    // out of range -- don't attempt to play music
+    // out of range or no tracks loaded -- don't attempt to play music
     return;
   }
 

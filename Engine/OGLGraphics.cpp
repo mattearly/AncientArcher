@@ -33,7 +33,7 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #include "OGLGraphics.h"
 #include <glm/glm.hpp>
 #include <glm/gtc/quaternion.hpp>
-#include <stb_image/stb_image.h>
+#include <stb_image.h>
 #include <glad/glad.h>
 #include <memory>
 #include <string>

@@ -31,7 +31,7 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 ----------------------------------------------------------------------
 */
 #pragma once
-#include <SDL2/SDL_mixer.h>
+#include <SDL_mixer.h>
 #include <string>
 #include <vector>
 

@@ -24,4 +24,4 @@
 //#define STBI_REALLOC realloc
 //#define STBI_FREE free
 
-#include <stb_image/stb_image.h>
+#include <stb_image.h>

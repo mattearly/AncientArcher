@@ -42,7 +42,7 @@ static int uniqueIDs = 0;
 
 int GameObject::getModelMatrix(const int& which, glm::mat4& out_mat4) const
 {
-  if (which < getInstanceCount()) 
+  if (which < getInstanceCount())
   {
     out_mat4 = mInstanceDetails.at(which).ModelMatrix;
     return 0;
@@ -77,7 +77,7 @@ GameObject::GameObject(const char* path, int camId, int shadId)
   //assLoad(mMeshes, path, true);  // yes triangulate
 
   SceneLoader sceneLoader;
-  sceneLoader.loadGameObjectWithAssimp(mMeshes, path, true); 
+  sceneLoader.loadGameObjectWithAssimp(mMeshes, path, true);
 
   mInstanceDetails.push_back(InstanceDetails());
 
@@ -91,7 +91,7 @@ GameObject::GameObject(const char* path, int camId, int shadId, std::vector<Inst
 {
   //std::vector<MeshDrawInfo> meshes = assLoad(path, false);  // no triangulate
   //assLoad(mMeshes, path, true);  // yes triangulate
-  
+
   SceneLoader sceneLoader;
   sceneLoader.loadGameObjectWithAssimp(mMeshes, path, true);
 
@@ -146,7 +146,7 @@ void GameObject::rotate(float angle, glm::vec3 axis, int which)
 void GameObject::rotate(float radianAngle, glm::vec3 axis)
 {
   rotate(radianAngle, axis, 0);
-} 
+}
 void GameObject::translateTo(glm::vec3 to, int which)
 {
   if (which < getInstanceCount()) {

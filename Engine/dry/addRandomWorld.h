@@ -46,14 +46,6 @@ void addRandomWorld(int cam_id)
 
   static int mainShaderId = LOOP->addShader("../shaders/combinedLight.vert", "../shaders/combinedLight.frag");
 
-  //const auto updateShaders = []()
-  //{
-  //  spotLight.Position = *mainWorld.getCamera(camID).getPosition();
-  //  spotLight.Direction = *mainWorld.getCamera(camID).getFront();
-  //  setSpotLight(spotLight, mainWorld.getShader(mainShaderId));
-  //};
-  //mainWorld.addToUpdate(updateShaders);
-
   // see what demo files we have in our data dir
   std::string assetDir;
   std::vector<std::string> loadableModels;
@@ -121,6 +113,11 @@ void addRandomWorld(int cam_id)
       sound.playSoundEffect(0);
       return true;
     }
+    if (keys.mouseButton2)
+    {
+      sound.playSoundEffect(1);
+      return true;
+    }
     return false;
   };
   LOOP->addToTimedOutKeyHandling(soundHotkeys);
@@ -129,6 +126,7 @@ void addRandomWorld(int cam_id)
   static AA::DirectionalLight directional_light;
   static AA::PointLight point_lights[AA::MAXPOINTLIGHTS];
   static AA::SpotLight spot_lights[AA::MAXSPOTLIGHTS];
+
   const auto begin = []()
   { 
     std::cout << "onBegin\n";
@@ -170,4 +168,12 @@ void addRandomWorld(int cam_id)
     }
   };
   LOOP->addToOnBegin(begin);
+
+  //const auto cameraFlashlight = []()
+//{
+//  spot_lights[0].Position = *LOOP->getCamera(camID).getPosition();
+//  spot_lights.Direction = *LOOP->getCamera(camID).getFront();
+//  setSpotLight(spot_lights[0], *LOOP->getShader(mainShaderId));
+//};
+//LOOP->addToUpdate(cameraFlashlight);
 }

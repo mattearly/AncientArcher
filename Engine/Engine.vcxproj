@@ -28,29 +28,23 @@
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
-    <UseDebugLibraries>true</UseDebugLibraries>
     <PlatformToolset>v142</PlatformToolset>
-    <CharacterSet>Unicode</CharacterSet>
+    <PreferredToolArchitecture>x64</PreferredToolArchitecture>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
-    <UseDebugLibraries>false</UseDebugLibraries>
     <PlatformToolset>v142</PlatformToolset>
-    <WholeProgramOptimization>true</WholeProgramOptimization>
-    <CharacterSet>Unicode</CharacterSet>
+    <PreferredToolArchitecture>x64</PreferredToolArchitecture>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
-    <UseDebugLibraries>true</UseDebugLibraries>
     <PlatformToolset>v142</PlatformToolset>
-    <CharacterSet>Unicode</CharacterSet>
+    <PreferredToolArchitecture>x64</PreferredToolArchitecture>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
-    <UseDebugLibraries>false</UseDebugLibraries>
     <PlatformToolset>v142</PlatformToolset>
-    <WholeProgramOptimization>true</WholeProgramOptimization>
-    <CharacterSet>Unicode</CharacterSet>
+    <PreferredToolArchitecture>x64</PreferredToolArchitecture>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
   <ImportGroup Label="ExtensionSettings">
@@ -70,81 +64,83 @@
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
-    <LinkIncremental>false</LinkIncremental>
-    <IncludePath>$(SolutionDir)includes;$(SolutionDir)Random;$(SolutionDir)Sound;$(SolutionDir)MearlyUtils;$(SolutionDir)BoxCollider;$(SolutionDir)Core;$(IncludePath)</IncludePath>
-    <LibraryPath>$(SolutionDir)libraries;$(LibraryPath)</LibraryPath>
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
-    <LinkIncremental>true</LinkIncremental>
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
-    <LinkIncremental>true</LinkIncremental>
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
-    <LinkIncremental>false</LinkIncremental>
-  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" />
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <ClCompile>
-      <WarningLevel>Level3</WarningLevel>
-      <FunctionLevelLinking>true</FunctionLevelLinking>
-      <IntrinsicFunctions>false</IntrinsicFunctions>
       <SDLCheck>true</SDLCheck>
-      <PreprocessorDefinitions>NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <ConformanceMode>true</ConformanceMode>
-      <Optimization>Disabled</Optimization>
-      <InlineFunctionExpansion>Disabled</InlineFunctionExpansion>
+      <AdditionalIncludeDirectories>..\..\..\assimp\assimp\include;..\..\..\assimp\assimp\build\include;..\..\..\SDL-mirror\SDL\include;..\..\..\SDL-mirror\SDL\build\include;..\..\..\SDL-mirror\SDL_mixer\include;..\..\..\nothings\stb;..\..\..\g-truc\glm;..\..\..\glfw\glfw\include;$(SolutionDir)include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <LanguageStandard>stdcpp17</LanguageStandard>
-      <AdditionalIncludeDirectories>%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
-      <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
+      <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
     </ClCompile>
     <Link>
-      <SubSystem>Console</SubSystem>
-      <EnableCOMDATFolding>true</EnableCOMDATFolding>
-      <OptimizeReferences>true</OptimizeReferences>
-      <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalDependencies>opengl32.lib;glfw3.lib;assimp-vc142-mt.lib;SDL2.lib;SDL2main.lib;SDL2_mixer.lib;libfbxsdk.lib;libfbxsdk-md.lib;libfbxsdk-mt.lib;libxml2-md.lib;libxml2-mt.lib;zlib-md.lib;zlib-mt.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>opengl32.lib;glfw3.lib;SDL2.lib;SDL2main.lib;SDL2_mixer.lib;assimp-vc142-mt.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>..\..\..\assimp\assimp\build\lib\$(Configuration);..\..\..\glfw\glfw\build\src\$(Configuration);..\..\..\SDL-mirror\SDL\build\$(Configuration);$(SolutionDir)library;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Link>
+    <PostBuildEvent>
+      <Command>xcopy /y /d "$(SolutionDir)library\SDL2_mixer.dll" "$(OutDir)"
+xcopy /y /d "$(SolutionDir)library\libmpg123-0.dll" "$(OutDir)"
+xcopy /y /d "..\..\..\assimp\assimp\build\bin\$(Configuration)\assimp-vc142-mt.dll" "$(OutDir)"
+xcopy /y /d "..\..\..\SDL-mirror\SDL\build\Release\SDL2.dll" "$(OutDir)"</Command>
+    </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
-      <WarningLevel>Level3</WarningLevel>
       <SDLCheck>true</SDLCheck>
-      <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <ConformanceMode>true</ConformanceMode>
+      <AdditionalIncludeDirectories>..\..\..\assimp\assimp\include;..\..\..\assimp\assimp\build\include;..\..\..\SDL-mirror\SDL\include;..\..\..\SDL-mirror\SDL\build\include;..\..\..\SDL-mirror\SDL_mixer\include;..\..\..\nothings\stb;..\..\..\g-truc\glm;..\..\..\glfw\glfw\include;$(SolutionDir)include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <LanguageStandard>stdcpp17</LanguageStandard>
+      <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
     </ClCompile>
     <Link>
-      <SubSystem>Console</SubSystem>
-      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <AdditionalDependencies>opengl32.lib;glfw3.lib;SDL2d.lib;SDL2maind.lib;SDL2_mixer.lib;assimp-vc142-mtd.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>..\..\..\assimp\assimp\build\lib\$(Configuration);..\..\..\glfw\glfw\build\src\$(Configuration);..\..\..\SDL-mirror\SDL\build\$(Configuration);$(SolutionDir)library;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Link>
+    <PostBuildEvent>
+      <Command>xcopy /y /d "$(SolutionDir)library\SDL2_mixer.dll" "$(OutDir)"
+xcopy /y /d "$(SolutionDir)library\libmpg123-0.dll" "$(OutDir)"
+xcopy /y /d "..\..\..\assimp\assimp\build\bin\$(Configuration)\assimp-vc142-mtd.dll" "$(OutDir)"
+xcopy /y /d "..\..\..\SDL-mirror\SDL\build\Release\SDL2.dll" "$(OutDir)"
+xcopy /y /d "..\..\..\SDL-mirror\SDL\build\Debug\SDL2d.dll" "$(OutDir)"</Command>
+    </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <ClCompile>
-      <WarningLevel>Level3</WarningLevel>
       <SDLCheck>true</SDLCheck>
-      <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <ConformanceMode>true</ConformanceMode>
+      <AdditionalIncludeDirectories>..\..\..\assimp\assimp\include;..\..\..\assimp\assimp\build\include;..\..\..\SDL-mirror\SDL\include;..\..\..\SDL-mirror\SDL\build\include;..\..\..\SDL-mirror\SDL_mixer\include;..\..\..\nothings\stb;..\..\..\g-truc\glm;..\..\..\glfw\glfw\include;$(SolutionDir)include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <LanguageStandard>stdcpp17</LanguageStandard>
+      <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
     </ClCompile>
     <Link>
-      <SubSystem>Console</SubSystem>
-      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <AdditionalDependencies>opengl32.lib;glfw3.lib;SDL2d.lib;SDL2maind.lib;SDL2_mixer.lib;assimp-vc142-mtd.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>..\..\..\assimp\assimp\build\lib\$(Configuration);..\..\..\glfw\glfw\build\src\$(Configuration);..\..\..\SDL-mirror\SDL\build\$(Configuration);$(SolutionDir)library;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Link>
+    <PostBuildEvent>
+      <Command>xcopy /y /d "$(SolutionDir)library\SDL2_mixer.dll" "$(OutDir)"
+xcopy /y /d "$(SolutionDir)library\libmpg123-0.dll" "$(OutDir)"
+xcopy /y /d "..\..\..\assimp\assimp\build\bin\$(Configuration)\assimp-vc142-mtd.dll" "$(OutDir)"
+xcopy /y /d "..\..\..\SDL-mirror\SDL\build\Release\SDL2.dll" "$(OutDir)"
+xcopy /y /d "..\..\..\SDL-mirror\SDL\build\Debug\SDL2d.dll" "$(OutDir)"</Command>
+    </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <ClCompile>
-      <WarningLevel>Level3</WarningLevel>
-      <FunctionLevelLinking>true</FunctionLevelLinking>
-      <IntrinsicFunctions>true</IntrinsicFunctions>
       <SDLCheck>true</SDLCheck>
-      <PreprocessorDefinitions>NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <ConformanceMode>true</ConformanceMode>
+      <AdditionalIncludeDirectories>..\..\..\assimp\assimp\include;..\..\..\assimp\assimp\build\include;..\..\..\SDL-mirror\SDL\include;..\..\..\SDL-mirror\SDL\build\include;..\..\..\SDL-mirror\SDL_mixer\include;..\..\..\nothings\stb;..\..\..\g-truc\glm;..\..\..\glfw\glfw\include;$(SolutionDir)include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <LanguageStandard>stdcpp17</LanguageStandard>
+      <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
     </ClCompile>
     <Link>
-      <SubSystem>Console</SubSystem>
-      <EnableCOMDATFolding>true</EnableCOMDATFolding>
-      <OptimizeReferences>true</OptimizeReferences>
-      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <AdditionalDependencies>opengl32.lib;glfw3.lib;SDL2.lib;SDL2main.lib;SDL2_mixer.lib;assimp-vc142-mt.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>..\..\..\assimp\assimp\build\lib\$(Configuration);..\..\..\glfw\glfw\build\src\$(Configuration);..\..\..\SDL-mirror\SDL\build\$(Configuration);$(SolutionDir)library;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Link>
+    <PostBuildEvent>
+      <Command>xcopy /y /d "$(SolutionDir)library\SDL2_mixer.dll" "$(OutDir)"
+xcopy /y /d "$(SolutionDir)library\libmpg123-0.dll" "$(OutDir)"
+xcopy /y /d "..\..\..\assimp\assimp\build\bin\$(Configuration)\assimp-vc142-mt.dll" "$(OutDir)"
+xcopy /y /d "..\..\..\SDL-mirror\SDL\build\Release\SDL2.dll" "$(OutDir)"</Command>
+    </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="loader\SceneLoader.h" />
@@ -158,11 +154,9 @@
     <ClInclude Include="dry\addSkybox.h" />
     <ClInclude Include="Conversions.h" />
     <ClInclude Include="dry\delay.h" />
-    <ClInclude Include="dry\FBXPrint.h" />
     <ClInclude Include="dry\Filesystem.h" />
     <ClInclude Include="dry\LoadableAssets.h" />
     <ClInclude Include="dry\ModelHeader.h" />
-    <ClInclude Include="fbxLoader\FBXManager.h" />
     <ClInclude Include="GameObject.h" />
     <ClInclude Include="InstanceDetails.h" />
     <ClInclude Include="MeshDrawInfo.h" />
@@ -189,7 +183,6 @@
     <ClCompile Include="Conversions.cpp" />
     <ClCompile Include="dry\Filesystem.cpp" />
     <ClCompile Include="dry\LoadableAssets.cpp" />
-    <ClCompile Include="fbxLoader\FBXManager.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="GameObject.cpp" />
     <ClCompile Include="glad.c" />

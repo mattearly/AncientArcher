@@ -42,22 +42,6 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #include <string>
 #include "../Loop.h"
 #include "../winSys/Input.h"
-#include "../fbxLoader/FBXManager.h"
-#include "FBXPrint.h"
-
-int testFBXLoader()
-{
-  bool ret_code;
-  AA::FBXManager fbxmanager;
-  ret_code = fbxmanager.LoadFBX("../assets/erikaarcher/erika_archer_bow_arrow.fbx");
-
-  for (const auto& t : fbxmanager.mScenes)
-  {
-    PrintNode(t->GetRootNode());
-  }
-
-  return ret_code;
-}
 
 int testEngineLoopBase()
 {
@@ -84,7 +68,7 @@ int testEngineLoopBase()
 
 int testEngineDemoWorld()
 {
-  LOOP->setWindowTitle("Test Engine Demo World");
+  LOOP->setWindowTitle("FPSDemo - Press 'TAB' to control mouse");
   DISPLAY->setWindowSize(800, 600, 910, 160);
   const int cameraId = setGodCamWithMovement();
   addRandomWorld(cameraId);
@@ -96,8 +80,7 @@ int testEngineDemoWorld()
 int runAllCoreTests()
 {
   int result = 0;
-  //result = testFBXLoader();
-  //result = testEngineLoopBase();
+  result = testEngineLoopBase();
   result = testEngineDemoWorld();
   return result;
 }
