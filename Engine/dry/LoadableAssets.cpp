@@ -182,7 +182,7 @@ void LoadableAssets::getDemoConfig(std::string& out_dir, std::vector<std::string
 //}
 
 //#ifdef WIN32
-//static std::vector<std::string> win_GetAllFileNamesInFolder(std::string path)
+//std::vector<std::string> win_GetAllFileNamesInFolder(std::string path)
 //{
 //  std::vector<std::string> names;
 //  std::string search_path = path + "/*.*";

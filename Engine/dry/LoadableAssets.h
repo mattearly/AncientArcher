@@ -7,16 +7,16 @@ Redistribution and use of this software in source and binary forms,
 with or without modification, are permitted provided that the
 following conditions are met:
 * Redistributions of source code must retain the above
-  copyright notice, this list of conditions and the
-  following disclaimer.
+	copyright notice, this list of conditions and the
+	following disclaimer.
 * Redistributions in binary form must reproduce the above
-  copyright notice, this list of conditions and the
-  following disclaimer in the documentation and/or other
-  materials provided with the distribution.
+	copyright notice, this list of conditions and the
+	following disclaimer in the documentation and/or other
+	materials provided with the distribution.
 * Neither the name of the Matthew Early, nor the names of its
-  contributors may be used to endorse or promote products
-  derived from this software without specific prior
-  written permission of the assimp team.
+	contributors may be used to endorse or promote products
+	derived from this software without specific prior
+	written permission of the assimp team.
 THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
 "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
 LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR
@@ -31,8 +31,8 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 ----------------------------------------------------------------------
 */
 /*
-  Stores a string list of your asset files. Based on config file that must be parsed.
-  The goal is to have an automatic setup for updating your list of usable assets.
+	Stores a string list of your asset files. Based on config file that must be parsed.
+	The goal is to have an automatic setup for updating your list of usable assets.
 */
 #pragma once;
 #include <fstream>
@@ -41,22 +41,17 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #include <filesystem>
 
 extern std::vector<std::filesystem::path> cpp17_GetAllFileNamesInFolder(std::filesystem::path path);
+extern std::vector<std::string> cpp17_GetAllFileNamesOfExtensionInFolder(std::filesystem::path path, const std::string& ext);
 
 class LoadableAssets {
+
 public:
 
-  void getDemoConfig(
-    std::string& return_dir, 
-    std::vector<std::string>& return_model_list, 
-    std::vector<std::string>& return_sound_list, 
-    const std::string assetPath = "../assets/");
-
-  //static void getSkyboxCubeMapFiles(const std::string& containingFolderPath, std::string& return_dir, std::vector<std::string>& return_file_list);
-  //static void loadConfig(const std::string& pathtoconfig, std::string& return_dir, std::vector<std::string>& return_list);
+	void getDemoConfig(
+		std::string& return_dir, std::vector<std::string>& return_model_list,
+		std::vector<std::string>& return_sound_list, const std::string assetPath = "../assets/");
 
 private:
 
 };
 
-// helper functions
-//static std::vector<std::string> win_GetAllFileNamesInFolder(std::string folder);
