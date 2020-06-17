@@ -161,6 +161,7 @@ xcopy /y /d "..\..\..\SDL-mirror\SDL\build\Release\SDL2.dll" "$(OutDir)"</Comman
     <ClInclude Include="InstanceDetails.h" />
     <ClInclude Include="MeshDrawInfo.h" />
     <ClInclude Include="OGLGraphics.h" />
+    <ClInclude Include="rpg\RPG.h" />
     <ClInclude Include="shaderSys\Lights.h" />
     <ClInclude Include="shaderSys\OGLShader.h" />
     <ClInclude Include="Skybox.h" />
@@ -183,11 +184,12 @@ xcopy /y /d "..\..\..\SDL-mirror\SDL\build\Release\SDL2.dll" "$(OutDir)"</Comman
     <ClCompile Include="Conversions.cpp" />
     <ClCompile Include="dry\Filesystem.cpp" />
     <ClCompile Include="dry\LoadableAssets.cpp" />
-    <ClCompile Include="main.cpp" />
+    <ClCompile Include="main\main.cpp" />
     <ClCompile Include="GameObject.cpp" />
     <ClCompile Include="glad.c" />
     <ClCompile Include="MeshDrawInfo.cpp" />
     <ClCompile Include="OGLGraphics.cpp" />
+    <ClCompile Include="rpg\RPG.cpp" />
     <ClCompile Include="shaderSys\OGLShader.cpp" />
     <ClCompile Include="Skybox.cpp" />
     <ClCompile Include="stb_image.cpp" />

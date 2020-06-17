@@ -108,6 +108,9 @@
     <ClInclude Include="loader\SceneLoader.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="rpg\RPG.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="dry\LoadableAssets.cpp">
@@ -173,10 +176,13 @@
     <ClCompile Include="TexLoader.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="main.cpp">
+    <ClCompile Include="loader\SceneLoader.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="loader\SceneLoader.cpp">
+    <ClCompile Include="main\main.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="rpg\RPG.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
