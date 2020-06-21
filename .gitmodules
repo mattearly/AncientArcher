@@ -1,0 +1,3 @@
+[submodule "rand"]
+	path = rand
+	url = https://github.com/mattearly/rand.git
