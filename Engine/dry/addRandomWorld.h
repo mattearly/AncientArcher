@@ -32,11 +32,11 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 #pragma once
 #include "LoadableAssets.h"
-#include "../Random.h"
 #include "../Sound.h"
 #include "../Loop.h"
 #include <math.h>
 #include "../shaderSys/Lights.h"
+#include "../../rand/rand/rand.h"
 
 void addRandomWorld(int cam_id)
 {
@@ -82,9 +82,9 @@ void addRandomWorld(int cam_id)
       for (int j = 0; j < num_instances; ++j) {
         LOOP->getGameObject(i).translateTo(
           glm::vec3(
-            AA::Random::NTKR(-roomWidth, roomWidth), 
+            NTKR(-roomWidth, roomWidth), 
             floorHeight, 
-            AA::Random::NTKR(-roomWidth, roomWidth)),
+            NTKR(-roomWidth, roomWidth)),
           j
         );
       }

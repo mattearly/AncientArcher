@@ -167,8 +167,6 @@ xcopy /y /d "..\..\..\SDL-mirror\SDL\build\Release\SDL2.dll" "$(OutDir)"</Comman
     <ClInclude Include="Skybox.h" />
     <ClInclude Include="TexLoader.h" />
     <ClInclude Include="Vertex.h" />
-    <ClInclude Include="Random.h" />
-    <ClInclude Include="RandomNumbers.h" />
     <ClInclude Include="Sound.h" />
     <ClInclude Include="winSys\Controls.h" />
     <ClInclude Include="winSys\Display.h" />
@@ -195,12 +193,16 @@ xcopy /y /d "..\..\..\SDL-mirror\SDL\build\Release\SDL2.dll" "$(OutDir)"</Comman
     <ClCompile Include="stb_image.cpp" />
     <ClCompile Include="TexLoader.cpp" />
     <ClCompile Include="Vertex.cpp" />
-    <ClCompile Include="RandomNumbers.cpp" />
     <ClCompile Include="Sound.cpp" />
     <ClCompile Include="winSys\Controls.cpp" />
     <ClCompile Include="winSys\Display.cpp" />
     <ClCompile Include="winSys\DisplayCallbacks.cpp" />
     <ClCompile Include="Loop.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\rand\rand\rand.vcxproj">
+      <Project>{32a240bc-514f-4bfa-a205-1766769e9d87}</Project>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

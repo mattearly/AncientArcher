@@ -54,12 +54,6 @@
     <ClInclude Include="Dice.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Random.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="RandomNumbers.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="WorldUp.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -132,9 +126,6 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Conversions.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="RandomNumbers.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="ColliderBox.cpp">
