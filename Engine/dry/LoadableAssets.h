@@ -34,7 +34,7 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 	Stores a string list of your asset files. Based on config file that must be parsed.
 	The goal is to have an automatic setup for updating your list of usable assets.
 */
-#pragma once;
+#pragma once
 #include <fstream>
 #include <vector>
 #include <string>
