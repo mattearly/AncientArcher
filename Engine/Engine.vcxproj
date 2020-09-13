@@ -76,7 +76,7 @@
       <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
     </ClCompile>
     <Link>
-      <AdditionalDependencies>SDL2.lib;SDL2main.lib;SDL2_mixer.lib;glfw3.lib;opengl32.lib;SDL2.lib;SDL2main.lib;SDL2_mixer.lib;assimp-vc142-mt.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>SDL2.lib;SDL2main.lib;SDL2_mixer.lib;glfw3.lib;opengl32.lib;assimp-vc142-mt.lib;SDL2.lib;SDL2main.lib;SDL2_mixer.lib;assimp-vc142-mt.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <AdditionalLibraryDirectories>$(SolutionDir)..\assimp\build\lib\$(Configuration);$(SolutionDir)..\glfw\build\src\$(Configuration);$(SolutionDir)..\SDL\build\$(Configuration);$(SolutionDir)library;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Link>
     <PostBuildEvent>
@@ -93,7 +93,7 @@ xcopy /y /d "$(SolutionDir)..\assimp\build\bin\$(Configuration)\assimp-vc142-mt.
       <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
     </ClCompile>
     <Link>
-      <AdditionalDependencies>SDL2.lib;SDL2main.lib;SDL2_mixer.lib;glfw3.lib;opengl32.lib;SDL2d.lib;SDL2maind.lib;SDL2_mixer.lib;assimp-vc142-mtd.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>SDL2.lib;SDL2main.lib;SDL2_mixer.lib;glfw3.lib;opengl32.lib;assimp-vc142-mt.lib;SDL2d.lib;SDL2maind.lib;SDL2_mixer.lib;assimp-vc142-mtd.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <AdditionalLibraryDirectories>$(SolutionDir)..\assimp\build\lib\$(Configuration);$(SolutionDir)..\glfw\build\src\$(Configuration);$(SolutionDir)..\SDL\build\$(Configuration);$(SolutionDir)library;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Link>
     <PostBuildEvent>
@@ -110,7 +110,7 @@ xcopy /y /d "$(SolutionDir)..\assimp\build\bin\$(Configuration)\assimp-vc142-mt.
       <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
     </ClCompile>
     <Link>
-      <AdditionalDependencies>SDL2.lib;SDL2main.lib;SDL2_mixer.lib;glfw3.lib;opengl32.lib;SDL2d.lib;SDL2maind.lib;SDL2_mixer.lib;assimp-vc142-mtd.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>SDL2.lib;SDL2main.lib;SDL2_mixer.lib;glfw3.lib;opengl32.lib;assimp-vc142-mt.lib;SDL2d.lib;SDL2maind.lib;SDL2_mixer.lib;assimp-vc142-mtd.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <AdditionalLibraryDirectories>$(SolutionDir)..\assimp\build\lib\$(Configuration);$(SolutionDir)..\glfw\build\src\$(Configuration);$(SolutionDir)..\SDL\build\$(Configuration);$(SolutionDir)library;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Link>
     <PostBuildEvent>
@@ -127,7 +127,7 @@ xcopy /y /d "$(SolutionDir)..\assimp\build\bin\$(Configuration)\assimp-vc142-mt.
       <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
     </ClCompile>
     <Link>
-      <AdditionalDependencies>SDL2.lib;SDL2main.lib;SDL2_mixer.lib;glfw3.lib;opengl32.lib;SDL2.lib;SDL2main.lib;SDL2_mixer.lib;assimp-vc142-mt.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>SDL2.lib;SDL2main.lib;SDL2_mixer.lib;glfw3.lib;opengl32.lib;assimp-vc142-mt.lib;SDL2.lib;SDL2main.lib;SDL2_mixer.lib;assimp-vc142-mt.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <AdditionalLibraryDirectories>$(SolutionDir)..\assimp\build\lib\$(Configuration);$(SolutionDir)..\glfw\build\src\$(Configuration);$(SolutionDir)..\SDL\build\$(Configuration);$(SolutionDir)library;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Link>
     <PostBuildEvent>
