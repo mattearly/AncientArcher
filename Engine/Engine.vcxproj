@@ -155,7 +155,6 @@ xcopy /y /d "$(SolutionDir)..\assimp\build\bin\$(Configuration)\assimp-vc142-mt.
     <ClInclude Include="InstanceDetails.h" />
     <ClInclude Include="MeshDrawInfo.h" />
     <ClInclude Include="OGLGraphics.h" />
-    <ClInclude Include="rpg\RPG.h" />
     <ClInclude Include="shaderSys\Lights.h" />
     <ClInclude Include="shaderSys\OGLShader.h" />
     <ClInclude Include="Skybox.h" />
@@ -181,7 +180,6 @@ xcopy /y /d "$(SolutionDir)..\assimp\build\bin\$(Configuration)\assimp-vc142-mt.
     <ClCompile Include="glad.c" />
     <ClCompile Include="MeshDrawInfo.cpp" />
     <ClCompile Include="OGLGraphics.cpp" />
-    <ClCompile Include="rpg\RPG.cpp" />
     <ClCompile Include="shaderSys\OGLShader.cpp" />
     <ClCompile Include="Skybox.cpp" />
     <ClCompile Include="stb_image.cpp" />

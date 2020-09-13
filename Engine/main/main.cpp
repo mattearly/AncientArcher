@@ -31,30 +31,24 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 ----------------------------------------------------------------------
 */
 #include <iostream>
+#include <limits>
 #include "../dry/coreTests.h"
-#include "../rpg/RPG.h"
 
 int main()
 {
 	char choice = 'a';
 	while (choice != 'q') {
 		std::cout << "Run:\n";
-		std::cout << "r: rpg game\n";
 		std::cout << "b: base loop\n";
 		std::cout << "d: demo world\n";
 		std::cout << "q: quit\n";
 		std::cout << "Choice: ";
 		std::cin >> choice;
 		char eatbuf;
-		//while (std::cin >> eatbuf) {};
+		//while (std::cin >> eatbuf);
+		std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
 		switch (choice)
 		{
-		case 'r':
-			{
-				RPG game;
-				game.run();
-			}
-		break;
 		case 'b':
 			if (!testEngineLoopBase())
 			{
@@ -69,9 +63,11 @@ int main()
 			break;
 		case 'q':
 			std::cout << "thanks for playing\n";
+			break;
 		default:
 			std::cout << "invalid choice\n";
 		}
+		if (choice != 'q') choice = 'a';
 	}
 	return 0;
 }

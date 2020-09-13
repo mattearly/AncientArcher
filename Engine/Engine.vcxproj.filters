@@ -102,9 +102,6 @@
     <ClInclude Include="loader\SceneLoader.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="rpg\RPG.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="dry\LoadableAssets.cpp">
@@ -171,9 +168,6 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="main\main.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="rpg\RPG.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
