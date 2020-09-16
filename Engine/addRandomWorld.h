@@ -31,12 +31,17 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 ----------------------------------------------------------------------
 */
 #pragma once
+#include <string>
+#include <vector>
 #include "LoadableAssets.h"
 //#include "Sound.h"
 #include "Loop.h"
 #include <math.h>
 #include "shaderSys/Lights.h"
 #include "rand/rand.h"
+#include <InstanceDetails.h>
+#include <glm/vec3.hpp>
+#include <glm/vec4.hpp>
 
 void addRandomWorld(int cam_id)
 {

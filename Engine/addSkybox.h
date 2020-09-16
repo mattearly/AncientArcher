@@ -31,6 +31,11 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 ----------------------------------------------------------------------
 */
 #pragma once
+#include <string>
+#include <vector>
+#include <Loop.h>
+#include <memory>
+#include <Skybox.h>
 
 /**
  *  * This function is based off having skyboxes in an asset path with the name of the skybox being the folder name and the files within containg
