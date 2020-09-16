@@ -32,8 +32,9 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 #pragma once
 #include <glm/glm.hpp>
-#include <GLFW\glfw3.h>
+//#include <GLFW\glfw3.h>
 
+struct GLFWwindow;
 namespace AA
 {
 

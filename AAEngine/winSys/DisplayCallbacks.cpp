@@ -35,7 +35,8 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 // ---------------
 #include "Display.h"
 #include "Controls.h"
-
+#include <glad/glad.h>
+#include <GLFW/glfw3.h>
 namespace AA
 {
 

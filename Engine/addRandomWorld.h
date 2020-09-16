@@ -32,11 +32,11 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 #pragma once
 #include "LoadableAssets.h"
-#include "../Sound.h"
-#include "../Loop.h"
+//#include "Sound.h"
+#include "Loop.h"
 #include <math.h>
-#include "../shaderSys/Lights.h"
-#include "../../rand/rand/rand.h"
+#include "shaderSys/Lights.h"
+#include "rand/rand.h"
 
 void addRandomWorld(int cam_id)
 {
@@ -82,7 +82,7 @@ void addRandomWorld(int cam_id)
       for (int j = 0; j < num_instances; ++j) {
         LOOP->getGameObject(i).translateTo(
           glm::vec3(
-            NTKR(-roomWidth, roomWidth), 
+            NTKR(-roomWidth, roomWidth),
             floorHeight, 
             NTKR(-roomWidth, roomWidth)),
           j
@@ -103,24 +103,24 @@ void addRandomWorld(int cam_id)
     }
   }
 
-  static AA::Sound sound;
-  sound.addSoundEffects(assetDir, loadableSounds);
+  //static AA::Sound sound;
+  //sound.addSoundEffects(assetDir, loadableSounds);
 
-  const auto soundHotkeys = [](AA::KeyboardInput& keys)
-  {
-    if (keys.mouseButton1)
-    {
-      sound.playSoundEffect(0);
-      return true;
-    }
-    if (keys.mouseButton2)
-    {
-      sound.playSoundEffect(1);
-      return true;
-    }
-    return false;
-  };
-  LOOP->addToTimedOutKeyHandling(soundHotkeys);
+  //const auto soundHotkeys = [](AA::KeyboardInput& keys)
+  //{
+  //  if (keys.mouseButton1)
+  //  {
+  //    sound.playSoundEffect(0);
+  //    return true;
+  //  }
+  //  if (keys.mouseButton2)
+  //  {
+  //    sound.playSoundEffect(1);
+  //    return true;
+  //  }
+  //  return false;
+  //};
+  //LOOP->addToTimedOutKeyHandling(soundHotkeys);
 
 
   static AA::DirectionalLight directional_light;

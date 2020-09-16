@@ -5,11 +5,65 @@
 #include <assimp/scene.h>
 #include <assimp/postprocess.h>
 #include "../Vertex.h"
-#include "../Conversions.h"
 #include "../TexLoader.h"
 #include <glad/glad.h>
+#include <glm/glm.hpp>
+#include <glm/gtc/quaternion.hpp>
+
 namespace AA
 {
+glm::mat4 SceneLoader::aiMat4_to_glmMat4(const aiMatrix4x4& inMat)
+{
+    glm::mat4 outMat;
+    outMat[0][0] = inMat.a1;
+    outMat[1][0] = inMat.b1;
+    outMat[2][0] = inMat.c1;
+    outMat[3][0] = inMat.d1;
+    outMat[0][1] = inMat.a2;
+    outMat[1][1] = inMat.b2;
+    outMat[2][1] = inMat.c2;
+    outMat[3][1] = inMat.d2;
+    outMat[0][2] = inMat.a3;
+    outMat[1][2] = inMat.b3;
+    outMat[2][2] = inMat.c3;
+    outMat[3][2] = inMat.d3;
+    outMat[0][3] = inMat.a4;
+    outMat[1][3] = inMat.b4;
+    outMat[2][3] = inMat.c4;
+    outMat[3][3] = inMat.d4;
+    return outMat;
+}
+
+glm::vec3 SceneLoader::aiVec3_to_glmVec3(const aiVector3D& inVec) noexcept
+{
+    glm::vec3 outVec;
+    outVec.x = inVec.x;
+    outVec.y = inVec.y;
+    outVec.z = inVec.z;
+    return outVec;
+}
+
+glm::vec4 SceneLoader::aiColor4_to_glmVec4(const aiColor4D& inVec) noexcept
+{
+    glm::vec4 outVec;
+
+    outVec.x = inVec.r;
+    outVec.y = inVec.g;
+    outVec.z = inVec.b;
+    outVec.w = inVec.a;
+
+    return outVec;
+}
+
+glm::quat SceneLoader::aiQuat_to_glmQuat(const aiQuaternion& inQuat) noexcept
+{
+    glm::quat outQuat;
+    outQuat.w = inQuat.w;
+    outQuat.x = inQuat.x;
+    outQuat.y = inQuat.y;
+    outQuat.z = inQuat.z;
+    return outQuat;
+}
 
 int SceneLoader::loadGameObjectWithAssimp(std::vector<MeshDrawInfo>& out_MeshInfo, std::string path, bool pp_triangulate)
 {
@@ -62,12 +116,12 @@ MeshDrawInfo SceneLoader::processMesh(aiMesh* mesh, const aiScene* scene, aiMatr
   std::vector<Vertex> loadedVerts;
   for (unsigned int i = 0; i < mesh->mNumVertices; ++i)
   {
-    const glm::vec4 tmpPos = glm::vec4(Conversions::aiVec3_to_glmVec3(mesh->mVertices[i]), 0.f);
-    const glm::vec4 tmpNorm = glm::vec4(Conversions::aiVec3_to_glmVec3(mesh->mNormals[i]), 0.f);
+    const glm::vec4 tmpPos = glm::vec4(SceneLoader::aiVec3_to_glmVec3(mesh->mVertices[i]), 0.f);
+    const glm::vec4 tmpNorm = glm::vec4(SceneLoader::aiVec3_to_glmVec3(mesh->mNormals[i]), 0.f);
     glm::vec4 tmpColor(1, 0, 0, 1);
     if (mesh->mColors[0])
     {
-      tmpColor = Conversions::aiColor4_to_glmVec4(mesh->mColors[0][i]);
+      tmpColor = SceneLoader::aiColor4_to_glmVec4(mesh->mColors[0][i]);
       std::cout << "tmp color loaded: " << tmpColor.r << " " << tmpColor.g << " " << tmpColor.b << " " << tmpColor.a << '\n';
     }
 
@@ -144,7 +198,7 @@ MeshDrawInfo SceneLoader::processMesh(aiMesh* mesh, const aiScene* scene, aiMatr
   }
   else  // success
   {
-    specular = Conversions::aiColor4_to_glmVec4(spec);
+    specular = SceneLoader::aiColor4_to_glmVec4(spec);
     std::cout << "material specular found! set to " 
       << specular.r << ','
       << specular.g << ','
@@ -179,7 +233,7 @@ MeshDrawInfo SceneLoader::processMesh(aiMesh* mesh, const aiScene* scene, aiMatr
 
   glBindVertexArray(0);
 
-  return MeshDrawInfo(VAO, loadedElements, loadedTextures, shine, specular, Conversions::aiMat4_to_glmMat4(*trans));
+  return MeshDrawInfo(VAO, loadedElements, loadedTextures, shine, specular, SceneLoader::aiMat4_to_glmMat4(*trans));
 }
 
 int SceneLoader::loadMaterialTextures(const aiMaterial* mat, aiTextureType type, std::string typeName, std::vector<TextureInfo>& out_texInfo)

@@ -30,21 +30,25 @@
     <ConfigurationType>Application</ConfigurationType>
     <PlatformToolset>v142</PlatformToolset>
     <PreferredToolArchitecture>x64</PreferredToolArchitecture>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
     <PlatformToolset>v142</PlatformToolset>
     <PreferredToolArchitecture>x64</PreferredToolArchitecture>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
     <PlatformToolset>v142</PlatformToolset>
     <PreferredToolArchitecture>x64</PreferredToolArchitecture>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
     <PlatformToolset>v142</PlatformToolset>
     <PreferredToolArchitecture>x64</PreferredToolArchitecture>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
   <ImportGroup Label="ExtensionSettings">
@@ -64,21 +68,26 @@
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" />
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" />
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" />
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <IncludePath>$(SolutionDir)AAEngine;$(SolutionDir)rand;$(IncludePath)</IncludePath>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <IncludePath>$(SolutionDir)AAEngine;$(SolutionDir)rand;$(IncludePath)</IncludePath>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <IncludePath>$(SolutionDir)AAEngine;$(SolutionDir)rand;$(IncludePath)</IncludePath>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <IncludePath>$(SolutionDir)AAEngine;$(SolutionDir)rand;$(IncludePath)</IncludePath>
+  </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <ClCompile>
       <SDLCheck>true</SDLCheck>
-      <AdditionalIncludeDirectories>$(SolutionDir)..\glm;$(SolutionDir)..\assimp\include;$(SolutionDir)..\assimp\build\include;$(SolutionDir)..\SDL\include;$(SolutionDir)..\SDL\build\include;$(SolutionDir)..\SDL_mixer\include;$(SolutionDir)..\stb;$(SolutionDir)..\glfw\include;$(SolutionDir)include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)..\glm;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <LanguageStandard>stdcpp17</LanguageStandard>
       <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
     </ClCompile>
-    <Link>
-      <AdditionalDependencies>SDL2.lib;SDL2main.lib;SDL2_mixer.lib;glfw3.lib;opengl32.lib;assimp-vc142-mt.lib;SDL2.lib;SDL2main.lib;SDL2_mixer.lib;assimp-vc142-mt.lib;%(AdditionalDependencies)</AdditionalDependencies>
-      <AdditionalLibraryDirectories>$(SolutionDir)..\assimp\build\lib\$(Configuration);$(SolutionDir)..\glfw\build\src\$(Configuration);$(SolutionDir)..\SDL\build\$(Configuration);$(SolutionDir)library;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-    </Link>
+    <Link />
     <PostBuildEvent>
       <Command>xcopy /y /d "$(SolutionDir)library\SDL2_mixer.dll" "$(OutDir)"
 xcopy /y /d "$(SolutionDir)..\SDL\build\$(Configuration)\SDL2.dll" "$(OutDir)"
@@ -88,14 +97,11 @@ xcopy /y /d "$(SolutionDir)..\assimp\build\bin\$(Configuration)\assimp-vc142-mt.
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
       <SDLCheck>true</SDLCheck>
-      <AdditionalIncludeDirectories>$(SolutionDir)..\glm;$(SolutionDir)..\assimp\include;$(SolutionDir)..\assimp\build\include;$(SolutionDir)..\SDL\include;$(SolutionDir)..\SDL\build\include;$(SolutionDir)..\SDL_mixer\include;$(SolutionDir)..\stb;$(SolutionDir)..\glfw\include;$(SolutionDir)include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)..\glm;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <LanguageStandard>stdcpp17</LanguageStandard>
       <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
     </ClCompile>
-    <Link>
-      <AdditionalDependencies>SDL2.lib;SDL2main.lib;SDL2_mixer.lib;glfw3.lib;opengl32.lib;assimp-vc142-mt.lib;SDL2d.lib;SDL2maind.lib;SDL2_mixer.lib;assimp-vc142-mtd.lib;%(AdditionalDependencies)</AdditionalDependencies>
-      <AdditionalLibraryDirectories>$(SolutionDir)..\assimp\build\lib\$(Configuration);$(SolutionDir)..\glfw\build\src\$(Configuration);$(SolutionDir)..\SDL\build\$(Configuration);$(SolutionDir)library;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-    </Link>
+    <Link />
     <PostBuildEvent>
       <Command>xcopy /y /d "$(SolutionDir)library\SDL2_mixer.dll" "$(OutDir)"
 xcopy /y /d "$(SolutionDir)..\SDL\build\$(Configuration)\SDL2.dll" "$(OutDir)"
@@ -105,14 +111,11 @@ xcopy /y /d "$(SolutionDir)..\assimp\build\bin\$(Configuration)\assimp-vc142-mt.
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <ClCompile>
       <SDLCheck>true</SDLCheck>
-      <AdditionalIncludeDirectories>$(SolutionDir)..\glm;$(SolutionDir)..\assimp\include;$(SolutionDir)..\assimp\build\include;$(SolutionDir)..\SDL\include;$(SolutionDir)..\SDL\build\include;$(SolutionDir)..\SDL_mixer\include;$(SolutionDir)..\stb;$(SolutionDir)..\glfw\include;$(SolutionDir)include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)..\glm;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <LanguageStandard>stdcpp17</LanguageStandard>
       <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
     </ClCompile>
-    <Link>
-      <AdditionalDependencies>SDL2.lib;SDL2main.lib;SDL2_mixer.lib;glfw3.lib;opengl32.lib;assimp-vc142-mt.lib;SDL2d.lib;SDL2maind.lib;SDL2_mixer.lib;assimp-vc142-mtd.lib;%(AdditionalDependencies)</AdditionalDependencies>
-      <AdditionalLibraryDirectories>$(SolutionDir)..\assimp\build\lib\$(Configuration);$(SolutionDir)..\glfw\build\src\$(Configuration);$(SolutionDir)..\SDL\build\$(Configuration);$(SolutionDir)library;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-    </Link>
+    <Link />
     <PostBuildEvent>
       <Command>xcopy /y /d "$(SolutionDir)library\SDL2_mixer.dll" "$(OutDir)"
 xcopy /y /d "$(SolutionDir)..\SDL\build\$(Configuration)\SDL2.dll" "$(OutDir)"
@@ -122,14 +125,11 @@ xcopy /y /d "$(SolutionDir)..\assimp\build\bin\$(Configuration)\assimp-vc142-mt.
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <ClCompile>
       <SDLCheck>true</SDLCheck>
-      <AdditionalIncludeDirectories>$(SolutionDir)..\glm;$(SolutionDir)..\assimp\include;$(SolutionDir)..\assimp\build\include;$(SolutionDir)..\SDL\include;$(SolutionDir)..\SDL\build\include;$(SolutionDir)..\SDL_mixer\include;$(SolutionDir)..\stb;$(SolutionDir)..\glfw\include;$(SolutionDir)include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)..\glm;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <LanguageStandard>stdcpp17</LanguageStandard>
       <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
     </ClCompile>
-    <Link>
-      <AdditionalDependencies>SDL2.lib;SDL2main.lib;SDL2_mixer.lib;glfw3.lib;opengl32.lib;assimp-vc142-mt.lib;SDL2.lib;SDL2main.lib;SDL2_mixer.lib;assimp-vc142-mt.lib;%(AdditionalDependencies)</AdditionalDependencies>
-      <AdditionalLibraryDirectories>$(SolutionDir)..\assimp\build\lib\$(Configuration);$(SolutionDir)..\glfw\build\src\$(Configuration);$(SolutionDir)..\SDL\build\$(Configuration);$(SolutionDir)library;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-    </Link>
+    <Link />
     <PostBuildEvent>
       <Command>xcopy /y /d "$(SolutionDir)library\SDL2_mixer.dll" "$(OutDir)"
 xcopy /y /d "$(SolutionDir)..\SDL\build\$(Configuration)\SDL2.dll" "$(OutDir)"
@@ -137,61 +137,23 @@ xcopy /y /d "$(SolutionDir)..\assimp\build\bin\$(Configuration)\assimp-vc142-mt.
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClInclude Include="loader\SceneLoader.h" />
-    <ClInclude Include="Camera.h" />
-    <ClInclude Include="ColliderBox.h" />
-    <ClInclude Include="CollisionHandler.h" />
-    <ClInclude Include="dry\coreTests.h" />
-    <ClInclude Include="Dice.h" />
-    <ClInclude Include="dry\addGodMovement.h" />
-    <ClInclude Include="dry\addRandomWorld.h" />
-    <ClInclude Include="dry\addSkybox.h" />
-    <ClInclude Include="Conversions.h" />
-    <ClInclude Include="dry\delay.h" />
-    <ClInclude Include="dry\Filesystem.h" />
-    <ClInclude Include="dry\LoadableAssets.h" />
-    <ClInclude Include="dry\ModelHeader.h" />
-    <ClInclude Include="GameObject.h" />
-    <ClInclude Include="InstanceDetails.h" />
-    <ClInclude Include="MeshDrawInfo.h" />
-    <ClInclude Include="OGLGraphics.h" />
-    <ClInclude Include="shaderSys\Lights.h" />
-    <ClInclude Include="shaderSys\OGLShader.h" />
-    <ClInclude Include="Skybox.h" />
-    <ClInclude Include="TexLoader.h" />
-    <ClInclude Include="Vertex.h" />
-    <ClInclude Include="Sound.h" />
-    <ClInclude Include="winSys\Controls.h" />
-    <ClInclude Include="winSys\Display.h" />
-    <ClInclude Include="winSys\Input.h" />
-    <ClInclude Include="Loop.h" />
-    <ClInclude Include="WorldUp.h" />
+    <ClInclude Include="coreTests.h" />
+    <ClInclude Include="addGodMovement.h" />
+    <ClInclude Include="addRandomWorld.h" />
+    <ClInclude Include="addSkybox.h" />
+    <ClInclude Include="delay.h" />
+    <ClInclude Include="Filesystem.h" />
+    <ClInclude Include="LoadableAssets.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="loader\SceneLoader.cpp" />
-    <ClCompile Include="Camera.cpp" />
-    <ClCompile Include="ColliderBox.cpp" />
-    <ClCompile Include="CollisionHandler.cpp" />
-    <ClCompile Include="Conversions.cpp" />
-    <ClCompile Include="dry\Filesystem.cpp" />
-    <ClCompile Include="dry\LoadableAssets.cpp" />
-    <ClCompile Include="main\main.cpp" />
-    <ClCompile Include="GameObject.cpp" />
-    <ClCompile Include="glad.c" />
-    <ClCompile Include="MeshDrawInfo.cpp" />
-    <ClCompile Include="OGLGraphics.cpp" />
-    <ClCompile Include="shaderSys\OGLShader.cpp" />
-    <ClCompile Include="Skybox.cpp" />
-    <ClCompile Include="stb_image.cpp" />
-    <ClCompile Include="TexLoader.cpp" />
-    <ClCompile Include="Vertex.cpp" />
-    <ClCompile Include="Sound.cpp" />
-    <ClCompile Include="winSys\Controls.cpp" />
-    <ClCompile Include="winSys\Display.cpp" />
-    <ClCompile Include="winSys\DisplayCallbacks.cpp" />
-    <ClCompile Include="Loop.cpp" />
+    <ClCompile Include="Filesystem.cpp" />
+    <ClCompile Include="LoadableAssets.cpp" />
+    <ClCompile Include="main.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\AAEngine\AAEngine.vcxproj">
+      <Project>{091bacde-fe9f-44da-a52d-8ab3b026a626}</Project>
+    </ProjectReference>
     <ProjectReference Include="..\rand\rand\rand.vcxproj">
       <Project>{32a240bc-514f-4bfa-a205-1766769e9d87}</Project>
     </ProjectReference>

@@ -40,8 +40,8 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #include "addRandomWorld.h"
 #include <iostream>
 #include <string>
-#include "../Loop.h"
-#include "../winSys/Input.h"
+#include "Loop.h"
+#include "winSys/Input.h"
 
 int testEngineLoopBase()
 {

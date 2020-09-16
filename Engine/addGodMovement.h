@@ -32,8 +32,8 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 #pragma once
 #include <iostream>
-#include "../Loop.h"
-#include "../WorldUp.h"
+#include "Loop.h"
+#include "WorldUp.h"
 
 #define UP AA::WorldUp::getWorldUp()
 

@@ -38,7 +38,6 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #include <memory>
 #include <string>
 #include <cstddef>
-#include "Conversions.h"
 #include "GameObject.h"
 #include "Vertex.h"
 
