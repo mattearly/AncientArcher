@@ -51,7 +51,7 @@ void addCubeSkybox()
     //LoadableAssets::getSkyboxCubeMapFiles("../assets/drakeq/", skybox_dir, skybox_file_names);
 
     // skybox file name order
-    const std::string path = "../assets/drakeq/";
+    const std::string path = "../assets/skyboxes/drakeq/";
     const std::string order[6] = { "right", "left", "up", "down", "front", "back" };
     const std::string ext = ".png";
     std::vector<std::string> cubemapfiles;

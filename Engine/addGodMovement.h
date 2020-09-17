@@ -116,7 +116,7 @@ int setGodCamWithMovement()
   {
     if (LOOP->getMouseReportingMode() == AA::MouseReporting::PERSPECTIVE)
     {
-      LOOP->getCamera(mainCamId).shiftYawAndPith(mouse.xOffset, mouse.yOffset);
+      LOOP->getCamera(mainCamId).shiftYawAndPitch(mouse.xOffset, mouse.yOffset);
     }
     else // if (mainWorld.getMouseReportingMode() == MouseReporting::STANDARD)
     {

@@ -49,7 +49,7 @@ void addRandomWorld(int cam_id)
  
   LOOP->setRenderDistance(camID, 10000.f);
 
-  static int mainShaderId = LOOP->addShader("../shaders/combinedLight.vert", "../shaders/combinedLight.frag");
+  static int mainShaderId = LOOP->addShader("../assets/shaders/combinedLight.vert", "../assets/shaders/combinedLight.frag");
 
   // see what demo files we have in our data dir
   std::string assetDir;
@@ -57,7 +57,7 @@ void addRandomWorld(int cam_id)
   std::vector<std::string> loadableSounds;
 
   LoadableAssets pathsToLoadables;
-  pathsToLoadables.getDemoConfig(assetDir, loadableModels, loadableSounds, "../assets/old/");
+  pathsToLoadables.getDemoConfig(assetDir, loadableModels, loadableSounds, "../assets/models/dae");
   static const int numLoadableModels = (int)loadableModels.size();  // produces warning
 
   if (numLoadableModels > 0)

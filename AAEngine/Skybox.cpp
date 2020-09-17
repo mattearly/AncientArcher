@@ -49,8 +49,8 @@ namespace AA
 Skybox::Skybox(std::vector<std::string> incomingSkymapFiles)
 {
   skyboxShader = std::make_unique<OGLShader>(
-    "../shaders/skycube.vert",
-    "../shaders/skycube.frag"
+    "../assets/shaders/skycube.vert",
+    "../assets/shaders/skycube.frag"
   );
   loadSkybox();
   cubemapTexture = TexLoader::getInstance()->loadCubeTexture(incomingSkymapFiles);
