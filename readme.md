@@ -27,7 +27,7 @@ path/to/yourrepos/glfw
 
 3. Build glfw
 
-	1. Same process as assimp, but before building change the runtime library in properties to `/MT`
+	1. Same process as assimp, but before building change the runtime library `(Properties -> C/C++ -> Code Generation -> Runtime Library)` to `/MT` 
 
 4. Open AncientArcher.sln and profit
 
