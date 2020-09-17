@@ -7,16 +7,16 @@ Redistribution and use of this software in source and binary forms,
 with or without modification, are permitted provided that the
 following conditions are met:
 * Redistributions of source code must retain the above
-  copyright notice, this list of conditions and the
-  following disclaimer.
+	copyright notice, this list of conditions and the
+	following disclaimer.
 * Redistributions in binary form must reproduce the above
-  copyright notice, this list of conditions and the
-  following disclaimer in the documentation and/or other
-  materials provided with the distribution.
+	copyright notice, this list of conditions and the
+	following disclaimer in the documentation and/or other
+	materials provided with the distribution.
 * Neither the name of the Matthew Early, nor the names of its
-  contributors may be used to endorse or promote products
-  derived from this software without specific prior
-  written permission of the assimp team.
+	contributors may be used to endorse or promote products
+	derived from this software without specific prior
+	written permission of the assimp team.
 THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
 "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
 LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR
@@ -40,39 +40,39 @@ class OGLShader
 {
 public:
 
-  OGLShader(const char* vertex_file, const char* fragment_file);
-  OGLShader(const char* vertex_file, const char* fragment_file, const char* geometry_file);
+	OGLShader(const char* vertex_file, const char* fragment_file);
+	OGLShader(const char* vertex_file, const char* fragment_file, const char* geometry_file);
 
-  void use() const noexcept;
-  void stop() const noexcept;
+	void use() const noexcept;
+	void stop() const noexcept;
 
-  //uniform setters
-  void setBool(const std::string& name, bool value) const;
-  void setInt(const std::string& name, int value) const;
-  void setUint(const std::string& name, unsigned int value) const;
-  void setFloat(const std::string& name, float value) const;
+	//uniform setters
+	void setBool(const std::string& name, bool value) const;
+	void setInt(const std::string& name, int value) const;
+	void setUint(const std::string& name, unsigned int value) const;
+	void setFloat(const std::string& name, float value) const;
 
-  void setVec2(const std::string& name, const glm::vec2& value) const;
-  void setVec2(const std::string& name, float x, float y) const;
+	void setVec2(const std::string& name, const glm::vec2& value) const;
+	void setVec2(const std::string& name, float x, float y) const;
 
-  void setVec3(const std::string& name, const glm::vec3& value) const;
-  void setVec3(const std::string& name, float x, float y, float z) const;
+	void setVec3(const std::string& name, const glm::vec3& value) const;
+	void setVec3(const std::string& name, float x, float y, float z) const;
 
-  void setVec4(const std::string& name, const glm::vec4& value) const;
-  void setVec4(const std::string& name, float x, float y, float z, float w) const;
+	void setVec4(const std::string& name, const glm::vec4& value) const;
+	void setVec4(const std::string& name, float x, float y, float z, float w) const;
 
-  void setMat2(const std::string& name, const glm::mat2& mat) const;
-  void setMat3(const std::string& name, const glm::mat3& mat) const;
-  void setMat4(const std::string& name, const glm::mat4& mat) const;
+	void setMat2(const std::string& name, const glm::mat2& mat) const;
+	void setMat3(const std::string& name, const glm::mat3& mat) const;
+	void setMat4(const std::string& name, const glm::mat4& mat) const;
 
-  const int getID() const;
+	const int getID() const;
 
-  int getAndCheckShaderUniform(const std::string& name) const;
+	int getAndCheckShaderUniform(const std::string& name) const;
 
 private:
-  OGLShader() = delete;
+	OGLShader() = delete;
 
-  unsigned int ID;
+	unsigned int ID;
 
 };
 
