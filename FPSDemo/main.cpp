@@ -4,25 +4,33 @@
 #include <memory>
 #include <Skybox.h>
 #include <iostream>
+// for our move speed controls
 static constexpr float DEFAULTMOVESPEED = 10.f;
 static constexpr float MAXSPEED = 400.f;
 static constexpr float FLYINCR = 1.f;
+
 int main(int argc, char* argv[])
 {
 	std::cout << "run: " << argv[0] << '\n';
 
+	// config first person controls
 	LOOP->setCursorToDisabled();
 	LOOP->setToPerspectiveMouseHandling();
+
+	// single camera
 	static int mainCamId = LOOP->addCamera();
+
+	// for our move speed
 	static float currFlySpeed = DEFAULTMOVESPEED;
 	static float prevFlySpeed = currFlySpeed;
 
+	// add WASD key first person movement function
 	const auto wasd = [](AA::KeyboardInput& key) {
 		static float frameCalculatedVelocity = 0.f;
 		static glm::vec3 moveDir = glm::vec3(0.f);
 		static glm::vec3 frontFacingDir = glm::vec3(*LOOP->getCamera(mainCamId).getFront());
 		static glm::vec3 rightFacingDir = glm::vec3(*LOOP->getCamera(mainCamId).getRight());
-		frameCalculatedVelocity = 0.0166f * currFlySpeed;
+		frameCalculatedVelocity = 0.0166f * currFlySpeed;  // a hack to simulate 60fps, using time between frames would be better
 
 		if (key.w)
 		{
@@ -84,7 +92,7 @@ int main(int argc, char* argv[])
 	};
 	LOOP->addToScrollHandling(mousewheelflyspeed);
 
-	// general asset locations (using trailing slashes)
+	// general sample asset locations (using trailing slashes)
 	const std::string assetpath = "../assets/";
 	const std::string skyboxfolder = "skyboxes/drakeq/";
 	const std::string modelfolder = "models/dae/";
