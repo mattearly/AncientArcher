@@ -47,11 +47,42 @@ int main(int argc, char* argv[])
 	};
 	LOOP->addToKeyHandling(wasd);
 
+	// add mouse movement to change our view direction
 	const auto mouselook = [](AA::MouseInput& cursor)
 	{
 		LOOP->getCamera(mainCamId).shiftYawAndPitch(cursor.xOffset, cursor.yOffset);
 	};
 	LOOP->addToMouseHandling(mouselook);
+
+	// add mouse scroll wheel to change fly speed
+	const auto mousewheelflyspeed = [](AA::ScrollInput& wheel)
+	{
+		// set flyspeed when mouse wheel moves
+		if (wheel.yOffset > 0.1f)
+		{
+			currFlySpeed += FLYINCR;
+			wheel.yOffset = 0;
+		}
+		if (wheel.yOffset < -0.1f)
+		{
+			currFlySpeed -= FLYINCR;
+			wheel.yOffset = 0;
+		}
+		// cap flyspeed
+		if (currFlySpeed >= MAXSPEED)
+		{
+			currFlySpeed = MAXSPEED;
+		}
+		if (currFlySpeed <= 1.f)
+		{
+			currFlySpeed = 1.000001f;
+		}
+		if (currFlySpeed != prevFlySpeed)
+		{
+			prevFlySpeed = currFlySpeed;
+		}
+	};
+	LOOP->addToScrollHandling(mousewheelflyspeed);
 
 	// general asset locations (using trailing slashes)
 	const std::string assetpath = "../assets/";
