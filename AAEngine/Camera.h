@@ -51,7 +51,7 @@ public:
   void setCurrentPitch(float pitch);
   void setCurrentYaw(float yaw);
   void shiftCurrentPosition(const glm::vec3& offset);
-  void shiftYawAndPith(float yawOffset, float pitchOffset);
+  void shiftYawAndPitch(float yawOffset, float pitchOffset);
 
   // experimental
   void setToOrtho() noexcept;

@@ -170,7 +170,7 @@ void Camera::shiftCurrentPosition(const glm::vec3& offset)
   updateCameraVectors();
 }
 
-void Camera::shiftYawAndPith(float yawOffset, float pitchOffset)
+void Camera::shiftYawAndPitch(float yawOffset, float pitchOffset)
 {
   mYaw += yawOffset;
   mPitch += pitchOffset;
