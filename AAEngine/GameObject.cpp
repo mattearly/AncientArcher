@@ -7,16 +7,16 @@ Redistribution and use of this software in source and binary forms,
 with or without modification, are permitted provided that the
 following conditions are met:
 * Redistributions of source code must retain the above
-  copyright notice, this list of conditions and the
-  following disclaimer.
+	copyright notice, this list of conditions and the
+	following disclaimer.
 * Redistributions in binary form must reproduce the above
-  copyright notice, this list of conditions and the
-  following disclaimer in the documentation and/or other
-  materials provided with the distribution.
+	copyright notice, this list of conditions and the
+	following disclaimer in the documentation and/or other
+	materials provided with the distribution.
 * Neither the name of the Matthew Early, nor the names of its
-  contributors may be used to endorse or promote products
-  derived from this software without specific prior
-  written permission of the assimp team.
+	contributors may be used to endorse or promote products
+	derived from this software without specific prior
+	written permission of the assimp team.
 THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
 "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
 LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR
@@ -57,10 +57,12 @@ const int GameObject::getShaderId() const noexcept
 {
 	return mShaderID;
 }
+
 const int GameObject::getCameraId() const noexcept
 {
 	return mCameraID;
 }
+
 const int GameObject::getObjectId() const noexcept
 {
 	return mObjectID;
@@ -71,6 +73,7 @@ const std::size_t GameObject::getInstanceCount() const noexcept
 {
 	return mInstanceDetails.size();
 }
+
 GameObject::GameObject(const char* path, int camId, int shadId)
 {
 	//std::vector<MeshDrawInfo> meshes = assLoad(path, false);  // no triangulate
@@ -108,10 +111,12 @@ void GameObject::setCamera(int id) noexcept
 {
 	mCameraID = id;
 }
+
 void GameObject::setShader(int id) noexcept
 {
 	mShaderID = id;
 }
+
 void GameObject::draw(const OGLShader& modelShader)
 {
 	OGLGraphics::getInstance()->Render(mMeshes, mInstanceDetails, modelShader);
@@ -123,10 +128,12 @@ void GameObject::scale(glm::vec3 amt, int which)
 		updateModelMatrix(which);
 	}
 }
+
 void GameObject::scale(glm::vec3 amt)
 {
 	scale(amt, 0);
 }
+
 void GameObject::rotate(float angle, glm::vec3 axis, int which)
 {
 	if (axis.x == 0.f && axis.y == 0.f && axis.z == 0.f)
@@ -143,10 +150,12 @@ void GameObject::rotate(float angle, glm::vec3 axis, int which)
 	updateModelMatrix(which);
 
 }
+
 void GameObject::rotate(float radianAngle, glm::vec3 axis)
 {
 	rotate(radianAngle, axis, 0);
 }
+
 void GameObject::translateTo(glm::vec3 to, int which)
 {
 	if (which < getInstanceCount()) {
@@ -154,25 +163,30 @@ void GameObject::translateTo(glm::vec3 to, int which)
 	}
 	updateModelMatrix(which);
 }
+
 void GameObject::translateTo(glm::vec3 to)
 {
 	translateTo(to, 0);
 }
+
 void GameObject::advanceScale(glm::vec3 amt)
 {
 	advanceScale(amt, 0);
 }
+
 void GameObject::advanceScale(glm::vec3 amt, int which)
 {
 	if (which < getInstanceCount()) {
-		mInstanceDetails.at(which).Scale += amt;  updateModelMatrix(which);
-
+		mInstanceDetails.at(which).Scale += amt;
+		updateModelMatrix(which);
 	}
 }
+
 void GameObject::advanceRotation(float angleAmtRadians)
 {
 	advanceRotation(angleAmtRadians, 0);
 }
+
 void GameObject::advanceRotation(float angleAmtRadians, int which)
 {
 	if (which < getInstanceCount()) {
@@ -180,10 +194,12 @@ void GameObject::advanceRotation(float angleAmtRadians, int which)
 		updateModelMatrix(which);
 	}
 }
+
 void GameObject::advanceTranslate(glm::vec3 amt)
 {
 	advanceTranslate(amt, 0);
 }
+
 void GameObject::advanceTranslate(glm::vec3 amt, int which)
 {
 	if (which < getInstanceCount()) {
@@ -191,10 +207,12 @@ void GameObject::advanceTranslate(glm::vec3 amt, int which)
 		updateModelMatrix(which);
 	}
 }
+
 void GameObject::changeRotateAxis(glm::vec3 axis)
 {
 	changeRotateAxis(axis, 0);
 }
+
 void GameObject::changeRotateAxis(glm::vec3 axis, int which)
 {
 	if (axis.x == 0.f && axis.y == 0.f && axis.z == 0.f)
@@ -214,10 +232,12 @@ bool GameObject::isSingleInstance() const
 {
 	return mInstanceDetails.size() == 1;
 }
+
 const glm::vec3& GameObject::getLocation() const
 {
 	return getLocation(0);
 }
+
 const glm::vec3& GameObject::getLocation(int which) const
 {
 	if (which < getInstanceCount()) {
@@ -228,6 +248,7 @@ const glm::vec3& GameObject::getLocation(int which) const
 		throw("error getting translate, should never get here");
 	}
 }
+
 void GameObject::updateModelMatrix(int which)
 {
 	if (which < getInstanceCount())
@@ -235,6 +256,7 @@ void GameObject::updateModelMatrix(int which)
 		mInstanceDetails.at(which).updateModelMatrix();
 	}
 }
+
 //MeshDrawInfo::MeshDrawInfo(unsigned int a,/* unsigned int b, unsigned int e,*/ std::vector<TextureInfo> t, std::vector<unsigned int> el)
 //  : vao(a),/* vbo(b), ebo(e),*/ textures(t), elements(el)
 //{
@@ -256,6 +278,7 @@ void InstanceDetails::updateModelMatrix()
 	ModelMatrix = glm::rotate(ModelMatrix, RotationAngle, RotationAxis);
 
 }
+
 InstanceDetails::InstanceDetails()
 {
 	Scale = glm::vec3(1);
@@ -264,6 +287,7 @@ InstanceDetails::InstanceDetails()
 	RotationAngle = 0.f;
 	updateModelMatrix();
 }
+
 InstanceDetails::InstanceDetails(glm::vec3 scale, glm::vec3 rotAx, glm::vec3 transl, float rotAng)
 {
 	Scale = scale;
