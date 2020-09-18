@@ -13,47 +13,50 @@ int main(int argc, char* argv[])
 {
 	std::cout << "run: " << argv[0] << '\n';
 
-	// config first person controls
+	// config for first person perspective controls
 	LOOP->setCursorToDisabled();
 	LOOP->setToPerspectiveMouseHandling();
 
-	// single camera
+	// a single camera
 	static int mainCamId = LOOP->addCamera();
 
-	// for our move speed
+	// for our move direction and speed
 	static float currFlySpeed = DEFAULTMOVESPEED;
 	static float prevFlySpeed = currFlySpeed;
+	static glm::vec3 moveDir = glm::vec3(0.f);
+	static glm::vec3 frontFacingDir = glm::vec3(*LOOP->getCamera(mainCamId).getFront());
+	static glm::vec3 rightFacingDir = glm::vec3(*LOOP->getCamera(mainCamId).getRight());
 
 	// add WASD key first person movement function
 	const auto wasd = [](AA::KeyboardInput& key) {
-		static float frameCalculatedVelocity = 0.f;
-		static glm::vec3 moveDir = glm::vec3(0.f);
-		static glm::vec3 frontFacingDir = glm::vec3(*LOOP->getCamera(mainCamId).getFront());
-		static glm::vec3 rightFacingDir = glm::vec3(*LOOP->getCamera(mainCamId).getRight());
-		frameCalculatedVelocity = 0.0166f * currFlySpeed;  // a hack to simulate 60fps, using time between frames would be better
-
 		if (key.w)
 		{
-			moveDir += frontFacingDir * frameCalculatedVelocity;
+			moveDir += frontFacingDir;
 		}
 		else if (key.s)
 		{
-			moveDir -= frontFacingDir * frameCalculatedVelocity;
+			moveDir -= frontFacingDir;
 		}
 		if (key.a)
 		{
-			moveDir -= rightFacingDir * frameCalculatedVelocity;
+			moveDir -= rightFacingDir;
 		}
 		else if (key.d)
 		{
-			moveDir += rightFacingDir * frameCalculatedVelocity;
+			moveDir += rightFacingDir;
 		}
-		LOOP->getCamera(mainCamId).shiftCurrentPosition(moveDir);
+	};
+	LOOP->addToKeyHandling(wasd);
+
+	const auto camMove = [](float dt) {
+		static float frameCalculatedVelocity = 0.f;
+		frameCalculatedVelocity = dt * currFlySpeed;
+		LOOP->getCamera(mainCamId).shiftCurrentPosition(moveDir * frameCalculatedVelocity);
 		moveDir = glm::vec3(0.f);
 		frontFacingDir = glm::vec3(*LOOP->getCamera(mainCamId).getFront());
 		rightFacingDir = glm::vec3(*LOOP->getCamera(mainCamId).getRight());
 	};
-	LOOP->addToKeyHandling(wasd);
+	LOOP->addToDeltaUpdate(camMove);
 
 	// add mouse movement to change our view direction
 	const auto mouselook = [](AA::MouseInput& cursor)
