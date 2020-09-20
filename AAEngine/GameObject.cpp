@@ -121,7 +121,7 @@ void GameObject::draw(const OGLShader& modelShader)
 {
 	OGLGraphics::getInstance()->Render(mMeshes, mInstanceDetails, modelShader);
 }
-void GameObject::scale(glm::vec3 amt, int which)
+void GameObject::scaleTo(glm::vec3 amt, int which)
 {
 	if (which < getInstanceCount()) {
 		mInstanceDetails.at(which).Scale = amt;
@@ -129,12 +129,12 @@ void GameObject::scale(glm::vec3 amt, int which)
 	}
 }
 
-void GameObject::scale(glm::vec3 amt)
+void GameObject::scaleTo(glm::vec3 amt)
 {
-	scale(amt, 0);
+	scaleTo(amt, 0);
 }
 
-void GameObject::rotate(float angle, glm::vec3 axis, int which)
+void GameObject::rotateTo(float angle, glm::vec3 axis, int which)
 {
 	if (axis.x == 0.f && axis.y == 0.f && axis.z == 0.f)
 	{
@@ -151,9 +151,9 @@ void GameObject::rotate(float angle, glm::vec3 axis, int which)
 
 }
 
-void GameObject::rotate(float radianAngle, glm::vec3 axis)
+void GameObject::rotateTo(float radianAngle, glm::vec3 axis)
 {
-	rotate(radianAngle, axis, 0);
+	rotateTo(radianAngle, axis, 0);
 }
 
 void GameObject::translateTo(glm::vec3 to, int which)
