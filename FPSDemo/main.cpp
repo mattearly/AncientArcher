@@ -2,8 +2,11 @@
 #include <vector>
 #include <Loop.h>
 #include <memory>
+#include <math.h>
 #include <Skybox.h>
 #include <iostream>
+#include <shaderSys\Lights.h>
+
 // for our move speed controls
 static constexpr float DEFAULTMOVESPEED = 10.f;
 static constexpr float MAXSPEED = 400.f;
@@ -98,7 +101,9 @@ int main(int argc, char* argv[])
 	// general sample asset locations (using trailing slashes)
 	const std::string assetpath = "../assets/";
 	const std::string skyboxfolder = "skyboxes/drakeq/";
-	const std::string modelfolder = "models/dae/";
+	const std::string daemodelfolder = "models/dae/";
+	const std::string fbxmodelfolder = "models/fbx/";
+	const std::string gltfmodelfolder = "models/glb/";
 
 	// add a skybox
 	const std::string order[6] = { "right", "left", "up", "down", "front", "back" };
@@ -111,11 +116,89 @@ int main(int argc, char* argv[])
 	const std::shared_ptr<AA::Skybox> skybox = std::make_shared<AA::Skybox>(cubemapfiles);
 	LOOP->setSkybox(skybox);
 
-	// add a object
-	static int cubeShaderId = LOOP->addShader((assetpath + "shaders/combinedLight.vert").c_str(), (assetpath + "shaders/combinedLight.frag").c_str());
-	const std::string modelfileext = ".dae";
-	static int cubeOneId = LOOP->addObject((assetpath + modelfolder + "check_cube" + modelfileext).c_str(), mainCamId, cubeShaderId);
-	LOOP->getGameObject(cubeOneId).translateTo(glm::vec3(0.f, -3.f, -3.f));
+	// a shader for our objects
+	static int combinedLightId = LOOP->addShader((assetpath + "shaders/combinedLight.vert").c_str(), (assetpath + "shaders/combinedLight.frag").c_str());
+
+	// add a collada object
+	const std::string daefileext = ".dae";
+	static int cubeOneId = LOOP->addObject((assetpath + daemodelfolder + "check_cube" + daefileext).c_str(), mainCamId, combinedLightId);
+	LOOP->getGameObject(cubeOneId).translateTo(glm::vec3(0.f, -30.f, -30.f));
+
+	// move our collada object
+	LOOP->getGameObject(cubeOneId).changeRotateAxis(glm::vec3(1, 1, 1));
+	const auto cubeMove = [](float dt) {
+		LOOP->getGameObject(cubeOneId).advanceRotation(glm::radians(dt * 5));
+
+
+		static bool posDirection = true;
+		if (LOOP->getGameObject(cubeOneId).getLocation().x > 100.f)
+			posDirection = false;
+		else if (LOOP->getGameObject(cubeOneId).getLocation().x < 0.f)
+			posDirection = true;
+
+		LOOP->getGameObject(cubeOneId).advanceTranslate(
+			posDirection ?
+			glm::vec3(dt * 5, 0, 0) :
+			glm::vec3(-dt * 5, 0, 0)
+		);
+	};
+	LOOP->addToDeltaUpdate(cubeMove);
+
+	// add a fbx object
+	const std::string fbxfileext = ".FBX";
+	static int boatOneId = LOOP->addObject((assetpath + fbxmodelfolder + "Boat" + fbxfileext).c_str(), mainCamId, combinedLightId);
+	LOOP->getGameObject(boatOneId).translateTo(glm::vec3(0.f, -40.f, 30.f));
+	LOOP->getGameObject(boatOneId).scaleTo(glm::vec3(.1f, .1f, .1f));
+
+	// rotate our fbx object with delta time
+	LOOP->getGameObject(boatOneId).changeRotateAxis(glm::vec3(0, 1, 0));
+	const auto boatSpin = [](float dt) {
+		LOOP->getGameObject(boatOneId).advanceRotation(glm::radians(dt * 5));
+	};
+	LOOP->addToDeltaUpdate(boatSpin);
+
+	// add a gltf (.glb) object
+	const std::string gltffileext = ".glb";
+	static int weirdCubeId = LOOP->addObject((assetpath + gltfmodelfolder + "weird_cube" + gltffileext).c_str(), mainCamId, combinedLightId);
+	LOOP->getGameObject(weirdCubeId).translateTo(glm::vec3(70.f, -45.f, 0.f));
+
+	// move in a circle
+	LOOP->getGameObject(weirdCubeId).changeRotateAxis(glm::vec3(0, 1, 0));
+	const auto cubeRingMov = [](float dt) {
+		static float crmElapsedTime = 0.f;
+		static float crmRadius = 1.f;
+		LOOP->getGameObject(weirdCubeId).advanceTranslate(glm::vec3(
+			crmRadius * cos(crmElapsedTime),
+			0,
+			crmRadius * sin(crmElapsedTime)
+		)
+		);
+		crmElapsedTime += dt;
+	};
+
+	LOOP->addToDeltaUpdate(cubeRingMov);
+
+	// up render distance so we can tell what is going on
+	LOOP->setRenderDistance(mainCamId, 1000.f);
+
+	// add a point light
+	static AA::PointLight pointLight;
+	pointLight.Position = glm::vec4(0.f);
+	pointLight.Ambient = glm::vec4(0.5f);
+	pointLight.Diffuse = glm::vec4(0.5f);
+	pointLight.Constant = 1.f;
+	pointLight.Linear = .09f;
+	pointLight.Quadratic = .032f;
+	AA::NUM_POINT_LIGHTS++;
+	setPointLight(pointLight, 0, LOOP->getShader(combinedLightId));
+
+	// add a directional light
+	static AA::DirectionalLight dLight;
+	dLight.Direction = glm::vec4(0.f, 1.f, 0.f, 0.f);
+	dLight.Ambient = glm::vec4(0.5f);
+	dLight.Diffuse = glm::vec4(0.5f);
+	dLight.Specular = glm::vec4(1);
+	setDirectionalLight(dLight, LOOP->getShader(combinedLightId));
 
 	return LOOP->runMainLoop();
 }
