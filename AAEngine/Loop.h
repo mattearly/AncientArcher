@@ -7,16 +7,16 @@ Redistribution and use of this software in source and binary forms,
 with or without modification, are permitted provided that the
 following conditions are met:
 * Redistributions of source code must retain the above
-  copyright notice, this list of conditions and the
-  following disclaimer.
+	copyright notice, this list of conditions and the
+	following disclaimer.
 * Redistributions in binary form must reproduce the above
-  copyright notice, this list of conditions and the
-  following disclaimer in the documentation and/or other
-  materials provided with the distribution.
+	copyright notice, this list of conditions and the
+	following disclaimer in the documentation and/or other
+	materials provided with the distribution.
 * Neither the name of the Matthew Early, nor the names of its
-  contributors may be used to endorse or promote products
-  derived from this software without specific prior
-  written permission of the assimp team.
+	contributors may be used to endorse or promote products
+	derived from this software without specific prior
+	written permission of the assimp team.
 THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
 "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
 LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR
@@ -47,8 +47,6 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #define CONTROLS       AA::Controls::getInstance()
 #define PointerXOffset AA::Controls::getInstance()->mMousePosition.xOffset
 #define PointerYOffset AA::Controls::getInstance()->mMousePosition.yOffset
-
-
 
 namespace AA
 {
@@ -111,19 +109,19 @@ private:
 	float mSlowUpdateTimeout;                                                 ///< keeps track of how how long the slow update has been timed out
 	float mSlowUpdateWaitLength;                                              ///< ms length the slow update times out for at least
 
-	std::vector<Camera>     mCameras;                                       ///< list of available cameras
-	std::vector<OGLShader>  mShaders;                                       ///< list of available shaders
-	std::vector<GameObject> mGameObjects;                                   ///< list of available objects
-	std::shared_ptr<Skybox> mSkybox;                                        ///< the main skybox
+	std::vector<Camera>     mCameras;                                         ///< list of available cameras
+	std::vector<OGLShader>  mShaders;                                         ///< list of available shaders
+	std::vector<GameObject> mGameObjects;                                     ///< list of available objects
+	std::shared_ptr<Skybox> mSkybox;                                          ///< the main skybox
 
 	std::vector<std::function<void()> >                 onBegin;              ///< list of functions to run once when runMainLoop is called
 	std::vector<std::function<void(float)> >            onDeltaUpdate;        ///< list of functions that rely on deltatime in the main loop
 	std::vector<std::function<void()> >                 onUpdate;             ///< list of functions that run every frame in the main loop
 	std::vector<std::function<void()> >                 onSlowDeltaUpdate;    ///< list of functions to run every only every mSlowUpdateWaitLength in the main loop
-	std::vector<std::function<void(KeyboardInput&)> > onKeyHandling;        ///< list of functions to handle keypresses every frame in the main loop
-	std::vector<std::function<void(ScrollInput&)> >   onScrollHandling;     ///< list of functions to handle mouse wheel scroll every frame in the main loop
-	std::vector<std::function<void(MouseInput&)> >    onMouseHandling;      ///< list of functions to handle mouse movement every frame in the main loop
-	std::vector<std::function<bool(KeyboardInput&)> > onTimeoutKeyHandling; ///< list of functions to handle key presses that time out for mNoSpamWaitLength after press
+	std::vector<std::function<void(KeyboardInput&)> >   onKeyHandling;        ///< list of functions to handle keypresses every frame in the main loop
+	std::vector<std::function<void(ScrollInput&)> >     onScrollHandling;     ///< list of functions to handle mouse wheel scroll every frame in the main loop
+	std::vector<std::function<void(MouseInput&)> >      onMouseHandling;      ///< list of functions to handle mouse movement every frame in the main loop
+	std::vector<std::function<bool(KeyboardInput&)> >   onTimeoutKeyHandling; ///< list of functions to handle key presses that time out for mNoSpamWaitLength after press
 
 	// called during runMainLoop
 	void begin();
