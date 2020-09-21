@@ -7,16 +7,16 @@ Redistribution and use of this software in source and binary forms,
 with or without modification, are permitted provided that the
 following conditions are met:
 * Redistributions of source code must retain the above
-  copyright notice, this list of conditions and the
-  following disclaimer.
+	copyright notice, this list of conditions and the
+	following disclaimer.
 * Redistributions in binary form must reproduce the above
-  copyright notice, this list of conditions and the
-  following disclaimer in the documentation and/or other
-  materials provided with the distribution.
+	copyright notice, this list of conditions and the
+	following disclaimer in the documentation and/or other
+	materials provided with the distribution.
 * Neither the name of the Matthew Early, nor the names of its
-  contributors may be used to endorse or promote products
-  derived from this software without specific prior
-  written permission of the assimp team.
+	contributors may be used to endorse or promote products
+	derived from this software without specific prior
+	written permission of the assimp team.
 THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
 "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
 LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR
@@ -45,22 +45,22 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 void addCubeSkybox()
 {
-  {
-    //std::string skybox_dir;
-    //std::vector<std::string> skybox_file_names;
-    //LoadableAssets::getSkyboxCubeMapFiles("../assets/drakeq/", skybox_dir, skybox_file_names);
+	{
+		//std::string skybox_dir;
+		//std::vector<std::string> skybox_file_names;
+		//LoadableAssets::getSkyboxCubeMapFiles("../assets/drakeq/", skybox_dir, skybox_file_names);
 
-    // skybox file name order
-    const std::string path = "../assets/skyboxes/drakeq/";
-    const std::string order[6] = { "right", "left", "up", "down", "front", "back" };
-    const std::string ext = ".png";
-    std::vector<std::string> cubemapfiles;
-    for (int j = 0; j < 6; ++j)
-    {
-      cubemapfiles.emplace_back(path + order[j] + ext);
-    }
+		// skybox file name order
+		const std::string path = "../assets/skyboxes/drakeq/";
+		const std::string order[6] = { "right", "left", "up", "down", "front", "back" };
+		const std::string ext = ".png";
+		std::vector<std::string> cubemapfiles;
+		for (int j = 0; j < 6; ++j)
+		{
+			cubemapfiles.emplace_back(path + order[j] + ext);
+		}
 
-    const std::shared_ptr<AA::Skybox> skybox = std::make_shared<AA::Skybox>(cubemapfiles);
-    LOOP->setSkybox(skybox);
-  }
+		const std::shared_ptr<AA::Skybox> skybox = std::make_shared<AA::Skybox>(cubemapfiles);
+		LOOP->setSkybox(skybox);
+	}
 }

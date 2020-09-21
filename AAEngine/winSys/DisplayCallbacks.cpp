@@ -40,7 +40,6 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #include <glm/glm.hpp>
 namespace AA
 {
-
 //---------------------------------------------------------------------------------------
 // RESHAPE WINDOW CALLBACK SETUP
 void Display::reshapeWindowHandler(GLFWwindow* window, int width, int height)
@@ -112,6 +111,4 @@ void Display::setScrollWheelHandler() noexcept
 {
 	::glfwSetScrollCallback(mWindow, scrollCallback);
 }
-
-
 }  // end namespace AA

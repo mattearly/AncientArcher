@@ -96,6 +96,5 @@ private:
 
 	// helpers
 	void updateModelMatrix(int which);
-
 };
 }  // end namespace AA

@@ -37,7 +37,6 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 namespace AA
 {
-
 static int uniqueIDs = 0;
 
 int GameObject::getModelMatrix(const int& which, glm::mat4& out_mat4) const
@@ -50,7 +49,6 @@ int GameObject::getModelMatrix(const int& which, glm::mat4& out_mat4) const
 
 	// out of range
 	return -1;
-
 }
 
 const int GameObject::getShaderId() const noexcept
@@ -104,7 +102,6 @@ GameObject::GameObject(const char* path, int camId, int shadId, std::vector<Inst
 	mCameraID = camId;
 	mShaderID = shadId;
 	mObjectID = uniqueIDs++;
-
 }
 
 void GameObject::setCamera(int id) noexcept
@@ -148,7 +145,6 @@ void GameObject::rotateTo(float angle, glm::vec3 axis, int which)
 		mInstanceDetails.at(which).RotationAxis = axis;
 	}
 	updateModelMatrix(which);
-
 }
 
 void GameObject::rotateTo(float radianAngle, glm::vec3 axis)
@@ -226,7 +222,6 @@ void GameObject::changeRotateAxis(glm::vec3 axis, int which)
 		mInstanceDetails.at(which).RotationAxis = axis;
 		updateModelMatrix(which);
 	}
-
 }
 bool GameObject::isSingleInstance() const
 {
@@ -276,7 +271,6 @@ void InstanceDetails::updateModelMatrix()
 	ModelMatrix = glm::translate(ModelMatrix, Translate);
 	ModelMatrix = glm::scale(ModelMatrix, Scale);
 	ModelMatrix = glm::rotate(ModelMatrix, RotationAngle, RotationAxis);
-
 }
 
 InstanceDetails::InstanceDetails()
@@ -307,6 +301,5 @@ InstanceDetails::InstanceDetails(glm::vec3 scale, glm::vec3 rotAx, glm::vec3 tra
 	RotationAngle = rotAng;
 
 	updateModelMatrix();
-
 }
 }  // end namespace AA

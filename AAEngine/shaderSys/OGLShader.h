@@ -73,7 +73,5 @@ private:
 	OGLShader() = delete;
 
 	unsigned int ID;
-
 };
-
 }  // end namespace AA

@@ -44,7 +44,6 @@ extern std::vector<std::filesystem::path> cpp17_GetAllFileNamesInFolder(std::fil
 extern std::vector<std::string> cpp17_GetAllFileNamesOfExtensionInFolder(std::filesystem::path path, const std::string& ext);
 
 class LoadableAssets {
-
 public:
 
 	void getDemoConfig(
@@ -52,6 +51,4 @@ public:
 		std::vector<std::string>& return_sound_list, const std::string assetPath = "../assets/");
 
 private:
-
 };
-

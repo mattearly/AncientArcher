@@ -7,16 +7,16 @@ Redistribution and use of this software in source and binary forms,
 with or without modification, are permitted provided that the
 following conditions are met:
 * Redistributions of source code must retain the above
-  copyright notice, this list of conditions and the
-  following disclaimer.
+	copyright notice, this list of conditions and the
+	following disclaimer.
 * Redistributions in binary form must reproduce the above
-  copyright notice, this list of conditions and the
-  following disclaimer in the documentation and/or other
-  materials provided with the distribution.
+	copyright notice, this list of conditions and the
+	following disclaimer in the documentation and/or other
+	materials provided with the distribution.
 * Neither the name of the Matthew Early, nor the names of its
-  contributors may be used to endorse or promote products
-  derived from this software without specific prior
-  written permission of the assimp team.
+	contributors may be used to endorse or promote products
+	derived from this software without specific prior
+	written permission of the assimp team.
 THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
 "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
 LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR
@@ -45,14 +45,12 @@ class OGLGraphics
 {
 public:
 
-  static OGLGraphics* getInstance();
+	static OGLGraphics* getInstance();
 
-  friend class GameObject;
+	friend class GameObject;
 
 private:
 
-  void Render(const std::vector<MeshDrawInfo>& meshes, const std::vector<InstanceDetails>& details, const OGLShader& modelShader);
-
+	void Render(const std::vector<MeshDrawInfo>& meshes, const std::vector<InstanceDetails>& details, const OGLShader& modelShader);
 };
-
 }  // end namespace AA

@@ -7,16 +7,16 @@ Redistribution and use of this software in source and binary forms,
 with or without modification, are permitted provided that the
 following conditions are met:
 * Redistributions of source code must retain the above
-  copyright notice, this list of conditions and the
-  following disclaimer.
+	copyright notice, this list of conditions and the
+	following disclaimer.
 * Redistributions in binary form must reproduce the above
-  copyright notice, this list of conditions and the
-  following disclaimer in the documentation and/or other
-  materials provided with the distribution.
+	copyright notice, this list of conditions and the
+	following disclaimer in the documentation and/or other
+	materials provided with the distribution.
 * Neither the name of the Matthew Early, nor the names of its
-  contributors may be used to endorse or promote products
-  derived from this software without specific prior
-  written permission of the assimp team.
+	contributors may be used to endorse or promote products
+	derived from this software without specific prior
+	written permission of the assimp team.
 THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
 "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
 LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR
@@ -40,7 +40,6 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 namespace AA
 {
-
 /**
  * Custom skymap constructor. Loads up the files in the path and skymap shader.
  *
@@ -48,15 +47,15 @@ namespace AA
  */
 Skybox::Skybox(std::vector<std::string> incomingSkymapFiles)
 {
-  skyboxShader = std::make_unique<OGLShader>(
-    "../assets/shaders/skycube.vert",
-    "../assets/shaders/skycube.frag"
-  );
-  loadSkybox();
-  cubemapTexture = TexLoader::getInstance()->loadCubeTexture(incomingSkymapFiles);
-  skyboxShader->use();
-  skyboxShader->setInt("skybox", 0);
-  //loadProjectionMatrix();  //does on first render
+	skyboxShader = std::make_unique<OGLShader>(
+		"../assets/shaders/skycube.vert",
+		"../assets/shaders/skycube.frag"
+		);
+	loadSkybox();
+	cubemapTexture = TexLoader::getInstance()->loadCubeTexture(incomingSkymapFiles);
+	skyboxShader->use();
+	skyboxShader->setInt("skybox", 0);
+	//loadProjectionMatrix();  //does on first render
 }
 
 /**
@@ -64,28 +63,28 @@ Skybox::Skybox(std::vector<std::string> incomingSkymapFiles)
  */
 void Skybox::render(const Camera& cam)
 {
-  glDepthFunc(GL_LEQUAL);  // change depth function so depth test passes when values are equal to depth buffer's content
+	glDepthFunc(GL_LEQUAL);  // change depth function so depth test passes when values are equal to depth buffer's content
 
-  //if (AAViewport::getInstance()->hasViewportChanged())
-  //{
-  loadProjectionMatrix(cam);
-  //}
+	//if (AAViewport::getInstance()->hasViewportChanged())
+	//{
+	loadProjectionMatrix(cam);
+	//}
 
-  loadViewMatrix(cam);        // todo: only update when camera moved
+	loadViewMatrix(cam);        // todo: only update when camera moved
 
-  glBindVertexArray(mSkyboxVAO);
+	glBindVertexArray(mSkyboxVAO);
 
-  glActiveTexture(GL_TEXTURE0);
-  glBindTexture(GL_TEXTURE_CUBE_MAP, cubemapTexture);
-  skyboxShader->use();
-  glDrawArrays(GL_TRIANGLES, 0, 36);
-  glBindVertexArray(0);
-  glDepthFunc(GL_LESS); // set depth function back to default
+	glActiveTexture(GL_TEXTURE0);
+	glBindTexture(GL_TEXTURE_CUBE_MAP, cubemapTexture);
+	skyboxShader->use();
+	glDrawArrays(GL_TRIANGLES, 0, 36);
+	glBindVertexArray(0);
+	glDepthFunc(GL_LESS); // set depth function back to default
 }
 
 void Skybox::setProjectionMatrix(const Camera& cam)
 {
-  loadProjectionMatrix(cam);
+	loadProjectionMatrix(cam);
 }
 
 /**
@@ -93,65 +92,64 @@ void Skybox::setProjectionMatrix(const Camera& cam)
  */
 void Skybox::loadSkybox()
 {
-  const float SIZE = 1.f;
+	const float SIZE = 1.f;
 
-  float skyboxVertices[] = {
-    // positions          
-    -SIZE,  SIZE, -SIZE,
-    -SIZE, -SIZE, -SIZE,
-     SIZE, -SIZE, -SIZE,
-     SIZE, -SIZE, -SIZE,
-     SIZE,  SIZE, -SIZE,
-    -SIZE,  SIZE, -SIZE,
+	float skyboxVertices[] = {
+		// positions
+		-SIZE,  SIZE, -SIZE,
+		-SIZE, -SIZE, -SIZE,
+		 SIZE, -SIZE, -SIZE,
+		 SIZE, -SIZE, -SIZE,
+		 SIZE,  SIZE, -SIZE,
+		-SIZE,  SIZE, -SIZE,
 
-    -SIZE, -SIZE,  SIZE,
-    -SIZE, -SIZE, -SIZE,
-    -SIZE,  SIZE, -SIZE,
-    -SIZE,  SIZE, -SIZE,
-    -SIZE,  SIZE,  SIZE,
-    -SIZE, -SIZE,  SIZE,
+		-SIZE, -SIZE,  SIZE,
+		-SIZE, -SIZE, -SIZE,
+		-SIZE,  SIZE, -SIZE,
+		-SIZE,  SIZE, -SIZE,
+		-SIZE,  SIZE,  SIZE,
+		-SIZE, -SIZE,  SIZE,
 
-     SIZE, -SIZE, -SIZE,
-     SIZE, -SIZE,  SIZE,
-     SIZE,  SIZE,  SIZE,
-     SIZE,  SIZE,  SIZE,
-     SIZE,  SIZE, -SIZE,
-     SIZE, -SIZE, -SIZE,
+		 SIZE, -SIZE, -SIZE,
+		 SIZE, -SIZE,  SIZE,
+		 SIZE,  SIZE,  SIZE,
+		 SIZE,  SIZE,  SIZE,
+		 SIZE,  SIZE, -SIZE,
+		 SIZE, -SIZE, -SIZE,
 
-    -SIZE, -SIZE,  SIZE,
-    -SIZE,  SIZE,  SIZE,
-     SIZE,  SIZE,  SIZE,
-     SIZE,  SIZE,  SIZE,
-     SIZE, -SIZE,  SIZE,
-    -SIZE, -SIZE,  SIZE,
+		-SIZE, -SIZE,  SIZE,
+		-SIZE,  SIZE,  SIZE,
+		 SIZE,  SIZE,  SIZE,
+		 SIZE,  SIZE,  SIZE,
+		 SIZE, -SIZE,  SIZE,
+		-SIZE, -SIZE,  SIZE,
 
-    -SIZE,  SIZE, -SIZE,
-     SIZE,  SIZE, -SIZE,
-     SIZE,  SIZE,  SIZE,
-     SIZE,  SIZE,  SIZE,
-    -SIZE,  SIZE,  SIZE,
-    -SIZE,  SIZE, -SIZE,
+		-SIZE,  SIZE, -SIZE,
+		 SIZE,  SIZE, -SIZE,
+		 SIZE,  SIZE,  SIZE,
+		 SIZE,  SIZE,  SIZE,
+		-SIZE,  SIZE,  SIZE,
+		-SIZE,  SIZE, -SIZE,
 
-    -SIZE, -SIZE, -SIZE,
-    -SIZE, -SIZE,  SIZE,
-     SIZE, -SIZE, -SIZE,
-     SIZE, -SIZE, -SIZE,
-    -SIZE, -SIZE,  SIZE,
-     SIZE, -SIZE,  SIZE
-  };
+		-SIZE, -SIZE, -SIZE,
+		-SIZE, -SIZE,  SIZE,
+		 SIZE, -SIZE, -SIZE,
+		 SIZE, -SIZE, -SIZE,
+		-SIZE, -SIZE,  SIZE,
+		 SIZE, -SIZE,  SIZE
+	};
 
-  //todo: use element buffers
-  glGenVertexArrays(1, &mSkyboxVAO);
+	//todo: use element buffers
+	glGenVertexArrays(1, &mSkyboxVAO);
 
-  unsigned int skyboxVBO = 0;
+	unsigned int skyboxVBO = 0;
 
-  glGenBuffers(1, &skyboxVBO);
-  glBindVertexArray(mSkyboxVAO);
-  glBindBuffer(GL_ARRAY_BUFFER, skyboxVBO);
-  glBufferData(GL_ARRAY_BUFFER, sizeof(skyboxVertices), &skyboxVertices, GL_STATIC_DRAW);
-  glEnableVertexAttribArray(0);
-  glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), (void*)0);
-
+	glGenBuffers(1, &skyboxVBO);
+	glBindVertexArray(mSkyboxVAO);
+	glBindBuffer(GL_ARRAY_BUFFER, skyboxVBO);
+	glBufferData(GL_ARRAY_BUFFER, sizeof(skyboxVertices), &skyboxVertices, GL_STATIC_DRAW);
+	glEnableVertexAttribArray(0);
+	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), (void*)0);
 }
 
 /**
@@ -160,9 +158,9 @@ void Skybox::loadSkybox()
  */
 void Skybox::loadViewMatrix(const Camera& cam)
 {
-  const glm::mat4 viewMatrix = glm::mat4(glm::mat3(cam.getViewMatrix()));
-  skyboxShader->use();
-  skyboxShader->setMat4("view", viewMatrix);
+	const glm::mat4 viewMatrix = glm::mat4(glm::mat3(cam.getViewMatrix()));
+	skyboxShader->use();
+	skyboxShader->setMat4("view", viewMatrix);
 }
 
 /**
@@ -171,8 +169,8 @@ void Skybox::loadViewMatrix(const Camera& cam)
  */
 void Skybox::loadProjectionMatrix(const Camera& cam)
 {
-  glm::mat4 projectionMatrix = cam.getProjectionMatrix();
-  skyboxShader->use();
-  skyboxShader->setMat4("projection", projectionMatrix);
+	glm::mat4 projectionMatrix = cam.getProjectionMatrix();
+	skyboxShader->use();
+	skyboxShader->setMat4("projection", projectionMatrix);
 }
 }  // end namespace AA

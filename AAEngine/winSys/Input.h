@@ -7,16 +7,16 @@ Redistribution and use of this software in source and binary forms,
 with or without modification, are permitted provided that the
 following conditions are met:
 * Redistributions of source code must retain the above
-  copyright notice, this list of conditions and the
-  following disclaimer.
+	copyright notice, this list of conditions and the
+	following disclaimer.
 * Redistributions in binary form must reproduce the above
-  copyright notice, this list of conditions and the
-  following disclaimer in the documentation and/or other
-  materials provided with the distribution.
+	copyright notice, this list of conditions and the
+	following disclaimer in the documentation and/or other
+	materials provided with the distribution.
 * Neither the name of the Matthew Early, nor the names of its
-  contributors may be used to endorse or promote products
-  derived from this software without specific prior
-  written permission of the assimp team.
+	contributors may be used to endorse or promote products
+	derived from this software without specific prior
+	written permission of the assimp team.
 THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
 "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
 LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR
@@ -36,52 +36,50 @@ namespace AA
 {
 struct KeyboardInput
 {
-  //keyboard
-  bool esc, f1, f2, f3, f4, f5, f6, f7, f8, f9,
-    f10, f11, f12;
+	//keyboard
+	bool esc, f1, f2, f3, f4, f5, f6, f7, f8, f9,
+		f10, f11, f12;
 
-  bool graveAccent, n1, n2, n3, n4, n5, n6, n7,
-    n8, n9, n0, minus, equal, backspace;
+	bool graveAccent, n1, n2, n3, n4, n5, n6, n7,
+		n8, n9, n0, minus, equal, backspace;
 
-  bool a, b, c, d, e, f, g, h, i, j, k, l, m,
-    n, o, p, q, r, s, t, u, v, w, x, y, z;
+	bool a, b, c, d, e, f, g, h, i, j, k, l, m,
+		n, o, p, q, r, s, t, u, v, w, x, y, z;
 
-  bool tab, leftShift, rightShift, leftControl,
-    rightControl, leftAlt, rightAlt, spacebar;
+	bool tab, leftShift, rightShift, leftControl,
+		rightControl, leftAlt, rightAlt, spacebar;
 
-  bool leftSquareBracket, rightSquareBracket;
+	bool leftSquareBracket, rightSquareBracket;
 
-  bool backslash, semiColon, apostrophe, enter;
+	bool backslash, semiColon, apostrophe, enter;
 
-  bool comma, period, forwardSlash;
+	bool comma, period, forwardSlash;
 
-  bool printScreen, scrollLock, pauseBreak, insert,
-    del, home, end, pageUp, pageDown;
+	bool printScreen, scrollLock, pauseBreak, insert,
+		del, home, end, pageUp, pageDown;
 
-  bool upArrow, downArrow, leftArrow, rightArrow;
+	bool upArrow, downArrow, leftArrow, rightArrow;
 
-  bool menu, leftSuper, rightSuper;
+	bool menu, leftSuper, rightSuper;
 
-  // todo 
-  // bool keypad_keys;
+	// todo
+	// bool keypad_keys;
 
-  //mouse buttons
-  bool mouseButton1, mouseButton2, mouseButton3,
-    mouseButton4, mousebutton5, mouseButton6,
-    mousebutton7, mouseButton8;
-
+	//mouse buttons
+	bool mouseButton1, mouseButton2, mouseButton3,
+		mouseButton4, mousebutton5, mouseButton6,
+		mousebutton7, mouseButton8;
 };
 
 struct MouseInput
 {
-  float xOffset;
-  float yOffset;
+	float xOffset;
+	float yOffset;
 };
 
 struct ScrollInput
 {
-  float xOffset;
-  float yOffset;
+	float xOffset;
+	float yOffset;
 };
-
 }  // end namespace AA

@@ -50,7 +50,6 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 namespace AA
 {
-
 class Loop
 {
 public:
@@ -132,7 +131,5 @@ private:
 	void initEngine();
 	void resetEngine() noexcept;
 	void setProjectionMatToAllShadersFromFirstCam_hack();  //used for testing purposes until more elegant solution appears
-
 };
-
 }  // end namespace AA

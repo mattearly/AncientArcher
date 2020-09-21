@@ -7,16 +7,16 @@ Redistribution and use of this software in source and binary forms,
 with or without modification, are permitted provided that the
 following conditions are met:
 * Redistributions of source code must retain the above
-  copyright notice, this list of conditions and the
-  following disclaimer.
+	copyright notice, this list of conditions and the
+	following disclaimer.
 * Redistributions in binary form must reproduce the above
-  copyright notice, this list of conditions and the
-  following disclaimer in the documentation and/or other
-  materials provided with the distribution.
+	copyright notice, this list of conditions and the
+	following disclaimer in the documentation and/or other
+	materials provided with the distribution.
 * Neither the name of the Matthew Early, nor the names of its
-  contributors may be used to endorse or promote products
-  derived from this software without specific prior
-  written permission of the assimp team.
+	contributors may be used to endorse or promote products
+	derived from this software without specific prior
+	written permission of the assimp team.
 THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
 "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
 LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR
@@ -43,11 +43,10 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 namespace AA
 {
-
 OGLGraphics* OGLGraphics::getInstance()
 {
-  static std::unique_ptr<OGLGraphics> graphics = std::make_unique<OGLGraphics>();
-  return graphics.get();
+	static std::unique_ptr<OGLGraphics> graphics = std::make_unique<OGLGraphics>();
+	return graphics.get();
 }
 
 /** Render the meshes with the shader. Assumes Camera View Matrix is already set.
@@ -57,49 +56,48 @@ OGLGraphics* OGLGraphics::getInstance()
  */
 void OGLGraphics::Render(const std::vector<MeshDrawInfo>& meshes, const std::vector<InstanceDetails>& details, const OGLShader& modelShader)
 {
-  // turn on depth test in case something else turned it off
-  glEnable(GL_DEPTH_TEST);
+	// turn on depth test in case something else turned it off
+	glEnable(GL_DEPTH_TEST);
 
-  // go through all meshes in the this
-  for (auto m : meshes)
-  {
-    // go through all textures in this mesh
-    for (unsigned int i = 0; i < m.textures.size(); ++i)
-    {
-      // activate each texture
-      glActiveTexture(GL_TEXTURE0 + i);
-      // get the texture type
-      const std::string texType = m.textures[i].type;
+	// go through all meshes in the this
+	for (auto m : meshes)
+	{
+		// go through all textures in this mesh
+		for (unsigned int i = 0; i < m.textures.size(); ++i)
+		{
+			// activate each texture
+			glActiveTexture(GL_TEXTURE0 + i);
+			// get the texture type
+			const std::string texType = m.textures[i].type;
 
-      //might not need shader.use() here
-      //modelShader.use();
+			//might not need shader.use() here
+			//modelShader.use();
 
-      // tell opengl to bind the texture to a model shader uniform var
-      glUniform1i(glGetUniformLocation(modelShader.getID(), ("material." + texType).c_str()), i);
-      glBindTexture(GL_TEXTURE_2D, m.textures[i].id);
-    }
+			// tell opengl to bind the texture to a model shader uniform var
+			glUniform1i(glGetUniformLocation(modelShader.getID(), ("material." + texType).c_str()), i);
+			glBindTexture(GL_TEXTURE_2D, m.textures[i].id);
+		}
 
-    //modelShader.setFloat("material.Shininess", m.shininess);
-    //modelShader.setVec4("material.Specular", m.specular);
+		//modelShader.setFloat("material.Shininess", m.shininess);
+		//modelShader.setVec4("material.Specular", m.specular);
 
-    // bind verts
-    glBindVertexArray(m.vao);
-    const GLsizei count = (GLsizei)m.elements.size();
+		// bind verts
+		glBindVertexArray(m.vao);
+		const GLsizei count = (GLsizei)m.elements.size();
 
-    // draw all the instances with their differing model matrices
-    for (const auto& instance : details)
-    {
-      //glm::mat4 drawModel = instance.ModelMatrix * m.transformation;
-      //modelShader.setMat4("model", drawModel);
-      modelShader.setMat4("model", instance.ModelMatrix);
-      glDrawElements(GL_TRIANGLES, count, GL_UNSIGNED_INT, nullptr);
-    }
-  }
+		// draw all the instances with their differing model matrices
+		for (const auto& instance : details)
+		{
+			//glm::mat4 drawModel = instance.ModelMatrix * m.transformation;
+			//modelShader.setMat4("model", drawModel);
+			modelShader.setMat4("model", instance.ModelMatrix);
+			glDrawElements(GL_TRIANGLES, count, GL_UNSIGNED_INT, nullptr);
+		}
+	}
 
-  // unbind vert array
-  glBindVertexArray(0);
-  // reset to first texture
-  glActiveTexture(GL_TEXTURE0);
+	// unbind vert array
+	glBindVertexArray(0);
+	// reset to first texture
+	glActiveTexture(GL_TEXTURE0);
 }
-
 }  // end namespace AA

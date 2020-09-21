@@ -129,7 +129,6 @@ int main(int argc, char* argv[])
 	const auto cubeMove = [](float dt) {
 		LOOP->getGameObject(cubeOneId).advanceRotation(glm::radians(dt * 5));
 
-
 		static bool posDirection = true;
 		if (LOOP->getGameObject(cubeOneId).getLocation().x > 100.f)
 			posDirection = false;
@@ -153,7 +152,7 @@ int main(int argc, char* argv[])
 	// rotate our fbx object with delta time
 	LOOP->getGameObject(boatOneId).changeRotateAxis(glm::vec3(0, 1, 0));
 	const auto boatSpin = [](float dt) {
-		LOOP->getGameObject(boatOneId).advanceRotation(glm::radians(dt * 5));
+		LOOP->getGameObject(boatOneId).advanceRotation(glm::radians(dt * 10));
 	};
 	LOOP->addToDeltaUpdate(boatSpin);
 
@@ -175,7 +174,6 @@ int main(int argc, char* argv[])
 		);
 		crmElapsedTime += dt;
 	};
-
 	LOOP->addToDeltaUpdate(cubeRingMov);
 
 	// up render distance so we can tell what is going on
@@ -199,6 +197,9 @@ int main(int argc, char* argv[])
 	dLight.Diffuse = glm::vec4(0.5f);
 	dLight.Specular = glm::vec4(1);
 	setDirectionalLight(dLight, LOOP->getShader(combinedLightId));
+
+	// add a spot light
+	//static AA::SpotLight sptLight;
 
 	return LOOP->runMainLoop();
 }

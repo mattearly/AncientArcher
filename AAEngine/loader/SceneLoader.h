@@ -26,5 +26,4 @@ private:
 	std::string mLastDir = "";
 	std::vector<TextureInfo> mTexturesLoaded;
 };
-
 } // end namespace AA

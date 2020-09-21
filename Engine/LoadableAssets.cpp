@@ -7,16 +7,16 @@ Redistribution and use of this software in source and binary forms,
 with or without modification, are permitted provided that the
 following conditions are met:
 * Redistributions of source code must retain the above
-  copyright notice, this list of conditions and the
-  following disclaimer.
+	copyright notice, this list of conditions and the
+	following disclaimer.
 * Redistributions in binary form must reproduce the above
-  copyright notice, this list of conditions and the
-  following disclaimer in the documentation and/or other
-  materials provided with the distribution.
+	copyright notice, this list of conditions and the
+	following disclaimer in the documentation and/or other
+	materials provided with the distribution.
 * Neither the name of the Matthew Early, nor the names of its
-  contributors may be used to endorse or promote products
-  derived from this software without specific prior
-  written permission of the assimp team.
+	contributors may be used to endorse or promote products
+	derived from this software without specific prior
+	written permission of the assimp team.
 THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
 "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
 LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR
@@ -40,104 +40,101 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 void LoadableAssets::getDemoConfig(std::string& out_dir, std::vector<std::string>& out_model_list, std::vector<std::string>& out_sound_list, const std::string assetPath)
 {
-  std::filesystem::path demoFilePath = assetPath;
-  const std::size_t PATHSIZE = demoFilePath.string().size();
-  if (std::filesystem::exists(demoFilePath))
-  {
-    out_dir = demoFilePath.string();
-  }
-  else
-  {
-    return;  //todo: log error
-  }
+	std::filesystem::path demoFilePath = assetPath;
+	const std::size_t PATHSIZE = demoFilePath.string().size();
+	if (std::filesystem::exists(demoFilePath))
+	{
+		out_dir = demoFilePath.string();
+	}
+	else
+	{
+		return;  //todo: log error
+	}
 
-  // all the files in the path
-  std::vector<std::filesystem::path> all_files = cpp17_GetAllFileNamesInFolder(demoFilePath);
+	// all the files in the path
+	std::vector<std::filesystem::path> all_files = cpp17_GetAllFileNamesInFolder(demoFilePath);
 
-  if (all_files.size() == 0)
-  {
-    return;  //todo: log error
-  }
-  else  // populate legal assets paths
-  {
+	if (all_files.size() == 0)
+	{
+		return;  //todo: log error
+	}
+	else  // populate legal assets paths
+	{
+		// scope to populate mModels
+		{
+			std::string assetExtension = ".obj";
+			for (const auto& filepath : all_files)
+			{
+				std::string filename = filepath.string().substr(PATHSIZE);
+				if (filename.find(assetExtension) != std::string::npos)
+				{
+					out_model_list.push_back(filename);
+				}
+			}
 
-    // scope to populate mModels
-    {
-      std::string assetExtension = ".obj";
-      for (const auto& filepath : all_files)
-      {
-        std::string filename = filepath.string().substr(PATHSIZE);
-        if (filename.find(assetExtension) != std::string::npos)
-        {
-          out_model_list.push_back(filename);
-        }
-      }
+			assetExtension = ".dae";
+			for (const auto& filepath : all_files)
+			{
+				std::string filename = filepath.string().substr(PATHSIZE);
+				if (filename.find(assetExtension) != std::string::npos)
+				{
+					out_model_list.push_back(filename);
+				}
+			}
 
-      assetExtension = ".dae";
-      for (const auto& filepath : all_files)
-      {
-        std::string filename = filepath.string().substr(PATHSIZE);
-        if (filename.find(assetExtension) != std::string::npos)
-        {
-          out_model_list.push_back(filename);
-        }
-      }
+			assetExtension = ".fbx";
+			for (const auto& filepath : all_files)
+			{
+				std::string filename = filepath.string().substr(PATHSIZE);
+				if (filename.find(assetExtension) != std::string::npos)
+				{
+					out_model_list.push_back(filename);
+				}
+			}
 
-      assetExtension = ".fbx";
-      for (const auto& filepath : all_files)
-      {
-        std::string filename = filepath.string().substr(PATHSIZE);
-        if (filename.find(assetExtension) != std::string::npos)
-        {
-          out_model_list.push_back(filename);
-        }
-      }
+			assetExtension = ".gltf";
+			for (const auto& filepath : all_files)
+			{
+				std::string filename = filepath.string().substr(PATHSIZE);
+				if (filename.find(assetExtension) != std::string::npos)
+				{
+					out_model_list.push_back(filename);
+				}
+			}
 
-      assetExtension = ".gltf";
-      for (const auto& filepath : all_files)
-      {
-        std::string filename = filepath.string().substr(PATHSIZE);
-        if (filename.find(assetExtension) != std::string::npos)
-        {
-          out_model_list.push_back(filename);
-        }
-      }  
-      
-      assetExtension = ".glb";
-      for (const auto& filepath : all_files)
-      {
-        std::string filename = filepath.string().substr(PATHSIZE);
-        if (filename.find(assetExtension) != std::string::npos)
-        {
-          out_model_list.push_back(filename);
-        }
-      }
-    }
+			assetExtension = ".glb";
+			for (const auto& filepath : all_files)
+			{
+				std::string filename = filepath.string().substr(PATHSIZE);
+				if (filename.find(assetExtension) != std::string::npos)
+				{
+					out_model_list.push_back(filename);
+				}
+			}
+		}
 
-    // scope to populate mSounds with the .wav and .mp3 paths in demoFilePath
-    {
-      std::string assetExtension = ".wav";
-      for (const auto& filepath : all_files)
-      {
-        std::string filename = filepath.string().substr(PATHSIZE);
-        if (filename.find(assetExtension) != std::string::npos)
-        {
-          out_sound_list.push_back(filename);
-        }
-      }
-      assetExtension = ".mp3";
-      for (const auto& filepath : all_files)
-      {
-        std::string filename = filepath.string().substr(PATHSIZE);
-        if (filename.find(assetExtension) != std::string::npos)
-        {
-          out_sound_list.push_back(filename);
-        }
-      }
-    }
-
-
-  }
+		// scope to populate mSounds with the .wav and .mp3 paths in demoFilePath
+		{
+			std::string assetExtension = ".wav";
+			for (const auto& filepath : all_files)
+			{
+				std::string filename = filepath.string().substr(PATHSIZE);
+				if (filename.find(assetExtension) != std::string::npos)
+				{
+					out_sound_list.push_back(filename);
+				}
+			}
+			assetExtension = ".mp3";
+			for (const auto& filepath : all_files)
+			{
+				std::string filename = filepath.string().substr(PATHSIZE);
+				if (filename.find(assetExtension) != std::string::npos)
+				{
+					out_sound_list.push_back(filename);
+				}
+			}
+		}
+	}
 }
 
 ///**
@@ -201,4 +198,3 @@ void LoadableAssets::getDemoConfig(std::string& out_dir, std::vector<std::string
 //  return names;
 //}
 //#endif
-
