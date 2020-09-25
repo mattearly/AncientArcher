@@ -15,7 +15,7 @@ uniform Material material;
 
 void main()
 {
- // const vec4 ambient(.2, .2, .2, 1.0); 
+ // const vec4 ambient(.2, .2, .2, 1.0);
   vec4 result =  texture(material.diffuse, texUV);
 //  result *= ambient;
   
