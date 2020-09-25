@@ -9,6 +9,13 @@ namespace AA
 class SceneLoader
 {
 public:
+	static SceneLoader* getSceneLoader();
+
+private:
+	SceneLoader();
+
+public:
+
 	glm::mat4 aiMat4_to_glmMat4(const aiMatrix4x4& inMat);
 	glm::vec3 aiVec3_to_glmVec3(const aiVector3D& inVec) noexcept;
 	glm::vec4 aiColor4_to_glmVec4(const aiColor4D& inVec) noexcept;

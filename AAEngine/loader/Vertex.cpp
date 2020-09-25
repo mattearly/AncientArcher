@@ -30,19 +30,13 @@ THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
 OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 ----------------------------------------------------------------------
 */
-#pragma once
-#include <glm\ext\vector_float4.hpp>
-#include <glm\ext\vector_float3.hpp>
-#include <glm\ext\vector_float2.hpp>
+#include "Vertex.h"
+
 namespace AA
 {
-struct Vertex
-{
-	Vertex(glm::vec4 pos, glm::vec4 norms, glm::vec2 texcoords) noexcept;
-	Vertex(glm::vec4 pos, glm::vec4 norms, glm::vec4 colors, glm::vec2 texcoords) noexcept;
-	glm::vec4 Position;
-	glm::vec4 Normal;
-	glm::vec4 Color;
-	glm::vec2 TexCoords;
-};
+Vertex::Vertex(glm::vec3 pos, glm::vec2 texcoords, glm::vec3 norms) noexcept
+	: Position(pos), TexCoords(texcoords), Normal(norms) {}
+
+//Vertex::Vertex(glm::vec4 pos, glm::vec4 norms, glm::vec4 colors, glm::vec2 texcoords) noexcept
+//	: Position(pos), Normal(norms), Color(colors), TexCoords(texcoords) {}
 } // end namespace AA

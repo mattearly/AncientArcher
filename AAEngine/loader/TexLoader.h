@@ -9,5 +9,7 @@ public:
 	static TexLoader* getInstance();
 	unsigned int loadCubeTexture(const std::vector<std::string>& files);
 	unsigned int textureFromFile(const char* filepath, bool gamma = false);
+private:
+	TexLoader();
 };
 } // end namespace AA

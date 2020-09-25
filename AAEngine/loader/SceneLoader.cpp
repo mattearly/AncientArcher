@@ -4,14 +4,26 @@
 #include <assimp/Importer.hpp>
 #include <assimp/scene.h>
 #include <assimp/postprocess.h>
-#include "../Vertex.h"
-#include "../TexLoader.h"
+#include "Vertex.h"
+#include "TexLoader.h"
 #include <glad/glad.h>
 #include <glm/glm.hpp>
 #include <glm/gtc/quaternion.hpp>
 
 namespace AA
 {
+SceneLoader* SceneLoader::getSceneLoader() {
+	static SceneLoader* sl = new SceneLoader();
+	sl->mLastDir = "";
+	return sl;
+}
+
+SceneLoader::SceneLoader()
+{
+	mLastDir = "";
+	mTexturesLoaded.clear();
+}
+
 glm::mat4 SceneLoader::aiMat4_to_glmMat4(const aiMatrix4x4& inMat)
 {
 	glm::mat4 outMat;
@@ -81,7 +93,7 @@ int SceneLoader::loadGameObjectWithAssimp(std::vector<MeshDrawInfo>& out_MeshInf
 		return -1;  // failed to load scene
 	}
 
-	//mLastDir = path.substr(0, path.find_last_of("/\\") + 1);  // get the beginning of the filename before the last / or \\
+	mLastDir = path.substr(0, path.find_last_of("/\\") + 1);  // get the beginning of the filename before the last / or \\
 
 	//std::string getBasePath(const std::string & path)
 	//{
@@ -108,27 +120,35 @@ void SceneLoader::processNode(aiNode* node, const aiScene* scene, std::vector<Me
 	}
 }
 
+///
+/// Get all the vertex Data for the incoming mesh and scene
+/// todo: fix translation for multi meshes (currently they all center which is wrong)
+///
 MeshDrawInfo SceneLoader::processMesh(aiMesh* mesh, const aiScene* scene, aiMatrix4x4* trans)
 {
-	// get all vertex data for this mesh
 	std::vector<Vertex> loadedVerts;
-	for (unsigned int i = 0; i < mesh->mNumVertices; ++i)
+	unsigned int numVerts = mesh->mNumVertices;
+
+	for (unsigned int i = 0; i < numVerts; ++i)
 	{
-		const glm::vec4 tmpPos = glm::vec4(SceneLoader::aiVec3_to_glmVec3(mesh->mVertices[i]), 0.f);
-		const glm::vec4 tmpNorm = glm::vec4(SceneLoader::aiVec3_to_glmVec3(mesh->mNormals[i]), 0.f);
-		glm::vec4 tmpColor(1, 0, 0, 1);
-		if (mesh->mColors[0])
-		{
-			tmpColor = SceneLoader::aiColor4_to_glmVec4(mesh->mColors[0][i]);
-			std::cout << "tmp color loaded: " << tmpColor.r << " " << tmpColor.g << " " << tmpColor.b << " " << tmpColor.a << '\n';
-		}
+		const glm::vec3 tmpPos = SceneLoader::aiVec3_to_glmVec3(mesh->mVertices[i]);
 
 		glm::vec2 tmpTexCoords(0);
 		if (mesh->mTextureCoords[0] != nullptr)
 		{
 			tmpTexCoords = glm::vec2(mesh->mTextureCoords[0][i].x, mesh->mTextureCoords[0][i].y);
 		}
-		loadedVerts.emplace_back(Vertex(tmpPos, tmpNorm, tmpColor, tmpTexCoords));
+
+		const glm::vec3 tmpNorm = SceneLoader::aiVec3_to_glmVec3(mesh->mNormals[i]);
+		//glm::vec4 tmpColor(1, 1, 0, 1);
+		//if (mesh->mColors[0])
+		//{
+		//	tmpColor = SceneLoader::aiColor4_to_glmVec4(mesh->mColors[0][i]);
+		//	std::cout << "tmp color loaded: " << tmpColor.r << " " << tmpColor.g << " " << tmpColor.b << " " << tmpColor.a << '\n';
+		//}
+
+		//loadedVerts.emplace_back(Vertex(tmpPos, tmpNorm, tmpColor, tmpTexCoords));
+		loadedVerts.emplace_back(Vertex(tmpPos, tmpTexCoords, tmpNorm));
 	}
 
 	// get the indices to draw triangle faces with
@@ -149,7 +169,7 @@ MeshDrawInfo SceneLoader::processMesh(aiMesh* mesh, const aiScene* scene, aiMatr
 
 	std::vector<TextureInfo> textureUnitMaps;
 
-	if (loadMaterialTextures(material, aiTextureType_DIFFUSE, "TextureUnit", textureUnitMaps) == 0) // if succeeds in loading texture add it to loaded texutres
+	if (loadMaterialTextures(material, aiTextureType_DIFFUSE, "Albedo", textureUnitMaps) == 0) // if succeeds in loading texture add it to loaded texutres
 	{
 		loadedTextures.insert(loadedTextures.end(), textureUnitMaps.begin(), textureUnitMaps.end());
 	}
@@ -174,62 +194,61 @@ MeshDrawInfo SceneLoader::processMesh(aiMesh* mesh, const aiScene* scene, aiMatr
 	//loadMaterialTextures(material, aiTextureType_BASE_COLOR, "base color", colorMaps);
 	//loadedTextures.insert(loadedTextures.end(), colorMaps.begin(), colorMaps.end());
 
-	float shine;
-	if (AI_SUCCESS != aiGetMaterialFloat(material, AI_MATKEY_SHININESS, &shine))
-	{
-		shine = .5f;
-		std::cout << "didn't get material shininess, set to .5f\n";
-	}
-	else  // success
-	{
-		std::cout << "material shininess found! set to: " << shine << '\n';
-	}
+	//float shine(1);
+	//if (AI_SUCCESS != aiGetMaterialFloat(material, AI_MATKEY_SHININESS, &shine))
+	//{
+	//	shine = .5f;
+	//	std::cout << "didn't get material shininess, set to .5f\n";
+	//}
+	//else  // success
+	//{
+	//	std::cout << "material shininess found! set to: " << shine << '\n';
+	//}
 
-	aiColor4D spec;
-	glm::vec4 specular;
-	if (AI_SUCCESS != aiGetMaterialColor(material, AI_MATKEY_COLOR_SPECULAR, &spec))
-	{
-		specular = glm::vec4(1.f);
-		std::cout << "didn't get material specular, set to 1,1,1,1\n";  //debug
-	}
-	else  // success
-	{
-		specular = SceneLoader::aiColor4_to_glmVec4(spec);
-		std::cout << "material specular found! set to "
-			<< specular.r << ','
-			<< specular.g << ','
-			<< specular.b << ','
-			<< specular.a << '\n';  // debug
-	}
+	//aiColor4D spec;
+	//glm::vec4 specular(1);
+	//if (AI_SUCCESS != aiGetMaterialColor(material, AI_MATKEY_COLOR_SPECULAR, &spec))
+	//{
+	//	specular = glm::vec4(1.f);
+	//	std::cout << "didn't get material specular, set to 1,1,1,1\n";  //debug
+	//}
+	//else  // success
+	//{
+	//	specular = SceneLoader::aiColor4_to_glmVec4(spec);
+	//	std::cout << "material specular found! set to "
+	//		<< specular.r << ','
+	//		<< specular.g << ','
+	//		<< specular.b << ','
+	//		<< specular.a << '\n';  // debug
+	//}
 
 	unsigned int VAO, VBO, EBO;
-	glGenVertexArrays(1, &VAO);
-	glGenBuffers(1, &VBO);
-	glGenBuffers(1, &EBO);
 
+	glGenBuffers(1, &VBO);
+
+	glGenVertexArrays(1, &VAO);
 	glBindVertexArray(VAO);
 	glBindBuffer(GL_ARRAY_BUFFER, VBO);
 	glBufferData(GL_ARRAY_BUFFER, loadedVerts.size() * sizeof(Vertex), &loadedVerts[0], GL_STATIC_DRAW);
 
+	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), (const void*)(offsetof(Vertex, Position)));
+	glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, sizeof(Vertex), (const void*)offsetof(Vertex, TexCoords));
+	glVertexAttribPointer(2, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), (const void*)offsetof(Vertex, Normal));
+
+	glEnableVertexAttribArray(0);
+	glEnableVertexAttribArray(1);
+	glEnableVertexAttribArray(2);
+
+	glGenBuffers(1, &EBO);
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);
 	glBufferData(GL_ELEMENT_ARRAY_BUFFER, loadedElements.size() * sizeof(unsigned int), &loadedElements[0], GL_STATIC_DRAW);
 
-	//glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void*)(offsetof(Vertex, Position)));
-	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), (const void*)(offsetof(Vertex, Position)));
-	glEnableVertexAttribArray(0);
-
-	glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), (const void*)offsetof(Vertex, Normal));
-	glEnableVertexAttribArray(1);
-
-	glVertexAttribPointer(2, 4, GL_FLOAT, GL_FALSE, sizeof(Vertex), (const void*)offsetof(Vertex, Color));
-	glEnableVertexAttribArray(2);
-
-	glVertexAttribPointer(3, 2, GL_FLOAT, GL_FALSE, sizeof(Vertex), (const void*)offsetof(Vertex, TexCoords));
-	glEnableVertexAttribArray(3);
-
 	glBindVertexArray(0);
 
-	return MeshDrawInfo(VAO, loadedElements, loadedTextures, shine, specular, SceneLoader::aiMat4_to_glmMat4(*trans));
+	glDeleteBuffers(1,&VBO);
+	glDeleteBuffers(1,&EBO);
+
+	return MeshDrawInfo(VAO, loadedElements, loadedTextures, SceneLoader::aiMat4_to_glmMat4(*trans));
 }
 
 int SceneLoader::loadMaterialTextures(const aiMaterial* mat, aiTextureType type, std::string typeName, std::vector<TextureInfo>& out_texInfo)
@@ -237,7 +256,20 @@ int SceneLoader::loadMaterialTextures(const aiMaterial* mat, aiTextureType type,
 	for (unsigned int i = 0; i < mat->GetTextureCount(type); ++i)
 	{
 		aiString tmpstr;
-		mat->GetTexture(type, i, &tmpstr);
+		auto tex_success = mat->GetTexture(type, i, &tmpstr);
+
+		switch (tex_success)
+		{
+		case aiReturn_SUCCESS:
+			std::cout << "success getting texture on material file " << i << ' ' << tmpstr.C_Str() << '\n';
+			break;
+		case aiReturn_FAILURE:
+			std::cout << "failure getting texture on material file " << i << ' ' << tmpstr.C_Str() << '\n';
+			break;
+		case aiReturn_OUTOFMEMORY:
+			std::cout << "oom getting texture on material file " << i << ' ' << tmpstr.C_Str() << '\n';
+			break;
+		}
 
 		// routine to see if we already have this texture loaded
 		bool alreadyLoaded = false;
@@ -258,12 +290,16 @@ int SceneLoader::loadMaterialTextures(const aiMaterial* mat, aiTextureType type,
 			}
 		}
 
-		// wasn't loaded, load it
+		// wasn't loaded, load it trying last dir path
 		if (!alreadyLoaded)
 		{
 			TextureInfo tmptex;
-			std::string tmpPath =/* mLastDir +*/ tmpstr.C_Str();
-			tmptex.id = TexLoader::getInstance()->textureFromFile(tmpPath.c_str());
+			//std::string tmpPath =/* mLastDir +*/ tmpstr.C_Str();
+			std::string tmpPath = tmpstr.C_Str();
+
+			std::cout << "attempting to load texture from " << mLastDir << tmpPath << '\n';
+
+			tmptex.id = TexLoader::getInstance()->textureFromFile((mLastDir + tmpPath).c_str());
 			if (tmptex.id != 0)
 			{
 				tmptex.path = tmpstr.C_Str();
@@ -273,7 +309,21 @@ int SceneLoader::loadMaterialTextures(const aiMaterial* mat, aiTextureType type,
 			}
 			else
 			{
-				return -1; // failed to load new texture
+				// last dir path failed, try literal path instead
+				std::cout << "attempting to load texture from " << tmpPath << '\n';
+
+				tmptex.id = TexLoader::getInstance()->textureFromFile(tmpPath.c_str());
+				if (tmptex.id != 0)
+				{
+					tmptex.path = tmpstr.C_Str();
+					tmptex.type = typeName;
+					out_texInfo.push_back(tmptex);
+					mTexturesLoaded.push_back(tmptex);
+				}
+				else
+				{
+					return -1; // failed to load new texture - all pathing failed
+				}
 			}
 		}
 	}

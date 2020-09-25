@@ -3,14 +3,16 @@
 #include <stdexcept>
 #include <glad\glad.h>
 #include <stb_image.h>
+#include <iostream>
 
 namespace AA
 {
 TexLoader* TexLoader::getInstance()
 {
-	//static TexLoader* staticTexLoader = new TexLoader();
-	static std::unique_ptr<TexLoader> staticTexLoader = std::make_unique<TexLoader>();
-	return staticTexLoader.get();
+	static TexLoader* tl = new TexLoader();
+	return tl;
+	//static std::unique_ptr<TexLoader> staticTexLoader = std::make_unique<TexLoader>();
+	//return staticTexLoader.get();
 }
 
 /**
@@ -107,10 +109,13 @@ unsigned int TexLoader::textureFromFile(const char* filepath, bool gamma)
 	}
 	else
 	{
-		//std::cout << "Texture failed to load at path: " << filepath << std::endl;
+		std::cout << "::TEXLOADER: failed to load at path: " << filepath << std::endl;
 		stbi_image_free(data);
 	}
 
 	return out_texID;
+}
+TexLoader::TexLoader()
+{
 }
 } // end namespace AA

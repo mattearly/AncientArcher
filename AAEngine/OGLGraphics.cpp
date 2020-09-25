@@ -39,7 +39,7 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #include <string>
 #include <cstddef>
 #include "GameObject.h"
-#include "Vertex.h"
+//#include "Vertex.h"
 
 namespace AA
 {
