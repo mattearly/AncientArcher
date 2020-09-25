@@ -210,8 +210,8 @@
     <ClInclude Include="shaderSys\Lights.h" />
     <ClInclude Include="shaderSys\OGLShader.h" />
     <ClInclude Include="Skybox.h" />
-    <ClInclude Include="TexLoader.h" />
-    <ClInclude Include="Vertex.h" />
+    <ClInclude Include="loader\TexLoader.h" />
+    <ClInclude Include="loader\Vertex.h" />
     <ClInclude Include="winSys\Controls.h" />
     <ClInclude Include="winSys\Display.h" />
     <ClInclude Include="winSys\Input.h" />
@@ -230,8 +230,8 @@
     <ClCompile Include="shaderSys\OGLShader.cpp" />
     <ClCompile Include="Skybox.cpp" />
     <ClCompile Include="stb_image.cpp" />
-    <ClCompile Include="TexLoader.cpp" />
-    <ClCompile Include="Vertex.cpp" />
+    <ClCompile Include="loader\TexLoader.cpp" />
+    <ClCompile Include="loader\Vertex.cpp" />
     <ClCompile Include="winSys\Controls.cpp" />
     <ClCompile Include="winSys\Display.cpp" />
     <ClCompile Include="winSys\DisplayCallbacks.cpp" />

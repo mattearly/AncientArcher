@@ -77,8 +77,7 @@ GameObject::GameObject(const char* path, int camId, int shadId)
 	//std::vector<MeshDrawInfo> meshes = assLoad(path, false);  // no triangulate
 	//assLoad(mMeshes, path, true);  // yes triangulate
 
-	SceneLoader sceneLoader;
-	sceneLoader.loadGameObjectWithAssimp(mMeshes, path, true);
+	AA::SceneLoader::getSceneLoader()->loadGameObjectWithAssimp(mMeshes, path, true);
 
 	mInstanceDetails.push_back(InstanceDetails());
 
@@ -93,8 +92,7 @@ GameObject::GameObject(const char* path, int camId, int shadId, std::vector<Inst
 	//std::vector<MeshDrawInfo> meshes = assLoad(path, false);  // no triangulate
 	//assLoad(mMeshes, path, true);  // yes triangulate
 
-	SceneLoader sceneLoader;
-	sceneLoader.loadGameObjectWithAssimp(mMeshes, path, true);
+	AA::SceneLoader::getSceneLoader()->loadGameObjectWithAssimp(mMeshes, path, true);
 
 	mInstanceDetails = details;
 
