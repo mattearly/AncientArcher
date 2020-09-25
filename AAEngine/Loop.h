@@ -57,9 +57,11 @@ public:
 	int runMainLoop();
 	void shutdown();
 
-	Loop();
-	Loop(const char* title);
+private:
+	Loop();  // SINGLETON: only accessable through getMainLoop
+	//Loop(const char* title);
 
+public:
 	const Camera& getCamera(int camId) const;
 	Camera& getCamera(int camId);
 

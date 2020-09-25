@@ -70,11 +70,11 @@ Loop::Loop()
 	initEngine();
 }
 
-Loop::Loop(const char* title)
-{
-	initEngine();
-	setWindowTitle(title);
-}
+//Loop::Loop(const char* title)
+//{
+//	initEngine();
+//	setWindowTitle(title);
+//}
 
 const Camera& Loop::getCamera(int camId) const
 {
@@ -362,12 +362,12 @@ void Loop::deltaUpdate()
 		CONTROLS->mMousePosition.xOffset = 0;
 		CONTROLS->mMousePosition.yOffset = 0;
 	}
-	else if (getMouseReportingMode() == MouseReporting::STANDARD && getCursorMode() == GLFW_CURSOR_NORMAL) // standard and normal
-	{
+	//else if (getMouseReportingMode() == MouseReporting::STANDARD && getCursorMode() == GLFW_CURSOR_NORMAL) // standard and normal
+	//{
 		// dont snap the position
 		//showmousepos(PointerXOffset, PointerYOffset);
-		std::cout << "X: " << PointerXOffset << " Y: " << PointerYOffset << '\n';
-	}
+		//std::cout << "X: " << PointerXOffset << " Y: " << PointerYOffset << '\n';
+	//}
 
 	// run through user prefered updates
 	for (auto& oU : onUpdate) { oU(); }
