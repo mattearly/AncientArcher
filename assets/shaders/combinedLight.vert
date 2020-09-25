@@ -1,12 +1,12 @@
-#version 330 core
+#version 430 core
 layout(location=0)in vec3 inPos;
 layout(location=1)in vec2 inTexUV;
 layout(location=2)in vec3 inNorm;
 // layout(location = 3) in vec4 inColor;
 
-// out vec3 pass_Pos;
+//out vec3 pass_Pos;
 out vec2 pass_TexUV;
-// out vec3 pass_Norm;
+//out vec3 pass_Norm;
 // out vec4 pass_Color;
 
 uniform mat4 projection;

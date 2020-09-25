@@ -1,4 +1,4 @@
-#version 330 core
+#version 430 core
 // passing in from combinedLight.vert
 layout(location=0)out vec3 pass_Pos;
 layout(location=1)out vec2 pass_TexUV;
