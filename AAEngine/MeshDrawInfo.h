@@ -46,14 +46,14 @@ struct TextureInfo
 struct MeshDrawInfo   // NodeDrawInfo a better name?
 {
 	//MeshDrawInfo(unsigned int a, std::vector<unsigned int> el, std::vector<TextureInfo> t, float shine, glm::vec4 spec, glm::mat4 trans);
-	MeshDrawInfo(unsigned int a, std::vector<unsigned int> el, std::vector<TextureInfo> t, glm::mat4 trans);
+	MeshDrawInfo(unsigned int a, unsigned int elsize, std::vector<TextureInfo> t, glm::mat4 trans);
 	unsigned int vao = 0;
 	//unsigned int vbo = 0;
 	//unsigned int ebo = 0;
 	std::vector<TextureInfo> textures;
 	//float shininess;
 	//glm::vec4 specular;
-	std::vector<unsigned int> elements;
+	unsigned int numElements;
 	glm::mat4 transformation;
 };
 }  // end namespace AA

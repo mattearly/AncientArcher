@@ -39,6 +39,7 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #include <string>
 #include <cstddef>
 #include "GameObject.h"
+#include <iostream>
 //#include "Vertex.h"
 
 namespace AA
@@ -65,6 +66,8 @@ void OGLGraphics::Render(const std::vector<MeshDrawInfo>& meshes, const std::vec
 		// go through all textures in this mesh
 		for (unsigned int i = 0; i < m.textures.size(); ++i)
 		{
+			//std::cout << "texOnMesh: " << i << '\n';
+
 			// activate each texture
 			glActiveTexture(GL_TEXTURE0 + i);
 			// get the texture type
@@ -78,20 +81,15 @@ void OGLGraphics::Render(const std::vector<MeshDrawInfo>& meshes, const std::vec
 			glBindTexture(GL_TEXTURE_2D, m.textures[i].id);
 		}
 
-		//modelShader.setFloat("material.Shininess", m.shininess);
-		//modelShader.setVec4("material.Specular", m.specular);
-
-		// bind verts
+		// bind vertex
 		glBindVertexArray(m.vao);
-		const GLsizei count = (GLsizei)m.elements.size();
+		//const GLsizei count = (GLsizei)m.elements.size();
 
 		// draw all the instances with their differing model matrices
 		for (const auto& instance : details)
 		{
-			//glm::mat4 drawModel = instance.ModelMatrix * m.transformation;
-			//modelShader.setMat4("model", drawModel);
 			modelShader.setMat4("model", instance.ModelMatrix);
-			glDrawElements(GL_TRIANGLES, count, GL_UNSIGNED_INT, nullptr);
+			glDrawElements(GL_TRIANGLES, m.numElements, GL_UNSIGNED_INT, nullptr);
 		}
 	}
 

@@ -80,13 +80,14 @@ glm::quat SceneLoader::aiQuat_to_glmQuat(const aiQuaternion& inQuat) noexcept
 int SceneLoader::loadGameObjectWithAssimp(std::vector<MeshDrawInfo>& out_MeshInfo, std::string path, bool pp_triangulate)
 {
 	Assimp::Importer importer;
-	int post_processsing_flags = 0;
-	post_processsing_flags |= aiProcess_JoinIdenticalVertices;
+	int post_processing_flags = 0;
+	post_processing_flags |= aiProcess_JoinIdenticalVertices;
+	//post_processing_flags |= aiProcess_FlipUVs;
 	if (pp_triangulate)
 	{
-		post_processsing_flags |= aiProcess_Triangulate;
+		post_processing_flags |= aiProcess_Triangulate;
 	}
-	const aiScene* scene = importer.ReadFile(path, post_processsing_flags);
+	const aiScene* scene = importer.ReadFile(path, post_processing_flags);
 	if (!scene || scene->mFlags & AI_SCENE_FLAGS_INCOMPLETE || !scene->mRootNode)
 	{
 		std::cout << "ERROR::ASSIMP::" << importer.GetErrorString() << '\n';
@@ -126,29 +127,23 @@ void SceneLoader::processNode(aiNode* node, const aiScene* scene, std::vector<Me
 ///
 MeshDrawInfo SceneLoader::processMesh(aiMesh* mesh, const aiScene* scene, aiMatrix4x4* trans)
 {
-	std::vector<Vertex> loadedVerts;
-	unsigned int numVerts = mesh->mNumVertices;
+	std::vector<Vertex> loaded_vertices;
+	unsigned int num_of_vertices_on_mesh = mesh->mNumVertices;
 
-	for (unsigned int i = 0; i < numVerts; ++i)
+	// get the vertices
+	for (unsigned int i = 0; i < num_of_vertices_on_mesh; ++i)
 	{
-		const glm::vec3 tmpPos = SceneLoader::aiVec3_to_glmVec3(mesh->mVertices[i]);
+		const glm::vec3 temp_position = SceneLoader::aiVec3_to_glmVec3(mesh->mVertices[i]);
 
-		glm::vec2 tmpTexCoords(0);
+		glm::vec2 temp_tex_coords(0);
 		if (mesh->mTextureCoords[0] != nullptr)
 		{
-			tmpTexCoords = glm::vec2(mesh->mTextureCoords[0][i].x, mesh->mTextureCoords[0][i].y);
+			temp_tex_coords = glm::vec2(mesh->mTextureCoords[0][i].x, mesh->mTextureCoords[0][i].y);
 		}
 
-		const glm::vec3 tmpNorm = SceneLoader::aiVec3_to_glmVec3(mesh->mNormals[i]);
-		//glm::vec4 tmpColor(1, 1, 0, 1);
-		//if (mesh->mColors[0])
-		//{
-		//	tmpColor = SceneLoader::aiColor4_to_glmVec4(mesh->mColors[0][i]);
-		//	std::cout << "tmp color loaded: " << tmpColor.r << " " << tmpColor.g << " " << tmpColor.b << " " << tmpColor.a << '\n';
-		//}
+		const glm::vec3 temp_norm = SceneLoader::aiVec3_to_glmVec3(mesh->mNormals[i]);
 
-		//loadedVerts.emplace_back(Vertex(tmpPos, tmpNorm, tmpColor, tmpTexCoords));
-		loadedVerts.emplace_back(Vertex(tmpPos, tmpTexCoords, tmpNorm));
+		loaded_vertices.emplace_back(Vertex(temp_position, temp_tex_coords, temp_norm));
 	}
 
 	// get the indices to draw triangle faces with
@@ -229,9 +224,9 @@ MeshDrawInfo SceneLoader::processMesh(aiMesh* mesh, const aiScene* scene, aiMatr
 	glGenVertexArrays(1, &VAO);
 	glBindVertexArray(VAO);
 	glBindBuffer(GL_ARRAY_BUFFER, VBO);
-	glBufferData(GL_ARRAY_BUFFER, loadedVerts.size() * sizeof(Vertex), &loadedVerts[0], GL_STATIC_DRAW);
+	glBufferData(GL_ARRAY_BUFFER, loaded_vertices.size() * sizeof(Vertex), &loaded_vertices[0], GL_STATIC_DRAW);
 
-	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), (const void*)(offsetof(Vertex, Position)));
+	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), (const void*)offsetof(Vertex, Position));
 	glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, sizeof(Vertex), (const void*)offsetof(Vertex, TexCoords));
 	glVertexAttribPointer(2, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), (const void*)offsetof(Vertex, Normal));
 
@@ -245,10 +240,10 @@ MeshDrawInfo SceneLoader::processMesh(aiMesh* mesh, const aiScene* scene, aiMatr
 
 	glBindVertexArray(0);
 
-	glDeleteBuffers(1,&VBO);
-	glDeleteBuffers(1,&EBO);
+	glDeleteBuffers(1, &VBO);
+	glDeleteBuffers(1, &EBO);
 
-	return MeshDrawInfo(VAO, loadedElements, loadedTextures, SceneLoader::aiMat4_to_glmMat4(*trans));
+	return MeshDrawInfo(VAO, (unsigned int)loadedElements.size(), loadedTextures, SceneLoader::aiMat4_to_glmMat4(*trans));
 }
 
 int SceneLoader::loadMaterialTextures(const aiMaterial* mat, aiTextureType type, std::string typeName, std::vector<TextureInfo>& out_texInfo)

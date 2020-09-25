@@ -37,8 +37,8 @@ namespace AA
 //{
 //	vao = a; elements = el; textures = t; shininess = shine; specular = spec; transformation = trans;
 //}
-MeshDrawInfo::MeshDrawInfo(unsigned int a, std::vector<unsigned int> el, std::vector<TextureInfo> t, glm::mat4 trans) :
-	vao(a), elements(el), textures(t), transformation(trans)
+MeshDrawInfo::MeshDrawInfo(unsigned int a, unsigned int elcount, std::vector<TextureInfo> t, glm::mat4 trans) :
+	vao(a), numElements(elcount), textures(t), transformation(trans)
 {
 	//vao = a; elements = el; textures = t; /*shininess = shine; specular = spec;*/ transformation = trans;
 }
