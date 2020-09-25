@@ -77,20 +77,23 @@ int main(int argc, char* argv[])
 			currFlySpeed += FLYINCR;
 			wheel.yOffset = 0;
 		}
-		if (wheel.yOffset < -0.1f)
+		else if (wheel.yOffset < -0.1f)
 		{
 			currFlySpeed -= FLYINCR;
 			wheel.yOffset = 0;
 		}
+
 		// cap flyspeed
 		if (currFlySpeed >= MAXSPEED)
 		{
 			currFlySpeed = MAXSPEED;
 		}
-		if (currFlySpeed <= 1.f)
+		else if (currFlySpeed <= 1.f)
 		{
 			currFlySpeed = 1.000001f;
 		}
+
+		// set flyspeed if it changed
 		if (currFlySpeed != prevFlySpeed)
 		{
 			prevFlySpeed = currFlySpeed;
@@ -99,11 +102,12 @@ int main(int argc, char* argv[])
 	LOOP->addToScrollHandling(mousewheelflyspeed);
 
 	// general sample asset locations (using trailing slashes)
-	const std::string assetpath = "../assets/";
-	const std::string skyboxfolder = "skyboxes/drakeq/";
-	const std::string daemodelfolder = "models/dae/";
-	const std::string fbxmodelfolder = "models/fbx/";
-	const std::string gltfmodelfolder = "models/glb/";
+	const std::string assetpath = "..\\assets\\";
+	const std::string skyboxfolder = "skyboxes\\drakeq\\";
+	const std::string daemodelfolder = "models\\dae\\";
+	const std::string fbxmodelfolder = "models\\fbx\\";
+	const std::string gltfmodelfolder = "models\\glb\\";
+	const std::string objmodelfolder = "models\\obj\\";
 
 	// add a skybox
 	const std::string order[6] = { "right", "left", "up", "down", "front", "back" };
@@ -116,8 +120,19 @@ int main(int argc, char* argv[])
 	const std::shared_ptr<AA::Skybox> skybox = std::make_shared<AA::Skybox>(cubemapfiles);
 	LOOP->setSkybox(skybox);
 
-	// a shader for our objects
-	static int combinedLightId = LOOP->addShader((assetpath + "shaders/combinedLight.vert").c_str(), (assetpath + "shaders/combinedLight.frag").c_str());
+	// shader locations for models
+	std::string vertShader = assetpath + "shaders\\combinedLight.vert";
+	std::string fragShader = assetpath + "shaders\\combinedLight.frag";
+	//std::string vertShader = "shaders/vert_default.glsl";
+	//std::string fragShader = "shaders/frag_noLight.glsl";
+
+	// load shader
+	static int combinedLightId = LOOP->addShader(vertShader.c_str(), fragShader.c_str());
+
+	// add a obj object
+	const std::string objfileext = ".obj";
+	static int sphereOneId = LOOP->addObject((assetpath + objmodelfolder + "code_sphere" + objfileext).c_str(), mainCamId, combinedLightId);
+	LOOP->getGameObject(sphereOneId).translateTo(glm::vec3(0.f, 0.f, 0.f));
 
 	// add a collada object
 	const std::string daefileext = ".dae";
@@ -179,27 +194,39 @@ int main(int argc, char* argv[])
 	// up render distance so we can tell what is going on
 	LOOP->setRenderDistance(mainCamId, 1000.f);
 
-	// add a point light
-	static AA::PointLight pointLight;
-	pointLight.Position = glm::vec4(0.f);
-	pointLight.Ambient = glm::vec4(0.5f);
-	pointLight.Diffuse = glm::vec4(0.5f);
-	pointLight.Constant = 1.f;
-	pointLight.Linear = .09f;
-	pointLight.Quadratic = .032f;
-	AA::NUM_POINT_LIGHTS++;
-	setPointLight(pointLight, 0, LOOP->getShader(combinedLightId));
+	//// add a point light
+	//static AA::PointLight pointLight;
+	//pointLight.Position = glm::vec4(0.f);
+	//pointLight.Ambient = glm::vec4(0.5f);
+	//pointLight.Diffuse = glm::vec4(0.5f);
+	//pointLight.Constant = 1.f;
+	//pointLight.Linear = .09f;
+	//pointLight.Quadratic = .032f;
+	//AA::NUM_POINT_LIGHTS++;
+	//setPointLight(pointLight, 0, LOOP->getShader(combinedLightId));
 
-	// add a directional light
-	static AA::DirectionalLight dLight;
-	dLight.Direction = glm::vec4(0.f, 1.f, 0.f, 0.f);
-	dLight.Ambient = glm::vec4(0.5f);
-	dLight.Diffuse = glm::vec4(0.5f);
-	dLight.Specular = glm::vec4(1);
-	setDirectionalLight(dLight, LOOP->getShader(combinedLightId));
+	//// add a directional light
+	//static AA::DirectionalLight dLight;
+	//dLight.Direction = glm::vec4(0.f, 1.f, 0.f, 0.f);
+	//dLight.Ambient = glm::vec4(0.5f);
+	//dLight.Diffuse = glm::vec4(0.5f);
+	//dLight.Specular = glm::vec4(1);
+	//setDirectionalLight(dLight, LOOP->getShader(combinedLightId));
 
-	// add a spot light
+	//// add a spot light
 	//static AA::SpotLight sptLight;
+	//sptLight.Position = glm::vec4(0, 0, 0, 0);
+	//sptLight.Direction = glm::vec4(-1, 0, 0, 0);
+	//sptLight.Ambient = glm::vec4(0.3f, 0.3f, 0.3f, 1.f);
+	//sptLight.Diffuse = glm::vec4(0.7f, 0.7f, 0.7f, 1.f);
+	//sptLight.Specular = glm::vec4(1);
+	//sptLight.Constant = 1.0f;
+	//sptLight.Linear = 0.7f;
+	//sptLight.Quadratic = .009f;
+	//sptLight.CutOff = glm::cos(glm::radians(25.f));
+	//sptLight.OuterCutOff = glm::cos(glm::radians(38.f));
+	//AA::NUM_SPOT_LIGHTS++;
+	//setSpotLight(sptLight, 0, LOOP->getShader(combinedLightId));
 
 	return LOOP->runMainLoop();
 }
