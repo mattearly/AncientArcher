@@ -39,7 +39,7 @@ unsigned int TexLoader::loadCubeTexture(const std::vector<std::string>& files)
 	std::size_t size = files.size();
 	for (auto i = 0; i < size; ++i)
 	{
-		unsigned char* data = stbi_load(files[i].c_str(), &width, &height, &nrChannel, 0);
+		unsigned char* data = stbi_load(files[i].c_str(), &width, &height, &nrChannel, STBI_rgb);
 		if (data)
 		{
 			glTexImage2D(
