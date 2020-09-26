@@ -79,10 +79,23 @@ glm::quat SceneLoader::aiQuat_to_glmQuat(const aiQuaternion& inQuat) noexcept
 
 int SceneLoader::loadGameObjectWithAssimp(std::vector<MeshDrawInfo>& out_MeshInfo, std::string path, bool pp_triangulate)
 {
+	std::cout << "------\n";
+	std::cout << "LOADING GAME OBJECT: path : " << path << "\n";
 	Assimp::Importer importer;
 	int post_processing_flags = 0;
+	//post processing -> http://assimp.sourceforge.net/lib_html/postprocess_8h.html
 	post_processing_flags |= aiProcess_JoinIdenticalVertices;
-	//post_processing_flags |= aiProcess_FlipUVs;
+	post_processing_flags |= 
+#ifdef D3D
+	aiProcess_MakeLeftHanded | aiProcess_FlipWindingOrder | aiProcess_FlipUVs |
+#endif
+	aiProcess_PreTransformVertices |
+		aiProcess_CalcTangentSpace |
+		aiProcess_GenSmoothNormals |
+		aiProcess_Triangulate |
+		aiProcess_FixInfacingNormals |
+		aiProcess_FindInvalidData |
+		aiProcess_ValidateDataStructure;
 	if (pp_triangulate)
 	{
 		post_processing_flags |= aiProcess_Triangulate;
@@ -256,13 +269,13 @@ int SceneLoader::loadMaterialTextures(const aiMaterial* mat, aiTextureType type,
 		switch (tex_success)
 		{
 		case aiReturn_SUCCESS:
-			std::cout << "success getting texture on material file " << i << ' ' << tmpstr.C_Str() << '\n';
+			std::cout << "success getting texture on material tex num " << i << ' ' << tmpstr.C_Str() << '\n';
 			break;
 		case aiReturn_FAILURE:
-			std::cout << "failure getting texture on material file " << i << ' ' << tmpstr.C_Str() << '\n';
+			std::cout << "failure getting texture on material tex num " << i << ' ' << tmpstr.C_Str() << '\n';
 			break;
 		case aiReturn_OUTOFMEMORY:
-			std::cout << "oom getting texture on material file " << i << ' ' << tmpstr.C_Str() << '\n';
+			std::cout << "oom getting texture on material tex num " << i << ' ' << tmpstr.C_Str() << '\n';
 			break;
 		}
 
