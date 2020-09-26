@@ -72,7 +72,11 @@ unsigned int TexLoader::textureFromFile(const char* filepath, bool gamma)
 
 	int width, height, nrComponents;
 
+#ifdef D3D
 	stbi_set_flip_vertically_on_load(0);
+#else
+	stbi_set_flip_vertically_on_load(1);
+#endif
 
 	//unsigned char* data = stbi_load(filepath, &width, &height, &nrComponents, 0);
 	unsigned char* data = stbi_load(filepath, &width, &height, &nrComponents, STBI_rgb);
