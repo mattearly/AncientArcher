@@ -5,7 +5,7 @@ int main()
 {
 	int cam = LOOP->addCamera();
 	LOOP->setRenderDistance(cam, 2000.f);
-	int shad = LOOP->addShader("../assets/shaders/combinedLight.vert", "../assets/shaders/combinedLight.frag");
+	int shad = LOOP->addShader("../assets/shaders/noLight.vert", "../assets/shaders/noLight.frag");
 	static int __cube = LOOP->addObject("../assets/models/dae/check_cube.dae", cam, shad);
 	LOOP->getGameObject(__cube).translateTo(glm::vec3(13.2269, 0, -1.2905));
 	LOOP->getGameObject(__cube).changeRotateAxis(glm::vec3(1, 0, 0));

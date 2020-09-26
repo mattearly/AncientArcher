@@ -4,7 +4,7 @@ int main()
 {
 	int cam = LOOP->addCamera();
 	LOOP->setRenderDistance(cam, 2000.f);
-	int shad = LOOP->addShader("../assets/shaders/combinedLight.vert", "../assets/shaders/combinedLight.frag");
+	int shad = LOOP->addShader("../assets/shaders/noLight.vert", "../assets/shaders/noLight.frag");
 	static int fbxobj = LOOP->addObject("../assets/models/fbx/boat.fbx", cam, shad);
 	LOOP->getGameObject(fbxobj).translateTo(glm::vec3(800, 0, -150));
 	LOOP->getGameObject(fbxobj).changeRotateAxis(glm::vec3(1, 0, 0));

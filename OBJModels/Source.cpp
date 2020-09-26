@@ -5,7 +5,7 @@ int main()
 {
 	int cam = LOOP->addCamera();
 	LOOP->setRenderDistance(cam, 2000.f);
-	int shad = LOOP->addShader("../assets/shaders/combinedLight.vert", "../assets/shaders/combinedLight.frag");
+	int shad = LOOP->addShader("../assets/shaders/noLight.vert", "../assets/shaders/noLight.frag");
 	static int codeSphere = LOOP->addObject("../assets/models/obj/code_sphere.obj", cam, shad);
 	LOOP->getGameObject(codeSphere).translateTo(glm::vec3(13.2269, 0, -1.2905));
 	LOOP->getGameObject(codeSphere).changeRotateAxis(glm::vec3(1, 0, 0));
