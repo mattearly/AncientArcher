@@ -1,8 +1,8 @@
 #version 430 core
 // passing in from combinedLight.vert
-layout(location=0)out vec3 pass_Pos;
-layout(location=1)out vec2 pass_TexUV;
-layout(location=2)out vec3 pass_Norm;
+layout(location=0)in vec3 pass_Pos;
+layout(location=1)in vec2 pass_TexUV;
+layout(location=2)in vec3 pass_Norm;
 // layout(location = 3) out vec3 pass_Color;
 
 // final pixel color
@@ -86,7 +86,7 @@ void main()
 	// out_Color=result;
 
 	// dont use lights
-	out_Color=texture(material.Albedo,pass_TexUV);
+	out_Color = texture(material.Albedo, pass_TexUV);
 	// out_Color=vec3(1);
 	
 }
