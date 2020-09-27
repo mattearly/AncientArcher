@@ -194,20 +194,30 @@ int main(int argc, char* argv[])
 	// up render distance so we can tell what is going on
 	LOOP->setRenderDistance(mainCamId, 1000.f);
 
-	//// add a point light
-	//static AA::PointLight pointLight;
-	//pointLight.Position = glm::vec4(0.f);
-	//pointLight.Ambient = glm::vec4(0.5f);
-	//pointLight.Diffuse = glm::vec4(0.5f);
-	//pointLight.Constant = 1.f;
-	//pointLight.Linear = .09f;
-	//pointLight.Quadratic = .032f;
-	//AA::NUM_POINT_LIGHTS++;
-	//setPointLight(pointLight, 0, LOOP->getShader(combinedLightId));
+	// add a point light
+	static AA::PointLight pointLight;
+	pointLight.Position = glm::vec3(0.f);
+	pointLight.Ambient = glm::vec3(0.5f);
+	pointLight.Diffuse = glm::vec3(0.5f);
+	pointLight.Constant = 1.f;
+	pointLight.Linear = .09f;
+	pointLight.Quadratic = .032f;
+	AA::NUM_POINT_LIGHTS++;
+	setPointLight(pointLight, 0, LOOP->getShader(combinedLightId));
+
+	auto keepPointLightOnPlayer = [](){
+		pointLight.Position = glm::vec3(
+		LOOP->getCamera(mainCamId).getPosition()->x,
+		LOOP->getCamera(mainCamId).getPosition()->y,
+		LOOP->getCamera(mainCamId).getPosition()->z		
+		);
+		setPointLight(pointLight, 0, LOOP->getShader(combinedLightId));
+	};
+	LOOP->addToSlowUpdate(keepPointLightOnPlayer);
 
 	// add a directional light
 	static AA::DirectionalLight dLight;
-	dLight.Direction = glm::vec3(0.f, -1.f, 0.f);
+	dLight.Direction = glm::vec3(-0.45f, -1.f, 0.f);
 	dLight.Ambient   = glm::vec3(0.2f);
 	dLight.Diffuse   = glm::vec3(0.5f);
 	dLight.Specular  = glm::vec3(1);
