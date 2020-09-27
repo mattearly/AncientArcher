@@ -107,7 +107,6 @@ int main(int argc, char* argv[])
 	const std::string skyboxfolder = "skyboxes\\drakeq\\";
 	const std::string daemodelfolder = "models\\dae\\";
 	const std::string fbxmodelfolder = "models\\fbx\\";
-	const std::string gltfmodelfolder = "models\\glb\\";
 	const std::string objmodelfolder = "models\\obj\\";
 
 	// add a skybox
@@ -172,9 +171,8 @@ int main(int argc, char* argv[])
 	};
 	LOOP->addToDeltaUpdate(boatSpin);
 
-	// add a gltf (.glb) object
-	const std::string gltffileext = ".glb";
-	static int weirdCubeId = LOOP->addObject((assetpath + gltfmodelfolder + "weird_cube" + gltffileext).c_str(), mainCamId, combinedLightId);
+	// add a wavefront (.obj) object
+	static int weirdCubeId = LOOP->addObject((assetpath + objmodelfolder + "weird_cube" + objfileext).c_str(), mainCamId, combinedLightId);
 	LOOP->getGameObject(weirdCubeId).translateTo(glm::vec3(70.f, -45.f, 0.f));
 
 	// move in a circle
