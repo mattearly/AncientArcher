@@ -58,6 +58,7 @@ int main(int argc, char* argv[])
 		moveDir = glm::vec3(0.f);
 		frontFacingDir = glm::vec3(*LOOP->getCamera(mainCamId).getFront());
 		rightFacingDir = glm::vec3(*LOOP->getCamera(mainCamId).getRight());
+		LOOP->getCamera(mainCamId).updateCameraVectors();
 	};
 	LOOP->addToDeltaUpdate(camMove);
 
@@ -205,11 +206,11 @@ int main(int argc, char* argv[])
 	AA::NUM_POINT_LIGHTS++;
 	setPointLight(pointLight, 0, LOOP->getShader(combinedLightId));
 
-	auto keepPointLightOnPlayer = [](){
+	auto keepPointLightOnPlayer = []() {
 		pointLight.Position = glm::vec3(
-		LOOP->getCamera(mainCamId).getPosition()->x,
-		LOOP->getCamera(mainCamId).getPosition()->y,
-		LOOP->getCamera(mainCamId).getPosition()->z		
+			LOOP->getCamera(mainCamId).getPosition()->x,
+			LOOP->getCamera(mainCamId).getPosition()->y,
+			LOOP->getCamera(mainCamId).getPosition()->z
 		);
 		setPointLight(pointLight, 0, LOOP->getShader(combinedLightId));
 	};
@@ -218,25 +219,33 @@ int main(int argc, char* argv[])
 	// add a directional light
 	static AA::DirectionalLight dLight;
 	dLight.Direction = glm::vec3(-0.45f, -1.f, 0.f);
-	dLight.Ambient   = glm::vec3(0.2f);
-	dLight.Diffuse   = glm::vec3(0.5f);
-	dLight.Specular  = glm::vec3(1);
+	dLight.Ambient = glm::vec3(0.05f);
+	dLight.Diffuse = glm::vec3(0.3f);
+	dLight.Specular = glm::vec3(1);
 	setDirectionalLight(dLight, LOOP->getShader(combinedLightId));
 
-	//// add a spot light
-	//static AA::SpotLight sptLight;
-	//sptLight.Position = glm::vec4(0, 0, 0, 0);
-	//sptLight.Direction = glm::vec4(-1, 0, 0, 0);
-	//sptLight.Ambient = glm::vec4(0.3f, 0.3f, 0.3f, 1.f);
-	//sptLight.Diffuse = glm::vec4(0.7f, 0.7f, 0.7f, 1.f);
-	//sptLight.Specular = glm::vec4(1);
-	//sptLight.Constant = 1.0f;
-	//sptLight.Linear = 0.7f;
-	//sptLight.Quadratic = .009f;
-	//sptLight.CutOff = glm::cos(glm::radians(25.f));
-	//sptLight.OuterCutOff = glm::cos(glm::radians(38.f));
-	//AA::NUM_SPOT_LIGHTS++;
-	//setSpotLight(sptLight, 0, LOOP->getShader(combinedLightId));
+	// add a spot light
+	static AA::SpotLight sptLight;
+	sptLight.Position  = glm::vec3(0, 0, 0);
+	sptLight.Direction = glm::vec3(-1, 0, 0);
+	sptLight.Ambient   = glm::vec3(1);
+	sptLight.Diffuse   = glm::vec3(1);
+	sptLight.Specular  = glm::vec3(1);
+	sptLight.Constant = 1.0f;
+	sptLight.Linear = 0.09f;
+	sptLight.Quadratic = .032f;
+	sptLight.CutOff = glm::cos(glm::radians(12.5f));
+	sptLight.OuterCutOff = glm::cos(glm::radians(20.5f));
+	AA::NUM_SPOT_LIGHTS++;
+	setSpotLight(sptLight, 0, LOOP->getShader(combinedLightId));
+
+	auto sudoHoldFlashlight = []() {
+		sptLight.Position = *LOOP->getCamera(mainCamId).getPosition();
+		sptLight.Direction = *LOOP->getCamera(mainCamId).getFront();
+		setSpotLight(sptLight, 0, LOOP->getShader(combinedLightId));
+	};
+	LOOP->addToUpdate(sudoHoldFlashlight);
+
 
 	return LOOP->runMainLoop();
 }
