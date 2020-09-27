@@ -48,7 +48,7 @@ Camera::Camera()
 
 	mPosition = glm::vec3(0);
 	mFieldOfView = 60.f;
-	mYaw = 0.f;
+	mYaw = -90.f;
 	mPitch = 0.f;
 	mRenderDistance = 100.f;
 	mProjectionChanged = false;
