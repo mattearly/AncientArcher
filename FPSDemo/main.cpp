@@ -132,7 +132,7 @@ int main(int argc, char* argv[])
 	// add a obj object
 	const std::string objfileext = ".obj";
 	static int sphereOneId = LOOP->addObject((assetpath + objmodelfolder + "code_sphere" + objfileext).c_str(), mainCamId, combinedLightId);
-	LOOP->getGameObject(sphereOneId).translateTo(glm::vec3(0.f, 0.f, 0.f));
+	LOOP->getGameObject(sphereOneId).translateTo(glm::vec3(0.f, -10.f, 10.f));
 
 	// add a collada object
 	const std::string daefileext = ".dae";
@@ -205,13 +205,13 @@ int main(int argc, char* argv[])
 	//AA::NUM_POINT_LIGHTS++;
 	//setPointLight(pointLight, 0, LOOP->getShader(combinedLightId));
 
-	//// add a directional light
-	//static AA::DirectionalLight dLight;
-	//dLight.Direction = glm::vec4(0.f, 1.f, 0.f, 0.f);
-	//dLight.Ambient = glm::vec4(0.5f);
-	//dLight.Diffuse = glm::vec4(0.5f);
-	//dLight.Specular = glm::vec4(1);
-	//setDirectionalLight(dLight, LOOP->getShader(combinedLightId));
+	// add a directional light
+	static AA::DirectionalLight dLight;
+	dLight.Direction = glm::vec3(0.f, -1.f, 0.f);
+	dLight.Ambient   = glm::vec3(0.2f);
+	dLight.Diffuse   = glm::vec3(0.5f);
+	dLight.Specular  = glm::vec3(1);
+	setDirectionalLight(dLight, LOOP->getShader(combinedLightId));
 
 	//// add a spot light
 	//static AA::SpotLight sptLight;

@@ -45,22 +45,22 @@ static int NUM_SPOT_LIGHTS = 0;
 
 struct DirectionalLight
 {
-	glm::vec4 Direction, Ambient, Diffuse, Specular;
+	glm::vec3 Direction, Ambient, Diffuse, Specular;
 };
 
 struct PointLight
 {
-	glm::vec4 Position;
+	glm::vec3 Position;
 	float Constant, Linear, Quadratic;
-	glm::vec4 Ambient, Diffuse, Specular;
+	glm::vec3 Ambient, Diffuse, Specular;
 };
 
 struct SpotLight
 {
-	glm::vec4 Position, Direction;
+	glm::vec3 Position, Direction;
 	float CutOff, OuterCutOff;
 	float Constant, Linear, Quadratic;
-	glm::vec4 Ambient, Diffuse, Specular;
+	glm::vec3 Ambient, Diffuse, Specular;
 };
 
 // single directional lights
@@ -76,10 +76,10 @@ static void setDirectionalLight(const DirectionalLight& light, const OGLShader& 
 	diffuse += "Diffuse";
 	specular += "Specular";
 
-	shader.setVec4(direction, light.Direction);
-	shader.setVec4(ambient, light.Ambient);
-	shader.setVec4(diffuse, light.Diffuse);
-	//shader.setVec4(specular,  light.Specular);
+	shader.setVec3(direction, light.Direction);
+	shader.setVec3(ambient, light.Ambient);
+	shader.setVec3(diffuse, light.Diffuse);
+	//shader.setVec3(specular,  light.Specular);
 }
 
 // multi lights
@@ -131,13 +131,13 @@ static void setPointLight(const PointLight& light, const int which, const OGLSha
 	diffuse += "Diffuse";
 	specular += "Specular";
 
-	shader.setVec4(position, light.Position);
+	shader.setVec3(position, light.Position);
 	shader.setFloat(constant, light.Constant);
 	shader.setFloat(linear, light.Linear);
 	shader.setFloat(quadratic, light.Quadratic);
-	shader.setVec4(ambient, light.Ambient);
-	shader.setVec4(diffuse, light.Diffuse);
-	shader.setVec4(specular, light.Specular);
+	shader.setVec3(ambient, light.Ambient);
+	shader.setVec3(diffuse, light.Diffuse);
+	shader.setVec3(specular, light.Specular);
 }
 
 static void setSpotLight(const SpotLight& light, const int which, const OGLShader& shader)
@@ -198,14 +198,14 @@ static void setSpotLight(const SpotLight& light, const int which, const OGLShade
 	diffuse += "Diffuse";
 	specular += "Specular";
 
-	shader.setVec4(pos, light.Position);
+	shader.setVec3(pos, light.Position);
 	shader.setFloat(cutoff, light.CutOff);
 	shader.setFloat(ocutoff, light.OuterCutOff);
-	shader.setVec4(direction, light.Direction);
+	shader.setVec3(direction, light.Direction);
 	shader.setFloat(linear, light.Linear);
 	shader.setFloat(quadrat, light.Quadratic);
-	shader.setVec4(ambient, light.Ambient);
-	shader.setVec4(diffuse, light.Diffuse);
-	shader.setVec4(specular, light.Specular);
+	shader.setVec3(ambient, light.Ambient);
+	shader.setVec3(diffuse, light.Diffuse);
+	shader.setVec3(specular, light.Specular);
 }
 }  // end namespace AA
