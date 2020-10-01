@@ -65,18 +65,16 @@ public:
 	// modifiers
 	void scaleTo(glm::vec3 amt, int which);
 	void scaleTo(glm::vec3 amt);
-	void rotateTo(float angle, glm::vec3 axis, int which);
-	void rotateTo(float angle, glm::vec3 axis);
+	void rotateTo(glm::vec3 new_rot, int which);
+	void rotateTo(glm::vec3 new_rot);
 	void translateTo(glm::vec3 amt, int which);
 	void translateTo(glm::vec3 amt);
 	void advanceScale(glm::vec3 amt);
 	void advanceScale(glm::vec3 amt, int which);
-	void advanceRotation(float angleAmtRadians);
-	void advanceRotation(float angleAmtRadians, int which);
+	void advanceRotation(glm::vec3 radianAmt);
+	void advanceRotation(glm::vec3 radianAmt, int which);
 	void advanceTranslate(glm::vec3 amt);
 	void advanceTranslate(glm::vec3 amt, int which);
-	void changeRotateAxis(glm::vec3 axis);
-	void changeRotateAxis(glm::vec3 axis, int which);
 
 	bool isSingleInstance() const;
 
@@ -84,7 +82,7 @@ public:
 
 private:
 
-	// only AAWorld can call draw
+	// only Loop can call draw
 	void draw(const OGLShader& modelShader);
 
 	int mCameraID = -1;
