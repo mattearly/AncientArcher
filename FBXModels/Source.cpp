@@ -4,12 +4,13 @@ int main()
 {
 	int cam = LOOP->addCamera();
 	LOOP->setRenderDistance(cam, 2000.f);
+	LOOP->getCamera(cam).shiftYawAndPitch(90.f, 0.f);
 	int shad = LOOP->addShader("../assets/shaders/noLight.vert", "../assets/shaders/noLight.frag");
 	static int fbxobj = LOOP->addObject("../assets/models/fbx/boat.fbx", cam, shad);
 	LOOP->getGameObject(fbxobj).translateTo(glm::vec3(800, 0, -150));
-	LOOP->getGameObject(fbxobj).changeRotateAxis(glm::vec3(1, 0, 0));
 
-	static bool moveaway(false), movetowards(false), moveleft(false), moveright(false), moveup(false), movedown(false), rotatecc(false), rotatec(false);
+	static bool moveaway(false), movetowards(false), moveleft(false), moveright(false), moveup(false), movedown(false),
+		rotatecc(false), rotatec(false), spinleft(false), spinright(false);
 	auto moveboat = [](AA::KeyboardInput& keys) {
 		if (keys.w)
 			moveaway = true;
@@ -51,6 +52,16 @@ int main()
 		else if (!keys.e)
 			rotatec = false;
 
+		if (keys.z)
+			spinleft = true;
+		else if (!keys.z)
+			spinleft = false;
+			
+		if (keys.x)
+			spinright = true;
+		else if (!keys.x)
+			spinright = false;
+
 
 	};
 	LOOP->addToKeyHandling(moveboat);
@@ -68,9 +79,13 @@ int main()
 		if (moveup)
 			LOOP->getGameObject(fbxobj).advanceTranslate(glm::vec3(0, 200 * dt, 0));
 		if (rotatecc)
-			LOOP->getGameObject(fbxobj).advanceRotation(glm::radians(-200 * dt));
+			LOOP->getGameObject(fbxobj).advanceRotation(glm::vec3(glm::radians(-200 * dt),0,0));
 		if (rotatec)
-			LOOP->getGameObject(fbxobj).advanceRotation(glm::radians(200 * dt));
+			LOOP->getGameObject(fbxobj).advanceRotation(glm::vec3(glm::radians(200 * dt), 0, 0));
+		if (spinleft)
+			LOOP->getGameObject(fbxobj).advanceRotation(glm::vec3(0, glm::radians(-200 * dt), 0));
+		if (spinright)
+			LOOP->getGameObject(fbxobj).advanceRotation(glm::vec3(0, glm::radians(200 * dt), 0));
 	};
 	LOOP->addToDeltaUpdate(process);
 
