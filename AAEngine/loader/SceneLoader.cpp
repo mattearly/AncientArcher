@@ -43,6 +43,7 @@ glm::mat4 SceneLoader::aiMat4_to_glmMat4(const aiMatrix4x4& inMat)
 	outMat[1][3] = inMat.b4;
 	outMat[2][3] = inMat.c4;
 	outMat[3][3] = inMat.d4;
+	//glm::transpose(outMat);
 	return outMat;
 }
 
@@ -77,15 +78,14 @@ glm::quat SceneLoader::aiQuat_to_glmQuat(const aiQuaternion& inQuat) noexcept
 	return outQuat;
 }
 
-int SceneLoader::loadGameObjectWithAssimp(std::vector<MeshDrawInfo>& out_MeshInfo, std::string path, bool pp_triangulate)
+int SceneLoader::loadGameObjectWithAssimp(std::vector<MeshDrawInfo>& out_MeshInfo, std::string path)
 {
 	std::cout << "------\n";
 	std::cout << "LOADING GAME OBJECT: path : " << path << "\n";
 	Assimp::Importer importer;
 	int post_processing_flags = 0;
 	//post processing -> http://assimp.sourceforge.net/lib_html/postprocess_8h.html
-	post_processing_flags |= aiProcess_JoinIdenticalVertices;
-	post_processing_flags |= 
+	post_processing_flags |= aiProcess_JoinIdenticalVertices | aiProcess_Triangulate |
 #ifdef D3D
 	aiProcess_MakeLeftHanded | aiProcess_FlipWindingOrder | aiProcess_FlipUVs |
 #endif
@@ -96,10 +96,7 @@ int SceneLoader::loadGameObjectWithAssimp(std::vector<MeshDrawInfo>& out_MeshInf
 		aiProcess_FixInfacingNormals |
 		aiProcess_FindInvalidData |
 		aiProcess_ValidateDataStructure;
-	if (pp_triangulate)
-	{
-		post_processing_flags |= aiProcess_Triangulate;
-	}
+
 	const aiScene* scene = importer.ReadFile(path, post_processing_flags);
 	if (!scene || scene->mFlags & AI_SCENE_FLAGS_INCOMPLETE || !scene->mRootNode)
 	{
@@ -177,7 +174,8 @@ MeshDrawInfo SceneLoader::processMesh(aiMesh* mesh, const aiScene* scene, aiMatr
 
 	std::vector<TextureInfo> textureUnitMaps;
 
-	if (loadMaterialTextures(material, aiTextureType_DIFFUSE, "Albedo", textureUnitMaps) == 0) // if succeeds in loading texture add it to loaded texutres
+	// if succeeds in loading texture add it to loaded texutres
+	if (loadMaterialTextures(material, aiTextureType_DIFFUSE, "Albedo", textureUnitMaps) == 0)
 	{
 		loadedTextures.insert(loadedTextures.end(), textureUnitMaps.begin(), textureUnitMaps.end());
 	}

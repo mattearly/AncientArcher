@@ -21,7 +21,7 @@ public:
 	glm::vec4 aiColor4_to_glmVec4(const aiColor4D& inVec) noexcept;
 	glm::quat aiQuat_to_glmQuat(const aiQuaternion& inQuat) noexcept;
 
-	int loadGameObjectWithAssimp(std::vector<MeshDrawInfo>& out_MeshInfo, std::string path, bool pp_triangulate);
+	int loadGameObjectWithAssimp(std::vector<MeshDrawInfo>& out_MeshInfo, std::string path);
 
 private:
 
