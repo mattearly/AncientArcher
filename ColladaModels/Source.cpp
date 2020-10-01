@@ -5,10 +5,10 @@ int main()
 {
 	int cam = LOOP->addCamera();
 	LOOP->setRenderDistance(cam, 2000.f);
+	LOOP->getCamera(cam).shiftYawAndPitch(90.f, 0.f);
 	int shad = LOOP->addShader("../assets/shaders/noLight.vert", "../assets/shaders/noLight.frag");
 	static int __cube = LOOP->addObject("../assets/models/dae/check_cube.dae", cam, shad);
 	LOOP->getGameObject(__cube).translateTo(glm::vec3(13.2269, 0, -1.2905));
-	LOOP->getGameObject(__cube).changeRotateAxis(glm::vec3(1, 0, 0));
 
 	static bool moveaway(false), movetowards(false), moveleft(false), moveright(false), moveup(false), movedown(false), rotatecc(false), rotatec(false);
 	auto moveboat = [](AA::KeyboardInput& keys) {
@@ -74,9 +74,9 @@ int main()
 		if (moveup)
 			LOOP->getGameObject(__cube).advanceTranslate(glm::vec3(0, speed * dt, 0));
 		if (rotatecc)
-			LOOP->getGameObject(__cube).advanceRotation(glm::radians(-speed * dt));
+			LOOP->getGameObject(__cube).advanceRotation(glm::vec3(glm::radians(-speed * dt), 0, 0));
 		if (rotatec)
-			LOOP->getGameObject(__cube).advanceRotation(glm::radians(speed * dt));
+			LOOP->getGameObject(__cube).advanceRotation(glm::vec3(glm::radians(speed * dt), 0, 0));
 	};
 	LOOP->addToDeltaUpdate(process);
 

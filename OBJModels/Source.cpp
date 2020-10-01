@@ -5,12 +5,13 @@ int main()
 {
 	int cam = LOOP->addCamera();
 	LOOP->setRenderDistance(cam, 2000.f);
+	LOOP->getCamera(cam).shiftYawAndPitch(90.f, 0.f);
 	int shad = LOOP->addShader("../assets/shaders/noLight.vert", "../assets/shaders/noLight.frag");
 	static int codeSphere = LOOP->addObject("../assets/models/obj/code_sphere.obj", cam, shad);
 	LOOP->getGameObject(codeSphere).translateTo(glm::vec3(13.2269, 0, -1.2905));
-	LOOP->getGameObject(codeSphere).changeRotateAxis(glm::vec3(1, 0, 0));
 
-	static bool moveaway(false), movetowards(false), moveleft(false), moveright(false), moveup(false), movedown(false), rotatecc(false), rotatec(false);
+	static bool moveaway(false), movetowards(false), moveleft(false), moveright(false), moveup(false), movedown(false),
+		rotatecc(false), rotatec(false);
 	auto moveboat = [](AA::KeyboardInput& keys) {
 		if (keys.w)
 			moveaway = true;
@@ -52,9 +53,10 @@ int main()
 		else if (!keys.e)
 			rotatec = false;
 
-		if (keys.l){
+		if (keys.l) {
 			glm::vec3 loc = LOOP->getGameObject(codeSphere).getLocation();
-			std::cout << "sphere loc: " << loc.x << ", " << loc.y << ", " << loc.z << '\n';}
+			std::cout << "sphere loc: " << loc.x << ", " << loc.y << ", " << loc.z << '\n';
+		}
 
 	};
 	LOOP->addToKeyHandling(moveboat);
@@ -73,9 +75,9 @@ int main()
 		if (moveup)
 			LOOP->getGameObject(codeSphere).advanceTranslate(glm::vec3(0, speed * dt, 0));
 		if (rotatecc)
-			LOOP->getGameObject(codeSphere).advanceRotation(glm::radians(-speed * dt));
+			LOOP->getGameObject(codeSphere).advanceRotation(glm::vec3(glm::radians(-speed * dt), 0, 0));
 		if (rotatec)
-			LOOP->getGameObject(codeSphere).advanceRotation(glm::radians(speed * dt));
+			LOOP->getGameObject(codeSphere).advanceRotation(glm::vec3(glm::radians(speed * dt), 0, 0));
 	};
 	LOOP->addToDeltaUpdate(process);
 

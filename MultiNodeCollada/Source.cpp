@@ -1,13 +1,14 @@
 #include <Loop.h>
 #include <glm/glm.hpp>
+#include <iostream>
 int main()
 {
 	int cam = LOOP->addCamera();
 	LOOP->setRenderDistance(cam, 2000.f);
 	LOOP->getCamera(cam).shiftYawAndPitch(90.f, 0.f);
 	int shad = LOOP->addShader("../assets/shaders/noLight.vert", "../assets/shaders/noLight.frag");
-	static int fbxobj = LOOP->addObject("../assets/models/fbx/boat.fbx", cam, shad);
-	LOOP->getGameObject(fbxobj).translateTo(glm::vec3(800, 0, -150));
+	static int lamp_post = LOOP->addObject("../assets/models/dae/lamp_post.dae", cam, shad);
+	LOOP->getGameObject(lamp_post).translateTo(glm::vec3(13.2269, 0, -1.2905));
 
 	static bool moveaway(false), movetowards(false), moveleft(false), moveright(false), moveup(false), movedown(false),
 		rotatecc(false), rotatec(false), spinleft(false), spinright(false);
@@ -62,30 +63,35 @@ int main()
 		else if (!keys.x)
 			spinright = false;
 
+		if (keys.l) {
+			glm::vec3 loc = LOOP->getGameObject(lamp_post).getLocation();
+			std::cout << "sphere loc: " << loc.x << ", " << loc.y << ", " << loc.z << '\n';
+		}
 
 	};
 	LOOP->addToKeyHandling(moveboat);
+	static const float speed = 10;
 	auto process = [](float dt) {
 		if (moveaway)
-			LOOP->getGameObject(fbxobj).advanceTranslate(glm::vec3(400 * dt, 0, 0));
+			LOOP->getGameObject(lamp_post).advanceTranslate(glm::vec3(speed * dt, 0, 0));
 		if (movetowards)
-			LOOP->getGameObject(fbxobj).advanceTranslate(glm::vec3(-400 * dt, 0, 0));
+			LOOP->getGameObject(lamp_post).advanceTranslate(glm::vec3(-speed * dt, 0, 0));
 		if (moveleft)
-			LOOP->getGameObject(fbxobj).advanceTranslate(glm::vec3(0, 0, -400 * dt));
+			LOOP->getGameObject(lamp_post).advanceTranslate(glm::vec3(0, 0, -speed * dt));
 		if (moveright)
-			LOOP->getGameObject(fbxobj).advanceTranslate(glm::vec3(0, 0, 400 * dt));
+			LOOP->getGameObject(lamp_post).advanceTranslate(glm::vec3(0, 0, speed * dt));
 		if (movedown)
-			LOOP->getGameObject(fbxobj).advanceTranslate(glm::vec3(0, -200 * dt, 0));
+			LOOP->getGameObject(lamp_post).advanceTranslate(glm::vec3(0, -speed * dt, 0));
 		if (moveup)
-			LOOP->getGameObject(fbxobj).advanceTranslate(glm::vec3(0, 200 * dt, 0));
+			LOOP->getGameObject(lamp_post).advanceTranslate(glm::vec3(0, speed * dt, 0));
 		if (rotatecc)
-			LOOP->getGameObject(fbxobj).advanceRotation(glm::vec3(glm::radians(-200 * dt), 0, 0));
+			LOOP->getGameObject(lamp_post).advanceRotation(glm::vec3(glm::radians(-speed * dt), 0, 0));
 		if (rotatec)
-			LOOP->getGameObject(fbxobj).advanceRotation(glm::vec3(glm::radians(200 * dt), 0, 0));
+			LOOP->getGameObject(lamp_post).advanceRotation(glm::vec3(glm::radians(speed * dt), 0, 0));
 		if (spinleft)
-			LOOP->getGameObject(fbxobj).advanceRotation(glm::vec3(0, glm::radians(-200 * dt), 0));
+			LOOP->getGameObject(lamp_post).advanceRotation(glm::vec3(0, glm::radians(-speed * dt), 0));
 		if (spinright)
-			LOOP->getGameObject(fbxobj).advanceRotation(glm::vec3(0, glm::radians(200 * dt), 0));
+			LOOP->getGameObject(lamp_post).advanceRotation(glm::vec3(0, glm::radians(speed * dt), 0));
 	};
 	LOOP->addToDeltaUpdate(process);
 
