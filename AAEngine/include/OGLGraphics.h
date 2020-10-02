@@ -1,5 +1,5 @@
 /*
-MeshDrawInfo
+OGLGraphics
 ----------------------------------------------------------------------
 Copyright (c) 2019-2020, Matthew Early matthewjearly@gmail.com
 All rights reserved.
@@ -30,17 +30,27 @@ THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
 OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 ----------------------------------------------------------------------
 */
+#pragma once
+#include <glm/glm.hpp>
+#include <vector>
+#include <string>
+#include "GameObject.h"
+#include "OGLShader.h"
 #include "MeshDrawInfo.h"
+#include "InstanceDetails.h"
+
 namespace AA
 {
-//MeshDrawInfo::MeshDrawInfo(unsigned int a, std::vector<unsigned int> el, std::vector<TextureInfo> t, float shine, glm::vec4 spec, glm::mat4 trans)
-//{
-//	vao = a; elements = el; textures = t; shininess = shine; specular = spec; transformation = trans;
-//}
-MeshDrawInfo::MeshDrawInfo(unsigned int a, unsigned int elcount, std::vector<TextureInfo> t, glm::mat4 trans) :
-	vao(a), numElements(elcount), textures(t), transformation(trans)
+class OGLGraphics
 {
-	//vao = a; elements = el; textures = t; /*shininess = shine; specular = spec;*/ transformation = trans;
-}
+public:
 
+	static OGLGraphics* getInstance();
+
+	friend class GameObject;
+
+private:
+
+	void Render(const std::vector<MeshDrawInfo>& meshes, const std::vector<InstanceDetails>& details, const OGLShader& modelShader);
+};
 }  // end namespace AA

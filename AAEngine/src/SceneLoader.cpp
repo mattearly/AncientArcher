@@ -1,12 +1,12 @@
-#include "SceneLoader.h"
+#include "../include/SceneLoader.h"
 #include <iostream>
 #include <sstream>
 #include <assimp/Importer.hpp>
 #include <assimp/scene.h>
 #include <assimp/postprocess.h>
-#include "Vertex.h"
-#include "TexLoader.h"
-#include <glad/glad.h>
+#include "../include/Vertex.h"
+#include "../include/TexLoader.h"
+#include "../include/vendor/glad/glad.h"
 #include <glm/glm.hpp>
 #include <glm/gtc/quaternion.hpp>
 

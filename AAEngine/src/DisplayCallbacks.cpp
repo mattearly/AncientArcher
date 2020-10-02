@@ -33,9 +33,9 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 // ---------------
 // GLFW3 callbacks
 // ---------------
-#include "Display.h"
-#include "Controls.h"
-#include <glad/glad.h>
+#include "../include/Display.h"
+#include "../include/Controls.h"
+#include "../include/vendor/glad/glad.h"
 #include <GLFW/glfw3.h>
 #include <glm/glm.hpp>
 namespace AA

@@ -1,5 +1,5 @@
 /*
-Skybox
+MeshDrawInfo
 ----------------------------------------------------------------------
 Copyright (c) 2019-2020, Matthew Early matthewjearly@gmail.com
 All rights reserved.
@@ -30,41 +30,17 @@ THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
 OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 ----------------------------------------------------------------------
 */
-#pragma once
-#include "Camera.h"
-#include "shaderSys/OGLShader.h"
-#include <vector>
-#include <string>
-#include <memory>
-#include <glm/glm.hpp>
-
+#include "../include/MeshDrawInfo.h"
 namespace AA
 {
-class Skybox
+//MeshDrawInfo::MeshDrawInfo(unsigned int a, std::vector<unsigned int> el, std::vector<TextureInfo> t, float shine, glm::vec4 spec, glm::mat4 trans)
+//{
+//	vao = a; elements = el; textures = t; shininess = shine; specular = spec; transformation = trans;
+//}
+MeshDrawInfo::MeshDrawInfo(unsigned int a, unsigned int elcount, std::vector<TextureInfo> t, glm::mat4 trans) :
+	vao(a), numElements(elcount), textures(t), transformation(trans)
 {
-public:
+	//vao = a; elements = el; textures = t; /*shininess = shine; specular = spec;*/ transformation = trans;
+}
 
-	//Skybox(std::shared_ptr<Camera>& viewport);
-	//Skybox(std::vector<std::string> incomingSkymapFiles);
-
-	Skybox(std::vector<std::string> incomingSkymapFiles);
-
-	void render(const Camera& cam);
-
-	//void render(const AAOGLShader& shader);
-
-	// to be manually called as needed
-	void setProjectionMatrix(const Camera& cam);
-
-private:
-
-	void loadSkybox();
-	void loadProjectionMatrix(const Camera& cam);
-	void loadViewMatrix(const Camera& cam);
-
-	unsigned int mSkyboxVAO = 0;
-	unsigned int cubemapTexture = 0;
-	std::unique_ptr<OGLShader> skyboxShader;
-	//std::shared_ptr<Camera>& mCamera;
-};
 }  // end namespace AA

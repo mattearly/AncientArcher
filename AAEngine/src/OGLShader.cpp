@@ -30,8 +30,8 @@ THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
 OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 ----------------------------------------------------------------------
 */
-#include "OGLShader.h"
-#include <glad\glad.h>
+#include "../include/OGLShader.h"
+#include "../include/vendor/glad/glad.h"
 #include <fstream>
 #include <sstream>
 #include <iostream>

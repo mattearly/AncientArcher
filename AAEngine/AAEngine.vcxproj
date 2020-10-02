@@ -78,22 +78,22 @@
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <LinkIncremental>true</LinkIncremental>
-    <IncludePath>$(SolutionDir)3rdParty\include;$(SolutionDir)..\glm;$(SolutionDir)..\assimp\include;$(SolutionDir)..\assimp\build\include;$(SolutionDir)..\SDL\include;$(SolutionDir)..\SDL\build\include;$(SolutionDir)..\SDL_mixer\include;$(SolutionDir)..\stb;$(SolutionDir)..\glfw\include;$(VC_IncludePath);$(WindowsSDK_IncludePath)</IncludePath>
+    <IncludePath>$(SolutionDir)..\glm;$(SolutionDir)..\assimp\include;$(SolutionDir)..\assimp\build\include;$(SolutionDir)..\stb;$(SolutionDir)..\glfw\include;$(VC_IncludePath);$(WindowsSDK_IncludePath)</IncludePath>
     <LibraryPath>$(SolutionDir)..\glfw\build\src\$(Configuration);$(SolutionDir)..\assimp\build\lib\$(Configuration);$(VC_LibraryPath_x86);$(WindowsSDK_LibraryPath_x86)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <LinkIncremental>false</LinkIncremental>
-    <IncludePath>$(SolutionDir)3rdParty\include;$(SolutionDir)..\glm;$(SolutionDir)..\assimp\include;$(SolutionDir)..\assimp\build\include;$(SolutionDir)..\SDL\include;$(SolutionDir)..\SDL\build\include;$(SolutionDir)..\SDL_mixer\include;$(SolutionDir)..\stb;$(SolutionDir)..\glfw\include;$(VC_IncludePath);$(WindowsSDK_IncludePath)</IncludePath>
+    <IncludePath>$(SolutionDir)..\glm;$(SolutionDir)..\assimp\include;$(SolutionDir)..\assimp\build\include;$(SolutionDir)..\stb;$(SolutionDir)..\glfw\include;$(VC_IncludePath);$(WindowsSDK_IncludePath)</IncludePath>
     <LibraryPath>$(SolutionDir)..\glfw\build\src\$(Configuration);$(SolutionDir)..\assimp\build\lib\$(Configuration);$(VC_LibraryPath_x86);$(WindowsSDK_LibraryPath_x86)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <LinkIncremental>true</LinkIncremental>
-    <IncludePath>$(SolutionDir)3rdParty\include;$(SolutionDir)..\glm;$(SolutionDir)..\assimp\include;$(SolutionDir)..\assimp\build\include;$(SolutionDir)..\SDL\include;$(SolutionDir)..\SDL\build\include;$(SolutionDir)..\SDL_mixer\include;$(SolutionDir)..\stb;$(SolutionDir)..\glfw\include;$(VC_IncludePath);$(WindowsSDK_IncludePath)</IncludePath>
+    <IncludePath>$(SolutionDir)..\glm;$(SolutionDir)..\assimp\include;$(SolutionDir)..\assimp\build\include;$(SolutionDir)..\stb;$(SolutionDir)..\glfw\include;$(VC_IncludePath);$(WindowsSDK_IncludePath)</IncludePath>
     <LibraryPath>$(SolutionDir)..\glfw\build\src\$(Configuration);$(SolutionDir)..\assimp\build\lib\$(Configuration);$(VC_LibraryPath_x64);$(WindowsSDK_LibraryPath_x64)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <LinkIncremental>false</LinkIncremental>
-    <IncludePath>$(SolutionDir)3rdParty\include;$(SolutionDir)..\glm;$(SolutionDir)..\assimp\include;$(SolutionDir)..\assimp\build\include;$(SolutionDir)..\SDL\include;$(SolutionDir)..\SDL\build\include;$(SolutionDir)..\SDL_mixer\include;$(SolutionDir)..\stb;$(SolutionDir)..\glfw\include;$(VC_IncludePath);$(WindowsSDK_IncludePath)</IncludePath>
+    <IncludePath>$(SolutionDir)..\glm;$(SolutionDir)..\assimp\include;$(SolutionDir)..\assimp\build\include;$(SolutionDir)..\stb;$(SolutionDir)..\glfw\include;$(VC_IncludePath);$(WindowsSDK_IncludePath)</IncludePath>
     <LibraryPath>$(SolutionDir)..\glfw\build\src\$(Configuration);$(SolutionDir)..\assimp\build\lib\$(Configuration);$(VC_LibraryPath_x64);$(WindowsSDK_LibraryPath_x64)</LibraryPath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
@@ -195,46 +195,48 @@
     </ProjectReference>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClInclude Include="Camera.h" />
-    <ClInclude Include="ColliderBox.h" />
-    <ClInclude Include="CollisionHandler.h" />
-    <ClInclude Include="GameObject.h" />
+    <ClInclude Include="include\Camera.h" />
+    <ClInclude Include="include\ColliderBox.h" />
+    <ClInclude Include="include\CollisionHandler.h" />
+    <ClInclude Include="include\GameObject.h" />
     <ClInclude Include="glad\glad.h" />
-    <ClInclude Include="InstanceDetails.h" />
+    <ClInclude Include="include\InstanceDetails.h" />
+    <ClInclude Include="include\vendor\glad\glad.h" />
+    <ClInclude Include="include\vendor\KHR\khrplatform.h" />
     <ClInclude Include="KHR\khrplatform.h" />
-    <ClInclude Include="loader\SceneLoader.h" />
-    <ClInclude Include="Loop.h" />
-    <ClInclude Include="MeshDrawInfo.h" />
-    <ClInclude Include="ModelHeader.h" />
-    <ClInclude Include="OGLGraphics.h" />
-    <ClInclude Include="shaderSys\Lights.h" />
-    <ClInclude Include="shaderSys\OGLShader.h" />
-    <ClInclude Include="Skybox.h" />
-    <ClInclude Include="loader\TexLoader.h" />
-    <ClInclude Include="loader\Vertex.h" />
-    <ClInclude Include="winSys\Controls.h" />
-    <ClInclude Include="winSys\Display.h" />
-    <ClInclude Include="winSys\Input.h" />
-    <ClInclude Include="WorldUp.h" />
+    <ClInclude Include="include\SceneLoader.h" />
+    <ClInclude Include="include\Loop.h" />
+    <ClInclude Include="include\MeshDrawInfo.h" />
+    <ClInclude Include="include\ModelHeader.h" />
+    <ClInclude Include="include\OGLGraphics.h" />
+    <ClInclude Include="include\Lights.h" />
+    <ClInclude Include="include\OGLShader.h" />
+    <ClInclude Include="include\Skybox.h" />
+    <ClInclude Include="include\TexLoader.h" />
+    <ClInclude Include="include\Vertex.h" />
+    <ClInclude Include="include\Controls.h" />
+    <ClInclude Include="include\Display.h" />
+    <ClInclude Include="include\Input.h" />
+    <ClInclude Include="include\WorldUp.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="Camera.cpp" />
-    <ClCompile Include="ColliderBox.cpp" />
-    <ClCompile Include="CollisionHandler.cpp" />
-    <ClCompile Include="GameObject.cpp" />
-    <ClCompile Include="glad.c" />
-    <ClCompile Include="loader\SceneLoader.cpp" />
-    <ClCompile Include="Loop.cpp" />
-    <ClCompile Include="MeshDrawInfo.cpp" />
-    <ClCompile Include="OGLGraphics.cpp" />
-    <ClCompile Include="shaderSys\OGLShader.cpp" />
-    <ClCompile Include="Skybox.cpp" />
-    <ClCompile Include="stb_image.cpp" />
-    <ClCompile Include="loader\TexLoader.cpp" />
-    <ClCompile Include="loader\Vertex.cpp" />
-    <ClCompile Include="winSys\Controls.cpp" />
-    <ClCompile Include="winSys\Display.cpp" />
-    <ClCompile Include="winSys\DisplayCallbacks.cpp" />
+    <ClCompile Include="src\Camera.cpp" />
+    <ClCompile Include="src\ColliderBox.cpp" />
+    <ClCompile Include="src\CollisionHandler.cpp" />
+    <ClCompile Include="src\GameObject.cpp" />
+    <ClCompile Include="src\vendor\glad\glad.c" />
+    <ClCompile Include="src\SceneLoader.cpp" />
+    <ClCompile Include="src\Loop.cpp" />
+    <ClCompile Include="src\MeshDrawInfo.cpp" />
+    <ClCompile Include="src\OGLGraphics.cpp" />
+    <ClCompile Include="src\OGLShader.cpp" />
+    <ClCompile Include="src\Skybox.cpp" />
+    <ClCompile Include="src\vendor\stb\stb_image.cpp" />
+    <ClCompile Include="src\TexLoader.cpp" />
+    <ClCompile Include="src\Vertex.cpp" />
+    <ClCompile Include="src\Controls.cpp" />
+    <ClCompile Include="src\Display.cpp" />
+    <ClCompile Include="src\DisplayCallbacks.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

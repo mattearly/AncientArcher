@@ -5,7 +5,7 @@
 #include <math.h>
 #include <Skybox.h>
 #include <iostream>
-#include <shaderSys\Lights.h>
+#include <Lights.h>
 
 // for our move speed controls
 static constexpr float DEFAULTMOVESPEED = 10.f;

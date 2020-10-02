@@ -32,9 +32,9 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 
 #pragma once
-#include "winSys/Display.h"
-#include "winSys/Input.h"
-#include "winSys/Controls.h"
+#include "Display.h"
+#include "Input.h"
+#include "Controls.h"
 #include "Camera.h"
 #include "Skybox.h"
 #include "GameObject.h"

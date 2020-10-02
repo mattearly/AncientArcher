@@ -30,12 +30,12 @@ THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
 OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 ----------------------------------------------------------------------
 */
-#include "Camera.h"
-#include "winSys/Display.h"
+#include "../include/Camera.h"
+#include "../include/Display.h"
 #include <glm\ext\matrix_clip_space.hpp>
 #include <glm\gtx\transform.hpp>
 #include <iostream>
-#include "WorldUp.h"
+#include "../include/WorldUp.h"
 namespace AA
 {
 #define UP WorldUp::getWorldUp()

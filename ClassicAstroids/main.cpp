@@ -1,6 +1,6 @@
 #include <Loop.h>
 #include <glm/glm.hpp>
-#include <shaderSys\Lights.h>
+#include <Lights.h>
 #include <rand/rand.h>
 
 int main()

@@ -30,8 +30,8 @@ THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
 OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 ----------------------------------------------------------------------
 */
-#include "Controls.h"
-#include "Display.h"
+#include "../include/Controls.h"
+#include "../include/Display.h"
 #include <GLFW\glfw3.h>
 #include <memory>
 #include <iostream>

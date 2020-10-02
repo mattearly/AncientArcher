@@ -37,7 +37,7 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #include <memory>
 #include <string>
 #include "Camera.h"
-#include "shaderSys/OGLShader.h"
+#include "OGLShader.h"
 #include "InstanceDetails.h"
 #include "MeshDrawInfo.h"
 namespace AA

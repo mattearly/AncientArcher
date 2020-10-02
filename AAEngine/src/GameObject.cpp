@@ -30,10 +30,10 @@ THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
 OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 ----------------------------------------------------------------------
 */
-#include "GameObject.h"
-#include "OGLGraphics.h"
-#include "Camera.h"
-#include "loader/SceneLoader.h"
+#include "../include/GameObject.h"
+#include "../include/OGLGraphics.h"
+#include "../include/Camera.h"
+#include "../include/SceneLoader.h"
 
 namespace AA
 {

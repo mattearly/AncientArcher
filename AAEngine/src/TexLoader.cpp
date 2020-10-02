@@ -1,7 +1,7 @@
-#include "TexLoader.h"
+#include "../include/TexLoader.h"
 #include <memory>
 #include <stdexcept>
-#include <glad\glad.h>
+#include "../include/vendor/glad/glad.h"
 #include <stb_image.h>
 #include <iostream>
 

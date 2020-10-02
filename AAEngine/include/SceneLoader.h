@@ -2,7 +2,7 @@
 #include <assimp/scene.h>
 #include <vector>
 #include <string>
-#include "../MeshDrawInfo.h"
+#include "MeshDrawInfo.h"
 
 namespace AA
 {
