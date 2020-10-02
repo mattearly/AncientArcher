@@ -212,6 +212,16 @@ const glm::vec3& GameObject::getLocation(int which) const
 	}
 }
 
+const glm::vec3& GameObject::getRotation() const
+{
+	return getRotation(0);
+}
+
+const glm::vec3& GameObject::getRotation(int which) const
+{
+	return mInstanceDetails.at(which).Rotation;
+}
+
 void GameObject::updateModelMatrix(int which)
 {
 	if (which < getInstanceCount())

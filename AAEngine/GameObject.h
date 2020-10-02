@@ -52,6 +52,8 @@ public:
 	// getters
 	const glm::vec3& getLocation() const;
 	const glm::vec3& getLocation(int which) const;
+	const glm::vec3& getRotation() const;
+	const glm::vec3& getRotation(int which) const;
 	int getModelMatrix(const int& which, glm::mat4& out_mat4) const;
 	const int getShaderId() const noexcept;
 	const int getCameraId() const noexcept;
