@@ -37,7 +37,6 @@ namespace AA
 struct InstanceDetails
 {
 	void updateModelMatrix();
-	//void updateModelMatrix(float prevAngle, glm::vec3 prevAxis);
 
 	InstanceDetails();
 	InstanceDetails(glm::vec3 scale, glm::vec3 rot, glm::vec3 transl);
