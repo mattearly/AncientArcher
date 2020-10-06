@@ -52,5 +52,7 @@ public:
 private:
 
 	void Render(const std::vector<MeshDrawInfo>& meshes, const std::vector<InstanceDetails>& details, const OGLShader& modelShader);
+
+	OGLGraphics();
 };
 }  // end namespace AA

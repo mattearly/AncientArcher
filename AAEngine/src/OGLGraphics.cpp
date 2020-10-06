@@ -46,9 +46,10 @@ namespace AA
 {
 OGLGraphics* OGLGraphics::getInstance()
 {
-	static std::unique_ptr<OGLGraphics> graphics = std::make_unique<OGLGraphics>();
-	return graphics.get();
+	static OGLGraphics* OGLgraphics = new OGLGraphics();
+	return OGLgraphics;
 }
+OGLGraphics::OGLGraphics() {};
 
 /** Render the meshes with the shader. Assumes Camera View Matrix is already set.
  *  @param[in] meshes to draw.
