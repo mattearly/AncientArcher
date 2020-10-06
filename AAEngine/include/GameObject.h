@@ -40,6 +40,7 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #include "OGLShader.h"
 #include "InstanceDetails.h"
 #include "MeshDrawInfo.h"
+#include "ColliderSphere.h"
 namespace AA
 {
 class GameObject
@@ -59,10 +60,12 @@ public:
 	const int getCameraId() const noexcept;
 	const int getObjectId() const noexcept;
 	const std::size_t getInstanceCount() const noexcept;
+	const ColliderSphere* getColliderSphere() const noexcept;
 
 	// setters
 	void setCamera(int id) noexcept;
 	void setShader(int id) noexcept;
+	void setColliderSphere(const glm::vec3& center, const float& radius, bool overwrite = true) noexcept;
 
 	// modifiers
 	void scaleTo(glm::vec3 amt, int which);
@@ -93,6 +96,8 @@ private:
 
 	std::vector<MeshDrawInfo> mMeshes;
 	std::vector<InstanceDetails> mInstanceDetails;  // for instancing multiple objects, sized to the number of this object in our world
+
+	ColliderSphere* mColliderSphere;
 
 	// helpers
 	void updateModelMatrix(int which);

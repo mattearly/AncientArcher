@@ -1,5 +1,5 @@
 /*
-CollisionHandler
+ColliderSphere
 ----------------------------------------------------------------------
 Copyright (c) 2019-2020, Matthew Early matthewjearly@gmail.com
 All rights reserved.
@@ -30,27 +30,14 @@ THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
 OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 ----------------------------------------------------------------------
 */
-#pragma once
-#include "ColliderBox.h"
-#include "ColliderSphere.h"
-namespace AA
+#include "../include/ColliderSphere.h"
+
+ColliderSphere::ColliderSphere(glm::vec3 loc, float r) :
+	center(loc), radius(r)
+{}
+
+ColliderSphere::ColliderSphere()
 {
-class CollisionHandler
-{
-public:
-	static CollisionHandler* getInstance();
-
-	bool AABB_vs_AABB_3D(const ColliderBox& a, const ColliderBox& b);
-	bool point_vs_AABB_3D(const glm::vec3& pt, const ColliderBox& b);
-	bool line_vs_AABB_3D(const glm::vec3& startpt, const glm::vec3& endpt, const ColliderBox& b);
-
-	bool sphere_vs_AABB_3D(const ColliderSphere& sphere, const ColliderBox& box);
-
-	bool sphere_vs_Sphere_3D(const ColliderSphere* sphere, const ColliderSphere* other);
-	bool point_vs_Sphere_3D(const glm::vec3& point, const ColliderSphere& sphere);
-	bool line_vs_Sphere_3D(const glm::vec3& startpoint, const glm::vec3& endpoint, const ColliderSphere& sphere);
-
-private:
-	CollisionHandler();
-};
-} // end namespace AA
+	center = glm::vec3(0);
+	radius = 1.f;
+}

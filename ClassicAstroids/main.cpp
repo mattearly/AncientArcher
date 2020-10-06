@@ -2,6 +2,7 @@
 #include <glm/glm.hpp>
 #include <Lights.h>
 #include <rand/rand.h>
+#include <CollisionHandler.h>
 
 int main()
 {
@@ -35,6 +36,7 @@ int main()
 	LOOP->getGameObject(go_lazer).translateTo(LOOP->getGameObject(go_ship).getLocation());
 	LOOP->getGameObject(go_lazer).scaleTo(glm::vec3(.3333f));
 	LOOP->getGameObject(go_lazer).rotateTo(glm::vec3(0, glm::radians(180.f), 0));
+	LOOP->getGameObject(go_lazer).setColliderSphere(LOOP->getGameObject(go_ship).getLocation(), .02f);
 
 	static bool turnleft(false), turnright(false), moveforward(false), fireweap(false);
 	auto hotkeys = [](AA::KeyboardInput& keyin)
@@ -148,12 +150,31 @@ int main()
 
 	// ASTEROIDS
 	static int go_asteroid = LOOP->addObject("../assets/models/obj/asteroid.obj", cam_1, shader_unlit);
-	static int go_asteroid2 = LOOP->addObject("../assets/models/obj/asteroid2.obj", cam_1, shader_unlit);
 	LOOP->getGameObject(go_asteroid).translateTo(glm::vec3(0, -20, -10));
+	LOOP->getGameObject(go_asteroid).setColliderSphere(glm::vec3(0, -20, -10), 1.f);
+
+	static int go_asteroid2 = LOOP->addObject("../assets/models/obj/asteroid2.obj", cam_1, shader_unlit);
 	LOOP->getGameObject(go_asteroid2).translateTo(glm::vec3(-7, -20, -7));
+	LOOP->getGameObject(go_asteroid2).setColliderSphere(glm::vec3(-7, -20, -7), 1.f);
+
+	auto checkCollide = []() {
+		if (AA::CollisionHandler::getInstance()->sphere_vs_Sphere_3D(
+			LOOP->getGameObject(go_lazer).getColliderSphere(), LOOP->getGameObject(go_asteroid).getColliderSphere()
+		)) {
+			std::cout << "first astroid hit\n";
+		}
+
+		if (AA::CollisionHandler::getInstance()->sphere_vs_Sphere_3D(
+			LOOP->getGameObject(go_lazer).getColliderSphere(), LOOP->getGameObject(go_asteroid2).getColliderSphere()
+		)) {
+			std::cout << "second astroid hit\n";
+		}
+	};
+	LOOP->addToUpdate(checkCollide);
+
 	// get 6 random floats for rotations
-	static float rand[6];
-	for (int i = 0; i < 6; i++)
+	static float rand[12];
+	for (int i = 0; i < 12; i++)
 	{
 		rand[i] = NTKR(0.f, 2.6f);
 	}

@@ -195,6 +195,7 @@
     </ProjectReference>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="include\ColliderSphere.h" />
     <ClInclude Include="include\Camera.h" />
     <ClInclude Include="include\ColliderBox.h" />
     <ClInclude Include="include\CollisionHandler.h" />
@@ -220,6 +221,7 @@
     <ClInclude Include="include\WorldUp.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="src\ColliderSphere.cpp" />
     <ClCompile Include="src\Camera.cpp" />
     <ClCompile Include="src\ColliderBox.cpp" />
     <ClCompile Include="src\CollisionHandler.cpp" />

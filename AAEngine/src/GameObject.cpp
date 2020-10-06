@@ -66,12 +66,17 @@ const int GameObject::getObjectId() const noexcept
 	return mObjectID;
 }
 
-// returns the size of the InstanceDetails vector. 
-// a size of 1 would indicate a single instance of the object, accessable at location 0. 
+// returns the size of the InstanceDetails vector.
+// a size of 1 would indicate a single instance of the object, accessable at location 0.
 // a size of 0 should never be seen
 const std::size_t GameObject::getInstanceCount() const noexcept
 {
 	return mInstanceDetails.size();
+}
+
+const ColliderSphere* GameObject::getColliderSphere() const noexcept
+{
+	return mColliderSphere;
 }
 
 GameObject::GameObject(const char* path, int camId, int shadId)
@@ -106,6 +111,15 @@ void GameObject::setCamera(int id) noexcept
 void GameObject::setShader(int id) noexcept
 {
 	mShaderID = id;
+}
+
+void GameObject::setColliderSphere(const glm::vec3& center, const float& radius, bool overwrite) noexcept
+{
+	if (overwrite && mColliderSphere != nullptr)
+	{
+		delete mColliderSphere;
+	}
+	mColliderSphere = new ColliderSphere(center, radius);
 }
 
 void GameObject::draw(const OGLShader& modelShader)
@@ -143,6 +157,10 @@ void GameObject::translateTo(glm::vec3 to, int which)
 {
 	if (which < getInstanceCount()) {
 		mInstanceDetails.at(which).Translate = to;
+		if (mColliderSphere)
+		{
+			mColliderSphere->center = to;  //todo instancing support
+		}
 	}
 	updateModelMatrix(which);
 }
@@ -187,6 +205,10 @@ void GameObject::advanceTranslate(glm::vec3 amt, int which)
 {
 	if (which < getInstanceCount()) {
 		mInstanceDetails.at(which).Translate += amt;
+		if (mColliderSphere)
+		{
+			mColliderSphere->center += amt;
+		}
 		updateModelMatrix(which);
 	}
 }
