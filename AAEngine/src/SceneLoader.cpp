@@ -87,9 +87,9 @@ int SceneLoader::loadGameObjectWithAssimp(std::vector<MeshDrawInfo>& out_MeshInf
 	//post processing -> http://assimp.sourceforge.net/lib_html/postprocess_8h.html
 	post_processing_flags |= aiProcess_JoinIdenticalVertices | aiProcess_Triangulate |
 #ifdef D3D
-	aiProcess_MakeLeftHanded | aiProcess_FlipWindingOrder | aiProcess_FlipUVs |
+		aiProcess_MakeLeftHanded | aiProcess_FlipWindingOrder | aiProcess_FlipUVs |
 #endif
-	aiProcess_PreTransformVertices |
+		aiProcess_PreTransformVertices |
 		aiProcess_CalcTangentSpace |
 		aiProcess_GenSmoothNormals |
 		aiProcess_Triangulate |
@@ -133,7 +133,6 @@ void SceneLoader::processNode(aiNode* node, const aiScene* scene, std::vector<Me
 
 ///
 /// Get all the vertex Data for the incoming mesh and scene
-/// todo: fix translation for multi meshes (currently they all center which is wrong)
 ///
 MeshDrawInfo SceneLoader::processMesh(aiMesh* mesh, const aiScene* scene, aiMatrix4x4* trans)
 {
@@ -267,15 +266,25 @@ int SceneLoader::loadMaterialTextures(const aiMaterial* mat, aiTextureType type,
 		switch (tex_success)
 		{
 		case aiReturn_SUCCESS:
-			std::cout << "success getting texture on material tex num " << i << ' ' << aiTmpStr.C_Str() << '\n';
+			std::cout << "Attempting Diffuse Texture on given path: " << aiTmpStr.C_Str() << '\n';
 			break;
 		case aiReturn_FAILURE:
 			std::cout << "failure getting texture on material tex num " << i << ' ' << aiTmpStr.C_Str() << '\n';
+			return -1;
 			break;
 		case aiReturn_OUTOFMEMORY:
 			std::cout << "oom getting texture on material tex num " << i << ' ' << aiTmpStr.C_Str() << '\n';
+			return -1;
 			break;
 		}
+
+		// todo: try 3 paths
+		// 1. the literal given path (will probably fail)
+		// 2. the path based on where the model was loaded from (might work)
+		// 3. the last part of the given path (after '/' or '\\') appended to the path based on were the model was loaded from
+		std::string tex_path1_literal = aiTmpStr.C_Str();
+		std::string tex_path2_loadedFromFullAppend = mLastDir + tex_path1_literal;
+		std::string tex_path3_loadedFromEndAppend = mLastDir + tex_path1_literal.substr(tex_path1_literal.find_last_of("/\\" + 1), tex_path1_literal.length());
 
 		// routine to see if we already have this texture loaded
 		bool alreadyLoaded = false;
@@ -283,7 +292,7 @@ int SceneLoader::loadMaterialTextures(const aiMaterial* mat, aiTextureType type,
 		{
 			for (const auto& p : mTexturesLoaded)
 			{
-				if (p.path.data() == aiTmpStr.C_Str())
+				if (p.path.data() == aiTmpStr.C_Str() || p.path.data() == tex_path2_loadedFromFullAppend || p.path.data() == tex_path3_loadedFromEndAppend)
 				{
 					TextureInfo tmptexinfo;
 					tmptexinfo.id = p.id;
@@ -296,45 +305,48 @@ int SceneLoader::loadMaterialTextures(const aiMaterial* mat, aiTextureType type,
 			}
 		}
 
-		// wasn't loaded, load it trying last dir path
 		if (!alreadyLoaded)
 		{
-			TextureInfo tmptex;
+			TextureInfo new_texture_info;
 
-			std::string tmpStr = aiTmpStr.C_Str();
-			std::string tmpPath = mLastDir +
-				tmpStr.substr(tmpStr.find_last_of("/\\") + 1);//, tmpStr.length());  //last part of path after '/' or '\\'
+			std::cout << " - TexLoad try 1 (given path): " << tex_path1_literal << '\n';
 
-			std::cout << "attempting to load texture from " << tmpPath << '\n';
-
-			tmptex.id = TexLoader::getInstance()->textureFromFile((tmpPath).c_str());
-			if (tmptex.id != 0)
+			new_texture_info.id = TexLoader::getInstance()->textureFromFile((tex_path1_literal).c_str());
+			if (new_texture_info.id != 0)
 			{
-				tmptex.path = tmpPath;
-				tmptex.type = typeName;
-				out_texInfo.push_back(tmptex);
-				mTexturesLoaded.push_back(tmptex);
+				new_texture_info.path = tex_path1_literal;
+				new_texture_info.type = typeName;
+				out_texInfo.push_back(new_texture_info);
+				mTexturesLoaded.push_back(new_texture_info);
+				return 0; // success!
 			}
-			else
-			{
-				// last dir path failed, try literal path instead
-				std::cout << "attempting to load texture from " << tmpStr << '\n';
 
-				tmptex.id = TexLoader::getInstance()->textureFromFile(tmpStr.c_str());
-				if (tmptex.id != 0)
-				{
-					tmptex.path = tmpStr;
-					tmptex.type = typeName;
-					out_texInfo.push_back(tmptex);
-					mTexturesLoaded.push_back(tmptex);
-				}
-				else
-				{
-					return -1; // failed to load new texture - all pathing failed
-				}
+			std::cout << " - TexLoad try 2 (full append): " << tex_path2_loadedFromFullAppend << '\n';
+
+			new_texture_info.id = TexLoader::getInstance()->textureFromFile(tex_path2_loadedFromFullAppend.c_str());
+			if (new_texture_info.id != 0)
+			{
+				new_texture_info.path = tex_path2_loadedFromFullAppend;
+				new_texture_info.type = typeName;
+				out_texInfo.push_back(new_texture_info);
+				mTexturesLoaded.push_back(new_texture_info);
+				return 0; // success!
 			}
+
+			new_texture_info.id = TexLoader::getInstance()->textureFromFile(tex_path3_loadedFromEndAppend.c_str());
+			if (new_texture_info.id != 0)
+			{
+				new_texture_info.path = tex_path3_loadedFromEndAppend;
+				new_texture_info.type = typeName;
+				out_texInfo.push_back(new_texture_info);
+				mTexturesLoaded.push_back(new_texture_info);
+				return 0; // success!
+			}
+
+			return -1; // failed to load new texture - all pathing failed
 		}
 	}
+
 	return 0;
 }
 } // end namespace AA
