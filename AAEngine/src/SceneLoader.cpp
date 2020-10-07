@@ -278,7 +278,7 @@ int SceneLoader::loadMaterialTextures(const aiMaterial* mat, aiTextureType type,
 			break;
 		}
 
-		// todo: try 3 paths
+		// try 3 paths
 		// 1. the literal given path (will probably fail)
 		// 2. the path based on where the model was loaded from (might work)
 		// 3. the last part of the given path (after '/' or '\\') appended to the path based on were the model was loaded from
