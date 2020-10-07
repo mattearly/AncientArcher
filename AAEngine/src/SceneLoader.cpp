@@ -333,6 +333,8 @@ int SceneLoader::loadMaterialTextures(const aiMaterial* mat, aiTextureType type,
 				return 0; // success!
 			}
 
+			std::cout << " - TexLoad try 3 (end append): " << tex_path3_loadedFromEndAppend << '\n';
+
 			new_texture_info.id = TexLoader::getInstance()->textureFromFile(tex_path3_loadedFromEndAppend.c_str());
 			if (new_texture_info.id != 0)
 			{
