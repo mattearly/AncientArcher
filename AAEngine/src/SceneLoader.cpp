@@ -284,7 +284,7 @@ int SceneLoader::loadMaterialTextures(const aiMaterial* mat, aiTextureType type,
 		// 3. the last part of the given path (after '/' or '\\') appended to the path based on were the model was loaded from
 		std::string tex_path1_literal = aiTmpStr.C_Str();
 		std::string tex_path2_loadedFromFullAppend = mLastDir + tex_path1_literal;
-		std::string tex_path3_loadedFromEndAppend = mLastDir + tex_path1_literal.substr(tex_path1_literal.find_last_of("/\\" + 1), tex_path1_literal.length());
+		std::string tex_path3_loadedFromEndAppend = mLastDir + tex_path1_literal.substr(tex_path1_literal.find_last_of("/\\") + 1);  // all the way to the end
 
 		// routine to see if we already have this texture loaded
 		bool alreadyLoaded = false;
