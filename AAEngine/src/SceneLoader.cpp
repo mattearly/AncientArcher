@@ -261,19 +261,19 @@ int SceneLoader::loadMaterialTextures(const aiMaterial* mat, aiTextureType type,
 {
 	for (unsigned int i = 0; i < mat->GetTextureCount(type); ++i)
 	{
-		aiString tmpstr;
-		auto tex_success = mat->GetTexture(type, i, &tmpstr);
+		aiString aiTmpStr;
+		auto tex_success = mat->GetTexture(type, i, &aiTmpStr);
 
 		switch (tex_success)
 		{
 		case aiReturn_SUCCESS:
-			std::cout << "success getting texture on material tex num " << i << ' ' << tmpstr.C_Str() << '\n';
+			std::cout << "success getting texture on material tex num " << i << ' ' << aiTmpStr.C_Str() << '\n';
 			break;
 		case aiReturn_FAILURE:
-			std::cout << "failure getting texture on material tex num " << i << ' ' << tmpstr.C_Str() << '\n';
+			std::cout << "failure getting texture on material tex num " << i << ' ' << aiTmpStr.C_Str() << '\n';
 			break;
 		case aiReturn_OUTOFMEMORY:
-			std::cout << "oom getting texture on material tex num " << i << ' ' << tmpstr.C_Str() << '\n';
+			std::cout << "oom getting texture on material tex num " << i << ' ' << aiTmpStr.C_Str() << '\n';
 			break;
 		}
 
@@ -283,7 +283,7 @@ int SceneLoader::loadMaterialTextures(const aiMaterial* mat, aiTextureType type,
 		{
 			for (const auto& p : mTexturesLoaded)
 			{
-				if (p.path.data() == tmpstr.C_Str())
+				if (p.path.data() == aiTmpStr.C_Str())
 				{
 					TextureInfo tmptexinfo;
 					tmptexinfo.id = p.id;
@@ -300,15 +300,17 @@ int SceneLoader::loadMaterialTextures(const aiMaterial* mat, aiTextureType type,
 		if (!alreadyLoaded)
 		{
 			TextureInfo tmptex;
-			//std::string tmpPath =/* mLastDir +*/ tmpstr.C_Str();
-			std::string tmpPath = tmpstr.C_Str();
 
-			std::cout << "attempting to load texture from " << mLastDir << tmpPath << '\n';
+			std::string tmpStr = aiTmpStr.C_Str();
+			std::string tmpPath = mLastDir +
+				tmpStr.substr(tmpStr.find_last_of("/\\") + 1);//, tmpStr.length());  //last part of path after '/' or '\\'
 
-			tmptex.id = TexLoader::getInstance()->textureFromFile((mLastDir + tmpPath).c_str());
+			std::cout << "attempting to load texture from " << tmpPath << '\n';
+
+			tmptex.id = TexLoader::getInstance()->textureFromFile((tmpPath).c_str());
 			if (tmptex.id != 0)
 			{
-				tmptex.path = tmpstr.C_Str();
+				tmptex.path = tmpPath;
 				tmptex.type = typeName;
 				out_texInfo.push_back(tmptex);
 				mTexturesLoaded.push_back(tmptex);
@@ -316,12 +318,12 @@ int SceneLoader::loadMaterialTextures(const aiMaterial* mat, aiTextureType type,
 			else
 			{
 				// last dir path failed, try literal path instead
-				std::cout << "attempting to load texture from " << tmpPath << '\n';
+				std::cout << "attempting to load texture from " << tmpStr << '\n';
 
-				tmptex.id = TexLoader::getInstance()->textureFromFile(tmpPath.c_str());
+				tmptex.id = TexLoader::getInstance()->textureFromFile(tmpStr.c_str());
 				if (tmptex.id != 0)
 				{
-					tmptex.path = tmpstr.C_Str();
+					tmptex.path = tmpStr;
 					tmptex.type = typeName;
 					out_texInfo.push_back(tmptex);
 					mTexturesLoaded.push_back(tmptex);
