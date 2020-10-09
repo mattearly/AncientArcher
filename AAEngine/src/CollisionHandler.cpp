@@ -136,13 +136,11 @@ bool CollisionHandler::sphere_vs_Sphere_3D(const ColliderSphere* sphere, const C
 	{
 		throw("null exception");
 	}
-
-	float distance = sqrt(
+	float distance_pow2 =
 		(sphere->center.x - other->center.x) * (sphere->center.x - other->center.x) +
 		(sphere->center.y - other->center.y) * (sphere->center.y - other->center.y) +
-		(sphere->center.z - other->center.z) * (sphere->center.z - other->center.z)
-	);
-	return distance < (sphere->radius + other->radius);
+		(sphere->center.z - other->center.z) * (sphere->center.z - other->center.z);
+	return distance_pow2 < pow((sphere->radius + other->radius), 2);
 }
 
 bool CollisionHandler::point_vs_Sphere_3D(const glm::vec3& point, const ColliderSphere& sphere)
