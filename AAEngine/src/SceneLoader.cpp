@@ -329,7 +329,7 @@ int SceneLoader::loadMaterialTextures(const aiMaterial* mat, aiTextureType type,
 			if (a_new_texture_info.accessId != 0)
 			{
 				// add the new one to our list of loaded textures
-				a_new_texture_info.path = tex_path1_literal;
+				a_new_texture_info.path = tex_path2_loadedFromFullAppend;
 				a_new_texture_info.type = typeName;
 				mTexturesLoaded.push_back(a_new_texture_info);
 
@@ -343,7 +343,7 @@ int SceneLoader::loadMaterialTextures(const aiMaterial* mat, aiTextureType type,
 			if (a_new_texture_info.accessId != 0)
 			{
 				// add the new one to our list of loaded textures
-				a_new_texture_info.path = tex_path1_literal;
+				a_new_texture_info.path = tex_path3_loadedFromEndAppend;
 				a_new_texture_info.type = typeName;
 				mTexturesLoaded.push_back(a_new_texture_info);
 
