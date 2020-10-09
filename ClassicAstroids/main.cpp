@@ -79,10 +79,11 @@ int main()
 	};
 	LOOP->addToKeyHandling(hotkeys);
 
-	static float TURNSPEED = 220.f;
-	static float MOVESPEED = 5.9f;
-	static float FIRELENGTH = .7187f;
-	static float BULLETSPEED = 24.f;
+	const float TURNSPEED = 220.f;
+	static const float TURNSPEEDr = glm::radians(TURNSPEED);
+	static const float MOVESPEED = 5.9f;
+	static const float FIRELENGTH = .7187f;
+	static const float BULLETSPEED = 24.f;
 
 	static float xShipDir;
 	static float zShipDir;
@@ -107,12 +108,12 @@ int main()
 
 		if (turnleft)
 		{
-			LOOP->getGameObject(go_ship).advanceRotation(glm::vec3(0, glm::radians(TURNSPEED) * dt, 0));
+			LOOP->getGameObject(go_ship).advanceRotation(glm::vec3(0, TURNSPEEDr * dt, 0));
 		}
 
 		if (turnright)
 		{
-			LOOP->getGameObject(go_ship).advanceRotation(glm::vec3(0, -glm::radians(TURNSPEED) * dt, 0));
+			LOOP->getGameObject(go_ship).advanceRotation(glm::vec3(0, -TURNSPEEDr * dt, 0));
 		}
 
 		if (fireweap && !bulletLive)
