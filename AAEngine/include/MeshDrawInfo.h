@@ -34,25 +34,19 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #include <string>
 #include <vector>
 #include <glm\glm.hpp>
+#include <unordered_map>
 namespace AA
 {
-struct TextureInfo
-{
-	unsigned int id = 0;
-	std::string type;
-	std::string path;
-};
-
 struct MeshDrawInfo   // NodeDrawInfo a better name?
 {
-	MeshDrawInfo(unsigned int a, unsigned int elsize, std::vector<TextureInfo> t, glm::mat4 trans);
-	unsigned int vao = 0;
-	//unsigned int vbo = 0;
-	//unsigned int ebo = 0;
-	std::vector<TextureInfo> textures;
+	MeshDrawInfo(uint32_t a, uint32_t elsize, std::unordered_map<uint32_t, std::string> t_ids, glm::mat4 trans);
+	uint32_t vao = 0;
+	//uint32_t vbo = 0;
+	//uint32_t ebo = 0;
+	std::unordered_map<uint32_t, std::string> textureDrawIds; // list of texture ids in mem
 	//float shininess;
 	//glm::vec4 specular;
-	unsigned int numElements;
+	uint32_t numElements;
 	glm::mat4 transformation;
 };
 }  // end namespace AA

@@ -1,6 +1,7 @@
 #include "../include/SceneLoader.h"
 #include <iostream>
 #include <sstream>
+#include <utility>
 #include <assimp/Importer.hpp>
 #include <assimp/scene.h>
 #include <assimp/postprocess.h>
@@ -119,13 +120,13 @@ int SceneLoader::loadGameObjectWithAssimp(std::vector<MeshDrawInfo>& out_MeshInf
 
 void SceneLoader::processNode(aiNode* node, const aiScene* scene, std::vector<MeshDrawInfo>& out_MeshInfo)
 {
-	for (unsigned int i = 0; i < node->mNumMeshes; ++i)
+	for (uint32_t i = 0; i < node->mNumMeshes; ++i)
 	{
 		aiMesh* mesh = scene->mMeshes[node->mMeshes[i]];
 		out_MeshInfo.push_back(processMesh(mesh, scene, &node->mTransformation));
 	}
 
-	for (unsigned int i = 0; i < node->mNumChildren; ++i)
+	for (uint32_t i = 0; i < node->mNumChildren; ++i)
 	{
 		processNode(node->mChildren[i], scene, out_MeshInfo);
 	}
@@ -137,10 +138,10 @@ void SceneLoader::processNode(aiNode* node, const aiScene* scene, std::vector<Me
 MeshDrawInfo SceneLoader::processMesh(aiMesh* mesh, const aiScene* scene, aiMatrix4x4* trans)
 {
 	std::vector<Vertex> loaded_vertices;
-	unsigned int num_of_vertices_on_mesh = mesh->mNumVertices;
+	uint32_t num_of_vertices_on_mesh = mesh->mNumVertices;
 
 	// get the vertices
-	for (unsigned int i = 0; i < num_of_vertices_on_mesh; ++i)
+	for (uint32_t i = 0; i < num_of_vertices_on_mesh; ++i)
 	{
 		const glm::vec3 temp_position = SceneLoader::aiVec3_to_glmVec3(mesh->mVertices[i]);
 
@@ -156,11 +157,11 @@ MeshDrawInfo SceneLoader::processMesh(aiMesh* mesh, const aiScene* scene, aiMatr
 	}
 
 	// get the indices to draw triangle faces with
-	std::vector<unsigned int> loadedElements;
-	for (unsigned int i = 0; i < mesh->mNumFaces; ++i)
+	std::vector<uint32_t> loadedElements;
+	for (uint32_t i = 0; i < mesh->mNumFaces; ++i)
 	{
 		aiFace face = mesh->mFaces[i];
-		for (unsigned int j = 0; j < face.mNumIndices; ++j)
+		for (uint32_t j = 0; j < face.mNumIndices; ++j)
 		{
 			loadedElements.push_back(face.mIndices[j]);
 		}
@@ -169,14 +170,17 @@ MeshDrawInfo SceneLoader::processMesh(aiMesh* mesh, const aiScene* scene, aiMatr
 	// get the materials
 	const aiMaterial* material = scene->mMaterials[mesh->mMaterialIndex];
 
-	std::vector<TextureInfo> loadedTextures;
+	std::unordered_map<uint32_t, std::string> loadedTextures;
 
-	std::vector<TextureInfo> textureUnitMaps;
+	std::unordered_map<uint32_t, std::string> textureUnitMaps;
 
 	// if succeeds in loading texture add it to loaded texutres
 	if (loadMaterialTextures(material, aiTextureType_DIFFUSE, "Albedo", textureUnitMaps) == 0)
 	{
-		loadedTextures.insert(loadedTextures.end(), textureUnitMaps.begin(), textureUnitMaps.end());
+		//loadedTextures.insert(loadedTextures.end(), textureUnitMaps.begin(), textureUnitMaps.end());
+
+		for (auto newtexture : textureUnitMaps)
+			loadedTextures.insert(loadedTextures.end(), newtexture);
 	}
 	else
 	{
@@ -227,7 +231,7 @@ MeshDrawInfo SceneLoader::processMesh(aiMesh* mesh, const aiScene* scene, aiMatr
 	//		<< specular.a << '\n';  // debug
 	//}
 
-	unsigned int VAO, VBO, EBO;
+	uint32_t VAO, VBO, EBO;
 
 	glGenBuffers(1, &VBO);
 
@@ -246,19 +250,19 @@ MeshDrawInfo SceneLoader::processMesh(aiMesh* mesh, const aiScene* scene, aiMatr
 
 	glGenBuffers(1, &EBO);
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);
-	glBufferData(GL_ELEMENT_ARRAY_BUFFER, loadedElements.size() * sizeof(unsigned int), &loadedElements[0], GL_STATIC_DRAW);
+	glBufferData(GL_ELEMENT_ARRAY_BUFFER, loadedElements.size() * sizeof(uint32_t), &loadedElements[0], GL_STATIC_DRAW);
 
 	glBindVertexArray(0);
 
 	glDeleteBuffers(1, &VBO);
 	glDeleteBuffers(1, &EBO);
 
-	return MeshDrawInfo(VAO, (unsigned int)loadedElements.size(), loadedTextures, SceneLoader::aiMat4_to_glmMat4(*trans));
+	return MeshDrawInfo(VAO, (uint32_t)loadedElements.size(), loadedTextures, SceneLoader::aiMat4_to_glmMat4(*trans));
 }
 
-int SceneLoader::loadMaterialTextures(const aiMaterial* mat, aiTextureType type, std::string typeName, std::vector<TextureInfo>& out_texInfo)
+int SceneLoader::loadMaterialTextures(const aiMaterial* mat, aiTextureType type, std::string typeName, std::unordered_map<uint32_t, std::string>& out_texInfo)
 {
-	for (unsigned int i = 0; i < mat->GetTextureCount(type); ++i)
+	for (uint32_t i = 0; i < mat->GetTextureCount(type); ++i)
 	{
 		aiString aiTmpStr;
 		auto tex_success = mat->GetTexture(type, i, &aiTmpStr);
@@ -288,61 +292,63 @@ int SceneLoader::loadMaterialTextures(const aiMaterial* mat, aiTextureType type,
 
 		// routine to see if we already have this texture loaded
 		bool alreadyLoaded = false;
-		for (unsigned int j = 0; j < mTexturesLoaded.size(); ++j)
+		for (uint32_t j = 0; j < mTexturesLoaded.size(); ++j)
 		{
 			for (const auto& p : mTexturesLoaded)
 			{
-				if (p.path.data() == aiTmpStr.C_Str() || p.path.data() == tex_path2_loadedFromFullAppend || p.path.data() == tex_path3_loadedFromEndAppend)
+				if (p.path.data() == tex_path1_literal || p.path.data() == tex_path2_loadedFromFullAppend || p.path.data() == tex_path3_loadedFromEndAppend)
 				{
-					TextureInfo tmptexinfo;
-					tmptexinfo.id = p.id;
-					tmptexinfo.type = p.type;
-					tmptexinfo.path = "";
-					out_texInfo.push_back(tmptexinfo);
-					alreadyLoaded = true;
-					std::cout << "Texture [" << p.path.data() << "] already loaded.\n";
-					return 0;
+					// texture already loaded, just give the mesh the details
+					out_texInfo.insert(out_texInfo.end(), { p.accessId, p.type });
+					std::cout << "Texture [" << p.path.data() << "] already loaded, using it.\n";
+					return 0;  // success
 				}
 			}
 		}
 
 		if (!alreadyLoaded)
 		{
-			TextureInfo new_texture_info;
+			TextureInfo a_new_texture_info;
 
 			std::cout << " - TexLoad try 1 (given path): " << tex_path1_literal << '\n';
-
-			new_texture_info.id = TexLoader::getInstance()->textureFromFile((tex_path1_literal).c_str());
-			if (new_texture_info.id != 0)
+			a_new_texture_info.accessId = TexLoader::getInstance()->textureFromFile((tex_path1_literal).c_str());
+			if (a_new_texture_info.accessId != 0)
 			{
-				new_texture_info.path = tex_path1_literal;
-				new_texture_info.type = typeName;
-				out_texInfo.push_back(new_texture_info);
-				mTexturesLoaded.push_back(new_texture_info);
+				// add the new one to our list of loaded textures
+				a_new_texture_info.path = tex_path1_literal;
+				a_new_texture_info.type = typeName;
+				mTexturesLoaded.push_back(a_new_texture_info);
+
+				// to return for draw info on this current mesh
+				out_texInfo.insert(out_texInfo.end(), { a_new_texture_info.accessId, a_new_texture_info.type });
 				return 0; // success!
 			}
 
 			std::cout << " - TexLoad try 2 (full append): " << tex_path2_loadedFromFullAppend << '\n';
-
-			new_texture_info.id = TexLoader::getInstance()->textureFromFile(tex_path2_loadedFromFullAppend.c_str());
-			if (new_texture_info.id != 0)
+			a_new_texture_info.accessId = TexLoader::getInstance()->textureFromFile(tex_path2_loadedFromFullAppend.c_str());
+			if (a_new_texture_info.accessId != 0)
 			{
-				new_texture_info.path = tex_path2_loadedFromFullAppend;
-				new_texture_info.type = typeName;
-				out_texInfo.push_back(new_texture_info);
-				mTexturesLoaded.push_back(new_texture_info);
+				// add the new one to our list of loaded textures
+				a_new_texture_info.path = tex_path1_literal;
+				a_new_texture_info.type = typeName;
+				mTexturesLoaded.push_back(a_new_texture_info);
+
+				// to return for draw info on this current mesh
+				out_texInfo.insert(out_texInfo.end(), { a_new_texture_info.accessId, a_new_texture_info.type });
 				return 0; // success!
 			}
 
 			std::cout << " - TexLoad try 3 (end append): " << tex_path3_loadedFromEndAppend << '\n';
-
-			new_texture_info.id = TexLoader::getInstance()->textureFromFile(tex_path3_loadedFromEndAppend.c_str());
-			if (new_texture_info.id != 0)
+			a_new_texture_info.accessId = TexLoader::getInstance()->textureFromFile(tex_path3_loadedFromEndAppend.c_str());
+			if (a_new_texture_info.accessId != 0)
 			{
-				new_texture_info.path = tex_path3_loadedFromEndAppend;
-				new_texture_info.type = typeName;
-				out_texInfo.push_back(new_texture_info);
-				mTexturesLoaded.push_back(new_texture_info);
+				// add the new one to our list of loaded textures
+				a_new_texture_info.path = tex_path1_literal;
+				a_new_texture_info.type = typeName;
+				mTexturesLoaded.push_back(a_new_texture_info);
+
+				// to return for draw info on this current mesh
+				out_texInfo.insert(out_texInfo.end(), { a_new_texture_info.accessId, a_new_texture_info.type });
 				return 0; // success!
 			}
 
@@ -350,6 +356,6 @@ int SceneLoader::loadMaterialTextures(const aiMaterial* mat, aiTextureType type,
 		}
 	}
 
-	return 0;
+	return 0; // success (we'll never get here but most static analysis give a warning if we don't have this here)
 }
 } // end namespace AA

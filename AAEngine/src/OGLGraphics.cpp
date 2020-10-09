@@ -65,21 +65,21 @@ void OGLGraphics::Render(const std::vector<MeshDrawInfo>& meshes, const std::vec
 	for (auto m : meshes)
 	{
 		// go through all textures in this mesh
-		for (unsigned int i = 0; i < m.textures.size(); ++i)
+		uint32_t i = 0;
+		for (auto textures : m.textureDrawIds)
 		{
-			//std::cout << "texOnMesh: " << i << '\n';
-
 			// activate each texture
 			glActiveTexture(GL_TEXTURE0 + i);
 			// get the texture type
-			const std::string texType = m.textures[i].type;
+			const std::string texType = textures.second;
 
 			//might not need shader.use() here
 			//modelShader.use();
 
 			// tell opengl to bind the texture to a model shader uniform var
 			glUniform1i(glGetUniformLocation(modelShader.getID(), ("material." + texType).c_str()), i);
-			glBindTexture(GL_TEXTURE_2D, m.textures[i].id);
+			glBindTexture(GL_TEXTURE_2D, textures.first);
+			i++;
 		}
 
 		// bind vertex

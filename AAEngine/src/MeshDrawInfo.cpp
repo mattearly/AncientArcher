@@ -33,14 +33,8 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #include "../include/MeshDrawInfo.h"
 namespace AA
 {
-//MeshDrawInfo::MeshDrawInfo(unsigned int a, std::vector<unsigned int> el, std::vector<TextureInfo> t, float shine, glm::vec4 spec, glm::mat4 trans)
-//{
-//	vao = a; elements = el; textures = t; shininess = shine; specular = spec; transformation = trans;
-//}
-MeshDrawInfo::MeshDrawInfo(unsigned int a, unsigned int elcount, std::vector<TextureInfo> t, glm::mat4 trans) :
-	vao(a), numElements(elcount), textures(t), transformation(trans)
+MeshDrawInfo::MeshDrawInfo(uint32_t a, uint32_t elcount, std::unordered_map<uint32_t, std::string> t_id, glm::mat4 trans) :
+	vao(a), numElements(elcount), textureDrawIds(t_id), transformation(trans)
 {
-	//vao = a; elements = el; textures = t; /*shininess = shine; specular = spec;*/ transformation = trans;
 }
-
 }  // end namespace AA
