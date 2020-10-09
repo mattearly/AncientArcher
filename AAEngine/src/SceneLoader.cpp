@@ -301,6 +301,7 @@ int SceneLoader::loadMaterialTextures(const aiMaterial* mat, aiTextureType type,
 					out_texInfo.push_back(tmptexinfo);
 					alreadyLoaded = true;
 					std::cout << "Texture [" << p.path.data() << "] already loaded.\n";
+					return 0;
 				}
 			}
 		}
