@@ -132,7 +132,7 @@ bool CollisionHandler::sphere_vs_AABB_3D(const ColliderSphere& sphere, const Col
 
 bool CollisionHandler::sphere_vs_Sphere_3D(const ColliderSphere* sphere, const ColliderSphere* other)
 {
-	if (sphere == nullptr || other == nullptr)
+	if (!sphere || !other)
 	{
 		throw("null exception");
 	}
