@@ -3,11 +3,15 @@
 #include <Lights.h>
 #include <rand/rand.h>
 #include <CollisionHandler.h>
+#include "../include/SplitAstroid.h"
 
 int main()
 {
 	static int cam_1 = LOOP->addCamera();
 	LOOP->getCamera(cam_1).shiftYawAndPitch(0.f, -90.f); // look down
+
+	// fullscreen
+//	DISPLAY->setWindowSize('f');
 
 	static int shader_unlit = LOOP->addShader("../assets/shaders/noLight.vert", "../assets/shaders/noLight.frag");
 
@@ -162,13 +166,15 @@ int main()
 		if (AA::CollisionHandler::getInstance()->sphere_vs_Sphere_3D(
 			LOOP->getGameObject(go_lazer).getColliderSphere(), LOOP->getGameObject(go_asteroid).getColliderSphere()
 		)) {
-			std::cout << "first astroid hit\n";
+			//std::cout << "first astroid hit\n";
+			splitAstroid(go_asteroid);
 		}
 
 		if (AA::CollisionHandler::getInstance()->sphere_vs_Sphere_3D(
 			LOOP->getGameObject(go_lazer).getColliderSphere(), LOOP->getGameObject(go_asteroid2).getColliderSphere()
 		)) {
-			std::cout << "second astroid hit\n";
+			//std::cout << "second astroid hit\n";
+			splitAstroid(go_asteroid2);
 		}
 	};
 	LOOP->addToUpdate(checkCollide);
