@@ -96,6 +96,8 @@ int main()
 	static float xFireDir;
 	static float zFireDir;
 	static bool bulletLive(false);
+	static float bulletTimer = 0.f;
+
 	auto controlShip = [](float dt) {
 		if (moveforward)
 		{
@@ -132,7 +134,6 @@ int main()
 
 		if (bulletLive)
 		{
-			static float bulletTimer = 0.f;
 			LOOP->getGameObject(go_lazer).advanceTranslate(glm::vec3(xFireDir, 0, zFireDir) * dt * BULLETSPEED);
 			bulletTimer += dt;
 			if (bulletTimer >= FIRELENGTH)
@@ -166,14 +167,18 @@ int main()
 		if (AA::CollisionHandler::getInstance()->sphere_vs_Sphere_3D(
 			LOOP->getGameObject(go_lazer).getColliderSphere(), LOOP->getGameObject(go_asteroid).getColliderSphere()
 		)) {
-			//std::cout << "first astroid hit\n";
+			std::cout << "first astroid hit\n";
+			bulletLive = false;
+			bulletTimer = 0.f;
 			splitAstroid(go_asteroid);
 		}
 
 		if (AA::CollisionHandler::getInstance()->sphere_vs_Sphere_3D(
 			LOOP->getGameObject(go_lazer).getColliderSphere(), LOOP->getGameObject(go_asteroid2).getColliderSphere()
 		)) {
-			//std::cout << "second astroid hit\n";
+			std::cout << "second astroid hit\n";
+			bulletLive = false;
+			bulletTimer = 0.f;
 			splitAstroid(go_asteroid2);
 		}
 	};
