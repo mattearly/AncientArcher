@@ -163,23 +163,30 @@ int main()
 	LOOP->getGameObject(go_asteroid2).translateTo(glm::vec3(-7, -20, -7));
 	LOOP->getGameObject(go_asteroid2).setColliderSphere(glm::vec3(-7, -20, -7), 1.f);
 
-	auto checkCollide = []() {
-		if (AA::CollisionHandler::getInstance()->sphere_vs_Sphere_3D(
-			LOOP->getGameObject(go_lazer).getColliderSphere(), LOOP->getGameObject(go_asteroid).getColliderSphere()
-		)) {
-			std::cout << "first astroid hit\n";
-			bulletLive = false;
-			bulletTimer = 0.f;
-			splitAstroid(go_asteroid);
+	auto checkCollide = []()
+	{
+		for (int s = 0; s < LOOP->getGameObject(go_asteroid).getInstanceCount(); s++) {
+			if (AA::CollisionHandler::getInstance()->sphere_vs_Sphere_3D(
+				LOOP->getGameObject(go_lazer).getColliderSphere(), LOOP->getGameObject(go_asteroid).getColliderSphere(s)
+			)) {
+				std::cout << "first astroid instance hit: " << s << '\n';
+				bulletLive = false;
+				bulletTimer = 0.f;
+				splitAstroid(go_asteroid);
+				return;
+			}
 		}
 
-		if (AA::CollisionHandler::getInstance()->sphere_vs_Sphere_3D(
-			LOOP->getGameObject(go_lazer).getColliderSphere(), LOOP->getGameObject(go_asteroid2).getColliderSphere()
-		)) {
-			std::cout << "second astroid hit\n";
-			bulletLive = false;
-			bulletTimer = 0.f;
-			splitAstroid(go_asteroid2);
+		for (int t = 0; t < LOOP->getGameObject(go_asteroid2).getInstanceCount(); t++) {
+			if (AA::CollisionHandler::getInstance()->sphere_vs_Sphere_3D(
+				LOOP->getGameObject(go_lazer).getColliderSphere(), LOOP->getGameObject(go_asteroid2).getColliderSphere(t)
+			)) {
+				std::cout << "second astroid instance hit: " << t << '\n';
+				bulletLive = false;
+				bulletTimer = 0.f;
+				splitAstroid(go_asteroid2);
+				return;
+			}
 		}
 	};
 	LOOP->addToUpdate(checkCollide);
