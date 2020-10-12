@@ -32,6 +32,7 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 #pragma once
 #include <glm\ext\vector_float3.hpp>
+#include "../include/ColliderSphere.h"
 namespace AA
 {
 struct InstanceDetails
@@ -48,5 +49,8 @@ struct InstanceDetails
 
 	// final result
 	glm::mat4 ModelMatrix = glm::mat4(1);
+
+	// for if the unit has collision
+	ColliderSphere* mColliderSphere = nullptr;
 };
 }  // end namespace AA

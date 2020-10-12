@@ -74,9 +74,14 @@ const std::size_t GameObject::getInstanceCount() const noexcept
 	return mInstanceDetails.size();
 }
 
-const ColliderSphere* GameObject::getColliderSphere() const noexcept
+/// <summary>`
+/// Returns the collider sphere (may be null) of the instance of the object (be sure to check for null to make sure it is set).
+/// </summary>
+/// <param name="which">The instance number to return the collider sphere of.</param>
+/// <returns>Collider sphere of instance at (which) location.</returns>
+const ColliderSphere* GameObject::getColliderSphere(uint32_t which) const noexcept
 {
-	return mColliderSphere;
+	return mInstanceDetails.at(which).mColliderSphere;  //todo: check there are enough instances if this has problems
 }
 
 GameObject::GameObject(const char* path, int camId, int shadId)
@@ -113,13 +118,13 @@ void GameObject::setShader(int id) noexcept
 	mShaderID = id;
 }
 
-void GameObject::setColliderSphere(const glm::vec3& center, const float& radius, bool overwrite) noexcept
+void GameObject::setColliderSphere(const glm::vec3& center, const float& radius, uint32_t which, bool overwrite) noexcept
 {
-	if (overwrite && mColliderSphere != nullptr)
+	if (overwrite && mInstanceDetails.at(which).mColliderSphere != nullptr)  //todo: check there are enough instances if this has problems
 	{
-		delete mColliderSphere;
+		delete mInstanceDetails.at(which).mColliderSphere;
 	}
-	mColliderSphere = new ColliderSphere(center, radius);
+	mInstanceDetails.at(which).mColliderSphere = new ColliderSphere(center, radius);
 }
 
 void GameObject::draw(const OGLShader& modelShader)
@@ -157,9 +162,9 @@ void GameObject::translateTo(glm::vec3 to, int which)
 {
 	if (which < getInstanceCount()) {
 		mInstanceDetails.at(which).Translate = to;
-		if (mColliderSphere)
+		if (mInstanceDetails.at(0).mColliderSphere)  //todo which
 		{
-			mColliderSphere->center = to;  //todo instancing support
+			mInstanceDetails.at(0).mColliderSphere->center = to;  //todo instancing support
 		}
 	}
 	updateModelMatrix(which);
@@ -205,9 +210,9 @@ void GameObject::advanceTranslate(glm::vec3 amt, int which)
 {
 	if (which < getInstanceCount()) {
 		mInstanceDetails.at(which).Translate += amt;
-		if (mColliderSphere)
+		if (mInstanceDetails.at(0).mColliderSphere)  //todo which
 		{
-			mColliderSphere->center += amt;
+			mInstanceDetails.at(0).mColliderSphere->center += amt;
 		}
 		updateModelMatrix(which);
 	}
@@ -277,6 +282,8 @@ InstanceDetails::InstanceDetails()
 	Scale = glm::vec3(1);
 	Translate = glm::vec3(0);
 	Rotation = glm::vec3(0);
+	ModelMatrix = glm::mat4(1);
+	ColliderSphere* mColliderSphere = nullptr;
 	updateModelMatrix();
 }
 

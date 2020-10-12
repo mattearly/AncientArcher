@@ -51,7 +51,7 @@ public:
 	GameObject(const char* path, int camId, int shadId, std::vector<InstanceDetails> details);
 
 	// getters
-	const glm::vec3& getLocation() const;
+	const glm::vec3& getLocation() const;  // todo refactor into single fuction
 	const glm::vec3& getLocation(int which) const;
 	const glm::vec3& getRotation() const;
 	const glm::vec3& getRotation(int which) const;
@@ -60,12 +60,12 @@ public:
 	const int getCameraId() const noexcept;
 	const int getObjectId() const noexcept;
 	const std::size_t getInstanceCount() const noexcept;
-	const ColliderSphere* getColliderSphere() const noexcept;
+	const ColliderSphere* getColliderSphere(uint32_t which = 0) const noexcept;
 
 	// setters
 	void setCamera(int id) noexcept;
 	void setShader(int id) noexcept;
-	void setColliderSphere(const glm::vec3& center, const float& radius, bool overwrite = true) noexcept;
+	void setColliderSphere(const glm::vec3& center, const float& radius, uint32_t which = 0, bool overwrite = true) noexcept;
 
 	// modifiers
 	void scaleTo(glm::vec3 amt, int which);
@@ -96,8 +96,6 @@ private:
 
 	std::vector<MeshDrawInfo> mMeshes;
 	std::vector<InstanceDetails> mInstanceDetails;  // for instancing multiple objects, sized to the number of this object in our world
-
-	ColliderSphere* mColliderSphere;
 
 	// helpers
 	void updateModelMatrix(int which);
