@@ -192,15 +192,19 @@ int main()
 	LOOP->addToUpdate(checkCollide);
 
 	// get 6 random floats for rotations
-	static float rand[12];
-	for (int i = 0; i < 12; i++)
+	static float rand[6];
+	for (int i = 0; i < 6; i++)
 	{
 		rand[i] = NTKR(0.f, 2.6f);
 	}
 
 	auto moveasteroids = [](float dt) {
-		LOOP->getGameObject(go_asteroid).advanceRotation(glm::vec3(dt * rand[0], dt * rand[1], dt * rand[2]));
-		LOOP->getGameObject(go_asteroid2).advanceRotation(glm::vec3(dt * rand[3], dt * rand[4], dt * rand[5]));
+		for (int s = 0; s < LOOP->getGameObject(go_asteroid).getInstanceCount(); s++) {
+			LOOP->getGameObject(go_asteroid).advanceRotation(glm::vec3(dt * rand[0], dt * rand[1], dt * rand[2]), s);
+		}
+		for (int t = 0; t < LOOP->getGameObject(go_asteroid2).getInstanceCount(); t++) {
+			LOOP->getGameObject(go_asteroid2).advanceRotation(glm::vec3(dt * rand[3], dt * rand[4], dt * rand[5]), t);
+		}
 	};
 	LOOP->addToDeltaUpdate(moveasteroids);
 
