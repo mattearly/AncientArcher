@@ -141,6 +141,12 @@ void GameObject::scaleTo(glm::vec3 amt, int which)
 {
 	if (which < getInstanceCount()) {
 		mInstanceDetails.at(which).Scale = amt;
+		if (mInstanceDetails.at(which).mColliderSphere)  // take average of xyz and scale collider sphere radius by that
+		{
+			//todo : not do this
+			float avr = ((amt.x + amt.y + amt.z) / 3.f);
+			mInstanceDetails.at(which).mColliderSphere->radius = mInstanceDetails.at(which).mColliderSphere->radius * avr;
+		}
 		updateModelMatrix(which);
 	}
 }
