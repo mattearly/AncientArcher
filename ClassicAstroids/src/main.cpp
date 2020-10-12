@@ -4,6 +4,7 @@
 #include <rand/rand.h>
 #include <CollisionHandler.h>
 #include "../include/SplitAstroid.h"
+#include "../include/RandomizeAstroid.h"
 
 int main()
 {
@@ -11,7 +12,7 @@ int main()
 	LOOP->getCamera(cam_1).shiftYawAndPitch(0.f, -90.f); // look down
 
 	// fullscreen
-//	DISPLAY->setWindowSize('f');
+	//DISPLAY->setWindowSize('f');
 
 	static int shader_unlit = LOOP->addShader("../assets/shaders/noLight.vert", "../assets/shaders/noLight.frag");
 
@@ -83,9 +84,9 @@ int main()
 	};
 	LOOP->addToKeyHandling(hotkeys);
 
-	const float TURNSPEED = 220.f;
+	const float TURNSPEED = 225.f;
 	static const float TURNSPEEDr = glm::radians(TURNSPEED);
-	static const float MOVESPEED = 5.9f;
+	static const float MOVESPEED = 6.9f;
 	static const float FIRELENGTH = .7187f;
 	static const float BULLETSPEED = 24.f;
 
@@ -156,54 +157,70 @@ int main()
 
 	// ASTEROIDS
 	static int go_asteroid = LOOP->addObject("../assets/models/obj/asteroid.obj", cam_1, shader_unlit);
-	LOOP->getGameObject(go_asteroid).translateTo(glm::vec3(0, -20, -10));
-	LOOP->getGameObject(go_asteroid).setColliderSphere(glm::vec3(0, -20, -10), 1.f);
+	LOOP->getGameObject(go_asteroid).translateTo(glm::vec3(0, -20, -5));
+	LOOP->getGameObject(go_asteroid).setColliderSphere(glm::vec3(0, -20, -5), 1.f);
 
 	static int go_asteroid2 = LOOP->addObject("../assets/models/obj/asteroid2.obj", cam_1, shader_unlit);
 	LOOP->getGameObject(go_asteroid2).translateTo(glm::vec3(-7, -20, -7));
 	LOOP->getGameObject(go_asteroid2).setColliderSphere(glm::vec3(-7, -20, -7), 1.f);
 
+	static std::vector<Astroid> astroids;
+	astroids.push_back(createAstroid(go_asteroid, 0));
+	astroids.push_back(createAstroid(go_asteroid2, 0));
+
 	auto checkCollide = []()
 	{
-		for (int s = 0; s < LOOP->getGameObject(go_asteroid).getInstanceCount(); s++) {
-			if (AA::CollisionHandler::getInstance()->sphere_vs_Sphere_3D(
-				LOOP->getGameObject(go_lazer).getColliderSphere(), LOOP->getGameObject(go_asteroid).getColliderSphere(s)
-			)) {
-				std::cout << "first astroid instance hit: " << s << '\n';
+		for (const auto& ast : astroids)
+		{
+			if (AA::CollisionHandler::getInstance()->sphere_vs_Sphere_3D
+			(
+				LOOP->getGameObject(go_lazer).getColliderSphere(),
+				LOOP->getGameObject(ast.object_id).getColliderSphere(ast.instance_id)
+			))
+			{
+				std::cout << "hit! obj id: " << ast.object_id << ", inst id: " << ast.instance_id << '\n';
 				bulletLive = false;
 				bulletTimer = 0.f;
-				splitAstroid(go_asteroid);
+				splitAstroid(ast.object_id, astroids);
 				return;
 			}
 		}
+		//for (int s = 0; s < LOOP->getGameObject(go_asteroid).getInstanceCount(); s++) {
+		//	if (AA::CollisionHandler::getInstance()->sphere_vs_Sphere_3D(
+		//		LOOP->getGameObject(go_lazer).getColliderSphere(), LOOP->getGameObject(go_asteroid).getColliderSphere(s)
+		//	)) {
+		//		std::cout << "first astroid instance hit: " << s << '\n';
+		//		bulletLive = false;
+		//		bulletTimer = 0.f;
+		//		splitAstroid(go_asteroid, astroids);
+		//		return;
+		//	}
+		//}
 
-		for (int t = 0; t < LOOP->getGameObject(go_asteroid2).getInstanceCount(); t++) {
-			if (AA::CollisionHandler::getInstance()->sphere_vs_Sphere_3D(
-				LOOP->getGameObject(go_lazer).getColliderSphere(), LOOP->getGameObject(go_asteroid2).getColliderSphere(t)
-			)) {
-				std::cout << "second astroid instance hit: " << t << '\n';
-				bulletLive = false;
-				bulletTimer = 0.f;
-				splitAstroid(go_asteroid2);
-				return;
-			}
-		}
+		//for (int t = 0; t < LOOP->getGameObject(go_asteroid2).getInstanceCount(); t++) {
+		//	if (AA::CollisionHandler::getInstance()->sphere_vs_Sphere_3D(
+		//		LOOP->getGameObject(go_lazer).getColliderSphere(), LOOP->getGameObject(go_asteroid2).getColliderSphere(t)
+		//	)) {
+		//		std::cout << "second astroid instance hit: " << t << '\n';
+		//		bulletLive = false;
+		//		bulletTimer = 0.f;
+		//		splitAstroid(go_asteroid2, astroids);
+		//		return;
+		//	}
+		//}
 	};
 	LOOP->addToUpdate(checkCollide);
 
-	// get 6 random floats for rotations
-	static float rand[6];
-	for (int i = 0; i < 6; i++)
-	{
-		rand[i] = NTKR(0.f, 2.6f);
-	}
-
+	static const float STARTDELAY = 3.f;
 	auto moveasteroids = [](float dt) {
-		for (int s = 0; s < LOOP->getGameObject(go_asteroid).getInstanceCount(); s++) {
-			LOOP->getGameObject(go_asteroid).advanceRotation(glm::vec3(dt * rand[0], dt * rand[1], dt * rand[2]), s);
-		}
-		for (int t = 0; t < LOOP->getGameObject(go_asteroid2).getInstanceCount(); t++) {
-			LOOP->getGameObject(go_asteroid2).advanceRotation(glm::vec3(dt * rand[3], dt * rand[4], dt * rand[5]), t);
+		static float live_timer = 0.f;
+		live_timer += dt;
+		if (live_timer < STARTDELAY)
+			return;
+		for (const auto& ast : astroids)
+		{
+			LOOP->getGameObject(ast.object_id).advanceTranslate(glm::vec3(dt * ast.direction.x * ast.speed, 0, dt * ast.direction.y * ast.speed), ast.instance_id);
+			LOOP->getGameObject(ast.object_id).advanceRotation(glm::vec3(dt * ast.rotation.x, dt * ast.rotation.y, dt * ast.rotation.z), ast.instance_id);
 		}
 	};
 	LOOP->addToDeltaUpdate(moveasteroids);

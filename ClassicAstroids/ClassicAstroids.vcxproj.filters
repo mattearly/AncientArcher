@@ -23,5 +23,8 @@
     <ClInclude Include="include\SplitAstroid.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="include\RandomizeAstroid.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

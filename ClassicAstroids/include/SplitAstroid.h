@@ -1,9 +1,10 @@
 #pragma once
 #include "../../AAEngine/include/GameObject.h"
 #include "../../AAEngine/include/Loop.h"
+#include "RandomizeAstroid.h"
 #include <rand/rand.h>
 
-void splitAstroid(int game_object)
+void splitAstroid(int game_object, std::vector<Astroid>& ast)
 {
 	static const float SPLIT_SIZE = .40f;
 	static const float RAND_DISTANCE = 1.f;
@@ -19,6 +20,7 @@ void splitAstroid(int game_object)
 			AA::InstanceDetails new_details(glm::vec3(SPLIT_SIZE), glm::vec3(0), original_loc + glm::vec3(NTKR(-RAND_DISTANCE, RAND_DISTANCE), 0, NTKR(-RAND_DISTANCE, RAND_DISTANCE)));
 			new_details.mColliderSphere = new ColliderSphere(new_details.Translate, our_ref.getColliderSphere()->radius);
 			our_ref.addInstance(new_details);
+			ast.push_back(createAstroid(game_object, i + 1));
 		}
 	}
 }
