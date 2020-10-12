@@ -127,6 +127,11 @@ void GameObject::setColliderSphere(const glm::vec3& center, const float& radius,
 	mInstanceDetails.at(which).mColliderSphere = new ColliderSphere(center, radius);
 }
 
+void GameObject::addInstance(const InstanceDetails& instance_details)
+{
+	mInstanceDetails.push_back(instance_details);
+}
+
 void GameObject::draw(const OGLShader& modelShader)
 {
 	OGLGraphics::getInstance()->Render(mMeshes, mInstanceDetails, modelShader);

@@ -67,6 +67,8 @@ public:
 	void setShader(int id) noexcept;
 	void setColliderSphere(const glm::vec3& center, const float& radius, uint32_t which = 0, bool overwrite = true) noexcept;
 
+	void addInstance(const InstanceDetails& instance_details);
+
 	// modifiers
 	void scaleTo(glm::vec3 amt, int which);
 	void scaleTo(glm::vec3 amt);
