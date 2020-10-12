@@ -137,6 +137,7 @@ void GameObject::draw(const OGLShader& modelShader)
 	OGLGraphics::getInstance()->Render(mMeshes, mInstanceDetails, modelShader);
 }
 
+// --------------------------SCALE
 void GameObject::scaleTo(glm::vec3 amt, int which)
 {
 	if (which < getInstanceCount()) {
@@ -156,36 +157,6 @@ void GameObject::scaleTo(glm::vec3 amt)
 	scaleTo(amt, 0);
 }
 
-void GameObject::rotateTo(glm::vec3 new_rot)
-{
-	rotateTo(new_rot, 0);
-}
-
-void GameObject::rotateTo(glm::vec3 new_rot, int which)
-{
-	if (which < getInstanceCount()) {
-		mInstanceDetails.at(which).Rotation = new_rot;
-	}
-	updateModelMatrix(which);
-}
-
-void GameObject::translateTo(glm::vec3 to, int which)
-{
-	if (which < getInstanceCount()) {
-		mInstanceDetails.at(which).Translate = to;
-		if (mInstanceDetails.at(0).mColliderSphere)  //todo which
-		{
-			mInstanceDetails.at(0).mColliderSphere->center = to;  //todo instancing support
-		}
-	}
-	updateModelMatrix(which);
-}
-
-void GameObject::translateTo(glm::vec3 to)
-{
-	translateTo(to, 0);
-}
-
 void GameObject::advanceScale(glm::vec3 amt)
 {
 	advanceScale(amt, 0);
@@ -197,6 +168,20 @@ void GameObject::advanceScale(glm::vec3 amt, int which)
 		mInstanceDetails.at(which).Scale += amt;
 		updateModelMatrix(which);
 	}
+}
+
+// ---------------------------ROTATE
+void GameObject::rotateTo(glm::vec3 new_rot)
+{
+	rotateTo(new_rot, 0);
+}
+
+void GameObject::rotateTo(glm::vec3 new_rot, int which)
+{
+	if (which < getInstanceCount()) {
+		mInstanceDetails.at(which).Rotation = new_rot;
+	}
+	updateModelMatrix(which);
 }
 
 void GameObject::advanceRotation(glm::vec3 radianAmt)
@@ -212,6 +197,7 @@ void GameObject::advanceRotation(glm::vec3 radianAmt, int which)
 	}
 }
 
+//-----------------------TRANSLATE
 void GameObject::advanceTranslate(glm::vec3 amt)
 {
 	advanceTranslate(amt, 0);
@@ -221,14 +207,35 @@ void GameObject::advanceTranslate(glm::vec3 amt, int which)
 {
 	if (which < getInstanceCount()) {
 		mInstanceDetails.at(which).Translate += amt;
-		if (mInstanceDetails.at(0).mColliderSphere)  //todo which
+		if (mInstanceDetails.at(which).mColliderSphere)
 		{
-			mInstanceDetails.at(0).mColliderSphere->center += amt;
+			mInstanceDetails.at(which).mColliderSphere->center += amt;
 		}
 		updateModelMatrix(which);
 	}
 }
 
+void GameObject::translateTo(glm::vec3 to, int which)
+{
+	if (which < getInstanceCount()) {
+		mInstanceDetails.at(which).Translate = to;
+		if (mInstanceDetails.at(which).mColliderSphere)
+		{
+			mInstanceDetails.at(which).mColliderSphere->center = to;
+		}
+	}
+	updateModelMatrix(which);
+}
+
+void GameObject::translateTo(glm::vec3 to)
+{
+	translateTo(to, 0);
+}
+
+/// <summary>
+/// Checks to see if there is only a single instance of the game object.
+/// </summary>
+/// <returns>true if there is only one instance, false if there is more than one.</returns>
 bool GameObject::isSingleInstance() const
 {
 	return mInstanceDetails.size() == 1;
