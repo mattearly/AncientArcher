@@ -4,8 +4,8 @@
 
 struct Astroid
 {
-	Astroid(float sp, glm::vec2 dir, glm::vec3 rot, int obj_id, int inst_id)
-		: speed(sp), direction(dir), rotation(rot), object_id(obj_id), instance_id(inst_id)
+	Astroid(float sp, glm::vec2 dir, glm::vec3 rot, int obj_id, int inst_id, bool fragment)
+		: speed(sp), direction(dir), rotation(rot), object_id(obj_id), instance_id(inst_id), isFragment(fragment)
 	{};
 
 	float speed;
@@ -14,9 +14,11 @@ struct Astroid
 
 	int object_id;
 	int instance_id;
+
+	bool isFragment;
 };
 
-Astroid createAstroid(int obj_id, int inst_id)
+Astroid createAstroid(int obj_id, int inst_id, bool fragment)
 {
 	float rand_speed = NTKR(1.f, 5.f);
 
@@ -29,5 +31,5 @@ Astroid createAstroid(int obj_id, int inst_id)
 	rand_rotation.y = NTKR(0.f, 2.6f);
 	rand_rotation.z = NTKR(0.f, 2.6f);
 
-	return Astroid(rand_speed, rand_direction, rand_rotation, obj_id, inst_id);
+	return Astroid(rand_speed, rand_direction, rand_rotation, obj_id, inst_id, fragment);
 }

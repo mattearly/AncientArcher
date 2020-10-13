@@ -23,7 +23,13 @@
     <ClInclude Include="include\SplitAstroid.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="include\RandomizeAstroid.h">
+    <ClInclude Include="include\DestroyAstroid.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Astroid.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="include\HitAstroid.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

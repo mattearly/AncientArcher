@@ -3,9 +3,10 @@
 #include <Lights.h>
 #include <rand/rand.h>
 #include <CollisionHandler.h>
-#include "../include/SplitAstroid.h"
-#include "../include/RandomizeAstroid.h"
+#include "../include/Astroid.h"
 #include "../include/DestroyAstroid.h"
+#include "../include/HitAstroid.h"
+#include "../include/SplitAstroid.h"
 
 int main()
 {
@@ -176,12 +177,12 @@ int main()
 	LOOP->getGameObject(go_asteroid2).setColliderSphere(glm::vec3(-7, -20, -7), 1.f);
 
 	static std::vector<Astroid> astroids;
-	astroids.push_back(createAstroid(go_asteroid, 0));
-	astroids.push_back(createAstroid(go_asteroid2, 0));
+	astroids.push_back(createAstroid(go_asteroid, 0, false));
+	astroids.push_back(createAstroid(go_asteroid2, 0, false));
 
 	auto checkCollide = []()
 	{
-		for (const auto& ast : astroids)
+		for (auto& ast : astroids)
 		{
 			if (AA::CollisionHandler::getInstance()->sphere_vs_Sphere_3D
 			(
@@ -190,10 +191,8 @@ int main()
 			))
 			{
 				//std::cout << "hit! obj id: " << ast.object_id << ", inst id: " << ast.instance_id << '\n';
-				//bulletLive = false;
-				//bulletTimer = 0.f;
 				bulletHitSomething = true;
-				splitAstroid(ast.object_id, astroids);
+				hitAstroid(ast, astroids);
 				return;
 			}
 		}

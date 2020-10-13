@@ -1,26 +1,39 @@
 #pragma once
 #include "../../AAEngine/include/GameObject.h"
 #include "../../AAEngine/include/Loop.h"
-#include "RandomizeAstroid.h"
+#include "Astroid.h"
 #include <rand/rand.h>
 
-void splitAstroid(int game_object, std::vector<Astroid>& ast)
+/// <summary>
+/// Turns a large (non-fragment) astroid into 4 small fragments.
+/// </summary>
+/// <param name="a">astroid that was hit</param>
+/// <param name="astriods">vector to add astroids to</param>
+void splitAstroid(Astroid& a, std::vector<Astroid>& astriods)
 {
 	static const float SPLIT_SIZE = .40f;
 	static const float RAND_DISTANCE = 1.f;
 
-	AA::GameObject& our_ref = LOOP->getGameObject(game_object);
+	AA::GameObject& our_ref = LOOP->getGameObject(a.object_id);
 	glm::vec3 original_loc = our_ref.getLocation();
 
 	if (our_ref.isSingleInstance())
 	{
+		// turn the orignal into a fragment
 		our_ref.scaleTo(glm::vec3(SPLIT_SIZE));
+		a.isFragment = true;
+
+		// and make 3 more fragments
 		for (int i = 0; i < 3; i++)
 		{
 			AA::InstanceDetails new_details(glm::vec3(SPLIT_SIZE), glm::vec3(0), original_loc + glm::vec3(NTKR(-RAND_DISTANCE, RAND_DISTANCE), 0, NTKR(-RAND_DISTANCE, RAND_DISTANCE)));
 			new_details.mColliderSphere = new ColliderSphere(new_details.Translate, our_ref.getColliderSphere()->radius);
 			our_ref.addInstance(new_details);
-			ast.push_back(createAstroid(game_object, i + 1));
+			astriods.push_back(createAstroid(a.object_id, i + 1, true));
 		}
+	}
+	else
+	{
+		throw("invalid astroid split call");
 	}
 }
