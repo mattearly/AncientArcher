@@ -5,6 +5,7 @@
 #include <CollisionHandler.h>
 #include "../include/SplitAstroid.h"
 #include "../include/RandomizeAstroid.h"
+#include "../include/DestroyAstroid.h"
 
 int main()
 {
@@ -84,7 +85,7 @@ int main()
 	};
 	LOOP->addToKeyHandling(hotkeys);
 
-	const float TURNSPEED = 225.f;
+	const float TURNSPEED = 210.f;
 	static const float TURNSPEEDr = glm::radians(TURNSPEED);
 	static const float MOVESPEED = 6.9f;
 	static const float FIRELENGTH = .7187f;
@@ -96,8 +97,9 @@ int main()
 	static float zCamPos;
 	static float xFireDir;
 	static float zFireDir;
-	static bool bulletLive(false);
+	static bool bulletOut(false);
 	static float bulletTimer = 0.f;
+	static bool bulletHitSomething(false);
 
 	auto controlShip = [](float dt) {
 		if (moveforward)
@@ -123,9 +125,9 @@ int main()
 			LOOP->getGameObject(go_ship).advanceRotation(glm::vec3(0, -TURNSPEEDr * dt, 0));
 		}
 
-		if (fireweap && !bulletLive)
+		if (fireweap && !bulletOut)
 		{
-			bulletLive = true;
+			bulletOut = true;
 			glm::vec3 dir = LOOP->getGameObject(go_ship).getRotation();
 			xShipDir = sin(dir.y);
 			zShipDir = cos(dir.y);
@@ -133,15 +135,24 @@ int main()
 			zFireDir = zShipDir;
 		}
 
-		if (bulletLive)
+		if (bulletOut)
 		{
-			LOOP->getGameObject(go_lazer).advanceTranslate(glm::vec3(xFireDir, 0, zFireDir) * dt * BULLETSPEED);
 			bulletTimer += dt;
+
 			if (bulletTimer >= FIRELENGTH)
 			{
-				bulletLive = false;
+				bulletOut = false;
 				bulletTimer = 0.f;
-				LOOP->getGameObject(go_lazer).translateTo(LOOP->getGameObject(go_ship).getLocation());
+				bulletHitSomething = false;
+			}
+
+			if (!bulletHitSomething)
+			{
+				LOOP->getGameObject(go_lazer).advanceTranslate(glm::vec3(xFireDir, 0, zFireDir) * dt * BULLETSPEED);
+			}
+			else
+			{
+				//apply steady loc & rotation
 				LOOP->getGameObject(go_lazer).translateTo(LOOP->getGameObject(go_ship).getLocation());
 				LOOP->getGameObject(go_lazer).rotateTo(LOOP->getGameObject(go_ship).getRotation());
 			}
@@ -178,36 +189,14 @@ int main()
 				LOOP->getGameObject(ast.object_id).getColliderSphere(ast.instance_id)
 			))
 			{
-				std::cout << "hit! obj id: " << ast.object_id << ", inst id: " << ast.instance_id << '\n';
-				bulletLive = false;
-				bulletTimer = 0.f;
+				//std::cout << "hit! obj id: " << ast.object_id << ", inst id: " << ast.instance_id << '\n';
+				//bulletLive = false;
+				//bulletTimer = 0.f;
+				bulletHitSomething = true;
 				splitAstroid(ast.object_id, astroids);
 				return;
 			}
 		}
-		//for (int s = 0; s < LOOP->getGameObject(go_asteroid).getInstanceCount(); s++) {
-		//	if (AA::CollisionHandler::getInstance()->sphere_vs_Sphere_3D(
-		//		LOOP->getGameObject(go_lazer).getColliderSphere(), LOOP->getGameObject(go_asteroid).getColliderSphere(s)
-		//	)) {
-		//		std::cout << "first astroid instance hit: " << s << '\n';
-		//		bulletLive = false;
-		//		bulletTimer = 0.f;
-		//		splitAstroid(go_asteroid, astroids);
-		//		return;
-		//	}
-		//}
-
-		//for (int t = 0; t < LOOP->getGameObject(go_asteroid2).getInstanceCount(); t++) {
-		//	if (AA::CollisionHandler::getInstance()->sphere_vs_Sphere_3D(
-		//		LOOP->getGameObject(go_lazer).getColliderSphere(), LOOP->getGameObject(go_asteroid2).getColliderSphere(t)
-		//	)) {
-		//		std::cout << "second astroid instance hit: " << t << '\n';
-		//		bulletLive = false;
-		//		bulletTimer = 0.f;
-		//		splitAstroid(go_asteroid2, astroids);
-		//		return;
-		//	}
-		//}
 	};
 	LOOP->addToUpdate(checkCollide);
 
