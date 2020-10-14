@@ -81,6 +81,10 @@ const std::size_t GameObject::getInstanceCount() const noexcept
 /// <returns>Collider sphere of instance at (which) location.</returns>
 const ColliderSphere* GameObject::getColliderSphere(uint32_t which) const noexcept
 {
+	if (which > mInstanceDetails.size())
+	{
+		throw("attempting to get a collider for an instance that does not exist");
+	}
 	return mInstanceDetails.at(which).mColliderSphere;  //todo: check there are enough instances if this has problems
 }
 
@@ -134,7 +138,8 @@ void GameObject::addInstance(const InstanceDetails& instance_details)
 
 void GameObject::draw(const OGLShader& modelShader)
 {
-	OGLGraphics::getInstance()->Render(mMeshes, mInstanceDetails, modelShader);
+	if (mInstanceDetails.size() > 0)
+		OGLGraphics::getInstance()->Render(mMeshes, mInstanceDetails, modelShader);
 }
 
 // --------------------------SCALE
@@ -213,6 +218,18 @@ void GameObject::advanceTranslate(glm::vec3 amt, int which)
 		}
 		updateModelMatrix(which);
 	}
+}
+
+bool GameObject::removeInstance(int which)
+{
+	if (which > mInstanceDetails.size() - 1 || which < 0)
+	{
+		throw("invalid attempt to remove instance, size error");
+	}
+
+	mInstanceDetails.erase(mInstanceDetails.begin() + which);
+
+	return false;
 }
 
 void GameObject::translateTo(glm::vec3 to, int which)

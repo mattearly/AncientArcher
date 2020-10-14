@@ -61,6 +61,7 @@ public:
 	const int getObjectId() const noexcept;
 	const std::size_t getInstanceCount() const noexcept;
 	const ColliderSphere* getColliderSphere(uint32_t which = 0) const noexcept;
+	bool isSingleInstance() const;
 
 	// setters
 	void setCamera(int id) noexcept;
@@ -83,7 +84,7 @@ public:
 	void advanceTranslate(glm::vec3 amt);
 	void advanceTranslate(glm::vec3 amt, int which);
 
-	bool isSingleInstance() const;
+	bool removeInstance(int which);
 
 	friend class Loop;
 
