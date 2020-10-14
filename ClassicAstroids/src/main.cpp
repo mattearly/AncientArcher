@@ -199,18 +199,20 @@ int main()
 
 	auto checkCollide = []()
 	{
-		for (auto& ast : astroids)
-		{
-			if (AA::CollisionHandler::getInstance()->sphere_vs_Sphere_3D
-			(
-				LOOP->getGameObject(go_lazer).getColliderSphere(),
-				LOOP->getGameObject(ast.object_id).getColliderSphere(ast.instance_id)
-			))
+		if (bulletOut) {
+			for (auto& ast : astroids)
 			{
-				//std::cout << "hit! obj id: " << ast.object_id << ", inst id: " << ast.instance_id << '\n';
-				bulletHitSomething = true;
-				hitAstroid(ast, astroids);
-				return;
+				if (AA::CollisionHandler::getInstance()->sphere_vs_Sphere_3D
+				(
+					LOOP->getGameObject(go_lazer).getColliderSphere(),
+					LOOP->getGameObject(ast.object_id).getColliderSphere(ast.instance_id)
+				))
+				{
+					//std::cout << "hit! obj id: " << ast.object_id << ", inst id: " << ast.instance_id << '\n';
+					bulletHitSomething = true;
+					hitAstroid(ast, astroids);
+					return;
+				}
 			}
 		}
 	};
