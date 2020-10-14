@@ -91,8 +91,8 @@ int main()
 	const float TURNSPEED = 210.f;
 	static const float TURNSPEEDr = glm::radians(TURNSPEED);
 	static const float MOVESPEED = 6.9f;
-	static const float FIRELENGTH = .7187f;
-	static const float BULLETSPEED = 24.f;
+	static const float FIRELENGTH = .6187f;
+	static const float BULLETSPEED = 23.f;
 
 	static float xShipDir;
 	static float zShipDir;
@@ -113,11 +113,24 @@ int main()
 			LOOP->getGameObject(go_ship).advanceTranslate(glm::vec3(xShipDir, 0, zShipDir) * dt * MOVESPEED);
 
 			// cam follow if move
-			//xCamPos = LOOP->getGameObject(go_ship).getLocation().x;
-			//zCamPos = LOOP->getGameObject(go_ship).getLocation().z;
-			//LOOP->getCamera(cam_1).setCurrentPosition(glm::vec3(xCamPos, 0, zCamPos));
+//xCamPos = LOOP->getGameObject(go_ship).getLocation().x;
+//zCamPos = LOOP->getGameObject(go_ship).getLocation().z;
+//LOOP->getCamera(cam_1).setCurrentPosition(glm::vec3(xCamPos, 0, zCamPos));
+//std::cout << "loc" << xCamPos << ',' << zCamPos << '\n';
 
-			//std::cout << "loc" << xCamPos << ',' << zCamPos << '\n';
+			//positive bounds
+			if (LOOP->getGameObject(go_ship).getLocation().x > BOUNDRYSIZE)
+				LOOP->getGameObject(go_ship).advanceTranslate(glm::vec3(-BOUNDRYSIZE * 2, 0, 0));
+
+			if (LOOP->getGameObject(go_ship).getLocation().z > BOUNDRYSIZE)
+				LOOP->getGameObject(go_ship).advanceTranslate(glm::vec3(0, 0, -BOUNDRYSIZE * 2));
+
+			//negative bounds
+			if (LOOP->getGameObject(go_ship).getLocation().x < -BOUNDRYSIZE)
+				LOOP->getGameObject(go_ship).advanceTranslate(glm::vec3(BOUNDRYSIZE * 2, 0, 0));
+
+			if (LOOP->getGameObject(go_ship).getLocation().z < -BOUNDRYSIZE)
+				LOOP->getGameObject(go_ship).advanceTranslate(glm::vec3(0, 0, BOUNDRYSIZE * 2));
 		}
 
 		if (turnleft)
