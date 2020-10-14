@@ -14,7 +14,7 @@ int main()
 	LOOP->getCamera(cam_1).shiftYawAndPitch(0.f, -90.f); // look down
 
 	// fullscreen
-	//DISPLAY->setWindowSize('f');
+	DISPLAY->setWindowSize(800, 800, true);
 
 	static int shader_unlit = LOOP->addShader("../assets/shaders/noLight.vert", "../assets/shaders/noLight.frag");
 
@@ -86,6 +86,8 @@ int main()
 	};
 	LOOP->addToKeyHandling(hotkeys);
 
+	static const float BOUNDRYSIZE = 10.9f;
+
 	const float TURNSPEED = 210.f;
 	static const float TURNSPEEDr = glm::radians(TURNSPEED);
 	static const float MOVESPEED = 6.9f;
@@ -111,9 +113,11 @@ int main()
 			LOOP->getGameObject(go_ship).advanceTranslate(glm::vec3(xShipDir, 0, zShipDir) * dt * MOVESPEED);
 
 			// cam follow if move
-			xCamPos = LOOP->getGameObject(go_ship).getLocation().x;
-			zCamPos = LOOP->getGameObject(go_ship).getLocation().z;
-			LOOP->getCamera(cam_1).setCurrentPosition(glm::vec3(xCamPos, 0, zCamPos));
+			//xCamPos = LOOP->getGameObject(go_ship).getLocation().x;
+			//zCamPos = LOOP->getGameObject(go_ship).getLocation().z;
+			//LOOP->getCamera(cam_1).setCurrentPosition(glm::vec3(xCamPos, 0, zCamPos));
+
+			//std::cout << "loc" << xCamPos << ',' << zCamPos << '\n';
 		}
 
 		if (turnleft)
@@ -167,7 +171,7 @@ int main()
 	};
 	LOOP->addToDeltaUpdate(controlShip);
 
-	// ASTEROIDS
+	// ASTROIDS
 	static int go_asteroid = LOOP->addObject("../assets/models/obj/asteroid.obj", cam_1, shader_unlit);
 	LOOP->getGameObject(go_asteroid).translateTo(glm::vec3(0, -20, -5));
 	LOOP->getGameObject(go_asteroid).setColliderSphere(glm::vec3(0, -20, -5), 1.f);
@@ -190,7 +194,7 @@ int main()
 				LOOP->getGameObject(ast.object_id).getColliderSphere(ast.instance_id)
 			))
 			{
-				std::cout << "hit! obj id: " << ast.object_id << ", inst id: " << ast.instance_id << '\n';
+				//std::cout << "hit! obj id: " << ast.object_id << ", inst id: " << ast.instance_id << '\n';
 				bulletHitSomething = true;
 				hitAstroid(ast, astroids);
 				return;
@@ -207,6 +211,21 @@ int main()
 			return;
 		for (const auto& ast : astroids)
 		{
+			//positive bounds
+			if (LOOP->getGameObject(ast.object_id).getLocation(ast.instance_id).x > BOUNDRYSIZE)
+				LOOP->getGameObject(ast.object_id).advanceTranslate(glm::vec3(-BOUNDRYSIZE * 2, 0, 0), ast.instance_id);
+
+			if (LOOP->getGameObject(ast.object_id).getLocation(ast.instance_id).z > BOUNDRYSIZE)
+				LOOP->getGameObject(ast.object_id).advanceTranslate(glm::vec3(0, 0, -BOUNDRYSIZE * 2), ast.instance_id);
+
+			//negative bounds
+			if (LOOP->getGameObject(ast.object_id).getLocation(ast.instance_id).x < -BOUNDRYSIZE)
+				LOOP->getGameObject(ast.object_id).advanceTranslate(glm::vec3(BOUNDRYSIZE * 2, 0, 0), ast.instance_id);
+
+			if (LOOP->getGameObject(ast.object_id).getLocation(ast.instance_id).z < -BOUNDRYSIZE)
+				LOOP->getGameObject(ast.object_id).advanceTranslate(glm::vec3(0, 0, BOUNDRYSIZE * 2), ast.instance_id);
+
+			// standard movement
 			LOOP->getGameObject(ast.object_id).advanceTranslate(glm::vec3(dt * ast.direction.x * ast.speed, 0, dt * ast.direction.y * ast.speed), ast.instance_id);
 			LOOP->getGameObject(ast.object_id).advanceRotation(glm::vec3(dt * ast.rotation.x, dt * ast.rotation.y, dt * ast.rotation.z), ast.instance_id);
 		}
