@@ -190,7 +190,7 @@ int main()
 				LOOP->getGameObject(ast.object_id).getColliderSphere(ast.instance_id)
 			))
 			{
-				//std::cout << "hit! obj id: " << ast.object_id << ", inst id: " << ast.instance_id << '\n';
+				std::cout << "hit! obj id: " << ast.object_id << ", inst id: " << ast.instance_id << '\n';
 				bulletHitSomething = true;
 				hitAstroid(ast, astroids);
 				return;

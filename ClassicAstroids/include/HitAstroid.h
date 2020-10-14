@@ -8,7 +8,7 @@ void hitAstroid(Astroid& a, std::vector<Astroid>& astroids)
 {
 	if (a.isFragment)
 	{
-		DestroyAstroid(a, astroids);
+		destroyAstroid(a, astroids);
 	}
 	else
 	{
