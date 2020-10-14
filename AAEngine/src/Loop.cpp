@@ -154,6 +154,7 @@ const GameObject& Loop::getGameObject(int objId) const
 
 GameObject& Loop::getGameObject(int objId)
 {
+	//todo optimize
 	for (auto& obj : mGameObjects)
 	{
 		if (obj.getObjectId() == objId)
