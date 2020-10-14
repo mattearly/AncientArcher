@@ -91,7 +91,7 @@ int main()
 	const float TURNSPEED = 210.f;
 	static const float TURNSPEEDr = glm::radians(TURNSPEED);
 	static const float MOVESPEED = 6.9f;
-	static const float FIRELENGTH = .6187f;
+	static const float FIRELENGTH = .3187f;
 	static const float BULLETSPEED = 23.f;
 
 	static float xShipDir;
@@ -167,6 +167,20 @@ int main()
 			if (!bulletHitSomething)
 			{
 				LOOP->getGameObject(go_lazer).advanceTranslate(glm::vec3(xFireDir, 0, zFireDir) * dt * BULLETSPEED);
+
+				//positive bounds
+				if (LOOP->getGameObject(go_lazer).getLocation().x > BOUNDRYSIZE)
+					LOOP->getGameObject(go_lazer).advanceTranslate(glm::vec3(-BOUNDRYSIZE * 2, 0, 0));
+
+				if (LOOP->getGameObject(go_lazer).getLocation().z > BOUNDRYSIZE)
+					LOOP->getGameObject(go_lazer).advanceTranslate(glm::vec3(0, 0, -BOUNDRYSIZE * 2));
+
+				//negative bounds
+				if (LOOP->getGameObject(go_lazer).getLocation().x < -BOUNDRYSIZE)
+					LOOP->getGameObject(go_lazer).advanceTranslate(glm::vec3(BOUNDRYSIZE * 2, 0, 0));
+
+				if (LOOP->getGameObject(go_lazer).getLocation().z < -BOUNDRYSIZE)
+					LOOP->getGameObject(go_lazer).advanceTranslate(glm::vec3(0, 0, BOUNDRYSIZE * 2));
 			}
 			else
 			{
@@ -199,7 +213,7 @@ int main()
 
 	auto checkCollide = []()
 	{
-		if (bulletOut) {
+		if (bulletOut && !bulletHitSomething) {
 			for (auto& ast : astroids)
 			{
 				if (AA::CollisionHandler::getInstance()->sphere_vs_Sphere_3D
