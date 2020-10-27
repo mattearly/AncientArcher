@@ -10,6 +10,8 @@ Dependencies: glm, assimp, glfw3, opengl
 
 `vcpkg install glm:x64-windows assimp:x64-windows glfw3:x64-windows glad:x64-windows`
 
+[vcpkg tutorial](https://youtu.be/pSirBt4OgXQ)
+
 # Dev Notes
 
 Notes:
