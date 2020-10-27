@@ -1,17 +1,15 @@
-#version 430 core
-// passing in from combinedLight.vert
-layout(location=0)in vec3 pass_Pos;
-layout(location=1)in vec2 pass_TexUV;
-layout(location=2)in vec3 pass_Norm;
-// layout(location = 3) out vec3 pass_Color;
+#version 330 core
 
-// final pixel color
+in vec3 pass_Pos;
+in vec2 pass_TexUV;
+in vec3 pass_Norm;
+
 out vec3 out_Color;
 
-// ------------ STRUCT DECLARACTIONS
 struct Material
 {
-	sampler2D Albedo;// or Diffuse for a more 'shadowy' version
+	sampler2D Albedo;                        // or Diffuse for a more 'shadowy' version
+	
 	// sampler2D TextureGloss;               // or Roughness
 	// sampler2D TextureNormal;
 	// sampler2D TextureAmbientOcclusion;    // more shadows
@@ -44,11 +42,9 @@ struct SpotLight
 	vec3 Ambient,Diffuse,Specular;
 };
 
-//  constants
 const int MAXPOINTLIGHTS=50;
 const int MAXSPOTLIGHTS=25;
 
-// ----------- UNIFORM DECLARATIONS
 uniform vec3 viewPos;
 uniform Material material;
 
@@ -59,39 +55,34 @@ uniform SpotLight spotLight[MAXSPOTLIGHTS];
 uniform int NUM_POINT_LIGHTS;
 uniform int NUM_SPOT_LIGHTS;
 
-// ---------- FUNCTION DELCARATIONS
 vec3 CalcDirectionalLight(vec3 normal,vec3 viewDir);
 vec3 CalcPointLight(PointLight light,vec3 normal,vec3 viewDir);
 vec3 CalcSpotLight(SpotLight light,vec3 normal,vec3 viewDir);
 
-// --------- MAIN
+int i = 0;
+
 void main()
 {
 	vec3 result;
-	// use lights
-	vec3 normal=normalize(pass_Norm);
-	vec3 viewDir=normalize(viewPos-pass_Pos);
-	// calc directional light on fragment
-	result += CalcDirectionalLight(normal, viewDir);
-	// calc point lights on fragments
-	for (int i = 0; i < NUM_POINT_LIGHTS; i++)
-	{
-		  result += CalcPointLight(pointLight[i], normal, viewDir);
-	}
-	// calc spot lights on the fragments
-	for (int i = 0; i < NUM_SPOT_LIGHTS; i++)
-	{
-		  result += CalcSpotLight(spotLight[i], normal, viewDir);
-	}
-	out_Color=result;
 
-	// dont use lights
-	// out_Color = texture(material.Albedo, pass_TexUV);
-	// out_Color=vec3(1);
+	vec3 normal = normalize(pass_Norm);
+	vec3 viewDir = normalize(viewPos - pass_Pos);
+
+	result += CalcDirectionalLight(normal, viewDir);
 	
+	for (i = 0; i < NUM_POINT_LIGHTS; i++)
+	{
+		result += CalcPointLight(pointLight[i], normal, viewDir);
+	}
+
+	for (i = 0; i < NUM_SPOT_LIGHTS; i++)
+	{
+		result += CalcSpotLight(spotLight[i], normal, viewDir);
+	}
+
+	out_Color = result;
 }
 
-// -------- FUNCTION DEFINITIONS
 vec3 CalcDirectionalLight(vec3 normal,vec3 viewDir)
 {
 	vec3 lightDir=normalize(-directionalLight.Direction);
