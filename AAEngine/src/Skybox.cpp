@@ -32,7 +32,7 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 // derived from https://learnopengl.com/Advanced-OpenGL/Cubemaps
 #include "../include/Skybox.h"
-#include "../include/vendor/glad/glad.h"
+#include <glad/glad.h>
 #include <glm/glm.hpp>
 #include <iostream>
 #include "../include/OGLGraphics.h"

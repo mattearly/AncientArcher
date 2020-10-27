@@ -31,7 +31,7 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 ----------------------------------------------------------------------
 */
 #include "../include/OGLShader.h"
-#include "../include/vendor/glad/glad.h"
+#include <glad/glad.h>
 #include <fstream>
 #include <sstream>
 #include <iostream>

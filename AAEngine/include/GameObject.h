@@ -60,7 +60,7 @@ public:
 	const int getCameraId() const noexcept;
 	const int getObjectId() const noexcept;
 	const std::size_t getInstanceCount() const noexcept;
-	const ColliderSphere* getColliderSphere(uint32_t which = 0) const noexcept;
+	const ColliderSphere* getColliderSphere(uint32_t which = 0) const;
 	bool isSingleInstance() const;
 
 	// setters

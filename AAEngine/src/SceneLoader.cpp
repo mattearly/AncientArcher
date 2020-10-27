@@ -7,7 +7,7 @@
 #include <assimp/postprocess.h>
 #include "../include/Vertex.h"
 #include "../include/TexLoader.h"
-#include "../include/vendor/glad/glad.h"
+#include <glad/glad.h>
 #include <glm/glm.hpp>
 #include <glm/gtc/quaternion.hpp>
 

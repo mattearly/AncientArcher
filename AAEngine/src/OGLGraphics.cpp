@@ -34,7 +34,7 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #include <glm/glm.hpp>
 #include <glm/gtc/quaternion.hpp>
 #include <stb_image.h>
-#include "../include/vendor/glad/glad.h"
+#include <glad/glad.h>
 #include <memory>
 #include <string>
 #include <cstddef>

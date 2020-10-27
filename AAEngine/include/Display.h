@@ -31,6 +31,7 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 ----------------------------------------------------------------------
 */
 #pragma once
+#include <glad/glad.h>
 #include <glm/glm.hpp>
 struct GLFWwindow;
 

@@ -79,7 +79,7 @@ const std::size_t GameObject::getInstanceCount() const noexcept
 /// </summary>
 /// <param name="which">The instance number to return the collider sphere of.</param>
 /// <returns>Collider sphere of instance at (which) location.</returns>
-const ColliderSphere* GameObject::getColliderSphere(uint32_t which) const noexcept
+const ColliderSphere* GameObject::getColliderSphere(uint32_t which) const
 {
 	if (which > mInstanceDetails.size())
 	{
