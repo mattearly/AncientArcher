@@ -2,34 +2,18 @@
 
 # Ancient Archer
 
-## To Run / Work on Development
+## build & run
 
-Requirements: Windows 10, Visual Studio Community Edition 2019, CMake, Git
+Currently I use vcpkg for handling the libraries. Note: download the x64-windows versions as AncientArcher is set to x64 build
 
-Dependencies: glm, stb, assimp, glfw
+Dependencies: glm, assimp, glfw, opengl
 
-1. Download dependencies (all open source on github) into the same root folder. i.e. 
+vcpkg install glm:x64-windows
+vcpkg install assimp:x64-windows
+vcpkg install glfw:x64-windows
+vcpkg install glad:x64-windows
 
-```
-path/to/yourrepos/AncientArcher
-path/to/yourrepos/glm
-path/to/yourrepos/stb
-path/to/yourrepos/assimp
-path/to/yourrepos/glfw
-```
-
-2. Build assimp
-
-	1. Use CMake to configure and build into `path\to\yourrepos\assimp\build`
-	2. Open assimp.sln(located in the build folder) with Visual Studio Community 2019. 
-	3. Build Debug x64(optional) and Release x64 Configurations.
-
-3. Build glfw
-
-	1. Same process as assimp, but before building change the runtime library `(Properties -> C/C++ -> Code Generation -> Runtime Library)` to `/MT` 
-
-4. Open AncientArcher.sln
-
+# Dev Notes
 
 Notes:
 
