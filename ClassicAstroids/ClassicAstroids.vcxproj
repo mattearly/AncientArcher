@@ -127,6 +127,8 @@
     <ClInclude Include="include\DestroyAstroid.h" />
     <ClInclude Include="include\Astroid.h" />
     <ClInclude Include="include\HitAstroid.h" />
+    <ClInclude Include="include\Levels.h" />
+    <ClInclude Include="include\Player.h" />
     <ClInclude Include="include\SplitAstroid.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

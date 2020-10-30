@@ -6,13 +6,19 @@
 #include "../include/DestroyAstroid.h"
 #include "../include/HitAstroid.h"
 #include "../include/SplitAstroid.h"
+#include "../include/Levels.h"
+#include "../include/Player.h"
 
 int main()
 {
 	static int cam_1 = LOOP->addCamera();
 	LOOP->getCamera(cam_1).shiftYawAndPitch(0.f, -90.f); // look down
 
-	DISPLAY->setWindowSize(800, 800, true);
+	auto startupSettings = []() {	
+		DISPLAY->setWindowTitle("astroids!");
+		DISPLAY->setWindowSize(800, 800, true);
+	};
+	LOOP->addToOnBegin(startupSettings);
 
 	static int unlit_shader = LOOP->addShader("../assets/shaders/noLight.vert", "../assets/shaders/noLight.frag");
 
@@ -42,6 +48,19 @@ int main()
 	LOOP->getGameObject(bullet_object).scaleTo(glm::vec3(.3333f));
 	LOOP->getGameObject(bullet_object).rotateTo(glm::vec3(0, glm::radians(180.f), 0));
 	LOOP->getGameObject(bullet_object).setColliderSphere(LOOP->getGameObject(player_ship_object).getLocation(), .02f);
+
+	// ASTROIDS
+	static int go_asteroid = LOOP->addObject("../assets/models/obj/asteroid.obj", cam_1, unlit_shader);
+	LOOP->getGameObject(go_asteroid).translateTo(glm::vec3(0, -20, -5));
+	LOOP->getGameObject(go_asteroid).setColliderSphere(glm::vec3(0, -20, -5), 1.f);
+
+	static int go_asteroid2 = LOOP->addObject("../assets/models/obj/asteroid2.obj", cam_1, unlit_shader);
+	LOOP->getGameObject(go_asteroid2).translateTo(glm::vec3(-7, -20, -7));
+	LOOP->getGameObject(go_asteroid2).setColliderSphere(glm::vec3(-7, -20, -7), 1.f);
+
+	static std::vector<Astroid> astroids;
+	astroids.push_back(createAstroid(go_asteroid, 0, false));
+	astroids.push_back(createAstroid(go_asteroid2, 0, false));
 
 	static bool turnleft(false), turnright(false), moveforward(false), fireweap(false);
 	auto hotkeys = [](AA::KeyboardInput& keypress)
@@ -140,7 +159,6 @@ int main()
 				//apply loc to bullet if it is not out
 				LOOP->getGameObject(bullet_object).translateTo(LOOP->getGameObject(player_ship_object).getLocation());
 			}
-
 		}
 
 		if (turnleft)
@@ -151,7 +169,6 @@ int main()
 				//apply rotation to bullet if it is not out
 				LOOP->getGameObject(bullet_object).rotateTo(LOOP->getGameObject(player_ship_object).getRotation());
 			}
-
 		}
 
 		if (turnright)
@@ -162,7 +179,6 @@ int main()
 				//apply rotation to bullet if it is not out
 				LOOP->getGameObject(bullet_object).rotateTo(LOOP->getGameObject(player_ship_object).getRotation());
 			}
-
 		}
 
 		// bullet logic
@@ -212,23 +228,9 @@ int main()
 						LOOP->getGameObject(bullet_object).advanceTranslate(glm::vec3(0, 0, BOUNDRYSIZE * 2));
 				}
 			}
-
 		}
 	};
 	LOOP->addToDeltaUpdate(controlShip);
-
-	// ASTROIDS
-	static int go_asteroid = LOOP->addObject("../assets/models/obj/asteroid.obj", cam_1, unlit_shader);
-	LOOP->getGameObject(go_asteroid).translateTo(glm::vec3(0, -20, -5));
-	LOOP->getGameObject(go_asteroid).setColliderSphere(glm::vec3(0, -20, -5), 1.f);
-
-	static int go_asteroid2 = LOOP->addObject("../assets/models/obj/asteroid2.obj", cam_1, unlit_shader);
-	LOOP->getGameObject(go_asteroid2).translateTo(glm::vec3(-7, -20, -7));
-	LOOP->getGameObject(go_asteroid2).setColliderSphere(glm::vec3(-7, -20, -7), 1.f);
-
-	static std::vector<Astroid> astroids;
-	astroids.push_back(createAstroid(go_asteroid, 0, false));
-	astroids.push_back(createAstroid(go_asteroid2, 0, false));
 
 	auto checkCollide = []()
 	{
