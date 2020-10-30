@@ -40,6 +40,7 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #include <string>
 #include <iomanip>
 #include <iostream>
+#include <utility>
 
 namespace AA
 {
@@ -223,45 +224,111 @@ void Loop::setSkybox(const std::shared_ptr<Skybox>& skybox) noexcept
 	mSkybox = skybox;
 }
 
-void Loop::addToOnBegin(void(*function)())
+uint32_t Loop::addToOnBegin(void(*function)())
 {
-	onBegin.push_back(function);
+	static uint32_t next_begin_id = 0;
+	next_begin_id++;
+	onBegin.emplace(next_begin_id, function);
+	return next_begin_id;
 }
 
-void Loop::addToDeltaUpdate(void(*function)(float))
+uint32_t Loop::addToDeltaUpdate(void(*function)(float))
 {
-	onDeltaUpdate.push_back(function);
+	static uint32_t next_deltaupdate_id = 0;
+	next_deltaupdate_id++;
+	onDeltaUpdate.emplace(next_deltaupdate_id, function);
+	return next_deltaupdate_id;
 }
 
-void Loop::addToTimedOutKeyHandling(bool(*function)(KeyboardInput&))
+uint32_t Loop::addToUpdate(void(*function)())
 {
-	onTimeoutKeyHandling.push_back(function);
+	static uint32_t next_update_id = 0;
+	next_update_id++;
+	onUpdate.emplace(next_update_id, function);
+	return next_update_id;
 }
 
-void Loop::addToScrollHandling(void(*function)(ScrollInput&))
+uint32_t Loop::addToSlowUpdate(void(*function)())
 {
-	onScrollHandling.push_back(function);
+	static uint32_t next_slowupdate_id = 0;
+	next_slowupdate_id++;
+	onSlowUpdate.emplace(next_slowupdate_id, function);
+	return next_slowupdate_id;
 }
 
-void Loop::addToKeyHandling(void(*function)(KeyboardInput&))
+uint32_t Loop::addToTimedOutKeyHandling(bool(*function)(KeyboardInput&))
 {
-	onKeyHandling.push_back(function);
+	static uint32_t next_timedout_id = 0;
+	next_timedout_id++;
+	onTimeoutKeyHandling.emplace(next_timedout_id, function);
+	return next_timedout_id;
 }
 
-void Loop::addToMouseHandling(void(*function)(MouseInput&))
+uint32_t Loop::addToScrollHandling(void(*function)(ScrollInput&))
 {
-	onMouseHandling.push_back(function);
+	static uint32_t next_scrollhandling_id = 0;
+	next_scrollhandling_id++;
+	onScrollHandling.emplace(next_scrollhandling_id, function);
+	return next_scrollhandling_id;
 }
 
-void Loop::addToUpdate(void(*function)())
+uint32_t Loop::addToKeyHandling(void(*function)(KeyboardInput&))
 {
-	onUpdate.push_back(function);
+	static uint32_t next_keyhandling_id = 0;
+	next_keyhandling_id++;
+	onKeyHandling.emplace(next_keyhandling_id, function);
+	return next_keyhandling_id;
 }
 
-void Loop::addToSlowUpdate(void(*function)())
+uint32_t Loop::addToMouseHandling(void(*function)(MouseInput&))
 {
-	onSlowDeltaUpdate.push_back(function);
+	static uint32_t next_mousehandling_id = 0;
+	next_mousehandling_id++;
+	onMouseHandling.emplace(next_mousehandling_id, function);
+	return next_mousehandling_id;
+
 }
+
+bool Loop::removeFromOnBegin(uint32_t r_id)
+{
+	return static_cast<bool>(onBegin.erase(r_id));
+}
+
+bool Loop::removeFromDeltaUpdate(uint32_t r_id)
+{
+	return static_cast<bool>(onDeltaUpdate.erase(r_id));
+}
+
+bool Loop::removeFromUpdate(uint32_t r_id)
+{
+	return static_cast<bool>(onUpdate.erase(r_id));
+}
+
+bool Loop::removeFromSlowUpdate(uint32_t r_id)
+{
+	return static_cast<bool>(onSlowUpdate.erase(r_id));
+}
+
+bool Loop::removeFromTimedOutKeyHandling(uint32_t r_id)
+{
+	return static_cast<bool>(onTimeoutKeyHandling.erase(r_id));
+}
+
+bool Loop::removeFromScrollHandling(uint32_t r_id)
+{
+	return static_cast<bool>(onScrollHandling.erase(r_id));
+}
+
+bool Loop::removeFromKeyHandling(uint32_t r_id)
+{
+	return static_cast<bool>(onKeyHandling.erase(r_id));
+}
+
+bool Loop::removeFromMouseHandling(uint32_t r_id)
+{
+	return static_cast<bool>(onMouseHandling.erase(r_id));
+}
+
 
 void Loop::setCursorToEnabled(bool isHardwareRendered)
 {
@@ -318,9 +385,9 @@ void Loop::begin()
 {
 	DISPLAY->keepWindowOpen();
 
-	for (auto& oB : onBegin)
+	for (const auto& oB : onBegin)
 	{
-		oB();
+		oB.second();
 	}
 
 	setProjectionMatToAllShadersFromFirstCam_hack();
@@ -338,21 +405,21 @@ void Loop::deltaUpdate()
 	// go through all updates that need access to delta time
 	for (auto& oDU : onDeltaUpdate)
 	{
-		oDU(mDeltaTime);
+		oDU.second(mDeltaTime);
 	}
 
 	// process keyboard input
-	for (auto& oKH : onKeyHandling) { oKH(CONTROLS->mButtonState); }
+	for (auto& oKH : onKeyHandling) { oKH.second(CONTROLS->mButtonState); }
 
 	// absorb scroll wheel
-	for (auto& oSH : onScrollHandling) { oSH(CONTROLS->mMouseWheelScroll); }
+	for (auto& oSH : onScrollHandling) { oSH.second(CONTROLS->mMouseWheelScroll); }
 
 	// reset scroll wheel to 0's after processing scroll wheel
 	CONTROLS->mMouseWheelScroll.xOffset = 0;
 	CONTROLS->mMouseWheelScroll.yOffset = 0;
 
 	// handle mouse position
-	for (auto& oMH : onMouseHandling) { oMH(CONTROLS->mMousePosition); }
+	for (auto& oMH : onMouseHandling) { oMH.second(CONTROLS->mMousePosition); }
 
 	// Snap cursor to the middle of the screen if it is in perspective and cursor is disabled (FPP mode)
 	if (getMouseReportingMode() == MouseReporting::PERSPECTIVE && getCursorMode() == GLFW_CURSOR_DISABLED)
@@ -371,7 +438,7 @@ void Loop::deltaUpdate()
 	//}
 
 	// run through user prefered updates
-	for (auto& oU : onUpdate) { oU(); }
+	for (auto& oU : onUpdate) { oU.second(); }
 
 	// delayed updates for things you don't want spammed.
 	// update accum time for delayed updates
@@ -380,9 +447,9 @@ void Loop::deltaUpdate()
 	if (mSlowUpdateTimeout > mSlowUpdateWaitLength)
 	{
 		// process all delayed updates
-		for (auto& oSU : onSlowDeltaUpdate)
+		for (auto& oSU : onSlowUpdate)
 		{
-			oSU();
+			oSU.second();
 		}
 		// we should also process whether the window size changed here
 		if (DISPLAY->mWindowSizeChanged)
@@ -408,7 +475,7 @@ void Loop::deltaUpdate()
 		for (auto& oTOK : onTimeoutKeyHandling)
 		{
 			// if we get a true we stop processing
-			if (oTOK(CONTROLS->mButtonState)) {
+			if (oTOK.second(CONTROLS->mButtonState)) {
 				//std::cout << "timeout key press detected. reseting timeoutkeytimer\n";
 				mNonSpammableKeysTimeout = 0.f;
 				break;
@@ -472,7 +539,7 @@ void Loop::resetEngine() noexcept
 	onScrollHandling.clear();
 	onMouseHandling.clear();
 	onUpdate.clear();
-	onSlowDeltaUpdate.clear();
+	onSlowUpdate.clear();
 
 	// reset all state data
 	mNonSpammableKeysTimeout = 0.f;
