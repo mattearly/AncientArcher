@@ -58,7 +58,7 @@ unsigned int TexLoader::loadCubeTexture(const std::vector<std::string>& files)
 		else
 		{
 			stbi_image_free(data);
-			//throw std::runtime_error("A cubemap texture was not able to be loaded.");
+			throw std::runtime_error("A cubemap texture was not able to be loaded -- check path.");
 			return 0;
 		}
 	}
