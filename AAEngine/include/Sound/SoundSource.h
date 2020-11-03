@@ -19,7 +19,7 @@ private:
 	bool loop = false;
 	ALuint buffer = 0;
 
-	ALint state = AL_INITIAL;
+	//ALint state = AL_INITIAL;
 	
 };
 
