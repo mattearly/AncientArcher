@@ -1,6 +1,7 @@
 #pragma once
 #include <vector>
 #include "Astroid.h"
+#include "../../AAEngine/include/Loop.h"
 
 /// <summary>
 /// fixes the instance ids of the rest of the astroids still left to match the rendering instance

@@ -2,7 +2,6 @@
 #include "../../AAEngine/include/GameObject.h"
 #include "../../AAEngine/include/Loop.h"
 #include "Astroid.h"
-#include <rand/rand.h>
 
 /// <summary>
 /// Turns a large (non-fragment) astroid into 4 small fragments.

@@ -1,6 +1,6 @@
 #pragma once
-#include <rand/rand.h>
 #include <glm/glm.hpp>
+#include "../../rand/rand/rand.h"
 
 struct Astroid
 {

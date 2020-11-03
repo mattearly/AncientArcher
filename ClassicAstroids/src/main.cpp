@@ -1,20 +1,22 @@
-#include <Loop.h>
-#include <Lights.h>
-#include <rand/rand.h>
-#include <CollisionHandler.h>
 #include "../include/Astroid.h"
 #include "../include/DestroyAstroid.h"
 #include "../include/HitAstroid.h"
 #include "../include/SplitAstroid.h"
 #include "../include/Levels.h"
 #include "../include/Player.h"
+#include "../../AAEngine/include/Lights.h"
+#include "../../AAEngine/include/Loop.h"
+#include "../../AAEngine/include/Sound/SoundDevice.h"
+#include "../../AAEngine/include/Sound/SoundBuffers.h"
+#include "../../AAEngine/include/Sound/SoundSource.h"
+#include "../../AAEngine/include/CollisionHandler.h"
 
 int main()
 {
 	static int cam_1 = LOOP->addCamera();
 	LOOP->getCamera(cam_1).shiftYawAndPitch(0.f, -90.f); // look down
 
-	auto startupSettings = []() {	
+	auto startupSettings = []() {
 		DISPLAY->setWindowTitle("astroids!");
 		DISPLAY->setWindowSize(800, 800, true);
 	};
@@ -61,6 +63,14 @@ int main()
 	static std::vector<Astroid> astroids;
 	astroids.push_back(createAstroid(go_asteroid, 0, false));
 	astroids.push_back(createAstroid(go_asteroid2, 0, false));
+
+	// INIT SOUND
+	AA::SoundDevice* snd = AA::SoundDevice::get();
+	// LOAD SOUND EFFECTS
+	static uint32_t sound_zap = AA::SoundBuffers::get()->addSound("../assets/sounds/zap15.ogg");
+	static AA::SoundSource zap_source;
+	static uint32_t sound_hit_ast = AA::SoundBuffers::get()->addSound("../assets/sounds/shot2.ogg");
+	static AA::SoundSource astroid_hit_source;
 
 	static bool turnleft(false), turnright(false), moveforward(false), fireweap(false);
 	auto hotkeys = [](AA::KeyboardInput& keypress)
@@ -191,6 +201,7 @@ int main()
 			zShipDir = cos(dir.y);
 			xFireDir = xShipDir;
 			zFireDir = zShipDir;
+			zap_source.Play(sound_zap);
 		}
 
 		if (bulletOnCooldown)
@@ -245,6 +256,7 @@ int main()
 				{
 					resetBullet();
 					hitAstroid(ast, astroids);
+					astroid_hit_source.Play(sound_hit_ast);
 					return;
 				}
 			}
