@@ -6,9 +6,9 @@
 
 Currently I use vcpkg for handling the libraries. Note: download the x64-windows versions as AncientArcher is set to x64 build
 
-Dependencies: glm, assimp, glfw3, opengl
+Dependencies: glm, assimp, glfw3, opengl, openal, sndfile
 
-`vcpkg install glm:x64-windows assimp:x64-windows glfw3:x64-windows glad:x64-windows`
+`vcpkg install glm:x64-windows assimp:x64-windows glfw3:x64-windows glad:x64-windows openal-soft:x64-windows libsndfile:x64-windows`
 
 [vcpkg tutorial](https://youtu.be/pSirBt4OgXQ)
 

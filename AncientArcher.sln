@@ -17,6 +17,8 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "ClassicAstroids", "ClassicA
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "FPS_Survival", "FPS_Survival\FPS_Survival.vcxproj", "{CEB98730-99AE-4134-9722-0379CF20D4D0}"
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "SoundTest", "SoundTest\SoundTest.vcxproj", "{40084D3F-264B-4946-9C3E-9402C61AE6F1}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|x64 = Debug|x64
@@ -81,6 +83,14 @@ Global
 		{CEB98730-99AE-4134-9722-0379CF20D4D0}.Release|x64.Build.0 = Release|x64
 		{CEB98730-99AE-4134-9722-0379CF20D4D0}.Release|x86.ActiveCfg = Release|Win32
 		{CEB98730-99AE-4134-9722-0379CF20D4D0}.Release|x86.Build.0 = Release|Win32
+		{40084D3F-264B-4946-9C3E-9402C61AE6F1}.Debug|x64.ActiveCfg = Debug|x64
+		{40084D3F-264B-4946-9C3E-9402C61AE6F1}.Debug|x64.Build.0 = Debug|x64
+		{40084D3F-264B-4946-9C3E-9402C61AE6F1}.Debug|x86.ActiveCfg = Debug|Win32
+		{40084D3F-264B-4946-9C3E-9402C61AE6F1}.Debug|x86.Build.0 = Debug|Win32
+		{40084D3F-264B-4946-9C3E-9402C61AE6F1}.Release|x64.ActiveCfg = Release|x64
+		{40084D3F-264B-4946-9C3E-9402C61AE6F1}.Release|x64.Build.0 = Release|x64
+		{40084D3F-264B-4946-9C3E-9402C61AE6F1}.Release|x86.ActiveCfg = Release|Win32
+		{40084D3F-264B-4946-9C3E-9402C61AE6F1}.Release|x86.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
