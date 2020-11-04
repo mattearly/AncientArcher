@@ -10,7 +10,7 @@ SoundBuffers* SoundBuffers::get()
 	return sndbuf;
 }
 
-ALuint SoundBuffers::addSound(const char* filename)
+ALuint SoundBuffers::addSoundEffect(const char* filename)
 {
 	ALenum err, format;
 	ALuint buffer;
@@ -90,21 +90,21 @@ ALuint SoundBuffers::addSound(const char* filename)
 		return 0;
 	}
 
-	buffers.push_back(buffer);  // add to the list of known buffers
+	p_SoundEffectBuffers.push_back(buffer);  // add to the list of known buffers
 
 	return buffer;
 }
 
-bool SoundBuffers::removeSound(const ALuint& buf_to_remove)
+bool SoundBuffers::removeSoundEffect(const ALuint& buf_to_remove)
 {
-	auto it = buffers.begin();
-	while (it != buffers.end())
+	auto it = p_SoundEffectBuffers.begin();
+	while (it != p_SoundEffectBuffers.end())
 	{
 		if (*it == buf_to_remove)
 		{
 			alDeleteBuffers(1, &*it);
 
-			it = buffers.erase(it);
+			it = p_SoundEffectBuffers.erase(it);
 			
 			return true; //she was found and removed and our job is done here
 		}

@@ -13,13 +13,17 @@ class SoundBuffers
 public:
 	static SoundBuffers* get();
 
-	ALuint addSound(const char* filename);
-	bool removeSound(const ALuint& buffer);
+	ALuint addSoundEffect(const char* filename);
+	bool removeSoundEffect(const ALuint& buffer);
+
 
 private:
+
 	SoundBuffers();
 	~SoundBuffers();
-	std::vector<ALuint> buffers;
+
+	std::vector<ALuint> p_SoundEffectBuffers;
+
 
 };
 } // end namespace AA

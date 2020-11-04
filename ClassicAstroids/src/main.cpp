@@ -67,9 +67,9 @@ int main()
 	// INIT SOUND
 	AA::SoundDevice* snd = AA::SoundDevice::get();
 	// LOAD SOUND EFFECTS
-	static uint32_t sound_zap = AA::SoundBuffers::get()->addSound("../assets/sounds/zap15.ogg");
+	static uint32_t sound_zap = AA::SoundBuffers::get()->addSoundEffect("../assets/sounds/zap15.ogg");
 	static AA::SoundSource zap_source;
-	static uint32_t sound_hit_ast = AA::SoundBuffers::get()->addSound("../assets/sounds/shot2.ogg");
+	static uint32_t sound_hit_ast = AA::SoundBuffers::get()->addSoundEffect("../assets/sounds/shot2.ogg");
 	static AA::SoundSource astroid_hit_source;
 
 	static bool turnleft(false), turnright(false), moveforward(false), fireweap(false);
