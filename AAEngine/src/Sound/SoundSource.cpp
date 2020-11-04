@@ -3,9 +3,6 @@
 
 namespace AA
 {
-void LoadSound(const char* soundfile)
-{
-}
 
 void SoundSource::Play(const ALuint buf)
 {
