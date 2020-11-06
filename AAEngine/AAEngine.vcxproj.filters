@@ -87,7 +87,13 @@
     <ClInclude Include="include\Sound\SoundSource.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="include\Sound\SoundBuffers.h">
+    <ClInclude Include="include\Sound\SoundBufferManager.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Sound\SoundStream.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="include\vendor\openal\common\alhelpers.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
@@ -149,7 +155,10 @@
     <ClCompile Include="src\Sound\SoundSource.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\Sound\SoundBuffers.cpp">
+    <ClCompile Include="src\Sound\SoundBufferManager.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\vendor\openal\common\alhelpers.c">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

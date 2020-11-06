@@ -152,6 +152,8 @@
     <ClInclude Include="include\GameObject.h" />
     <ClInclude Include="glad\glad.h" />
     <ClInclude Include="include\InstanceDetails.h" />
+    <ClInclude Include="include\Sound\SoundStream.h" />
+    <ClInclude Include="include\vendor\openal\common\alhelpers.h" />
     <ClInclude Include="KHR\khrplatform.h" />
     <ClInclude Include="include\SceneLoader.h" />
     <ClInclude Include="include\Loop.h" />
@@ -169,10 +171,10 @@
     <ClInclude Include="include\WorldUp.h" />
     <ClInclude Include="include\Sound\SoundDevice.h" />
     <ClInclude Include="include\Sound\SoundSource.h" />
-    <ClInclude Include="include\Sound\SoundBuffers.h" />
+    <ClInclude Include="include\Sound\SoundBufferManager.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="src\Sound\SoundBuffers.cpp" />
+    <ClCompile Include="src\Sound\SoundBufferManager.cpp" />
     <ClCompile Include="src\Sound\SoundSource.cpp" />
     <ClCompile Include="src\Sound\SoundDevice.cpp" />
     <ClCompile Include="src\ColliderSphere.cpp" />
@@ -186,6 +188,7 @@
     <ClCompile Include="src\OGLGraphics.cpp" />
     <ClCompile Include="src\OGLShader.cpp" />
     <ClCompile Include="src\Skybox.cpp" />
+    <ClCompile Include="src\vendor\openal\common\alhelpers.c" />
     <ClCompile Include="src\vendor\stb\stb_image.cpp" />
     <ClCompile Include="src\TexLoader.cpp" />
     <ClCompile Include="src\Vertex.cpp" />
