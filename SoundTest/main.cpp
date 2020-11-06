@@ -22,47 +22,47 @@ int main()
 	};
 	LOOP->addToKeyHandling(playDingOnClick);
 
-	  StreamPlayer* player;
-	  int i;
+	StreamPlayer* player;
+	int i;
 
-	  player = NewPlayer();
-	
-	
-	    if (!OpenPlayerFile(player, "E:/downloads/GojiBerryBeat-NanaKwabena.wav"))
-	      std::cout << "could not open play file\n";
-	    if (!StartPlayer(player))
-	    {
-	      ClosePlayerFile(player);
-	      std::cout << "could not start playing music\n";
-	    }
-	
-	    while (UpdatePlayer(player))
-	      al_nssleep(10000000);
-	
-	    /* All done with this file. Close it and go to the next */
-	    ClosePlayerFile(player);
-	 
+	player = NewPlayer();
 
-		std::cout << "done\n";
 
-	  /* All files done. Delete the player, and close down OpenAL */
-	  DeletePlayer(player);
-	  player = NULL;
-	
-	  //CloseAL();
+	if (!OpenPlayerFile(player, "../assets/sounds/music/Into It - Kwon.ogg"))
+		std::cout << "could not open play file\n";
+	if (!StartPlayer(player))
+	{
+		ClosePlayerFile(player);
+		std::cout << "could not start playing music\n";
+	}
 
-	//auto beginWithMusic = []()
-	//{
-	//	SoundBufferManager::get()->OpenPlayerFile("E:\\downloads\\GojiBerryBeat-NanaKwabena.wav");
-	//	SoundBufferManager::get()->InitPlayer(music_sounds);
-	//	SoundBufferManager::get()->StartPlayer(music_sounds);
-	//};
-	//LOOP->addToOnBegin(beginWithMusic);
-	//auto updateMusicBuffer = []()
-	//{
-	//	SoundBufferManager::get()->UpdatePlayer(music_sounds);
-	//};
-	//LOOP->addToSlowUpdate(updateMusicBuffer);
+	while (UpdatePlayer(player))
+		al_nssleep(10000000);
+
+	/* All done with this file. Close it and go to the next */
+	ClosePlayerFile(player);
+
+
+	std::cout << "done\n";
+
+	/* All files done. Delete the player, and close down OpenAL */
+	DeletePlayer(player);
+	player = NULL;
+
+	//CloseAL();
+
+  //auto beginWithMusic = []()
+  //{
+  //	SoundBufferManager::get()->OpenPlayerFile("E:\\downloads\\GojiBerryBeat-NanaKwabena.wav");
+  //	SoundBufferManager::get()->InitPlayer(music_sounds);
+  //	SoundBufferManager::get()->StartPlayer(music_sounds);
+  //};
+  //LOOP->addToOnBegin(beginWithMusic);
+  //auto updateMusicBuffer = []()
+  //{
+  //	SoundBufferManager::get()->UpdatePlayer(music_sounds);
+  //};
+  //LOOP->addToSlowUpdate(updateMusicBuffer);
 
 	return LOOP->runMainLoop();
 }
