@@ -12,10 +12,19 @@ class SoundDevice
 {
 public:
 	static SoundDevice* get();
+	static void init();
+	static void init(const char* devicename);
+
+	void SwitchDevice(const char* devicename);
+
+	void populateDeviceVec(std::vector<std::string>& devicesVec);
+
+protected:
+	SoundDevice();
+	SoundDevice(const char* devicename);
+	~SoundDevice();
 
 private:
-	SoundDevice();
-	~SoundDevice();
 
 	ALCdevice* p_ALCDevice;
 	ALCcontext* p_ALCContext;
