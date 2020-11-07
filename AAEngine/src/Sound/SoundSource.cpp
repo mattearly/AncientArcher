@@ -1,4 +1,5 @@
 #include "..\..\include\Sound\SoundSource.h"
+#include "..\..\include\Sound\SoundBufferManager.h"
 #include <iostream>
 
 namespace AA
@@ -22,6 +23,12 @@ void SoundSource::Play(const ALuint buf)
 	//	alGetSourcei(source, AL_SOURCE_STATE, &state);
 	//}
 	//std::cout << "done playing sound\n";
+}
+
+void SoundSource::LongPlay(const ALuint id)
+{
+	if (!SoundBufferManager::get()->PlayMusic(id, *this))
+		std::cout << "failed to start playing music\n";
 }
 
 SoundSource::SoundSource()
