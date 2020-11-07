@@ -96,6 +96,9 @@
     <ClInclude Include="include\vendor\openal\common\alhelpers.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="include\Sound\SoundMusicSource.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\Camera.cpp">
@@ -159,6 +162,9 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="src\vendor\openal\common\alhelpers.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Sound\SoundMusicSource.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

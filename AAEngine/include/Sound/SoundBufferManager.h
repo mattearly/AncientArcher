@@ -4,17 +4,9 @@
 #include <sndfile.h>
 #include "SoundSource.h"
 #include <unordered_map>
+#include "SoundMusicSource.h"
 
 namespace AA {
-
-//
-//typedef struct StreamPlayer {
-//	ALuint buffers[NUM_MUSIC_BUFFERS];
-//	SNDFILE* sndfile;
-//	SF_INFO sfinfo;
-//	short* membuf;
-//	ALenum format;
-//} StreamPlayer;
 
 /// <summary>
 /// Stores reference access to the loaded sound buffers.
@@ -30,30 +22,33 @@ public:
 	bool removeSoundEffect(const ALuint& buffer);
 
 	uint32_t addLongPlaySound(const char* filename);
-	bool removeLongPlaySound(const uint32_t id);
+	//bool removeLongPlaySound(const uint32_t id);
 	
-	friend class SoundSource;
+	friend class SoundMusicSource;
 
 private:
 	SoundBufferManager();
 	~SoundBufferManager();
+	
+	// sound effect buffers so we know what to clean up and whatnot
 	std::vector<ALuint> p_SoundEffectBuffers;
 
+	// samples of music or long sounds that would need a buffer
 	const int NUM_MUSIC_BUFFERS = 4;
 	const int BUFFER_SAMPLES = 8192;
-
-	struct StreamBuffer {
+	struct MusicStream {
 		ALuint buffers[4];
 		SNDFILE* sndfile;
 		SF_INFO sfinfo;
 		short* membuf;
 		ALenum format;
-		//int loopid;
 	};
+	int StartLongSoundPlay(const uint32_t id, const ALuint src);
+	int UpdateLongPlayingBuffers(const uint32_t id, const ALuint src);
 
-	std::unordered_map<uint32_t, StreamBuffer*> p_LongSounds; 
-	int PlayMusic(const uint32_t id, SoundSource& src);
-	int UpdatePlay(const uint32_t id, SoundSource& src);
+	// long sound buffers so we know how to stream and clean up
+	std::unordered_map<uint32_t, MusicStream*> p_LongSounds;
+
 
 
 	//StreamPlayer *p_StreamPlayer;

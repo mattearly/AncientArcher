@@ -25,12 +25,6 @@ void SoundSource::Play(const ALuint buf)
 	//std::cout << "done playing sound\n";
 }
 
-void SoundSource::LongPlay(const ALuint id)
-{
-	if (!SoundBufferManager::get()->PlayMusic(id, *this))
-		std::cout << "failed to start playing music\n";
-}
-
 SoundSource::SoundSource()
 {
 	alGenSources(1, &source);

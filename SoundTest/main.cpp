@@ -4,6 +4,7 @@
 #include "../AAEngine/include/Sound/SoundSource.h"
 #include "../AAEngine/include/Sound/SoundStream.h"
 #include <iostream>
+#include "../AAEngine/include/Sound/SoundMusicSource.h"
 
 using namespace AA;
 
@@ -22,8 +23,10 @@ int main()
 	static SoundSource heal_sound;
 	
 	static uint32_t kwon_song = SoundBufferManager::get()->addLongPlaySound("../assets/sounds/music/Into It - Kwon.ogg");
-	static SoundSource music_sounds;
+	static SoundMusicSource music_sounds;
 
+	static bool isPlaying = false;
+	//static bool isPaused = false;
 	auto ourControls = [](KeyboardInput& in) {
 		if (in.mouseButton1)
 		{
@@ -31,15 +34,35 @@ int main()
 		}
 		if (in.p)
 		{
-			static bool played = false;
-			if(!played)
+		
+			if(!isPlaying)
 			{
-				music_sounds.LongPlay(kwon_song);
-				played = true;
+				music_sounds.Play(kwon_song);
+				isPlaying = true;
 			}
+			/*else if (!isPaused) 
+			{
+				music_sounds.Pause(kwon_song);
+				isPaused = true;
+			}
+			else if (isPaused)
+			{
+				music_sounds.Play(kwon_song);
+				isPaused = false;
+			}*/
 		}
 	};
 	LOOP->addToKeyHandling(ourControls);
+
+
+	auto updateMusicStream = []()
+	{
+		if (isPlaying)
+		{
+			music_sounds.UpdatePlayingBuffers(kwon_song);
+		}
+	};
+	LOOP->addToSlowUpdate(updateMusicStream);
 
 	//StreamPlayer* player;
 	//int i;

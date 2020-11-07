@@ -9,7 +9,6 @@ class SoundSource
 {
 public:
 	void Play(const ALuint buffer);
-	void LongPlay(const ALuint id);
 
 	SoundSource();
 	~SoundSource();
