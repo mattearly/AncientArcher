@@ -16,11 +16,26 @@ int main()
 	static int cam_1 = LOOP->addCamera();
 	LOOP->getCamera(cam_1).shiftYawAndPitch(0.f, -90.f); // look down
 
+	// INIT SOUND
+	AA::SoundDevice* snd = AA::SoundDevice::get();
+	// LOAD SOUND EFFECTS
+	static uint32_t sound_zap = AA::SoundBufferManager::get()->addSoundEffect("../assets/sounds/zap15.ogg");
+	static AA::SoundSource zap_source;
+	static uint32_t sound_hit_ast = AA::SoundBufferManager::get()->addSoundEffect("../assets/sounds/shot2.ogg");
+	static AA::SoundSource astroid_hit_source;
+	// LOAD MUSIC
+	static uint32_t intoit = AA::SoundBufferManager::get()->addLongPlaySound("../assets/sounds/music/Into It - Kwon.ogg");
+	static AA::SoundMusicSource music_source;
+
 	auto startupSettings = []() {
 		DISPLAY->setWindowTitle("astroids!");
 		DISPLAY->setWindowSize(800, 800, true);
+		music_source.Play(intoit);
 	};
 	LOOP->addToOnBegin(startupSettings);
+
+	auto updateMusic = []() {music_source.UpdatePlayingBuffers(intoit); };
+	LOOP->addToSlowUpdate(updateMusic);
 
 	static int unlit_shader = LOOP->addShader("../assets/shaders/noLight.vert", "../assets/shaders/noLight.frag");
 
@@ -64,13 +79,6 @@ int main()
 	astroids.push_back(createAstroid(go_asteroid, 0, false));
 	astroids.push_back(createAstroid(go_asteroid2, 0, false));
 
-	// INIT SOUND
-	AA::SoundDevice* snd = AA::SoundDevice::get();
-	// LOAD SOUND EFFECTS
-	static uint32_t sound_zap = AA::SoundBufferManager::get()->addSoundEffect("../assets/sounds/zap15.ogg");
-	static AA::SoundSource zap_source;
-	static uint32_t sound_hit_ast = AA::SoundBufferManager::get()->addSoundEffect("../assets/sounds/shot2.ogg");
-	static AA::SoundSource astroid_hit_source;
 
 	static bool turnleft(false), turnright(false), moveforward(false), fireweap(false);
 	auto hotkeys = [](AA::KeyboardInput& keypress)
