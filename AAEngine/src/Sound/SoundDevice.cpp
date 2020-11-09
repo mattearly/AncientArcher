@@ -1,5 +1,6 @@
 #include "..\..\include\Sound\SoundDevice.h"
 #include <AL\al.h>
+#include <AL\alext.h>
 namespace AA {
 
 static SoundDevice* p_SoundDevice_instance = nullptr;
@@ -87,13 +88,24 @@ SoundDevice::SoundDevice()
 	if (!p_ALCDevice)
 		throw("failed to get sound device");
 
+	ALCint attri[5];
+	//ALC_FREQUENCY
+		//ALC_MONO_SOURCES
+		//ALC_REFRESH
+		//ALC_STEREO_SOURCES
+		//ALC_SYNC
+		//
+	//ALC_TRUE;
+	//ALC_HRTF_SOFT;
+	//attri[0] = 0;
+	//attri[1] = ALC_HRTF_SOFT;
+	//p_ALCContext = alcCreateContext(p_ALCDevice, attri);
 	p_ALCContext = alcCreateContext(p_ALCDevice, nullptr);
 	if (!p_ALCContext)
 		throw("failed to set sound context");
 
 	if (!alcMakeContextCurrent(p_ALCContext))
 		throw("failed to make context current");
-
 
 	//verbose say device name opened
 	const ALCchar* name = NULL;
