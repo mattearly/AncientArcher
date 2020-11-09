@@ -7,12 +7,12 @@ namespace AA
 void SoundEffectSource::Play(const ALuint buf)
 {
 	// update stored buffer to play if we need to
-	if (buf != buffer) { 
-		buffer = buf; 
-		alSourcei(source, AL_BUFFER, (ALint)buf);
+	if (buf != p_Buffer) {
+		p_Buffer = buf;
+		alSourcei(p_Source, AL_BUFFER, (ALint)buf);
 	}
 
-	alSourcePlay(source);
+	alSourcePlay(p_Source);
 
 	if (alGetError() != AL_NO_ERROR)
 	{
@@ -29,6 +29,24 @@ void SoundEffectSource::Play(const ALuint buf)
 	//std::cout << "done playing sound\n";
 }
 
+void SoundEffectSource::SetPosition(const float& x, const float& y, const float& z) {
+	SetLocation(x, y, z);
+}
+
+void SoundEffectSource::SetLocation(const float& x, const float& y, const float& z) {
+	alSource3f(p_Source, AL_POSITION, x, y, z);
+}
+
+void SoundEffectSource::SetPosition(const glm::vec3& loc)
+{
+	SetLocation(loc);
+}
+
+void SoundEffectSource::SetLocation(const glm::vec3& loc)
+{
+	alSource3f(p_Source, AL_POSITION, loc.x, loc.y, loc.z);
+}
+
 SoundEffectSource::SoundEffectSource()
 {
 
@@ -38,13 +56,13 @@ SoundEffectSource::SoundEffectSource()
 	float velocity[3] = { 0,0,0 };
 	bool loop = false;
 
-	alGenSources(1, &source);
-	alSourcef(source, AL_PITCH, pitch);
-	alSourcef(source, AL_GAIN, gain);
-	alSource3f(source, AL_POSITION, position[0], position[1], position[2]);
-	alSource3f(source, AL_VELOCITY, velocity[0], velocity[1], velocity[2]);
-	alSourcei(source, AL_LOOPING, loop);
-	alSourcei(source, AL_BUFFER, buffer);
+	alGenSources(1, &p_Source);
+	alSourcef(p_Source, AL_PITCH, pitch);
+	alSourcef(p_Source, AL_GAIN, gain);
+	alSource3f(p_Source, AL_POSITION, position[0], position[1], position[2]);
+	alSource3f(p_Source, AL_VELOCITY, velocity[0], velocity[1], velocity[2]);
+	alSourcei(p_Source, AL_LOOPING, loop);
+	alSourcei(p_Source, AL_BUFFER, p_Buffer);
 	if (alGetError() != AL_NO_ERROR)
 	{
 		std::cout << "error setting sound effect source data\n";
@@ -53,7 +71,7 @@ SoundEffectSource::SoundEffectSource()
 
 SoundEffectSource::~SoundEffectSource()
 {
-	alDeleteSources(1, &source);
+	alDeleteSources(1, &p_Source);
 }
 
 } //end namespace AA
