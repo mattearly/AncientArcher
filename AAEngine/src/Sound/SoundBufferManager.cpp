@@ -253,6 +253,8 @@ int SoundBufferManager::UpdateLongPlayingBuffers(const uint32_t id, const ALuint
 {
 	ALint processed, state;
 
+	// clear error 
+	alGetError();
 	/* Get relevant source info */
 	alGetSourcei(src, AL_SOURCE_STATE, &state);
 	alGetSourcei(src, AL_BUFFERS_PROCESSED, &processed);
