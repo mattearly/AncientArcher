@@ -1,5 +1,4 @@
 #include "..\..\include\Sound\SoundEffectSource.h"
-#include "..\..\include\Sound\SoundBufferManager.h"
 #include <iostream>
 
 namespace AA
@@ -32,6 +31,13 @@ void SoundEffectSource::Play(const ALuint buf)
 
 SoundEffectSource::SoundEffectSource()
 {
+
+	float pitch = 1.f;
+	float gain = 1.f;
+	float position[3] = { 0,0,0 };
+	float velocity[3] = { 0,0,0 };
+	bool loop = false;
+
 	alGenSources(1, &source);
 	alSourcef(source, AL_PITCH, pitch);
 	alSourcef(source, AL_GAIN, gain);

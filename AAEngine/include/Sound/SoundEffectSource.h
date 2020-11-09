@@ -13,16 +13,10 @@ public:
 	SoundEffectSource();
 	~SoundEffectSource();
 
-	friend class SoundBufferManager;
-
 private:
 
 	ALuint source;
-	float pitch = 1.f;
-	float gain = 1.f;
-	float position[3] = {0,0,0};
-	float velocity[3] = {0,0,0};
-	bool loop = false;
+
 	ALuint buffer = 0;
 
 	//ALint state = AL_INITIAL;
