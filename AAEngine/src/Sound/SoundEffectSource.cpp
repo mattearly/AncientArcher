@@ -1,19 +1,24 @@
-#include "..\..\include\Sound\SoundSource.h"
+#include "..\..\include\Sound\SoundEffectSource.h"
 #include "..\..\include\Sound\SoundBufferManager.h"
 #include <iostream>
 
 namespace AA
 {
 
-void SoundSource::Play(const ALuint buf)
+void SoundEffectSource::Play(const ALuint buf)
 {
-	if (buf != buffer)
-	{
-		buffer = buf;
+	// update stored buffer to play if we need to
+	if (buf != buffer) { 
+		buffer = buf; 
+		alSourcei(source, AL_BUFFER, (ALint)buf);
 	}
-	alSourcei(source, AL_BUFFER, (ALint)buf);
 
 	alSourcePlay(source);
+
+	if (alGetError() != AL_NO_ERROR)
+	{
+		std::cout << "error in playing sound effect\n";
+	}
 
 	//state = AL_PLAYING;
 	//std::cout << "playing sound\n";
@@ -25,7 +30,7 @@ void SoundSource::Play(const ALuint buf)
 	//std::cout << "done playing sound\n";
 }
 
-SoundSource::SoundSource()
+SoundEffectSource::SoundEffectSource()
 {
 	alGenSources(1, &source);
 	alSourcef(source, AL_PITCH, pitch);
@@ -34,9 +39,13 @@ SoundSource::SoundSource()
 	alSource3f(source, AL_VELOCITY, velocity[0], velocity[1], velocity[2]);
 	alSourcei(source, AL_LOOPING, loop);
 	alSourcei(source, AL_BUFFER, buffer);
+	if (alGetError() != AL_NO_ERROR)
+	{
+		std::cout << "error setting sound effect source data\n";
+	}
 }
 
-SoundSource::~SoundSource()
+SoundEffectSource::~SoundEffectSource()
 {
 	alDeleteSources(1, &source);
 }

@@ -2,7 +2,7 @@
 #include <vector>
 #include <AL\al.h>
 #include <sndfile.h>
-#include "SoundSource.h"
+#include "SoundEffectSource.h"
 #include <unordered_map>
 #include "SoundMusicSource.h"
 

@@ -126,7 +126,7 @@ bool SoundBufferManager::removeSoundEffect(const ALuint& buf_to_remove)
 uint32_t SoundBufferManager::addLongPlaySound(const char* filename)
 {
 
-	MusicStream *music_stream;
+	MusicStream* music_stream;
 	music_stream = static_cast<MusicStream*>(calloc(1, sizeof(*music_stream)));
 	assert(music_stream != nullptr);
 
@@ -170,7 +170,7 @@ uint32_t SoundBufferManager::addLongPlaySound(const char* filename)
 
 	static uint32_t ourTrackerId = 0;
 	ourTrackerId++;
-	p_LongSounds.insert({ourTrackerId, music_stream});
+	p_LongSounds.insert({ ourTrackerId, music_stream });
 
 	return ourTrackerId;
 }
@@ -199,20 +199,22 @@ SoundBufferManager::~SoundBufferManager()
 		// delete buffers for music stream
 		alDeleteBuffers(NUM_MUSIC_BUFFERS, ms.second->buffers);
 		if (alGetError() != AL_NO_ERROR)
-			fprintf(stderr, "failed to dleete obj ids\n");
+			fprintf(stderr, "failed to delete obj ids\n");
 
 		memset(ms.second, 0, sizeof(*ms.second));
 		free(ms.second);
 	}
 
 	p_LongSounds.clear();
-	
+
 }
 
 int SoundBufferManager::StartLongSoundPlay(const uint32_t id, const ALuint src)
 {
 	ALsizei i;
 
+	// clear any al errors
+	alGetError();
 	/* Rewind the source position and clear the buffer queue */
 	alSourceRewind(src);
 	alSourcei(src, AL_BUFFER, 0);

@@ -153,7 +153,6 @@
     <ClInclude Include="glad\glad.h" />
     <ClInclude Include="include\InstanceDetails.h" />
     <ClInclude Include="include\Sound\SoundMusicSource.h" />
-    <ClInclude Include="include\Sound\SoundStream.h" />
     <ClInclude Include="include\vendor\openal\common\alhelpers.h" />
     <ClInclude Include="KHR\khrplatform.h" />
     <ClInclude Include="include\SceneLoader.h" />
@@ -171,13 +170,13 @@
     <ClInclude Include="include\Input.h" />
     <ClInclude Include="include\WorldUp.h" />
     <ClInclude Include="include\Sound\SoundDevice.h" />
-    <ClInclude Include="include\Sound\SoundSource.h" />
+    <ClInclude Include="include\Sound\SoundEffectSource.h" />
     <ClInclude Include="include\Sound\SoundBufferManager.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\Sound\SoundBufferManager.cpp" />
     <ClCompile Include="src\Sound\SoundMusicSource.cpp" />
-    <ClCompile Include="src\Sound\SoundSource.cpp" />
+    <ClCompile Include="src\Sound\SoundEffectSource.cpp" />
     <ClCompile Include="src\Sound\SoundDevice.cpp" />
     <ClCompile Include="src\ColliderSphere.cpp" />
     <ClCompile Include="src\Camera.cpp" />

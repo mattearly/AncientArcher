@@ -5,13 +5,13 @@ namespace AA{
 /// <summary>
 /// Source of playback for a buffer.
 /// </summary>
-class SoundSource
+class SoundEffectSource
 {
 public:
 	void Play(const ALuint buffer);
 
-	SoundSource();
-	~SoundSource();
+	SoundEffectSource();
+	~SoundEffectSource();
 
 	friend class SoundBufferManager;
 

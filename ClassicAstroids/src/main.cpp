@@ -8,7 +8,7 @@
 #include "../../AAEngine/include/Loop.h"
 #include "../../AAEngine/include/Sound/SoundDevice.h"
 #include "../../AAEngine/include/Sound/SoundBufferManager.h"
-#include "../../AAEngine/include/Sound/SoundSource.h"
+#include "../../AAEngine/include/Sound/SoundEffectSource.h"
 #include "../../AAEngine/include/CollisionHandler.h"
 
 int main()
@@ -20,9 +20,9 @@ int main()
 	AA::SoundDevice* snd = AA::SoundDevice::get();
 	// LOAD SOUND EFFECTS
 	static uint32_t sound_zap = AA::SoundBufferManager::get()->addSoundEffect("../assets/sounds/zap15.ogg");
-	static AA::SoundSource zap_source;
+	static AA::SoundEffectSource zap_source;
 	static uint32_t sound_hit_ast = AA::SoundBufferManager::get()->addSoundEffect("../assets/sounds/shot2.ogg");
-	static AA::SoundSource astroid_hit_source;
+	static AA::SoundEffectSource astroid_hit_source;
 	// LOAD MUSIC
 	static uint32_t intoit = AA::SoundBufferManager::get()->addLongPlaySound("../assets/sounds/music/Into It - Kwon.ogg");
 	static AA::SoundMusicSource music_source;

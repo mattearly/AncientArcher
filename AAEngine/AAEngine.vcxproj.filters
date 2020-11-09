@@ -84,19 +84,16 @@
     <ClInclude Include="include\Sound\SoundDevice.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="include\Sound\SoundSource.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="include\Sound\SoundBufferManager.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="include\Sound\SoundStream.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="include\vendor\openal\common\alhelpers.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="include\Sound\SoundMusicSource.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Sound\SoundEffectSource.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
@@ -155,9 +152,6 @@
     <ClCompile Include="src\Sound\SoundDevice.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\Sound\SoundSource.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="src\Sound\SoundBufferManager.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -165,6 +159,9 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="src\Sound\SoundMusicSource.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Sound\SoundEffectSource.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
