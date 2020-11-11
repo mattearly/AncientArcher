@@ -154,7 +154,6 @@
     <ClInclude Include="include\InstanceDetails.h" />
     <ClInclude Include="include\Sound\SoundListener.h" />
     <ClInclude Include="include\Sound\SoundMusicSource.h" />
-    <ClInclude Include="include\vendor\openal\common\alhelpers.h" />
     <ClInclude Include="KHR\khrplatform.h" />
     <ClInclude Include="include\SceneLoader.h" />
     <ClInclude Include="include\Loop.h" />
@@ -191,7 +190,6 @@
     <ClCompile Include="src\OGLGraphics.cpp" />
     <ClCompile Include="src\OGLShader.cpp" />
     <ClCompile Include="src\Skybox.cpp" />
-    <ClCompile Include="src\vendor\openal\common\alhelpers.c" />
     <ClCompile Include="src\vendor\stb\stb_image.cpp" />
     <ClCompile Include="src\TexLoader.cpp" />
     <ClCompile Include="src\Vertex.cpp" />
