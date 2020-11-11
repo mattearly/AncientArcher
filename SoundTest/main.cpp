@@ -3,6 +3,7 @@
 #include "../AAEngine/include/Sound/SoundBufferManager.h"
 #include "../AAEngine/include/Sound/SoundEffectSource.h"
 #include "../AAEngine/include/Sound/SoundMusicSource.h"
+#include "../AAEngine/include/Sound/SoundListener.h"
 #include <iostream>
 
 using namespace AA;
@@ -26,6 +27,7 @@ int main()
 
 	static bool isPlaying = false;
 	//static bool isPaused = false;
+	static float volume = 1.f;
 	auto ourControls = [](KeyboardInput& in) {
 		if (in.mouseButton1)
 		{
@@ -52,6 +54,37 @@ int main()
 		}
 	};
 	LOOP->addToKeyHandling(ourControls);
+
+	auto timedKeybinds = [](KeyboardInput& in)
+	{
+		if (in.upArrow)
+		{
+			volume+=.1f;
+			if (volume > 3.f)
+			{
+				volume = 3.f;
+			}
+			float passvol = volume;
+			std::cout << "volume: " << volume << '\n';
+			SoundListener::Get()->SetMasterGain(passvol);
+
+			return true;
+		}
+		if (in.downArrow)
+		{
+			volume-=.1f;
+			if (volume < 0.f)
+			{
+				volume = 0.f;
+			}
+			std::cout << "volume: " << volume << '\n';
+			float passvol = volume;
+			SoundListener::Get()->SetMasterGain(passvol);
+			return true;
+		}
+		return false;
+	};
+	LOOP->addToTimedOutKeyHandling(timedKeybinds);
 
 	auto updateMusicStream = []()
 	{
