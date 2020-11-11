@@ -4,6 +4,9 @@
 namespace AA {
 SoundListener* SoundListener::Get()
 {
+	// make sure sound device is initialized
+	SoundDevice::init();
+
 	SoundListener* snd_listener = new SoundListener();
 	return snd_listener;
 }
@@ -16,10 +19,10 @@ void SoundListener::SetMasterGain(const float& gain)
 	{
 		newVol = 0.f;
 	}
-	else if (newVol > 30.f)
+	else if (newVol > 5.f)
 	{
 		// now thats flippin loud, lets cap it
-		newVol = 30.f;
+		newVol = 5.f;
 	}
 
 	alListenerf(AL_GAIN, newVol);
@@ -51,13 +54,15 @@ void SoundListener::SetLocation(const float& x, const float& y, const float& z)
 
 }
 
-void SoundListener::SetOrientation(const glm::vec3& at, const glm::vec3& up)
-{
-}
+//void SoundListener::SetOrientation(const glm::vec3& at, const glm::vec3& up)
+//{
+//}
+//
+//void SoundListener::SetOrientation(const float& xat, const float& yat, const float& zat, const float& xup, const float& yup, const float& zup)
+//{
+//}
 
-void SoundListener::SetOrientation(const float& xat, const float& yat, const float& zat, const float& xup, const float& yup, const float& zup)
-{
-}
+SoundListener::SoundListener(){}
 
 SoundListener::~SoundListener()
 {
