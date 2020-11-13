@@ -47,6 +47,44 @@ void SoundEffectSource::SetLocation(const glm::vec3& loc)
 	alSource3f(p_Source, AL_POSITION, loc.x, loc.y, loc.z);
 }
 
+void SoundEffectSource::SetVolume(const float& gain)
+{
+	float newvol = 0;
+	if (gain < 0.f)
+	{
+		newvol = 0;
+	}
+	else if (gain > 5.f)
+	{
+		newvol = 5.f;
+	}
+	else
+	{
+		newvol = gain;
+	}
+
+	alSourcef(p_Source, AL_GAIN, newvol);
+
+	ALenum ALerror = AL_NO_ERROR;
+	ALerror = alGetError();
+	auto geterrorstring = [](ALenum ALerror) {
+		switch (ALerror) {
+		case AL_NO_ERROR:       return std::string("AL_NO_ERROR - (No error)."); break;
+		case AL_INVALID_NAME:       return std::string("AL_INVALID_NAME - Invalid Name paramater passed to AL call."); break;
+		case AL_INVALID_ENUM:       return std::string("AL_INVALID_ENUM - Invalid parameter passed to AL call."); break;
+		case AL_INVALID_VALUE:      return std::string("AL_INVALID_VALUE - Invalid enum parameter value."); break;
+		case AL_INVALID_OPERATION:  return std::string("AL_INVALID_OPERATION"); break;
+		case AL_OUT_OF_MEMORY:      return std::string("AL_OUT_OF_MEMORY"); break;
+		default:            return std::string("AL Unknown Error."); break;
+		}
+	};
+	std::cout << geterrorstring(ALerror) << '\n';
+	//std::cout << getALErrorString(ALerror) << std::endl;
+	//throw("error setting suond on music source\n");
+}
+
+
+
 SoundEffectSource::SoundEffectSource()
 {
 

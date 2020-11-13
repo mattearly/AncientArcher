@@ -12,12 +12,11 @@ public:
 	void Play(const ALuint buffer);
 
 	void SetPosition(const float& x, const float& y, const float& z);
-
 	void SetLocation(const float& x, const float& y, const float& z);
-
 	void SetPosition(const glm::vec3& loc);
-
 	void SetLocation(const glm::vec3& loc);
+
+	void SetVolume(const float& gain);
 
 	SoundEffectSource();
 	~SoundEffectSource();
