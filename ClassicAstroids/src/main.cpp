@@ -17,7 +17,8 @@ int main()
 	LOOP->getCamera(cam_1).shiftYawAndPitch(0.f, -90.f); // look down
 
 	// INIT SOUND
-	AA::SoundDevice* snd = AA::SoundDevice::get();
+	//AA::SoundDevice* snd = AA::SoundDevice::Get();
+	AA::SoundDevice::Init();
 	// LOAD SOUND EFFECTS
 	static uint32_t sound_zap = AA::SoundBufferManager::get()->addSoundEffect("../assets/sounds/zap15.ogg");
 	static AA::SoundEffectSource zap_source;
