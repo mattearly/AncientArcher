@@ -5,13 +5,13 @@ namespace AA {
 
 static SoundDevice* p_SoundDevice_instance = nullptr;
 
-SoundDevice* SoundDevice::get()
+SoundDevice* SoundDevice::Get()
 {
-	init(); // uses default device unless device was custom init
+	Init(); // uses default device unless device was custom init
 	return p_SoundDevice_instance;
 }
 
-void SoundDevice::init()
+void SoundDevice::Init()
 {
 	if (!p_SoundDevice_instance)
 	{
@@ -19,7 +19,7 @@ void SoundDevice::init()
 	}
 }
 
-void SoundDevice::init(const char* devicename)
+void SoundDevice::Init(const char* devicename)
 {
 	if (!p_SoundDevice_instance)
 	{
@@ -62,7 +62,7 @@ void SoundDevice::SwitchDevice(const char* devicename)
 	printf("Opened \"%s\"\n", name);
 }
 
-void SoundDevice::populateDeviceVec(std::vector<std::string>& devicesVec)
+void SoundDevice::PopulateDeviceVec(std::vector<std::string>& devicesVec)
 {
 	const ALCchar* devicenames;
 	//devicenames = alcGetString(p_ALCDevice, ALC_DEVICE_SPECIFIER); // get current without windows tag
@@ -88,7 +88,7 @@ SoundDevice::SoundDevice()
 	if (!p_ALCDevice)
 		throw("failed to get sound device");
 
-	ALCint attri[5];
+	//ALCint attri[5];
 	//ALC_FREQUENCY
 		//ALC_MONO_SOURCES
 		//ALC_REFRESH

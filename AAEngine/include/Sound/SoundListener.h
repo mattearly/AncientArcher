@@ -7,7 +7,7 @@ class SoundListener
 public:
 	static SoundListener* Get();
 
-	void SetMasterGain(const float& gain);
+	void SetMasterGain(const float& val);
 	
 	void SetPosition(const glm::vec3& pos);
 	void SetPosition(const float& x, const float& y, const float& z);

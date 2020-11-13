@@ -5,7 +5,7 @@ namespace AA {
 SoundListener* SoundListener::Get()
 {
 	// make sure sound device is initialized
-	SoundDevice::init();
+	SoundDevice::Init();
 
 	SoundListener* snd_listener = new SoundListener();
 	return snd_listener;

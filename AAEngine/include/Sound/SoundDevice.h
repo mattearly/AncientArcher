@@ -11,13 +11,16 @@ namespace AA {
 class SoundDevice
 {
 public:
-	static SoundDevice* get();
-	static void init();
-	static void init(const char* devicename);
+	static SoundDevice* Get();
+	static void Init();
+	static void Init(const char* devicename);
 
 	void SwitchDevice(const char* devicename);
 
-	void populateDeviceVec(std::vector<std::string>& devicesVec);
+	void PopulateDeviceVec(std::vector<std::string>& devicesVec);
+
+
+	friend class SoundMusicSource;
 
 protected:
 	SoundDevice();
