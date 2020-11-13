@@ -10,6 +10,8 @@ public:
 	void Pause(const uint32_t id);
 	void Stop(const uint32_t id);
 
+	void SetVolume(const float& val);
+
 	void UpdatePlayingBuffers(const uint32_t id);
 
 	SoundMusicSource();

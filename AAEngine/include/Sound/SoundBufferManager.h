@@ -8,6 +8,14 @@
 
 namespace AA {
 
+struct MusicStream {
+	ALuint buffers[4];
+	SNDFILE* sndfile;
+	SF_INFO sfinfo;
+	short* membuf;
+	ALenum format;
+};
+
 /// <summary>
 /// Stores reference access to the loaded sound buffers.
 /// addSoundEffect(...) returns id to play the sound.
@@ -34,20 +42,14 @@ private:
 	std::vector<ALuint> p_SoundEffectBuffers;
 
 	// samples of music or long sounds that would need a buffer
-	const int NUM_MUSIC_BUFFERS = 4;
-	const int BUFFER_SAMPLES = 8192;
-	struct MusicStream {
-		ALuint buffers[4];
-		SNDFILE* sndfile;
-		SF_INFO sfinfo;
-		short* membuf;
-		ALenum format;
-	};
+	static const int NUM_MUSIC_BUFFERS = 4;
+	static const int BUFFER_SAMPLES = 8192;
+
 	int StartLongSoundPlay(const uint32_t id, const ALuint src);
-	int UpdateLongPlayingBuffers(const uint32_t id, const ALuint src);
+	int PauseLongSoundPlay(const uint32_t id, const ALuint src);
+	int StopLongSoundPlay(const uint32_t id, const ALuint src);
 
 	// long sound buffers so we know how to stream and clean up
-	std::unordered_map<uint32_t, MusicStream*> p_LongSounds;
 
 
 
