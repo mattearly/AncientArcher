@@ -8,17 +8,17 @@ namespace AA {
 void SoundMusicSource::Play(const uint32_t id)
 {
 	// fill buffer queue
-	SoundBufferManager::get()->StartLongSoundPlay(id, p_Source);
+	SoundBufferManager::get()->PlayLongSound(id, p_Source);
 }
 
 void SoundMusicSource::Pause(const uint32_t id)
 {
-	SoundBufferManager::get()->PauseLongSoundPlay(id, p_Source);
+	SoundBufferManager::get()->PauseLongSound(id, p_Source);
 }
 
 void SoundMusicSource::Stop(const uint32_t id)
 {
-	SoundBufferManager::get()->StopLongSoundPlay(id, p_Source);
+	SoundBufferManager::get()->StopLongSound(id, p_Source);
 }
 
 void SoundMusicSource::SetVolume(const float& val)

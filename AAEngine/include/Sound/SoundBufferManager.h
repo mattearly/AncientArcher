@@ -45,16 +45,13 @@ private:
 	static const int NUM_MUSIC_BUFFERS = 4;
 	static const int BUFFER_SAMPLES = 8192;
 
-	int StartLongSoundPlay(const uint32_t id, const ALuint src);
-	int PauseLongSoundPlay(const uint32_t id, const ALuint src);
-	int StopLongSoundPlay(const uint32_t id, const ALuint src);
+	int PlayLongSound(const uint32_t id, const ALuint src);
+	int PauseLongSound(const uint32_t id, const ALuint src);
+	int StopLongSound(const uint32_t id, const ALuint src);
 
 	// long sound buffers so we know how to stream and clean up
 
-
-
 	//StreamPlayer *p_StreamPlayer;
-
 
 };
 } // end namespace AA

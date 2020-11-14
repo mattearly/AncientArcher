@@ -4,12 +4,13 @@
 #include <AL\alext.h>
 #include <cassert>
 #include "../../include/Loop.h"
+#include <iostream>
 
 namespace AA {
 
 static uint32_t p_PlayWhichId;
 static ALuint p_SourceId;
-static int p_PlayId;
+static int p_PlayUpdateId;
 static std::unordered_map<uint32_t, MusicStream*> p_LongSounds;
 
 SoundBufferManager* SoundBufferManager::get()
@@ -214,7 +215,7 @@ SoundBufferManager::~SoundBufferManager()
 
 }
 
-int SoundBufferManager::StartLongSoundPlay(const uint32_t id, const ALuint src)
+int SoundBufferManager::PlayLongSound(const uint32_t id, const ALuint src)
 {
 	ALsizei i;
 
@@ -253,12 +254,16 @@ int SoundBufferManager::StartLongSoundPlay(const uint32_t id, const ALuint src)
 
 	p_PlayWhichId = id;
 	p_SourceId = src;
-	p_PlayId = LOOP->addToSlowUpdate([]()
+	p_PlayUpdateId = LOOP->addToSlowUpdate([]()
 		{
 			ALint processed, state;
 
 			// clear error 
-			alGetError();
+			if (alGetError() != AL_NO_ERROR)
+			{
+				std::cout << "error before starting playback\n";
+			}
+
 			/* Get relevant source info */
 			alGetSourcei(p_SourceId, AL_SOURCE_STATE, &state);
 			alGetSourcei(p_SourceId, AL_BUFFERS_PROCESSED, &processed);
@@ -311,7 +316,6 @@ int SoundBufferManager::StartLongSoundPlay(const uint32_t id, const ALuint src)
 					return;
 				}
 			}
-
 			//return 1;
 		}
 	);
@@ -319,17 +323,23 @@ int SoundBufferManager::StartLongSoundPlay(const uint32_t id, const ALuint src)
 	return 1;
 }
 
-int SoundBufferManager::PauseLongSoundPlay(const uint32_t id, const ALuint src)
+int SoundBufferManager::PauseLongSound(const uint32_t id, const ALuint src)
 {
 	alSourcePause(src);
-	LOOP->removeFromSlowUpdate(p_PlayWhichId);
-	return 1;
+	if (!LOOP->removeFromSlowUpdate(p_PlayUpdateId))
+	{
+			std::cout << "failed to remove long play buffer from slow update\n";
+	}
+	return 0;
 }
 
-int SoundBufferManager::StopLongSoundPlay(const uint32_t id, const ALuint src)
+int SoundBufferManager::StopLongSound(const uint32_t id, const ALuint src)
 {
 	alSourceStop(src);
-	LOOP->removeFromSlowUpdate(p_PlayWhichId);
+	if (!LOOP->removeFromSlowUpdate(p_PlayUpdateId))
+	{
+		std::cout << "failed to remove long play buffer from slow update\n";
+	}
 	return 0;
 }
 

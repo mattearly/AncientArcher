@@ -21,25 +21,27 @@ int main()
 
 	static uint32_t heal_sound_buf = SoundBufferManager::get()->addSoundEffect("../assets/sounds/heal.ogg");
 	static SoundEffectSource heal_sound;
-	
+
 	static uint32_t kwon_song = SoundBufferManager::get()->addLongPlaySound("../assets/sounds/music/Into It - Kwon.ogg");
 	static SoundMusicSource music_sounds;
 
 	static enum class MUSIC_STATE {
-		play, pause, stop
-	} music_state;
+		initial, play, pause, stop
+	} music_state = MUSIC_STATE::initial;
+
 	static float master_volume = 1.f;
 	static float music_volume = 1.f;
 	static float se_volume = 1.f;
-	auto play_stop_controls = [](KeyboardInput& in) {
-		if (in.mouseButton1)
+	auto play_stop_controls = [](KeyboardInput& in)
+	{
+		if (in.mouseButton1)  // heal sound
 		{
 			heal_sound.Play(heal_sound_buf);
 			return true;
 		}
-		if (in.p)
+		if (in.p)  //play | pause toggle
 		{
-			if(music_state != MUSIC_STATE::play)
+			if (music_state != MUSIC_STATE::play)
 			{
 				music_sounds.Play(kwon_song);
 				music_state = MUSIC_STATE::play;
@@ -52,9 +54,9 @@ int main()
 				return true;
 			}
 		}
-		if (in.o)
+		if (in.o)  // stop if playing or pause
 		{
-			if (music_state != MUSIC_STATE::stop)
+			if (music_state == MUSIC_STATE::play || music_state == MUSIC_STATE::pause)
 			{
 				music_sounds.Stop(kwon_song);
 				music_state = MUSIC_STATE::stop;
@@ -67,9 +69,10 @@ int main()
 
 	auto timedKeybinds = [](KeyboardInput& in)
 	{
+
 		if (in.upArrow)
 		{
-			master_volume+=.1f;
+			master_volume += .1f;
 			if (master_volume > 3.f)
 			{
 				master_volume = 3.f;
@@ -80,9 +83,10 @@ int main()
 
 			return true;
 		}
+
 		if (in.downArrow)
 		{
-			master_volume-=.1f;
+			master_volume -= .1f;
 			if (master_volume < 0.f)
 			{
 				master_volume = 0.f;
@@ -105,6 +109,7 @@ int main()
 			music_sounds.SetVolume(newvol);
 			return true;
 		}
+
 		if (in.minus)
 		{
 			music_volume -= .1f;
@@ -143,18 +148,10 @@ int main()
 			heal_sound.SetVolume(newvol);
 			return true;
 		}
+
 		return false;
 	};
 	LOOP->addToTimedOutKeyHandling(timedKeybinds);
-
-	//auto updateMusicStream = []()
-	//{
-	//	if (isPlaying)
-	//	{
-	//		music_sounds.UpdatePlayingBuffers(kwon_song);
-	//	}
-	//};
-	//LOOP->addToSlowUpdate(updateMusicStream);
 
 	return LOOP->runMainLoop();
 }
