@@ -31,6 +31,8 @@ Continue expanding and improving Ancient Archer Game Engine.
   * glm for CPU 3d math
   * stb_image to load textures
   * assimp to load meshes and models
+  * openal for sound
+  * libsndfile to load sound
 
 ## Testability, Monitoring and Alerting
 
