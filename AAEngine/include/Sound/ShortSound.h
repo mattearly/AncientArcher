@@ -23,9 +23,9 @@ public:
 	ShortSound();
 	~ShortSound();
 
-
 	static ALuint AddShortSound(const char* filename);
-	//static bool RemoveShortSound(const ALuint& buffer);
+	static bool RemoveShortSound(const ALuint& buffer);
+	static void DestroyAllBuffers();
 
 private:
 

@@ -209,7 +209,7 @@ ALuint ShortSound::AddShortSound(const char* filename)
 	return buffer;
 }
 
-bool RemoveShortSound(const ALuint& buf_to_remove)
+bool ShortSound::RemoveShortSound(const ALuint& buf_to_remove)
 {
 	auto it = g_ShortSoundBuffers.begin();
 	while (it != g_ShortSoundBuffers.end())
@@ -227,6 +227,17 @@ bool RemoveShortSound(const ALuint& buf_to_remove)
 		}
 	}
 	return false; //couldn't find, failed to remove
+}
+
+void ShortSound::DestroyAllBuffers()
+{
+	for (auto& b : g_ShortSoundBuffers)
+	{
+		alDeleteBuffers(1, &b);
+	}
+
+	g_ShortSoundBuffers.clear();
+
 }
 
 } //end namespace AA
