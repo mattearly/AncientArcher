@@ -7,9 +7,11 @@
 #include "../../AAEngine/include/Lights.h"
 #include "../../AAEngine/include/Loop.h"
 #include "../../AAEngine/include/Sound/SoundDevice.h"
-#include "../../AAEngine/include/Sound/SoundBufferManager.h"
-#include "../../AAEngine/include/Sound/SoundEffectSource.h"
+#include "../../AAEngine/include/Sound/LongSound.h"
+#include "../../AAEngine/include/Sound/ShortSound.h"
 #include "../../AAEngine/include/CollisionHandler.h"
+
+using namespace AA;
 
 int main()
 {
@@ -20,22 +22,24 @@ int main()
 	//AA::SoundDevice* snd = AA::SoundDevice::Get();
 	AA::SoundDevice::Init();
 	// LOAD SOUND EFFECTS
-	static uint32_t sound_zap = AA::SoundBufferManager::get()->addSoundEffect("../assets/sounds/zap15.ogg");
-	static AA::SoundEffectSource zap_source;
-	static uint32_t sound_hit_ast = AA::SoundBufferManager::get()->addSoundEffect("../assets/sounds/shot2.ogg");
-	static AA::SoundEffectSource astroid_hit_source;
+	static uint32_t sound_zap = ShortSound::AddShortSound("../assets/sounds/zap15.ogg");
+	static ShortSound zap_source;
+	zap_source.SetVolume(1.2f);
+	static uint32_t sound_hit_ast = ShortSound::AddShortSound("../assets/sounds/shot2.ogg");
+	static AA::ShortSound astroid_hit_source;
+	astroid_hit_source.SetVolume(1.2f);
 	// LOAD MUSIC
-	static uint32_t intoit = AA::SoundBufferManager::get()->addLongPlaySound("../assets/sounds/music/Into It - Kwon.ogg");
-	static AA::SoundMusicSource music_source;
+	static AA::LongSound music_source("../assets/sounds/music/Into It - Kwon.ogg");
+	music_source.SetVolume(.5f);
 
 	auto startupSettings = []() {
-		DISPLAY->setWindowTitle("astroids!");
+		DISPLAY->setWindowTitle("ASTROIDS!");
 		DISPLAY->setWindowSize(800, 800, true);
-		music_source.Play(intoit);
+		music_source.Play();
 	};
 	LOOP->addToOnBegin(startupSettings);
 
-	auto updateMusic = []() {music_source.UpdatePlayingBuffers(intoit); };
+	auto updateMusic = []() {music_source.UpdatePlayBuffer(); };
 	LOOP->addToSlowUpdate(updateMusic);
 
 	static int unlit_shader = LOOP->addShader("../assets/shaders/noLight.vert", "../assets/shaders/noLight.frag");
