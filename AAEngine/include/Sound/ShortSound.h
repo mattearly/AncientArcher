@@ -1,33 +1,39 @@
 #pragma once
 #include <AL\al.h>
 #include <glm/glm.hpp>
-//class SoundBufferManager;
-namespace AA{
+#include <vector>
+
+namespace AA
+{
 /// <summary>
 /// Source of playback for a buffer.
 /// </summary>
-class SoundEffectSource
+class ShortSound
 {
 public:
 	void Play(const ALuint buffer);
 
 	void SetPosition(const float& x, const float& y, const float& z);
-	void SetLocation(const float& x, const float& y, const float& z);
 	void SetPosition(const glm::vec3& loc);
+	void SetLocation(const float& x, const float& y, const float& z);
 	void SetLocation(const glm::vec3& loc);
 
 	void SetVolume(const float& gain);
 
-	SoundEffectSource();
-	~SoundEffectSource();
+	ShortSound();
+	~ShortSound();
+
+
+	static ALuint AddShortSound(const char* filename);
+	//static bool RemoveShortSound(const ALuint& buffer);
 
 private:
 
 	ALuint p_Source;
 	ALuint p_Buffer = 0;
 
-	//ALint state = AL_INITIAL;
-
 };
+
+
 
 } // end namespace AA
