@@ -63,6 +63,11 @@ int Loop::runMainLoop()
 void Loop::shutdown()
 {
 	//DISPLAY->resetStateDataToDefault();
+	for (auto& oTD : onTearDown)
+	{
+		oTD.second();
+	}
+	resetEngine();
 	DISPLAY->closeWindow();
 }
 
@@ -289,6 +294,14 @@ uint32_t Loop::addToMouseHandling(void(*function)(MouseInput&))
 
 }
 
+uint32_t Loop::addToOnTeardown(void(*function)())
+{
+	static uint32_t next_teardown_id = 0;
+	next_teardown_id++;
+	onTearDown.emplace(next_teardown_id, function);
+	return next_teardown_id;
+}
+
 bool Loop::removeFromOnBegin(uint32_t r_id)
 {
 	return static_cast<bool>(onBegin.erase(r_id));
@@ -327,6 +340,11 @@ bool Loop::removeFromKeyHandling(uint32_t r_id)
 bool Loop::removeFromMouseHandling(uint32_t r_id)
 {
 	return static_cast<bool>(onMouseHandling.erase(r_id));
+}
+
+bool Loop::removeFromTeardown(uint32_t r_id)
+{
+	return static_cast<bool>(onTearDown.erase(r_id));
 }
 
 
@@ -377,6 +395,12 @@ void Loop::setProjectionMatrix(int shadId, int camId)
 {
 	getShader(shadId).use();
 	getShader(shadId).setMat4("projection", getCamera(camId).getProjectionMatrix());
+}
+
+void Loop::setSlowUpdateTimeoutLength(const float& newtime)
+{
+	// !! warning, no checking, set at your own risk
+	mSlowUpdateWaitLength = newtime;
 }
 
 // -- PRIVATE FUNCTIONS --
@@ -540,7 +564,7 @@ void Loop::resetEngine() noexcept
 	onMouseHandling.clear();
 	onUpdate.clear();
 	onSlowUpdate.clear();
-
+	onTearDown.clear();
 	// reset all state data
 	mNonSpammableKeysTimeout = 0.f;
 	mSlowUpdateTimeout = 0.f;

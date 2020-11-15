@@ -93,6 +93,7 @@ namespace AA
 		uint32_t addToScrollHandling(void(*function)(ScrollInput&));
 		uint32_t addToKeyHandling(void(*function)(KeyboardInput&));
 		uint32_t addToMouseHandling(void(*function)(MouseInput&));
+		uint32_t addToOnTeardown(void(*function)());
 
 		bool removeFromOnBegin(uint32_t r_id);
 		bool removeFromDeltaUpdate(uint32_t r_id);
@@ -102,6 +103,7 @@ namespace AA
 		bool removeFromScrollHandling(uint32_t r_id);
 		bool removeFromKeyHandling(uint32_t r_id);
 		bool removeFromMouseHandling(uint32_t r_id);
+		bool removeFromTeardown(uint32_t r_id);
 
 		void setCursorToEnabled(bool isHardwareRendered = false);
 		void setCursorToDisabled();
@@ -110,6 +112,7 @@ namespace AA
 		void setWindowTitle(const char* title);
 		void setRenderDistance(int camId, float amt) noexcept;
 		void setProjectionMatrix(int shadId, int camId);
+		void setSlowUpdateTimeoutLength(const float& newtime);
 
 		friend class Controls;
 
@@ -136,6 +139,7 @@ namespace AA
 		std::unordered_map<uint32_t, std::function<void(ScrollInput&)> > onScrollHandling;       ///< list of functions to handle mouse wheel scroll every frame in the main loop
 		std::unordered_map<uint32_t, std::function<void(KeyboardInput&)> > onKeyHandling;        ///< list of functions to handle keypresses every frame in the main loop
 		std::unordered_map<uint32_t, std::function<void(MouseInput&)> > onMouseHandling;         ///< list of functions to handle mouse movement every frame in the main loop
+		std::unordered_map<uint32_t, std::function<void()> > onTearDown;                         ///< list of functions to run when destroying
 
 		// called during runMainLoop
 		void begin();
