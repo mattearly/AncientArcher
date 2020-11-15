@@ -147,7 +147,7 @@ int main()
 	LOOP->addToTimedOutKeyHandling(timedKeybinds);
 
 	auto updateMusicBuffer = []() {
-		music_sounds.UpdatePlayBuffer();
+		music_sounds.UpdatePlayBuffer();  //todo: move this internally into LongSound
 	};
 	LOOP->addToSlowUpdate(updateMusicBuffer);
 

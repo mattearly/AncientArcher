@@ -55,8 +55,7 @@ void LongSound::Pause()
 	if (GetPlayingState() != AL_PLAYING)
 		return;
 	
-
-
+	alSourcePause(p_Source);
 }
 
 void LongSound::Resume()
@@ -64,6 +63,8 @@ void LongSound::Resume()
 	// do nothing if not paused
 	if (GetPlayingState() != AL_PAUSED)
 		return;
+
+	alSourcePlay(p_Source);
 }
 
 void LongSound::Stop() {
@@ -71,7 +72,7 @@ void LongSound::Stop() {
 	if (GetPlayingState() == AL_STOPPED)
 		return;
 
-
+	alSourceStop(p_Source);
 }
 
 void LongSound::SetVolume(const float& val)
