@@ -20,7 +20,9 @@ public:
 	void PopulateDeviceVec(std::vector<std::string>& devicesVec);
 
 
-	friend class SoundMusicSource;
+
+	void SuspendContext();
+	void ResumeContext();
 
 protected:
 	SoundDevice();
@@ -28,6 +30,7 @@ protected:
 	~SoundDevice();
 
 private:
+
 
 	ALCdevice* p_ALCDevice;
 	ALCcontext* p_ALCContext;

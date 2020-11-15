@@ -82,6 +82,16 @@ void SoundDevice::PopulateDeviceVec(std::vector<std::string>& devicesVec)
 
 }
 
+void SoundDevice::SuspendContext()
+{
+	alcSuspendContext(p_ALCContext);
+}
+
+void SoundDevice::ResumeContext()
+{
+	alcProcessContext(p_ALCContext);
+}
+
 SoundDevice::SoundDevice()
 {
 	p_ALCDevice = alcOpenDevice(nullptr);  // get default device
