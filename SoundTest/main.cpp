@@ -18,8 +18,14 @@ int main()
 		std::cout << '-' << d << std::endl;
 	}
 
+	SoundListener::Get()->SetPosition(0.f, 0.f, 0.f);
+	SoundListener::Get()->SetOrientation(glm::vec3(0.f, 0.f, -1.f), glm::vec3(0.f, 1.f, 0.f));
+
+
 	static uint32_t heal_sound_buf = ShortSound::AddShortSound("../assets/sounds/heal.ogg");
 	static ShortSound heal_sound;
+	heal_sound.SetPosition(glm::vec3(-2.f, 0.f, 0.f));
+	heal_sound.SetRelative(true);
 
 	static LongSound music_sounds("../assets/sounds/music/Into It - Kwon.ogg");
 
