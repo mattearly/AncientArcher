@@ -545,7 +545,8 @@ void Loop::resetEngine() noexcept
 	mNonSpammableKeysTimeout = 0.f;
 	mSlowUpdateTimeout = 0.f;
 	mNoSpamWaitLength = .5667f;
-	mSlowUpdateWaitLength = .5667f;
+	//mSlowUpdateWaitLength = .5667f;
+	mSlowUpdateWaitLength = .3337f;
 
 	mLastFrameTime = 0.f;
 	mCurrentFrameTime = 0.f;
