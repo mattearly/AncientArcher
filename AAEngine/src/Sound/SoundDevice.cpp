@@ -98,18 +98,6 @@ SoundDevice::SoundDevice()
 	if (!p_ALCDevice)
 		throw("failed to get sound device");
 
-	//ALCint attri[5];
-	//ALC_FREQUENCY
-		//ALC_MONO_SOURCES
-		//ALC_REFRESH
-		//ALC_STEREO_SOURCES
-		//ALC_SYNC
-		//
-	//ALC_TRUE;
-	//ALC_HRTF_SOFT;
-	//attri[0] = 0;
-	//attri[1] = ALC_HRTF_SOFT;
-	//p_ALCContext = alcCreateContext(p_ALCDevice, attri);
 	p_ALCContext = alcCreateContext(p_ALCDevice, nullptr);
 	if (!p_ALCContext)
 		throw("failed to set sound context");
@@ -124,6 +112,23 @@ SoundDevice::SoundDevice()
 	if (!name || alcGetError(p_ALCDevice) != AL_NO_ERROR)
 		name = alcGetString(p_ALCDevice, ALC_DEVICE_SPECIFIER);
 	printf("Opened \"%s\"\n", name);
+
+
+	// todo: check for surround sound devices/set options for hrtf https://github.com/kcat/openal-soft/blob/master/examples/alhrtf.c
+
+	//ALCint attri[5];
+	//ALC_FREQUENCY
+	//	ALC_MONO_SOURCES
+	//	ALC_REFRESH
+	//	ALC_STEREO_SOURCES
+	//ALC_SYNC
+	//ALC_TRUE;
+	//ALC_HRTF_SOFT;
+	//attri[0] = 0;
+	//attri[1] = ALC_HRTF_SOFT;
+	//p_ALCContext = alcCreateContext(p_ALCDevice, attri);
+
+
 }
 
 SoundDevice::SoundDevice(const char* devicename)
