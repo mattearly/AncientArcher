@@ -1,8 +1,7 @@
 #include "../AAEngine/include/Loop.h"
 #include "../AAEngine/include/Sound/SoundDevice.h"
-#include "../AAEngine/include/Sound/SoundBufferManager.h"
-#include "../AAEngine/include/Sound/SoundEffectSource.h"
-#include "../AAEngine/include/Sound/SoundMusicSource.h"
+#include "../AAEngine/include/Sound/ShortSound.h"
+#include "../AAEngine/include/Sound/LongSound.h"
 #include "../AAEngine/include/Sound/SoundListener.h"
 #include <iostream>
 
@@ -19,11 +18,11 @@ int main()
 		std::cout << '-' << d << std::endl;
 	}
 
-	static uint32_t heal_sound_buf = SoundBufferManager::get()->addSoundEffect("../assets/sounds/heal.ogg");
-	static SoundEffectSource heal_sound;
+	static uint32_t heal_sound_buf = ShortSound::AddShortSound("../assets/sounds/heal.ogg");
+	static ShortSound heal_sound;
 
-	static uint32_t kwon_song = SoundBufferManager::get()->addLongPlaySound("../assets/sounds/music/Into It - Kwon.ogg");
-	static SoundMusicSource music_sounds;
+	//static uint32_t kwon_song = SoundBufferManager::get()->addLongPlaySound("../assets/sounds/music/Into It - Kwon.ogg");
+	static LongSound music_sounds("../assets/sounds/music/Into It - Kwon.ogg");
 
 	static enum class MUSIC_STATE {
 		initial, play, pause, stop
@@ -43,13 +42,13 @@ int main()
 		{
 			if (music_state != MUSIC_STATE::play)
 			{
-				music_sounds.Play(kwon_song);
+				music_sounds.Play();
 				music_state = MUSIC_STATE::play;
 				return true;
 			}
 			else if (music_state == MUSIC_STATE::play)
 			{
-				music_sounds.Pause(kwon_song);
+				music_sounds.Pause();
 				music_state = MUSIC_STATE::pause;
 				return true;
 			}
@@ -58,7 +57,7 @@ int main()
 		{
 			if (music_state == MUSIC_STATE::play || music_state == MUSIC_STATE::pause)
 			{
-				music_sounds.Stop(kwon_song);
+				//music_sounds.Stop();
 				music_state = MUSIC_STATE::stop;
 				return true;
 			}
@@ -152,6 +151,14 @@ int main()
 		return false;
 	};
 	LOOP->addToTimedOutKeyHandling(timedKeybinds);
+
+	auto updateMusicBuffer = []() {
+		if (music_state == MUSIC_STATE::play)
+		{
+			music_sounds.UpdatePlayBuffer();
+		}
+	};
+	LOOP->addToSlowUpdate(updateMusicBuffer);
 
 	return LOOP->runMainLoop();
 }
