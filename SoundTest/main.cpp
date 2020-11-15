@@ -21,50 +21,45 @@ int main()
 	static uint32_t heal_sound_buf = ShortSound::AddShortSound("../assets/sounds/heal.ogg");
 	static ShortSound heal_sound;
 
-	//static uint32_t kwon_song = SoundBufferManager::get()->addLongPlaySound("../assets/sounds/music/Into It - Kwon.ogg");
 	static LongSound music_sounds("../assets/sounds/music/Into It - Kwon.ogg");
-
-	static enum class MUSIC_STATE {
-		initial, play, pause, stop
-	} music_state = MUSIC_STATE::initial;
 
 	static float master_volume = 1.f;
 	static float music_volume = 1.f;
 	static float se_volume = 1.f;
-	auto play_stop_controls = [](KeyboardInput& in)
+	auto playControls = [](KeyboardInput& in)
 	{
 		if (in.mouseButton1)  // heal sound
 		{
 			heal_sound.Play(heal_sound_buf);
 			return true;
 		}
+
 		if (in.p)  //play | pause toggle
 		{
-			if (music_state != MUSIC_STATE::play)
-			{
-				music_sounds.Play();
-				music_state = MUSIC_STATE::play;
-				return true;
-			}
-			else if (music_state == MUSIC_STATE::play)
-			{
-				music_sounds.Pause();
-				music_state = MUSIC_STATE::pause;
-				return true;
-			}
+			music_sounds.Play();
+			return true;
 		}
-		if (in.o)  // stop if playing or pause
+
+		if (in.semiColon)
 		{
-			if (music_state == MUSIC_STATE::play || music_state == MUSIC_STATE::pause)
-			{
-				//music_sounds.Stop();
-				music_state = MUSIC_STATE::stop;
-				return true;
-			}
+			music_sounds.Pause();
+			return true;
+		}
+
+		if (in.l)
+		{
+			music_sounds.Resume();
+			return true;
+		}
+
+		if (in.o)  // stop
+		{
+			music_sounds.Stop();
+			return true;
 		}
 		return false;
 	};
-	LOOP->addToTimedOutKeyHandling(play_stop_controls);
+	LOOP->addToTimedOutKeyHandling(playControls);
 
 	auto timedKeybinds = [](KeyboardInput& in)
 	{
@@ -152,12 +147,18 @@ int main()
 	LOOP->addToTimedOutKeyHandling(timedKeybinds);
 
 	auto updateMusicBuffer = []() {
-		if (music_state == MUSIC_STATE::play)
-		{
-			music_sounds.UpdatePlayBuffer();
-		}
+		music_sounds.UpdatePlayBuffer();
 	};
 	LOOP->addToSlowUpdate(updateMusicBuffer);
 
+	//LOOP->setSlowUpdateTimeoutLength(.05f);
+
+	auto destroySounds = []()
+	{
+		ShortSound::DestroyAllBuffers();
+	};
+	LOOP->addToOnTeardown(destroySounds);
+
 	return LOOP->runMainLoop();
+
 }

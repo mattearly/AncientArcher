@@ -12,17 +12,20 @@ public:
 
 	void Play();
 	void Pause();
+	void Resume();
 	void Stop();
 
 	void SetVolume(const float& val);
 
 	void UpdatePlayBuffer();
 
+	ALint GetPlayingState();
+
 private:
 
 	static const int BUFFER_COUNT = 4;
 	static const int BUFFER_SAMPLES = 8192;
-
+	
 	//uint32_t p_SlowUpdateLoopId;
 
 	ALuint p_Source;

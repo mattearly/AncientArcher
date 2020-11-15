@@ -9,6 +9,10 @@ namespace AA {
 
 void LongSound::Play()
 {
+	// if already playing, don't do anything
+	if (GetPlayingState() == AL_PLAYING)
+		return;
+
 	ALsizei i;
 
 	// clear any al errors
@@ -47,11 +51,27 @@ void LongSound::Play()
 
 void LongSound::Pause()
 {
-	//SoundBufferManager::get()->PauseLongSound(id, p_Source);
+	// if not currently Playing, pause does nothing
+	if (GetPlayingState() != AL_PLAYING)
+		return;
+	
+
+
+}
+
+void LongSound::Resume()
+{
+	// do nothing if not paused
+	if (GetPlayingState() != AL_PAUSED)
+		return;
 }
 
 void LongSound::Stop() {
-	//SoundBufferManager::get()->StopLongSound(id, p_Source);
+	// if already stopped, do nothing
+	if (GetPlayingState() == AL_STOPPED)
+		return;
+
+
 }
 
 void LongSound::SetVolume(const float& val)
@@ -94,6 +114,11 @@ void LongSound::SetVolume(const float& val)
 
 void LongSound::UpdatePlayBuffer()
 {
+	if (GetPlayingState() != AL_PLAYING)
+		return;
+
+
+
 	ALint processed, state;
 
 	// clear error 
@@ -156,6 +181,13 @@ void LongSound::UpdatePlayBuffer()
 
 }
 
+ALint LongSound::GetPlayingState()
+{
+	ALint curr_state;
+	alGetSourcei(p_Source, AL_SOURCE_STATE, &curr_state);
+	return curr_state;
+}
+
 //LongSound::LongSound()
 //{
 //	alGenSources(1, &p_Source);
@@ -198,9 +230,10 @@ LongSound::LongSound(const char* filename)
 		if (sf_command(p_Sndfile, SFC_WAVEX_GET_AMBISONIC, NULL, 0) == SF_AMBISONIC_B_FORMAT)
 			p_Format = AL_FORMAT_BFORMAT3D_16;
 	}
+
 	if (!p_Format)
 	{
-		fprintf(stderr, "Unsupported channel count: %d\n", p_Sfinfo.channels);
+		//fprintf(stderr, "Unsupported channel count: %d\n", p_Sfinfo.channels);
 		sf_close(p_Sndfile);
 		p_Sndfile = NULL;
 		throw("Unsupported channel count in opening new sound file");
