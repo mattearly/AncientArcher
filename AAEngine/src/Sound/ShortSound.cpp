@@ -44,6 +44,11 @@ void ShortSound::SetPosition(const float& x, const float& y, const float& z) {
 
 void ShortSound::SetLocation(const float& x, const float& y, const float& z) {
 	alSource3f(p_Source, AL_POSITION, x, y, z);
+
+	if (alGetError() != AL_NO_ERROR)
+	{
+		std::cout << "error in playing sound effect\n";
+	}
 }
 
 void ShortSound::SetPosition(const glm::vec3& loc)
@@ -54,6 +59,36 @@ void ShortSound::SetPosition(const glm::vec3& loc)
 void ShortSound::SetLocation(const glm::vec3& loc)
 {
 	alSource3f(p_Source, AL_POSITION, loc.x, loc.y, loc.z);
+
+	if (alGetError() != AL_NO_ERROR)
+	{
+		std::cout << "error in playing sound effect\n";
+	}
+}
+
+void ShortSound::SetVelocity(float velocity)
+{
+	alSourcef(p_Source, AL_VELOCITY, velocity);
+
+	if (alGetError() != AL_NO_ERROR)
+	{
+		std::cout << "error in playing sound effect\n";
+	}
+}
+
+void ShortSound::SetDirection(const float& x, const float& y, const float& z)
+{
+	alSource3f(p_Source, AL_DIRECTION, x, y, z);
+
+	if (alGetError() != AL_NO_ERROR)
+	{
+		std::cout << "error in playing sound effect\n";
+	}
+}
+
+void ShortSound::SetDirection(const glm::vec3& dir)
+{
+	SetDirection(dir.x, dir.y, dir.z);
 }
 
 void ShortSound::SetVolume(const float& gain)
@@ -96,6 +131,28 @@ void ShortSound::SetVolume(const float& gain)
 	//std::cout << geterrorstring(ALerror) << '\n';
 }
 
+void ShortSound::SetLooping(const bool& opt)
+{
+	alSourcei(p_Source, AL_LOOPING, (ALint)opt);
+	if (alGetError() != AL_NO_ERROR)
+	{
+		throw("error setting gain");
+	}
+}
+
+void ShortSound::SetRelative(const bool& opt)
+{
+	alSourcei(p_Source, AL_SOURCE_RELATIVE, (ALint)opt);
+
+	if (alGetError() != AL_NO_ERROR)
+	{
+		throw("error setting gain");
+	}
+
+
+
+}
+
 ShortSound::ShortSound()
 {
 
@@ -110,7 +167,7 @@ ShortSound::ShortSound()
 	alSourcef(p_Source, AL_GAIN, gain);
 	alSource3f(p_Source, AL_POSITION, position[0], position[1], position[2]);
 	alSource3f(p_Source, AL_VELOCITY, velocity[0], velocity[1], velocity[2]);
-	alSourcei(p_Source, AL_LOOPING, loop);
+	alSourcei(p_Source, AL_LOOPING, (ALint)loop);
 	alSourcei(p_Source, AL_BUFFER, p_Buffer);
 	if (alGetError() != AL_NO_ERROR)
 	{

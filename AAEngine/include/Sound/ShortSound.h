@@ -18,7 +18,15 @@ public:
 	void SetLocation(const float& x, const float& y, const float& z);
 	void SetLocation(const glm::vec3& loc);
 
+	void SetVelocity(float velocity);
+
+	void SetDirection(const float& x, const float& y, const float& z);
+	void SetDirection(const glm::vec3& dir);
+
 	void SetVolume(const float& gain);
+
+	void SetLooping(const bool& opt);
+	void SetRelative(const bool& opt);
 
 	ShortSound();
 	~ShortSound();
