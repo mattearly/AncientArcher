@@ -68,7 +68,6 @@ int main()
 
 	auto timedKeybinds = [](KeyboardInput& in)
 	{
-
 		if (in.upArrow)
 		{
 			master_volume += .1f;
@@ -112,13 +111,13 @@ int main()
 		if (in.minus)
 		{
 			music_volume -= .1f;
-			if (music_volume < 0.f)
+			if (music_volume < 0.0001f)
 			{
-				music_volume = 0.f;
+				music_volume = 0.0001f;
 			}
 			float newvol = music_volume;
 			std::cout << "Music Volume: " << music_volume << '\n';
-			heal_sound.SetVolume(newvol);
+			music_sounds.SetVolume(newvol);
 			return true;
 		}
 
