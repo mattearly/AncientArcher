@@ -9,6 +9,7 @@
 #include "../../AAEngine/include/Sound/SoundDevice.h"
 #include "../../AAEngine/include/Sound/LongSound.h"
 #include "../../AAEngine/include/Sound/ShortSound.h"
+#include "../../AAEngine/include/Sound/SoundListener.h"
 #include "../../AAEngine/include/CollisionHandler.h"
 
 using namespace AA;
@@ -28,19 +29,20 @@ int main()
 	static uint32_t sound_hit_ast = ShortSound::AddShortSound("../assets/sounds/shot2.ogg");
 	static AA::ShortSound astroid_hit_source;
 	astroid_hit_source.SetVolume(1.2f);
+	astroid_hit_source.SetRelative(1);  // for positional explosions!
 	// LOAD MUSIC
-	static AA::LongSound music_source("../assets/sounds/music/Into It - Kwon.ogg");
-	music_source.SetVolume(.5f);
+	//static AA::LongSound music_source("../assets/sounds/music/Into It - Kwon.ogg");
+	//music_source.SetVolume(.5f);
 
 	auto startupSettings = []() {
 		DISPLAY->setWindowTitle("ASTROIDS!");
 		DISPLAY->setWindowSize(800, 800, true);
-		music_source.Play();
+		//music_source.Play();
 	};
 	LOOP->addToOnBegin(startupSettings);
 
-	auto updateMusic = []() {music_source.UpdatePlayBuffer(); };
-	LOOP->addToSlowUpdate(updateMusic);
+	//auto updateMusic = []() {music_source.UpdatePlayBuffer(); };
+	//LOOP->addToSlowUpdate(updateMusic);
 
 	static int unlit_shader = LOOP->addShader("../assets/shaders/noLight.vert", "../assets/shaders/noLight.frag");
 
@@ -177,6 +179,9 @@ int main()
 			if (LOOP->getGameObject(player_ship_object).getLocation().z < -BOUNDRYSIZE)
 				LOOP->getGameObject(player_ship_object).advanceTranslate(glm::vec3(0, 0, BOUNDRYSIZE * 2));
 
+			// set listener location for positional sound calc
+			SoundListener::Get()->SetPosition(LOOP->getGameObject(player_ship_object).getLocation());
+
 			if (!bulletOut)
 			{
 				//apply loc to bullet if it is not out
@@ -187,6 +192,9 @@ int main()
 		if (turnleft)
 		{
 			LOOP->getGameObject(player_ship_object).advanceRotation(glm::vec3(0, TURNSPEEDr * dt, 0));
+			// set listener orientation for positional sound calc
+			SoundListener::Get()->SetOrientation(LOOP->getGameObject(player_ship_object).getRotation(), glm::vec3(0, 1, 0));
+
 			if (!bulletOut)
 			{
 				//apply rotation to bullet if it is not out
@@ -197,6 +205,9 @@ int main()
 		if (turnright)
 		{
 			LOOP->getGameObject(player_ship_object).advanceRotation(glm::vec3(0, -TURNSPEEDr * dt, 0));
+			// set listener orientation for positional sound calc
+			SoundListener::Get()->SetOrientation(LOOP->getGameObject(player_ship_object).getRotation(), glm::vec3(0, 1, 0));
+
 			if (!bulletOut)
 			{
 				//apply rotation to bullet if it is not out
@@ -268,6 +279,7 @@ int main()
 				))
 				{
 					resetBullet();
+					astroid_hit_source.SetLocation(LOOP->getGameObject(ast.object_id).getLocation());
 					hitAstroid(ast, astroids);
 					astroid_hit_source.Play(sound_hit_ast);
 					return;

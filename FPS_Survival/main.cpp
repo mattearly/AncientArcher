@@ -6,7 +6,6 @@
 #include "include/func/player_to_world.h"
 #include "include/func/game_settings.h"
 
-
 int main()
 {
 	setPlayerCam();
@@ -14,8 +13,7 @@ int main()
 	loadWorld();
 	putPlayerInWorld();
 
-
-
 	setGameSettings(settings);
+
 	return LOOP->runMainLoop();
 }

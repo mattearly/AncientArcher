@@ -9,4 +9,5 @@ void setPlayerCam()
 	// config engine loop for first person perspective view and controls
 	LOOP->setCursorToDisabled();
 	LOOP->setToPerspectiveMouseHandling();
+
 }

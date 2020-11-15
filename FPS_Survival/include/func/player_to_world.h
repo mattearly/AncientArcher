@@ -8,10 +8,8 @@ static const float DEFAULTMOVESPEED = 10.f;
 static const float MAXSPEED = 400.f;
 static const float FLYINCR = 1.f;
 
-
 void putPlayerInWorld()
 {
-
 	// for our move direction and speed
 	static float currFlySpeed = DEFAULTMOVESPEED;
 	static float prevFlySpeed = currFlySpeed;
