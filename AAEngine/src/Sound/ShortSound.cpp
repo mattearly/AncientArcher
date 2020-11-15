@@ -74,22 +74,26 @@ void ShortSound::SetVolume(const float& gain)
 
 	alSourcef(p_Source, AL_GAIN, newvol);
 
-	ALenum ALerror = AL_NO_ERROR;
-	ALerror = alGetError();
-	auto geterrorstring = [](ALenum ALerror) {
-		switch (ALerror) {
-		case AL_NO_ERROR:       return std::string("AL_NO_ERROR - (No error)."); break;
-		case AL_INVALID_NAME:       return std::string("AL_INVALID_NAME - Invalid Name paramater passed to AL call."); break;
-		case AL_INVALID_ENUM:       return std::string("AL_INVALID_ENUM - Invalid parameter passed to AL call."); break;
-		case AL_INVALID_VALUE:      return std::string("AL_INVALID_VALUE - Invalid enum parameter value."); break;
-		case AL_INVALID_OPERATION:  return std::string("AL_INVALID_OPERATION"); break;
-		case AL_OUT_OF_MEMORY:      return std::string("AL_OUT_OF_MEMORY"); break;
-		default:            return std::string("AL Unknown Error."); break;
-		}
-	};
-	std::cout << geterrorstring(ALerror) << '\n';
-	//std::cout << getALErrorString(ALerror) << std::endl;
-	//throw("error setting suond on music source\n");
+
+	if (alGetError() != AL_NO_ERROR)
+	{
+		throw("error setting gain");
+	}
+
+	//ALenum ALerror = AL_NO_ERROR;
+	//ALerror = alGetError();
+	//auto geterrorstring = [](ALenum ALerror) {
+	//	switch (ALerror) {
+	//	case AL_NO_ERROR:       return std::string("AL_NO_ERROR - (No error)."); break;
+	//	case AL_INVALID_NAME:       return std::string("AL_INVALID_NAME - Invalid Name paramater passed to AL call."); break;
+	//	case AL_INVALID_ENUM:       return std::string("AL_INVALID_ENUM - Invalid parameter passed to AL call."); break;
+	//	case AL_INVALID_VALUE:      return std::string("AL_INVALID_VALUE - Invalid enum parameter value."); break;
+	//	case AL_INVALID_OPERATION:  return std::string("AL_INVALID_OPERATION"); break;
+	//	case AL_OUT_OF_MEMORY:      return std::string("AL_OUT_OF_MEMORY"); break;
+	//	default:            return std::string("AL Unknown Error."); break;
+	//	}
+	//};
+	//std::cout << geterrorstring(ALerror) << '\n';
 }
 
 ShortSound::ShortSound()
