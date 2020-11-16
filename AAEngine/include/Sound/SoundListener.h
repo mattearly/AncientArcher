@@ -19,9 +19,10 @@ public:
 	//	const float& xat, const float& yat, const float& zat,
 	//	const float& xup, const float& yup, const float& zup);
 
+	void SetDistanceModel(ALuint type);
+
 protected:
 	SoundListener();
-	~SoundListener();
 
 };
 

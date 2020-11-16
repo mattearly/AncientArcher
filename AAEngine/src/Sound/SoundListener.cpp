@@ -86,6 +86,34 @@ void SoundListener::SetOrientation(const glm::vec3& at, const glm::vec3& up)
 //{
 //}
 
+/// <summary>
+/// AL_INVERSE_DISTANCE, AL_INVERSE_DISTANCE_CLAMPED, AL_LINEAR_DISTANCE,
+/// AL_LINEAR_DISTANCE_CLAMPED, AL_EXPONENT_DISTANCE,
+/// AL_EXPONENT_DISTANCE_CLAMPED, or AL_NONE.
+/// </summary>
+/// <param name="type">option</param>
+void SoundListener::SetDistanceModel(ALuint type)
+{
+	switch (type)
+	{
+		case AL_INVERSE_DISTANCE:
+		case AL_INVERSE_DISTANCE_CLAMPED:
+		case AL_LINEAR_DISTANCE:
+		case AL_LINEAR_DISTANCE_CLAMPED:
+		case AL_EXPONENT_DISTANCE:
+		case AL_EXPONENT_DISTANCE_CLAMPED:
+		case AL_NONE:
+			break;
+		default:
+			throw("invalid distance model");
+	}
+	alDistanceModel(type);
+	if (alGetError() != AL_NO_ERROR)
+	{
+		throw("error setting listener distance model");
+	}
+}
+
 SoundListener::SoundListener(){}
 
 
