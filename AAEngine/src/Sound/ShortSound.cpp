@@ -6,6 +6,38 @@
 #include <AL\alext.h>
 #include <inttypes.h>
 
+/// <reference>
+/// AL_PITCH f, fv pitch multiplier, always positive
+/// AL_GAIN f, fv source gain value should be positive
+/// AL_MAX_DISTANCE f, fv, i, iv used with the Inverse Clamped Distance Model
+///                              to set the distance where there will no longer be
+///                              any attenuation of the source
+///                              AL_ROLLOFF_FACTOR f, fv, i, iv the rolloff rate for the source
+///                              default is 1.0
+/// AL_REFERENCE_DISTANCE f, fv, i, iv the distance under which the volume for the
+///                                    source would normally drop by half(before
+///                                    being influenced by rolloff factor or AL_MAX_DISTANCE)
+/// AL_MIN_GAIN f, fv the minimum gain for this source
+/// AL_MAX_GAIN f, fv the maximum gain for this source
+/// AL_CONE_OUTER_GAIN f, fv the gain when outside the oriented cone
+/// AL_CONE_INNER_ANGLE f, fv, i, iv the gain when inside the oriented cone
+/// AL_CONE_OUTER_ANGLE f, fv, i, iv outer angle of the sound cone, in degrees
+///                                  default is 360
+/// AL_POSITION fv, 3f X, Y, Z position
+/// AL_VELOCITY fv, 3f velocity vector
+/// AL_DIRECTION fv, 3f, iv, 3i direction vector
+/// AL_SOURCE_RELATIVE i, iv determines if the positions are relative to the listener
+///                          default is AL_FALSE
+/// AL_SOURCE_TYPE i, iv the source type – AL_UNDETERMINED, AL_STATIC, or AL_STREAMING
+/// AL_LOOPING i, iv turns looping on(AL_TRUE) or off(AL_FALSE)
+/// AL_BUFFER i, iv the ID of the attached buffer
+/// AL_SOURCE_STATE i, iv the state of the source(AL_STOPPED, AL_PLAYING, …)
+/// AL_BUFFERS_QUEUED* i, iv the number of buffers queued on this source
+/// AL_BUFFERS_PROCESSED* i, iv the number of buffers in the queue that have been processed
+/// AL_SEC_OFFSET f, fv, i, iv the playback position, expressed in seconds
+/// AL_SAMPLE_OFFSET f, fv, i, iv the playback position, expressed in samples
+/// AL_BYTE_OFFSET f, fv, i, iv the playback position, expressed in bytes
+/// </reference>
 namespace AA
 {
 
@@ -136,7 +168,10 @@ void ShortSound::SetLooping(const bool& opt)
 		throw("error setting short sound looping status");
 	}
 }
-
+/// <summary>
+/// determines if the positions are relative to the listener
+/// </summary>
+/// <param name="opt"></param>
 void ShortSound::SetRelative(const bool& opt)
 {
 	alSourcei(p_Source, AL_SOURCE_RELATIVE, (ALint)opt);
