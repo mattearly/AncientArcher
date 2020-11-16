@@ -41,10 +41,9 @@ void SoundListener::SetPosition(const glm::vec3& pos)
 void SoundListener::SetLocation(const glm::vec3& pos)
 {
 	alListener3f(AL_POSITION, pos.x, pos.y, pos.z);
-
 	if (alGetError() != AL_NO_ERROR)
 	{
-		throw("error setting gain");
+		throw("error setting listener location");
 	}
 }
 
@@ -58,7 +57,7 @@ void SoundListener::SetLocation(const float& x, const float& y, const float& z)
 	alListener3f(AL_POSITION, x, y, z);
 	if (alGetError() != AL_NO_ERROR)
 	{
-		throw("error setting gain");
+		throw("error setting listener location");
 	}
 }
 
@@ -89,9 +88,6 @@ void SoundListener::SetOrientation(const glm::vec3& at, const glm::vec3& up)
 
 SoundListener::SoundListener(){}
 
-SoundListener::~SoundListener()
-{
-}
 
 
 }
