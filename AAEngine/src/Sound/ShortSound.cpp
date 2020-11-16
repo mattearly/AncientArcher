@@ -3,7 +3,6 @@
 #include <sndfile.h>
 #include "../../include/Sound/ShortSound.h"
 #include <unordered_map>
-#include <iostream>
 #include <AL\alext.h>
 #include <inttypes.h>
 
@@ -25,7 +24,7 @@ void ShortSound::Play(const ALuint buf)
 
 	if (alGetError() != AL_NO_ERROR)
 	{
-		std::cout << "error in playing sound effect\n";
+		throw("error playing short sound");
 	}
 
 	//state = AL_PLAYING;
@@ -47,7 +46,8 @@ void ShortSound::SetLocation(const float& x, const float& y, const float& z) {
 
 	if (alGetError() != AL_NO_ERROR)
 	{
-		std::cout << "error in playing sound effect\n";
+		throw("error setting short sound location");
+
 	}
 }
 
@@ -59,30 +59,27 @@ void ShortSound::SetPosition(const glm::vec3& loc)
 void ShortSound::SetLocation(const glm::vec3& loc)
 {
 	alSource3f(p_Source, AL_POSITION, loc.x, loc.y, loc.z);
-
 	if (alGetError() != AL_NO_ERROR)
 	{
-		std::cout << "error in playing sound effect\n";
+		throw("error setting short sound Location");
 	}
 }
 
 void ShortSound::SetVelocity(float velocity)
 {
 	alSourcef(p_Source, AL_VELOCITY, velocity);
-
 	if (alGetError() != AL_NO_ERROR)
 	{
-		std::cout << "error in playing sound effect\n";
+		throw("error setting short sound velocity");
 	}
 }
 
 void ShortSound::SetDirection(const float& x, const float& y, const float& z)
 {
 	alSource3f(p_Source, AL_DIRECTION, x, y, z);
-
 	if (alGetError() != AL_NO_ERROR)
 	{
-		std::cout << "error in playing sound effect\n";
+		throw("error setting short sound direction");
 	}
 }
 
@@ -112,7 +109,7 @@ void ShortSound::SetVolume(const float& gain)
 
 	if (alGetError() != AL_NO_ERROR)
 	{
-		throw("error setting gain");
+		throw("error setting short sound volume");
 	}
 
 	//ALenum ALerror = AL_NO_ERROR;
@@ -136,26 +133,21 @@ void ShortSound::SetLooping(const bool& opt)
 	alSourcei(p_Source, AL_LOOPING, (ALint)opt);
 	if (alGetError() != AL_NO_ERROR)
 	{
-		throw("error setting gain");
+		throw("error setting short sound looping status");
 	}
 }
 
 void ShortSound::SetRelative(const bool& opt)
 {
 	alSourcei(p_Source, AL_SOURCE_RELATIVE, (ALint)opt);
-
 	if (alGetError() != AL_NO_ERROR)
 	{
-		throw("error setting gain");
+		throw("error setting short sound relative");
 	}
-
-
-
 }
 
 ShortSound::ShortSound()
 {
-
 	float pitch = 1.f;
 	float gain = 1.f;
 	float position[3] = { 0,0,0 };
@@ -171,7 +163,7 @@ ShortSound::ShortSound()
 	alSourcei(p_Source, AL_BUFFER, p_Buffer);
 	if (alGetError() != AL_NO_ERROR)
 	{
-		std::cout << "error setting sound effect source data\n";
+		throw("error setting short sound data");
 	}
 }
 
@@ -179,7 +171,6 @@ ShortSound::~ShortSound()
 {
 	alDeleteSources(1, &p_Source);
 }
-
 
 ALuint ShortSound::AddShortSound(const char* filename)
 {
@@ -292,9 +283,7 @@ void ShortSound::DestroyAllBuffers()
 	{
 		alDeleteBuffers(1, &b);
 	}
-
 	g_ShortSoundBuffers.clear();
-
 }
 
 } //end namespace AA
