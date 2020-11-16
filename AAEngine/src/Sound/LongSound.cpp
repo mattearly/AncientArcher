@@ -247,7 +247,21 @@ LongSound::LongSound(const char* filename)
 
 LongSound::~LongSound()
 {
+	//routine: delete all buffer data and snd file stuff
+	//close player file
+	if (p_Sndfile)
+	{
+		sf_close(p_Sndfile);
+	}
+	p_Sndfile = nullptr;
+	free(p_Membuf);
+	p_Membuf = nullptr;
+
+	//delete sources
 	alDeleteSources(1, &p_Source);
+
+	//delete buffers
+	alDeleteBuffers(BUFFER_COUNT, p_Buffers);
 }
 
 };
