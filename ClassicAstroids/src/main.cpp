@@ -16,8 +16,11 @@ using namespace AA;
 
 int main()
 {
+	// set some basic defaults for our astroid game
 	static int cam_1 = LOOP->addCamera();
 	LOOP->getCamera(cam_1).shiftYawAndPitch(0.f, -90.f); // look down
+	DISPLAY->setWindowTitle("ASTROIDS!");
+	DISPLAY->setWindowSize(800, 800, true);
 
 	// INIT SOUND
 	//AA::SoundDevice* snd = AA::SoundDevice::Get();
@@ -25,24 +28,27 @@ int main()
 	// LOAD SOUND EFFECTS
 	static uint32_t sound_zap = ShortSound::AddShortSound("../assets/sounds/zap15.ogg");
 	static ShortSound zap_source;
-	zap_source.SetVolume(1.2f);
+	//zap_source.SetVolume(1.1f);
 	static uint32_t sound_hit_ast = ShortSound::AddShortSound("../assets/sounds/shot2.ogg");
 	static AA::ShortSound astroid_hit_source;
-	astroid_hit_source.SetVolume(1.2f);
-	astroid_hit_source.SetRelative(1);  // for positional explosions!
-	// LOAD MUSIC
-	//static AA::LongSound music_source("../assets/sounds/music/Into It - Kwon.ogg");
-	//music_source.SetVolume(.5f);
+	//astroid_hit_source.SetVolume(1.8f);
+	astroid_hit_source.SetRelative(1);
+	SoundListener::Get()->SetDistanceModel(AL_NONE);
 
-	auto startupSettings = []() {
-		DISPLAY->setWindowTitle("ASTROIDS!");
-		DISPLAY->setWindowSize(800, 800, true);
-		//music_source.Play();
+	// LOAD MUSIC
+	static AA::LongSound music_source("../assets/sounds/music/Interplanetary Alignment - NoMBe (stereo).ogg");
+	music_source.SetVolume(.1f);
+
+	auto startupSettings = []()
+	{
+		music_source.Play();
 	};
 	LOOP->addToOnBegin(startupSettings);
 
-	//auto updateMusic = []() {music_source.UpdatePlayBuffer(); };
-	//LOOP->addToSlowUpdate(updateMusic);
+	auto updateMusic = []() {
+		music_source.UpdatePlayBuffer();
+	};
+	LOOP->addToSlowUpdate(updateMusic);
 
 	static int unlit_shader = LOOP->addShader("../assets/shaders/noLight.vert", "../assets/shaders/noLight.frag");
 
