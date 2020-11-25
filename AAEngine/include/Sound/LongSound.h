@@ -23,8 +23,8 @@ public:
 
 private:
 
-	static const int BUFFER_COUNT = 4;
-	static const int BUFFER_SAMPLES = 8192;
+	static constexpr int BUFFER_COUNT = 4;
+	static constexpr int BUFFER_SAMPLES = 8192;
 	
 	//uint32_t p_SlowUpdateLoopId;
 
