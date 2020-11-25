@@ -11,6 +11,7 @@
 #include "../../AAEngine/include/Sound/ShortSound.h"
 #include "../../AAEngine/include/Sound/SoundListener.h"
 #include "../../AAEngine/include/CollisionHandler.h"
+#include <glm/glm.hpp>
 
 using namespace AA;
 
@@ -23,7 +24,6 @@ int main()
 	DISPLAY->setWindowSize(800, 800, true);
 
 	// INIT SOUND
-	//AA::SoundDevice* snd = AA::SoundDevice::Get();
 	AA::SoundDevice::Init();
 	// LOAD SOUND EFFECTS
 	static uint32_t sound_zap = ShortSound::AddShortSound("../assets/sounds/zap15.ogg");
@@ -54,7 +54,7 @@ int main()
 
 	static int lit_shader = LOOP->addShader("../assets/shaders/combinedLight.vert", "../assets/shaders/combinedLight.frag");
 	// directional light for lit shader
-	static AA::DirectionalLight directional_light;
+	static AA::DirectionalLight directional_light{};
 	directional_light.Direction = glm::vec3(-0.45f, -1.f, 0.f);
 	directional_light.Ambient = glm::vec3(0.05f);
 	directional_light.Diffuse = glm::vec3(0.3f);
@@ -142,12 +142,12 @@ int main()
 	static const float BULLETCOOLDOWN = .4187f;
 	static const float BULLETSPEED = 21.f;
 
-	static float xShipDir;
-	static float zShipDir;
-	static float xCamPos;
-	static float zCamPos;
-	static float xFireDir;
-	static float zFireDir;
+	static float xShipDir = 0.0;
+	static float zShipDir = 0.0;
+	static float xCamPos = 0.0;
+	static float zCamPos = 0.0;
+	static float xFireDir = 0.0;
+	static float zFireDir = 0.0;
 
 	static bool bulletOut(false);
 	static bool bulletHitSomething(false);
@@ -198,8 +198,16 @@ int main()
 		if (turnleft)
 		{
 			LOOP->getGameObject(player_ship_object).advanceRotation(glm::vec3(0, TURNSPEEDr * dt, 0));
+
 			// set listener orientation for positional sound calc
-			SoundListener::Get()->SetOrientation(LOOP->getGameObject(player_ship_object).getRotation(), glm::vec3(0, 1, 0));
+
+			//const glm::mat4 inverted = glm::inverse(LOOP->getGameObject(player_ship_object).getModelMatrix(0));
+			//const glm::vec3 forward = normalize(glm::vec3(inverted[2]));
+
+			//glm::vec3 dir = LOOP->getGameObject(player_ship_object).getRotation();
+			//xShipDir = sin(dir.y);
+			//zShipDir = cos(dir.y);
+			SoundListener::Get()->SetOrientation(glm::vec3(xShipDir, 0, zShipDir),	glm::vec3(0, 1, 0));
 
 			if (!bulletOut)
 			{
@@ -211,8 +219,14 @@ int main()
 		if (turnright)
 		{
 			LOOP->getGameObject(player_ship_object).advanceRotation(glm::vec3(0, -TURNSPEEDr * dt, 0));
+
 			// set listener orientation for positional sound calc
-			SoundListener::Get()->SetOrientation(LOOP->getGameObject(player_ship_object).getRotation(), glm::vec3(0, 1, 0));
+			//glm::vec3 dir = LOOP->getGameObject(player_ship_object).getRotation();
+			//glm::vec3 front{};
+			//front.x = cos(dir.y);
+			//front.y = 0;
+			//front.z = sin(dir.y);
+			SoundListener::Get()->SetOrientation(glm::vec3(xShipDir, 0, zShipDir), glm::vec3(0, 1, 0));
 
 			if (!bulletOut)
 			{
