@@ -39,6 +39,8 @@ private:
 
 	// holder vars
 	std::string mLastDir = "";
+	std::string mLastFileName = "";
+	std::string mLastFileExtension = "";
 	std::vector<TextureInfo> mTexturesLoaded;
 };
 } // end namespace AA
