@@ -2,6 +2,8 @@
 #include "../../../AAEngine/include/Loop.h"
 
 extern int playerCam;
+extern int unlit_shader;
+static int playerId = -1;
 
 // for our move speed controls
 static const float DEFAULTMOVESPEED = 10.f;
@@ -10,6 +12,7 @@ static const float FLYINCR = 1.f;
 
 void putPlayerInWorld()
 {
+	playerId = LOOP->addObject("../assets/models/fbx/Ch18_nonPBR.fbx", playerCam, unlit_shader);
 	// for our move direction and speed
 	static float currFlySpeed = DEFAULTMOVESPEED;
 	static float prevFlySpeed = currFlySpeed;
