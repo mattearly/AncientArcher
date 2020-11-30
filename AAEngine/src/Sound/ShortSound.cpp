@@ -221,12 +221,16 @@ ALuint ShortSound::AddShortSound(const char* filename)
 	sndfile = sf_open(filename, SFM_READ, &sfinfo);
 	if (!sndfile)
 	{
+#ifdef _DEBUG
 		fprintf(stderr, "Could not open audio in %s: %s\n", filename, sf_strerror(sndfile));
+#endif
 		return 0;
 	}
 	if (sfinfo.frames < 1 || sfinfo.frames >(sf_count_t)(INT_MAX / sizeof(short)) / sfinfo.channels)
 	{
+#ifdef _DEBUG
 		fprintf(stderr, "Bad sample count in %s (%" PRId64 ")\n", filename, sfinfo.frames);
+#endif
 		sf_close(sndfile);
 		return 0;
 	}
@@ -249,7 +253,9 @@ ALuint ShortSound::AddShortSound(const char* filename)
 	}
 	if (!format)
 	{
+#ifdef _DEBUG
 		fprintf(stderr, "Unsupported channel count: %d\n", sfinfo.channels);
+#endif
 		sf_close(sndfile);
 		return 0;
 	}
@@ -262,7 +268,9 @@ ALuint ShortSound::AddShortSound(const char* filename)
 	{
 		free(membuf);
 		sf_close(sndfile);
+#ifdef _DEBUG
 		fprintf(stderr, "Failed to read samples in %s (%" PRId64 ")\n", filename, num_frames);
+#endif
 		return 0;
 	}
 	num_bytes = (ALsizei)(num_frames * sfinfo.channels) * (ALsizei)sizeof(short);
@@ -281,7 +289,9 @@ ALuint ShortSound::AddShortSound(const char* filename)
 	err = alGetError();
 	if (err != AL_NO_ERROR)
 	{
+#ifdef _DEBUG
 		fprintf(stderr, "OpenAL Error: %s\n", alGetString(err));
+#endif
 		if (buffer && alIsBuffer(buffer))
 			alDeleteBuffers(1, &buffer);
 		return 0;

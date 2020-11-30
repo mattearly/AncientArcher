@@ -71,20 +71,21 @@ void SoundListener::SetOrientation(const glm::vec3& at, const glm::vec3& up)
 	ori.push_back(up.y);
 	ori.push_back(up.z);
 	alListenerfv(AL_ORIENTATION, ori.data());
-
 	if (alGetError() != AL_NO_ERROR)
 	{
 		throw("error setting gain");
 	}
 }
 
-//void SoundListener::SetOrientation(const glm::vec3& at, const glm::vec3& up)
-//{
-//}
-//
-//void SoundListener::SetOrientation(const float& xat, const float& yat, const float& zat, const float& xup, const float& yup, const float& zup)
-//{
-//}
+void SoundListener::SetOrientation(const float& atx, const float& aty, const float& atz, const float& upx, const float& upy, const float& upz)
+{
+	float ori[6] = { atx, aty, atz, upx, upy, upz };
+	alListenerfv(AL_ORIENTATION, &ori[0]);
+	if (alGetError() != AL_NO_ERROR)
+	{
+		throw("error setting gain");
+	}
+}
 
 /// <summary>
 /// AL_INVERSE_DISTANCE, AL_INVERSE_DISTANCE_CLAMPED, AL_LINEAR_DISTANCE,
@@ -92,20 +93,20 @@ void SoundListener::SetOrientation(const glm::vec3& at, const glm::vec3& up)
 /// AL_EXPONENT_DISTANCE_CLAMPED, or AL_NONE.
 /// </summary>
 /// <param name="type">option</param>
-void SoundListener::SetDistanceModel(ALuint type)
+void SoundListener::SetDistanceModel(ALint type)
 {
 	switch (type)
 	{
-		case AL_INVERSE_DISTANCE:
-		case AL_INVERSE_DISTANCE_CLAMPED:
-		case AL_LINEAR_DISTANCE:
-		case AL_LINEAR_DISTANCE_CLAMPED:
-		case AL_EXPONENT_DISTANCE:
-		case AL_EXPONENT_DISTANCE_CLAMPED:
-		case AL_NONE:
-			break;
-		default:
-			throw("invalid distance model");
+	case AL_INVERSE_DISTANCE:
+	case AL_INVERSE_DISTANCE_CLAMPED:
+	case AL_LINEAR_DISTANCE:
+	case AL_LINEAR_DISTANCE_CLAMPED:
+	case AL_EXPONENT_DISTANCE:
+	case AL_EXPONENT_DISTANCE_CLAMPED:
+	case AL_NONE:
+		break;
+	default:
+		throw("invalid distance model");
 	}
 	alDistanceModel(type);
 	if (alGetError() != AL_NO_ERROR)
@@ -114,8 +115,8 @@ void SoundListener::SetDistanceModel(ALuint type)
 	}
 }
 
-SoundListener::SoundListener(){}
+SoundListener::SoundListener() {}
 
 
 
-}
+}  // end namespace AA

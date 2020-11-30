@@ -51,6 +51,16 @@ int GameObject::getModelMatrix(const int& which, glm::mat4& out_mat4) const
 	return -1;
 }
 
+glm::mat4 GameObject::getModelMatrix(const int& which)
+{
+	if (which < getInstanceCount())
+	{
+		return mInstanceDetails.at(which).ModelMatrix;
+	}
+	else
+		throw("couldn't get model matrix");
+}
+
 const int GameObject::getShaderId() const noexcept
 {
 	return mShaderID;
