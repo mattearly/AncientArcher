@@ -35,12 +35,12 @@ private:
 
 	void processNode(aiNode* node, const aiScene* scene, std::vector<MeshDrawInfo>& out_);
 	MeshDrawInfo processMesh(aiMesh* mesh, const aiScene* scene, aiMatrix4x4* trans);
-	int loadMaterialTextures(const aiMaterial* mat, aiTextureType type, std::string typeName, std::unordered_map<uint32_t, std::string>& out_texInfo);
+	int loadMaterialTextures(const aiScene* scn, const aiMaterial* mat, aiTextureType type, std::string typeName, std::unordered_map<uint32_t, std::string>& out_texInfo);
 
 	// holder vars
-	std::string mLastDir = "";
-	std::string mLastFileName = "";
-	std::string mLastFileExtension = "";
+	std::string mModelDir = "";
+	std::string mModelFileName = "";
+	std::string mModelFileExtension = "";
 	std::vector<TextureInfo> mTexturesLoaded;
 };
 } // end namespace AA
