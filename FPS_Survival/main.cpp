@@ -12,8 +12,6 @@ int main()
 	setStormySkybox();
 	loadWorld();
 	putPlayerInWorld();
-
 	setGameSettings(settings);
-
 	return LOOP->runMainLoop();
 }

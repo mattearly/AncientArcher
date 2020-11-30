@@ -34,8 +34,9 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #include <glad/glad.h>
 #include <fstream>
 #include <sstream>
+#ifdef _DEBUG
 #include <iostream>
-
+#endif
 namespace AA
 {
 OGLShader::OGLShader(const char* vertex_file, const char* fragment_file)
@@ -65,7 +66,9 @@ OGLShader::OGLShader(const char* vertex_file, const char* fragment_file)
 	}
 	catch (std::ifstream::failure e)
 	{
+#ifdef _DEBUG
 		std::cout << "ERROR::SHADER::FILE_NOT_SUCCESFULLY_READ" << std::endl;
+#endif
 	}
 
 	const char* vertexShaderSource = vertexCode.c_str();
@@ -82,10 +85,12 @@ OGLShader::OGLShader(const char* vertex_file, const char* fragment_file)
 	glGetShaderiv(vertexShader, GL_COMPILE_STATUS, &v_success);
 	if (!v_success)
 	{
+#ifdef _DEBUG
 		glGetShaderInfoLog(vertexShader, 512, nullptr, v_infoLog);
 		std::cout << "error in vertex shader, compilation failed: " << v_infoLog << std::endl;
 		char a;
 		std::cin >> a;
+#endif
 		exit(-1);
 	}
 
@@ -100,10 +105,12 @@ OGLShader::OGLShader(const char* vertex_file, const char* fragment_file)
 	glGetShaderiv(fragmentShader, GL_COMPILE_STATUS, &f_success);
 	if (!f_success)
 	{
+#ifdef _DEBUG
 		glGetShaderInfoLog(fragmentShader, 512, nullptr, f_infoLog);
 		std::cout << "error in fragment shader, compilation failed: " << f_infoLog << std::endl;
 		char a;
 		std::cin >> a;
+#endif
 		exit(-1);
 	}
 
@@ -119,18 +126,21 @@ OGLShader::OGLShader(const char* vertex_file, const char* fragment_file)
 	glGetProgramiv(ID, GL_LINK_STATUS, &p_success);
 	if (!p_success)
 	{
+#ifdef _DEBUG
 		glGetProgramInfoLog(ID, 512, nullptr, p_infoLog);
 		std::cout << "error in ID: " << p_infoLog << std::endl;
 		char a;
 		std::cin >> a;
+#endif
 		exit(-1);
 	}
 
 	/* we don't need them anymore */
 	glDeleteShader(vertexShader);
 	glDeleteShader(fragmentShader);
-
+#ifdef _DEBUG
 	std::cout << "debug: shader ID = " << ID << std::endl;
+#endif
 }
 
 OGLShader::OGLShader(const char* vertex_file, const char* fragment_file, const char* geometry_file)
@@ -168,7 +178,9 @@ OGLShader::OGLShader(const char* vertex_file, const char* fragment_file, const c
 	}
 	catch (std::ifstream::failure e)
 	{
+#ifdef _DEBUG
 		std::cout << "ERROR::SHADER::FILE_NOT_SUCCESFULLY_READ" << std::endl;
+#endif
 	}
 
 	const char* vertexShaderSource = vertexCode.c_str();
@@ -186,10 +198,12 @@ OGLShader::OGLShader(const char* vertex_file, const char* fragment_file, const c
 	glGetShaderiv(vertexShader, GL_COMPILE_STATUS, &v_success);
 	if (!v_success)
 	{
+#ifdef _DEBUG
 		glGetShaderInfoLog(vertexShader, 512, nullptr, v_infoLog);
 		std::cout << "error in vertex shader, compilation failed: " << v_infoLog << std::endl;
 		char a;
 		std::cin >> a;
+#endif
 		exit(-1);
 	}
 
@@ -204,10 +218,12 @@ OGLShader::OGLShader(const char* vertex_file, const char* fragment_file, const c
 	glGetShaderiv(fragmentShader, GL_COMPILE_STATUS, &f_success);
 	if (!f_success)
 	{
+#ifdef _DEBUG
 		glGetShaderInfoLog(fragmentShader, 512, nullptr, f_infoLog);
 		std::cout << "error in fragment shader, compilation failed: " << f_infoLog << std::endl;
 		char a;
 		std::cin >> a;
+#endif
 		exit(-1);
 	}
 
@@ -222,10 +238,12 @@ OGLShader::OGLShader(const char* vertex_file, const char* fragment_file, const c
 	glGetShaderiv(geometryShader, GL_COMPILE_STATUS, &g_success);
 	if (!g_success)
 	{
+#ifdef _DEBUG
 		glGetShaderInfoLog(geometryShader, 512, nullptr, g_infoLog);
 		std::cout << "error in geometry shader, compilation failed: " << g_infoLog << std::endl;
 		char a;
 		std::cin >> a;
+#endif
 		exit(-1);
 	}
 
@@ -242,10 +260,12 @@ OGLShader::OGLShader(const char* vertex_file, const char* fragment_file, const c
 	glGetProgramiv(ID, GL_LINK_STATUS, &p_success);
 	if (!p_success)
 	{
+#ifdef _DEBUG
 		glGetProgramInfoLog(ID, 512, nullptr, p_infoLog);
 		std::cout << "error in ID: " << p_infoLog << std::endl;
 		char a;
 		std::cin >> a;
+#endif
 		exit(-1);
 	}
 
@@ -340,12 +360,14 @@ int OGLShader::getAndCheckShaderUniform(const std::string& name) const
 
 	if (shader_var_id < 0)
 	{
+#ifdef _DEBUG
 		std::cout <<
 			"!!!SETTINGS SHADER UNIFORM VARIABLE ERROR!!!\n"
 			" name: " << name << '\n' <<
 			" id: " << ID << '\n' <<
 			" error: " << shader_var_id << '\n' <<
 			"-----------------------------------\n";
+#endif
 	}
 
 	return shader_var_id;
