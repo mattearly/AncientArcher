@@ -151,7 +151,9 @@ unsigned int TexLoader::textureFromData(const aiTexture* tex)
 	bool compressed = false;
 	if (tex->mHeight == 0)
 	{
+#ifdef _DEBUG
 		std::cout << "height says compressed data texture\n";
+#endif
 		//return out_texID;
 		compressed = true;
 	}
