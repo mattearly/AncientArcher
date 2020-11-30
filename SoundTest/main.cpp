@@ -9,6 +9,7 @@ using namespace AA;
 
 int main()
 {
+	LOOP->setWindowTitle("keys: leftclick, p, o");
 	SoundDevice* sound_dev = SoundDevice::Get(); // should init sound device and not throw if successful
 	std::vector<std::string> devices;
 	sound_dev->PopulateDeviceVec(devices);
