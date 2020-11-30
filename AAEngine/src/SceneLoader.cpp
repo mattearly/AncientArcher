@@ -1,5 +1,7 @@
 #include "../include/SceneLoader.h"
+#ifdef _DEBUG
 #include <iostream>
+#endif
 #include <sstream>
 #include <utility>
 #include <assimp/Importer.hpp>
@@ -81,8 +83,10 @@ glm::quat SceneLoader::aiQuat_to_glmQuat(const aiQuaternion& inQuat) noexcept
 
 int SceneLoader::loadGameObjectWithAssimp(std::vector<MeshDrawInfo>& out_MeshInfo, std::string path)
 {
+#ifdef _DEBUG
 	std::cout << "------\n";
 	std::cout << "LOADING GAME OBJECT: path : " << path << "\n";
+#endif _DEBUG
 	Assimp::Importer importer;
 	int post_processing_flags = 0;
 	//post processing -> http://assimp.sourceforge.net/lib_html/postprocess_8h.html
@@ -101,11 +105,26 @@ int SceneLoader::loadGameObjectWithAssimp(std::vector<MeshDrawInfo>& out_MeshInf
 	const aiScene* scene = importer.ReadFile(path, post_processing_flags);
 	if (!scene || scene->mFlags & AI_SCENE_FLAGS_INCOMPLETE || !scene->mRootNode)
 	{
+#ifdef _DEBUG
 		std::cout << "ERROR::ASSIMP::" << importer.GetErrorString() << '\n';
+#endif
 		return -1;  // failed to load scene
 	}
 
-	mLastDir = path.substr(0, path.find_last_of("/\\") + 1);  // get the beginning of the filename before the last / or \\
+	int the_last_slash = path.find_last_of("/\\") + 1;
+	int the_last_dot = path.find_last_of(".");
+
+	mLastDir = path.substr(0, the_last_slash);  // path to filename's dir
+
+	mLastFileExtension = path.substr(the_last_dot + 1);  // get the file extension (type of file)
+
+	mLastFileName = path.substr(the_last_slash, the_last_dot - the_last_slash);  // get the name of the file
+
+#ifdef _DEBUG
+	std::cout << "last dir = " << mLastDir << '\n';
+	std::cout << "last file extension = " << mLastFileExtension << '\n';
+	std::cout << "last filename = " << mLastFileName << '\n';
+#endif
 
 	//std::string getBasePath(const std::string & path)
 	//{
@@ -182,10 +201,12 @@ MeshDrawInfo SceneLoader::processMesh(aiMesh* mesh, const aiScene* scene, aiMatr
 		for (auto newtexture : textureUnitMaps)
 			loadedTextures.insert(loadedTextures.end(), newtexture);
 	}
+#ifdef _DEBUG
 	else
 	{
 		std::cout << "failed to load aiTextureType_DIFFUSE\n";
 	}
+#endif
 
 	//std::vector<TextureInfo> specMaps;
 	//loadMaterialTextures(material, aiTextureType_SPECULAR, "specular", specMaps);
@@ -270,14 +291,21 @@ int SceneLoader::loadMaterialTextures(const aiMaterial* mat, aiTextureType type,
 		switch (tex_success)
 		{
 		case aiReturn_SUCCESS:
-			std::cout << "Attempting Diffuse Texture on given path: " << aiTmpStr.C_Str() << '\n';
+#ifdef _DEBUG
+			std::cout << "Attempting Texture on given path: " << aiTmpStr.C_Str() << '\n';
+#endif
 			break;
 		case aiReturn_FAILURE:
+#ifdef _DEBUG
 			std::cout << "failure getting texture on material tex num " << i << ' ' << aiTmpStr.C_Str() << '\n';
+#endif
 			return -1;
 			break;
 		case aiReturn_OUTOFMEMORY:
+
+#ifdef _DEBUG
 			std::cout << "oom getting texture on material tex num " << i << ' ' << aiTmpStr.C_Str() << '\n';
+#endif
 			return -1;
 			break;
 		}
@@ -289,7 +317,7 @@ int SceneLoader::loadMaterialTextures(const aiMaterial* mat, aiTextureType type,
 		std::string tex_path1_literal = aiTmpStr.C_Str();
 		std::string tex_path2_loadedFromFullAppend = mLastDir + tex_path1_literal;
 		std::string tex_path3_loadedFromEndAppend = mLastDir + tex_path1_literal.substr(tex_path1_literal.find_last_of("/\\") + 1);  // all the way to the end
-
+		std::string tex_path4_fbxpacked = mLastDir + mLastFileName + ".fbm";
 		// routine to see if we already have this texture loaded
 		bool alreadyLoaded = false;
 		for (uint32_t j = 0; j < mTexturesLoaded.size(); ++j)
@@ -300,7 +328,9 @@ int SceneLoader::loadMaterialTextures(const aiMaterial* mat, aiTextureType type,
 				{
 					// texture already loaded, just give the mesh the details
 					out_texInfo.insert(out_texInfo.end(), { p.accessId, p.type });
+#ifdef _DEBUG
 					std::cout << "Texture [" << p.path.data() << "] already loaded, using it.\n";
+#endif
 					return 0;  // success
 				}
 			}
@@ -310,7 +340,9 @@ int SceneLoader::loadMaterialTextures(const aiMaterial* mat, aiTextureType type,
 		{
 			TextureInfo a_new_texture_info;
 
+#ifdef _DEBUG
 			std::cout << " - TexLoad try 1 (given path): " << tex_path1_literal << '\n';
+#endif
 			a_new_texture_info.accessId = TexLoader::getInstance()->textureFromFile((tex_path1_literal).c_str());
 			if (a_new_texture_info.accessId != 0)
 			{
@@ -323,8 +355,9 @@ int SceneLoader::loadMaterialTextures(const aiMaterial* mat, aiTextureType type,
 				out_texInfo.insert(out_texInfo.end(), { a_new_texture_info.accessId, a_new_texture_info.type });
 				return 0; // success!
 			}
-
+#ifdef _DEBUG
 			std::cout << " - TexLoad try 2 (full append): " << tex_path2_loadedFromFullAppend << '\n';
+#endif
 			a_new_texture_info.accessId = TexLoader::getInstance()->textureFromFile(tex_path2_loadedFromFullAppend.c_str());
 			if (a_new_texture_info.accessId != 0)
 			{
@@ -337,13 +370,29 @@ int SceneLoader::loadMaterialTextures(const aiMaterial* mat, aiTextureType type,
 				out_texInfo.insert(out_texInfo.end(), { a_new_texture_info.accessId, a_new_texture_info.type });
 				return 0; // success!
 			}
-
+#ifdef _DEBUG
 			std::cout << " - TexLoad try 3 (end append): " << tex_path3_loadedFromEndAppend << '\n';
+#endif
 			a_new_texture_info.accessId = TexLoader::getInstance()->textureFromFile(tex_path3_loadedFromEndAppend.c_str());
 			if (a_new_texture_info.accessId != 0)
 			{
 				// add the new one to our list of loaded textures
 				a_new_texture_info.path = tex_path3_loadedFromEndAppend;
+				a_new_texture_info.type = typeName;
+				mTexturesLoaded.push_back(a_new_texture_info);
+
+				// to return for draw info on this current mesh
+				out_texInfo.insert(out_texInfo.end(), { a_new_texture_info.accessId, a_new_texture_info.type });
+				return 0; // success!
+			}
+#ifdef _DEBUG
+			std::cout << " - TexLoad try 4 (fbx packed): " << tex_path4_fbxpacked << '\n';
+#endif
+			a_new_texture_info.accessId = TexLoader::getInstance()->textureFromFile(tex_path4_fbxpacked.c_str());
+			if (a_new_texture_info.accessId != 0)
+			{
+				// add the new one to our list of loaded textures
+				a_new_texture_info.path = tex_path4_fbxpacked;
 				a_new_texture_info.type = typeName;
 				mTexturesLoaded.push_back(a_new_texture_info);
 

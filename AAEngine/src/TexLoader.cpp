@@ -3,8 +3,9 @@
 #include <stdexcept>
 #include <glad/glad.h>
 #include <stb_image.h>
+#ifdef _DEBUG
 #include <iostream>
-
+#endif
 namespace AA
 {
 TexLoader* TexLoader::getInstance()
@@ -112,19 +113,22 @@ unsigned int TexLoader::textureFromFile(const char* filepath, bool gamma)
 
 		//try: https://stackoverflow.com/questions/23150123/loading-png-with-stb-image-for-opengl-texture-gives-wrong-colors
 		glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
-		
+
 		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, data);
 		glGenerateMipmap(GL_TEXTURE_2D);
 
 		glBindTexture(GL_TEXTURE_2D, 0);
 
 		stbi_image_free(data);
+#ifdef _DEBUG
 		std::cout << "::TEXLOADER: SUCCESS at path: " << filepath << std::endl;
-
+#endif
 	}
 	else
 	{
+#ifdef _DEBUG
 		std::cout << "::TEXLOADER: failed to load at path: " << filepath << std::endl;
+#endif
 		stbi_image_free(data);
 	}
 
