@@ -53,6 +53,7 @@ void SoundDevice::SwitchDevice(const char* devicename)
 		throw("failed to make context current");
 
 
+#ifdef _DEBUG
 	//verbose
 	const ALCchar* name = NULL;
 	if (alcIsExtensionPresent(p_ALCDevice, "ALC_ENUMERATE_ALL_EXT"))
@@ -60,6 +61,7 @@ void SoundDevice::SwitchDevice(const char* devicename)
 	if (!name || alcGetError(p_ALCDevice) != AL_NO_ERROR)
 		name = alcGetString(p_ALCDevice, ALC_DEVICE_SPECIFIER);
 	printf("Opened \"%s\"\n", name);
+#endif
 }
 
 void SoundDevice::PopulateDeviceVec(std::vector<std::string>& devicesVec)
@@ -105,6 +107,7 @@ SoundDevice::SoundDevice()
 	if (!alcMakeContextCurrent(p_ALCContext))
 		throw("failed to make context current");
 
+#ifdef _DEBUG
 	//verbose say device name opened
 	const ALCchar* name = NULL;
 	if (alcIsExtensionPresent(p_ALCDevice, "ALC_ENUMERATE_ALL_EXT"))
@@ -112,7 +115,7 @@ SoundDevice::SoundDevice()
 	if (!name || alcGetError(p_ALCDevice) != AL_NO_ERROR)
 		name = alcGetString(p_ALCDevice, ALC_DEVICE_SPECIFIER);
 	printf("Opened \"%s\"\n", name);
-
+#endif
 
 	// todo: check for surround sound devices/set options for hrtf https://github.com/kcat/openal-soft/blob/master/examples/alhrtf.c
 
@@ -145,6 +148,7 @@ SoundDevice::SoundDevice(const char* devicename)
 		throw("failed to make context current");
 
 
+#ifdef _DEBUG
 	//verbose say device name opened
 	const ALCchar* name = NULL;
 	if (alcIsExtensionPresent(p_ALCDevice, "ALC_ENUMERATE_ALL_EXT"))
@@ -152,6 +156,7 @@ SoundDevice::SoundDevice(const char* devicename)
 	if (!name || alcGetError(p_ALCDevice) != AL_NO_ERROR)
 		name = alcGetString(p_ALCDevice, ALC_DEVICE_SPECIFIER);
 	printf("Opened \"%s\"\n", name);
+#endif
 }
 
 
