@@ -3,21 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.29613.14
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "rand", "rand\rand\rand.vcxproj", "{32A240BC-514F-4BFA-A205-1766769E9D87}"
-EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "AAEngine", "AAEngine\AAEngine.vcxproj", "{091BACDE-FE9F-44DA-A52D-8AB3B026A626}"
-EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "FPSDemo", "FPSDemo\FPSDemo.vcxproj", "{2B5C6B6F-4377-495A-BF50-9C37E79C3FF1}"
-EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "FBXModels", "FBXModels\FBXModels.vcxproj", "{0D944ACE-1B5A-4273-BFB0-FA22A8B500B6}"
-EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "ModelMatrixTests", "ModelMatrixTests\ModelMatrixTests.vcxproj", "{2757C373-D7C3-4892-8C40-2656946EB300}"
-EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "ClassicAstroids", "ClassicAstroids\ClassicAstroids.vcxproj", "{FD435769-E0EA-41D4-83D0-442E2440D1FE}"
-EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "FPS_Survival", "FPS_Survival\FPS_Survival.vcxproj", "{CEB98730-99AE-4134-9722-0379CF20D4D0}"
-EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "SoundTest", "SoundTest\SoundTest.vcxproj", "{40084D3F-264B-4946-9C3E-9402C61AE6F1}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -25,38 +11,10 @@ Global
 		Release|x64 = Release|x64
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{32A240BC-514F-4BFA-A205-1766769E9D87}.Debug|x64.ActiveCfg = Debug|x64
-		{32A240BC-514F-4BFA-A205-1766769E9D87}.Debug|x64.Build.0 = Debug|x64
-		{32A240BC-514F-4BFA-A205-1766769E9D87}.Release|x64.ActiveCfg = Release|x64
-		{32A240BC-514F-4BFA-A205-1766769E9D87}.Release|x64.Build.0 = Release|x64
 		{091BACDE-FE9F-44DA-A52D-8AB3B026A626}.Debug|x64.ActiveCfg = Debug|x64
 		{091BACDE-FE9F-44DA-A52D-8AB3B026A626}.Debug|x64.Build.0 = Debug|x64
 		{091BACDE-FE9F-44DA-A52D-8AB3B026A626}.Release|x64.ActiveCfg = Release|x64
 		{091BACDE-FE9F-44DA-A52D-8AB3B026A626}.Release|x64.Build.0 = Release|x64
-		{2B5C6B6F-4377-495A-BF50-9C37E79C3FF1}.Debug|x64.ActiveCfg = Debug|x64
-		{2B5C6B6F-4377-495A-BF50-9C37E79C3FF1}.Debug|x64.Build.0 = Debug|x64
-		{2B5C6B6F-4377-495A-BF50-9C37E79C3FF1}.Release|x64.ActiveCfg = Release|x64
-		{2B5C6B6F-4377-495A-BF50-9C37E79C3FF1}.Release|x64.Build.0 = Release|x64
-		{0D944ACE-1B5A-4273-BFB0-FA22A8B500B6}.Debug|x64.ActiveCfg = Debug|x64
-		{0D944ACE-1B5A-4273-BFB0-FA22A8B500B6}.Debug|x64.Build.0 = Debug|x64
-		{0D944ACE-1B5A-4273-BFB0-FA22A8B500B6}.Release|x64.ActiveCfg = Release|x64
-		{0D944ACE-1B5A-4273-BFB0-FA22A8B500B6}.Release|x64.Build.0 = Release|x64
-		{2757C373-D7C3-4892-8C40-2656946EB300}.Debug|x64.ActiveCfg = Debug|x64
-		{2757C373-D7C3-4892-8C40-2656946EB300}.Debug|x64.Build.0 = Debug|x64
-		{2757C373-D7C3-4892-8C40-2656946EB300}.Release|x64.ActiveCfg = Release|x64
-		{2757C373-D7C3-4892-8C40-2656946EB300}.Release|x64.Build.0 = Release|x64
-		{FD435769-E0EA-41D4-83D0-442E2440D1FE}.Debug|x64.ActiveCfg = Debug|x64
-		{FD435769-E0EA-41D4-83D0-442E2440D1FE}.Debug|x64.Build.0 = Debug|x64
-		{FD435769-E0EA-41D4-83D0-442E2440D1FE}.Release|x64.ActiveCfg = Release|x64
-		{FD435769-E0EA-41D4-83D0-442E2440D1FE}.Release|x64.Build.0 = Release|x64
-		{CEB98730-99AE-4134-9722-0379CF20D4D0}.Debug|x64.ActiveCfg = Debug|x64
-		{CEB98730-99AE-4134-9722-0379CF20D4D0}.Debug|x64.Build.0 = Debug|x64
-		{CEB98730-99AE-4134-9722-0379CF20D4D0}.Release|x64.ActiveCfg = Release|x64
-		{CEB98730-99AE-4134-9722-0379CF20D4D0}.Release|x64.Build.0 = Release|x64
-		{40084D3F-264B-4946-9C3E-9402C61AE6F1}.Debug|x64.ActiveCfg = Debug|x64
-		{40084D3F-264B-4946-9C3E-9402C61AE6F1}.Debug|x64.Build.0 = Debug|x64
-		{40084D3F-264B-4946-9C3E-9402C61AE6F1}.Release|x64.ActiveCfg = Release|x64
-		{40084D3F-264B-4946-9C3E-9402C61AE6F1}.Release|x64.Build.0 = Release|x64
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
