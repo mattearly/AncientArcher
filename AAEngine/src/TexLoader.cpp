@@ -160,7 +160,7 @@ unsigned int TexLoader::textureFromData(const aiTexture* tex)
 
 	int width, height, nrComponents;
 
-	size_t texture_size = static_cast<size_t>(tex->mWidth * std::max(tex->mHeight, 1u));
+	int texture_size = tex->mWidth * std::max(tex->mHeight, 1u);
 
 	unsigned char* data = stbi_load_from_memory(reinterpret_cast<unsigned char*>(tex->pcData), texture_size, &width, &height, &nrComponents, STBI_rgb);
 

@@ -81,11 +81,11 @@ OGLShader::OGLShader(const char* vertex_file, const char* fragment_file)
 
 	/* determine if vertex shader was successful in compiling */
 	int v_success;
-	char v_infoLog[512];
 	glGetShaderiv(vertexShader, GL_COMPILE_STATUS, &v_success);
 	if (!v_success)
 	{
 #ifdef _DEBUG
+		char v_infoLog[512];
 		glGetShaderInfoLog(vertexShader, 512, nullptr, v_infoLog);
 		std::cout << "error in vertex shader, compilation failed: " << v_infoLog << std::endl;
 		char a;
@@ -101,11 +101,11 @@ OGLShader::OGLShader(const char* vertex_file, const char* fragment_file)
 
 	/* determine if fragment shader was successful in compiling */
 	int f_success;
-	char f_infoLog[512];
 	glGetShaderiv(fragmentShader, GL_COMPILE_STATUS, &f_success);
 	if (!f_success)
 	{
 #ifdef _DEBUG
+		char f_infoLog[512];
 		glGetShaderInfoLog(fragmentShader, 512, nullptr, f_infoLog);
 		std::cout << "error in fragment shader, compilation failed: " << f_infoLog << std::endl;
 		char a;
@@ -122,11 +122,11 @@ OGLShader::OGLShader(const char* vertex_file, const char* fragment_file)
 
 	/* check that the ID was successful */
 	int p_success;
-	char p_infoLog[512];
 	glGetProgramiv(ID, GL_LINK_STATUS, &p_success);
 	if (!p_success)
 	{
 #ifdef _DEBUG
+		char p_infoLog[512];
 		glGetProgramInfoLog(ID, 512, nullptr, p_infoLog);
 		std::cout << "error in ID: " << p_infoLog << std::endl;
 		char a;
@@ -194,11 +194,11 @@ OGLShader::OGLShader(const char* vertex_file, const char* fragment_file, const c
 
 	/* determine if vertex shader was successful in compiling */
 	int v_success;
-	char v_infoLog[512];
 	glGetShaderiv(vertexShader, GL_COMPILE_STATUS, &v_success);
 	if (!v_success)
 	{
 #ifdef _DEBUG
+		char v_infoLog[512];
 		glGetShaderInfoLog(vertexShader, 512, nullptr, v_infoLog);
 		std::cout << "error in vertex shader, compilation failed: " << v_infoLog << std::endl;
 		char a;
@@ -214,11 +214,11 @@ OGLShader::OGLShader(const char* vertex_file, const char* fragment_file, const c
 
 	/* determine if fragment shader was successful in compiling */
 	int f_success;
-	char f_infoLog[512];
 	glGetShaderiv(fragmentShader, GL_COMPILE_STATUS, &f_success);
 	if (!f_success)
 	{
 #ifdef _DEBUG
+		char f_infoLog[512];
 		glGetShaderInfoLog(fragmentShader, 512, nullptr, f_infoLog);
 		std::cout << "error in fragment shader, compilation failed: " << f_infoLog << std::endl;
 		char a;
@@ -234,11 +234,11 @@ OGLShader::OGLShader(const char* vertex_file, const char* fragment_file, const c
 
 	/* determine if geometry shader was successful in compiling */
 	int g_success;
-	char g_infoLog[512];
 	glGetShaderiv(geometryShader, GL_COMPILE_STATUS, &g_success);
 	if (!g_success)
 	{
 #ifdef _DEBUG
+		char g_infoLog[512];
 		glGetShaderInfoLog(geometryShader, 512, nullptr, g_infoLog);
 		std::cout << "error in geometry shader, compilation failed: " << g_infoLog << std::endl;
 		char a;
@@ -256,11 +256,11 @@ OGLShader::OGLShader(const char* vertex_file, const char* fragment_file, const c
 
 	/* check that the ID was successful */
 	int p_success;
-	char p_infoLog[512];
 	glGetProgramiv(ID, GL_LINK_STATUS, &p_success);
 	if (!p_success)
 	{
 #ifdef _DEBUG
+		char p_infoLog[512];
 		glGetProgramInfoLog(ID, 512, nullptr, p_infoLog);
 		std::cout << "error in ID: " << p_infoLog << std::endl;
 		char a;

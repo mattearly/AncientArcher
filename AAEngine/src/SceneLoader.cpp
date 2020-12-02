@@ -111,8 +111,8 @@ int SceneLoader::loadGameObjectWithAssimp(std::vector<MeshDrawInfo>& out_MeshInf
 		return -1;  // failed to load scene
 	}
 
-	int the_last_slash = path.find_last_of("/\\") + 1;
-	int the_last_dot = path.find_last_of(".");
+	std::size_t the_last_slash = path.find_last_of("/\\") + 1;
+	std::size_t the_last_dot = path.find_last_of(".");
 
 	mModelDir = path.substr(0, the_last_slash);  // path to filename's dir
 
