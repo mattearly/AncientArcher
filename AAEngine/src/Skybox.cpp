@@ -45,12 +45,40 @@ namespace AA
  *
  * @param incomingSkymapFiles  A six png image cube map texture. The order must be: "right", "left", "up", "down", "front", "back"
  */
-Skybox::Skybox(std::vector<std::string> incomingSkymapFiles)
+Skybox::Skybox(std::vector<std::string> incomingSkymapFiles, bool useInternalShaders, const char* vertpath, const char* fragpath)
 {
-	skyboxShader = std::make_unique<OGLShader>(
-		"../assets/shaders/skycube.vert",
-		"../assets/shaders/skycube.frag"
-		);
+	if (useInternalShaders) {
+		const char* skycubevert =
+			"#version 330 core\n"
+			"layout(location = 0) in vec3 aPos;\n"
+			"out vec3 TexCoords;\n"
+			"uniform mat4 projection;\n"
+			"uniform mat4 view;\n"
+			"void main(){\n"
+			"	TexCoords = aPos;\n"
+			"	vec4 pos = projection * view * vec4(aPos, 1.0);\n"
+			"	gl_Position = pos.xyww;\n"
+			"}\n"
+			;
+		const char* skycubefrag =
+			"#version 330 core\n"
+			"in vec3 TexCoords;\n"
+			"out vec4 FragColor;\n"
+			"uniform samplerCube skybox;\n"
+			"void main()	{\n"
+			"	FragColor = texture(skybox, TexCoords);\n"
+			"}\n"
+			;
+		skyboxShader = std::make_unique<OGLShader>(
+			skycubevert,
+			skycubefrag, false
+			);
+	}
+	else {
+		if (vertpath == "" || fragpath == "")
+			throw("shader path must be provided if not using internal shaders");
+		skyboxShader = std::make_unique<OGLShader>(vertpath, fragpath);
+	}
 	loadSkybox();
 	cubemapTexture = TexLoader::getInstance()->loadCubeTexture(incomingSkymapFiles);
 	skyboxShader->use();

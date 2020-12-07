@@ -47,7 +47,7 @@ public:
 	//Skybox(std::shared_ptr<Camera>& viewport);
 	//Skybox(std::vector<std::string> incomingSkymapFiles);
 
-	Skybox(std::vector<std::string> incomingSkymapFiles);
+	Skybox(std::vector<std::string> incomingSkymapFiles, bool useInternalShaders = true, const char* vertpath = "", const char* fragpath = "");
 
 	void render(const Camera& cam);
 
