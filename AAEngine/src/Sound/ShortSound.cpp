@@ -224,7 +224,8 @@ ALuint ShortSound::AddShortSound(const char* filename)
 #ifdef _DEBUG
 		fprintf(stderr, "Could not open audio in %s: %s\n", filename, sf_strerror(sndfile));
 #endif
-		return 0;
+		//return 0;
+		throw("short sound file could not be loaded");
 	}
 	if (sfinfo.frames < 1 || sfinfo.frames >(sf_count_t)(INT_MAX / sizeof(short)) / sfinfo.channels)
 	{
