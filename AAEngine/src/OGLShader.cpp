@@ -39,40 +39,52 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #endif
 namespace AA
 {
-OGLShader::OGLShader(const char* vertex_file, const char* fragment_file)
+OGLShader::OGLShader(const char* vert, const char* frag, bool isFilePath)
 {
 	std::string vertexCode;
 	std::string fragmentCode;
-	std::ifstream vShaderFile;
-	std::ifstream fShaderFile;
 
-	vShaderFile.exceptions(std::ifstream::failbit | std::ifstream::badbit);
-	fShaderFile.exceptions(std::ifstream::failbit | std::ifstream::badbit);
+	const char* vertexShaderSource;
+	const char* fragmentShaderSource;
 
-	try
-	{
-		vShaderFile.open(vertex_file);
-		fShaderFile.open(fragment_file);
-		std::stringstream vShaderStream, fShaderStream;
+	if (isFilePath) {
 
-		vShaderStream << vShaderFile.rdbuf();
-		fShaderStream << fShaderFile.rdbuf();
+		std::ifstream vShaderFile;
+		std::ifstream fShaderFile;
+	
+		vShaderFile.exceptions(std::ifstream::failbit | std::ifstream::badbit);
+		fShaderFile.exceptions(std::ifstream::failbit | std::ifstream::badbit);
 
-		vShaderFile.close();
-		fShaderFile.close();
+		try
+		{
+			vShaderFile.open(vert);
+			fShaderFile.open(frag);
+			std::stringstream vShaderStream, fShaderStream;
 
-		vertexCode = vShaderStream.str();
-		fragmentCode = fShaderStream.str();
-	}
-	catch (std::ifstream::failure e)
-	{
+			vShaderStream << vShaderFile.rdbuf();
+			fShaderStream << fShaderFile.rdbuf();
+
+			vShaderFile.close();
+			fShaderFile.close();
+
+			vertexCode = vShaderStream.str();
+			fragmentCode = fShaderStream.str();
+		}
+		catch (std::ifstream::failure e)
+		{
 #ifdef _DEBUG
-		std::cout << "ERROR::SHADER::FILE_NOT_SUCCESFULLY_READ" << std::endl;
+			std::cout << "ERROR::SHADER::FILE_NOT_SUCCESFULLY_READ" << std::endl;
 #endif
-	}
 
-	const char* vertexShaderSource = vertexCode.c_str();
-	const char* fragmentShaderSource = fragmentCode.c_str();
+		}
+		vertexShaderSource = vertexCode.c_str();
+		fragmentShaderSource = fragmentCode.c_str();
+	}
+	else
+	{
+		vertexShaderSource = vert;
+		fragmentShaderSource = frag;
+	}
 
 	/* compile vertex (points) shader */
 	int vertexShader = glCreateShader(GL_VERTEX_SHADER);
@@ -143,7 +155,7 @@ OGLShader::OGLShader(const char* vertex_file, const char* fragment_file)
 #endif
 }
 
-OGLShader::OGLShader(const char* vertex_file, const char* fragment_file, const char* geometry_file)
+OGLShader::OGLShader(const char* vertex_file, const char* frag, const char* geometry_file)
 {
 	std::string vertexCode;
 	std::string fragmentCode;
@@ -159,7 +171,7 @@ OGLShader::OGLShader(const char* vertex_file, const char* fragment_file, const c
 	try
 	{
 		vShaderFile.open(vertex_file);
-		fShaderFile.open(fragment_file);
+		fShaderFile.open(frag);
 		gShaderFile.open(geometry_file);
 
 		std::stringstream vShaderStream, fShaderStream, gShaderStream;

@@ -40,7 +40,7 @@ class OGLShader
 {
 public:
 
-	OGLShader(const char* vertex_file, const char* fragment_file);
+	OGLShader(const char* vert, const char* frag, bool isFilePath = true);
 	OGLShader(const char* vertex_file, const char* fragment_file, const char* geometry_file);
 
 	void use() const noexcept;
