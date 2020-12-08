@@ -36,12 +36,16 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 namespace AA
 {
+enum class SHADERTYPE {
+	DIFF, LITDIFF
+};
 class OGLShader
 {
 public:
 
+	OGLShader(const SHADERTYPE& type);
 	OGLShader(const char* vert, const char* frag, bool isFilePath = true);
-	OGLShader(const char* vertex_file, const char* fragment_file, const char* geometry_file);
+	//OGLShader(const char* vertex_file, const char* fragment_file, const char* geometry_file);
 
 	void use() const noexcept;
 	void stop() const noexcept;
@@ -73,5 +77,7 @@ private:
 	OGLShader() = delete;
 
 	unsigned int ID;
+
+	void LoadShader(const char* vert, const char* frag);
 };
 }  // end namespace AA

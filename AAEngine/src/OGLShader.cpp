@@ -39,19 +39,188 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #endif
 namespace AA
 {
+
+/// <summary>
+/// Constructor to load an internal shader.
+/// </summary>
+/// <param name="type">which to use</param>
+OGLShader::OGLShader(const SHADERTYPE& type)
+{
+	ID = -1;
+	switch (type)
+	{
+	case SHADERTYPE::DIFF:
+	{
+		const char* vert_source =
+			"#version 330 core\n"
+			"layout(location=0)in vec3 inPos;\n"
+			"layout(location=1)in vec2 inTexUV;\n"
+			"out vec2 pass_TexUV;\n"
+			"uniform mat4 projection;\n"
+			"uniform mat4 model;\n"
+			"uniform mat4 view;\n"
+			"void main(){\n"
+			"  pass_TexUV = inTexUV;\n"
+			"  gl_Position = projection * view * model * vec4(inPos,1);\n"
+			"}\n"
+			;
+		const char* frag_source =
+			"#version 330 core\n"
+			"in vec2 pass_TexUV;\n"
+			"out vec4 out_Color;\n"
+			"struct Material {\n"
+			"  sampler2D Albedo;\n"
+			"};\n"
+			"uniform Material material;\n"
+			"void main(){\n"
+			"  out_Color = texture(material.Albedo, pass_TexUV);\n"
+			"}\n"
+			;
+		LoadShader(vert_source, frag_source);
+	}
+	break;
+	case SHADERTYPE::LITDIFF:
+	{
+		const char* vert_source =
+			"#version 330 core\n"
+			"layout(location=0)in vec3 inPos;\n"
+			"layout(location=1)in vec2 inTexUV;\n"
+			"layout(location=2)in vec3 inNorm;\n"
+			"out vec3 pass_Pos;\n"
+			"out vec2 pass_TexUV;\n"
+			"out vec3 pass_Norm;\n"
+			"uniform mat4 projection;\n"
+			"uniform mat4 model;\n"
+			"uniform mat4 view;\n"
+			"void main(){	\n"
+			"  pass_Pos = (model * vec4(inPos,1.)).xyz;\n"
+			"  pass_TexUV = inTexUV;\n"
+			"  pass_Norm = inNorm;\n"
+			"  gl_Position = projection * view * model * vec4(inPos,1);\n"
+			"}\n"
+			;
+		const char* frag_source =
+			"#version 330 core\n"
+			"in vec3 pass_Pos;\n"
+			"in vec2 pass_TexUV;\n"
+			"in vec3 pass_Norm;\n"
+			"out vec3 out_Color;\n"
+			"struct Material{\n"
+			"  sampler2D Albedo;\n"
+			"};\n"
+			"struct DirectionalLight{\n"
+			"  vec3 Direction;\n"
+			"  vec3 Ambient;\n"
+			"  vec3 Diffuse;\n"
+			"  vec3 Specular;\n"
+			"};\n"
+			"struct PointLight{\n"
+			"  vec3 Position;\n"
+			"  float Constant,Linear,Quadratic;\n"
+			"  vec3 Ambient,Diffuse,Specular;\n"
+			"};\n"
+			"struct SpotLight{\n"
+			"  vec3 Position,Direction;\n"
+			"  float CutOff,OuterCutOff;\n"
+			"  float Constant,Linear,Quadratic;\n"
+			"  vec3 Ambient,Diffuse,Specular;\n"
+			"};\n"
+			"const int MAXPOINTLIGHTS=50;\n"
+			"const int MAXSPOTLIGHTS=25;\n"
+			"uniform vec3 viewPos;\n"
+			"uniform Material material;\n"
+			"uniform DirectionalLight directionalLight;\n"
+			"uniform PointLight pointLight[MAXPOINTLIGHTS];\n"
+			"uniform SpotLight spotLight[MAXSPOTLIGHTS];\n"
+			"uniform int NUM_POINT_LIGHTS;\n"
+			"uniform int NUM_SPOT_LIGHTS;\n"
+			"vec3 CalcDirectionalLight(vec3 normal,vec3 viewDir);\n"
+			"vec3 CalcPointLight(PointLight light,vec3 normal,vec3 viewDir);\n"
+			"vec3 CalcSpotLight(SpotLight light,vec3 normal,vec3 viewDir);\n"
+			"int i = 0;\n"
+			"void main(){\n"
+			"  vec3 result;\n"
+			"  vec3 normal = normalize(pass_Norm);\n"
+			"  vec3 viewDir = normalize(viewPos - pass_Pos);\n"
+			"  result += CalcDirectionalLight(normal, viewDir);\n"
+			"  for (i = 0; i < NUM_POINT_LIGHTS; i++)\n"
+			"    result += CalcPointLight(pointLight[i], normal, viewDir);\n"
+			"  for (i = 0; i < NUM_SPOT_LIGHTS; i++)\n"
+			"    result += CalcSpotLight(spotLight[i], normal, viewDir);\n"
+			"  out_Color = result;\n"
+			"}\n"
+			"vec3 CalcDirectionalLight(vec3 normal,vec3 viewDir){\n"
+			"  vec3 lightDir=normalize(-directionalLight.Direction);\n"
+			"  float diff=max(dot(normal,lightDir),0.);\n"
+			"  vec3 reflectDir=reflect(-lightDir,normal);\n"
+			"  // float spec=pow(max(dot(viewDir,reflectDir),0.),material.Shininess);\n"
+			"  vec3 ambient=directionalLight.Ambient*texture(material.Albedo,pass_TexUV).rgb;\n"
+			"  vec3 diffuse=directionalLight.Diffuse*diff*texture(material.Albedo,pass_TexUV).rgb;\n"
+			"  // vec3 specular = directionalLight.Specular * spec * texture(material.Specular, pass_TexUV).rgb;\n"
+			"  return(ambient+diffuse/*+ specular*/);\n"
+			"}\n"
+			"vec3 CalcPointLight(PointLight light, vec3 normal, vec3 viewDir){\n"
+			"  vec3 lightDir = normalize(light.Position - pass_Pos);\n"
+			"  float diff = max(dot(normal, lightDir), 0.0);\n"
+			"  vec3 reflectDir = reflect(-lightDir, normal);\n"
+			"  // float spec = pow(max(dot(viewDir, reflectDir), 0.0), material.Shininess);\n"
+			"  float dist = length(light.Position - pass_Pos);\n"
+			"  float attenuation = 1.0 / (light.Constant + light.Linear * dist + light.Quadratic * (dist * dist));\n"
+			"  vec3 ambient = light.Ambient * texture(material.Albedo, pass_TexUV).rgb;\n"
+			"  vec3 diffuse = light.Diffuse * diff * texture(material.Albedo, pass_TexUV).rgb;\n"
+			"  //  vec3 specular = light.Specular * spec * vec3(texture(material.Specular, pass_TexUV);\n"
+			"  ambient *= attenuation;\n"
+			"  diffuse *= attenuation;\n"
+			"  //  specular *= attenuation;\n"
+			"  return (ambient + diffuse /*+ specular*/);\n"
+			"}\n"
+			"vec3 CalcSpotLight(SpotLight light, vec3 normal, vec3 viewDir){\n"
+			"  vec3 lightDir = normalize(light.Position - pass_Pos);\n"
+			"  float diff = max(dot(normal, lightDir), 0.0);\n"
+			"  vec3 reflectDir = reflect(-lightDir, normal);\n"
+			"  // float spec = pow(max(dot(viewDir, reflectDir), 0.0), material.Shininess);\n"
+			"  float dist = length(light.Position - pass_Pos);\n"
+			"  float attenuation  = 1.0 / (light.Constant + light.Linear * dist + light.Quadratic * (dist * dist));\n"
+			"  float theta = dot(lightDir, normalize(-light.Direction));\n"
+			"  float epsilon = light.CutOff - light.OuterCutOff;\n"
+			"  float intensity = clamp((theta - light.OuterCutOff) / epsilon, 0.0, 1.0);\n"
+			"  vec3 ambient = light.Ambient * texture(material.Albedo, pass_TexUV).rgb;\n"
+			"  vec3 diffuse = light.Diffuse * diff * texture(material.Albedo, pass_TexUV).rgb;\n"
+			"  //  vec3 specular = light.Specular * spec * vec3(texture(material.Specular, pass_TexUV);\n"
+			"  ambient *= attenuation * intensity;\n"
+			"  diffuse *= attenuation * intensity;\n"
+			"  //  specular *= attenuation * intensity;\n"
+			"  return (ambient + diffuse /*+ specular*/);\n"
+			"}\n";
+			LoadShader(vert_source, frag_source);
+	}
+	break;
+	default:
+		throw("invalid shadertype");
+		break;
+	};
+}
+
+
+/// <summary>
+/// Loads a vertex and fragment pair into a shader program. Must be of the same type(Path or Source).
+/// </summary>
+/// <param name="vert">Path or Source</param>
+/// <param name="frag">Path or Source</param>
+/// <param name="isFilePath">Defaults to true. Set to false if you are passing in source code and not a file path</param>
 OGLShader::OGLShader(const char* vert, const char* frag, bool isFilePath)
 {
-	std::string vertexCode;
-	std::string fragmentCode;
-
 	const char* vertexShaderSource;
 	const char* fragmentShaderSource;
 
 	if (isFilePath) {
 
+		std::string vertexCode;
+		std::string fragmentCode;
+
 		std::ifstream vShaderFile;
 		std::ifstream fShaderFile;
-	
+
 		vShaderFile.exceptions(std::ifstream::failbit | std::ifstream::badbit);
 		fShaderFile.exceptions(std::ifstream::failbit | std::ifstream::badbit);
 
@@ -86,206 +255,140 @@ OGLShader::OGLShader(const char* vert, const char* frag, bool isFilePath)
 		fragmentShaderSource = frag;
 	}
 
-	/* compile vertex (points) shader */
-	int vertexShader = glCreateShader(GL_VERTEX_SHADER);
-	glShaderSource(vertexShader, 1, &vertexShaderSource, nullptr);
-	glCompileShader(vertexShader);
-
-	/* determine if vertex shader was successful in compiling */
-	int v_success;
-	glGetShaderiv(vertexShader, GL_COMPILE_STATUS, &v_success);
-	if (!v_success)
-	{
-#ifdef _DEBUG
-		char v_infoLog[512];
-		glGetShaderInfoLog(vertexShader, 512, nullptr, v_infoLog);
-		std::cout << "error in vertex shader, compilation failed: " << v_infoLog << std::endl;
-		char a;
-		std::cin >> a;
-#endif
-		exit(-1);
-	}
-
-	/* compile fragment shader */
-	int fragmentShader = glCreateShader(GL_FRAGMENT_SHADER);
-	glShaderSource(fragmentShader, 1, &fragmentShaderSource, nullptr);
-	glCompileShader(fragmentShader);
-
-	/* determine if fragment shader was successful in compiling */
-	int f_success;
-	glGetShaderiv(fragmentShader, GL_COMPILE_STATUS, &f_success);
-	if (!f_success)
-	{
-#ifdef _DEBUG
-		char f_infoLog[512];
-		glGetShaderInfoLog(fragmentShader, 512, nullptr, f_infoLog);
-		std::cout << "error in fragment shader, compilation failed: " << f_infoLog << std::endl;
-		char a;
-		std::cin >> a;
-#endif
-		exit(-1);
-	}
-
-	/* make the shader program */
-	ID = glCreateProgram();
-	glAttachShader(ID, vertexShader);
-	glAttachShader(ID, fragmentShader);
-	glLinkProgram(ID);
-
-	/* check that the ID was successful */
-	int p_success;
-	glGetProgramiv(ID, GL_LINK_STATUS, &p_success);
-	if (!p_success)
-	{
-#ifdef _DEBUG
-		char p_infoLog[512];
-		glGetProgramInfoLog(ID, 512, nullptr, p_infoLog);
-		std::cout << "error in ID: " << p_infoLog << std::endl;
-		char a;
-		std::cin >> a;
-#endif
-		exit(-1);
-	}
-
-	/* we don't need them anymore */
-	glDeleteShader(vertexShader);
-	glDeleteShader(fragmentShader);
-#ifdef _DEBUG
-	std::cout << "debug: shader ID = " << ID << std::endl;
-#endif
+	LoadShader(vertexShaderSource, fragmentShaderSource);
 }
 
-OGLShader::OGLShader(const char* vertex_file, const char* frag, const char* geometry_file)
-{
-	std::string vertexCode;
-	std::string fragmentCode;
-	std::string geometryCode;
-	std::ifstream vShaderFile;
-	std::ifstream fShaderFile;
-	std::ifstream gShaderFile;
-
-	vShaderFile.exceptions(std::ifstream::failbit | std::ifstream::badbit);
-	fShaderFile.exceptions(std::ifstream::failbit | std::ifstream::badbit);
-	gShaderFile.exceptions(std::ifstream::failbit | std::ifstream::badbit);
-
-	try
-	{
-		vShaderFile.open(vertex_file);
-		fShaderFile.open(frag);
-		gShaderFile.open(geometry_file);
-
-		std::stringstream vShaderStream, fShaderStream, gShaderStream;
-
-		vShaderStream << vShaderFile.rdbuf();
-		fShaderStream << fShaderFile.rdbuf();
-		gShaderStream << gShaderFile.rdbuf();
-
-		vShaderFile.close();
-		fShaderFile.close();
-		gShaderFile.close();
-
-		vertexCode = vShaderStream.str();
-		fragmentCode = fShaderStream.str();
-		geometryCode = gShaderStream.str();
-	}
-	catch (std::ifstream::failure e)
-	{
-#ifdef _DEBUG
-		std::cout << "ERROR::SHADER::FILE_NOT_SUCCESFULLY_READ" << std::endl;
-#endif
-	}
-
-	const char* vertexShaderSource = vertexCode.c_str();
-	const char* fragmentShaderSource = fragmentCode.c_str();
-	const char* geometryShaderSource = geometryCode.c_str();
-
-	/* compile vertex (points) shader */
-	int vertexShader = glCreateShader(GL_VERTEX_SHADER);
-	glShaderSource(vertexShader, 1, &vertexShaderSource, nullptr);
-	glCompileShader(vertexShader);
-
-	/* determine if vertex shader was successful in compiling */
-	int v_success;
-	glGetShaderiv(vertexShader, GL_COMPILE_STATUS, &v_success);
-	if (!v_success)
-	{
-#ifdef _DEBUG
-		char v_infoLog[512];
-		glGetShaderInfoLog(vertexShader, 512, nullptr, v_infoLog);
-		std::cout << "error in vertex shader, compilation failed: " << v_infoLog << std::endl;
-		char a;
-		std::cin >> a;
-#endif
-		exit(-1);
-	}
-
-	/* compile fragment shader */
-	int fragmentShader = glCreateShader(GL_FRAGMENT_SHADER);
-	glShaderSource(fragmentShader, 1, &fragmentShaderSource, nullptr);
-	glCompileShader(fragmentShader);
-
-	/* determine if fragment shader was successful in compiling */
-	int f_success;
-	glGetShaderiv(fragmentShader, GL_COMPILE_STATUS, &f_success);
-	if (!f_success)
-	{
-#ifdef _DEBUG
-		char f_infoLog[512];
-		glGetShaderInfoLog(fragmentShader, 512, nullptr, f_infoLog);
-		std::cout << "error in fragment shader, compilation failed: " << f_infoLog << std::endl;
-		char a;
-		std::cin >> a;
-#endif
-		exit(-1);
-	}
-
-	/* compile geometry shader */
-	int geometryShader = glCreateShader(GL_GEOMETRY_SHADER);
-	glShaderSource(geometryShader, 1, &geometryShaderSource, nullptr);
-	glCompileShader(geometryShader);
-
-	/* determine if geometry shader was successful in compiling */
-	int g_success;
-	glGetShaderiv(geometryShader, GL_COMPILE_STATUS, &g_success);
-	if (!g_success)
-	{
-#ifdef _DEBUG
-		char g_infoLog[512];
-		glGetShaderInfoLog(geometryShader, 512, nullptr, g_infoLog);
-		std::cout << "error in geometry shader, compilation failed: " << g_infoLog << std::endl;
-		char a;
-		std::cin >> a;
-#endif
-		exit(-1);
-	}
-
-	/* make the shader program */
-	ID = glCreateProgram();
-	glAttachShader(ID, vertexShader);
-	glAttachShader(ID, fragmentShader);
-	glAttachShader(ID, geometryShader);
-	glLinkProgram(ID);
-
-	/* check that the ID was successful */
-	int p_success;
-	glGetProgramiv(ID, GL_LINK_STATUS, &p_success);
-	if (!p_success)
-	{
-#ifdef _DEBUG
-		char p_infoLog[512];
-		glGetProgramInfoLog(ID, 512, nullptr, p_infoLog);
-		std::cout << "error in ID: " << p_infoLog << std::endl;
-		char a;
-		std::cin >> a;
-#endif
-		exit(-1);
-	}
-
-	/* we don't need them anymore */
-	glDeleteShader(vertexShader);
-	glDeleteShader(fragmentShader);
-	glDeleteShader(geometryShader);
-}
+//OGLShader::OGLShader(const char* vertex_file, const char* frag, const char* geometry_file)
+//{
+//	std::string vertexCode;
+//	std::string fragmentCode;
+//	std::string geometryCode;
+//	std::ifstream vShaderFile;
+//	std::ifstream fShaderFile;
+//	std::ifstream gShaderFile;
+//
+//	vShaderFile.exceptions(std::ifstream::failbit | std::ifstream::badbit);
+//	fShaderFile.exceptions(std::ifstream::failbit | std::ifstream::badbit);
+//	gShaderFile.exceptions(std::ifstream::failbit | std::ifstream::badbit);
+//
+//	try
+//	{
+//		vShaderFile.open(vertex_file);
+//		fShaderFile.open(frag);
+//		gShaderFile.open(geometry_file);
+//
+//		std::stringstream vShaderStream, fShaderStream, gShaderStream;
+//
+//		vShaderStream << vShaderFile.rdbuf();
+//		fShaderStream << fShaderFile.rdbuf();
+//		gShaderStream << gShaderFile.rdbuf();
+//
+//		vShaderFile.close();
+//		fShaderFile.close();
+//		gShaderFile.close();
+//
+//		vertexCode = vShaderStream.str();
+//		fragmentCode = fShaderStream.str();
+//		geometryCode = gShaderStream.str();
+//	}
+//	catch (std::ifstream::failure e)
+//	{
+//#ifdef _DEBUG
+//		std::cout << "ERROR::SHADER::FILE_NOT_SUCCESFULLY_READ" << std::endl;
+//#endif
+//	}
+//
+//	const char* vertexShaderSource = vertexCode.c_str();
+//	const char* fragmentShaderSource = fragmentCode.c_str();
+//	const char* geometryShaderSource = geometryCode.c_str();
+//
+//	/* compile vertex (points) shader */
+//	int vertexShader = glCreateShader(GL_VERTEX_SHADER);
+//	glShaderSource(vertexShader, 1, &vertexShaderSource, nullptr);
+//	glCompileShader(vertexShader);
+//
+//	/* determine if vertex shader was successful in compiling */
+//	int v_success;
+//	glGetShaderiv(vertexShader, GL_COMPILE_STATUS, &v_success);
+//	if (!v_success)
+//	{
+//#ifdef _DEBUG
+//		char v_infoLog[512];
+//		glGetShaderInfoLog(vertexShader, 512, nullptr, v_infoLog);
+//		std::cout << "error in vertex shader, compilation failed: " << v_infoLog << std::endl;
+//		char a;
+//		std::cin >> a;
+//#endif
+//		exit(-1);
+//	}
+//
+//	/* compile fragment shader */
+//	int fragmentShader = glCreateShader(GL_FRAGMENT_SHADER);
+//	glShaderSource(fragmentShader, 1, &fragmentShaderSource, nullptr);
+//	glCompileShader(fragmentShader);
+//
+//	/* determine if fragment shader was successful in compiling */
+//	int f_success;
+//	glGetShaderiv(fragmentShader, GL_COMPILE_STATUS, &f_success);
+//	if (!f_success)
+//	{
+//#ifdef _DEBUG
+//		char f_infoLog[512];
+//		glGetShaderInfoLog(fragmentShader, 512, nullptr, f_infoLog);
+//		std::cout << "error in fragment shader, compilation failed: " << f_infoLog << std::endl;
+//		char a;
+//		std::cin >> a;
+//#endif
+//		exit(-1);
+//	}
+//
+//	/* compile geometry shader */
+//	int geometryShader = glCreateShader(GL_GEOMETRY_SHADER);
+//	glShaderSource(geometryShader, 1, &geometryShaderSource, nullptr);
+//	glCompileShader(geometryShader);
+//
+//	/* determine if geometry shader was successful in compiling */
+//	int g_success;
+//	glGetShaderiv(geometryShader, GL_COMPILE_STATUS, &g_success);
+//	if (!g_success)
+//	{
+//#ifdef _DEBUG
+//		char g_infoLog[512];
+//		glGetShaderInfoLog(geometryShader, 512, nullptr, g_infoLog);
+//		std::cout << "error in geometry shader, compilation failed: " << g_infoLog << std::endl;
+//		char a;
+//		std::cin >> a;
+//#endif
+//		exit(-1);
+//	}
+//
+//	/* make the shader program */
+//	ID = glCreateProgram();
+//	glAttachShader(ID, vertexShader);
+//	glAttachShader(ID, fragmentShader);
+//	glAttachShader(ID, geometryShader);
+//	glLinkProgram(ID);
+//
+//	/* check that the ID was successful */
+//	int p_success;
+//	glGetProgramiv(ID, GL_LINK_STATUS, &p_success);
+//	if (!p_success)
+//	{
+//#ifdef _DEBUG
+//		char p_infoLog[512];
+//		glGetProgramInfoLog(ID, 512, nullptr, p_infoLog);
+//		std::cout << "error in ID: " << p_infoLog << std::endl;
+//		char a;
+//		std::cin >> a;
+//#endif
+//		exit(-1);
+//	}
+//
+//	/* we don't need them anymore */
+//	glDeleteShader(vertexShader);
+//	glDeleteShader(fragmentShader);
+//	glDeleteShader(geometryShader);
+//}
 
 void OGLShader::use() const noexcept
 {
@@ -384,4 +487,76 @@ int OGLShader::getAndCheckShaderUniform(const std::string& name) const
 
 	return shader_var_id;
 }
+void OGLShader::LoadShader(const char* vert_source, const char* frag_source)
+{
+
+	/* compile vertex (points) shader */
+	int vertexShader = glCreateShader(GL_VERTEX_SHADER);
+	glShaderSource(vertexShader, 1, &vert_source, nullptr);
+	glCompileShader(vertexShader);
+
+	/* determine if vertex shader was successful in compiling */
+	int v_success;
+	glGetShaderiv(vertexShader, GL_COMPILE_STATUS, &v_success);
+	if (!v_success)
+	{
+#ifdef _DEBUG
+		char v_infoLog[512];
+		glGetShaderInfoLog(vertexShader, 512, nullptr, v_infoLog);
+		std::cout << "error in vertex shader, compilation failed: " << v_infoLog << std::endl;
+		char a;
+		std::cin >> a;
+#endif
+		exit(-1);
+	}
+
+	/* compile fragment shader */
+	int fragmentShader = glCreateShader(GL_FRAGMENT_SHADER);
+	glShaderSource(fragmentShader, 1, &frag_source, nullptr);
+	glCompileShader(fragmentShader);
+
+	/* determine if fragment shader was successful in compiling */
+	int f_success;
+	glGetShaderiv(fragmentShader, GL_COMPILE_STATUS, &f_success);
+	if (!f_success)
+	{
+#ifdef _DEBUG
+		char f_infoLog[512];
+		glGetShaderInfoLog(fragmentShader, 512, nullptr, f_infoLog);
+		std::cout << "error in fragment shader, compilation failed: " << f_infoLog << std::endl;
+		char a;
+		std::cin >> a;
+#endif
+		exit(-1);
+	}
+
+	/* make the shader program */
+	ID = glCreateProgram();
+	glAttachShader(ID, vertexShader);
+	glAttachShader(ID, fragmentShader);
+	glLinkProgram(ID);
+
+	/* check that the ID was successful */
+	int p_success;
+	glGetProgramiv(ID, GL_LINK_STATUS, &p_success);
+	if (!p_success)
+	{
+#ifdef _DEBUG
+		char p_infoLog[512];
+		glGetProgramInfoLog(ID, 512, nullptr, p_infoLog);
+		std::cout << "error in ID: " << p_infoLog << std::endl;
+		char a;
+		std::cin >> a;
+#endif
+		exit(-1);
+	}
+
+	/* we don't need them anymore */
+	glDeleteShader(vertexShader);
+	glDeleteShader(fragmentShader);
+#ifdef _DEBUG
+	std::cout << "debug: shader ID = " << ID << std::endl;
+#endif
+}
+
 }  // end namespace AA
