@@ -35,7 +35,6 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #include "../include/Camera.h"
 #include <glad/glad.h>
 #include <GLFW/glfw3.h>
-
 #include <vector>
 #include <string>
 #include <iomanip>
@@ -193,12 +192,16 @@ int Loop::addCamera()
 	return return_id;
 }
 
-int Loop::addShader(const char* vert_path, const char* frag_path)
+int Loop::addShader(const char* vert, const char* frag, const bool isPath)
 {
-	const OGLShader tmpShader(vert_path, frag_path);
-	const int return_id = tmpShader.getID();
-	mShaders.push_back(tmpShader);
-	return return_id;
+	mShaders.emplace_back(OGLShader(vert, frag, isPath));
+	return mShaders.back().getID();
+}
+
+int Loop::addShader(const SHADERTYPE& type)
+{
+	mShaders.emplace_back(OGLShader(type));
+	return mShaders.back().getID();
 }
 
 int Loop::addObject(const char* path, int camId, int shadId)
