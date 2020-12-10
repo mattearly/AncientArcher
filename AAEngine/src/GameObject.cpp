@@ -38,7 +38,6 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 namespace AA
 {
 static int uniqueIDs = 0;
-
 int GameObject::getModelMatrix(const int& which, glm::mat4& out_mat4) const
 {
 	if (which < getInstanceCount())
@@ -46,17 +45,13 @@ int GameObject::getModelMatrix(const int& which, glm::mat4& out_mat4) const
 		out_mat4 = mInstanceDetails.at(which).ModelMatrix;
 		return 0;
 	}
-
-	// out of range
-	return -1;
+	return -1;  // out of range
 }
 
 glm::mat4 GameObject::getModelMatrix(const int& which)
 {
 	if (which < getInstanceCount())
-	{
 		return mInstanceDetails.at(which).ModelMatrix;
-	}
 	else
 		throw("couldn't get model matrix");
 }
@@ -84,7 +79,7 @@ const std::size_t GameObject::getInstanceCount() const noexcept
 	return mInstanceDetails.size();
 }
 
-/// <summary>`
+/// <summary>
 /// Returns the collider sphere (may be null) of the instance of the object (be sure to check for null to make sure it is set).
 /// </summary>
 /// <param name="which">The instance number to return the collider sphere of.</param>
@@ -101,10 +96,7 @@ const ColliderSphere* GameObject::getColliderSphere(uint32_t which) const
 GameObject::GameObject(const char* path, int camId, int shadId)
 {
 	AA::SceneLoader::getSceneLoader()->loadGameObjectWithAssimp(mMeshes, path);
-
 	mInstanceDetails.push_back(InstanceDetails());
-
-	//mMeshes = meshes;
 	mCameraID = camId;
 	mShaderID = shadId;
 	mObjectID = uniqueIDs++;
@@ -113,10 +105,7 @@ GameObject::GameObject(const char* path, int camId, int shadId)
 GameObject::GameObject(const char* path, int camId, int shadId, std::vector<InstanceDetails> details)
 {
 	AA::SceneLoader::getSceneLoader()->loadGameObjectWithAssimp(mMeshes, path);
-
 	mInstanceDetails = details;
-
-	//mMeshes = meshes;
 	mCameraID = camId;
 	mShaderID = shadId;
 	mObjectID = uniqueIDs++;
@@ -153,13 +142,15 @@ void GameObject::draw(const OGLShader& modelShader)
 }
 
 // --------------------------SCALE
-void GameObject::scaleTo(glm::vec3 amt, int which)
+void GameObject::setScale(glm::vec3 amt, int which)
 {
 	if (which < getInstanceCount()) {
 		mInstanceDetails.at(which).Scale = amt;
+
+		// attempt to scale any collider spheres appropriately with the object
 		if (mInstanceDetails.at(which).mColliderSphere)  // take average of xyz and scale collider sphere radius by that
 		{
-			//todo : not do this
+			//todo : not do this or at least test it better
 			float avr = ((amt.x + amt.y + amt.z) / 3.f);
 			mInstanceDetails.at(which).mColliderSphere->radius = mInstanceDetails.at(which).mColliderSphere->radius * avr;
 		}
@@ -167,9 +158,9 @@ void GameObject::scaleTo(glm::vec3 amt, int which)
 	}
 }
 
-void GameObject::scaleTo(glm::vec3 amt)
+void GameObject::setScale(glm::vec3 amt)
 {
-	scaleTo(amt, 0);
+	setScale(amt, 0);
 }
 
 void GameObject::advanceScale(glm::vec3 amt)
@@ -186,12 +177,12 @@ void GameObject::advanceScale(glm::vec3 amt, int which)
 }
 
 // ---------------------------ROTATE
-void GameObject::rotateTo(glm::vec3 new_rot)
+void GameObject::setRotation(glm::vec3 new_rot)
 {
-	rotateTo(new_rot, 0);
+	setRotation(new_rot, 0);
 }
 
-void GameObject::rotateTo(glm::vec3 new_rot, int which)
+void GameObject::setRotation(glm::vec3 new_rot, int which)
 {
 	if (which < getInstanceCount()) {
 		mInstanceDetails.at(which).Rotation = new_rot;
@@ -242,7 +233,7 @@ bool GameObject::removeInstance(int which)
 	return false;
 }
 
-void GameObject::translateTo(glm::vec3 to, int which)
+void GameObject::setTranslation(glm::vec3 to, int which)
 {
 	if (which < getInstanceCount()) {
 		mInstanceDetails.at(which).Translate = to;
@@ -254,9 +245,9 @@ void GameObject::translateTo(glm::vec3 to, int which)
 	updateModelMatrix(which);
 }
 
-void GameObject::translateTo(glm::vec3 to)
+void GameObject::setTranslation(glm::vec3 to)
 {
-	translateTo(to, 0);
+	setTranslation(to, 0);
 }
 
 /// <summary>
@@ -335,10 +326,8 @@ InstanceDetails::InstanceDetails()
 InstanceDetails::InstanceDetails(glm::vec3 scale, glm::vec3 rot, glm::vec3 transl)
 {
 	Scale = scale;
-
 	Translate = transl;
 	Rotation = rot;
-
 	updateModelMatrix();
 }
 }  // end namespace AA

@@ -51,7 +51,7 @@ public:
 	GameObject(const char* path, int camId, int shadId, std::vector<InstanceDetails> details);
 
 	// getters
-	const glm::vec3& getLocation() const;  // todo refactor into single fuction
+	const glm::vec3& getLocation() const;
 	const glm::vec3& getLocation(int which) const;
 	const glm::vec3& getRotation() const;
 	const glm::vec3& getRotation(int which) const;
@@ -69,15 +69,13 @@ public:
 	void setShader(int id) noexcept;
 	void setColliderSphere(const glm::vec3& center, const float& radius, uint32_t which = 0, bool overwrite = true) noexcept;
 
-	void addInstance(const InstanceDetails& instance_details);
+	void setScale(glm::vec3 amt, int which);
+	void setScale(glm::vec3 amt);
+	void setRotation(glm::vec3 new_rot, int which);
+	void setRotation(glm::vec3 new_rot);
+	void setTranslation(glm::vec3 amt, int which);
+	void setTranslation(glm::vec3 amt);
 
-	// modifiers
-	void scaleTo(glm::vec3 amt, int which);
-	void scaleTo(glm::vec3 amt);
-	void rotateTo(glm::vec3 new_rot, int which);
-	void rotateTo(glm::vec3 new_rot);
-	void translateTo(glm::vec3 amt, int which);
-	void translateTo(glm::vec3 amt);
 	void advanceScale(glm::vec3 amt);
 	void advanceScale(glm::vec3 amt, int which);
 	void advanceRotation(glm::vec3 radianAmt);
@@ -85,6 +83,7 @@ public:
 	void advanceTranslate(glm::vec3 amt);
 	void advanceTranslate(glm::vec3 amt, int which);
 
+	void addInstance(const InstanceDetails& instance_details);
 	bool removeInstance(int which);
 
 	friend class Loop;
