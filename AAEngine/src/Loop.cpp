@@ -294,7 +294,6 @@ uint32_t Loop::addToMouseHandling(void(*function)(MouseInput&))
 	next_mousehandling_id++;
 	onMouseHandling.emplace(next_mousehandling_id, function);
 	return next_mousehandling_id;
-
 }
 
 uint32_t Loop::addToOnTeardown(void(*function)())
@@ -350,7 +349,6 @@ bool Loop::removeFromTeardown(uint32_t r_id)
 	return static_cast<bool>(onTearDown.erase(r_id));
 }
 
-
 void Loop::setCursorToEnabled(bool isHardwareRendered)
 {
 	if (isHardwareRendered)
@@ -379,13 +377,13 @@ void Loop::setWindowTitle(const char* title)
 {
 	DISPLAY->setWindowTitle(title);
 }
-void Loop::setRenderDistance(int camId, float amt) noexcept
+void Loop::setMaxRenderDistance(int camId, float amt) noexcept
 {
 	for (auto& cam : mCameras)
 	{
 		if (cam.getID() == camId)
 		{
-			cam.setRenderDistance(amt);
+			cam.setMaxRenderDistance(amt);
 			return;
 		}
 	}

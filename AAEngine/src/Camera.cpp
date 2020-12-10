@@ -50,7 +50,7 @@ Camera::Camera()
 	mFieldOfView = 60.f;
 	mYaw = -90.f;
 	mPitch = 0.f;
-	mRenderDistance = 100.f;
+	mMaxRenderDistance = 100.f;
 	mProjectionChanged = false;
 	mOrthoFieldSize = glm::vec4(-1, 1, -1, 1);
 	mRenderProjection = RenderProjection::PERSPECTIVE;
@@ -87,7 +87,7 @@ void Camera::resetViewportVars()
 	mFieldOfView = 60.f;
 	mYaw = 0.f;
 	mPitch = 0.f;
-	mRenderDistance = 100.f;
+	mMaxRenderDistance = 100.f;
 	mProjectionChanged = false;
 	mOrthoFieldSize = glm::vec4(-1, 1, -1, 1);
 	mRenderProjection = RenderProjection::PERSPECTIVE;
@@ -131,9 +131,9 @@ void Camera::setOrthoFieldSize(glm::vec4 lrbt) noexcept
 	mOrthoFieldSize = lrbt;
 }
 
-void Camera::setRenderDistance(float distance) noexcept
+void Camera::setMaxRenderDistance(float distance) noexcept
 {
-	mRenderDistance = distance;
+	mMaxRenderDistance = distance;
 	//updateViewport();
 }
 
@@ -207,7 +207,7 @@ glm::mat4 Camera::getProjectionMatrix() const
 	switch (mRenderProjection)
 	{
 	case RenderProjection::PERSPECTIVE:
-		projection = glm::perspective(glm::radians(mFieldOfView), screen_width / screen_height, 0.01f, mRenderDistance);
+		projection = glm::perspective(glm::radians(mFieldOfView), screen_width / screen_height, 0.01f, mMaxRenderDistance);
 		break;
 	case RenderProjection::ORTHO:
 		// todo: test and fix ortho
@@ -217,7 +217,7 @@ glm::mat4 Camera::getProjectionMatrix() const
 		//  mOrthoFieldSize.z,
 		//  mOrthoFieldSize.w,
 		//  .01f,
-		//  mRenderDistance
+		//  mMaxRenderDistance
 		//);
 		break;
 	default:
@@ -254,7 +254,7 @@ float Camera::getPitch() const noexcept
 
 float Camera::getRenderDistance() const noexcept
 {
-	return mRenderDistance;
+	return mMaxRenderDistance;
 }
 
 const int& Camera::getID() const noexcept

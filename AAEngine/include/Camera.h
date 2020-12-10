@@ -81,7 +81,7 @@ private:
 	float            mFieldOfView;
 	float            mYaw;
 	float            mPitch;
-	float            mRenderDistance;
+	float            mMaxRenderDistance;
 	bool             mProjectionChanged;
 	glm::vec4        mOrthoFieldSize;
 	int              mUniqueViewportID;
@@ -89,6 +89,6 @@ private:
 
 	void resetViewportVars();
 
-	void setRenderDistance(float distance) noexcept;
+	void setMaxRenderDistance(float distance) noexcept;
 };
 } // end namespace AA

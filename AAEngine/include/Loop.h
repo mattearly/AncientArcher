@@ -111,7 +111,7 @@ public:
 	void setToPerspectiveMouseHandling();
 	void setToStandardMouseHandling();
 	void setWindowTitle(const char* title);
-	void setRenderDistance(int camId, float amt) noexcept;
+	void setMaxRenderDistance(int camId, float amt) noexcept;
 	void setProjectionMatrix(int shadId, int camId);
 	void setSlowUpdateTimeoutLength(const float& newtime);
 
