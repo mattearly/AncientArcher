@@ -33,7 +33,9 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #pragma once
 #include <glm/glm.hpp>
 #include <sstream>
+#ifdef _DEBUG
 #include <iostream>
+#endif
 #include "OGLShader.h"
 
 namespace AA
@@ -43,29 +45,27 @@ const int MAXSPOTLIGHTS = 25;
 static int NUM_POINT_LIGHTS = 0;
 static int NUM_SPOT_LIGHTS = 0;
 
-struct DirectionalLight
-{
+struct DirectionalLight {
 	glm::vec3 Direction, Ambient, Diffuse, Specular;
 };
 
-struct PointLight
-{
+struct PointLight {
 	glm::vec3 Position;
 	float Constant, Linear, Quadratic;
 	glm::vec3 Ambient, Diffuse, Specular;
 };
 
-struct SpotLight
-{
+struct SpotLight {
 	glm::vec3 Position, Direction;
 	float CutOff, OuterCutOff;
 	float Constant, Linear, Quadratic;
 	glm::vec3 Ambient, Diffuse, Specular;
 };
 
-// single directional lights
-static void setDirectionalLight(const DirectionalLight& light, const OGLShader& shader)
-{
+/// static helper functions
+
+// single directional light
+static void setDirectionalLight(const DirectionalLight& light, const OGLShader& shader) {
 	shader.use();
 
 	std::string direction, ambient, diffuse, specular;
@@ -83,17 +83,20 @@ static void setDirectionalLight(const DirectionalLight& light, const OGLShader& 
 }
 
 // multi lights
-static void setPointLight(const PointLight& light, const int which, const OGLShader& shader)
-{
+static void setPointLight(const PointLight& light, const int which, const OGLShader& shader) {
 	if (which >= MAXPOINTLIGHTS)
 	{
+#ifdef _DEBUG
 		std::cout << "couldn't set PointLight light, too many\n";
+#endif
 		return;
 	}
 
 	if (which >= NUM_POINT_LIGHTS)
 	{
+#ifdef _DEBUG
 		std::cout << "couldn't set PointLight light, not enough in use\n";
+#endif
 		return;
 	}
 
@@ -140,17 +143,20 @@ static void setPointLight(const PointLight& light, const int which, const OGLSha
 	shader.setVec3(specular, light.Specular);
 }
 
-static void setSpotLight(const SpotLight& light, const int which, const OGLShader& shader)
-{
+static void setSpotLight(const SpotLight& light, const int which, const OGLShader& shader) {
 	if (which >= MAXSPOTLIGHTS)
 	{
+#ifdef _DEBUG
 		std::cout << "couldn't set SpotLight light, too many\n";
+#endif
 		return;
 	}
 
 	if (which >= NUM_SPOT_LIGHTS)
 	{
+#ifdef _DEBUG
 		std::cout << "couldn't set SpotLight light, not enough in use\n";
+#endif
 		return;
 	}
 
