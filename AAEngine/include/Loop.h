@@ -42,18 +42,13 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #include <memory>
 #include <unordered_map>
 
-//todo: put these in namespace and cleanup subprojects
-#define LOOP           AA::Loop::getMainLoop()
-#define DISPLAY        AA::Display::getInstance()
-#define CONTROLS       AA::Controls::getInstance()
-#define PointerXOffset AA::Controls::getInstance()->mMousePosition.xOffset
-#define PointerYOffset AA::Controls::getInstance()->mMousePosition.yOffset
-
 namespace AA
 {
-/// <summary>
-/// The main game loop.
-/// </summary>
+#define LOOP           Loop::getMainLoop()
+#define DISPLAY        Display::getInstance()
+#define CONTROLS       Controls::getInstance()
+#define PointerXOffset Controls::getInstance()->mMousePosition.xOffset
+#define PointerYOffset Controls::getInstance()->mMousePosition.yOffset
 class Loop
 {
 public:
