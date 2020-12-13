@@ -1,5 +1,5 @@
 /*
-Vertex
+ColliderBox
 ----------------------------------------------------------------------
 Copyright (c) 2019-2020, Matthew Early matthewjearly@gmail.com
 All rights reserved.
@@ -30,13 +30,18 @@ THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
 OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 ----------------------------------------------------------------------
 */
-#include "../include/Vertex.h"
-
+#include "../../include/Scene/ColliderBox.h"
 namespace AA
 {
-Vertex::Vertex(glm::vec3 pos, glm::vec2 texcoords, glm::vec3 norms) noexcept
-	: Position(pos), TexCoords(texcoords), Normal(norms) {}
+ColliderBox::ColliderBox()
+{
+	loc = prevLoc = glm::vec3(0.f);
+	size = glm::vec3(1.f);
+}
 
-//Vertex::Vertex(glm::vec4 pos, glm::vec4 norms, glm::vec4 colors, glm::vec2 texcoords) noexcept
-//	: Position(pos), Normal(norms), Color(colors), TexCoords(texcoords) {}
+ColliderBox::ColliderBox(glm::vec3 lc, glm::vec3 sz)
+{
+	loc = prevLoc = lc;
+	size = sz;
+}
 } // end namespace AA

@@ -1,5 +1,5 @@
 /*
-ColliderSphere
+Vertex
 ----------------------------------------------------------------------
 Copyright (c) 2019-2020, Matthew Early matthewjearly@gmail.com
 All rights reserved.
@@ -30,14 +30,13 @@ THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
 OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 ----------------------------------------------------------------------
 */
-#include "../include/ColliderSphere.h"
+#include "../../include/Scene/Vertex.h"
 
-ColliderSphere::ColliderSphere(glm::vec3 loc, float r) :
-	center(loc), radius(r)
-{}
-
-ColliderSphere::ColliderSphere()
+namespace AA
 {
-	center = glm::vec3(0);
-	radius = 1.f;
-}
+Vertex::Vertex(glm::vec3 pos, glm::vec2 texcoords, glm::vec3 norms) noexcept
+	: Position(pos), TexCoords(texcoords), Normal(norms) {}
+
+//Vertex::Vertex(glm::vec4 pos, glm::vec4 norms, glm::vec4 colors, glm::vec2 texcoords) noexcept
+//	: Position(pos), Normal(norms), Color(colors), TexCoords(texcoords) {}
+} // end namespace AA

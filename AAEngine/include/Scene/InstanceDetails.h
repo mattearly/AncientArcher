@@ -1,5 +1,5 @@
 /*
-MeshDrawInfo
+InstanceDetails
 ----------------------------------------------------------------------
 Copyright (c) 2019-2020, Matthew Early matthewjearly@gmail.com
 All rights reserved.
@@ -30,11 +30,27 @@ THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
 OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 ----------------------------------------------------------------------
 */
-#include "../include/MeshDrawInfo.h"
+#pragma once
+#include <glm\ext\vector_float3.hpp>
+#include "ColliderSphere.h"
 namespace AA
 {
-MeshDrawInfo::MeshDrawInfo(uint32_t a, uint32_t elcount, std::unordered_map<uint32_t, std::string> t_id, glm::mat4 trans) :
-	vao(a), numElements(elcount), textureDrawIds(t_id), transformation(trans)
+struct InstanceDetails
 {
-}
+	void updateModelMatrix();
+
+	InstanceDetails();
+	InstanceDetails(glm::vec3 scale, glm::vec3 rot, glm::vec3 transl);
+
+	// updateModelMatrix uses these
+	glm::vec3 Scale = glm::vec3(1);
+	glm::vec3 Rotation = glm::vec3(0); // radians on each of xyz
+	glm::vec3 Translate = glm::vec3(0);
+
+	// final result
+	glm::mat4 ModelMatrix = glm::mat4(1);
+
+	// for if the unit has collision
+	ColliderSphere* mColliderSphere = nullptr;
+};
 }  // end namespace AA

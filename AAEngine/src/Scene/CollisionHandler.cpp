@@ -37,7 +37,7 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 * and have been modified to be more fitting to this engine
 */
 
-#include "../include/CollisionHandler.h"
+#include "../../include/Scene/CollisionHandler.h"
 #include <math.h>
 namespace AA
 {

@@ -31,12 +31,12 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 ----------------------------------------------------------------------
 */
 // derived from https://learnopengl.com/Advanced-OpenGL/Cubemaps
-#include "../include/Skybox.h"
 #include <glad/glad.h>
 #include <glm/glm.hpp>
 #include <iostream>
-#include "../include/OGLGraphics.h"
-#include "../include/TexLoader.h"
+#include "../../include/Scene/Skybox.h"
+#include "../../include/Scene/OGLGraphics.h"
+#include "../../include/Scene/TexLoader.h"
 
 namespace AA
 {

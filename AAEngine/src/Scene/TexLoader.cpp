@@ -1,4 +1,4 @@
-#include "../include/TexLoader.h"
+#include "../../include/Scene/TexLoader.h"
 #include <memory>
 #include <stdexcept>
 #include <glad/glad.h>

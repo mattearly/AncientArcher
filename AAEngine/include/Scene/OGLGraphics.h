@@ -1,5 +1,5 @@
 /*
-InstanceDetails
+OGLGraphics
 ----------------------------------------------------------------------
 Copyright (c) 2019-2020, Matthew Early matthewjearly@gmail.com
 All rights reserved.
@@ -31,26 +31,27 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 ----------------------------------------------------------------------
 */
 #pragma once
-#include <glm\ext\vector_float3.hpp>
-#include "../include/ColliderSphere.h"
+#include <glm/glm.hpp>
+#include <vector>
+#include <string>
+#include "GameObject.h"
+#include "OGLShader.h"
+#include "MeshDrawInfo.h"
+#include "InstanceDetails.h"
 namespace AA
 {
-struct InstanceDetails
+class OGLGraphics
 {
-	void updateModelMatrix();
+public:
 
-	InstanceDetails();
-	InstanceDetails(glm::vec3 scale, glm::vec3 rot, glm::vec3 transl);
+	static OGLGraphics* getInstance();
 
-	// updateModelMatrix uses these
-	glm::vec3 Scale = glm::vec3(1);
-	glm::vec3 Rotation = glm::vec3(0); // radians on each of xyz
-	glm::vec3 Translate = glm::vec3(0);
+	friend class GameObject;
 
-	// final result
-	glm::mat4 ModelMatrix = glm::mat4(1);
+private:
 
-	// for if the unit has collision
-	ColliderSphere* mColliderSphere = nullptr;
+	void Render(const std::vector<MeshDrawInfo>& meshes, const std::vector<InstanceDetails>& details, const OGLShader& modelShader);
+
+	OGLGraphics();
 };
 }  // end namespace AA

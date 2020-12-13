@@ -30,10 +30,13 @@ THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
 OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 ----------------------------------------------------------------------
 */
-#include "../include/GameObject.h"
-#include "../include/OGLGraphics.h"
-#include "../include/Camera.h"
-#include "../include/SceneLoader.h"
+#include "../../include/Scene/GameObject.h"
+#include "../../include/Scene/OGLGraphics.h"
+#include "../../include/Scene/Camera.h"
+#include "../../include/Scene/SceneLoader.h"
+#ifdef _DEBUG
+#include <iostream>
+#endif
 
 namespace AA
 {
@@ -137,6 +140,11 @@ void GameObject::addInstance(const InstanceDetails& instance_details)
 
 void GameObject::draw(const OGLShader& modelShader)
 {
+#ifdef _DEBUG
+	if (mShaderID == -1 || mCameraID == -1 || mObjectID == -1)
+		std::cout << "bad object\n";
+#endif
+
 	if (mInstanceDetails.size() > 0)
 		OGLGraphics::getInstance()->Render(mMeshes, mInstanceDetails, modelShader);
 }

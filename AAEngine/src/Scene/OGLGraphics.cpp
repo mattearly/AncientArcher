@@ -30,7 +30,7 @@ THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
 OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 ----------------------------------------------------------------------
 */
-#include "../include/OGLGraphics.h"
+#include "../../include/Scene/OGLGraphics.h"
 #include <glm/glm.hpp>
 #include <glm/gtc/quaternion.hpp>
 #include <stb_image.h>
@@ -38,7 +38,7 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #include <memory>
 #include <string>
 #include <cstddef>
-#include "../include/GameObject.h"
+#include "../../include/Scene/GameObject.h"
 #include <iostream>
 //#include "Vertex.h"
 

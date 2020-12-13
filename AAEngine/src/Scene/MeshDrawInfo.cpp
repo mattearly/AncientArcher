@@ -1,5 +1,5 @@
 /*
-ColliderBox
+MeshDrawInfo
 ----------------------------------------------------------------------
 Copyright (c) 2019-2020, Matthew Early matthewjearly@gmail.com
 All rights reserved.
@@ -30,18 +30,11 @@ THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
 OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 ----------------------------------------------------------------------
 */
-#include "../include/ColliderBox.h"
+#include "../../include/Scene/MeshDrawInfo.h"
 namespace AA
 {
-ColliderBox::ColliderBox()
+MeshDrawInfo::MeshDrawInfo(uint32_t a, uint32_t elcount, std::unordered_map<uint32_t, std::string> t_id, glm::mat4 trans) :
+	vao(a), numElements(elcount), textureDrawIds(t_id), transformation(trans)
 {
-	loc = prevLoc = glm::vec3(0.f);
-	size = glm::vec3(1.f);
 }
-
-ColliderBox::ColliderBox(glm::vec3 lc, glm::vec3 sz)
-{
-	loc = prevLoc = lc;
-	size = sz;
-}
-} // end namespace AA
+}  // end namespace AA

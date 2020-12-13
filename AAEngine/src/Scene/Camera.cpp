@@ -30,12 +30,14 @@ THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
 OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 ----------------------------------------------------------------------
 */
-#include "../include/Camera.h"
-#include "../include/Display.h"
 #include <glm\ext\matrix_clip_space.hpp>
 #include <glm\gtx\transform.hpp>
+#ifdef _DEBUG
 #include <iostream>
-#include "../include/WorldUp.h"
+#endif
+#include "../../include/Scene/WorldUp.h"
+#include "../../include/Scene/Camera.h"
+#include "../../include/Display.h"
 namespace AA
 {
 #define UP WorldUp::getWorldUp()
@@ -198,8 +200,12 @@ glm::mat4 Camera::getProjectionMatrix() const
 
 	if (screen_width <= 0 || screen_height <= 0)
 	{
+#ifdef _DEBUG
 		std::cout << "Projection setting failed. File: " << __FILE__ << " Line: " << __LINE__ << "  -Screen width or height is 0.\n";
 		return glm::mat4(0);
+#else
+		throw("projection fail 0 width or height");
+#endif
 	}
 
 	glm::mat4 projection = glm::mat4(1);

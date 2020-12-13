@@ -34,9 +34,9 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #include "Display.h"
 #include "Input.h"
 #include "Controls.h"
-#include "Camera.h"
-#include "Skybox.h"
-#include "GameObject.h"
+#include "Scene/Camera.h"
+#include "Scene/Skybox.h"
+#include "Scene/GameObject.h"
 #include <vector>
 #include <functional>
 #include <memory>
@@ -44,11 +44,9 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 namespace AA
 {
-#define LOOP           Loop::getMainLoop()
-#define DISPLAY        Display::getInstance()
-#define CONTROLS       Controls::getInstance()
-#define PointerXOffset Controls::getInstance()->mMousePosition.xOffset
-#define PointerYOffset Controls::getInstance()->mMousePosition.yOffset
+///
+/// LOOP Class essentially ties everything together
+///
 class Loop
 {
 public:
@@ -147,4 +145,11 @@ private:
 	void resetEngine() noexcept;
 	void setProjectionMatToAllShadersFromFirstCam_hack();  //used for testing purposes until more elegant solution appears
 };
+
+#define LOOP           Loop::getMainLoop()
+#define DISPLAY        Display::getInstance()
+#define CONTROLS       Controls::getInstance()
+#define PointerXOffset Controls::getInstance()->mMousePosition.xOffset
+#define PointerYOffset Controls::getInstance()->mMousePosition.yOffset
+
 }  // end namespace AA

@@ -1,5 +1,5 @@
 /*
-OGLGraphics
+ColliderSphere
 ----------------------------------------------------------------------
 Copyright (c) 2019-2020, Matthew Early matthewjearly@gmail.com
 All rights reserved.
@@ -30,29 +30,14 @@ THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
 OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 ----------------------------------------------------------------------
 */
-#pragma once
-#include <glm/glm.hpp>
-#include <vector>
-#include <string>
-#include "GameObject.h"
-#include "OGLShader.h"
-#include "MeshDrawInfo.h"
-#include "InstanceDetails.h"
+#include "../../include/Scene/ColliderSphere.h"
 
-namespace AA
+ColliderSphere::ColliderSphere(glm::vec3 loc, float r) :
+	center(loc), radius(r)
+{}
+
+ColliderSphere::ColliderSphere()
 {
-class OGLGraphics
-{
-public:
-
-	static OGLGraphics* getInstance();
-
-	friend class GameObject;
-
-private:
-
-	void Render(const std::vector<MeshDrawInfo>& meshes, const std::vector<InstanceDetails>& details, const OGLShader& modelShader);
-
-	OGLGraphics();
-};
-}  // end namespace AA
+	center = glm::vec3(0);
+	radius = 1.f;
+}
