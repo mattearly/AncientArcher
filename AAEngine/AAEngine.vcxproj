@@ -95,7 +95,7 @@
     <ClInclude Include="include\Sound\LongSound.h" />
     <ClInclude Include="KHR\khrplatform.h" />
     <ClInclude Include="include\Scene\SceneLoader.h" />
-    <ClInclude Include="include\Loop.h" />
+    <ClInclude Include="include\AncientArcher.h" />
     <ClInclude Include="include\Scene\MeshDrawInfo.h" />
     <ClInclude Include="include\Scene\ModelHeader.h" />
     <ClInclude Include="include\Scene\OGLGraphics.h" />
@@ -104,9 +104,9 @@
     <ClInclude Include="include\Scene\Skybox.h" />
     <ClInclude Include="include\Scene\TexLoader.h" />
     <ClInclude Include="include\Scene\Vertex.h" />
-    <ClInclude Include="include\Controls.h" />
-    <ClInclude Include="include\Display.h" />
-    <ClInclude Include="include\Input.h" />
+    <ClInclude Include="include\Controls\Controls.h" />
+    <ClInclude Include="include\Window\Display.h" />
+    <ClInclude Include="include\Controls\Input.h" />
     <ClInclude Include="include\Scene\WorldUp.h" />
     <ClInclude Include="include\Sound\SoundDevice.h" />
     <ClInclude Include="include\Sound\ShortSound.h" />
@@ -122,7 +122,7 @@
     <ClCompile Include="src\Scene\CollisionHandler.cpp" />
     <ClCompile Include="src\Scene\GameObject.cpp" />
     <ClCompile Include="src\Scene\SceneLoader.cpp" />
-    <ClCompile Include="src\Loop.cpp" />
+    <ClCompile Include="src\AncientArcher.cpp" />
     <ClCompile Include="src\Scene\MeshDrawInfo.cpp" />
     <ClCompile Include="src\Scene\OGLGraphics.cpp" />
     <ClCompile Include="src\Scene\OGLShader.cpp" />
@@ -130,9 +130,9 @@
     <ClCompile Include="src\vendor\stb\stb_image.cpp" />
     <ClCompile Include="src\Scene\TexLoader.cpp" />
     <ClCompile Include="src\Scene\Vertex.cpp" />
-    <ClCompile Include="src\Controls.cpp" />
-    <ClCompile Include="src\Display.cpp" />
-    <ClCompile Include="src\DisplayCallbacks.cpp" />
+    <ClCompile Include="src\Controls\Controls.cpp" />
+    <ClCompile Include="src\Window\Display.cpp" />
+    <ClCompile Include="src\Window\DisplayCallbacks.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

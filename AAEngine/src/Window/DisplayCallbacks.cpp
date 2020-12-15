@@ -1,5 +1,5 @@
 /*
-Controls
+DisplayCallbacks
 ----------------------------------------------------------------------
 Copyright (c) 2019-2020, Matthew Early matthewjearly@gmail.com
 All rights reserved.
@@ -30,42 +30,18 @@ THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
 OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 ----------------------------------------------------------------------
 */
-#pragma once
-#include "Input.h"
-
+// ---------------
+// GLFW3 callbacks
+// ---------------
+#include "../../include/Window/Display.h"
+#include "../../include/Controls/Controls.h"
+#include <glad/glad.h>
+#include <GLFW/glfw3.h>
+#include <glm/glm.hpp>
+#ifdef _DEBUG
+#include <iostream>
+#endif
 namespace AA
 {
-enum class STANDARDMOUSEZEROS { DEFAULT, TOP_LEFT_0_to_1, BOT_LEFT_0_to_1, TOP_LEFT_FULL_RANGE, BOT_LEFT_FULL_RANGE };
 
-class Controls
-{
-public:
-
-	static Controls* getInstance();
-
-	float getFPPMouseSensitivity() const noexcept;
-	void setFPPMouseSensitivity(float sensitivity) noexcept;
-
-	friend class Display;      // for access to mouseMovement and mouseScrollWheelMovement
-	friend class Loop;         // for access to Input
-
-private:
-
-	STANDARDMOUSEZEROS mStandardMouseZeros = STANDARDMOUSEZEROS::BOT_LEFT_0_to_1;
-
-	void pullButtonStateEvents();
-
-	KeyboardInput mButtonState = {};
-	MouseInput    mMousePosition = {};
-	ScrollInput   mMouseWheelScroll = {};
-
-	float mFPPMouseSensitivity = 0.1f;  ///< mouse sensitivity while in first person perspective
-	bool mRenewFPP = true;
-
-	void perspectiveMouseMovement(float xpos, float ypos) noexcept;
-	void standardMouseMovement(float xpos, float ypos);
-	void mouseScrollWheelMovement(float xpos, float ypos) noexcept;
-
-	void resetControlVars() noexcept;
-};
 }  // end namespace AA

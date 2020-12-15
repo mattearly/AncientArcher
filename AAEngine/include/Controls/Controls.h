@@ -1,5 +1,5 @@
 /*
-Camera
+Controls
 ----------------------------------------------------------------------
 Copyright (c) 2019-2020, Matthew Early matthewjearly@gmail.com
 All rights reserved.
@@ -31,66 +31,41 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 ----------------------------------------------------------------------
 */
 #pragma once
-#include <glm/glm.hpp>
-#include <memory>
+#include "Input.h"
 
 namespace AA
 {
-enum class RenderProjection { ORTHO, PERSPECTIVE };
+enum class STANDARDMOUSEZEROS { DEFAULT, TOP_LEFT_0_to_1, BOT_LEFT_0_to_1, TOP_LEFT_FULL_RANGE, BOT_LEFT_FULL_RANGE };
 
-class Camera
+class Controls
 {
 public:
-	Camera(int width, int height);
 
-	void updateCameraVectors();
+	//static Controls* Get();
 
-	// setters
-	void setToPerspective() noexcept;
-	void setCurrentPosition(glm::vec3 pos);
-	void setCurrentPitch(float pitch);
-	void setCurrentYaw(float yaw);
-	void shiftCurrentPosition(const glm::vec3& offset);
-	void shiftYawAndPitch(float yawOffset, float pitchOffset);
+	float getFPPMouseSensitivity() const noexcept;
+	void setFPPMouseSensitivity(float sensitivity) noexcept;
 
-	// experimental
-	void setToOrtho() noexcept;
-	void setOrthoFieldSize(float left, float right, float bottom, float top) noexcept;
-	void setOrthoFieldSize(glm::vec4 lrbt) noexcept;
+	friend class Display;      // for access to mouseMovement and mouseScrollWheelMovement
+	friend class AncientArcher;         // for access to Input
 
-	// getters
-	const glm::vec3& getLocation() const noexcept;
-	glm::mat4 getViewMatrix() const;
-	glm::mat4 getProjectionMatrix() const;
-	const glm::vec3* getPosition() const noexcept;
-	const glm::vec3* getFront() const noexcept;
-	const glm::vec3* getRight() const noexcept;
-	float getYaw() const noexcept;
-	float getPitch() const noexcept;
-	float getRenderDistance() const noexcept;
-	const int& getID() const noexcept;
+protected:
 
-	friend class AncientArcher;
+	STANDARDMOUSEZEROS mStandardMouseZeros = STANDARDMOUSEZEROS::BOT_LEFT_0_to_1;
 
-private:
+	//void pullButtonStateEvents();
 
-	int              mWidth;
-	int              mHeight;
-	glm::vec3        mFront;
-	glm::vec3        mRight;
-	glm::vec3        mUp;
-	glm::vec3        mPosition;
-	float            mFieldOfView;
-	float            mYaw;
-	float            mPitch;
-	float            mMaxRenderDistance;
-	bool             mProjectionChanged;
-	glm::vec4        mOrthoFieldSize;
-	int              mUniqueViewportID;
-	RenderProjection mRenderProjection;
+	KeyboardInput mButtonState = {};
+	MouseInput    mMousePosition = {};
+	ScrollInput   mMouseWheelScroll = {};
 
-	void resetViewportVars();
+	float mFPPMouseSensitivity = 0.1f;  ///< mouse sensitivity while in first person perspective
+	bool mRenewFPP = true;
 
-	void setMaxRenderDistance(float distance) noexcept;
+	void perspectiveMouseMovement(float xpos, float ypos) noexcept;
+	//void standardMouseMovement(float xpos, float ypos);
+	void mouseScrollWheelMovement(float xpos, float ypos) noexcept;
+
+	void resetControlVars() noexcept;
 };
-} // end namespace AA
+}  // end namespace AA

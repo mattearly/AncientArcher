@@ -4,7 +4,7 @@
 #include <iostream>
 #include <AL\alc.h>
 #include <AL\alext.h>
-#include "../../include/Loop.h"
+
 namespace AA {
 
 void LongSound::Play()

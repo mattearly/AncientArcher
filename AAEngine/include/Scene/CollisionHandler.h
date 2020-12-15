@@ -38,7 +38,7 @@ namespace AA
 class CollisionHandler
 {
 public:
-	static CollisionHandler* getInstance();
+	static CollisionHandler* Get();
 
 	bool AABB_vs_AABB_3D(const ColliderBox& a, const ColliderBox& b);
 	bool point_vs_AABB_3D(const glm::vec3& pt, const ColliderBox& b);

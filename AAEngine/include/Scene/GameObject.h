@@ -86,11 +86,11 @@ public:
 	void addInstance(const InstanceDetails& instance_details);
 	bool removeInstance(int which);
 
-	friend class Loop;
+	friend class AncientArcher;
 
 private:
 
-	// only Loop can call draw
+	// only AncientArcher can call draw on Objects
 	void draw(const OGLShader& modelShader);
 
 	int mCameraID = -1;

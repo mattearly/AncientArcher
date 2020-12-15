@@ -30,126 +30,138 @@ THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
 OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 ----------------------------------------------------------------------
 */
-#include "../include/Display.h"
-#include "../include/Controls.h"
+#include "../../include/Window/Display.h"
+#include "../../include/Controls/Controls.h"
 #include <memory>
+#include <glad/glad.h>
 #include <GLFW/glfw3.h>
 
 namespace AA
 {
-Display* Display::getInstance()
-{
-	static std::unique_ptr<Display> display = std::make_unique<Display>();
-	return display.get();
-}
+//Display* Display::Get()
+//{
+//	static Display* display = new Display();
+//	return display;
+//}
 
 Display::~Display()  // breaks rule of 5
 {
 	glfwTerminate();
 }
 
-void Display::setWindowClearColor(glm::vec3 rgb) noexcept
+void Display::SetWindowClearColor(glm::vec3 rgb) noexcept
 {
 	if (rgb.x < 0.f || rgb.x > 1.0f || rgb.y < 0.f || rgb.y > 1.0f || rgb.z < 0.f || rgb.z > 1.0f)
 	{
-		//std::cout << "WARNING: Out of range value on setWindowClearColor, values should be between 0.f and 1.f\n";
+		//std::cout << "WARNING: Out of range value on SetWindowClearColor, values should be between 0.f and 1.f\n";
 	}
 	mWindowClearColor = rgb;
 }
 
-int Display::getWindowWidth() noexcept
+int Display::GetWindowWidth() noexcept
 {
 	return mWindowWidth;
 }
 
-int Display::getWindowHeight() noexcept
+int Display::GetWindowHeight() noexcept
 {
 	return mWindowHeight;
 }
 
-bool Display::getIsWindowFullScreen() noexcept
+bool Display::GetIsWindowFullScreen() noexcept
 {
 	return mWindowIsFullScreen;
 }
 
-GLFWwindow* Display::getWindow() noexcept
+GLFWwindow* Display::GetWindow() noexcept
 {
 	return mWindow;
 }
 
-int Display::getCursorMode() const noexcept
+int Display::GetCursorMode() const noexcept
 {
 	return glfwGetInputMode(mWindow, GLFW_CURSOR);
 }
 
-MouseReporting Display::getMouseReportingMode() const noexcept
+MouseReporting Display::GetMouseReportingMode() const noexcept
 {
 	return mMouseReporting;
 }
 
-void Display::setCursorToVisible() noexcept
+void Display::SetCursorToVisible() noexcept
 {
 	glfwSetInputMode(mWindow, GLFW_CURSOR, GLFW_CURSOR_NORMAL);
 }
 
-void Display::setCursorToHidden() noexcept
+void Display::SetCursorToHidden() noexcept
 {
 	glfwSetInputMode(mWindow, GLFW_CURSOR, GLFW_CURSOR_HIDDEN);
 }
 
-void Display::setCursorToDisabled() noexcept
+void Display::SetCursorToDisabled() noexcept
 {
 	glfwSetInputMode(mWindow, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
 }
 
-void Display::setWindowTitle(const char* name) noexcept
+void Display::SetWindowTitle(const char* name) noexcept
 {
 	glfwSetWindowTitle(mWindow, name);
 }
 
-void Display::setWindowSize(int width, int height, int xpos, int ypos) noexcept
+void Display::SetWindowSize(int width, int height, int xpos, int ypos) noexcept
 {
-	glfwSetWindowMonitor(mWindow, nullptr, xpos, ypos, width, height, 0);
+	if (width > 0 && height > 0)
+	{
+		glfwSetWindowMonitor(mWindow, nullptr, xpos, ypos, width, height, 0);
+	}
+	else
+	{
+		glfwSetWindowMonitor(mWindow, nullptr, xpos, ypos, mWindowWidth, mWindowHeight, 0);
+
+	}
 	mWindowIsFullScreen = false;
 }
 
-void Display::setWindowSize(int width, int height, bool center) noexcept
+void Display::SetWindowSize(int width, int height, bool center) noexcept
 {
-	// turn off fullscreen to get frame sizes
-	glfwSetWindowMonitor(mWindow, nullptr, mXPos, mYPos, mWindowWidth, mWindowHeight, 0);
+	// turn off fullscreen to Get frame sizes
+	if (mWindowIsFullScreen)
+		glfwSetWindowMonitor(mWindow, nullptr, 0, 0, mWindowWidth, mWindowHeight, 0);
 
-	// get work area sizes after turning off full screen
+	// Get work area sizes after turning off full screen
 	int x, y, w, h;
 	glfwGetMonitorWorkarea(glfwGetPrimaryMonitor(), &x, &y, &w, &h);
 
-	// get frame sizes after turning off full screen
+	// Get frame sizes after turning off full screen
 	int frameSizeLeft, frameSizeTop, frameSizeRight, frameSizeBot;
 	glfwGetWindowFrameSize(mWindow, &frameSizeLeft, &frameSizeTop, &frameSizeRight, &frameSizeBot);
 
 	const int xPos = (w / 2) - (width / 2) + ((frameSizeLeft + frameSizeRight) / 2);
 	const int yPos = (h / 2) - (height / 2) + ((frameSizeTop + frameSizeBot) / 2);
 
+	mXPos = xPos;
+	mYPos = yPos;
 	glfwSetWindowMonitor(mWindow, nullptr, xPos, yPos, width, height, 0);
 	mWindowIsFullScreen = false;
 }
 
-void Display::setWindowSize(const char to) noexcept
+void Display::SetWindowSize(const char to) noexcept
 {
 	switch (to)
 	{
 		// m = maximize
 	case 'm':
-		setWindowToMaximized();
+		SetWindowToMaximized();
 		break;
 
 		// f = fullscreen
 	case 'f':
-		setWindowToFullscreen();
+		SetWindowToFullscreen();
 		break;
 
 		// b = borderless fullscreen
 	case 'b':
-		setWindowToFullscreenBorderless();
+		SetWindowToFullscreenBorderless();
 		break;
 
 		// undefined = do nothing
@@ -162,15 +174,15 @@ void Display::toggleFullScreen() noexcept
 {
 	if (mWindowIsFullScreen)
 	{
-		setFullscreenToOff();
+		SetFullscreenToOff();
 	}
 	else
 	{
-		setWindowToFullscreen();
+		SetWindowToFullscreen();
 	}
 }
 
-void Display::setWindowToFullscreen() noexcept
+void Display::SetWindowToFullscreen() noexcept
 {
 	int x, y, w, h;
 	glfwGetMonitorWorkarea(glfwGetPrimaryMonitor(), &x, &y, &w, &h);
@@ -187,16 +199,16 @@ void Display::setWindowToFullscreen() noexcept
 	mWindowIsFullScreen = true;
 }
 
-void Display::setFullscreenToOff() noexcept
+void Display::SetFullscreenToOff() noexcept
 {
-	// turn off fullscreen to get frame sizes
+	// turn off fullscreen to Get frame sizes
 	glfwSetWindowMonitor(mWindow, nullptr, mXPos, mYPos, mWindowWidth, mWindowHeight, 0);
 
-	// get work area sizes after turning off full screen
+	// Get work area sizes after turning off full screen
 	int x, y, w, h;
 	glfwGetMonitorWorkarea(glfwGetPrimaryMonitor(), &x, &y, &w, &h);
 
-	// get frame sizes after turning off full screen
+	// Get frame sizes after turning off full screen
 	int frameSizeLeft, frameSizeTop, frameSizeRight, frameSizeBot;
 	glfwGetWindowFrameSize(mWindow, &frameSizeLeft, &frameSizeTop, &frameSizeRight, &frameSizeBot);
 
@@ -206,13 +218,13 @@ void Display::setFullscreenToOff() noexcept
 	mWindowWidth = w - frameSizeLeft - frameSizeRight;
 	mWindowHeight = h - frameSizeTop - frameSizeBot;
 
-	// set size in windowed mode
+	// Set size in windowed mode
 	glfwSetWindowMonitor(mWindow, nullptr, mXPos, mYPos, mWindowWidth, mWindowHeight, 0);
 
 	mWindowIsFullScreen = false;
 }
 
-void Display::setWindowToMaximized() noexcept
+void Display::SetWindowToMaximized() noexcept
 {
 	// turn off fullscreen so the maximize works (glfw specification)
 	if (mWindowIsFullScreen) {
@@ -222,7 +234,7 @@ void Display::setWindowToMaximized() noexcept
 	glfwMaximizeWindow(mWindow);
 }
 
-void Display::setWindowToFullscreenBorderless() noexcept
+void Display::SetWindowToFullscreenBorderless() noexcept
 {
 	if (mWindowIsFullScreen)
 	{
@@ -265,7 +277,7 @@ void Display::initGLFW() noexcept
 {
 	glfwInit();
 
-	glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 4);
+	glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
 	glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
 	// with core profile, you have to create and manage your own VAO's, no default given
 	glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
@@ -288,12 +300,14 @@ void Display::initFromEngine()
 
 	glfwMakeContextCurrent(mWindow);
 
-	setReshapeWindowHandler();
+	//SetReshapeWindowHandler();
 
-	//setCurorPosToPerspectiveCalc();
-	setCurorPosToStandardCalc();
+	////SetCurorPosToPerspectiveCalc();
+	//SetCurorPosToStandardCalc();
 
-	setScrollWheelHandler();
+	//SetScrollWheelHandler();
+
+	//SetResizeWindowHandler();
 
 	//if (!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress))  // init glad (for opengl context) -- moved to engine
 	//{
@@ -305,7 +319,7 @@ void Display::initFromEngine()
 	//}
 }
 
-void Display::resetStateDataToDefault()
+void Display::ResetStateDataToDefault()
 {
 	mWindowIsFullScreen = false;
 	mWindowWidth = 800, mWindowHeight = 600;

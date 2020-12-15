@@ -37,14 +37,14 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #endif
 #include "../../include/Scene/WorldUp.h"
 #include "../../include/Scene/Camera.h"
-#include "../../include/Display.h"
+#include "../../include/Window/Display.h"
 namespace AA
 {
 #define UP WorldUp::getWorldUp()
 
 static int uniqueIDs = 0;
 
-Camera::Camera()
+Camera::Camera(int width, int height)
 {
 	mUniqueViewportID = uniqueIDs++;
 
@@ -69,6 +69,8 @@ Camera::Camera()
 	mUp = glm::normalize(mUp);
 
 	//updateCameraVectors();
+	mWidth = width;
+	mHeight = height;
 }
 
 void Camera::updateCameraVectors()
@@ -113,10 +115,10 @@ void Camera::setToPerspective() noexcept
 
 void Camera::setToOrtho() noexcept
 {
-	//Camera::getInstance()->setOrthoFieldSize(
+	//Camera::Get()->setOrthoFieldSize(
 	//  glm::vec4(
-	//    0, AADisplay::getInstance()->getWindowWidth(),
-	//    0, AADisplay::getInstance()->getWindowHeight()
+	//    0, AADisplay::Get()->getWindowWidth(),
+	//    0, AADisplay::Get()->getWindowHeight()
 	//  )
 	//);
 
@@ -195,25 +197,28 @@ glm::mat4 Camera::getViewMatrix() const
 glm::mat4 Camera::getProjectionMatrix() const
 {
 	// todo: other ways of adjusting camera viewport
-	const float screen_width = static_cast<float>(Display::getInstance()->getWindowWidth());
-	const float screen_height = static_cast<float>(Display::getInstance()->getWindowHeight());
-
-	if (screen_width <= 0 || screen_height <= 0)
-	{
-#ifdef _DEBUG
-		std::cout << "Projection setting failed. File: " << __FILE__ << " Line: " << __LINE__ << "  -Screen width or height is 0.\n";
-		return glm::mat4(0);
-#else
-		throw("projection fail 0 width or height");
-#endif
-	}
+	//const float screen_width = static_cast<float>(mWidth);
+	//const float screen_height = static_cast<float>(Display::Get()->GetWindowHeight());
+//
+//	if (screen_width <= 0 || screen_height <= 0)
+//	{
+//#ifdef _DEBUG
+//		std::cout << "Projection setting failed. File: " << __FILE__ << " Line: " << __LINE__ << "  -Screen width or height is 0.\n";
+//		return glm::mat4(0);
+//#else
+//		throw("projection fail 0 width or height");
+//#endif
+	//}
 
 	glm::mat4 projection = glm::mat4(1);
 
 	switch (mRenderProjection)
 	{
 	case RenderProjection::PERSPECTIVE:
-		projection = glm::perspective(glm::radians(mFieldOfView), screen_width / screen_height, 0.01f, mMaxRenderDistance);
+		{
+		float aspectRatio = static_cast<float>(mWidth)/static_cast<float>(mHeight);
+		projection = glm::perspective(glm::radians(mFieldOfView), aspectRatio, 0.0167f, mMaxRenderDistance);
+		}
 		break;
 	case RenderProjection::ORTHO:
 		// todo: test and fix ortho

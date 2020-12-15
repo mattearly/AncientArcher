@@ -31,7 +31,6 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 ----------------------------------------------------------------------
 */
 #pragma once
-#include <glad/glad.h>
 #include <glm/glm.hpp>
 struct GLFWwindow;
 
@@ -43,61 +42,64 @@ class Display
 {
 public:
 
-	static Display* getInstance();
+	//static Display* Get();
 
 	~Display();
 
-	int getWindowWidth() noexcept;
-	int getWindowHeight() noexcept;
-	bool getIsWindowFullScreen() noexcept;
-	GLFWwindow* getWindow() noexcept;
-	int getCursorMode() const noexcept;
-	MouseReporting getMouseReportingMode() const noexcept;
+	int GetWindowWidth() noexcept;
+	int GetWindowHeight() noexcept;
+	bool GetIsWindowFullScreen() noexcept;
+	GLFWwindow* GetWindow() noexcept;
+	int GetCursorMode() const noexcept;
+	MouseReporting GetMouseReportingMode() const noexcept;
 
-	void setCursorToVisible() noexcept;   // to use the os pointer
-	void setCursorToHidden() noexcept;    // for hidden but still there (render your own pointer)
-	void setCursorToDisabled() noexcept;  // for first person hidden mouse type
+	void SetCursorToVisible() noexcept;   // to use the os pointer
+	void SetCursorToHidden() noexcept;    // for hidden but still there (render your own pointer)
+	void SetCursorToDisabled() noexcept;  // for first person hidden mouse type
 
-	void setWindowClearColor(glm::vec3 rgb) noexcept;
-	void setWindowSize(int width, int height, int xpos, int ypos) noexcept;
-	void setWindowSize(int width, int height, bool center = true) noexcept;
-	void setWindowSize(const char to) noexcept;
-	void setWindowTitle(const char* name) noexcept;
+	void SetWindowClearColor(glm::vec3 rgb) noexcept;
+	void SetWindowSize(int width, int height, int xpos, int ypos) noexcept;
+	void SetWindowSize(int width, int height, bool center = true) noexcept;
+	void SetWindowSize(const char to) noexcept;
+	void SetWindowTitle(const char* name) noexcept;
 
 	void closeWindow() noexcept;
 
 	// PUBLIC HANDLERS FOR GLFW
 	void reshapeWindowHandler(GLFWwindow* window, int width, int height);
+	void resizeWindowHandler(GLFWwindow* window, int width, int height);
 	void perspectiveMouseHandler(GLFWwindow* window, float xpos, float ypos);
 	void standardMouseHandler(GLFWwindow* window, float xpos, float ypos);
 	void scrollHandler(GLFWwindow* window, float xpos, float ypos);
 
-	friend class Loop;
+	//friend class AncientArcher;
 
-private:
+protected:
 
 	// internal functions
 	void toggleFullScreen() noexcept;
-	void setWindowToFullscreen() noexcept;
-	void setFullscreenToOff() noexcept;
+	void SetWindowToFullscreen() noexcept;
+	void SetFullscreenToOff() noexcept;
 
-	void setWindowToMaximized() noexcept;
-	void setWindowToFullscreenBorderless() noexcept;
+	void SetWindowToMaximized() noexcept;
+	void SetWindowToFullscreenBorderless() noexcept;
 
 	void keepWindowOpen() noexcept;
 
 	void clearBackBuffer() const noexcept;
 	void swapWindowBuffers() const noexcept;
 
-	void setReshapeWindowHandler() noexcept;
-	void setCurorPosToPerspectiveCalc() noexcept;
-	void setCurorPosToStandardCalc() noexcept;
-	void setScrollWheelHandler() noexcept;
+	//void SetReshapeWindowHandler() noexcept;
+	//void SetResizeWindowHandler() noexcept;
+	//void SetCurorPosToPerspectiveCalc() noexcept;
+	//void SetCurorPosToStandardCalc() noexcept;
+	//void SetScrollWheelHandler() noexcept;
 
 	void initGLFW() noexcept;
 	void initFromEngine();
-	void resetStateDataToDefault();
+	void ResetStateDataToDefault();
 
+//private:
 	// state data
 	MouseReporting mMouseReporting = MouseReporting::STANDARD;
 	bool mWindowIsFullScreen = false;

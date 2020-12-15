@@ -33,6 +33,7 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #pragma once
 #include <glm/glm.hpp>
 #include <vector>
+#include <glad/glad.h>
 #include <string>
 #include "GameObject.h"
 #include "OGLShader.h"

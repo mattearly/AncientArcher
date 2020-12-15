@@ -41,7 +41,7 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #include <math.h>
 namespace AA
 {
-CollisionHandler* CollisionHandler::getInstance()
+CollisionHandler* CollisionHandler::Get()
 {
 	static CollisionHandler* cHandler = new CollisionHandler();
 	return cHandler;
