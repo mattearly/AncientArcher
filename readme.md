@@ -2,28 +2,32 @@
 
 # Ancient Archer
 
-Ancient Archer is a scripting game engine that can be included as a C++ Library. It generally functions by adding functions to process during the main loop and then pressing run. See the demo projects for how to use it.
+Ancient Archer is a scripting engine for game development, research, or just practice. It can be included into any C++ project as a static or dynamic library.
 
-## build & run
+## Build Ancient Archer
 
-Dependencies: glm, assimp, glfw3, opengl, openal, sndfile
+### OS, Compiler
 
-Currently I use vcpkg for handling the libraries. Note: download the x64-windows versions as AncientArcher is set to x64 build
+ Compiled on Windows MSVC16, x64. You can use Visual Studio 2019 Community Edition.
+
+### Dependencies
+
+glm, assimp, glfw3, opengl, openal, sndfile
+
+Currently, I use vcpkg for handling the libraries. The line of code below should get you what you need from vcpkg.
 
 `vcpkg install glm:x64-windows assimp:x64-windows glfw3:x64-windows glad:x64-windows openal-soft:x64-windows libsndfile:x64-windows`
 
-[vcpkg tutorial](https://youtu.be/pSirBt4OgXQ)
+Of course there is a little more to know about vcpkg if you haven't used it before, you can see my [vcpkg tutorial video](https://youtu.be/pSirBt4OgXQ) or just look at the documentation for it on the [vcpkg repo](https://github.com/microsoft/vcpkg).
 
-## dev notes
+## Use Ancient Archer
 
-Because Visual Studio has .obj intermediate files that are in the gitignore, to add obj models files and stuff in the models/obj folder to version control, you must run `git add -f *.obj *.png *.mtl` in command line.
+Link as you would any other C++ library and you can begin using it in your code.
 
-Anyone is welcome to work on this and submit pull requests. There are a ton of things that can be improved/added.
-
-## road map
-
-(subject to change)
-- 2020 November: Audio Integration Focus
-- 2020 December: Physics Integration Focus
-- 2021 Janurary: Shader and Render Focus
-- 2021 Feburary: ???
+```cpp
+#include <AncientArcher.h>
+int main()
+{
+  AA::Engine->Run();
+}
+```
