@@ -580,6 +580,9 @@ void AncientArcher::initEngine()
 
 void AncientArcher::resetEngine() noexcept
 {
+	// process anything the user requested and unload all meshes and textures
+	teardown();
+
 	//clear all vectors
 	mCameras.clear();
 	mShaders.clear();
