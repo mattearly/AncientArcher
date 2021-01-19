@@ -32,12 +32,9 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 #include <glm\ext\matrix_clip_space.hpp>
 #include <glm\gtx\transform.hpp>
-#ifdef _DEBUG
-#include <iostream>
-#endif
 #include "../../include/Scene/WorldUp.h"
 #include "../../include/Scene/Camera.h"
-#include "../../include/Window/Display.h"
+#include "../../include/Window/Display/Display.h"
 namespace AA
 {
 #define UP WorldUp::getWorldUp()

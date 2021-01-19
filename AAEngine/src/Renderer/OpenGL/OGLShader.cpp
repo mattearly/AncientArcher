@@ -34,9 +34,6 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #include <glad/glad.h>
 #include <fstream>
 #include <sstream>
-#ifdef _DEBUG
-#include <iostream>
-#endif
 namespace AA
 {
 
@@ -241,10 +238,9 @@ OGLShader::OGLShader(const char* vert, const char* frag, bool isFilePath)
 		}
 		catch (std::ifstream::failure e)
 		{
-#ifdef _DEBUG
-			std::cout << "ERROR::SHADER::FILE_NOT_SUCCESFULLY_READ" << std::endl;
-#endif
-
+//#ifdef _DEBUG
+//			std::cout << "ERROR::SHADER::FILE_NOT_SUCCESFULLY_READ" << std::endl;
+//#endif
 		}
 		vertexShaderSource = vertexCode.c_str();
 		fragmentShaderSource = fragmentCode.c_str();
@@ -475,14 +471,14 @@ int OGLShader::getAndCheckShaderUniform(const std::string& name) const
 
 	if (shader_var_id < 0)
 	{
-#ifdef _DEBUG
-		std::cout <<
-			"!!!SETTINGS SHADER UNIFORM VARIABLE ERROR!!!\n"
-			" name: " << name << '\n' <<
-			" id: " << ID << '\n' <<
-			" error: " << shader_var_id << '\n' <<
-			"-----------------------------------\n";
-#endif
+//#ifdef _DEBUG
+//		std::cout <<
+//			"!!!SETTINGS SHADER UNIFORM VARIABLE ERROR!!!\n"
+//			" name: " << name << '\n' <<
+//			" id: " << ID << '\n' <<
+//			" error: " << shader_var_id << '\n' <<
+//			"-----------------------------------\n";
+//#endif
 	}
 
 	return shader_var_id;
@@ -500,13 +496,13 @@ void OGLShader::LoadShader(const char* vert_source, const char* frag_source)
 	glGetShaderiv(vertexShader, GL_COMPILE_STATUS, &v_success);
 	if (!v_success)
 	{
-#ifdef _DEBUG
-		char v_infoLog[512];
-		glGetShaderInfoLog(vertexShader, 512, nullptr, v_infoLog);
-		std::cout << "error in vertex shader, compilation failed: " << v_infoLog << std::endl;
-		char a;
-		std::cin >> a;
-#endif
+//#ifdef _DEBUG
+//		char v_infoLog[512];
+//		glGetShaderInfoLog(vertexShader, 512, nullptr, v_infoLog);
+//		std::cout << "error in vertex shader, compilation failed: " << v_infoLog << std::endl;
+//		char a;
+//		std::cin >> a;
+//#endif
 		exit(-1);
 	}
 
@@ -520,13 +516,13 @@ void OGLShader::LoadShader(const char* vert_source, const char* frag_source)
 	glGetShaderiv(fragmentShader, GL_COMPILE_STATUS, &f_success);
 	if (!f_success)
 	{
-#ifdef _DEBUG
-		char f_infoLog[512];
-		glGetShaderInfoLog(fragmentShader, 512, nullptr, f_infoLog);
-		std::cout << "error in fragment shader, compilation failed: " << f_infoLog << std::endl;
-		char a;
-		std::cin >> a;
-#endif
+//#ifdef _DEBUG
+//		char f_infoLog[512];
+//		glGetShaderInfoLog(fragmentShader, 512, nullptr, f_infoLog);
+//		std::cout << "error in fragment shader, compilation failed: " << f_infoLog << std::endl;
+//		char a;
+//		std::cin >> a;
+//#endif
 		exit(-1);
 	}
 
@@ -541,22 +537,22 @@ void OGLShader::LoadShader(const char* vert_source, const char* frag_source)
 	glGetProgramiv(ID, GL_LINK_STATUS, &p_success);
 	if (!p_success)
 	{
-#ifdef _DEBUG
-		char p_infoLog[512];
-		glGetProgramInfoLog(ID, 512, nullptr, p_infoLog);
-		std::cout << "error in ID: " << p_infoLog << std::endl;
-		char a;
-		std::cin >> a;
-#endif
+//#ifdef _DEBUG
+//		char p_infoLog[512];
+//		glGetProgramInfoLog(ID, 512, nullptr, p_infoLog);
+//		std::cout << "error in ID: " << p_infoLog << std::endl;
+//		char a;
+//		std::cin >> a;
+//#endif
 		exit(-1);
 	}
 
 	/* we don't need them anymore */
 	glDeleteShader(vertexShader);
 	glDeleteShader(fragmentShader);
-#ifdef _DEBUG
-	std::cout << "debug: shader ID = " << ID << std::endl;
-#endif
+//#ifdef _DEBUG
+//	std::cout << "debug: shader ID = " << ID << std::endl;
+//#endif
 }
 
 }  // end namespace AA

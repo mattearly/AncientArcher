@@ -84,7 +84,7 @@
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClInclude Include="include\Renderer\OpenGL\OGLLight.h" />
+    <ClInclude Include="include\Renderer\OpenGL\OGLLights.h" />
     <ClInclude Include="include\Scene\ColliderSphere.h" />
     <ClInclude Include="include\Scene\Camera.h" />
     <ClInclude Include="include\Scene\ColliderBox.h" />
@@ -94,7 +94,9 @@
     <ClInclude Include="include\Scene\InstanceDetails.h" />
     <ClInclude Include="include\Sound\SoundListener.h" />
     <ClInclude Include="include\Sound\LongSound.h" />
-    <ClInclude Include="include\Window\DisplayCallbacks.h" />
+    <ClInclude Include="include\Window\Controls\MouseInput.h" />
+    <ClInclude Include="include\Window\Controls\ScrollInput.h" />
+    <ClInclude Include="include\Window\Display\DisplayCallbacks.h" />
     <ClInclude Include="KHR\khrplatform.h" />
     <ClInclude Include="include\Renderer\OpenGL\SceneLoader.h" />
     <ClInclude Include="include\AncientArcher.h" />
@@ -106,9 +108,9 @@
     <ClInclude Include="include\Renderer\OpenGL\Skybox.h" />
     <ClInclude Include="include\Renderer\OpenGL\TexLoader.h" />
     <ClInclude Include="include\Renderer\Vertex.h" />
-    <ClInclude Include="include\Controls\Controls.h" />
-    <ClInclude Include="include\Window\Display.h" />
-    <ClInclude Include="include\Controls\Input.h" />
+    <ClInclude Include="include\Window\Controls\Controls.h" />
+    <ClInclude Include="include\Window\Display\Display.h" />
+    <ClInclude Include="include\Window\Controls\KeyboardInput.h" />
     <ClInclude Include="include\Scene\WorldUp.h" />
     <ClInclude Include="include\Sound\SoundDevice.h" />
     <ClInclude Include="include\Sound\ShortSound.h" />
@@ -132,9 +134,9 @@
     <ClCompile Include="src\vendor\stb\stb_image.cpp" />
     <ClCompile Include="src\Renderer\OpenGL\TexLoader.cpp" />
     <ClCompile Include="src\Renderer\Vertex.cpp" />
-    <ClCompile Include="src\Controls\Controls.cpp" />
-    <ClCompile Include="src\Window\Display.cpp" />
-    <ClCompile Include="src\Window\DisplayCallbacks.cpp" />
+    <ClCompile Include="src\Window\Controls\Controls.cpp" />
+    <ClCompile Include="src\Window\Display\Display.cpp" />
+    <ClCompile Include="src\Window\Display\DisplayCallbacks.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

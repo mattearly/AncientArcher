@@ -31,9 +31,7 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 ----------------------------------------------------------------------
 */
 #pragma once
-#include "Window/Display.h"
-#include "Controls/Input.h"
-#include "Controls/Controls.h"
+#include "Window/Display/Display.h"
 #include "Scene/Camera.h"
 #include "Renderer/OpenGL/Skybox.h"
 #include "Scene/GameObject.h"
@@ -48,7 +46,7 @@ namespace AA
 ///
 /// AncientArcher Class essentially ties everything together for render scenes
 ///
-class AncientArcher : public Display, Controls
+class AncientArcher : public Display
 {
 public:
 	static AncientArcher* Get();
@@ -94,31 +92,20 @@ public:
 
 	void SetSlowUpdateTimeoutLength(const float& newtime);
 	void SetMaxRenderDistance(int camId, float amt) noexcept;
-	//void SetWindowSize(const char to, int width = -1, int height = -1, bool center = false);
-	void SetWindowPos(int xpos, int ypos);
+
 	void SetProjectionMatrix(int shadId, int camId);
 	void SetCursorToEnabled(bool isHardwareRendered = false);
 
-	void setReshapeWindowHandler() noexcept;
-	void setCurorPosToPerspectiveCalc() noexcept;
-	void setCurorPosToStandardCalc() noexcept;
-	void setScrollWheelHandler() noexcept;
-
-	//void SetCursorToDisabled();
-	//void SetToPerspectiveMouseHandling();
-	//void SetToStandardMouseHandling();
-	//void SetWindowTitle(const char* title);
+	void SetCurorReadToFPPCalc() noexcept;
+	void SetCurorReadToStandardCalc() noexcept;
 
 	void ReshapeWindowHandler(GLFWwindow* window, int width, int height);
 	void PerspectiveMouseHandler(GLFWwindow* window, float xpos, float ypos);
 	void StandardMouseHandler(GLFWwindow* window, float xpos, float ypos);
 	void ScrollHandler(GLFWwindow* window, float xpos, float ypos);
 
-
-
 private:
 	AncientArcher();
-
 
 	float mLastFrameTime;                  ///< keeps track of the previous frame's time
 	float mCurrentFrameTime;               ///< keeps track of the current frame's time
@@ -133,31 +120,31 @@ private:
 	std::vector<GameObject> mGameObjects;  ///< list of available objects
 	std::shared_ptr<Skybox> mSkybox;       ///< the main skybox
 
-	std::unordered_map<uint32_t, std::function<void()> >                            onBegin;  ///< list of functions to run once when runMainAncientArcher is called
-	std::unordered_map<uint32_t, std::function<void(float)> >                 onDeltaUpdate;  ///< list of functions that rely on deltatime in the main AncientArcher
-	std::unordered_map<uint32_t, std::function<void()> >                           onUpdate;  ///< list of functions that run every frame in the main AncientArcher
-	std::unordered_map<uint32_t, std::function<void()> >                       onSlowUpdate;  ///< list of functions to run every only every mSlowUpdateWaitLength in the main AncientArcher
+	std::unordered_map<uint32_t, std::function<void()> >               onBegin;               ///< list of functions to run once when runMainAncientArcher is called
+	std::unordered_map<uint32_t, std::function<void(float)> >          onDeltaUpdate;         ///< list of functions that rely on deltatime in the main AncientArcher
+	std::unordered_map<uint32_t, std::function<void()> >               onUpdate;              ///< list of functions that run every frame in the main AncientArcher
+	std::unordered_map<uint32_t, std::function<void()> >               onSlowUpdate;          ///< list of functions to run every only every mSlowUpdateWaitLength in the main AncientArcher
 	std::unordered_map<uint32_t, std::function<bool(KeyboardInput&)> > onTimeoutKeyHandling;  ///< list of functions to handle key presses that time out for mNoSpamWaitLength after press
-	std::unordered_map<uint32_t, std::function<void(ScrollInput&)> >       onScrollHandling;  ///< list of functions to handle mouse wheel scroll every frame in the main AncientArcher
-	std::unordered_map<uint32_t, std::function<void(KeyboardInput&)> >        onKeyHandling;  ///< list of functions to handle keypresses every frame in the main AncientArcher
-	std::unordered_map<uint32_t, std::function<void(MouseInput&)> >         onMouseHandling;  ///< list of functions to handle mouse movement every frame in the main AncientArcher
-	std::unordered_map<uint32_t, std::function<void()> >                         onTearDown;  ///< list of functions to run when destroying
+	std::unordered_map<uint32_t, std::function<void(ScrollInput&)> >   onScrollHandling;      ///< list of functions to handle mouse wheel scroll every frame in the main AncientArcher
+	std::unordered_map<uint32_t, std::function<void(KeyboardInput&)> > onKeyHandling;         ///< list of functions to handle keypresses every frame in the main AncientArcher
+	std::unordered_map<uint32_t, std::function<void(MouseInput&)> >    onMouseHandling;       ///< list of functions to handle mouse movement every frame in the main AncientArcher
+	std::unordered_map<uint32_t, std::function<void()> >               onTearDown;            ///< list of functions to run when destroying
 
 	// called during Run
-	void pullButtonStateEvents();
-
 	void begin();
 	void deltaUpdate();
 	void render();
 	void teardown();
 
+	// called during setup of window and tied to the correct rendering viewport
+	void setReshapeWindowHandler() noexcept;
+
 	// helpers
 	void initEngine();
 	void resetEngine() noexcept;
 
-
-
 	void standardMouseMovement(float xpos, float ypos);
+	void setScrollWheelHandler() noexcept;
 
 	// todo: refactor - used for testing purposes until more elegant solution appears
 	void __setProjectionMatToAllShadersFromFirstCam_hack();

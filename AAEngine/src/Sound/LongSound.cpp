@@ -1,7 +1,6 @@
 #include "../../include/Sound/LongSound.h"
 #include "../../include/Sound/SoundDevice.h"
 #include <cassert>
-#include <iostream>
 #include <AL\alc.h>
 #include <AL\alext.h>
 
@@ -125,7 +124,7 @@ void LongSound::UpdatePlayBuffer()
 	// clear error 
 	if (alGetError() != AL_NO_ERROR)
 	{
-		std::cout << "Error before rebuffering\n";
+		throw("Rebuffering Error");
 	}
 
 	/* Get relevant source info */

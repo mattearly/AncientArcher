@@ -1,5 +1,5 @@
 /*
-Input
+Controls
 ----------------------------------------------------------------------
 Copyright (c) 2019-2020, Matthew Early matthewjearly@gmail.com
 All rights reserved.
@@ -31,55 +31,43 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 ----------------------------------------------------------------------
 */
 #pragma once
+#include "KeyboardInput.h"
+#include "MouseInput.h"
+#include "ScrollInput.h"
 
 namespace AA
 {
-struct KeyboardInput
+enum class STANDARDMOUSEZEROS { DEFAULT, TOP_LEFT_0_to_1, BOT_LEFT_0_to_1, TOP_LEFT_FULL_RANGE, BOT_LEFT_FULL_RANGE };
+
+class Controls
 {
-	//keyboard
-	bool esc, f1, f2, f3, f4, f5, f6, f7, f8, f9,
-		f10, f11, f12;
+public:
 
-	bool graveAccent, n1, n2, n3, n4, n5, n6, n7,
-		n8, n9, n0, minus, equal, backspace;
+	//static Controls* Get();
 
-	bool a, b, c, d, e, f, g, h, i, j, k, l, m,
-		n, o, p, q, r, s, t, u, v, w, x, y, z;
+	float getFPPMouseSensitivity() const noexcept;
+	void setFPPMouseSensitivity(float sensitivity) noexcept;
 
-	bool tab, leftShift, rightShift, leftControl,
-		rightControl, leftAlt, rightAlt, spacebar;
+	//friend class Display;      // for access to mouseMovement and mouseScrollWheelMovement
+	//friend class AncientArcher;         // for access to Input
 
-	bool leftSquareBracket, rightSquareBracket;
+protected:
 
-	bool backslash, semiColon, apostrophe, enter;
+	STANDARDMOUSEZEROS mStandardMouseZeros = STANDARDMOUSEZEROS::BOT_LEFT_0_to_1;
 
-	bool comma, period, forwardSlash;
+	//void pullButtonStateEvents();
 
-	bool printScreen, scrollLock, pauseBreak, insert,
-		del, home, end, pageUp, pageDown;
+	KeyboardInput mButtonState = {};
+	MouseInput    mMousePosition = {};
+	ScrollInput   mMouseWheelScroll = {};
 
-	bool upArrow, downArrow, leftArrow, rightArrow;
+	float mFPPMouseSensitivity = 0.1f;  ///< mouse sensitivity while in first person perspective
+	bool mRenewFPP = true;
 
-	bool menu, leftSuper, rightSuper;
+	void perspectiveMouseMovement(float xpos, float ypos) noexcept;
+	//void standardMouseMovement(float xpos, float ypos);
+	void mouseScrollWheelMovement(float xpos, float ypos) noexcept;
 
-	// todo
-	// bool keypad_keys;
-
-	//mouse buttons
-	bool mouseButton1, mouseButton2, mouseButton3,
-		mouseButton4, mousebutton5, mouseButton6,
-		mousebutton7, mouseButton8;
-};
-
-struct MouseInput
-{
-	float xOffset;
-	float yOffset;
-};
-
-struct ScrollInput
-{
-	float xOffset;
-	float yOffset;
+	void resetControlVars() noexcept;
 };
 }  // end namespace AA

@@ -32,13 +32,15 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 #pragma once
 #include <glm/glm.hpp>
+#include "../Controls/Controls.h"
+
 struct GLFWwindow;
 
 namespace AA
 {
 enum class MouseReporting { STANDARD, PERSPECTIVE };
 
-class Display
+class Display : public Controls
 {
 public:
 	~Display();
@@ -60,16 +62,12 @@ public:
 	void SetWindowSize(const char to) noexcept;
 	void SetWindowTitle(const char* name) noexcept;
 
-
-	//void ReshapeWindowHandler(GLFWwindow* window, int width, int height);
-	//void PerspectiveMouseHandler(GLFWwindow* window, float xpos, float ypos);
-	//void StandardMouseHandler(GLFWwindow* window, float xpos, float ypos);
-	//void ScrollHandler(GLFWwindow* window, float xpos, float ypos);
-
 protected:
 
 	// hold for engine to change back to false so it can know if it should resize the camera viewports
 	bool mWindowSizeDirty = false;
+
+	void pullButtonStateEvents();
 
 	void toggleFullScreen() noexcept;
 	void setWindowToFullscreen() noexcept;
@@ -84,13 +82,6 @@ protected:
 	void swapWindowBuffers() const noexcept;
 
 	void closeWindow() noexcept;
-
-
-	//void setReshapeWindowHandler() noexcept;
-	//void SetResizeWindowHandler() noexcept;
-	//void setCurorPosToPerspectiveCalc() noexcept;
-	//void setCurorPosToStandardCalc() noexcept;
-	//void setScrollWheelHandler() noexcept;
 
 	void initGLFW() noexcept;
 	void initDisplayFromEngine();

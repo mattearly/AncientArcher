@@ -33,10 +33,6 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #include "../../include/Scene/GameObject.h"
 #include "../../include/Renderer/OpenGL/OGLGraphics.h"
 #include "../../include/Scene/Camera.h"
-
-#ifdef _DEBUG
-#include <iostream>
-#endif
 #include "../../include/Renderer/OpenGL/SceneLoader.h"
 
 namespace AA
@@ -141,10 +137,8 @@ void GameObject::addInstance(const InstanceDetails& instance_details)
 
 void GameObject::draw(const OGLShader& modelShader)
 {
-#ifdef _DEBUG
 	if (mShaderID == -1 || mCameraID == -1 || mObjectID == -1)
-		std::cout << "bad object\n";
-#endif
+		throw("bad something in the draw");
 
 	if (mInstanceDetails.size() > 0)
 		OGLGraphics::getInstance()->Render(mMeshes, mInstanceDetails, modelShader);

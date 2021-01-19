@@ -33,10 +33,9 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 // derived from https://learnopengl.com/Advanced-OpenGL/Cubemaps
 #include <glad/glad.h>
 #include <glm/glm.hpp>
-#include <iostream>
-#include "../../include/Scene/Skybox.h"
-#include "../../include/Scene/OGLGraphics.h"
-#include "../../include/Scene/TexLoader.h"
+#include "../../../include/Renderer/OpenGL/Skybox.h"
+#include "../../../include/Renderer/OpenGL/OGLGraphics.h"
+#include "../../../include/Renderer/OpenGL/TexLoader.h"
 
 namespace AA
 {
