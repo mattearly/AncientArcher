@@ -54,11 +54,6 @@ void Display::SetWindowClearColor(glm::vec3 rgb) noexcept
 
 int Display::GetWindowWidth() noexcept
 {
-	if (!mWindow)
-	{
-		throw("window not initialized");
-	}
-
 	int width, height;
 
 	glfwGetWindowSize(mWindow, &width, &height);
@@ -68,11 +63,6 @@ int Display::GetWindowWidth() noexcept
 
 int Display::GetWindowHeight() noexcept
 {
-	if (!mWindow)
-	{
-		throw("window not initialized");
-	}
-
 	int width, height;
 
 	glfwGetWindowSize(mWindow, &width, &height);
