@@ -74,9 +74,7 @@ public:
 		static int cam = AA::Engine->AddCamera(AA::Engine->GetWindowWidth(), AA::Engine->GetWindowHeight());
 		int shader = AA::Engine->AddShader(AA::SHADERTYPE::DIFF);
 
-		//static int wasd = AA::Engine->AddObject("E:\\storage\\source\\repos\\AncientArcher\\AAUnitTest\\res\\wasd.obj", cam, shader);
 		static int wasd = AA::Engine->AddObject("..\\..\\AAUnitTest\\res\\wasd.obj", cam, shader);
-		//static int wasd = AA::Engine->AddObject("E:\\storage\\Models\\dovecote.fbx", cam, shader);
 
 		AA::Engine->GetGameObject(wasd).setTranslation(glm::vec3(0, 0, 0));
 		AA::Engine->GetGameObject(wasd).setScale(glm::vec3(3));
