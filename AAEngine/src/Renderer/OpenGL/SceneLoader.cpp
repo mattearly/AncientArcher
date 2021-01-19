@@ -30,9 +30,6 @@ THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
 OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 ----------------------------------------------------------------------
 */
-#ifdef _DEBUG
-#include <iostream>
-#endif
 #include <sstream>
 #include <utility>
 #include <assimp/Importer.hpp>
@@ -117,10 +114,6 @@ glm::quat SceneLoader::aiQuat_to_glmQuat(const aiQuaternion& inQuat) noexcept
 
 int SceneLoader::loadGameObjectWithAssimp(std::vector<MeshDrawInfo>& out_MeshInfo, std::string path)
 {
-#ifdef _DEBUG
-	std::cout << "------\n";
-	std::cout << "LOADING GAME OBJECT: path : " << path << "\n";
-#endif _DEBUG
 	Assimp::Importer importer;
 	int post_processing_flags = 0;
 	//post processing -> http://assimp.sourceforge.net/lib_html/postprocess_8h.html
@@ -140,7 +133,7 @@ int SceneLoader::loadGameObjectWithAssimp(std::vector<MeshDrawInfo>& out_MeshInf
 	if (!scene || scene->mFlags & AI_SCENE_FLAGS_INCOMPLETE || !scene->mRootNode)
 	{
 #ifdef _DEBUG
-		std::cout << "ERROR::ASSIMP::" << importer.GetErrorString() << '\n';
+		//std::cout << "ERROR::ASSIMP::" << importer.GetErrorString() << '\n';
 #endif
 		return -1;  // failed to load scene
 	}
@@ -161,21 +154,28 @@ int SceneLoader::loadGameObjectWithAssimp(std::vector<MeshDrawInfo>& out_MeshInf
 		std::char_traits<char>,
 		std::allocator<char>>::size_type>(the_last_dot) - the_last_slash);  // get the name of the file
 
-#ifdef _DEBUG
-	std::cout << "mModelDir = " << mModelDir << '\n';
-	std::cout << "mModelFileExtension = " << mModelFileExtension << '\n';
-	std::cout << "mModelFileName = " << mModelFileName << '\n';
-#endif
-
-	//std::string getBasePath(const std::string & path)
-	//{
-	//  size_t pos = path.find_last_of("\\/");
-	//  return (std::string::npos == pos) ? "" : path.substr(0, pos + 1);
-	//}
+//#ifdef _DEBUG
+//#include <iostream>
+//	std::cout << "mModelDir = " << mModelDir << '\n';
+//	std::cout << "mModelFileExtension = " << mModelFileExtension << '\n';
+//	std::cout << "mModelFileName = " << mModelFileName << '\n';
+//#endif
 
 	processNode(scene->mRootNode, scene, out_MeshInfo);
 
 	return 0;
+}
+
+void SceneLoader::unloadGameObject(const std::vector<MeshDrawInfo>& toUnload)
+{
+	for (const auto& meshIt : toUnload)
+	{
+		glDeleteBuffers(1, &meshIt.vao);
+		for (const auto& texIt : meshIt.textureDrawIds)
+		{
+			glDeleteTextures(1, &texIt.first);
+		}
+	}
 }
 
 void SceneLoader::processNode(aiNode* node, const aiScene* scene, std::vector<MeshDrawInfo>& out_MeshInfo)
@@ -240,12 +240,12 @@ MeshDrawInfo SceneLoader::processMesh(aiMesh* mesh, const aiScene* scene, aiMatr
 		for (auto& newtexture : albedo_textures)
 			all_loaded_textures.insert(all_loaded_textures.end(), newtexture);
 	}
-#ifdef _DEBUG
-	else
-	{
-		std::cout << "failed to load aiTextureType_DIFFUSE\n";
-	}
-#endif
+//#ifdef _DEBUG
+//	else
+//	{
+//		std::cout << "failed to load aiTextureType_DIFFUSE\n";
+//	}
+//#endif
 
 	//std::vector<TextureInfo> specMaps;
 	//loadMaterialTextures(material, aiTextureType_SPECULAR, "specular", specMaps);
@@ -330,21 +330,21 @@ int SceneLoader::loadMaterialTextures(const aiScene* scn, const aiMaterial* mat,
 		switch (tex_success)
 		{
 		case aiReturn_SUCCESS:
-#ifdef _DEBUG
-			std::cout << "Attempting Texture on given path: " << aiTmpStr.C_Str() << '\n';
-#endif
+//#ifdef _DEBUG
+//			std::cout << "Attempting Texture on given path: " << aiTmpStr.C_Str() << '\n';
+//#endif
 			break;
 		case aiReturn_FAILURE:
-#ifdef _DEBUG
-			std::cout << "failure getting texture on material tex num " << i << ' ' << aiTmpStr.C_Str() << '\n';
-#endif
+//#ifdef _DEBUG
+//			std::cout << "failure getting texture on material tex num " << i << ' ' << aiTmpStr.C_Str() << '\n';
+//#endif
 			return -1;
 			break;
 		case aiReturn_OUTOFMEMORY:
 
-#ifdef _DEBUG
-			std::cout << "oom getting texture on material tex num " << i << ' ' << aiTmpStr.C_Str() << '\n';
-#endif
+//#ifdef _DEBUG
+//			std::cout << "oom getting texture on material tex num " << i << ' ' << aiTmpStr.C_Str() << '\n';
+//#endif
 			return -1;
 			break;
 		}
@@ -356,9 +356,9 @@ int SceneLoader::loadMaterialTextures(const aiScene* scn, const aiMaterial* mat,
 		{
 			//returned pointer is not null, read texture from memory
 			std::string embedded_filename = ai_embedded_texture->mFilename.C_Str();
-#ifdef _DEBUG
-			std::cout << "found embedded texture: " << embedded_filename << '\n';
-#endif
+//#ifdef _DEBUG
+//			std::cout << "found embedded texture: " << embedded_filename << '\n';
+//#endif
 			for (uint32_t j = 0; j < mTexturesLoaded.size(); ++j)
 			{
 				for (const auto& p : mTexturesLoaded)
@@ -367,9 +367,9 @@ int SceneLoader::loadMaterialTextures(const aiScene* scn, const aiMaterial* mat,
 					{
 						// texture already loaded, just give the mesh the details
 						out_texInfo.insert(out_texInfo.end(), { p.accessId, p.type });
-#ifdef _DEBUG
-						std::cout << "Embedded Texture [" << p.path.data() << "] already loaded, using it.\n";
-#endif
+//#ifdef _DEBUG
+//						std::cout << "Embedded Texture [" << p.path.data() << "] already loaded, using it.\n";
+//#endif
 						return 0;  // success
 					}
 				}
@@ -436,10 +436,10 @@ int SceneLoader::loadMaterialTextures(const aiScene* scn, const aiMaterial* mat,
 			//				}
 			//			}
 
-
-#ifdef _DEBUG
-			std::cout << "Embedded Texture from data attempt: \n";
-#endif
+//
+//#ifdef _DEBUG
+//			std::cout << "Embedded Texture from data attempt: \n";
+//#endif
 			a_new_texture_info.accessId = TexLoader::getInstance()->textureFromData(ai_embedded_texture);
 			if (a_new_texture_info.accessId != 0)
 			{
@@ -477,9 +477,9 @@ int SceneLoader::loadMaterialTextures(const aiScene* scn, const aiMaterial* mat,
 					{
 						// texture already loaded, just give the mesh the details
 						out_texInfo.insert(out_texInfo.end(), { p.accessId, p.type });
-#ifdef _DEBUG
-						std::cout << "Texture [" << p.path.data() << "] already loaded, using it.\n";
-#endif
+//#ifdef _DEBUG
+//						std::cout << "Texture [" << p.path.data() << "] already loaded, using it.\n";
+//#endif
 						return 0;  // success
 					}
 				}
@@ -487,9 +487,9 @@ int SceneLoader::loadMaterialTextures(const aiScene* scn, const aiMaterial* mat,
 
 			TextureInfo a_new_texture_info;
 
-#ifdef _DEBUG
-			std::cout << " - TexLoad try 1 (given path): " << tex_path1_literal << '\n';
-#endif
+//#ifdef _DEBUG
+//			std::cout << " - TexLoad try 1 (given path): " << tex_path1_literal << '\n';
+//#endif
 			a_new_texture_info.accessId = TexLoader::getInstance()->textureFromFile((tex_path1_literal).c_str());
 			if (a_new_texture_info.accessId != 0)
 			{
@@ -502,9 +502,9 @@ int SceneLoader::loadMaterialTextures(const aiScene* scn, const aiMaterial* mat,
 				out_texInfo.insert(out_texInfo.end(), { a_new_texture_info.accessId, a_new_texture_info.type });
 				return 0; // success!
 			}
-#ifdef _DEBUG
-			std::cout << " - TexLoad try 2 (full append): " << tex_path2_loadedFromFullAppend << '\n';
-#endif
+//#ifdef _DEBUG
+//			std::cout << " - TexLoad try 2 (full append): " << tex_path2_loadedFromFullAppend << '\n';
+//#endif
 			a_new_texture_info.accessId = TexLoader::getInstance()->textureFromFile(tex_path2_loadedFromFullAppend.c_str());
 			if (a_new_texture_info.accessId != 0)
 			{
@@ -517,9 +517,9 @@ int SceneLoader::loadMaterialTextures(const aiScene* scn, const aiMaterial* mat,
 				out_texInfo.insert(out_texInfo.end(), { a_new_texture_info.accessId, a_new_texture_info.type });
 				return 0; // success!
 			}
-#ifdef _DEBUG
-			std::cout << " - TexLoad try 3 (end append): " << tex_path3_loadedFromEndAppend << '\n';
-#endif
+//#ifdef _DEBUG
+//			std::cout << " - TexLoad try 3 (end append): " << tex_path3_loadedFromEndAppend << '\n';
+//#endif
 			a_new_texture_info.accessId = TexLoader::getInstance()->textureFromFile(tex_path3_loadedFromEndAppend.c_str());
 			if (a_new_texture_info.accessId != 0)
 			{

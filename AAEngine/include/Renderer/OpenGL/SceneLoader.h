@@ -19,19 +19,13 @@ class SceneLoader
 public:
 	static SceneLoader* getSceneLoader();
 
-private:
-	SceneLoader();
-
-public:
-
-	glm::mat4 aiMat4_to_glmMat4(const aiMatrix4x4& inMat);
-	glm::vec3 aiVec3_to_glmVec3(const aiVector3D& inVec) noexcept;
-	glm::vec4 aiColor4_to_glmVec4(const aiColor4D& inVec) noexcept;
-	glm::quat aiQuat_to_glmQuat(const aiQuaternion& inQuat) noexcept;
-
 	int loadGameObjectWithAssimp(std::vector<MeshDrawInfo>& out_MeshInfo, std::string path);
 
+	void unloadGameObject(const std::vector<MeshDrawInfo>& toUnload);
+
 private:
+
+	SceneLoader();
 
 	void processNode(aiNode* node, const aiScene* scene, std::vector<MeshDrawInfo>& out_);
 	MeshDrawInfo processMesh(aiMesh* mesh, const aiScene* scene, aiMatrix4x4* trans);
@@ -42,5 +36,12 @@ private:
 	std::string mModelFileName = "";
 	std::string mModelFileExtension = "";
 	std::vector<TextureInfo> mTexturesLoaded;
+
+	// helpers
+	glm::mat4 aiMat4_to_glmMat4(const aiMatrix4x4& inMat);
+	glm::vec3 aiVec3_to_glmVec3(const aiVector3D& inVec) noexcept;
+	glm::vec4 aiColor4_to_glmVec4(const aiColor4D& inVec) noexcept;
+	glm::quat aiQuat_to_glmQuat(const aiQuaternion& inQuat) noexcept;
+
 };
 } // end namespace AA

@@ -74,6 +74,10 @@ void AncientArcher::teardown()
 	{
 		oTD.second();
 	}
+	for (const auto& model : mGameObjects)
+	{
+		SceneLoader::getSceneLoader()->unloadGameObject(model.mMeshes);
+	}
 }
 
 AncientArcher::AncientArcher()
