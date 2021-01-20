@@ -45,9 +45,29 @@ Camera::Camera(int width, int height)
 {
 	mUniqueViewportID = uniqueIDs++;
 
+	resetViewportVars();
+
+	mWidth = width;
+	mHeight = height;
+}
+
+void Camera::UpdateCameraVectors()
+{
+	glm::vec3 front{};
+	front.x = cos(glm::radians(mYaw)) * cos(glm::radians(mPitch));
+	front.y = sin(glm::radians(mPitch));
+	front.z = sin(glm::radians(mYaw)) * cos(glm::radians(mPitch));
+	mFront = glm::normalize(front);
+	mRight = glm::normalize(glm::cross(mFront, UP));
+	mUp = glm::normalize(glm::cross(mRight, mFront));
+}
+
+// same as default constructor but doesn't touch the uniqueId's
+void Camera::resetViewportVars()
+{
 	mPosition = glm::vec3(0);
-	mFieldOfView = 60.f;
-	mYaw = 0.f;
+	mFieldOfView = 90.f;
+	mYaw = -90.f;
 	mPitch = 0.f;
 	mMaxRenderDistance = 2000.f;
 	mProjectionChanged = false;
@@ -64,55 +84,16 @@ Camera::Camera(int width, int height)
 	mFront = glm::normalize(mFront);
 	mRight = glm::normalize(mRight);
 	mUp = glm::normalize(mUp);
-
-	//updateCameraVectors();
-	mWidth = width;
-	mHeight = height;
 }
 
-void Camera::updateCameraVectors()
-{
-	glm::vec3 front;
-	front.x = cos(glm::radians(mYaw)) * cos(glm::radians(mPitch));
-	front.y = sin(glm::radians(mPitch));
-	front.z = sin(glm::radians(mYaw)) * cos(glm::radians(mPitch));
-	mFront = glm::normalize(front);
-	mRight = glm::normalize(glm::cross(mFront, UP));
-	mUp = glm::normalize(glm::cross(mRight, mFront));
-}
-
-// same as default constructor but doesn't touch the uniqueId's
-void Camera::resetViewportVars()
-{
-	mPosition = glm::vec3(0);
-	mFieldOfView = 60.f;
-	mYaw = 0.f;
-	mPitch = 0.f;
-	mMaxRenderDistance = 100.f;
-	mProjectionChanged = false;
-	mOrthoFieldSize = glm::vec4(-1, 1, -1, 1);
-	mRenderProjection = RenderProjection::PERSPECTIVE;
-
-	mFront.x = cos(glm::radians(mYaw)) * cos(glm::radians(mPitch));
-	mFront.y = sin(glm::radians(mPitch));
-	mFront.z = sin(glm::radians(mYaw)) * cos(glm::radians(mPitch));
-
-	mRight = glm::cross(mFront, UP);
-	mUp = glm::cross(mRight, mFront);
-
-	mFront = glm::normalize(mFront);
-	mRight = glm::normalize(mRight);
-	mUp = glm::normalize(mUp);
-}
-
-void Camera::setToPerspective() noexcept
+void Camera::SetToPerspective() noexcept
 {
 	mRenderProjection = RenderProjection::PERSPECTIVE;
 }
 
-void Camera::setToOrtho() noexcept
+void Camera::__setToOrtho() noexcept
 {
-	//Camera::Get()->setOrthoFieldSize(
+	//Camera::Get()->__setOrthoFieldSize(
 	//  glm::vec4(
 	//    0, AADisplay::Get()->getWindowWidth(),
 	//    0, AADisplay::Get()->getWindowHeight()
@@ -122,29 +103,29 @@ void Camera::setToOrtho() noexcept
 	mRenderProjection = RenderProjection::ORTHO;
 }
 
-void Camera::setOrthoFieldSize(float left, float right, float bottom, float top) noexcept
+void Camera::__setOrthoFieldSize(float left, float right, float bottom, float top) noexcept
 {
 	mOrthoFieldSize = glm::vec4(left, right, bottom, top);
 }
 
-void Camera::setOrthoFieldSize(glm::vec4 lrbt) noexcept
+void Camera::__setOrthoFieldSize(glm::vec4 lrbt) noexcept
 {
 	mOrthoFieldSize = lrbt;
 }
 
-void Camera::setMaxRenderDistance(float distance) noexcept
+void Camera::SetMaxRenderDistance(float distance) noexcept
 {
 	mMaxRenderDistance = distance;
 	//updateViewport();
 }
 
-void Camera::setCurrentPosition(glm::vec3 pos)
+void Camera::SetCurrentLocation(glm::vec3 pos)
 {
 	mPosition = pos;
-	updateCameraVectors();
+	UpdateCameraVectors();
 }
 
-void Camera::setCurrentPitch(float pitch)
+void Camera::SetCurrentPitch(float pitch)
 {
 	mPitch = pitch;
 	if (mPitch > 89.9f)
@@ -155,22 +136,22 @@ void Camera::setCurrentPitch(float pitch)
 	{
 		mPitch = -89.9f;
 	}
-	updateCameraVectors();
+	UpdateCameraVectors();
 }
 
-void Camera::setCurrentYaw(float yaw)
+void Camera::SetCurrentYaw(float yaw)
 {
 	mYaw = yaw;
-	updateCameraVectors();
+	UpdateCameraVectors();
 }
 
-void Camera::shiftCurrentPosition(const glm::vec3& offset)
+void Camera::ShiftCurrentLocation(const glm::vec3& offset)
 {
 	mPosition += offset;
-	updateCameraVectors();
+	UpdateCameraVectors();
 }
 
-void Camera::shiftYawAndPitch(float yawOffset, float pitchOffset)
+void Camera::ShiftYawAndPitch(float yawOffset, float pitchOffset)
 {
 	mYaw += yawOffset;
 	mPitch += pitchOffset;
@@ -182,10 +163,10 @@ void Camera::shiftYawAndPitch(float yawOffset, float pitchOffset)
 	{
 		mPitch = -89.9f;
 	}
-	updateCameraVectors();
+	UpdateCameraVectors();
 }
 
-glm::mat4 Camera::getViewMatrix() const
+glm::mat4 Camera::GetViewMatrix() const
 {
 	return glm::lookAt(mPosition, mPosition + mFront, mUp);
 }
@@ -270,7 +251,7 @@ const int& Camera::getID() const noexcept
 	return mUniqueViewportID;
 }
 
-const glm::vec3& Camera::getLocation() const noexcept
+const glm::vec3& Camera::GetLocation() const noexcept
 {
 	return mPosition;
 }

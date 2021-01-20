@@ -51,8 +51,8 @@ public:
 	GameObject(const char* path, int camId, int shadId, std::vector<InstanceDetails> details);
 
 	// getters
-	const glm::vec3& getLocation() const;
-	const glm::vec3& getLocation(int which) const;
+	const glm::vec3& GetLocation() const;
+	const glm::vec3& GetLocation(int which) const;
 	const glm::vec3& getRotation() const;
 	const glm::vec3& getRotation(int which) const;
 	int getModelMatrix(const int& which, glm::mat4& out_mat4) const;

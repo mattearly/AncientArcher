@@ -43,6 +43,7 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 namespace AA
 {
 #define Engine AncientArcher::Get()
+#define Cam(X) AncientArcher::Get()->GetCamera(X)
 ///
 /// AncientArcher Class essentially ties everything together for render scenes
 ///

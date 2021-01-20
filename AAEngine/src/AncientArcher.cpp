@@ -404,7 +404,7 @@ void AncientArcher::SetMaxRenderDistance(int camId, float amt) noexcept
 	{
 		if (cam.getID() == camId)
 		{
-			cam.setMaxRenderDistance(amt);
+			cam.SetMaxRenderDistance(amt);
 			return;
 		}
 	}
@@ -546,7 +546,7 @@ void AncientArcher::render()
 		const int cameraID = obj.getCameraId();
 
 		// set the view matrix from the cam for this object
-		GetShader(shaderID).setMat4("view", GetCamera(cameraID).getViewMatrix());
+		GetShader(shaderID).setMat4("view", GetCamera(cameraID).GetViewMatrix());
 
 		// draw using the shader for it
 		obj.draw(GetShader(shaderID));

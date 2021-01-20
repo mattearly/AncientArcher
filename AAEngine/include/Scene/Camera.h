@@ -43,24 +43,27 @@ class Camera
 public:
 	Camera(int width, int height);
 
-	void updateCameraVectors();
+	void UpdateCameraVectors();
 
 	// setters
-	void setToPerspective() noexcept;
-	void setCurrentPosition(glm::vec3 pos);
-	void setCurrentPitch(float pitch);
-	void setCurrentYaw(float yaw);
-	void shiftCurrentPosition(const glm::vec3& offset);
-	void shiftYawAndPitch(float yawOffset, float pitchOffset);
+	void SetMaxRenderDistance(float distance) noexcept;
+
+	void SetToPerspective() noexcept;
+	void SetCurrentLocation(glm::vec3 pos);
+	void SetCurrentPitch(float pitch);
+	void SetCurrentYaw(float yaw);
+
+	void ShiftCurrentLocation(const glm::vec3& offset);
+	void ShiftYawAndPitch(float yawOffset, float pitchOffset);
 
 	// experimental
-	void setToOrtho() noexcept;
-	void setOrthoFieldSize(float left, float right, float bottom, float top) noexcept;
-	void setOrthoFieldSize(glm::vec4 lrbt) noexcept;
+	void __setToOrtho() noexcept;
+	void __setOrthoFieldSize(float left, float right, float bottom, float top) noexcept;
+	void __setOrthoFieldSize(glm::vec4 lrbt) noexcept;
 
 	// getters
-	const glm::vec3& getLocation() const noexcept;
-	glm::mat4 getViewMatrix() const;
+	const glm::vec3& GetLocation() const noexcept;
+	glm::mat4 GetViewMatrix() const;
 	glm::mat4 getProjectionMatrix() const;
 	const glm::vec3* getPosition() const noexcept;
 	const glm::vec3* getFront() const noexcept;
@@ -91,6 +94,5 @@ private:
 
 	void resetViewportVars();
 
-	void setMaxRenderDistance(float distance) noexcept;
 };
 } // end namespace AA

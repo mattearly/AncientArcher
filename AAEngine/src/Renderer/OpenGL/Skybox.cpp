@@ -180,12 +180,12 @@ void Skybox::loadSkybox()
 }
 
 /**
- * Sets the view matrix value on the skyboxShader from the getViewMatrix() function in AAViewport.
+ * Sets the view matrix value on the skyboxShader from the GetViewMatrix() function in AAViewport.
  * skyboxShader is in use after this call completes.
  */
 void Skybox::loadViewMatrix(const Camera& cam)
 {
-	const glm::mat4 viewMatrix = glm::mat4(glm::mat3(cam.getViewMatrix()));
+	const glm::mat4 viewMatrix = glm::mat4(glm::mat3(cam.GetViewMatrix()));
 	skyboxShader->use();
 	skyboxShader->setMat4("view", viewMatrix);
 }

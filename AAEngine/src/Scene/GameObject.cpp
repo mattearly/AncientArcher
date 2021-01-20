@@ -262,12 +262,12 @@ bool GameObject::isSingleInstance() const
 	return mInstanceDetails.size() == 1;
 }
 
-const glm::vec3& GameObject::getLocation() const
+const glm::vec3& GameObject::GetLocation() const
 {
-	return getLocation(0);
+	return GetLocation(0);
 }
 
-const glm::vec3& GameObject::getLocation(int which) const
+const glm::vec3& GameObject::GetLocation(int which) const
 {
 	if (which < getInstanceCount()) {
 		return mInstanceDetails.at(which).Translate;
