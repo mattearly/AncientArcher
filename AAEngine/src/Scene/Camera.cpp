@@ -172,7 +172,7 @@ glm::mat4 Camera::GetViewMatrix() const
 }
 
 // returns a projection matrix based on the window width and height and the perspective.
-glm::mat4 Camera::getProjectionMatrix() const
+glm::mat4 Camera::GetProjectionMatrix() const
 {
 	// todo: other ways of adjusting camera viewport
 	//const float screen_width = static_cast<float>(mWidth);
@@ -216,37 +216,32 @@ glm::mat4 Camera::getProjectionMatrix() const
 	return projection;
 }
 
-const glm::vec3* Camera::getPosition() const noexcept
-{
-	return &mPosition;
-}
-
-const glm::vec3* Camera::getFront() const noexcept
+const glm::vec3* Camera::GetFront() const noexcept
 {
 	return &mFront;
 }
 
-const glm::vec3* Camera::getRight() const noexcept
+const glm::vec3* Camera::GetRight() const noexcept
 {
 	return &mRight;
 }
 
-float Camera::getYaw() const noexcept
+float Camera::GetYaw() const noexcept
 {
 	return mYaw;
 }
 
-float Camera::getPitch() const noexcept
+float Camera::GetPitch() const noexcept
 {
 	return mPitch;
 }
 
-float Camera::getRenderDistance() const noexcept
+float Camera::GetRenderDistance() const noexcept
 {
 	return mMaxRenderDistance;
 }
 
-const int& Camera::getID() const noexcept
+const int& Camera::GetID() const noexcept
 {
 	return mUniqueViewportID;
 }

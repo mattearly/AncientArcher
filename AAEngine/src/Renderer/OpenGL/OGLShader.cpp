@@ -460,7 +460,7 @@ void OGLShader::setMat4(const std::string& name, const glm::mat4& mat) const
 	glUniformMatrix4fv(getAndCheckShaderUniform(name), 1, GL_FALSE, &mat[0][0]);
 }
 
-const int OGLShader::getID() const
+const int OGLShader::GetID() const
 {
 	return ID;
 }

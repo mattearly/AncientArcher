@@ -68,7 +68,7 @@ public:
 	void setMat3(const std::string& name, const glm::mat3& mat) const;
 	void setMat4(const std::string& name, const glm::mat4& mat) const;
 
-	const int getID() const;
+	const int GetID() const;
 
 	int getAndCheckShaderUniform(const std::string& name) const;
 

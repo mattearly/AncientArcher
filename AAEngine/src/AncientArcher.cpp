@@ -88,7 +88,7 @@ const Camera& AncientArcher::GetCamera(int camId) const
 {
 	for (const auto& cam : mCameras)
 	{
-		if (cam.getID() == camId)
+		if (cam.GetID() == camId)
 		{
 			return cam;
 		}
@@ -104,7 +104,7 @@ Camera& AncientArcher::GetCamera(int camId)
 {
 	for (auto& cam : mCameras)
 	{
-		if (cam.getID() == camId)
+		if (cam.GetID() == camId)
 		{
 			return cam;
 		}
@@ -119,7 +119,7 @@ const OGLShader& AncientArcher::GetShader(int shadId) const
 {
 	for (const auto& shad : mShaders)
 	{
-		if (shad.getID() == shadId)
+		if (shad.GetID() == shadId)
 		{
 			return shad;
 		}
@@ -134,7 +134,7 @@ OGLShader& AncientArcher::GetShader(int shadId)
 {
 	for (auto& shad : mShaders)
 	{
-		if (shad.getID() == shadId)
+		if (shad.GetID() == shadId)
 		{
 			return shad;
 		}
@@ -179,7 +179,7 @@ GameObject& AncientArcher::GetGameObject(int objId)
 int AncientArcher::AddCamera(int w, int h)
 {
 	Camera tmpCam(w, h);
-	const int return_id = tmpCam.getID();
+	const int return_id = tmpCam.GetID();
 
 	mCameras.push_back(tmpCam);
 
@@ -189,13 +189,13 @@ int AncientArcher::AddCamera(int w, int h)
 int AncientArcher::AddShader(const char* vert, const char* frag, const bool isPath)
 {
 	mShaders.emplace_back(OGLShader(vert, frag, isPath));
-	return mShaders.back().getID();
+	return mShaders.back().GetID();
 }
 
 int AncientArcher::AddShader(const SHADERTYPE& type)
 {
 	mShaders.emplace_back(OGLShader(type));
-	return mShaders.back().getID();
+	return mShaders.back().GetID();
 }
 
 int AncientArcher::AddObject(const char* path, int camId, int shadId)
@@ -402,7 +402,7 @@ void AncientArcher::SetMaxRenderDistance(int camId, float amt) noexcept
 {
 	for (auto& cam : mCameras)
 	{
-		if (cam.getID() == camId)
+		if (cam.GetID() == camId)
 		{
 			cam.SetMaxRenderDistance(amt);
 			return;
@@ -416,7 +416,7 @@ void AncientArcher::SetMaxRenderDistance(int camId, float amt) noexcept
 void AncientArcher::SetProjectionMatrix(int shadId, int camId)
 {
 	GetShader(shadId).use();
-	GetShader(shadId).setMat4("projection", GetCamera(camId).getProjectionMatrix());
+	GetShader(shadId).setMat4("projection", GetCamera(camId).GetProjectionMatrix());
 }
 
 void AncientArcher::SetSlowUpdateTimeoutLength(const float& newtime)
@@ -614,11 +614,11 @@ void AncientArcher::__setProjectionMatToAllShadersFromFirstCam_hack()
 	// set proj matries hack from first cam
 	for (auto& shad : mShaders)
 	{
-		//shad.setMat4("projection", mCameras.front().getProjectionMatrix());
-		const int sID = shad.getID();
+		//shad.setMat4("projection", mCameras.front().GetProjectionMatrix());
+		const int sID = shad.GetID();
 		//std::cout << "shad id: " << sID << '\n';
 
-		const int cID = mCameras.front().getID();
+		const int cID = mCameras.front().GetID();
 		//std::cout << "shad id: " << sID << '\n';
 
 		SetProjectionMatrix(sID, cID);  //set shader (sID) from cam (cID)

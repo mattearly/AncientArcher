@@ -191,12 +191,12 @@ void Skybox::loadViewMatrix(const Camera& cam)
 }
 
 /**
- * Sets the projection matrix value on the skyboxShader from the getProjectionMatrix() function in AAViewport.
+ * Sets the projection matrix value on the skyboxShader from the GetProjectionMatrix() function in AAViewport.
  * skyboxShader is in use after this call completes.
  */
 void Skybox::loadProjectionMatrix(const Camera& cam)
 {
-	glm::mat4 projectionMatrix = cam.getProjectionMatrix();
+	glm::mat4 projectionMatrix = cam.GetProjectionMatrix();
 	skyboxShader->use();
 	skyboxShader->setMat4("projection", projectionMatrix);
 }

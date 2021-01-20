@@ -62,18 +62,15 @@ public:
 	void __setOrthoFieldSize(glm::vec4 lrbt) noexcept;
 
 	// getters
-	const glm::vec3& GetLocation() const noexcept;
 	glm::mat4 GetViewMatrix() const;
-	glm::mat4 getProjectionMatrix() const;
-	const glm::vec3* getPosition() const noexcept;
-	const glm::vec3* getFront() const noexcept;
-	const glm::vec3* getRight() const noexcept;
-	float getYaw() const noexcept;
-	float getPitch() const noexcept;
-	float getRenderDistance() const noexcept;
-	const int& getID() const noexcept;
-
-	friend class AncientArcher;
+	glm::mat4 GetProjectionMatrix() const;
+	const glm::vec3& GetLocation() const noexcept;
+	const glm::vec3* GetFront() const noexcept;
+	const glm::vec3* GetRight() const noexcept;
+	float GetYaw() const noexcept;
+	float GetPitch() const noexcept;
+	float GetRenderDistance() const noexcept;
+	const int& GetID() const noexcept;
 
 private:
 

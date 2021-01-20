@@ -74,7 +74,7 @@ void OGLGraphics::Render(const std::vector<MeshDrawInfo>& meshes, const std::vec
 			//modelShader.use();
 
 			// tell opengl to bind the texture to a model shader uniform var
-			glUniform1i(glGetUniformLocation(modelShader.getID(), ("material." + texType).c_str()), i);
+			glUniform1i(glGetUniformLocation(modelShader.GetID(), ("material." + texType).c_str()), i);
 			glBindTexture(GL_TEXTURE_2D, textures.first);
 			i++;
 		}
