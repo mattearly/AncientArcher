@@ -34,7 +34,7 @@ public:
 
 		AA::Engine->AddToDeltaUpdate([](float dt) {
 			timeholder_B += dt;
-			if (timeholder_B > 3.f)
+			if (timeholder_B > 6.f)
 			{
 				AA::Engine->Shutdown();
 			}
