@@ -4,7 +4,7 @@ namespace AA
 {
 class DisplayCallbacks 
 {
-friend class AncientArcher;
+friend class Display;
 private:
 	static void perspectiveMouseCallback(GLFWwindow * window, double xpos, double ypos);
 	static void standardMouseCallback(GLFWwindow * window, double xpos, double ypos);

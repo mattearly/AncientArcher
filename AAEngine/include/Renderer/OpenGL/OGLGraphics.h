@@ -33,7 +33,6 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #pragma once
 #include <glm/glm.hpp>
 #include <vector>
-#include <glad/glad.h>
 #include <string>
 //#include "GameObject.h"
 #include "OGLShader.h"
@@ -43,16 +42,14 @@ namespace AA
 {
 class OGLGraphics
 {
-public:
-
-	static OGLGraphics* getInstance();
-
-	friend class GameObject;
-
+friend class GameObject;
+friend class Display;
 private:
 
-	void Render(const std::vector<MeshDrawInfo>& meshes, const std::vector<InstanceDetails>& details, const OGLShader& modelShader);
+	static void Render(const std::vector<MeshDrawInfo>& meshes, const std::vector<InstanceDetails>& details, const OGLShader& modelShader);
+	static void SetViewportSize(int x, int y, int w, int h);
+	static void SetDefaultBackgroundColor(float x, float y, float z);
+	static void ClearScreen()  noexcept;
 
-	OGLGraphics();
 };
 }  // end namespace AA

@@ -49,6 +49,7 @@ public:
 	void SetMaxRenderDistance(float distance) noexcept;
 
 	void SetToPerspective() noexcept;
+	void SetDimensions(int width, int height) noexcept;
 	void SetCurrentLocation(glm::vec3 pos);
 	void SetCurrentPitch(float pitch);
 	void SetCurrentYaw(float yaw);

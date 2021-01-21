@@ -31,25 +31,23 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 ----------------------------------------------------------------------
 */
 #include "../../../include/Window/Display/Display.h"
+#include "../../../include/Window/Display/DisplayCallbacks.h"
+#include "../../../include/Renderer/OpenGL/OGLGraphics.h"
 #include <memory>
 #include <glad/glad.h>
 #include <GLFW/glfw3.h>
 #include <glm/glm.hpp>
+#include <queue>
 
 namespace AA
 {
+
+// hold for engine to change back to false if it becomes true, as it must process new camera view matrices for the shaders
+bool externWindowSizeDirty = false;
+
 Display::~Display()  // breaks rule of 5
 {
 	glfwTerminate();
-}
-
-void Display::SetWindowClearColor(glm::vec3 rgb) noexcept
-{
-	if (rgb.x < 0.f || rgb.x > 1.0f || rgb.y < 0.f || rgb.y > 1.0f || rgb.z < 0.f || rgb.z > 1.0f)
-	{
-		//std::cout << "WARNING: Out of range value on SetWindowClearColor, values should be between 0.f and 1.f\n";
-	}
-	mWindowClearColor = rgb;
 }
 
 int Display::GetWindowWidth() noexcept
@@ -90,6 +88,11 @@ MouseReporting Display::GetMouseReportingMode() const noexcept
 	return mMouseReporting;
 }
 
+void Display::SetClearColor(glm::vec3 color)
+{
+	OGLGraphics::SetDefaultBackgroundColor(color.x, color.y, color.z);
+}
+
 void Display::SetCursorToVisible() noexcept
 {
 	glfwSetInputMode(mWindow, GLFW_CURSOR, GLFW_CURSOR_NORMAL);
@@ -110,158 +113,185 @@ void Display::SetWindowTitle(const char* name) noexcept
 	glfwSetWindowTitle(mWindow, name);
 }
 
-void Display::SetWindowSize(int width, int height, int xpos, int ypos) noexcept
-{
-	if (width > 0 && height > 0)
-	{
-		glfwSetWindowMonitor(mWindow, nullptr, xpos, ypos, width, height, 0);
-	}
-	else
-	{
-		glfwSetWindowMonitor(mWindow, nullptr, xpos, ypos, mWindowWidth, mWindowHeight, 0);
+//void Display::SetWindowSize(int width, int height, int xpos, int ypos) noexcept
+//{
+//	if (width > 0 && height > 0)
+//	{
+//		glfwSetWindowMonitor(mWindow, nullptr, xpos, ypos, width, height, 0);
+//	}
+//	else
+//	{
+//		glfwSetWindowMonitor(mWindow, nullptr, xpos, ypos, GetWindowWidth(), GetWindowHeight(), 0);
+//
+//	}
+//	mWindowIsFullScreen = false;
+//}
+//
+//void Display::SetWindowSize(int width, int height, bool center) noexcept
+//{
+//	// turn off fullscreen to Get frame sizes
+//	if (mWindowIsFullScreen)
+//		glfwSetWindowMonitor(mWindow, nullptr, 0, 0, GetWindowWidth(), GetWindowHeight(), 0);
+//
+//	// Get work area sizes after turning off full screen
+//	int x, y, w, h;
+//	glfwGetMonitorWorkarea(glfwGetPrimaryMonitor(), &x, &y, &w, &h);
+//
+//	// Get frame sizes after turning off full screen
+//	int frameSizeLeft, frameSizeTop, frameSizeRight, frameSizeBot;
+//	glfwGetWindowFrameSize(mWindow, &frameSizeLeft, &frameSizeTop, &frameSizeRight, &frameSizeBot);
+//
+//	const int xPos = (w / 2) - (width / 2) + ((frameSizeLeft + frameSizeRight) / 2);
+//	const int yPos = (h / 2) - (height / 2) + ((frameSizeTop + frameSizeBot) / 2);
+//
+//	mXPos = xPos;
+//	mYPos = yPos;
+//	glfwSetWindowMonitor(mWindow, nullptr, xPos, yPos, width, height, 0);
+//	mWindowIsFullScreen = false;
+//}
+//
+///// <summary>
+///// Sets the window from a list of presets m = max, f = fullscreen, b = borderless
+///// </summary>
+///// <param name="to">'m' = maximize, 'f' = fullscreen, 'b' = fullscreen borderless. All other specifications are ignored with undefined behavior.</param>
+///// <returns></returns>
+//void Display::SetWindowSize(const char to) noexcept
+//{
+//	switch (to)
+//	{
+//		// m = maximize
+//	case 'm':
+//		setWindowToMaximized();
+//		break;
+//
+//		// f = fullscreen
+//	case 'f':
+//		setWindowToFullscreen();
+//		break;
+//
+//		// b = borderless fullscreen
+//	case 'b':
+//		setWindowToFullscreenBorderless();
+//		break;
+//
+//		// undefined = do nothing
+//	default:
+//		break;
+//	}
+//}
 
-	}
-	mWindowIsFullScreen = false;
+void Display::SetReadMouseCurorAsFPP() noexcept
+{
+	mRenewFPP = true;
+	::glfwSetCursorPosCallback(mWindow, DisplayCallbacks::perspectiveMouseCallback);
+	mMouseReporting = MouseReporting::PERSPECTIVE;
 }
 
-void Display::SetWindowSize(int width, int height, bool center) noexcept
+void Display::SetReadMouseCurorAsStandard() noexcept
 {
-	// turn off fullscreen to Get frame sizes
+	::glfwSetCursorPosCallback(mWindow, DisplayCallbacks::standardMouseCallback);
+	mMouseReporting = MouseReporting::STANDARD;
+}
+
+
+void Display::SetupScrollWheelCallback() noexcept
+{
+	::glfwSetScrollCallback(mWindow, DisplayCallbacks::scrollCallback);
+}
+
+void Display::ToggleFullscreen() noexcept
+{
 	if (mWindowIsFullScreen)
-		glfwSetWindowMonitor(mWindow, nullptr, 0, 0, mWindowWidth, mWindowHeight, 0);
-
-	// Get work area sizes after turning off full screen
-	int x, y, w, h;
-	glfwGetMonitorWorkarea(glfwGetPrimaryMonitor(), &x, &y, &w, &h);
-
-	// Get frame sizes after turning off full screen
-	int frameSizeLeft, frameSizeTop, frameSizeRight, frameSizeBot;
-	glfwGetWindowFrameSize(mWindow, &frameSizeLeft, &frameSizeTop, &frameSizeRight, &frameSizeBot);
-
-	const int xPos = (w / 2) - (width / 2) + ((frameSizeLeft + frameSizeRight) / 2);
-	const int yPos = (h / 2) - (height / 2) + ((frameSizeTop + frameSizeBot) / 2);
-
-	mXPos = xPos;
-	mYPos = yPos;
-	glfwSetWindowMonitor(mWindow, nullptr, xPos, yPos, width, height, 0);
-	mWindowIsFullScreen = false;
-}
-
-/// <summary>
-/// Sets the window from a list of presets m = max, f = fullscreen, b = borderless
-/// </summary>
-/// <param name="to">'m' = maximize, 'f' = fullscreen, 'b' = fullscreen borderless. All other specifications are ignored with undefined behavior.</param>
-/// <returns></returns>
-void Display::SetWindowSize(const char to) noexcept
-{
-	switch (to)
-	{
-		// m = maximize
-	case 'm':
-		setWindowToMaximized();
-		break;
-
-		// f = fullscreen
-	case 'f':
-		setWindowToFullscreen();
-		break;
-
-		// b = borderless fullscreen
-	case 'b':
-		setWindowToFullscreenBorderless();
-		break;
-
-		// undefined = do nothing
-	default:
-		break;
-	}
-}
-
-void Display::toggleFullScreen() noexcept
-{
-	if (mWindowIsFullScreen)
-	{
-		SetFullscreenToOff();
-	}
+		setWindowToWindowed();
 	else
-	{
 		setWindowToFullscreen();
-	}
 }
 
 void Display::setWindowToFullscreen() noexcept
 {
-	int x, y, w, h;
-	glfwGetMonitorWorkarea(glfwGetPrimaryMonitor(), &x, &y, &w, &h);
-	int frameSizeLeft, frameSizeTop, frameSizeRight, frameSizeBot;
-	glfwGetWindowFrameSize(mWindow, &frameSizeLeft, &frameSizeTop, &frameSizeRight, &frameSizeBot);
+	// store previous windowed size and location
+	glfwGetWindowSize(mWindow, &mLastWidth, &mLastHeight);
+	glfwGetWindowPos(mWindow, &mLastxPos, &mLastyPos);
 
-	mXPos = 0;
-	mYPos = 0;
-	mWindowWidth = w + frameSizeLeft + frameSizeRight;
-	mWindowHeight = h + frameSizeTop + frameSizeBot;
+	// get the main monitor so we can use its size for fullscreen
+	const GLFWvidmode* mode = glfwGetVideoMode(glfwGetPrimaryMonitor());
 
-	glfwSetWindowMonitor(mWindow, glfwGetPrimaryMonitor(), mXPos, mYPos, mWindowWidth, mWindowHeight, 0);
+	// set our window to fullscreen on the primary monitor
+	glfwSetWindowMonitor(mWindow, glfwGetPrimaryMonitor(), 0, 0, mode->width, mode->height, mode->refreshRate);
 
+	// update our control variable
 	mWindowIsFullScreen = true;
 }
 
-void Display::SetFullscreenToOff() noexcept
+void Display::setWindowToWindowed() noexcept
 {
 	// turn off fullscreen to Get frame sizes
-	glfwSetWindowMonitor(mWindow, nullptr, mXPos, mYPos, mWindowWidth, mWindowHeight, 0);
+	//glfwSetWindowMonitor(mWindow, nullptr, mXPos, mYPos, GetWindowWidth(), GetWindowHeight(), 0);
 
 	// Get work area sizes after turning off full screen
-	int x, y, w, h;
-	glfwGetMonitorWorkarea(glfwGetPrimaryMonitor(), &x, &y, &w, &h);
+	//int x, y, w, h;
+	//glfwGetMonitorWorkarea(glfwGetPrimaryMonitor(), &x, &y, &w, &h);
 
 	// Get frame sizes after turning off full screen
-	int frameSizeLeft, frameSizeTop, frameSizeRight, frameSizeBot;
-	glfwGetWindowFrameSize(mWindow, &frameSizeLeft, &frameSizeTop, &frameSizeRight, &frameSizeBot);
+	//int frameSizeLeft, frameSizeTop, frameSizeRight, frameSizeBot;
+	//glfwGetWindowFrameSize(mWindow, &frameSizeLeft, &frameSizeTop, &frameSizeRight, &frameSizeBot);
 
 	// update window size and positions
-	mXPos = x + frameSizeLeft;
-	mYPos = y + frameSizeTop;
-	mWindowWidth = w - frameSizeLeft - frameSizeRight;
-	mWindowHeight = h - frameSizeTop - frameSizeBot;
+	//mXPos = x + frameSizeLeft;
+	//mYPos = y + frameSizeTop;
+	//GetWindowWidth() = w - frameSizeLeft - frameSizeRight;
+	//GetWindowHeight() = h - frameSizeTop - frameSizeBot;
 
 	// Set size in windowed mode
-	glfwSetWindowMonitor(mWindow, nullptr, mXPos, mYPos, mWindowWidth, mWindowHeight, 0);
+	glfwSetWindowMonitor(mWindow, nullptr, mLastxPos, mLastyPos, mLastWidth, mLastHeight, 0);
 
 	mWindowIsFullScreen = false;
 }
 
-void Display::setWindowToMaximized() noexcept
+void Display::SetupReshapeCallback() noexcept
 {
-	// turn off fullscreen so the maximize works (glfw specification)
-	if (mWindowIsFullScreen) {
-		SetFullscreenToOff();
-	}
-	glfwMaximizeWindow(mWindow);
+	::glfwSetFramebufferSizeCallback(mWindow, DisplayCallbacks::reshapeCallback);
 }
 
-void Display::setWindowToFullscreenBorderless() noexcept
+void Display::ReshapeWindowHandler(GLFWwindow* window, int width, int height)
 {
-	if (mWindowIsFullScreen)
-	{
-		SetFullscreenToOff();
-	}
-
-	auto monitor = glfwGetPrimaryMonitor();
-	const GLFWvidmode* mode = glfwGetVideoMode(monitor);
-
-	mXPos = mYPos = 0;
-	mWindowHeight = mode->height;
-	mWindowWidth = mode->width;
-
-	glfwSetWindowMonitor(mWindow, nullptr, mXPos, mYPos, mWindowWidth, mWindowHeight, mode->refreshRate);
-
+	OGLGraphics::SetViewportSize(0, 0, width, height);
+	externWindowSizeDirty = true;  // update cam view matrix before next render
+	//Engine->UpdateCamViewMatrices(width, height);
 }
+
+//void Display::setWindowToMaximized() noexcept
+//{
+//	// turn off fullscreen so the maximize works (glfw specification)
+//	if (mWindowIsFullScreen) {
+//		setWindowToWindowed();
+//	}
+//	glfwMaximizeWindow(mWindow);
+//}
+//
+//void Display::setWindowToFullscreenBorderless() noexcept
+//{
+//	if (mWindowIsFullScreen)
+//	{
+//		setWindowToWindowed();
+//	}
+//
+//	auto monitor = glfwGetPrimaryMonitor();
+//	const GLFWvidmode* mode = glfwGetVideoMode(monitor);
+//
+//	mXPos = mYPos = 0;
+//	GetWindowHeight() = mode->height;
+//	GetWindowWidth() = mode->width;
+//
+//	glfwSetWindowMonitor(mWindow, nullptr, mXPos, mYPos, GetWindowWidth(), GetWindowHeight(), mode->refreshRate);
+//
+//}
+
+
 
 void Display::clearBackBuffer() const noexcept
 {
-	glClearColor(mWindowClearColor.x, mWindowClearColor.y, mWindowClearColor.z, 0.0f);
-	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+	OGLGraphics::ClearScreen();
 }
 
 void Display::swapWindowBuffers() const noexcept
@@ -279,65 +309,70 @@ void Display::closeWindow() noexcept
 	glfwSetWindowShouldClose(mWindow, 1);
 }
 
-void Display::initGLFW() noexcept
+void Display::initDisplayFromEngine(RenderingFramework rf)
 {
+	// set an error calback in case of failure we at least know
+	static auto glfw_error_callback = [](int e, const char* msg) {
+		if (e != 65543)
+			throw("glfw callback error");
+	};
+	glfwSetErrorCallback(glfw_error_callback);
+
 	glfwInit();
 
-	glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
-	glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
-
-	// with core profile, you have to create and manage your own VAO's, no default given
-	glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
-
-#ifdef __APPLE__
-	glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);
-#endif
-}
-
-void Display::initDisplayFromEngine()
-{
-	initGLFW();
-
-	mWindow = glfwCreateWindow(mWindowWidth, mWindowHeight, "AncientArcher", nullptr, nullptr);
-	if (!mWindow)
+	if (rf == RenderingFramework::OPENGL)
 	{
-		glfwTerminate();
-		exit(-1);
+		// with core profile, you have to create and manage your own VAO's, no default 
+		glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
+#ifdef __APPLE__
+		glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);
+#endif
+
+	// try more modern versions of OpenGL, don't use older than 3.3
+	std::queue<std::pair<int, int> > try_versions;
+	try_versions.emplace(std::pair<int, int>(4, 6));
+	try_versions.emplace(std::pair<int, int>(4, 5));
+	try_versions.emplace(std::pair<int, int>(4, 4));
+	try_versions.emplace(std::pair<int, int>(4, 3));
+	try_versions.emplace(std::pair<int, int>(4, 2));
+	try_versions.emplace(std::pair<int, int>(4, 1));
+	try_versions.emplace(std::pair<int, int>(4, 0));
+	try_versions.emplace(std::pair<int, int>(3, 3));
+	//try_versions.emplace(std::pair<int, int>(3, 2));
+	//try_versions.emplace(std::pair<int, int>(3, 1));
+	//try_versions.emplace(std::pair<int, int>(3, 0));
+	//try_versions.emplace(std::pair<int, int>(2, 1));
+	//try_versions.emplace(std::pair<int, int>(2, 0));
+	//try_versions.emplace(std::pair<int, int>(1, 5));
+	//try_versions.emplace(std::pair<int, int>(1, 4));
+	//try_versions.emplace(std::pair<int, int>(1, 3));
+	//try_versions.emplace(std::pair<int, int>(1, 2));  // there is also a 1.2.1
+	//try_versions.emplace(std::pair<int, int>(1, 1));
+	//try_versions.emplace(std::pair<int, int>(1, 0));
+
+	while (!mWindow)
+	{
+		std::pair<int, int> ver = try_versions.front();
+		glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, ver.first);
+		glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, ver.second);
+		mWindow = glfwCreateWindow(mLastWidth, mLastHeight, "AncientArcher", nullptr, nullptr);
+		if (!mWindow)
+			try_versions.pop();
 	}
+	}
+
+	if (!mWindow)
+		throw("unsupported graphics");
 
 	glfwMakeContextCurrent(mWindow);
 
-	//setReshapeWindowHandler();
-
-	////SetCurorReadToFPPCalc();
-	//SetCurorReadToStandardCalc();
-
-	//setScrollWheelHandler();
-
-	//SetResizeWindowHandler();
-
-	//if (!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress))  // init glad (for opengl context) -- moved to engine
-	//{
-	//  //todo: logging without iostream
-	//  //std::cout << "failed to init glad\n";
-	//  //char tmp;
-	//  //std::cin >> tmp;
-	//  exit(-1);
-	//}
-}
-
-void Display::resetStateDataToDefault()
-{
-	if (mWindowIsFullScreen)
-		toggleFullScreen();
-	//mWindowIsFullScreen = false;
-	mWindowWidth = 800, mWindowHeight = 600;
-	mXPos = mYPos = 0;
-	mWindowClearColor = glm::vec3(0.35f, 0.15f, 0.35f);
-
-	glfwDestroyWindow(mWindow);
-
-	mWindow = nullptr;
+	if (rf == RenderingFramework::OPENGL)
+	{
+		if (!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress))  // tie context to glad opengl funcs
+		{
+			throw("unable to context to OpenGL");
+		}
+	}
 }
 
 

@@ -41,12 +41,6 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 namespace AA
 {
-OGLGraphics* OGLGraphics::getInstance()
-{
-	static OGLGraphics* OGLgraphics = new OGLGraphics();
-	return OGLgraphics;
-}
-OGLGraphics::OGLGraphics() {};
 
 /** Render the meshes with the shader. Assumes Camera View Matrix is already set.
  *  @param[in] meshes to draw.
@@ -55,6 +49,7 @@ OGLGraphics::OGLGraphics() {};
  */
 void OGLGraphics::Render(const std::vector<MeshDrawInfo>& meshes, const std::vector<InstanceDetails>& details, const OGLShader& modelShader)
 {
+	//todo: consider render entire scenes so clearbackbuffer can be put in here as well, or does it have to wait for screen to be ready anyway?
 	// turn on depth test in case something else turned it off
 	glEnable(GL_DEPTH_TEST);
 
@@ -95,5 +90,18 @@ void OGLGraphics::Render(const std::vector<MeshDrawInfo>& meshes, const std::vec
 	glBindVertexArray(0);
 	// reset to first texture
 	glActiveTexture(GL_TEXTURE0);
+}
+void OGLGraphics::SetViewportSize(int x, int y, int w, int h)
+{
+	glViewport(x, y, w, h);
+}
+void OGLGraphics::SetDefaultBackgroundColor(float x, float y, float z)
+{
+	glClearColor(x, y, z, 0.0f);
+}
+
+void OGLGraphics::ClearScreen()  noexcept
+{
+	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 }
 }  // end namespace AA

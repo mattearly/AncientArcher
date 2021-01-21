@@ -35,6 +35,7 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #include "MouseInput.h"
 #include "ScrollInput.h"
 
+struct GLFWwindow;
 namespace AA
 {
 enum class STANDARDMOUSEZEROS { DEFAULT, TOP_LEFT_0_to_1, BOT_LEFT_0_to_1, TOP_LEFT_FULL_RANGE, BOT_LEFT_FULL_RANGE };
@@ -43,31 +44,31 @@ class Controls
 {
 public:
 
-	//static Controls* Get();
+	float GetMouseFPPSensitivity() const noexcept;
+	void SetMouseFPPSensitivity(float sensitivity) noexcept;
 
-	float getFPPMouseSensitivity() const noexcept;
-	void setFPPMouseSensitivity(float sensitivity) noexcept;
-
-	//friend class Display;      // for access to mouseMovement and mouseScrollWheelMovement
-	//friend class AncientArcher;         // for access to Input
+	void PerspectiveMouseHandler(GLFWwindow* window, float xpos, float ypos);
+	void StandardMouseHandler(GLFWwindow* window, float xpos, float ypos);
+	void ScrollHandler(GLFWwindow* window, float xpos, float ypos);
 
 protected:
 
-	STANDARDMOUSEZEROS mStandardMouseZeros = STANDARDMOUSEZEROS::BOT_LEFT_0_to_1;
-
-	//void pullButtonStateEvents();
-
-	KeyboardInput mButtonState = {};
-	MouseInput    mMousePosition = {};
-	ScrollInput   mMouseWheelScroll = {};
-
-	float mFPPMouseSensitivity = 0.1f;  ///< mouse sensitivity while in first person perspective
-	bool mRenewFPP = true;
-
 	void perspectiveMouseMovement(float xpos, float ypos) noexcept;
-	//void standardMouseMovement(float xpos, float ypos);
+	void standardMouseMovement(float xpos, float ypos);
 	void mouseScrollWheelMovement(float xpos, float ypos) noexcept;
 
-	void resetControlVars() noexcept;
+	void resetControlVars() noexcept;	
+	
+	KeyboardInput mButtonState = {};	
+	MouseInput    mMousePosition = {};
+	ScrollInput   mMouseWheelScroll = {};
+	bool mRenewFPP = true;
+
+private:
+
+	STANDARDMOUSEZEROS mStandardMouseZeros = STANDARDMOUSEZEROS::BOT_LEFT_0_to_1;
+
+	float mFPPMouseSensitivity = 0.1f;  ///< mouse sensitivity while in first person perspective
+
 };
 }  // end namespace AA

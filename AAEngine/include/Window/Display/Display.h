@@ -39,7 +39,7 @@ struct GLFWwindow;
 namespace AA
 {
 enum class MouseReporting { STANDARD, PERSPECTIVE };
-
+enum class RenderingFramework { OPENGL, D3D, VULKAN };
 class Display : public Controls
 {
 public:
@@ -52,49 +52,54 @@ public:
 	int GetCursorMode() const noexcept;
 	MouseReporting GetMouseReportingMode() const noexcept;
 
+	void SetClearColor(glm::vec3 color);
+
 	void SetCursorToVisible() noexcept;   // to use the os pointer
 	void SetCursorToHidden() noexcept;    // for hidden but still there (render your own pointer)
 	void SetCursorToDisabled() noexcept;  // for first person hidden mouse type
 
-	void SetWindowClearColor(glm::vec3 rgb) noexcept;
-	void SetWindowSize(int width, int height, int xpos, int ypos) noexcept;
-	void SetWindowSize(int width, int height, bool center = true) noexcept;
-	void SetWindowSize(const char to) noexcept;
+	//void SetWindowSize(int width, int height, int xpos, int ypos) noexcept;
+	//void SetWindowSize(int width, int height, bool center = true) noexcept;
+	//void SetWindowSize(const char to) noexcept;
+	//void setWindowToMaximized() noexcept;
+	//void setWindowToFullscreenBorderless() noexcept;
+
+	void SetReadMouseCurorAsFPP() noexcept;
+	void SetReadMouseCurorAsStandard() noexcept;
+
 	void SetWindowTitle(const char* name) noexcept;
+
+	void ToggleFullscreen() noexcept;
+
+	void ReshapeWindowHandler(GLFWwindow* window, int width, int height);
 
 protected:
 
-	// hold for engine to change back to false so it can know if it should resize the camera viewports
-	bool mWindowSizeDirty = false;
+	void SetupReshapeCallback() noexcept;
+	void SetupScrollWheelCallback() noexcept;
 
 	void pullButtonStateEvents();
 
-	void toggleFullScreen() noexcept;
+	bool mWindowIsFullScreen = false;
 	void setWindowToFullscreen() noexcept;
-	void SetFullscreenToOff() noexcept;
-
-	void setWindowToMaximized() noexcept;
-	void setWindowToFullscreenBorderless() noexcept;
-
-	void keepWindowOpen() noexcept;
+	void setWindowToWindowed() noexcept;
 
 	void clearBackBuffer() const noexcept;
 	void swapWindowBuffers() const noexcept;
 
-	void closeWindow() noexcept;
-
-	void initGLFW() noexcept;
-	void initDisplayFromEngine();
-	void resetStateDataToDefault();
+	void initDisplayFromEngine(RenderingFramework rf);
 
 	MouseReporting mMouseReporting = MouseReporting::STANDARD;
-	bool mWindowIsFullScreen = false;
-	int mWindowWidth = 1024, mWindowHeight = 768;
-	int mXPos = 0, mYPos = 0;
-	glm::vec3 mWindowClearColor = glm::vec3(0.35f, 0.15f, 0.35f);
+
 	GLFWwindow* mWindow = nullptr;
 
-private:
+	void closeWindow() noexcept;
+	void keepWindowOpen() noexcept;
+
+private:	
+
+	int mLastxPos = 0, mLastyPos = 0;
+	int mLastWidth = 1024, mLastHeight = 768;
 
 };
 }  // end namespace AA

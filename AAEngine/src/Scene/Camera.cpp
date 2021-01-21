@@ -91,6 +91,12 @@ void Camera::SetToPerspective() noexcept
 	mRenderProjection = RenderProjection::PERSPECTIVE;
 }
 
+void Camera::SetDimensions(int width, int height) noexcept
+{
+	mWidth = width;
+	mHeight = height;
+}
+
 void Camera::__setToOrtho() noexcept
 {
 	//Camera::Get()->__setOrthoFieldSize(

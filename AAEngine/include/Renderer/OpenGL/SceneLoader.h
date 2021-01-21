@@ -17,7 +17,7 @@ struct TextureInfo
 class SceneLoader
 {
 public:
-	static SceneLoader* getSceneLoader();
+	static SceneLoader* Get();
 
 	int loadGameObjectWithAssimp(std::vector<MeshDrawInfo>& out_MeshInfo, std::string path);
 

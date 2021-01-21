@@ -53,38 +53,38 @@ public:
 	// getters
 	const glm::vec3& GetLocation() const;
 	const glm::vec3& GetLocation(int which) const;
-	const glm::vec3& getRotation() const;
-	const glm::vec3& getRotation(int which) const;
-	int getModelMatrix(const int& which, glm::mat4& out_mat4) const;
-	glm::mat4 getModelMatrix(const int& which);
-	const int getShaderId() const noexcept;
-	const int getCameraId() const noexcept;
-	const int getObjectId() const noexcept;
-	const std::size_t getInstanceCount() const noexcept;
-	const ColliderSphere* getColliderSphere(uint32_t which = 0) const;
-	bool isSingleInstance() const;
+	const glm::vec3& GetRotation() const;
+	const glm::vec3& GetRotation(int which) const;
+	int GetModelMatrix(const int& which, glm::mat4& out_mat4) const;
+	glm::mat4 GetModelMatrix(const int& which);
+	const int GetShaderId() const noexcept;
+	const int GetCameraId() const noexcept;
+	const int GetObjectId() const noexcept;
+	const std::size_t GetInstanceCount() const noexcept;
+	const ColliderSphere* GetColliderSphere(uint32_t which = 0) const;
+	bool IsSingleInstance() const;
 
 	// setters
-	void setCamera(int id) noexcept;
-	void setShader(int id) noexcept;
-	void setColliderSphere(const glm::vec3& center, const float& radius, uint32_t which = 0, bool overwrite = true) noexcept;
+	void SetCamera(int id) noexcept;
+	void SetShader(int id) noexcept;
+	void SetColliderSphere(const glm::vec3& center, const float& radius, uint32_t which = 0, bool overwrite = true) noexcept;
 
-	void setScale(glm::vec3 amt, int which);
-	void setScale(glm::vec3 amt);
-	void setRotation(glm::vec3 new_rot, int which);
-	void setRotation(glm::vec3 new_rot);
-	void setTranslation(glm::vec3 amt, int which);
-	void setTranslation(glm::vec3 amt);
+	void SetScale(glm::vec3 amt, int which);
+	void SetScale(glm::vec3 amt);
+	void SetRotation(glm::vec3 new_rot, int which);
+	void SetRotation(glm::vec3 new_rot);
+	void SetTranslation(glm::vec3 amt, int which);
+	void SetTranslation(glm::vec3 amt);
 
-	void advanceScale(glm::vec3 amt);
-	void advanceScale(glm::vec3 amt, int which);
-	void advanceRotation(glm::vec3 radianAmt);
-	void advanceRotation(glm::vec3 radianAmt, int which);
-	void advanceTranslate(glm::vec3 amt);
-	void advanceTranslate(glm::vec3 amt, int which);
+	void AddToScale(glm::vec3 amt);
+	void AddToScale(glm::vec3 amt, int which);
+	void AddToRotation(glm::vec3 radianAmt);
+	void AddToRotation(glm::vec3 radianAmt, int which);
+	void AddToTranslation(glm::vec3 amt);
+	void AddToTranslation(glm::vec3 amt, int which);
 
-	void addInstance(const InstanceDetails& instance_details);
-	bool removeInstance(int which);
+	void AddInstance(const InstanceDetails& instance_details);
+	bool RemoveInstance(int which);
 
 	friend class AncientArcher;
 
@@ -101,6 +101,6 @@ private:
 	std::vector<InstanceDetails> mInstanceDetails;  // for instancing multiple objects, sized to the number of this object in our world
 
 	// helpers
-	void updateModelMatrix(int which);
+	void calculateNewModelMatrix(int which);
 };
 }  // end namespace AA

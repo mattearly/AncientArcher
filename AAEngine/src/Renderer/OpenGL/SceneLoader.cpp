@@ -46,7 +46,7 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 namespace AA
 {
-SceneLoader* SceneLoader::getSceneLoader() {
+SceneLoader* SceneLoader::Get() {
 	static SceneLoader* sl = new SceneLoader();
 	return sl;
 }

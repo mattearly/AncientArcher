@@ -116,6 +116,7 @@
     <ClInclude Include="include\Sound\ShortSound.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="src\Scene\InstanceDetails.cpp" />
     <ClCompile Include="src\Sound\SoundListener.cpp" />
     <ClCompile Include="src\Sound\LongSound.cpp" />
     <ClCompile Include="src\Sound\ShortSound.cpp" />

@@ -32,13 +32,19 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 #pragma once
 #include "Window/Display/Display.h"
-#include "Scene/Camera.h"
-#include "Renderer/OpenGL/Skybox.h"
-#include "Scene/GameObject.h"
+
 #include <vector>
 #include <functional>
 #include <memory>
 #include <unordered_map>
+
+#include "Scene/Camera.h"
+#include "Renderer/OpenGL/Skybox.h"
+#include "Scene/GameObject.h"
+
+class OGLShader;
+enum class SHADERTYPE;
+struct InstanceDetails;
 
 namespace AA
 {
@@ -55,14 +61,9 @@ public:
 	void Shutdown() noexcept;
 	void SoftReset();
 
-public:
-	const Camera& GetCamera(int camId) const;
-	Camera& GetCamera(int camId);
-	const OGLShader& GetShader(int shadId) const;
-	OGLShader& GetShader(int shadId);
-	const GameObject& GetGameObject(int objId) const;
-	GameObject& GetGameObject(int objId);
+	void SetWindowClearColor(glm::vec3 rgb) noexcept;
 
+public:
 	int AddCamera(int w, int h);
 	int AddShader(const char* vert_path, const char* frag_path, const bool isPath = true);
 	int AddShader(const SHADERTYPE& type);
@@ -97,13 +98,12 @@ public:
 	void SetProjectionMatrix(int shadId, int camId);
 	void SetCursorToEnabled(bool isHardwareRendered = false);
 
-	void SetCurorReadToFPPCalc() noexcept;
-	void SetCurorReadToStandardCalc() noexcept;
-
-	void ReshapeWindowHandler(GLFWwindow* window, int width, int height);
-	void PerspectiveMouseHandler(GLFWwindow* window, float xpos, float ypos);
-	void StandardMouseHandler(GLFWwindow* window, float xpos, float ypos);
-	void ScrollHandler(GLFWwindow* window, float xpos, float ypos);
+	const Camera& GetCamera(int camId) const;
+	Camera& GetCamera(int camId);
+	const OGLShader& GetShader(int shadId) const;
+	OGLShader& GetShader(int shadId);
+	const GameObject& GetGameObject(int objId) const;
+	GameObject& GetGameObject(int objId);
 
 private:
 	AncientArcher();
@@ -137,17 +137,15 @@ private:
 	void render();
 	void teardown();
 
-	// called during setup of window and tied to the correct rendering viewport
-	void setReshapeWindowHandler() noexcept;
-
 	// helpers
+	glm::vec3          mWindowClearColor            = glm::vec3(0.35f, 0.15f, 0.35f);
+	RenderingFramework mPreferredRenderingFramework = RenderingFramework::OPENGL;
 	void initEngine();
 	void resetEngine() noexcept;
 
-	void standardMouseMovement(float xpos, float ypos);
-	void setScrollWheelHandler() noexcept;
 
 	// todo: refactor - used for testing purposes until more elegant solution appears
+	void __updateCamViewMatrices(int width, int height);
 	void __setProjectionMatToAllShadersFromFirstCam_hack();
 };
 }  // end namespace AA

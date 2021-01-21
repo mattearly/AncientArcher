@@ -32,17 +32,18 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 #pragma once
 #include <glm\ext\vector_float3.hpp>
+#include <glm\ext\matrix_float4x4.hpp>
 #include "ColliderSphere.h"
 namespace AA
 {
 struct InstanceDetails
 {
-	void updateModelMatrix();
+	void calcModelMatrix();
 
 	InstanceDetails();
 	InstanceDetails(glm::vec3 scale, glm::vec3 rot, glm::vec3 transl);
 
-	// updateModelMatrix uses these
+	// UpdateModelMatrix uses these
 	glm::vec3 Scale = glm::vec3(1);
 	glm::vec3 Rotation = glm::vec3(0); // radians on each of xyz
 	glm::vec3 Translate = glm::vec3(0);

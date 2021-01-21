@@ -31,21 +31,46 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 ----------------------------------------------------------------------
 */
 #include "../../../include/Window/Controls/Controls.h"
-#include <GLFW\glfw3.h>
+#include "../../../include/Renderer/OpenGL/OGLGraphics.h"
 #include <memory>
+#include <GLFW/glfw3.h>
+#include "../../../include/AncientArcher.h"
 
 namespace AA
 {
 
-float Controls::getFPPMouseSensitivity() const noexcept
+extern bool WindowSizeDirty;
+
+float Controls::GetMouseFPPSensitivity() const noexcept
 {
 	return mFPPMouseSensitivity;
 }
 
-void Controls::setFPPMouseSensitivity(float sensitivity) noexcept
+void Controls::SetMouseFPPSensitivity(float sensitivity) noexcept
 {
 	mFPPMouseSensitivity = sensitivity;
 }
+
+void Controls::PerspectiveMouseHandler(GLFWwindow* window, float xpos, float ypos)
+{
+	perspectiveMouseMovement(xpos, ypos);
+}
+
+void Controls::StandardMouseHandler(GLFWwindow* window, float xpos, float ypos)
+{
+	standardMouseMovement(xpos, ypos);
+}
+
+void Controls::ScrollHandler(GLFWwindow* window, float xpos, float ypos)
+{
+	mouseScrollWheelMovement(xpos, ypos);
+}
+
+void Controls::resetControlVars() noexcept
+{
+	mFPPMouseSensitivity = 0.1f;
+}
+
 
 void Controls::perspectiveMouseMovement(float x, float y) noexcept
 {
@@ -72,59 +97,55 @@ void Controls::perspectiveMouseMovement(float x, float y) noexcept
 	mMousePosition.xOffset = xOffset;
 	mMousePosition.yOffset = yOffset;
 }
+
 /**
 * Reports the mouse in x y space on the screen: bottom left should be 0,0
 */
-//void Controls::standardMouseMovement(float xpos, float ypos)
-//{
-//	switch (mStandardMouseZeros)
-//	{
-//	case STANDARDMOUSEZEROS::BOT_LEFT_0_to_1:
-//	{
-//		const float c_xpos = xpos / Window_W;
-//		const float c_ypos = -(ypos - Window_H) / Window_H;
-//		mMousePosition.xOffset = c_xpos;
-//		mMousePosition.yOffset = c_ypos;
-//	}
-//	break;
-//	case STANDARDMOUSEZEROS::TOP_LEFT_0_to_1:
-//	{
-//		const float c_xpos = xpos / Display::getInstance()->getWindowWidth();
-//		const float c_ypos = ypos / Display::getInstance()->getWindowHeight();
-//		mMousePosition.xOffset = c_xpos;
-//		mMousePosition.yOffset = c_ypos;
-//	}
-//	break;
-//	case STANDARDMOUSEZEROS::BOT_LEFT_FULL_RANGE:
-//	{
-//		const float c_xpos = xpos;
-//		const float c_ypos = -(ypos - Window_H);
-//		mMousePosition.xOffset = c_xpos;
-//		mMousePosition.yOffset = c_ypos;
-//	}
-//	break;
-//	case STANDARDMOUSEZEROS::TOP_LEFT_FULL_RANGE:
-//	{
-//		const float c_xpos = xpos;
-//		const float c_ypos = ypos;
-//		mMousePosition.xOffset = c_xpos;
-//		mMousePosition.yOffset = c_ypos;
-//	}
-//	break;
-//	default:
-//		std::cout << "case not handled in standard mouse zeros\n";
-//	}
-//}
+void Controls::standardMouseMovement(float xpos, float ypos)
+{
+	float DisplayWindowWidth = Engine->GetWindowWidth();
+	float DisplayWindowHeight = Engine->GetWindowHeight();
 
+	switch (mStandardMouseZeros)
+	{
+	case STANDARDMOUSEZEROS::BOT_LEFT_0_to_1:
+	{
+		const float c_xpos = xpos / DisplayWindowWidth;
+		const float c_ypos = -(ypos - DisplayWindowHeight) / DisplayWindowHeight;
+		mMousePosition.xOffset = c_xpos;
+		mMousePosition.yOffset = c_ypos;
+	}
+	break;
+	case STANDARDMOUSEZEROS::TOP_LEFT_0_to_1:
+	{
+		const float c_xpos = xpos / DisplayWindowWidth;
+		const float c_ypos = ypos / DisplayWindowHeight;
+		mMousePosition.xOffset = c_xpos;
+		mMousePosition.yOffset = c_ypos;
+	}
+	break;
+	case STANDARDMOUSEZEROS::BOT_LEFT_FULL_RANGE:
+	{
+		const float c_xpos = xpos;
+		const float c_ypos = -(ypos - DisplayWindowHeight);
+		mMousePosition.xOffset = c_xpos;
+		mMousePosition.yOffset = c_ypos;
+	}
+	break;
+	case STANDARDMOUSEZEROS::TOP_LEFT_FULL_RANGE:
+	{
+		const float c_xpos = xpos;
+		const float c_ypos = ypos;
+		mMousePosition.xOffset = c_xpos;
+		mMousePosition.yOffset = c_ypos;
+	}
+	break;
+	}
+}
 void Controls::mouseScrollWheelMovement(float x, float y) noexcept
 {
 	mMouseWheelScroll.xOffset = x;
 	mMouseWheelScroll.yOffset = y;
-}
-
-void Controls::resetControlVars() noexcept
-{
-	mFPPMouseSensitivity = 0.1f;
 }
 
 }  // end namespace AA

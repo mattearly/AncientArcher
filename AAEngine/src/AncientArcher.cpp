@@ -30,19 +30,19 @@ THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
 OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 ----------------------------------------------------------------------
 */
-#include <glad/glad.h>
-#include <GLFW/glfw3.h>
 #include <vector>
 #include <string>
 #include <iomanip>
 #include <utility>
 #include "../include/AncientArcher.h"
-#include "../include/Scene/Camera.h"
-#include "../include/Window/Display/DisplayCallbacks.h"
 #include "../include/Renderer/OpenGL/SceneLoader.h"
+#include <GLFW/glfw3.h>
 
 namespace AA
 {
+
+extern bool externWindowSizeDirty;
+
 AncientArcher* AncientArcher::Get()
 {
 	static AncientArcher* aa = new AncientArcher();
@@ -67,16 +67,13 @@ void AncientArcher::SoftReset()
 	resetEngine();
 }
 
-void AncientArcher::teardown()
+void AncientArcher::SetWindowClearColor(glm::vec3 rgb) noexcept
 {
-	for (auto& oTD : onTearDown)
+	if (rgb.x < 0.f || rgb.x > 1.0f || rgb.y < 0.f || rgb.y > 1.0f || rgb.z < 0.f || rgb.z > 1.0f)
 	{
-		oTD.second();
+		//std::cout << "WARNING: Out of range value on SetWindowClearColor, values should be between 0.f and 1.f\n";
 	}
-	for (const auto& model : mGameObjects)
-	{
-		SceneLoader::getSceneLoader()->unloadGameObject(model.mMeshes);
-	}
+	mWindowClearColor = rgb;
 }
 
 AncientArcher::AncientArcher()
@@ -149,7 +146,7 @@ const GameObject& AncientArcher::GetGameObject(int objId) const
 {
 	for (const auto& obj : mGameObjects)
 	{
-		if (obj.getObjectId() == objId)
+		if (obj.GetObjectId() == objId)
 		{
 			return obj;
 		}
@@ -165,7 +162,7 @@ GameObject& AncientArcher::GetGameObject(int objId)
 	//todo optimize
 	for (auto& obj : mGameObjects)
 	{
-		if (obj.getObjectId() == objId)
+		if (obj.GetObjectId() == objId)
 		{
 			return obj;
 		}
@@ -174,6 +171,16 @@ GameObject& AncientArcher::GetGameObject(int objId)
 	// if it didn't find it and return above ^^^^^^^^  show error message in console
 	//std::cout << "game object ID by the ID [" << objId << "] was not found.\n";
 	exit(-1);
+}
+
+void AncientArcher::__updateCamViewMatrices(int width, int height)
+{
+	for (auto& cam : mCameras)
+	{
+		cam.SetDimensions(width, height);
+	}
+
+	__setProjectionMatToAllShadersFromFirstCam_hack();
 }
 
 int AncientArcher::AddCamera(int w, int h)
@@ -201,7 +208,7 @@ int AncientArcher::AddShader(const SHADERTYPE& type)
 int AncientArcher::AddObject(const char* path, int camId, int shadId)
 {
 	GameObject tmpObject(path, camId, shadId);
-	const int return_id = tmpObject.getObjectId();
+	const int return_id = tmpObject.GetObjectId();
 
 	mGameObjects.push_back(tmpObject);
 
@@ -210,16 +217,17 @@ int AncientArcher::AddObject(const char* path, int camId, int shadId)
 
 int AncientArcher::AddObject(const char* path, int cam_id, int shad_id, const std::vector<InstanceDetails>& details)
 {
-	// todo: optimize. check if it is an object we already have loaded and use it again if so
+	// todo: optimize. check if it is an object we already have loaded and use it again if so. this will require the same with textures
 
 	GameObject tmpObject(path, cam_id, shad_id, details);
 
-	const int return_id = tmpObject.getObjectId();
+	const int return_id = tmpObject.GetObjectId();
 
 	mGameObjects.push_back(tmpObject);
 
 	return return_id;
 }
+
 
 void AncientArcher::SetSkybox(const std::shared_ptr<Skybox>& skybox) noexcept
 {
@@ -355,49 +363,6 @@ void AncientArcher::SetCursorToEnabled(bool isHardwareRendered)
 	}
 }
 
-//void AncientArcher::SetCursorToDisabled()
-//{
-//	SetCursorToDisabled();
-//}
-//void AncientArcher::SetToPerspectiveMouseHandling()
-//{
-//	SetCurorReadToFPPCalc();
-//}
-//void AncientArcher::SetToStandardMouseHandling()
-//{
-//	SetCurorReadToStandardCalc();
-//}
-//void AncientArcher::SetWindowTitle(const char* title)
-//{
-//	SetWindowTitle(title);
-//}
-//void AncientArcher::SetWindowSize(const char to, int width, int height, bool center)
-//{
-//	SetWindowSize(to);
-//	switch (to)
-//	{
-//	case 'f':
-//	case 'm':
-//	case 'b':
-//		return;
-//	default:
-//		break;
-//	}
-//
-//	assert(width > 0);
-//	assert(height > 0);
-//
-//	if (center)
-//	{
-//		SetWindowSize(width, height, center);
-//	}
-//	else
-//	{
-//		SetWindowSize(width, height, center);
-//	}
-//}
-
-
 void AncientArcher::SetMaxRenderDistance(int camId, float amt) noexcept
 {
 	for (auto& cam : mCameras)
@@ -425,11 +390,26 @@ void AncientArcher::SetSlowUpdateTimeoutLength(const float& newtime)
 	mSlowUpdateWaitLength = newtime;
 }
 
-// -- PRIVATE FUNCTIONS --
+
+void AncientArcher::initEngine()
+{
+	//resetEngine();
+
+	initDisplayFromEngine(mPreferredRenderingFramework);
+
+	SetupReshapeCallback();
+
+	SetupScrollWheelCallback();
+
+	SetReadMouseCurorAsStandard();
+
+	SetClearColor(mWindowClearColor);
+
+}
 
 void AncientArcher::begin()
 {
-	keepWindowOpen();
+	Display::keepWindowOpen();
 
 	for (const auto& oB : onBegin)
 	{
@@ -498,14 +478,14 @@ void AncientArcher::deltaUpdate()
 			oSU.second();
 		}
 		// we should also process whether the window size changed here
-		if (mWindowSizeDirty)
-		{
-			// notify shader/cams
-			__setProjectionMatToAllShadersFromFirstCam_hack();
+		//if (WindowSizeDirty)
+		//{
+		//	// notify shader/cams
+		//	__setProjectionMatToAllShadersFromFirstCam_hack();
 
-			// don't process again
-			mWindowSizeDirty = false;
-		}
+		//	// don't process again
+		//	WindowSizeDirty = false;
+		//}
 		// reset timeout length to 0
 		mSlowUpdateTimeout = 0.f;
 	}
@@ -534,16 +514,21 @@ void AncientArcher::render()
 {
 	clearBackBuffer();
 
+	if (externWindowSizeDirty)
+	{
+		__updateCamViewMatrices(Display::GetWindowWidth(), Display::GetWindowHeight());
+	}
+
 	for (auto& obj : mGameObjects)
 	{
 		// get the id of the shader for this object
-		const int shaderID = obj.getShaderId();
+		const int shaderID = obj.GetShaderId();
 
 		// switch to the shader
 		GetShader(shaderID).use();
 
 		// get the camera id for this object
-		const int cameraID = obj.getCameraId();
+		const int cameraID = obj.GetCameraId();
 
 		// set the view matrix from the cam for this object
 		GetShader(shaderID).setMat4("view", GetCamera(cameraID).GetViewMatrix());
@@ -558,25 +543,18 @@ void AncientArcher::render()
 	swapWindowBuffers();
 }
 
-void AncientArcher::initEngine()
+void AncientArcher::teardown()
 {
-	resetEngine();
-
-	initDisplayFromEngine();
-
-	setReshapeWindowHandler();
-
-	SetCurorReadToStandardCalc();
-
-	setScrollWheelHandler();
-
-	// Init OpenGL
-	if (!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress))  // init glad (for opengl context) -- must be after initGet()
+	for (auto& oTD : onTearDown)
 	{
-		//std::cout << "failed to init glad @ file " __FILE__ << " line " << __LINE__ << '\n';
-		exit(-1);
+		oTD.second();
+	}
+	for (const auto& model : mGameObjects)
+	{
+		SceneLoader::Get()->unloadGameObject(model.mMeshes);
 	}
 }
+
 
 void AncientArcher::resetEngine() noexcept
 {
@@ -634,109 +612,4 @@ void AncientArcher::__setProjectionMatToAllShadersFromFirstCam_hack()
 		}
 	}
 }
-
-///////////  CALLBACKS ////////////////
-
-//---------------------------------------------------------------------------------------
-// RESHAPE WINDOW CALLBACK SETUP
-void AncientArcher::ReshapeWindowHandler(GLFWwindow* window, int width, int height)
-{
-	mWindowWidth = width;
-	mWindowHeight = height;
-	glViewport(0, 0, mWindowWidth, mWindowHeight);
-	mWindowSizeDirty = true;
-//#ifdef _DEBUG
-//	std::cout << "window reshape called\n";
-//#endif
-}
-
-void AncientArcher::setReshapeWindowHandler() noexcept
-{
-	::glfwSetFramebufferSizeCallback(mWindow, DisplayCallbacks::reshapeCallback);
-}
-
-//---------------------------------------------------------------------------------------
-// PERSPECTIVE MOUSE REPORTING CALLBACK SETUP
-void AncientArcher::PerspectiveMouseHandler(GLFWwindow* window, float xpos, float ypos)
-{
-	perspectiveMouseMovement(xpos, ypos);
-}
-
-
-void AncientArcher::SetCurorReadToFPPCalc() noexcept
-{
-	mRenewFPP = true;
-	::glfwSetCursorPosCallback(mWindow, DisplayCallbacks::perspectiveMouseCallback);
-	mMouseReporting = MouseReporting::PERSPECTIVE;
-}
-
-//---------------------------------------------------------------------------------------
-// STANDARD MOUSE REPORTING CALLBACK SETUP
-void AncientArcher::StandardMouseHandler(GLFWwindow* window, float xpos, float ypos)
-{
-	standardMouseMovement(xpos, ypos);
-}
-
-void AncientArcher::SetCurorReadToStandardCalc() noexcept
-{
-	::glfwSetCursorPosCallback(mWindow, DisplayCallbacks::standardMouseCallback);
-	mMouseReporting = MouseReporting::STANDARD;
-}
-/**
-* Reports the mouse in x y space on the screen: bottom left should be 0,0
-*/
-void AncientArcher::standardMouseMovement(float xpos, float ypos)
-{
-	switch (mStandardMouseZeros)
-	{
-	case STANDARDMOUSEZEROS::BOT_LEFT_0_to_1:
-	{
-		const float c_xpos = xpos / mWindowWidth;
-		const float c_ypos = -(ypos - mWindowHeight) / mWindowHeight;
-		mMousePosition.xOffset = c_xpos;
-		mMousePosition.yOffset = c_ypos;
-	}
-	break;
-	case STANDARDMOUSEZEROS::TOP_LEFT_0_to_1:
-	{
-		const float c_xpos = xpos / mWindowWidth;
-		const float c_ypos = ypos / mWindowHeight;
-		mMousePosition.xOffset = c_xpos;
-		mMousePosition.yOffset = c_ypos;
-	}
-	break;
-	case STANDARDMOUSEZEROS::BOT_LEFT_FULL_RANGE:
-	{
-		const float c_xpos = xpos;
-		const float c_ypos = -(ypos - mWindowHeight);
-		mMousePosition.xOffset = c_xpos;
-		mMousePosition.yOffset = c_ypos;
-	}
-	break;
-	case STANDARDMOUSEZEROS::TOP_LEFT_FULL_RANGE:
-	{
-		const float c_xpos = xpos;
-		const float c_ypos = ypos;
-		mMousePosition.xOffset = c_xpos;
-		mMousePosition.yOffset = c_ypos;
-	}
-	break;
-	//default:
-		//std::cout << "case not handled in standard mouse zeros\n";
-	}
-}
-
-//---------------------------------------------------------------------------------------
-// MOUSE SCROLL REPORTING CALLBACK SETUP
-void AncientArcher::ScrollHandler(GLFWwindow* window, float xpos, float ypos)
-{
-	mouseScrollWheelMovement(xpos, ypos);
-}
-
-void AncientArcher::setScrollWheelHandler() noexcept
-{
-	::glfwSetScrollCallback(mWindow, DisplayCallbacks::scrollCallback);
-}
-
-
 }  // end namespace AA
