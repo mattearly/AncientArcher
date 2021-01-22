@@ -239,5 +239,81 @@ public:
 		Assert::AreEqual(AA::Engine->Run(), 0);
 	}
 
+	TEST_METHOD(F_CustomShaderTest)
+	{
+		AA::Engine->SoftReset();
+		static int cam_F = AA::Engine->AddCamera(AA::Engine->GetWindowWidth(), AA::Engine->GetWindowHeight());
+		int shader = AA::Engine->AddShader("E:\\storage\\Shaders\\basicvert.glsl", "E:\\storage\\Shaders\\basicfrag.glsl", true);
+		//int shader = AA::Engine->AddShader(AA::SHADERTYPE::DIFF);
+
+		// put in your own model to test it out
+		int dovecote = AA::Engine->AddObject("E:\\storage\\Models\\dovecote.fbx", cam_F, shader);
+		AA::Engine->GetGameObject(dovecote).SetTranslation(glm::vec3(0, 0, 0));
+
+		AA::Cam(cam_F).SetCurrentLocation(glm::vec3(0, 0, 1600));
+		AA::Cam(cam_F).SetMaxRenderDistance(2700.f);
+
+		static bool up, down, left, right;
+		Engine->AddToKeyHandling([](auto& kb) {
+			if (kb.upArrow)
+				up = true;
+			else
+				up = false;
+
+			if (kb.downArrow)
+				down = true;
+			else
+				down = false;
+
+			if (kb.leftArrow)
+				left = true;
+			else
+				left = false;
+
+			if (kb.rightArrow)
+				right = true;
+			else
+				right = false;
+			});
+
+		AA::Engine->AddToDeltaUpdate([](float dt) {
+			float Velocity = 200;
+			if (up)
+				Cam(cam_F).ShiftCurrentLocation(glm::vec3(0, dt * Velocity, 0));
+			if (down)
+				Cam(cam_F).ShiftCurrentLocation(glm::vec3(0, -dt * Velocity, 0));
+
+			if (left)
+				Cam(cam_F).ShiftCurrentLocation(glm::vec3(-dt * Velocity, 0, 0));
+
+			if (right)
+				Cam(cam_F).ShiftCurrentLocation(glm::vec3(dt * Velocity, 0, 0));
+
+			});
+
+		Engine->AddToTimedOutKeyHandling([](auto& kb) {
+			if (kb.p)
+			{
+				Cam(cam_F).SetToPerspective();
+				return true;
+			}
+
+			if (kb.o)
+			{
+				Cam(cam_F).__setToOrtho();
+				return true;
+			}
+
+			if ((kb.leftAlt || kb.rightAlt) && kb.enter) {
+				AA::Engine->ToggleFullscreen();
+				return true;
+			}
+
+			return false;
+			});
+
+		Assert::AreEqual(AA::Engine->Run(), 0);
+
+	}
 };
 }
