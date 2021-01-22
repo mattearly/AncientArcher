@@ -32,12 +32,12 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 #include <glm\ext\matrix_clip_space.hpp>
 #include <glm\gtx\transform.hpp>
-#include "../../include/Scene/WorldUp.h"
+#include "../../include/Scene/WorldSettings.h"
 #include "../../include/Scene/Camera.h"
 #include "../../include/Window/Display/Display.h"
 namespace AA
 {
-#define UP WorldUp::getWorldUp()
+#define UP World->GetUpDir()
 
 static int uniqueIDs = 0;
 

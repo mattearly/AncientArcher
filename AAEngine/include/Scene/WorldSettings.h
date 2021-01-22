@@ -1,5 +1,5 @@
 /*
-WorldUp
+WorldSettings
 ----------------------------------------------------------------------
 Copyright (c) 2019-2020, Matthew Early matthewjearly@gmail.com
 All rights reserved.
@@ -34,10 +34,15 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #include <glm\ext\vector_float3.hpp>
 namespace AA
 {
-class WorldUp
+#define World WorldSettings::Get()
+
+class WorldSettings
 {
 public:
-	static const glm::vec3 getWorldUp() { return glm::vec3(0, 1, 0); }
+	static WorldSettings* Get();
+	glm::vec3 GetUpDir() {return mWorldUp; };
 private:
+	WorldSettings();
+	glm::vec3 mWorldUp;
 };
 } // end namespace AA

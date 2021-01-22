@@ -111,11 +111,12 @@
     <ClInclude Include="include\Window\Controls\Controls.h" />
     <ClInclude Include="include\Window\Display\Display.h" />
     <ClInclude Include="include\Window\Controls\KeyboardInput.h" />
-    <ClInclude Include="include\Scene\WorldUp.h" />
+    <ClInclude Include="include\Scene\WorldSettings.h" />
     <ClInclude Include="include\Sound\SoundDevice.h" />
     <ClInclude Include="include\Sound\ShortSound.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="src\Scene\WorldSettings.cpp" />
     <ClCompile Include="src\Scene\InstanceDetails.cpp" />
     <ClCompile Include="src\Sound\SoundListener.cpp" />
     <ClCompile Include="src\Sound\LongSound.cpp" />

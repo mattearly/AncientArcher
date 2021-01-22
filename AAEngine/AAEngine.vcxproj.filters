@@ -51,9 +51,6 @@
     <ClInclude Include="include\Scene\CollisionHandler.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="include\Scene\WorldUp.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="include\AncientArcher.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -103,6 +100,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="include\Window\Controls\ScrollInput.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Scene\WorldSettings.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
@@ -171,6 +171,9 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="src\Scene\InstanceDetails.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Scene\WorldSettings.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
