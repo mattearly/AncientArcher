@@ -43,7 +43,6 @@ class Camera
 public:
 	Camera(int width, int height);
 
-	void UpdateCameraVectors();
 
 	// setters
 	void SetMaxRenderDistance(float distance) noexcept;
@@ -59,8 +58,6 @@ public:
 
 	// experimental
 	void __setToOrtho() noexcept;
-	void __setOrthoFieldSize(float left, float right, float bottom, float top) noexcept;
-	void __setOrthoFieldSize(glm::vec4 lrbt) noexcept;
 
 	// getters
 	glm::mat4 GetViewMatrix() const;
@@ -81,16 +78,17 @@ private:
 	glm::vec3        mRight;
 	glm::vec3        mUp;
 	glm::vec3        mPosition;
-	float            mFieldOfView;
+	float            mPerspectiveFieldOfView;
 	float            mYaw;
 	float            mPitch;
 	float            mMaxRenderDistance;
-	bool             mProjectionChanged;
-	glm::vec4        mOrthoFieldSize;
+	//bool             mProjectionChanged;
+	//glm::vec4        mOrthoFieldSize;
 	int              mUniqueViewportID;
 	RenderProjection mRenderProjection;
 
 	void resetViewportVars();
+	void updateCameraVectors();
 
 };
 } // end namespace AA

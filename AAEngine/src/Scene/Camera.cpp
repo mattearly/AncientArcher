@@ -37,13 +37,16 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #include "../../include/Window/Display/Display.h"
 namespace AA
 {
+
+extern bool externWindowSizeDirty;
+
 #define UP World->GetUpDir()
 
-static int uniqueIDs = 0;
+static int uniqueCamIDs = 0;
 
 Camera::Camera(int width, int height)
 {
-	mUniqueViewportID = uniqueIDs++;
+	mUniqueViewportID = uniqueCamIDs++;
 
 	resetViewportVars();
 
@@ -51,7 +54,7 @@ Camera::Camera(int width, int height)
 	mHeight = height;
 }
 
-void Camera::UpdateCameraVectors()
+void Camera::updateCameraVectors()
 {
 	glm::vec3 front{};
 	front.x = cos(glm::radians(mYaw)) * cos(glm::radians(mPitch));
@@ -65,13 +68,13 @@ void Camera::UpdateCameraVectors()
 // same as default constructor but doesn't touch the uniqueId's
 void Camera::resetViewportVars()
 {
-	mPosition = glm::vec3(0);
-	mFieldOfView = 90.f;
+	mPosition = glm::vec3(0.f);
+	mPerspectiveFieldOfView = 45.f;
 	mYaw = -90.f;
 	mPitch = 0.f;
-	mMaxRenderDistance = 2000.f;
-	mProjectionChanged = false;
-	mOrthoFieldSize = glm::vec4(-1, 1, -1, 1);
+	mMaxRenderDistance = 2500.f;
+	//mProjectionChanged = false;
+	//mOrthoFieldSize = glm::vec4(-1, 1, -1, 1);
 	mRenderProjection = RenderProjection::PERSPECTIVE;
 
 	mFront.x = cos(glm::radians(mYaw)) * cos(glm::radians(mPitch));
@@ -99,36 +102,19 @@ void Camera::SetDimensions(int width, int height) noexcept
 
 void Camera::__setToOrtho() noexcept
 {
-	//Camera::Get()->__setOrthoFieldSize(
-	//  glm::vec4(
-	//    0, AADisplay::Get()->getWindowWidth(),
-	//    0, AADisplay::Get()->getWindowHeight()
-	//  )
-	//);
-
 	mRenderProjection = RenderProjection::ORTHO;
-}
-
-void Camera::__setOrthoFieldSize(float left, float right, float bottom, float top) noexcept
-{
-	mOrthoFieldSize = glm::vec4(left, right, bottom, top);
-}
-
-void Camera::__setOrthoFieldSize(glm::vec4 lrbt) noexcept
-{
-	mOrthoFieldSize = lrbt;
+	externWindowSizeDirty = true;
 }
 
 void Camera::SetMaxRenderDistance(float distance) noexcept
 {
 	mMaxRenderDistance = distance;
-	//updateViewport();
 }
 
 void Camera::SetCurrentLocation(glm::vec3 pos)
 {
 	mPosition = pos;
-	UpdateCameraVectors();
+	updateCameraVectors();
 }
 
 void Camera::SetCurrentPitch(float pitch)
@@ -142,19 +128,19 @@ void Camera::SetCurrentPitch(float pitch)
 	{
 		mPitch = -89.9f;
 	}
-	UpdateCameraVectors();
+	updateCameraVectors();
 }
 
 void Camera::SetCurrentYaw(float yaw)
 {
 	mYaw = yaw;
-	UpdateCameraVectors();
+	updateCameraVectors();
 }
 
 void Camera::ShiftCurrentLocation(const glm::vec3& offset)
 {
 	mPosition += offset;
-	UpdateCameraVectors();
+	updateCameraVectors();
 }
 
 void Camera::ShiftYawAndPitch(float yawOffset, float pitchOffset)
@@ -169,7 +155,7 @@ void Camera::ShiftYawAndPitch(float yawOffset, float pitchOffset)
 	{
 		mPitch = -89.9f;
 	}
-	UpdateCameraVectors();
+	updateCameraVectors();
 }
 
 glm::mat4 Camera::GetViewMatrix() const
@@ -177,48 +163,32 @@ glm::mat4 Camera::GetViewMatrix() const
 	return glm::lookAt(mPosition, mPosition + mFront, mUp);
 }
 
-// returns a projection matrix based on the window width and height and the perspective.
 glm::mat4 Camera::GetProjectionMatrix() const
 {
-	// todo: other ways of adjusting camera viewport
-	//const float screen_width = static_cast<float>(mWidth);
-	//const float screen_height = static_cast<float>(Display::Get()->GetWindowHeight());
-//
-//	if (screen_width <= 0 || screen_height <= 0)
-//	{
-//#ifdef _DEBUG
-//		std::cout << "Projection setting failed. File: " << __FILE__ << " Line: " << __LINE__ << "  -Screen width or height is 0.\n";
-//		return glm::mat4(0);
-//#else
-//		throw("projection fail 0 width or height");
-//#endif
-	//}
-
 	glm::mat4 projection = glm::mat4(1);
-
 	switch (mRenderProjection)
 	{
 	case RenderProjection::PERSPECTIVE:
-		{
-		float aspectRatio = static_cast<float>(mWidth)/static_cast<float>(mHeight);
-		projection = glm::perspective(glm::radians(mFieldOfView), aspectRatio, 0.0167f, mMaxRenderDistance);
-		}
-		break;
+	{
+		float aspectRatio = static_cast<float>(mWidth) / static_cast<float>(mHeight);
+		projection = glm::perspective(glm::radians(mPerspectiveFieldOfView), aspectRatio, 0.0167f, mMaxRenderDistance);
+	}
+	break;
 	case RenderProjection::ORTHO:
-		// todo: test and fix ortho
-		//projection = glm::ortho(
-		//  mOrthoFieldSize.x,
-		//  mOrthoFieldSize.y,
-		//  mOrthoFieldSize.z,
-		//  mOrthoFieldSize.w,
-		//  .01f,
-		//  mMaxRenderDistance
-		//);
+		projection = glm::ortho(
+			0.f,
+			static_cast<float>(mWidth),
+			0.f,
+			static_cast<float>(mHeight),
+			0.0167f,
+			mMaxRenderDistance
+		);	
+
+
 		break;
 	default:
 		break;
 	}
-
 	return projection;
 }
 
