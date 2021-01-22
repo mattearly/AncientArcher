@@ -103,8 +103,8 @@ void Controls::perspectiveMouseMovement(float x, float y) noexcept
 */
 void Controls::standardMouseMovement(float xpos, float ypos)
 {
-	float DisplayWindowWidth = Engine->GetWindowWidth();
-	float DisplayWindowHeight = Engine->GetWindowHeight();
+	float DisplayWindowWidth =  static_cast<float>(Engine->GetWindowWidth());
+	float DisplayWindowHeight = static_cast<float>(Engine->GetWindowHeight());
 
 	switch (mStandardMouseZeros)
 	{
