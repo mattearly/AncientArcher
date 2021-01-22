@@ -37,7 +37,7 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 namespace AA
 {
-static int uniqueIDs = 0;
+static int uniqueGameObjectIDs = 0;
 int GameObject::GetModelMatrix(const int& which, glm::mat4& out_mat4) const
 {
 	if (which < GetInstanceCount())
@@ -99,7 +99,7 @@ GameObject::GameObject(const char* path, int camId, int shadId)
 	mInstanceDetails.push_back(InstanceDetails());
 	mCameraID = camId;
 	mShaderID = shadId;
-	mObjectID = uniqueIDs++;
+	mObjectID = uniqueGameObjectIDs++;
 }
 
 GameObject::GameObject(const char* path, int camId, int shadId, std::vector<InstanceDetails> details)
@@ -108,7 +108,7 @@ GameObject::GameObject(const char* path, int camId, int shadId, std::vector<Inst
 	mInstanceDetails = details;
 	mCameraID = camId;
 	mShaderID = shadId;
-	mObjectID = uniqueIDs++;
+	mObjectID = uniqueGameObjectIDs++;
 }
 
 void GameObject::SetCamera(int id) noexcept
