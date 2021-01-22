@@ -220,32 +220,16 @@ void Display::setWindowToFullscreen() noexcept
 	glfwSetWindowMonitor(mWindow, glfwGetPrimaryMonitor(), 0, 0, mode->width, mode->height, mode->refreshRate);
 
 	// update our control variable
-	mWindowIsFullScreen = true;
+	mWindowIsFullScreen = !mWindowIsFullScreen;
 }
 
 void Display::setWindowToWindowed() noexcept
 {
-	// turn off fullscreen to Get frame sizes
-	//glfwSetWindowMonitor(mWindow, nullptr, mXPos, mYPos, GetWindowWidth(), GetWindowHeight(), 0);
-
-	// Get work area sizes after turning off full screen
-	//int x, y, w, h;
-	//glfwGetMonitorWorkarea(glfwGetPrimaryMonitor(), &x, &y, &w, &h);
-
-	// Get frame sizes after turning off full screen
-	//int frameSizeLeft, frameSizeTop, frameSizeRight, frameSizeBot;
-	//glfwGetWindowFrameSize(mWindow, &frameSizeLeft, &frameSizeTop, &frameSizeRight, &frameSizeBot);
-
-	// update window size and positions
-	//mXPos = x + frameSizeLeft;
-	//mYPos = y + frameSizeTop;
-	//GetWindowWidth() = w - frameSizeLeft - frameSizeRight;
-	//GetWindowHeight() = h - frameSizeTop - frameSizeBot;
-
 	// Set size in windowed mode
 	glfwSetWindowMonitor(mWindow, nullptr, mLastxPos, mLastyPos, mLastWidth, mLastHeight, 0);
 
-	mWindowIsFullScreen = false;
+	// update our control variable
+	mWindowIsFullScreen = !mWindowIsFullScreen;
 }
 
 void Display::SetupReshapeCallback() noexcept
