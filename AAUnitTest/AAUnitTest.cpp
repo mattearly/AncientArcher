@@ -243,7 +243,7 @@ public:
 	{
 		AA::Engine->SoftReset();
 		static int cam_F = AA::Engine->AddCamera(AA::Engine->GetWindowWidth(), AA::Engine->GetWindowHeight());
-		int shader = AA::Engine->AddShader("E:\\storage\\Shaders\\basicvert.glsl", "E:\\storage\\Shaders\\basicfrag.glsl", true);
+		int shader = AA::Engine->AddShader("..\\..\\AAUnitTest\\res\\basicvert.glsl", "..\\..\\AAUnitTest\\res\\basicfrag.glsl", true);
 		//int shader = AA::Engine->AddShader(AA::SHADERTYPE::DIFF);
 
 		// put in your own model to test it out
