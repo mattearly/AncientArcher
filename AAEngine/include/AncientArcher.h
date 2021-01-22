@@ -32,15 +32,13 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 #pragma once
 #include "Window/Display/Display.h"
-
+#include "Scene/Camera.h"
+#include "Renderer/OpenGL/Skybox.h"
+#include "Scene/GameObject.h"
 #include <vector>
 #include <functional>
 #include <memory>
 #include <unordered_map>
-
-#include "Scene/Camera.h"
-#include "Renderer/OpenGL/Skybox.h"
-#include "Scene/GameObject.h"
 
 class OGLShader;
 enum class SHADERTYPE;
@@ -61,8 +59,6 @@ public:
 	int Run();
 	void Shutdown() noexcept;
 	void SoftReset();
-
-	void SetWindowClearColor(glm::vec3 rgb) noexcept;
 
 public:
 	int AddCamera(int w, int h);
@@ -109,9 +105,9 @@ public:
 private:
 	AncientArcher();
 
-	float mLastFrameTime;                  ///< keeps track of the previous frame's time
-	float mCurrentFrameTime;               ///< keeps track of the current frame's time
-	float mDeltaTime;                      ///< the delta difference between previous and current frame
+	//float mLastFrameTime;                  ///< keeps track of the previous frame's time
+	//float mCurrentFrameTime;               ///< keeps track of the current frame's time
+	//float mDeltaTime;                      ///< the delta difference between previous and current frame
 	float mNonSpammableKeysTimeout;        ///< keeps track of how long the keys have timed out
 	float mNoSpamWaitLength;               ///< how long the non-spammable keys are to time out for at least
 	float mSlowUpdateTimeout;              ///< keeps track of how how long the slow update has been timed out
@@ -142,7 +138,6 @@ private:
 	RenderingFramework mPreferredRenderingFramework = RenderingFramework::OPENGL;
 	void initEngine();
 	void resetEngine() noexcept;
-
 
 	// todo: refactor - used for testing purposes until more elegant solution appears
 	void __updateCamViewMatrices(int width, int height);

@@ -30,13 +30,13 @@ THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
 OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 ----------------------------------------------------------------------
 */
+#include "../include/AncientArcher.h"
+#include "../include/Renderer/OpenGL/SceneLoader.h"
 #include <vector>
 #include <string>
 #include <iomanip>
 #include <utility>
-#include "../include/AncientArcher.h"
-#include "../include/Renderer/OpenGL/SceneLoader.h"
-#include <GLFW/glfw3.h>
+#include <chrono>
 
 namespace AA
 {
@@ -414,15 +414,21 @@ void AncientArcher::deltaUpdate()
 {
 	pullButtonStateEvents();
 
+	// init delta clock on first tap into deltaUpdate
+	static std::chrono::system_clock::time_point currTime;
+	static std::chrono::system_clock::time_point lastTime = std::chrono::system_clock::now();
+	static std::chrono::duration<float> deltaTime;
+
 	// update engine run delta times
-	mCurrentFrameTime = static_cast<float>(glfwGetTime());
-	mDeltaTime = mCurrentFrameTime - mLastFrameTime;
-	mLastFrameTime = mCurrentFrameTime;
+	currTime = std::chrono::system_clock::now();
+	deltaTime = currTime - lastTime;
+	lastTime  = currTime;
 
 	// go through all updates that need access to delta time
+	float elapsedTime = deltaTime.count();
 	for (auto& oDU : onDeltaUpdate)
 	{
-		oDU.second(mDeltaTime);
+		oDU.second(elapsedTime);
 	}
 
 	// process keyboard input
@@ -459,7 +465,7 @@ void AncientArcher::deltaUpdate()
 
 	// delayed updates for things you don't want spammed.
 	// update accum time for delayed updates
-	mSlowUpdateTimeout += mDeltaTime;
+	mSlowUpdateTimeout += elapsedTime;
 	// check to see if its time to process delayed updates
 	if (mSlowUpdateTimeout > mSlowUpdateWaitLength)
 	{
@@ -483,7 +489,7 @@ void AncientArcher::deltaUpdate()
 
 	// needs updated, we'll use it in update with keyboard functions before the AncientArcher is done.
 	// note that the keyboard processing cant be here because we have yet to run processSystemKeys()
-	mNonSpammableKeysTimeout += mDeltaTime;
+	mNonSpammableKeysTimeout += elapsedTime;
 
 	// only be executable after a timeout has been met, sort of like a cooldown
 	if (mNonSpammableKeysTimeout > mNoSpamWaitLength)
@@ -549,10 +555,9 @@ void AncientArcher::teardown()
 
 void AncientArcher::resetEngine() noexcept
 {
-	// process anything the user requested and unload all meshes and textures
+	// process anything the user Requested and unload all meshes and textures
 	teardown();
 
-	//clear all vectors
 	mCameras.clear();
 	mShaders.clear();
 	mGameObjects.clear();
@@ -565,16 +570,15 @@ void AncientArcher::resetEngine() noexcept
 	onUpdate.clear();
 	onSlowUpdate.clear();
 	onTearDown.clear();
-	// reset all state data
+
 	mNonSpammableKeysTimeout = 0.f;
 	mSlowUpdateTimeout = 0.f;
 	mNoSpamWaitLength = .5667f;
-	//mSlowUpdateWaitLength = .5667f;
 	mSlowUpdateWaitLength = .3337f;
 
-	mLastFrameTime = 0.f;
-	mCurrentFrameTime = 0.f;
-	mDeltaTime = 0.f;
+	//mLastFrameTime = 0.f;
+	//mCurrentFrameTime = 0.f;
+	//mDeltaTime = 0.f;
 
 	Display::SetClearColor();
 }
