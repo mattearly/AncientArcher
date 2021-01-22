@@ -19,7 +19,7 @@ public:
 		AA::Engine->AddToDeltaUpdate([](float dt)
 			{
 				timeholder_A += dt;
-				if (timeholder_A > 3.f)
+				if (timeholder_A > 1.f)
 				{
 					AA::Engine->Shutdown();
 				}
@@ -35,7 +35,7 @@ public:
 
 		AA::Engine->AddToDeltaUpdate([](float dt) {
 			timeholder_B += dt;
-			if (timeholder_B > 6.f)
+			if (timeholder_B > 1.f)
 			{
 				AA::Engine->Shutdown();
 			}
@@ -48,19 +48,20 @@ public:
 	TEST_METHOD(C_AutoCamAndModelTest)
 	{
 		AA::Engine->SoftReset();
-		static int cam = AA::Engine->AddCamera(AA::Engine->GetWindowWidth(), AA::Engine->GetWindowHeight());
+		static int cam_C = AA::Engine->AddCamera(AA::Engine->GetWindowWidth(), AA::Engine->GetWindowHeight());
 		int shader = AA::Engine->AddShader(AA::SHADERTYPE::DIFF);
 
 		// put in your own model to test it out
-		int dovecote = AA::Engine->AddObject("E:\\storage\\Models\\dovecote.fbx", cam, shader);
+		int dovecote = AA::Engine->AddObject("E:\\storage\\Models\\dovecote.fbx", cam_C, shader);
 		AA::Engine->GetGameObject(dovecote).SetTranslation(glm::vec3(0, 0, 0));
 
-		AA::Cam(cam).SetCurrentLocation(glm::vec3(0, 350, 0));
-		AA::Cam(cam).SetMaxRenderDistance(2700.f);
+		AA::Cam(cam_C).SetCurrentLocation(glm::vec3(0, 350, 2300));
+		AA::Cam(cam_C).SetMaxRenderDistance(2700.f);
 
 		AA::Engine->AddToDeltaUpdate([](float dt) {
-			AA::Cam(cam).ShiftCurrentLocation(glm::vec3(0, 0, dt * 200));
-			if (AA::Cam(cam).GetLocation().z > 2300)
+			float Velocity = 1200;
+			AA::Cam(cam_C).ShiftCurrentLocation(glm::vec3(0, 0, -dt * Velocity));
+			if (AA::Cam(cam_C).GetLocation().z < 300)
 			{
 				AA::Engine->Shutdown();
 			}
@@ -73,17 +74,17 @@ public:
 	TEST_METHOD(D_WASDMovementTest)
 	{
 		AA::Engine->SoftReset();
-		static int cam = AA::Engine->AddCamera(AA::Engine->GetWindowWidth(), AA::Engine->GetWindowHeight());
+		static int cam_D = AA::Engine->AddCamera(AA::Engine->GetWindowWidth(), AA::Engine->GetWindowHeight());
 		int shader = AA::Engine->AddShader(AA::SHADERTYPE::DIFF);
 
-		static int wasd = AA::Engine->AddObject("..\\..\\AAUnitTest\\res\\wasd.obj", cam, shader);
+		static int wasd = AA::Engine->AddObject("..\\..\\AAUnitTest\\res\\wasd.obj", cam_D, shader);
 
 		AA::Engine->GetGameObject(wasd).SetScale(glm::vec3(3));
 		AA::Engine->GetGameObject(wasd).AddToRotation(glm::vec3(90, 0, 0));
 
-		AA::Cam(cam).SetCurrentLocation(glm::vec3(0, 0, 30));
-		AA::Cam(cam).SetCurrentPitch(0.f);
-		AA::Cam(cam).SetCurrentYaw(270.f);
+		AA::Cam(cam_D).SetCurrentLocation(glm::vec3(0, 0, 30));
+		AA::Cam(cam_D).SetCurrentPitch(0.f);
+		AA::Cam(cam_D).SetCurrentYaw(270.f);
 
 		static bool left = false, right = false, forward = false, backwards = false;
 		static bool pressedleft = false, pressedright = false, pressedforward = false, pressedbackwards = false;
@@ -115,16 +116,16 @@ public:
 		AA::Engine->AddToDeltaUpdate([](float dt) {
 
 			if (forward)
-				AA::Cam(cam).ShiftCurrentLocation(glm::vec3(0, 0, -dt * VELOCITY));
+				AA::Cam(cam_D).ShiftCurrentLocation(glm::vec3(0, 0, -dt * VELOCITY));
 
 			if (backwards)
-				AA::Cam(cam).ShiftCurrentLocation(glm::vec3(0, 0, dt * VELOCITY));
+				AA::Cam(cam_D).ShiftCurrentLocation(glm::vec3(0, 0, dt * VELOCITY));
 
 			if (left)
-				AA::Cam(cam).ShiftCurrentLocation(glm::vec3(-dt * VELOCITY, 0, 0));
+				AA::Cam(cam_D).ShiftCurrentLocation(glm::vec3(-dt * VELOCITY, 0, 0));
 
 			if (right)
-				AA::Cam(cam).ShiftCurrentLocation(glm::vec3(dt * VELOCITY, 0, 0));
+				AA::Cam(cam_D).ShiftCurrentLocation(glm::vec3(dt * VELOCITY, 0, 0));
 
 			// rotate object
 			AA::Engine->GetGameObject(wasd).AddToRotation(glm::vec3(0, dt * .2, 0));
@@ -144,31 +145,31 @@ public:
 	{
 		AA::Engine->SoftReset();
 
-		static int cam = AA::Engine->AddCamera(AA::Engine->GetWindowWidth(), AA::Engine->GetWindowHeight());
-		AA::Cam(cam).SetCurrentLocation(glm::vec3(0, 0, 0));
-		AA::Cam(cam).ShiftYawAndPitch(90, 0);
-		AA::Cam(cam).SetMaxRenderDistance(3000);
+		static int cam_E = AA::Engine->AddCamera(AA::Engine->GetWindowWidth(), AA::Engine->GetWindowHeight());
+		AA::Cam(cam_E).SetCurrentLocation(glm::vec3(0, 0, 0));
+		AA::Cam(cam_E).ShiftYawAndPitch(90, 0);
+		AA::Cam(cam_E).SetMaxRenderDistance(3000);
 
 		int shader = AA::Engine->AddShader(AA::SHADERTYPE::DIFF);
 
-		static int skele = AA::Engine->AddObject("..\\..\\AAUnitTest\\res\\fpp_test_text.obj", cam, shader);
+		static int skele = AA::Engine->AddObject("..\\..\\AAUnitTest\\res\\fpp_test_text.obj", cam_E, shader);
 		AA::Engine->GetGameObject(skele).SetTranslation(glm::vec3(150, 0, -75));
 		AA::Engine->GetGameObject(skele).SetScale(glm::vec3(10));
 		AA::Engine->GetGameObject(skele).SetRotation(glm::vec3(0, glm::radians(-90.f), 0));
 
-		static int negZ = AA::Engine->AddObject("..\\..\\AAUnitTest\\res\\-z.obj", cam, shader);
+		static int negZ = AA::Engine->AddObject("..\\..\\AAUnitTest\\res\\-z.obj", cam_E, shader);
 		AA::Obj(negZ).SetTranslation(glm::vec3(0, 75, -1500));
 		AA::Obj(negZ).SetScale(glm::vec3(50));
 
-		static int posZ = AA::Engine->AddObject("..\\..\\AAUnitTest\\res\\z.obj", cam, shader);
+		static int posZ = AA::Engine->AddObject("..\\..\\AAUnitTest\\res\\z.obj", cam_E, shader);
 		AA::Obj(posZ).SetTranslation(glm::vec3(0, 75, 1500));
 		AA::Obj(posZ).SetScale(glm::vec3(50));
 
-		static int negX = AA::Engine->AddObject("..\\..\\AAUnitTest\\res\\-x.obj", cam, shader);
+		static int negX = AA::Engine->AddObject("..\\..\\AAUnitTest\\res\\-x.obj", cam_E, shader);
 		AA::Obj(negX).SetTranslation(glm::vec3(-1500, 75, 0));
 		AA::Obj(negX).SetScale(glm::vec3(50));
 
-		static int posX = AA::Engine->AddObject("..\\..\\AAUnitTest\\res\\x.obj", cam, shader);
+		static int posX = AA::Engine->AddObject("..\\..\\AAUnitTest\\res\\x.obj", cam_E, shader);
 		AA::Obj(posX).SetTranslation(glm::vec3(1500, 75, 0));
 		AA::Obj(posX).SetScale(glm::vec3(50));
 
@@ -176,7 +177,7 @@ public:
 		AA::Engine->SetCursorToDisabled();
 		AA::Engine->SetReadMouseCurorAsFPP();
 		AA::Engine->AddToMouseHandling([](AA::MouseInput& cursor) {
-			AA::Cam(cam).ShiftYawAndPitch(cursor.xOffset, cursor.yOffset);
+			AA::Cam(cam_E).ShiftYawAndPitch(cursor.xOffset, cursor.yOffset);
 			});
 
 		static bool left = false, right = false, forward = false, backwards = false;
@@ -213,19 +214,19 @@ public:
 		static float VELOCITY = 2;
 
 		AA::Engine->AddToDeltaUpdate([](float dt) {
-			glm::vec3 front_vec = *AA::Cam(cam).GetFront();
-			glm::vec3 right_vec = *AA::Cam(cam).GetRight();
+			glm::vec3 front_vec = *AA::Cam(cam_E).GetFront();
+			glm::vec3 right_vec = *AA::Cam(cam_E).GetRight();
 			if (forward)
-				AA::Cam(cam).ShiftCurrentLocation(front_vec * VELOCITY);
+				AA::Cam(cam_E).ShiftCurrentLocation(front_vec * VELOCITY);
 
 			if (backwards)
-				AA::Cam(cam).ShiftCurrentLocation(-front_vec * VELOCITY * .5f);
+				AA::Cam(cam_E).ShiftCurrentLocation(-front_vec * VELOCITY * .5f);
 
 			if (left)
-				AA::Cam(cam).ShiftCurrentLocation(-right_vec * VELOCITY * .7f);
+				AA::Cam(cam_E).ShiftCurrentLocation(-right_vec * VELOCITY * .7f);
 
 			if (right)
-				AA::Cam(cam).ShiftCurrentLocation(right_vec * VELOCITY * .7f);
+				AA::Cam(cam_E).ShiftCurrentLocation(right_vec * VELOCITY * .7f);
 
 			//rotate x's and z's
 			AA::Obj(negZ).AddToRotation(glm::vec3(0, dt * VELOCITY, 0));
