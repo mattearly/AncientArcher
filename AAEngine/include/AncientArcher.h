@@ -50,6 +50,7 @@ namespace AA
 {
 #define Engine AncientArcher::Get()
 #define Cam(X) AncientArcher::Get()->GetCamera(X)
+#define Obj(X) AncientArcher::Get()->GetGameObject(X)
 ///
 /// AncientArcher Class essentially ties everything together for render scenes
 ///
