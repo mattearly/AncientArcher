@@ -42,14 +42,14 @@ namespace AA
 {
 class OGLGraphics
 {
-friend class GameObject;
-friend class Display;
+	friend class GameObject;
+	friend class Display;
 private:
 
 	static void Render(const std::vector<MeshDrawInfo>& meshes, const std::vector<InstanceDetails>& details, const OGLShader& modelShader);
 	static void SetViewportSize(int x, int y, int w, int h);
-	static void SetDefaultBackgroundColor(glm::vec3 color);
-	static void ClearScreen()  noexcept;
+	static void SetDefaultBackgroundColor(glm::vec3 color) noexcept;
+	static void ClearScreen() noexcept;
 
 };
 }  // end namespace AA

@@ -56,21 +56,21 @@ void OGLGraphics::Render(const std::vector<MeshDrawInfo>& meshes, const std::vec
 	// go through all meshes in the this
 	for (auto m : meshes)
 	{
-		// go through all textures in this mesh
+		// go through all texture in this mesh
 		uint32_t i = 0;
-		for (auto textures : m.textureDrawIds)
+		for (const auto& texture : m.textureDrawIds)
 		{
 			// activate each texture
 			glActiveTexture(GL_TEXTURE0 + i);
 			// get the texture type
-			const std::string texType = textures.second;
+			const std::string texType = texture.second;
 
 			//might not need shader.use() here
 			//modelShader.use();
 
 			// tell opengl to bind the texture to a model shader uniform var
 			glUniform1i(glGetUniformLocation(modelShader.GetID(), ("material." + texType).c_str()), i);
-			glBindTexture(GL_TEXTURE_2D, textures.first);
+			glBindTexture(GL_TEXTURE_2D, texture.first);
 			i++;
 		}
 
@@ -95,7 +95,7 @@ void OGLGraphics::SetViewportSize(int x, int y, int w, int h)
 {
 	glViewport(x, y, w, h);
 }
-void OGLGraphics::SetDefaultBackgroundColor(glm::vec3 color)
+void OGLGraphics::SetDefaultBackgroundColor(glm::vec3 color) noexcept
 {
 	glClearColor(color.x, color.y, color.z, 0.0f);
 }
