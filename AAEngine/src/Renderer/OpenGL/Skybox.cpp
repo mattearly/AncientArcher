@@ -79,7 +79,7 @@ Skybox::Skybox(std::vector<std::string> incomingSkymapFiles, bool useInternalSha
 		skyboxShader = std::make_unique<OGLShader>(vertpath, fragpath);
 	}
 	loadSkybox();
-	cubemapTexture = TexLoader::getInstance()->loadCubeTexture(incomingSkymapFiles);
+	cubemapTexture = TexLoader::loadCubeTexture(incomingSkymapFiles);
 	skyboxShader->use();
 	skyboxShader->setInt("skybox", 0);
 	//loadProjectionMatrix();  //does on first render

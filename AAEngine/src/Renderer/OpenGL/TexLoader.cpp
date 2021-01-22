@@ -8,13 +8,6 @@
 #endif
 namespace AA
 {
-TexLoader* TexLoader::getInstance()
-{
-	static TexLoader* tl = new TexLoader();
-	return tl;
-	//static std::unique_ptr<TexLoader> staticTexLoader = std::make_unique<TexLoader>();
-	//return staticTexLoader.get();
-}
 
 /**
  * This code loads in a cube map texture.
@@ -205,8 +198,5 @@ unsigned int TexLoader::textureFromData(const aiTexture* tex)
 	//img = (char*)stbi_load_from_memory((unsigned char*)&_binary_font_png_start, &_binary_font_png_end - &_binary_font_png_start, &w, &h, &n, 4);
 
 	return out_texID;
-}
-TexLoader::TexLoader()
-{
 }
 } // end namespace AA

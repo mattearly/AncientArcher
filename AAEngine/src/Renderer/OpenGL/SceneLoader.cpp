@@ -42,8 +42,6 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #include "../../../include/Renderer/Vertex.h"
 #include "../../../include/Renderer/OpenGL/TexLoader.h"
 
-
-
 namespace AA
 {
 SceneLoader* SceneLoader::Get() {
@@ -440,7 +438,7 @@ int SceneLoader::loadMaterialTextures(const aiScene* scn, const aiMaterial* mat,
 //#ifdef _DEBUG
 //			std::cout << "Embedded Texture from data attempt: \n";
 //#endif
-			a_new_texture_info.accessId = TexLoader::getInstance()->textureFromData(ai_embedded_texture);
+			a_new_texture_info.accessId = TexLoader::textureFromData(ai_embedded_texture);
 			if (a_new_texture_info.accessId != 0)
 			{
 				// add the new one to our list of loaded textures
@@ -490,7 +488,7 @@ int SceneLoader::loadMaterialTextures(const aiScene* scn, const aiMaterial* mat,
 //#ifdef _DEBUG
 //			std::cout << " - TexLoad try 1 (given path): " << tex_path1_literal << '\n';
 //#endif
-			a_new_texture_info.accessId = TexLoader::getInstance()->textureFromFile((tex_path1_literal).c_str());
+			a_new_texture_info.accessId = TexLoader::textureFromFile((tex_path1_literal).c_str());
 			if (a_new_texture_info.accessId != 0)
 			{
 				// add the new one to our list of loaded textures
@@ -505,7 +503,7 @@ int SceneLoader::loadMaterialTextures(const aiScene* scn, const aiMaterial* mat,
 //#ifdef _DEBUG
 //			std::cout << " - TexLoad try 2 (full append): " << tex_path2_loadedFromFullAppend << '\n';
 //#endif
-			a_new_texture_info.accessId = TexLoader::getInstance()->textureFromFile(tex_path2_loadedFromFullAppend.c_str());
+			a_new_texture_info.accessId = TexLoader::textureFromFile(tex_path2_loadedFromFullAppend.c_str());
 			if (a_new_texture_info.accessId != 0)
 			{
 				// add the new one to our list of loaded textures
@@ -520,7 +518,7 @@ int SceneLoader::loadMaterialTextures(const aiScene* scn, const aiMaterial* mat,
 //#ifdef _DEBUG
 //			std::cout << " - TexLoad try 3 (end append): " << tex_path3_loadedFromEndAppend << '\n';
 //#endif
-			a_new_texture_info.accessId = TexLoader::getInstance()->textureFromFile(tex_path3_loadedFromEndAppend.c_str());
+			a_new_texture_info.accessId = TexLoader::textureFromFile(tex_path3_loadedFromEndAppend.c_str());
 			if (a_new_texture_info.accessId != 0)
 			{
 				// add the new one to our list of loaded textures

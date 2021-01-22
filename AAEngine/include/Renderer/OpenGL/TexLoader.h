@@ -7,11 +7,9 @@ namespace AA
 class TexLoader
 {
 public:
-	static TexLoader* getInstance();
-	unsigned int loadCubeTexture(const std::vector<std::string>& files);
-	unsigned int textureFromFile(const char* filepath, bool gamma = false);
-	unsigned int textureFromData(const aiTexture* tex);
+	static unsigned int loadCubeTexture(const std::vector<std::string>& files);
+	static unsigned int textureFromFile(const char* filepath, bool gamma = false);
+	static unsigned int textureFromData(const aiTexture* tex);
 private:
-	TexLoader();
 };
 } // end namespace AA
