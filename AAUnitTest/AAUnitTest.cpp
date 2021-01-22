@@ -4,6 +4,7 @@
 #include <AncientArcher.h>
 
 using namespace Microsoft::VisualStudio::CppUnitTestFramework;
+using namespace AA;
 
 namespace AAUnitTest
 {
@@ -39,6 +40,8 @@ public:
 				AA::Engine->Shutdown();
 			}
 			});
+
+		AA::Engine->AddToSlowUpdate([]() {AA::Engine->SetClearColor(glm::vec3(.4f, .4f, .4f)); });
 		Assert::AreEqual(AA::Engine->Run(), 0);
 	}
 
@@ -52,7 +55,7 @@ public:
 		int dovecote = AA::Engine->AddObject("E:\\storage\\Models\\dovecote.fbx", cam, shader);
 		AA::Engine->GetGameObject(dovecote).SetTranslation(glm::vec3(0, 0, 0));
 
-		AA::Cam(cam).SetCurrentLocation(glm::vec3(0, 350, 300));
+		AA::Cam(cam).SetCurrentLocation(glm::vec3(0, 350, 0));
 		AA::Cam(cam).SetMaxRenderDistance(2700.f);
 
 		AA::Engine->AddToDeltaUpdate([](float dt) {
@@ -143,7 +146,7 @@ public:
 
 		static int cam = AA::Engine->AddCamera(AA::Engine->GetWindowWidth(), AA::Engine->GetWindowHeight());
 		AA::Cam(cam).SetCurrentLocation(glm::vec3(0, 0, 0));
-		AA::Cam(cam).ShiftYawAndPitch(90,0);
+		AA::Cam(cam).ShiftYawAndPitch(90, 0);
 		AA::Cam(cam).SetMaxRenderDistance(3000);
 
 		int shader = AA::Engine->AddShader(AA::SHADERTYPE::DIFF);
@@ -151,7 +154,7 @@ public:
 		static int skele = AA::Engine->AddObject("..\\..\\AAUnitTest\\res\\fpp_test_text.obj", cam, shader);
 		AA::Engine->GetGameObject(skele).SetTranslation(glm::vec3(150, 0, -75));
 		AA::Engine->GetGameObject(skele).SetScale(glm::vec3(10));
-		AA::Engine->GetGameObject(skele).SetRotation(glm::vec3(0,glm::radians(-90.f),0));
+		AA::Engine->GetGameObject(skele).SetRotation(glm::vec3(0, glm::radians(-90.f), 0));
 
 		static int negZ = AA::Engine->AddObject("..\\..\\AAUnitTest\\res\\-z.obj", cam, shader);
 		AA::Obj(negZ).SetTranslation(glm::vec3(0, 75, -1500));
@@ -160,7 +163,7 @@ public:
 		static int posZ = AA::Engine->AddObject("..\\..\\AAUnitTest\\res\\z.obj", cam, shader);
 		AA::Obj(posZ).SetTranslation(glm::vec3(0, 75, 1500));
 		AA::Obj(posZ).SetScale(glm::vec3(50));
-		
+
 		static int negX = AA::Engine->AddObject("..\\..\\AAUnitTest\\res\\-x.obj", cam, shader);
 		AA::Obj(negX).SetTranslation(glm::vec3(-1500, 75, 0));
 		AA::Obj(negX).SetScale(glm::vec3(50));
@@ -225,10 +228,10 @@ public:
 				AA::Cam(cam).ShiftCurrentLocation(right_vec * VELOCITY * .7f);
 
 			//rotate x's and z's
-			AA::Obj(negZ).AddToRotation(glm::vec3(0, dt*VELOCITY, 0));
-			AA::Obj(posZ).AddToRotation(glm::vec3(0, dt*VELOCITY, 0));
-			AA::Obj(negX).AddToRotation(glm::vec3(0, dt*VELOCITY, 0));
-			AA::Obj(posX).AddToRotation(glm::vec3(0, dt*VELOCITY, 0));
+			AA::Obj(negZ).AddToRotation(glm::vec3(0, dt * VELOCITY, 0));
+			AA::Obj(posZ).AddToRotation(glm::vec3(0, dt * VELOCITY, 0));
+			AA::Obj(negX).AddToRotation(glm::vec3(0, dt * VELOCITY, 0));
+			AA::Obj(posX).AddToRotation(glm::vec3(0, dt * VELOCITY, 0));
 
 			});
 
