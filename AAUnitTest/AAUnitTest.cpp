@@ -48,13 +48,11 @@ public:
 		static int cam = AA::Engine->AddCamera(AA::Engine->GetWindowWidth(), AA::Engine->GetWindowHeight());
 		int shader = AA::Engine->AddShader(AA::SHADERTYPE::DIFF);
 
-		// this is local, put in your own model to test it out
+		// put in your own model to test it out
 		int dovecote = AA::Engine->AddObject("E:\\storage\\Models\\dovecote.fbx", cam, shader);
 		AA::Engine->GetGameObject(dovecote).SetTranslation(glm::vec3(0, 0, 0));
 
 		AA::Cam(cam).SetCurrentLocation(glm::vec3(0, 350, 300));
-		//AA::Cam(cam).SetCurrentPitch(0.f);
-		//AA::Cam(cam).SetCurrentYaw(0.f);
 		AA::Cam(cam).SetMaxRenderDistance(2700.f);
 
 		AA::Engine->AddToDeltaUpdate([](float dt) {
@@ -77,9 +75,7 @@ public:
 
 		static int wasd = AA::Engine->AddObject("..\\..\\AAUnitTest\\res\\wasd.obj", cam, shader);
 
-		AA::Engine->GetGameObject(wasd).SetTranslation(glm::vec3(0, 0, 0));
 		AA::Engine->GetGameObject(wasd).SetScale(glm::vec3(3));
-		//AA::Engine->GetGameObject(wasd).SetRotation(glm::vec3(3));
 		AA::Engine->GetGameObject(wasd).AddToRotation(glm::vec3(90, 0, 0));
 
 		AA::Cam(cam).SetCurrentLocation(glm::vec3(0, 0, 30));
@@ -128,7 +124,6 @@ public:
 				AA::Cam(cam).ShiftCurrentLocation(glm::vec3(dt * VELOCITY, 0, 0));
 
 			// rotate object
-			//AA::Engine->GetGameObject(wasd).AddToRotation(glm::vec3(dt * .2, dt * .2, dt * .2));
 			AA::Engine->GetGameObject(wasd).AddToRotation(glm::vec3(0, dt * .2, 0));
 			});
 
@@ -142,37 +137,46 @@ public:
 		Assert::AreEqual(AA::Engine->Run(), 0);
 	}
 
-
 	TEST_METHOD(E_FirstPersonPerspectiveTest)
 	{
 		AA::Engine->SoftReset();
 
 		static int cam = AA::Engine->AddCamera(AA::Engine->GetWindowWidth(), AA::Engine->GetWindowHeight());
-		int shader = AA::Engine->AddShader(AA::SHADERTYPE::DIFF);
-		// add your own model here
-		static int skele = AA::Engine->AddObject("E:\\storage\\Models\\fgc_skeleton.fbx", cam, shader);
-
 		AA::Cam(cam).SetCurrentLocation(glm::vec3(0, 0, 0));
+		AA::Cam(cam).ShiftYawAndPitch(90,0);
 		AA::Cam(cam).SetMaxRenderDistance(3000);
-		// config engine loop for first person perspective view and controls
+
+		int shader = AA::Engine->AddShader(AA::SHADERTYPE::DIFF);
+
+		static int skele = AA::Engine->AddObject("..\\..\\AAUnitTest\\res\\fpp_test_text.obj", cam, shader);
+		AA::Engine->GetGameObject(skele).SetTranslation(glm::vec3(150, 0, -75));
+		AA::Engine->GetGameObject(skele).SetScale(glm::vec3(10));
+		AA::Engine->GetGameObject(skele).SetRotation(glm::vec3(0,glm::radians(-90.f),0));
+
+		static int negZ = AA::Engine->AddObject("..\\..\\AAUnitTest\\res\\-z.obj", cam, shader);
+		AA::Obj(negZ).SetTranslation(glm::vec3(0, 75, -1500));
+		AA::Obj(negZ).SetScale(glm::vec3(50));
+
+		static int posZ = AA::Engine->AddObject("..\\..\\AAUnitTest\\res\\z.obj", cam, shader);
+		AA::Obj(posZ).SetTranslation(glm::vec3(0, 75, 1500));
+		AA::Obj(posZ).SetScale(glm::vec3(50));
+		
+		static int negX = AA::Engine->AddObject("..\\..\\AAUnitTest\\res\\-x.obj", cam, shader);
+		AA::Obj(negX).SetTranslation(glm::vec3(-1500, 75, 0));
+		AA::Obj(negX).SetScale(glm::vec3(50));
+
+		static int posX = AA::Engine->AddObject("..\\..\\AAUnitTest\\res\\x.obj", cam, shader);
+		AA::Obj(posX).SetTranslation(glm::vec3(1500, 75, 0));
+		AA::Obj(posX).SetScale(glm::vec3(50));
+
+		// First Person Mouse
 		AA::Engine->SetCursorToDisabled();
 		AA::Engine->SetReadMouseCurorAsFPP();
-
-		AA::Engine->GetGameObject(skele).SetTranslation(glm::vec3(0, -100, -1000));
-		AA::Engine->GetGameObject(skele).SetScale(glm::vec3(.5));
-		//AA::Engine->GetGameObject(skele).SetRotation(glm::vec3(3));
-		//AA::Engine->GetGameObject(skele).AddToRotation(glm::vec3(90, 0, 0));
-
-		//AA::Cam(cam).SetCurrentPitch(0.f);
-		//AA::Cam(cam).SetCurrentYaw(270.f);
-
 		AA::Engine->AddToMouseHandling([](AA::MouseInput& cursor) {
 			AA::Cam(cam).ShiftYawAndPitch(cursor.xOffset, cursor.yOffset);
 			});
 
-
 		static bool left = false, right = false, forward = false, backwards = false;
-
 		AA::Engine->AddToKeyHandling([](AA::KeyboardInput& kb) {
 			if (kb.w)
 				forward = true;
@@ -196,14 +200,14 @@ public:
 
 			});
 		AA::Engine->AddToTimedOutKeyHandling([](AA::KeyboardInput& kb) {
-			if (kb.leftAlt && kb.enter) {
+			if ((kb.leftAlt || kb.rightAlt) && kb.enter) {
 				AA::Engine->ToggleFullscreen();
 				return true;
 			}
 			return false;
 			});
 
-		static float VELOCITY = 7;
+		static float VELOCITY = 2;
 
 		AA::Engine->AddToDeltaUpdate([](float dt) {
 			glm::vec3 front_vec = *AA::Cam(cam).GetFront();
@@ -219,8 +223,14 @@ public:
 
 			if (right)
 				AA::Cam(cam).ShiftCurrentLocation(right_vec * VELOCITY * .7f);
-			});
 
+			//rotate x's and z's
+			AA::Obj(negZ).AddToRotation(glm::vec3(0, dt*VELOCITY, 0));
+			AA::Obj(posZ).AddToRotation(glm::vec3(0, dt*VELOCITY, 0));
+			AA::Obj(negX).AddToRotation(glm::vec3(0, dt*VELOCITY, 0));
+			AA::Obj(posX).AddToRotation(glm::vec3(0, dt*VELOCITY, 0));
+
+			});
 
 		Assert::AreEqual(AA::Engine->Run(), 0);
 	}
