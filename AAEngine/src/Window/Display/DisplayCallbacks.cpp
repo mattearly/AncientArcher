@@ -5,19 +5,19 @@ namespace AA
 {
 void DisplayCallbacks::perspectiveMouseCallback(GLFWwindow* window, double xpos, double ypos)
 {
-	Engine->PerspectiveMouseHandler(window, (float)xpos, (float)ypos);
+	Engine->PerspectiveMouseHandler(static_cast<float>(xpos), static_cast<float>(ypos));
 }
 void DisplayCallbacks::standardMouseCallback(GLFWwindow* window, double xpos, double ypos)
 {
-	Engine->StandardMouseHandler(window, (float)xpos, (float)ypos);
+	Engine->StandardMouseHandler(static_cast<float>(xpos), static_cast<float>(ypos));
 }
 void DisplayCallbacks::scrollCallback(GLFWwindow* window, double xpos, double ypos)
 {
-	Engine->ScrollHandler(window, (float)xpos, (float)ypos);
+	Engine->ScrollHandler(static_cast<float>(xpos), static_cast<float>(ypos));
 }
 void DisplayCallbacks::reshapeCallback(GLFWwindow* window, int w, int h)
 {
-	Engine->ReshapeWindowHandler(window, w, h);
+	Engine->ReshapeWindowHandler(w, h);
 }
 
 }  // end namespace AA

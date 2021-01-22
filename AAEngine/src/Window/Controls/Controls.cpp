@@ -51,17 +51,17 @@ void Controls::SetMouseFPPSensitivity(float sensitivity) noexcept
 	mFPPMouseSensitivity = sensitivity;
 }
 
-void Controls::PerspectiveMouseHandler(GLFWwindow* window, float xpos, float ypos)
+void Controls::PerspectiveMouseHandler(float xpos, float ypos)
 {
 	perspectiveMouseMovement(xpos, ypos);
 }
 
-void Controls::StandardMouseHandler(GLFWwindow* window, float xpos, float ypos)
+void Controls::StandardMouseHandler(float xpos, float ypos)
 {
 	standardMouseMovement(xpos, ypos);
 }
 
-void Controls::ScrollHandler(GLFWwindow* window, float xpos, float ypos)
+void Controls::ScrollHandler(float xpos, float ypos)
 {
 	mouseScrollWheelMovement(xpos, ypos);
 }
@@ -103,7 +103,7 @@ void Controls::perspectiveMouseMovement(float x, float y) noexcept
 */
 void Controls::standardMouseMovement(float xpos, float ypos)
 {
-	float DisplayWindowWidth =  static_cast<float>(Engine->GetWindowWidth());
+	float DisplayWindowWidth = static_cast<float>(Engine->GetWindowWidth());
 	float DisplayWindowHeight = static_cast<float>(Engine->GetWindowHeight());
 
 	switch (mStandardMouseZeros)

@@ -237,41 +237,11 @@ void Display::SetupReshapeCallback() noexcept
 	::glfwSetFramebufferSizeCallback(mWindow, DisplayCallbacks::reshapeCallback);
 }
 
-void Display::ReshapeWindowHandler(GLFWwindow* window, int width, int height)
+void Display::ReshapeWindowHandler(int width, int height)
 {
 	OGLGraphics::SetViewportSize(0, 0, width, height);
 	externWindowSizeDirty = true;  // update cam view matrix before next render
-	//Engine->UpdateCamViewMatrices(width, height);
 }
-
-//void Display::setWindowToMaximized() noexcept
-//{
-//	// turn off fullscreen so the maximize works (glfw specification)
-//	if (mWindowIsFullScreen) {
-//		setWindowToWindowed();
-//	}
-//	glfwMaximizeWindow(mWindow);
-//}
-//
-//void Display::setWindowToFullscreenBorderless() noexcept
-//{
-//	if (mWindowIsFullScreen)
-//	{
-//		setWindowToWindowed();
-//	}
-//
-//	auto monitor = glfwGetPrimaryMonitor();
-//	const GLFWvidmode* mode = glfwGetVideoMode(monitor);
-//
-//	mXPos = mYPos = 0;
-//	GetWindowHeight() = mode->height;
-//	GetWindowWidth() = mode->width;
-//
-//	glfwSetWindowMonitor(mWindow, nullptr, mXPos, mYPos, GetWindowWidth(), GetWindowHeight(), mode->refreshRate);
-//
-//}
-
-
 
 void Display::clearBackBuffer() const noexcept
 {
@@ -369,8 +339,6 @@ void Display::initDisplayFromEngine(RenderingFramework rf)
 	}
 }
 
-
-/////// PULL CONTROLS BUTTON STATE FROM DISPLAY ////////
 void Display::pullButtonStateEvents()
 {
 	glfwPollEvents();

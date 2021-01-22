@@ -47,9 +47,9 @@ public:
 	float GetMouseFPPSensitivity() const noexcept;
 	void SetMouseFPPSensitivity(float sensitivity) noexcept;
 
-	void PerspectiveMouseHandler(GLFWwindow* window, float xpos, float ypos);
-	void StandardMouseHandler(GLFWwindow* window, float xpos, float ypos);
-	void ScrollHandler(GLFWwindow* window, float xpos, float ypos);
+	void PerspectiveMouseHandler(float xpos, float ypos);
+	void StandardMouseHandler(float xpos, float ypos);
+	void ScrollHandler(float xpos, float ypos);
 
 protected:
 
@@ -57,9 +57,9 @@ protected:
 	void standardMouseMovement(float xpos, float ypos);
 	void mouseScrollWheelMovement(float xpos, float ypos) noexcept;
 
-	void resetControlVars() noexcept;	
-	
-	KeyboardInput mButtonState = {};	
+	void resetControlVars() noexcept;
+
+	KeyboardInput mButtonState = {};
 	MouseInput    mMousePosition = {};
 	ScrollInput   mMouseWheelScroll = {};
 	bool mRenewFPP = true;

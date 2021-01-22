@@ -71,7 +71,7 @@ public:
 
 	void ToggleFullscreen() noexcept;
 
-	void ReshapeWindowHandler(GLFWwindow* window, int width, int height);
+	void ReshapeWindowHandler(int width, int height);
 
 protected:
 
