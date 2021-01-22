@@ -96,6 +96,9 @@ protected:
 	void closeWindow() noexcept;
 	void keepWindowOpen() noexcept;
 
+	bool isTryingToClose() noexcept;
+	bool isFPP() noexcept;
+
 private:	
 
 	int mLastxPos = 0, mLastyPos = 0;

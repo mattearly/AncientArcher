@@ -288,6 +288,16 @@ void Display::keepWindowOpen() noexcept
 	glfwSetWindowShouldClose(mWindow, 0);
 }
 
+bool Display::isTryingToClose() noexcept
+{
+	return glfwWindowShouldClose(mWindow);
+}
+
+bool Display::isFPP() noexcept
+{
+	return (GetMouseReportingMode() == MouseReporting::PERSPECTIVE && GetCursorMode() == GLFW_CURSOR_DISABLED);
+}
+
 void Display::closeWindow() noexcept
 {
 	glfwSetWindowShouldClose(mWindow, 1);

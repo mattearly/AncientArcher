@@ -52,7 +52,7 @@ AncientArcher* AncientArcher::Get()
 int AncientArcher::Run()
 {
 	begin();
-	while (!glfwWindowShouldClose(mWindow)) { deltaUpdate(); render(); }
+	while (!Display::isTryingToClose()) { deltaUpdate(); render(); }
 	teardown();
 	return 0;
 }
@@ -439,7 +439,7 @@ void AncientArcher::deltaUpdate()
 	for (auto& oMH : onMouseHandling) { oMH.second(mMousePosition); }
 
 	// Snap cursor to the middle of the screen if it is in perspective and cursor is disabled (FPP mode)
-	if (GetMouseReportingMode() == MouseReporting::PERSPECTIVE && GetCursorMode() == GLFW_CURSOR_DISABLED)
+	if (isFPP())
 	{
 		//deb(mMousePosition.xOffset);
 		//deb(mMousePosition.yOffset);
