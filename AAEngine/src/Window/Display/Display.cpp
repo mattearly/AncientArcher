@@ -90,7 +90,7 @@ MouseReporting Display::GetMouseReportingMode() const noexcept
 
 void Display::SetClearColor(glm::vec3 color)
 {
-	OGLGraphics::SetDefaultBackgroundColor(color.x, color.y, color.z);
+	OGLGraphics::SetDefaultBackgroundColor(color);
 }
 
 void Display::SetCursorToVisible() noexcept

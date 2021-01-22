@@ -95,9 +95,9 @@ void OGLGraphics::SetViewportSize(int x, int y, int w, int h)
 {
 	glViewport(x, y, w, h);
 }
-void OGLGraphics::SetDefaultBackgroundColor(float x, float y, float z)
+void OGLGraphics::SetDefaultBackgroundColor(glm::vec3 color)
 {
-	glClearColor(x, y, z, 0.0f);
+	glClearColor(color.x, color.y, color.z, 0.0f);
 }
 
 void OGLGraphics::ClearScreen()  noexcept

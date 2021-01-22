@@ -67,15 +67,6 @@ void AncientArcher::SoftReset()
 	resetEngine();
 }
 
-void AncientArcher::SetWindowClearColor(glm::vec3 rgb) noexcept
-{
-	if (rgb.x < 0.f || rgb.x > 1.0f || rgb.y < 0.f || rgb.y > 1.0f || rgb.z < 0.f || rgb.z > 1.0f)
-	{
-		//std::cout << "WARNING: Out of range value on SetWindowClearColor, values should be between 0.f and 1.f\n";
-	}
-	mWindowClearColor = rgb;
-}
-
 AncientArcher::AncientArcher()
 {
 	initEngine();
@@ -403,7 +394,7 @@ void AncientArcher::initEngine()
 
 	SetReadMouseCurorAsStandard();
 
-	SetClearColor(mWindowClearColor);
+	SetClearColor();
 
 }
 
@@ -585,6 +576,7 @@ void AncientArcher::resetEngine() noexcept
 	mCurrentFrameTime = 0.f;
 	mDeltaTime = 0.f;
 
+	Display::SetClearColor();
 }
 
 void AncientArcher::__setProjectionMatToAllShadersFromFirstCam_hack()

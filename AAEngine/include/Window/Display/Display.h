@@ -52,7 +52,7 @@ public:
 	int GetCursorMode() const noexcept;
 	MouseReporting GetMouseReportingMode() const noexcept;
 
-	void SetClearColor(glm::vec3 color);
+	void SetClearColor(glm::vec3 color = glm::vec3(.35f, .15f, .35f));
 
 	void SetCursorToVisible() noexcept;   // to use the os pointer
 	void SetCursorToHidden() noexcept;    // for hidden but still there (render your own pointer)

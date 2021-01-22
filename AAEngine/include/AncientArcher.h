@@ -139,7 +139,6 @@ private:
 	void teardown();
 
 	// helpers
-	glm::vec3          mWindowClearColor            = glm::vec3(0.35f, 0.15f, 0.35f);
 	RenderingFramework mPreferredRenderingFramework = RenderingFramework::OPENGL;
 	void initEngine();
 	void resetEngine() noexcept;
