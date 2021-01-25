@@ -28,17 +28,11 @@ static void setDirectionalLight(const DirectionalLight& light, const OGLShader& 
 static void setPointLight(const PointLight& light, const int which, const OGLShader& shader) {
 	if (which >= MAXPOINTLIGHTS)
 	{
-#ifdef _DEBUG
-		std::cout << "couldn't set PointLight light, too many\n";
-#endif
 		return;
 	}
 
 	if (which >= NUM_POINT_LIGHTS)
 	{
-#ifdef _DEBUG
-		std::cout << "couldn't set PointLight light, not enough in use\n";
-#endif
 		return;
 	}
 
@@ -88,17 +82,11 @@ static void setPointLight(const PointLight& light, const int which, const OGLSha
 static void setSpotLight(const SpotLight& light, const int which, const OGLShader& shader) {
 	if (which >= MAXSPOTLIGHTS)
 	{
-#ifdef _DEBUG
-		std::cout << "couldn't set SpotLight light, too many\n";
-#endif
 		return;
 	}
 
 	if (which >= NUM_SPOT_LIGHTS)
 	{
-#ifdef _DEBUG
-		std::cout << "couldn't set SpotLight light, not enough in use\n";
-#endif
 		return;
 	}
 

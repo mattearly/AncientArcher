@@ -130,9 +130,6 @@ int SceneLoader::loadGameObjectWithAssimp(std::vector<MeshDrawInfo>& out_MeshInf
 	const aiScene* scene = importer.ReadFile(path, post_processing_flags);
 	if (!scene || scene->mFlags & AI_SCENE_FLAGS_INCOMPLETE || !scene->mRootNode)
 	{
-#ifdef _DEBUG
-		//std::cout << "ERROR::ASSIMP::" << importer.GetErrorString() << '\n';
-#endif
 		return -1;  // failed to load scene
 	}
 
@@ -151,13 +148,6 @@ int SceneLoader::loadGameObjectWithAssimp(std::vector<MeshDrawInfo>& out_MeshInf
 		static_cast<std::basic_string<char,
 		std::char_traits<char>,
 		std::allocator<char>>::size_type>(the_last_dot) - the_last_slash);  // get the name of the file
-
-//#ifdef _DEBUG
-//#include <iostream>
-//	std::cout << "mModelDir = " << mModelDir << '\n';
-//	std::cout << "mModelFileExtension = " << mModelFileExtension << '\n';
-//	std::cout << "mModelFileName = " << mModelFileName << '\n';
-//#endif
 
 	processNode(scene->mRootNode, scene, out_MeshInfo);
 
@@ -238,56 +228,6 @@ MeshDrawInfo SceneLoader::processMesh(aiMesh* mesh, const aiScene* scene, aiMatr
 		for (auto& newtexture : albedo_textures)
 			all_loaded_textures.insert(all_loaded_textures.end(), newtexture);
 	}
-//#ifdef _DEBUG
-//	else
-//	{
-//		std::cout << "failed to load aiTextureType_DIFFUSE\n";
-//	}
-//#endif
-
-	//std::vector<TextureInfo> specMaps;
-	//loadMaterialTextures(material, aiTextureType_SPECULAR, "specular", specMaps);
-	//loadedTextures.insert(loadedTextures.end(), specMaps.begin(), specMaps.end());
-
-	//std::vector<TextureInfo> normMaps;
-	//loadMaterialTextures(material, aiTextureType_HEIGHT, "normal", normMaps);
-	//loadedTextures.insert(loadedTextures.end(), normMaps.begin(), normMaps.end());
-
-	//std::vector<TextureInfo> heightMaps;
-	//loadMaterialTextures(material, aiTextureType_AMBIENT, "height", heightMaps);
-	//loadedTextures.insert(loadedTextures.end(), heightMaps.begin(), heightMaps.end());
-
-	//std::vector<TextureInfo> colorMaps;
-	//loadMaterialTextures(material, aiTextureType_BASE_COLOR, "base color", colorMaps);
-	//loadedTextures.insert(loadedTextures.end(), colorMaps.begin(), colorMaps.end());
-
-	//float shine(1);
-	//if (AI_SUCCESS != aiGetMaterialFloat(material, AI_MATKEY_SHININESS, &shine))
-	//{
-	//	shine = .5f;
-	//	std::cout << "didn't get material shininess, set to .5f\n";
-	//}
-	//else  // success
-	//{
-	//	std::cout << "material shininess found! set to: " << shine << '\n';
-	//}
-
-	//aiColor4D spec;
-	//glm::vec4 specular(1);
-	//if (AI_SUCCESS != aiGetMaterialColor(material, AI_MATKEY_COLOR_SPECULAR, &spec))
-	//{
-	//	specular = glm::vec4(1.f);
-	//	std::cout << "didn't get material specular, set to 1,1,1,1\n";  //debug
-	//}
-	//else  // success
-	//{
-	//	specular = SceneLoader::aiColor4_to_glmVec4(spec);
-	//	std::cout << "material specular found! set to "
-	//		<< specular.r << ','
-	//		<< specular.g << ','
-	//		<< specular.b << ','
-	//		<< specular.a << '\n';  // debug
-	//}
 
 	uint32_t VAO, VBO, EBO;
 
@@ -328,22 +268,12 @@ int SceneLoader::loadMaterialTextures(const aiScene* scn, const aiMaterial* mat,
 		switch (tex_success)
 		{
 		case aiReturn_SUCCESS:
-//#ifdef _DEBUG
-//			std::cout << "Attempting Texture on given path: " << aiTmpStr.C_Str() << '\n';
-//#endif
 			break;
 		case aiReturn_FAILURE:
-//#ifdef _DEBUG
-//			std::cout << "failure getting texture on material tex num " << i << ' ' << aiTmpStr.C_Str() << '\n';
-//#endif
 			return -1;
 			break;
 		case aiReturn_OUTOFMEMORY:
-
-//#ifdef _DEBUG
-//			std::cout << "oom getting texture on material tex num " << i << ' ' << aiTmpStr.C_Str() << '\n';
-//#endif
-			return -1;
+			return -2;
 			break;
 		}
 
@@ -354,9 +284,6 @@ int SceneLoader::loadMaterialTextures(const aiScene* scn, const aiMaterial* mat,
 		{
 			//returned pointer is not null, read texture from memory
 			std::string embedded_filename = ai_embedded_texture->mFilename.C_Str();
-//#ifdef _DEBUG
-//			std::cout << "found embedded texture: " << embedded_filename << '\n';
-//#endif
 			for (uint32_t j = 0; j < mTexturesLoaded.size(); ++j)
 			{
 				for (const auto& p : mTexturesLoaded)
@@ -365,9 +292,6 @@ int SceneLoader::loadMaterialTextures(const aiScene* scn, const aiMaterial* mat,
 					{
 						// texture already loaded, just give the mesh the details
 						out_texInfo.insert(out_texInfo.end(), { p.accessId, p.type });
-//#ifdef _DEBUG
-//						std::cout << "Embedded Texture [" << p.path.data() << "] already loaded, using it.\n";
-//#endif
 						return 0;  // success
 					}
 				}
@@ -375,69 +299,7 @@ int SceneLoader::loadMaterialTextures(const aiScene* scn, const aiMaterial* mat,
 
 			// ok, load it
 			TextureInfo a_new_texture_info;
-			//
-			//			// try literal given path
-			//#ifdef _DEBUG
-			//			std::cout << "embedded literal path load attempt: " << embedded_filename << '\n';
-			//#endif
-			//			a_new_texture_info.accessId = TexLoader::getInstance()->textureFromFile((embedded_filename).c_str());
-			//			if (a_new_texture_info.accessId != 0)
-			//			{
-			//				// add the new one to our list of loaded textures
-			//				a_new_texture_info.path = embedded_filename;
-			//				a_new_texture_info.type = typeName;
-			//				mTexturesLoaded.push_back(a_new_texture_info);
-			//
-			//				// to return for draw info on this current mesh
-			//				out_texInfo.insert(out_texInfo.end(), { a_new_texture_info.accessId, a_new_texture_info.type });
-			//				return 0; // success!
-			//			}
-			//
-			//			// try embedded path starting from full modeldir
-			//			{
-			//				//std::string hash_fbm_path = mModelDir + embedded_path.substr(embedded_path.find_last_of("/\\") + 1);
-			//				std::string full_path = mModelDir + mModelFileName + '.' + mModelFileExtension + '/' + embedded_filename;
-			//#ifdef _DEBUG
-			//				std::cout << "trying full path embedded load at: " << full_path << '\n';
-			//#endif
-			//				a_new_texture_info.accessId = TexLoader::getInstance()->textureFromFile((full_path).c_str());
-			//				if (a_new_texture_info.accessId != 0)
-			//				{
-			//					// add the new one to our list of loaded textures
-			//					a_new_texture_info.path = full_path;
-			//					a_new_texture_info.type = typeName;
-			//					mTexturesLoaded.push_back(a_new_texture_info);
-			//
-			//					// to return for draw info on this current mesh
-			//					out_texInfo.insert(out_texInfo.end(), { a_new_texture_info.accessId, a_new_texture_info.type });
-			//					return 0; // success!
-			//				}
-			//			}
-			//
-			//			// try hacked paths  ///"/skins_eb29d20b-bfff-4e86-8516-2afd41512743.fbm/Ch18_1001_Diffuse.png"
-			//			{
-			//				std::string hacked_path = mModelDir + mModelFileName + '.' + mModelFileExtension + "/skins_eb29d20b-bfff-4e86-8516-2afd41512743.fbm/Ch18_1001_Diffuse.png";
-			//#ifdef _DEBUG
-			//				std::cout << "trying hacked path embedded load at: " << hacked_path << '\n';
-			//#endif
-			//				a_new_texture_info.accessId = TexLoader::getInstance()->textureFromFile((hacked_path).c_str());
-			//				if (a_new_texture_info.accessId != 0)
-			//				{
-			//					// add the new one to our list of loaded textures
-			//					a_new_texture_info.path = hacked_path;
-			//					a_new_texture_info.type = typeName;
-			//					mTexturesLoaded.push_back(a_new_texture_info);
-			//
-			//					// to return for draw info on this current mesh
-			//					out_texInfo.insert(out_texInfo.end(), { a_new_texture_info.accessId, a_new_texture_info.type });
-			//					return 0; // success!
-			//				}
-			//			}
 
-//
-//#ifdef _DEBUG
-//			std::cout << "Embedded Texture from data attempt: \n";
-//#endif
 			a_new_texture_info.accessId = TexLoader::textureFromData(ai_embedded_texture);
 			if (a_new_texture_info.accessId != 0)
 			{
@@ -475,9 +337,6 @@ int SceneLoader::loadMaterialTextures(const aiScene* scn, const aiMaterial* mat,
 					{
 						// texture already loaded, just give the mesh the details
 						out_texInfo.insert(out_texInfo.end(), { p.accessId, p.type });
-//#ifdef _DEBUG
-//						std::cout << "Texture [" << p.path.data() << "] already loaded, using it.\n";
-//#endif
 						return 0;  // success
 					}
 				}
@@ -485,9 +344,6 @@ int SceneLoader::loadMaterialTextures(const aiScene* scn, const aiMaterial* mat,
 
 			TextureInfo a_new_texture_info;
 
-//#ifdef _DEBUG
-//			std::cout << " - TexLoad try 1 (given path): " << tex_path1_literal << '\n';
-//#endif
 			a_new_texture_info.accessId = TexLoader::textureFromFile((tex_path1_literal).c_str());
 			if (a_new_texture_info.accessId != 0)
 			{
@@ -500,9 +356,7 @@ int SceneLoader::loadMaterialTextures(const aiScene* scn, const aiMaterial* mat,
 				out_texInfo.insert(out_texInfo.end(), { a_new_texture_info.accessId, a_new_texture_info.type });
 				return 0; // success!
 			}
-//#ifdef _DEBUG
-//			std::cout << " - TexLoad try 2 (full append): " << tex_path2_loadedFromFullAppend << '\n';
-//#endif
+
 			a_new_texture_info.accessId = TexLoader::textureFromFile(tex_path2_loadedFromFullAppend.c_str());
 			if (a_new_texture_info.accessId != 0)
 			{
@@ -515,9 +369,7 @@ int SceneLoader::loadMaterialTextures(const aiScene* scn, const aiMaterial* mat,
 				out_texInfo.insert(out_texInfo.end(), { a_new_texture_info.accessId, a_new_texture_info.type });
 				return 0; // success!
 			}
-//#ifdef _DEBUG
-//			std::cout << " - TexLoad try 3 (end append): " << tex_path3_loadedFromEndAppend << '\n';
-//#endif
+
 			a_new_texture_info.accessId = TexLoader::textureFromFile(tex_path3_loadedFromEndAppend.c_str());
 			if (a_new_texture_info.accessId != 0)
 			{
