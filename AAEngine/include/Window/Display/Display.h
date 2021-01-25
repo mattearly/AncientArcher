@@ -72,10 +72,10 @@ public:
 	void ToggleFullscreen() noexcept;
 
 	void ReshapeWindowHandler(int width, int height);
+	void SetupReshapeCallback() noexcept;
 
 protected:
 
-	void SetupReshapeCallback() noexcept;
 	void SetupScrollWheelCallback() noexcept;
 
 	void pullButtonStateEvents();
@@ -99,7 +99,9 @@ protected:
 	bool isTryingToClose() noexcept;
 	bool isFPP() noexcept;
 
-private:	
+private:
+
+	RenderingFramework mRenderingType;
 
 	int mLastxPos = 0, mLastyPos = 0;
 	int mLastWidth = 1024, mLastHeight = 768;

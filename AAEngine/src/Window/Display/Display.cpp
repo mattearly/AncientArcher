@@ -172,7 +172,16 @@ void Display::SetupReshapeCallback() noexcept
 
 void Display::ReshapeWindowHandler(int width, int height)
 {
-	OGLGraphics::SetViewportSize(0, 0, width, height);
+	if (mRenderingType == RenderingFramework::OPENGL) {
+		OGLGraphics::SetViewportSize(0, 0, width, height);
+	}
+	else if (mRenderingType == RenderingFramework::D3D) {
+		//todo
+	}
+	else if (mRenderingType == RenderingFramework::VULKAN) {
+		// 
+	}
+
 	externWindowSizeDirty = true;  // update cam view matrix before next render
 }
 
@@ -206,7 +215,7 @@ void Display::closeWindow() noexcept
 	glfwSetWindowShouldClose(mWindow, 1);
 }
 
-void Display::initDisplayFromEngine(RenderingFramework rf)
+void Display::initDisplayFromEngine(RenderingFramework preferred_rendering_framework)
 {
 	// set an error calback in case of failure we at least know
 	static auto glfw_error_callback = [](int e, const char* msg) {
@@ -217,7 +226,7 @@ void Display::initDisplayFromEngine(RenderingFramework rf)
 
 	glfwInit();
 
-	if (rf == RenderingFramework::OPENGL)
+	if (preferred_rendering_framework == RenderingFramework::OPENGL)
 	{
 		// with core profile, you have to create and manage your own VAO's, no default 
 		glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
@@ -225,37 +234,37 @@ void Display::initDisplayFromEngine(RenderingFramework rf)
 		glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);
 #endif
 
-	// try more modern versions of OpenGL, don't use older than 3.3
-	std::queue<std::pair<int, int> > try_versions;
-	try_versions.emplace(std::pair<int, int>(4, 6));
-	try_versions.emplace(std::pair<int, int>(4, 5));
-	try_versions.emplace(std::pair<int, int>(4, 4));
-	try_versions.emplace(std::pair<int, int>(4, 3));
-	try_versions.emplace(std::pair<int, int>(4, 2));
-	try_versions.emplace(std::pair<int, int>(4, 1));
-	try_versions.emplace(std::pair<int, int>(4, 0));
-	try_versions.emplace(std::pair<int, int>(3, 3));
-	//try_versions.emplace(std::pair<int, int>(3, 2));
-	//try_versions.emplace(std::pair<int, int>(3, 1));
-	//try_versions.emplace(std::pair<int, int>(3, 0));
-	//try_versions.emplace(std::pair<int, int>(2, 1));
-	//try_versions.emplace(std::pair<int, int>(2, 0));
-	//try_versions.emplace(std::pair<int, int>(1, 5));
-	//try_versions.emplace(std::pair<int, int>(1, 4));
-	//try_versions.emplace(std::pair<int, int>(1, 3));
-	//try_versions.emplace(std::pair<int, int>(1, 2));  // there is also a 1.2.1
-	//try_versions.emplace(std::pair<int, int>(1, 1));
-	//try_versions.emplace(std::pair<int, int>(1, 0));
+		// try more modern versions of OpenGL, don't use older than 3.3
+		std::queue<std::pair<int, int> > try_versions;
+		try_versions.emplace(std::pair<int, int>(4, 6));
+		try_versions.emplace(std::pair<int, int>(4, 5));
+		try_versions.emplace(std::pair<int, int>(4, 4));
+		try_versions.emplace(std::pair<int, int>(4, 3));
+		try_versions.emplace(std::pair<int, int>(4, 2));
+		try_versions.emplace(std::pair<int, int>(4, 1));
+		try_versions.emplace(std::pair<int, int>(4, 0));
+		try_versions.emplace(std::pair<int, int>(3, 3));
+		//try_versions.emplace(std::pair<int, int>(3, 2));
+		//try_versions.emplace(std::pair<int, int>(3, 1));
+		//try_versions.emplace(std::pair<int, int>(3, 0));
+		//try_versions.emplace(std::pair<int, int>(2, 1));
+		//try_versions.emplace(std::pair<int, int>(2, 0));
+		//try_versions.emplace(std::pair<int, int>(1, 5));
+		//try_versions.emplace(std::pair<int, int>(1, 4));
+		//try_versions.emplace(std::pair<int, int>(1, 3));
+		//try_versions.emplace(std::pair<int, int>(1, 2));  // there is also a 1.2.1
+		//try_versions.emplace(std::pair<int, int>(1, 1));
+		//try_versions.emplace(std::pair<int, int>(1, 0));
 
-	while (!mWindow)
-	{
-		std::pair<int, int> ver = try_versions.front();
-		glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, ver.first);
-		glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, ver.second);
-		mWindow = glfwCreateWindow(mLastWidth, mLastHeight, "AncientArcher", nullptr, nullptr);
-		if (!mWindow)
-			try_versions.pop();
-	}
+		while (!mWindow)
+		{
+			std::pair<int, int> ver = try_versions.front();
+			glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, ver.first);
+			glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, ver.second);
+			mWindow = glfwCreateWindow(mLastWidth, mLastHeight, "AncientArcher", nullptr, nullptr);
+			if (!mWindow)
+				try_versions.pop();
+		}
 	}
 
 	if (!mWindow)
@@ -263,7 +272,7 @@ void Display::initDisplayFromEngine(RenderingFramework rf)
 
 	glfwMakeContextCurrent(mWindow);
 
-	if (rf == RenderingFramework::OPENGL)
+	if (preferred_rendering_framework == RenderingFramework::OPENGL)
 	{
 		if (!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress))  // tie context to glad opengl funcs
 		{
