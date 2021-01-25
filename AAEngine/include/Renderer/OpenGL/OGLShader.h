@@ -72,6 +72,8 @@ public:
 
 	int getAndCheckShaderUniform(const std::string& name) const;
 
+	void deleteShader();
+
 private:
 	OGLShader() = delete;
 

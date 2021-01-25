@@ -542,15 +542,22 @@ void AncientArcher::render()
 
 void AncientArcher::teardown()
 {
+	// run user preferred functions first
 	for (auto& oTD : onTearDown)
 	{
 		oTD.second();
 	}
+	// delete all the meshes and textures from GPU memory
 	for (const auto& model : mGameObjects)
 	{
 		SceneLoader::Get()->unloadGameObject(model.mMeshes);
 	}
-}
+	// delete all the shaders from GPU
+	for (auto& shader : mShaders)
+	{
+		shader.deleteShader();
+	}
+ }
 
 
 void AncientArcher::resetEngine() noexcept

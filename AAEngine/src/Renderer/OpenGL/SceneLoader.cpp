@@ -158,10 +158,26 @@ void SceneLoader::unloadGameObject(const std::vector<MeshDrawInfo>& toUnload)
 {
 	for (const auto& meshIt : toUnload)
 	{
+		// delete the mesh
 		glDeleteBuffers(1, &meshIt.vao);
+
+		// go through textures
 		for (const auto& texIt : meshIt.textureDrawIds)
 		{
+			// delete the textures
 			glDeleteTextures(1, &texIt.first);
+
+			// update list of loaded textures by removing unloaded textures
+			for (auto texs = mTexturesLoaded.begin(); texs != mTexturesLoaded.end(); )
+			{
+				if (texs->path == texIt.second)
+				{
+					texs = mTexturesLoaded.erase(texs);
+				} else {
+					++texs;
+				}
+			}
+
 		}
 	}
 }
