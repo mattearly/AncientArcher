@@ -91,15 +91,32 @@ void OGLGraphics::Render(const std::vector<MeshDrawInfo>& meshes, const std::vec
 	// reset to first texture
 	glActiveTexture(GL_TEXTURE0);
 }
+
+/// <summary>
+/// Sets the size of the OpenGL viewport
+/// </summary>
+/// <param name="x">starting loc</param>
+/// <param name="y">starting loc</param>
+/// <param name="w">width</param>
+/// <param name="h">height</param>
 void OGLGraphics::SetViewportSize(int x, int y, int w, int h)
 {
 	glViewport(x, y, w, h);
 }
-void OGLGraphics::SetDefaultBackgroundColor(glm::vec3 color) noexcept
+
+/// <summary>
+/// sets the color of the opengl viewport if nothing is drawn
+/// </summary>
+/// <param name="vec3">rgb floats between 0 and 1</param>
+/// <returns></returns>
+void OGLGraphics::SetViewportClearColor(glm::vec3 color) noexcept
 {
 	glClearColor(color.x, color.y, color.z, 0.0f);
 }
 
+/// <summary>
+/// pre-render function
+/// </summary>
 void OGLGraphics::ClearScreen()  noexcept
 {
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);

@@ -48,7 +48,7 @@ private:
 
 	static void Render(const std::vector<MeshDrawInfo>& meshes, const std::vector<InstanceDetails>& details, const OGLShader& modelShader);
 	static void SetViewportSize(int x, int y, int w, int h);
-	static void SetDefaultBackgroundColor(glm::vec3 color) noexcept;
+	static void SetViewportClearColor(glm::vec3 color) noexcept;
 	static void ClearScreen() noexcept;
 
 };
