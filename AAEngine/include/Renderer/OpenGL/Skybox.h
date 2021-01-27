@@ -65,6 +65,5 @@ private:
 	unsigned int mSkyboxVAO = 0;
 	unsigned int cubemapTexture = 0;
 	std::unique_ptr<OGLShader> skyboxShader;
-	//std::shared_ptr<Camera>& mCamera;
 };
 }  // end namespace AA

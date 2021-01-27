@@ -35,13 +35,13 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #include <glm/glm.hpp>
 #include "../../../include/Renderer/OpenGL/Skybox.h"
 #include "../../../include/Renderer/OpenGL/OGLGraphics.h"
-#include "../../../include/Renderer/OpenGL/TexLoader.h"
+#include "../../../include/Settings/Settings.h"
+#include <stb_image.h>
 
 namespace AA
 {
 /**
  * Custom skymap constructor. Loads up the files in the path and skymap shader.
- *
  * @param incomingSkymapFiles  A six png image cube map texture. The order must be: "right", "left", "up", "down", "front", "back"
  */
 Skybox::Skybox(std::vector<std::string> incomingSkymapFiles, bool useInternalShaders, const char* vertpath, const char* fragpath)
@@ -79,7 +79,31 @@ Skybox::Skybox(std::vector<std::string> incomingSkymapFiles, bool useInternalSha
 		skyboxShader = std::make_unique<OGLShader>(vertpath, fragpath);
 	}
 	loadSkybox();
-	cubemapTexture = TexLoader::loadCubeTexture(incomingSkymapFiles);
+
+	if (incomingSkymapFiles.size() != 6)
+	{
+		// wrong size for a cubemap, i dunno use a default one or something
+	}
+	else  // is size 6, load and use
+	{
+		int width, height, nrChannel;
+		stbi_set_flip_vertically_on_load(0); // tell stb_image.h to not flip loaded texture's on the y-axis.
+		std::vector<unsigned char*> data;
+		data.resize(6);
+		for (auto i = 0; i < 6; ++i)
+			data[i] = stbi_load(incomingSkymapFiles[i].c_str(), &width, &height, &nrChannel, STBI_rgb);
+		switch (Settings::Get()->GetOptions().renderer)
+		{
+			case RenderingFramework::OPENGL:
+				cubemapTexture = OGLGraphics::UploadCubeMapTex(data, width, height);
+				break;
+		}
+
+		
+	}
+
+	//cubemapTexture = TexLoader::loadCubeTexture(incomingSkymapFiles);
+	
 	skyboxShader->use();
 	skyboxShader->setInt("skybox", 0);
 	//loadProjectionMatrix();  //does on first render

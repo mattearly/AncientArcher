@@ -38,9 +38,11 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #include <glad/glad.h>
 #include <glm/glm.hpp>
 #include <glm/gtc/quaternion.hpp>
-#include "../../../include/Renderer/OpenGL/SceneLoader.h"
-#include "../../../include/Renderer/Vertex.h"
-#include "../../../include/Renderer/OpenGL/TexLoader.h"
+#include "../../include/Renderer/SceneLoader.h"
+#include "../../include/Renderer/OpenGL/OGLGraphics.h"
+#include "../../include/Renderer/Vertex.h"
+#include "../../include/Settings/Settings.h"
+#include <stb_image.h>
 
 namespace AA
 {
@@ -54,7 +56,6 @@ SceneLoader::SceneLoader()
 	mModelDir = "";
 	mModelFileName = "";
 	mModelFileName = "";
-	mTexturesLoaded.clear();
 }
 
 glm::mat4 SceneLoader::aiMat4_to_glmMat4(const aiMatrix4x4& inMat)
@@ -110,7 +111,7 @@ glm::quat SceneLoader::aiQuat_to_glmQuat(const aiQuaternion& inQuat) noexcept
 	return outQuat;
 }
 
-int SceneLoader::loadGameObjectWithAssimp(std::vector<MeshDrawInfo>& out_MeshInfo, std::string path)
+int SceneLoader::LoadGameObjectFromFile(std::vector<MeshDrawInfo>& out_MeshInfo, std::string path)
 {
 	Assimp::Importer importer;
 	int post_processing_flags = 0;
@@ -154,30 +155,37 @@ int SceneLoader::loadGameObjectWithAssimp(std::vector<MeshDrawInfo>& out_MeshInf
 	return 0;
 }
 
-void SceneLoader::unloadGameObject(const std::vector<MeshDrawInfo>& toUnload)
+void SceneLoader::UnloadGameObject(const std::vector<MeshDrawInfo>& toUnload)
 {
 	for (const auto& meshIt : toUnload)
 	{
-		// delete the mesh
-		glDeleteBuffers(1, &meshIt.vao);
-
-		// go through textures
-		for (const auto& texIt : meshIt.textureDrawIds)
+		switch (Settings::Get()->GetOptions().renderer)
 		{
-			// delete the textures
-			glDeleteTextures(1, &texIt.first);
-
-			// update list of loaded textures by removing unloaded textures
-			for (auto texs = mTexturesLoaded.begin(); texs != mTexturesLoaded.end(); )
+		case RenderingFramework::OPENGL:
+			OGLGraphics::DeleteMesh(meshIt.vao);
+			for (const auto& texIt : meshIt.textureDrawIds)
 			{
-				if (texs->path == texIt.second)
+				for (auto loaded_tex = mLoadedTextures.begin(); loaded_tex != mLoadedTextures.end(); loaded_tex++)
 				{
-					texs = mTexturesLoaded.erase(texs);
-				} else {
-					++texs;
+					if (texIt.first == loaded_tex->accessId)
+					{
+						loaded_tex->ref_count--;
+						if (loaded_tex->ref_count == 0)
+						{
+							OGLGraphics::DeleteTex(loaded_tex->accessId);
+						}
+					}
 				}
-			}
 
+				// sync textures
+				mLoadedTextures.remove_if([](const TextureInfo& ti) {
+					if (ti.ref_count == 0)
+						return true;
+					else
+						return false;
+					});
+			}
+			break;
 		}
 	}
 }
@@ -196,9 +204,6 @@ void SceneLoader::processNode(aiNode* node, const aiScene* scene, std::vector<Me
 	}
 }
 
-///
-/// Get all the vertex Data for the incoming mesh and scene
-///
 MeshDrawInfo SceneLoader::processMesh(aiMesh* mesh, const aiScene* scene, aiMatrix4x4* trans)
 {
 	std::vector<Vertex> loaded_vertices;
@@ -208,15 +213,12 @@ MeshDrawInfo SceneLoader::processMesh(aiMesh* mesh, const aiScene* scene, aiMatr
 	for (uint32_t i = 0; i < num_of_vertices_on_mesh; ++i)
 	{
 		const glm::vec3 temp_position = SceneLoader::aiVec3_to_glmVec3(mesh->mVertices[i]);
-
 		glm::vec2 temp_tex_coords(0);
 		if (mesh->mTextureCoords[0] != nullptr)
 		{
 			temp_tex_coords = glm::vec2(mesh->mTextureCoords[0][i].x, mesh->mTextureCoords[0][i].y);
 		}
-
 		const glm::vec3 temp_norm = SceneLoader::aiVec3_to_glmVec3(mesh->mNormals[i]);
-
 		loaded_vertices.emplace_back(Vertex(temp_position, temp_tex_coords, temp_norm));
 	}
 
@@ -233,9 +235,7 @@ MeshDrawInfo SceneLoader::processMesh(aiMesh* mesh, const aiScene* scene, aiMatr
 
 	// get the materials
 	const aiMaterial* material = scene->mMaterials[mesh->mMaterialIndex];
-
 	std::unordered_map<uint32_t, std::string> all_loaded_textures;
-
 	std::unordered_map<uint32_t, std::string> albedo_textures;
 
 	// if succeeds in loading texture add it to loaded texutres
@@ -245,42 +245,31 @@ MeshDrawInfo SceneLoader::processMesh(aiMesh* mesh, const aiScene* scene, aiMatr
 			all_loaded_textures.insert(all_loaded_textures.end(), newtexture);
 	}
 
-	uint32_t VAO, VBO, EBO;
-
-	glGenBuffers(1, &VBO);
-
-	glGenVertexArrays(1, &VAO);
-	glBindVertexArray(VAO);
-	glBindBuffer(GL_ARRAY_BUFFER, VBO);
-	glBufferData(GL_ARRAY_BUFFER, loaded_vertices.size() * sizeof(Vertex), &loaded_vertices[0], GL_STATIC_DRAW);
-
-	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), (const void*)offsetof(Vertex, Position));
-	glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, sizeof(Vertex), (const void*)offsetof(Vertex, TexCoords));
-	glVertexAttribPointer(2, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), (const void*)offsetof(Vertex, Normal));
-
-	glEnableVertexAttribArray(0);
-	glEnableVertexAttribArray(1);
-	glEnableVertexAttribArray(2);
-
-	glGenBuffers(1, &EBO);
-	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);
-	glBufferData(GL_ELEMENT_ARRAY_BUFFER, loadedElements.size() * sizeof(uint32_t), &loadedElements[0], GL_STATIC_DRAW);
-
-	glBindVertexArray(0);
-
-	glDeleteBuffers(1, &VBO);
-	glDeleteBuffers(1, &EBO);
-
-	return MeshDrawInfo(VAO, (uint32_t)loadedElements.size(), all_loaded_textures, SceneLoader::aiMat4_to_glmMat4(*trans));
+	uint32_t vao = 0;
+	switch (Settings::Get()->GetOptions().renderer)
+	{
+	case RenderingFramework::OPENGL:
+		vao = OGLGraphics::UploadMesh(loaded_vertices, loadedElements);
+		break;
+	}
+	return MeshDrawInfo(vao, (uint32_t)loadedElements.size(), all_loaded_textures, SceneLoader::aiMat4_to_glmMat4(*trans));
 }
 
+/// <summary>
+/// handles loading a texture or reusing an already loaded one. increments mTexturesLoaded textures if they were reused
+/// </summary>
+/// <param name="scn">scene being loaded</param>
+/// <param name="mat">material being loaded</param>
+/// <param name="type">type of the material to look for</param>
+/// <param name="typeName">type of texture (albedo, etc)</param>
+/// <param name="out_texInfo">populate if successful</param>
+/// <returns>0 for success, all negative returns are error</returns>
 int SceneLoader::loadMaterialTextures(const aiScene* scn, const aiMaterial* mat, aiTextureType type, std::string typeName, std::unordered_map<uint32_t, std::string>& out_texInfo)
 {
 	for (uint32_t i = 0; i < mat->GetTextureCount(type); ++i)
 	{
 		aiString aiTmpStr;
 		auto tex_success = mat->GetTexture(type, i, &aiTmpStr);
-
 		switch (tex_success)
 		{
 		case aiReturn_SUCCESS:
@@ -292,117 +281,128 @@ int SceneLoader::loadMaterialTextures(const aiScene* scn, const aiMaterial* mat,
 			return -2;
 			break;
 		}
-
-
 		// try from embedded
 		const aiTexture* ai_embedded_texture = scn->GetEmbeddedTexture(aiTmpStr.C_Str());
+		// read texture from memory if above was successful
 		if (ai_embedded_texture)
 		{
-			//returned pointer is not null, read texture from memory
 			std::string embedded_filename = ai_embedded_texture->mFilename.C_Str();
-			for (uint32_t j = 0; j < mTexturesLoaded.size(); ++j)
+			for (auto& available_texture : mLoadedTextures)
 			{
-				for (const auto& p : mTexturesLoaded)
+				// if texture path already loaded, just give the mesh the details
+				if (available_texture.path.data() == embedded_filename)
 				{
-					if (p.path.data() == embedded_filename)
-					{
-						// texture already loaded, just give the mesh the details
-						out_texInfo.insert(out_texInfo.end(), { p.accessId, p.type });
-						return 0;  // success
-					}
+					out_texInfo.insert(out_texInfo.end(), { available_texture.accessId, available_texture.type });
+					available_texture.ref_count++;
+					//return 0;  // success
+					break;
 				}
 			}
-
-			// ok, load it
+			// not already loaded, ok lets load it
 			TextureInfo a_new_texture_info;
-
-			a_new_texture_info.accessId = TexLoader::textureFromData(ai_embedded_texture);
-			if (a_new_texture_info.accessId != 0)
+			bool compressed = false;
+			if (ai_embedded_texture->mHeight == 0)
 			{
-				// add the new one to our list of loaded textures
-				a_new_texture_info.path = embedded_filename;
-				a_new_texture_info.type = typeName;
-				mTexturesLoaded.push_back(a_new_texture_info);
-
-				// to return for draw info on this current mesh
-				out_texInfo.insert(out_texInfo.end(), { a_new_texture_info.accessId, a_new_texture_info.type });
-				return 0; // success!
+				compressed = true;
 			}
-
-			return -1; // failed to get embedded texture
-
+			int width, height, nrComponents;
+#ifdef D3D
+			stbi_set_flip_vertically_on_load(0);
+#else
+			stbi_set_flip_vertically_on_load(1);
+#endif
+			int texture_size = ai_embedded_texture->mWidth * std::max(ai_embedded_texture->mHeight, 1u);
+			unsigned char* data = stbi_load_from_memory(reinterpret_cast<unsigned char*>(ai_embedded_texture->pcData), texture_size, &width, &height, &nrComponents, STBI_rgb);
+			if (data)
+			{
+				switch (Settings::Get()->GetOptions().renderer)
+				{
+				case RenderingFramework::OPENGL:
+					a_new_texture_info.accessId = OGLGraphics::Upload2DTex(data, width, height);
+					if (a_new_texture_info.accessId != 0)
+					{
+						// add the new one to our list of loaded textures
+						a_new_texture_info.path = embedded_filename;
+						a_new_texture_info.type = typeName;
+						// update our list of loaded textures
+						mLoadedTextures.push_front(a_new_texture_info);
+						// to return for draw info on this current mesh
+						out_texInfo.insert(out_texInfo.end(), { a_new_texture_info.accessId, a_new_texture_info.type });
+						//return 0; // success!
+					}
+					break;
+				}
+			}
+			//return -1; // failed to get embedded texture
 		}
-		//regular file, check if it exists and read it
-		else
+		else  //regular file, check if it exists and read it
 		{
-
-			// try 3 paths
+			std::vector<std::string> potential_paths;
+			// the 3 paths to try
 			// 1. the literal given path (will probably fail)
+			potential_paths.emplace_back(aiTmpStr.C_Str());
 			// 2. the path based on where the model was loaded from (might work)
+			std::string literal_path = mModelDir + aiTmpStr.C_Str();
+			potential_paths.emplace_back(literal_path);
 			// 3. the last part of the given path (after '/' or '\\') appended to the path based on were the model was loaded from
-			std::string tex_path1_literal = aiTmpStr.C_Str();
-			std::string tex_path2_loadedFromFullAppend = mModelDir + tex_path1_literal;
-			std::string tex_path3_loadedFromEndAppend = mModelDir + tex_path1_literal.substr(tex_path1_literal.find_last_of("/\\") + 1);  // all the way to the end
+			std::string from_model_path = mModelDir + literal_path.substr(literal_path.find_last_of("/\\") + 1);  // all the way to the end
+			potential_paths.emplace_back(from_model_path);
 			// routine to see if we already have this texture loaded
-			bool alreadyLoaded = false;
-			for (uint32_t j = 0; j < mTexturesLoaded.size(); ++j)
+			for (auto& available_texture : mLoadedTextures)
 			{
-				for (const auto& p : mTexturesLoaded)
+				for (const auto& a_path : potential_paths)
 				{
-					if (p.path.data() == tex_path1_literal || p.path.data() == tex_path2_loadedFromFullAppend || p.path.data() == tex_path3_loadedFromEndAppend)
+					if (available_texture.path.data() == a_path)
 					{
 						// texture already loaded, just give the mesh the details
-						out_texInfo.insert(out_texInfo.end(), { p.accessId, p.type });
+						out_texInfo.insert(out_texInfo.end(), { available_texture.accessId, available_texture.type });
+						available_texture.ref_count++;
 						return 0;  // success
 					}
 				}
 			}
-
+			// wasn't already loaded, lets try to load it
 			TextureInfo a_new_texture_info;
-
-			a_new_texture_info.accessId = TexLoader::textureFromFile((tex_path1_literal).c_str());
-			if (a_new_texture_info.accessId != 0)
+			int width, height, nrComponents;
+#ifdef D3D
+			stbi_set_flip_vertically_on_load(0);
+#else
+			stbi_set_flip_vertically_on_load(1);
+#endif
+			// try 1
+			unsigned char* data = nullptr;
+			for (const auto& a_path : potential_paths)
 			{
-				// add the new one to our list of loaded textures
-				a_new_texture_info.path = tex_path1_literal;
-				a_new_texture_info.type = typeName;
-				mTexturesLoaded.push_back(a_new_texture_info);
-
-				// to return for draw info on this current mesh
-				out_texInfo.insert(out_texInfo.end(), { a_new_texture_info.accessId, a_new_texture_info.type });
-				return 0; // success!
+				data = stbi_load(a_path.c_str(), &width, &height, &nrComponents, STBI_rgb);
+				if (data)
+				{
+					switch (Settings::Get()->GetOptions().renderer)
+					{
+					case RenderingFramework::OPENGL:
+						a_new_texture_info.accessId = OGLGraphics::Upload2DTex(data, width, height);
+						break;
+					}
+					if (a_new_texture_info.accessId != 0)
+					{
+						// add the new one to our list of loaded textures
+						a_new_texture_info.path = a_path;
+						a_new_texture_info.type = typeName;
+						mLoadedTextures.push_front(a_new_texture_info);
+						// to return for draw info on this current mesh
+						out_texInfo.insert(out_texInfo.end(), { a_new_texture_info.accessId, a_new_texture_info.type });
+						stbi_image_free(data);
+						//return 0; // success!
+						break;
+					}
+				}
+				stbi_image_free(data);
 			}
-
-			a_new_texture_info.accessId = TexLoader::textureFromFile(tex_path2_loadedFromFullAppend.c_str());
-			if (a_new_texture_info.accessId != 0)
-			{
-				// add the new one to our list of loaded textures
-				a_new_texture_info.path = tex_path2_loadedFromFullAppend;
-				a_new_texture_info.type = typeName;
-				mTexturesLoaded.push_back(a_new_texture_info);
-
-				// to return for draw info on this current mesh
-				out_texInfo.insert(out_texInfo.end(), { a_new_texture_info.accessId, a_new_texture_info.type });
-				return 0; // success!
-			}
-
-			a_new_texture_info.accessId = TexLoader::textureFromFile(tex_path3_loadedFromEndAppend.c_str());
-			if (a_new_texture_info.accessId != 0)
-			{
-				// add the new one to our list of loaded textures
-				a_new_texture_info.path = tex_path3_loadedFromEndAppend;
-				a_new_texture_info.type = typeName;
-				mTexturesLoaded.push_back(a_new_texture_info);
-
-				// to return for draw info on this current mesh
-				out_texInfo.insert(out_texInfo.end(), { a_new_texture_info.accessId, a_new_texture_info.type });
-				return 0; // success!
-			}
-
-			return -1; // failed to load new texture - all pathing failed
+			//return -1; // failed to load new texture - all pathing failed
+			break;
 		}
 	}
 
-	return -1; // failed to return a success so probably a fail (we'll never get here but most static analysis give a warning if we don't have this here)
+	// went through the above loop without error, mLoadedTextures & out_texInfo should be updated
+	return 0;
 }
 } // end namespace AA

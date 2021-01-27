@@ -1,27 +1,21 @@
 #pragma once
 #include <assimp/scene.h>
-#include <vector>
 #include <string>
-#include "../MeshDrawInfo.h"
-#include <unordered_map>
+#include "MeshDrawInfo.h"
+#include <forward_list>
+#include "TextureInfo.h"
 
 namespace AA
 {
-struct TextureInfo
-{
-	uint32_t accessId; // id to access it on the video mem (drawId)
-	std::string type;
-	std::string path;
-};
 
 class SceneLoader
 {
 public:
 	static SceneLoader* Get();
 
-	int loadGameObjectWithAssimp(std::vector<MeshDrawInfo>& out_MeshInfo, std::string path);
+	int LoadGameObjectFromFile(std::vector<MeshDrawInfo>& out_MeshInfo, std::string path);
 
-	void unloadGameObject(const std::vector<MeshDrawInfo>& toUnload);
+	void UnloadGameObject(const std::vector<MeshDrawInfo>& toUnload);
 
 private:
 
@@ -35,7 +29,9 @@ private:
 	std::string mModelDir = "";
 	std::string mModelFileName = "";
 	std::string mModelFileExtension = "";
-	std::vector<TextureInfo> mTexturesLoaded;
+
+	// Unordered Map of LoadedTextures
+	std::forward_list<TextureInfo> mLoadedTextures;
 
 	// helpers
 	glm::mat4 aiMat4_to_glmMat4(const aiMatrix4x4& inMat);

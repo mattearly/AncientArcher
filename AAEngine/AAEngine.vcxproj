@@ -85,6 +85,8 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="include\Renderer\OpenGL\OGLLights.h" />
+    <ClInclude Include="include\Renderer\RenderFrameworks.h" />
+    <ClInclude Include="include\Renderer\TextureInfo.h" />
     <ClInclude Include="include\Scene\ColliderSphere.h" />
     <ClInclude Include="include\Scene\Camera.h" />
     <ClInclude Include="include\Scene\ColliderBox.h" />
@@ -92,13 +94,15 @@
     <ClInclude Include="include\Scene\GameObject.h" />
     <ClInclude Include="glad\glad.h" />
     <ClInclude Include="include\Scene\InstanceDetails.h" />
+    <ClInclude Include="include\Settings\Settings.h" />
+    <ClInclude Include="include\Settings\SettingsOptions.h" />
     <ClInclude Include="include\Sound\SoundListener.h" />
     <ClInclude Include="include\Sound\LongSound.h" />
     <ClInclude Include="include\Window\Controls\MouseInput.h" />
     <ClInclude Include="include\Window\Controls\ScrollInput.h" />
     <ClInclude Include="include\Window\Display\DisplayCallbacks.h" />
     <ClInclude Include="KHR\khrplatform.h" />
-    <ClInclude Include="include\Renderer\OpenGL\SceneLoader.h" />
+    <ClInclude Include="include\Renderer\SceneLoader.h" />
     <ClInclude Include="include\AncientArcher.h" />
     <ClInclude Include="include\Renderer\MeshDrawInfo.h" />
     <ClInclude Include="include\Renderer\ModelHeader.h" />
@@ -106,7 +110,6 @@
     <ClInclude Include="include\Renderer\Lights.h" />
     <ClInclude Include="include\Renderer\OpenGL\OGLShader.h" />
     <ClInclude Include="include\Renderer\OpenGL\Skybox.h" />
-    <ClInclude Include="include\Renderer\OpenGL\TexLoader.h" />
     <ClInclude Include="include\Renderer\Vertex.h" />
     <ClInclude Include="include\Window\Controls\Controls.h" />
     <ClInclude Include="include\Window\Display\Display.h" />
@@ -116,6 +119,7 @@
     <ClInclude Include="include\Sound\ShortSound.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="src\Settings\Settings.cpp" />
     <ClCompile Include="src\Scene\WorldSettings.cpp" />
     <ClCompile Include="src\Scene\InstanceDetails.cpp" />
     <ClCompile Include="src\Sound\SoundListener.cpp" />
@@ -127,14 +131,14 @@
     <ClCompile Include="src\Scene\ColliderBox.cpp" />
     <ClCompile Include="src\Scene\CollisionHandler.cpp" />
     <ClCompile Include="src\Scene\GameObject.cpp" />
-    <ClCompile Include="src\Renderer\OpenGL\SceneLoader.cpp" />
+    <ClCompile Include="src\Renderer\SceneLoader.cpp" />
     <ClCompile Include="src\AncientArcher.cpp" />
     <ClCompile Include="src\Renderer\MeshDrawInfo.cpp" />
     <ClCompile Include="src\Renderer\OpenGL\OGLGraphics.cpp" />
     <ClCompile Include="src\Renderer\OpenGL\OGLShader.cpp" />
     <ClCompile Include="src\Renderer\OpenGL\Skybox.cpp" />
     <ClCompile Include="src\vendor\stb\stb_image.cpp" />
-    <ClCompile Include="src\Renderer\OpenGL\TexLoader.cpp" />
+    <ClCompile Include="src\Renderer\TexLoader.cpp" />
     <ClCompile Include="src\Renderer\Vertex.cpp" />
     <ClCompile Include="src\Window\Controls\Controls.cpp" />
     <ClCompile Include="src\Window\Display\Display.cpp" />

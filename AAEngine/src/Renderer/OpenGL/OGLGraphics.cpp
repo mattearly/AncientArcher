@@ -121,4 +121,104 @@ void OGLGraphics::ClearScreen()  noexcept
 {
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 }
+
+/// <summary>
+/// sends the mesh data to the graphics card
+/// </summary>
+/// <param name="verts">vertices to upload</param>
+/// <param name="elems">relevant indicies</param>
+/// <returns>the VAO</returns>
+uint32_t OGLGraphics::UploadMesh(const std::vector<Vertex>& verts, const std::vector<uint32_t>& elems)
+{
+	uint32_t VAO, VBO, EBO;
+	glGenBuffers(1, &VBO);
+
+	glGenVertexArrays(1, &VAO);
+	glBindVertexArray(VAO);
+	glBindBuffer(GL_ARRAY_BUFFER, VBO);
+	glBufferData(GL_ARRAY_BUFFER, verts.size() * sizeof(Vertex), &verts[0], GL_STATIC_DRAW);
+
+	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), (const void*)offsetof(Vertex, Position));
+	glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, sizeof(Vertex), (const void*)offsetof(Vertex, TexCoords));
+	glVertexAttribPointer(2, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), (const void*)offsetof(Vertex, Normal));
+
+	glEnableVertexAttribArray(0);
+	glEnableVertexAttribArray(1);
+	glEnableVertexAttribArray(2);
+
+	glGenBuffers(1, &EBO);
+	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);
+	glBufferData(GL_ELEMENT_ARRAY_BUFFER, elems.size() * sizeof(uint32_t), &elems[0], GL_STATIC_DRAW);
+
+	glBindVertexArray(0);
+
+	glDeleteBuffers(1, &VBO);
+	glDeleteBuffers(1, &EBO);
+
+	return VAO;
+}
+
+/// <summary>
+/// removes the mesh from our GPU memory
+/// </summary>
+/// <param name="VAO">vao to delete</param>
+void OGLGraphics::DeleteMesh(const uint32_t& VAO)
+{
+	glDeleteBuffers(1, &VAO);
+}
+
+uint32_t OGLGraphics::Upload2DTex(const unsigned char* tex_data, int width, int height)
+{
+	unsigned int out_texID = 0;
+
+	glGenTextures(1, &out_texID);
+	glBindTexture(GL_TEXTURE_2D, out_texID);
+
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
+
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+
+
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
+
+
+	//try: https://stackoverflow.com/questions/23150123/loading-png-with-stb-image-for-opengl-texture-gives-wrong-colors
+	glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
+
+	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, tex_data);
+	glGenerateMipmap(GL_TEXTURE_2D);
+
+	glBindTexture(GL_TEXTURE_2D, 0);
+
+	return out_texID;
+}
+
+uint32_t OGLGraphics::UploadCubeMapTex(std::vector<unsigned char*> tex_data, int width, int height)
+{
+
+	unsigned int out_texID;
+	glGenTextures(1, &out_texID);
+	glBindTexture(GL_TEXTURE_CUBE_MAP, out_texID);
+	glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+	glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+	glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
+	glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
+	glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_R, GL_CLAMP_TO_EDGE);
+
+	for (auto i = 0; i < 6; ++i)
+	{
+		if (tex_data[i])
+		{
+			glTexImage2D(GL_TEXTURE_CUBE_MAP_POSITIVE_X + i, 0, GL_RGB, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, tex_data[i]);
+		}
+	}
+	return out_texID;
+}
+
+void OGLGraphics::DeleteTex(const uint32_t& id)
+{
+	glDeleteTextures(1, &id);
+}
+
 }  // end namespace AA

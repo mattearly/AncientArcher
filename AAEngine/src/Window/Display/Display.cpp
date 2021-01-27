@@ -33,6 +33,7 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #include "../../../include/Window/Display/Display.h"
 #include "../../../include/Window/Display/DisplayCallbacks.h"
 #include "../../../include/Renderer/OpenGL/OGLGraphics.h"
+#include "../../../include/Settings/Settings.h"
 #include <memory>
 #include <glad/glad.h>
 #include <GLFW/glfw3.h>
@@ -66,11 +67,6 @@ int Display::GetWindowHeight() noexcept
 	glfwGetWindowSize(mWindow, &width, &height);
 
 	return height;
-}
-
-bool Display::GetIsWindowFullScreen() noexcept
-{
-	return mWindowIsFullScreen;
 }
 
 GLFWwindow* Display::GetWindow() noexcept
@@ -132,38 +128,38 @@ void Display::SetupScrollWheelCallback() noexcept
 	::glfwSetScrollCallback(mWindow, DisplayCallbacks::scrollCallback);
 }
 
-void Display::ToggleFullscreen() noexcept
-{
-	if (mWindowIsFullScreen)
-		setWindowToWindowed();
-	else
-		setWindowToFullscreen();
-}
-
-void Display::setWindowToFullscreen() noexcept
-{
-	// store previous windowed size and location
-	glfwGetWindowSize(mWindow, &mLastWidth, &mLastHeight);
-	glfwGetWindowPos(mWindow, &mLastxPos, &mLastyPos);
-
-	// get the main monitor so we can use its size for fullscreen
-	const GLFWvidmode* mode = glfwGetVideoMode(glfwGetPrimaryMonitor());
-
-	// set our window to fullscreen on the primary monitor
-	glfwSetWindowMonitor(mWindow, glfwGetPrimaryMonitor(), 0, 0, mode->width, mode->height, mode->refreshRate);
-
-	// update our control variable
-	mWindowIsFullScreen = !mWindowIsFullScreen;
-}
-
-void Display::setWindowToWindowed() noexcept
-{
-	// Set size in windowed mode
-	glfwSetWindowMonitor(mWindow, nullptr, mLastxPos, mLastyPos, mLastWidth, mLastHeight, 0);
-
-	// update our control variable
-	mWindowIsFullScreen = !mWindowIsFullScreen;
-}
+//void Display::ToggleFullscreen() noexcept
+//{
+//	if (Settings::Get()->GetOptions().fullscreen)
+//		setWindowToWindowed();
+//	else
+//		setWindowToFullscreen();
+//}
+//
+//void Display::setWindowToFullscreen() noexcept
+//{
+//	// store previous windowed size and location
+//	glfwGetWindowSize(mWindow, &mLastWidth, &mLastHeight);
+//	glfwGetWindowPos(mWindow, &mLastxPos, &mLastyPos);
+//
+//	// get the main monitor so we can use its size for fullscreen
+//	const GLFWvidmode* mode = glfwGetVideoMode(glfwGetPrimaryMonitor());
+//
+//	// set our window to fullscreen on the primary monitor
+//	glfwSetWindowMonitor(mWindow, glfwGetPrimaryMonitor(), 0, 0, mode->width, mode->height, mode->refreshRate);
+//
+//	// update our control variable
+//	mWindowIsFullScreen = !mWindowIsFullScreen;
+//}
+//
+//void Display::setWindowToWindowed() noexcept
+//{
+//	// Set size in windowed mode
+//	glfwSetWindowMonitor(mWindow, nullptr, mLastxPos, mLastyPos, mLastWidth, mLastHeight, 0);
+//
+//	// update our control variable
+//	mWindowIsFullScreen = !mWindowIsFullScreen;
+//}
 
 void Display::SetupReshapeCallback() noexcept
 {
@@ -172,14 +168,16 @@ void Display::SetupReshapeCallback() noexcept
 
 void Display::ReshapeWindowHandler(int width, int height)
 {
-	if (mRenderingType == RenderingFramework::OPENGL) {
+	switch (Settings::Get()->GetOptions().renderer)
+	{
+	case RenderingFramework::OPENGL:
 		OGLGraphics::SetViewportSize(0, 0, width, height);
-	}
-	else if (mRenderingType == RenderingFramework::D3D) {
-		//todo
-	}
-	else if (mRenderingType == RenderingFramework::VULKAN) {
-		// 
+		break;
+	case RenderingFramework::D3D:
+		break;
+	case RenderingFramework::VULKAN:
+		break;
+
 	}
 
 	externWindowSizeDirty = true;  // update cam view matrix before next render
@@ -215,7 +213,7 @@ void Display::closeWindow() noexcept
 	glfwSetWindowShouldClose(mWindow, 1);
 }
 
-void Display::initDisplayFromEngine(RenderingFramework preferred_rendering_framework)
+void Display::initDisplayFromEngine()
 {
 	// set an error calback in case of failure we at least know
 	static auto glfw_error_callback = [](int e, const char* msg) {
@@ -226,7 +224,9 @@ void Display::initDisplayFromEngine(RenderingFramework preferred_rendering_frame
 
 	glfwInit();
 
-	if (preferred_rendering_framework == RenderingFramework::OPENGL)
+	glfwWindowHint(GLFW_MAXIMIZED, GLFW_TRUE);
+
+	if (Settings::Get()->GetOptions().renderer == RenderingFramework::OPENGL)
 	{
 		// with core profile, you have to create and manage your own VAO's, no default 
 		glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
@@ -261,7 +261,7 @@ void Display::initDisplayFromEngine(RenderingFramework preferred_rendering_frame
 			std::pair<int, int> ver = try_versions.front();
 			glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, ver.first);
 			glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, ver.second);
-			mWindow = glfwCreateWindow(mLastWidth, mLastHeight, "AncientArcher", nullptr, nullptr);
+			mWindow = glfwCreateWindow(100, 100, "AncientArcher", nullptr, nullptr);  // maximized test if it needs width height
 			if (!mWindow)
 				try_versions.pop();
 		}
@@ -272,7 +272,7 @@ void Display::initDisplayFromEngine(RenderingFramework preferred_rendering_frame
 
 	glfwMakeContextCurrent(mWindow);
 
-	if (preferred_rendering_framework == RenderingFramework::OPENGL)
+	if (Settings::Get()->GetOptions().renderer == RenderingFramework::OPENGL)
 	{
 		if (!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress))  // tie context to glad opengl funcs
 		{

@@ -31,7 +31,7 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 ----------------------------------------------------------------------
 */
 #include "../include/AncientArcher.h"
-#include "../include/Renderer/OpenGL/SceneLoader.h"
+#include "../include/Renderer/SceneLoader.h"
 #include <vector>
 #include <string>
 #include <iomanip>
@@ -219,7 +219,7 @@ int AncientArcher::AddObject(const char* path, int cam_id, int shad_id, const st
 	return return_id;
 }
 
-
+// todo: make a managed AddSkybox instead
 void AncientArcher::SetSkybox(const std::shared_ptr<Skybox>& skybox) noexcept
 {
 	mSkybox = skybox;
@@ -386,7 +386,7 @@ void AncientArcher::initEngine()
 {
 	//resetEngine();
 
-	initDisplayFromEngine(mPreferredRenderingFramework);
+	initDisplayFromEngine();
 
 	SetupReshapeCallback();
 
@@ -550,7 +550,7 @@ void AncientArcher::teardown()
 	// delete all the meshes and textures from GPU memory
 	for (const auto& model : mGameObjects)
 	{
-		SceneLoader::Get()->unloadGameObject(model.mMeshes);
+		SceneLoader::Get()->UnloadGameObject(model.mMeshes);
 	}
 	// delete all the shaders from GPU
 	for (auto& shader : mShaders)

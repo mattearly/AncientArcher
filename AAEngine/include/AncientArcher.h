@@ -39,6 +39,7 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #include <functional>
 #include <memory>
 #include <unordered_map>
+#include "Settings/Settings.h"
 
 class OGLShader;
 enum class SHADERTYPE;
@@ -104,7 +105,7 @@ public:
 
 private:
 	AncientArcher();
-
+	
 	//float mLastFrameTime;                  ///< keeps track of the previous frame's time
 	//float mCurrentFrameTime;               ///< keeps track of the current frame's time
 	//float mDeltaTime;                      ///< the delta difference between previous and current frame
@@ -135,7 +136,6 @@ private:
 	void teardown();
 
 	// helpers
-	RenderingFramework mPreferredRenderingFramework = RenderingFramework::OPENGL;
 	void initEngine();
 	void resetEngine() noexcept;
 

@@ -33,7 +33,7 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #include "../../include/Scene/GameObject.h"
 #include "../../include/Renderer/OpenGL/OGLGraphics.h"
 #include "../../include/Scene/Camera.h"
-#include "../../include/Renderer/OpenGL/SceneLoader.h"
+#include "../../include/Renderer/SceneLoader.h"
 
 namespace AA
 {
@@ -95,7 +95,7 @@ const ColliderSphere* GameObject::GetColliderSphere(uint32_t which) const
 
 GameObject::GameObject(const char* path, int camId, int shadId)
 {
-	AA::SceneLoader::Get()->loadGameObjectWithAssimp(mMeshes, path);
+	AA::SceneLoader::Get()->LoadGameObjectFromFile(mMeshes, path);
 	mInstanceDetails.push_back(InstanceDetails());
 	mCameraID = camId;
 	mShaderID = shadId;
@@ -104,7 +104,7 @@ GameObject::GameObject(const char* path, int camId, int shadId)
 
 GameObject::GameObject(const char* path, int camId, int shadId, std::vector<InstanceDetails> details)
 {
-	AA::SceneLoader::Get()->loadGameObjectWithAssimp(mMeshes, path);
+	AA::SceneLoader::Get()->LoadGameObjectFromFile(mMeshes, path);
 	mInstanceDetails = details;
 	mCameraID = camId;
 	mShaderID = shadId;

@@ -39,7 +39,7 @@ struct GLFWwindow;
 namespace AA
 {
 enum class MouseReporting { STANDARD, PERSPECTIVE };
-enum class RenderingFramework { OPENGL, D3D, VULKAN };
+
 class Display : public Controls
 {
 public:
@@ -47,7 +47,6 @@ public:
 
 	int GetWindowWidth() noexcept;
 	int GetWindowHeight() noexcept;
-	bool GetIsWindowFullScreen() noexcept;
 	GLFWwindow* GetWindow() noexcept;
 	int GetCursorMode() const noexcept;
 	MouseReporting GetMouseReportingMode() const noexcept;
@@ -58,18 +57,10 @@ public:
 	void SetCursorToHidden() noexcept;    // for hidden but still there (render your own pointer)
 	void SetCursorToDisabled() noexcept;  // for first person hidden mouse type
 
-	//void SetWindowSize(int width, int height, int xpos, int ypos) noexcept;
-	//void SetWindowSize(int width, int height, bool center = true) noexcept;
-	//void SetWindowSize(const char to) noexcept;
-	//void setWindowToMaximized() noexcept;
-	//void setWindowToFullscreenBorderless() noexcept;
-
 	void SetReadMouseCurorAsFPP() noexcept;
 	void SetReadMouseCurorAsStandard() noexcept;
 
 	void SetWindowTitle(const char* name) noexcept;
-
-	void ToggleFullscreen() noexcept;
 
 	void ReshapeWindowHandler(int width, int height);
 	void SetupReshapeCallback() noexcept;
@@ -80,14 +71,10 @@ protected:
 
 	void pullButtonStateEvents();
 
-	bool mWindowIsFullScreen = false;
-	void setWindowToFullscreen() noexcept;
-	void setWindowToWindowed() noexcept;
-
 	void clearBackBuffer() const noexcept;
 	void swapWindowBuffers() const noexcept;
 
-	void initDisplayFromEngine(RenderingFramework rf);
+	void initDisplayFromEngine();
 
 	MouseReporting mMouseReporting = MouseReporting::STANDARD;
 
@@ -101,10 +88,6 @@ protected:
 
 private:
 
-	RenderingFramework mRenderingType;
-
-	int mLastxPos = 0, mLastyPos = 0;
-	int mLastWidth = 1024, mLastHeight = 768;
 
 };
 }  // end namespace AA
