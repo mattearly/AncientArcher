@@ -43,7 +43,7 @@ struct MeshDrawInfo   // NodeDrawInfo a better name?
 	uint32_t vao = 0;
 	//uint32_t vbo = 0;
 	//uint32_t ebo = 0;
-	std::unordered_map<uint32_t, std::string> textureDrawIds; // list of texture ids in mem
+	std::unordered_map<uint32_t, std::string> textureDrawIds; // list of texture ids(uint32_t) and type(string) in mem
 	//float shininess;
 	//glm::vec4 specular;
 	uint32_t numElements;

@@ -35,6 +35,8 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 namespace AA
 {
+// todo: something better with these limitation holders
+
 const int MAXPOINTLIGHTS = 50;
 const int MAXSPOTLIGHTS = 25;
 static int NUM_POINT_LIGHTS = 0;
