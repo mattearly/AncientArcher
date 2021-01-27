@@ -203,9 +203,14 @@ public:
 				right = false;
 
 			});
-		AA::Engine->AddToTimedOutKeyHandling([](AA::KeyboardInput& kb) {
-			if ((kb.leftAlt || kb.rightAlt) && kb.enter) {
-				AA::Engine->ToggleFullscreen();
+		AA::Engine->AddToTimedOutKeyHandling([](AA::KeyboardInput& kb) -> bool {
+			if (kb.esc) {
+				//todo: options menu
+				return true;
+			}
+			if (kb.f11)
+			{
+				//AA::Engine->ToggleFullscreen();
 				return true;
 			}
 			return false;
@@ -304,16 +309,94 @@ public:
 				return true;
 			}
 
-			if ((kb.leftAlt || kb.rightAlt) && kb.enter) {
-				AA::Engine->ToggleFullscreen();
-				return true;
-			}
-
 			return false;
 			});
 
 		Assert::AreEqual(AA::Engine->Run(), 0);
 
+	}
+
+	TEST_METHOD(G_SkyboxTest)
+	{
+		AA::Engine->SoftReset();
+
+		static int cam_G = AA::Engine->AddCamera(AA::Engine->GetWindowWidth(), AA::Engine->GetWindowHeight());
+		AA::Cam(cam_G).SetCurrentLocation(glm::vec3(0, 0, 0));
+		AA::Cam(cam_G).ShiftYawAndPitch(90, 0);
+		AA::Cam(cam_G).SetMaxRenderDistance(3000);
+
+		const std::string skyboxfolder = "..\\..\\AAUnitTest\\res\\skybox\\";
+		const std::string order[6] = { "posx", "negx", "posy", "negy", "posz", "negz" };
+		//const std::string skyboxtype = "stormydays\\";
+		const std::string skyboxfileext = ".jpg";
+		std::vector<std::string> cubemapfiles;
+		for (int j = 0; j < 6; ++j)
+		{
+			cubemapfiles.emplace_back(skyboxfolder /*+ skyboxtype*/ + order[j] + skyboxfileext);
+		}
+		const std::shared_ptr<AA::Skybox> skybox = std::make_shared<AA::Skybox>(cubemapfiles);
+		AA::Engine->SetSkybox(skybox);
+
+
+		int shader = AA::Engine->AddShader(AA::SHADERTYPE::DIFF);
+
+		int plane_thing = AA::Engine->AddObject("..\\..\\AAUnitTest\\res\\cube_stretched.obj", cam_G, shader);
+		
+		Obj(plane_thing).SetScale(glm::vec3(2, 1, 2));
+		Obj(plane_thing).SetTranslation(glm::vec3(0, -50, 0));
+
+
+		// First Person Mouse
+		AA::Engine->SetCursorToDisabled();
+		AA::Engine->SetReadMouseCurorAsFPP();
+		AA::Engine->AddToMouseHandling([](AA::MouseInput& cursor) {
+			AA::Cam(cam_G).ShiftYawAndPitch(cursor.xOffset, cursor.yOffset);
+			});
+
+		static bool left = false, right = false, forward = false, backwards = false;
+		AA::Engine->AddToKeyHandling([](AA::KeyboardInput& kb) {
+			if (kb.w)
+				forward = true;
+			else
+				forward = false;
+
+			if (kb.s)
+				backwards = true;
+			else
+				backwards = false;
+
+			if (kb.a)
+				left = true;
+			else
+				left = false;
+
+			if (kb.d)
+				right = true;
+			else
+				right = false;
+
+			});
+
+		static float VELOCITY = 2;
+
+		AA::Engine->AddToDeltaUpdate([](float dt) {
+			glm::vec3 front_vec = *AA::Cam(cam_G).GetFront();
+			glm::vec3 right_vec = *AA::Cam(cam_G).GetRight();
+			if (forward)
+				AA::Cam(cam_G).ShiftCurrentLocation(front_vec * VELOCITY);
+
+			if (backwards)
+				AA::Cam(cam_G).ShiftCurrentLocation(-front_vec * VELOCITY * .5f);
+
+			if (left)
+				AA::Cam(cam_G).ShiftCurrentLocation(-right_vec * VELOCITY * .7f);
+
+			if (right)
+				AA::Cam(cam_G).ShiftCurrentLocation(right_vec * VELOCITY * .7f);
+
+			});
+
+		Assert::AreEqual(AA::Engine->Run(), 0);
 	}
 };
 }
