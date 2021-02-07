@@ -138,7 +138,6 @@
     <ClCompile Include="src\Renderer\OpenGL\OGLShader.cpp" />
     <ClCompile Include="src\Renderer\OpenGL\Skybox.cpp" />
     <ClCompile Include="src\vendor\stb\stb_image.cpp" />
-    <ClCompile Include="src\Renderer\TexLoader.cpp" />
     <ClCompile Include="src\Renderer\Vertex.cpp" />
     <ClCompile Include="src\Window\Controls\Controls.cpp" />
     <ClCompile Include="src\Window\Display\Display.cpp" />
