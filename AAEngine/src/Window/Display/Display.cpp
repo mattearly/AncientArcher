@@ -229,7 +229,7 @@ void Display::initDisplayFromEngine()
 			std::pair<int, int> ver = try_versions.front();
 			glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, ver.first);
 			glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, ver.second);
-			mWindow = glfwCreateWindow(100, 100, "AncientArcher", nullptr, nullptr);  // maximized test if it needs width height
+			mWindow = glfwCreateWindow(1280, 720, "AncientArcher", nullptr, nullptr);
 			if (!mWindow)
 				try_versions.pop();
 		}
