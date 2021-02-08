@@ -37,7 +37,7 @@ Skybox::Skybox(std::vector<std::string> incomingSkymapFiles, bool useInternalSha
 			;
 		skyboxShader = std::make_unique<OGLShader>(
 			skycubevert,
-			skycubefrag, false
+			skycubefrag
 			);
 	}
 	else {
@@ -49,7 +49,7 @@ Skybox::Skybox(std::vector<std::string> incomingSkymapFiles, bool useInternalSha
 
 	if (incomingSkymapFiles.size() != 6)
 	{
-		// wrong size for a cubemap, i dunno use a default one or something
+		throw("wrong number of cubemap files for skybox");
 	}
 	else  // is size 6, load and use
 	{
@@ -61,19 +61,13 @@ Skybox::Skybox(std::vector<std::string> incomingSkymapFiles, bool useInternalSha
 			data[i] = stbi_load(incomingSkymapFiles[i].c_str(), &width, &height, &nrChannel, STBI_rgb);
 		switch (Settings::Get()->GetOptions().renderer)
 		{
-			case RenderingFramework::OPENGL:
-				cubemapTexture = OGLGraphics::UploadCubeMapTex(data, width, height);
-				break;
+		case RenderingFramework::OPENGL:
+			cubemapTexture = OGLGraphics::UploadCubeMapTex(data, width, height);
+			break;
 		}
-
-		
 	}
-
-	//cubemapTexture = TexLoader::loadCubeTexture(incomingSkymapFiles);
-	
 	skyboxShader->use();
 	skyboxShader->setInt("skybox", 0);
-	//loadProjectionMatrix();  //does on first render
 }
 
 /**

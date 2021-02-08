@@ -96,8 +96,11 @@
     <ClInclude Include="include\Scene\InstanceDetails.h" />
     <ClInclude Include="include\Settings\Settings.h" />
     <ClInclude Include="include\Settings\SettingsOptions.h" />
+    <ClInclude Include="include\Shader\DiffShader.h" />
+    <ClInclude Include="include\Shader\LitShader.h" />
     <ClInclude Include="include\Sound\SoundListener.h" />
     <ClInclude Include="include\Sound\LongSound.h" />
+    <ClInclude Include="include\Utility\Files.h" />
     <ClInclude Include="include\Window\Controls\MouseInput.h" />
     <ClInclude Include="include\Window\Controls\ScrollInput.h" />
     <ClInclude Include="include\Window\Display\DisplayCallbacks.h" />

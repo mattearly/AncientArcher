@@ -31,8 +31,7 @@ public:
 
 public:
 	int AddCamera(int w, int h);
-	int AddShader(const char* vert_path, const char* frag_path, const bool isPath = true);
-	int AddShader(const SHADERTYPE& type);
+	int AddShader(const char* vert_src, const char* frag_src);
 	int AddObject(const char* path, int cam_id, int shad_id);
 	int AddObject(const char* path, int cam_id, int shad_id, const std::vector<InstanceDetails>& details);
 

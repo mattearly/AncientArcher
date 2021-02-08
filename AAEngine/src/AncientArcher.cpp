@@ -5,7 +5,6 @@
 #include <iomanip>
 #include <utility>
 #include <chrono>
-
 namespace AA
 {
 
@@ -152,15 +151,9 @@ int AncientArcher::AddCamera(int w, int h)
 	return return_id;
 }
 
-int AncientArcher::AddShader(const char* vert, const char* frag, const bool isPath)
+int AncientArcher::AddShader(const char* vert_src, const char* frag_src)
 {
-	mShaders.emplace_back(OGLShader(vert, frag, isPath));
-	return mShaders.back().GetID();
-}
-
-int AncientArcher::AddShader(const SHADERTYPE& type)
-{
-	mShaders.emplace_back(OGLShader(type));
+	mShaders.emplace_back(OGLShader(vert_src, frag_src));
 	return mShaders.back().GetID();
 }
 

@@ -3,17 +3,13 @@
 #include <glm\glm.hpp>
 namespace AA
 {
-enum class SHADERTYPE {
-	DIFF, LITDIFF
-};
 class OGLShader
 {
 public:
 
-	OGLShader(const SHADERTYPE& type);
-	OGLShader(const char* vert, const char* frag, bool isFilePath = true);
-	//OGLShader(const char* vertex_file, const char* fragment_file, const char* geometry_file);
-
+	//OGLShader(const SHADERTYPE& type);
+	OGLShader(const char* vert_src, const char* frag_src);
+	
 	void use() const noexcept;
 	void stop() const noexcept;
 

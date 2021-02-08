@@ -4,6 +4,8 @@
 #include <AncientArcher.h>
 #include <Sound/ShortSound.h>
 #include <Sound/SoundDevice.h>
+#include <Utility/Files.h>
+#include <Shader/DiffShader.h>
 
 using namespace Microsoft::VisualStudio::CppUnitTestFramework;
 using namespace AA;
@@ -50,9 +52,9 @@ public:
 	{
 		AA::Engine->SoftReset();
 		static int cam_C = AA::Engine->AddCamera(AA::Engine->GetWindowWidth(), AA::Engine->GetWindowHeight());
-		int shader = AA::Engine->AddShader(AA::SHADERTYPE::DIFF);
+		int shader = AA::Engine->AddShader(diff_vert_src, diff_frag_src);
 
-		// put in your own model to test it out
+		// local model, use your own
 		static int dovecote = AA::Engine->AddObject("E:\\storage\\Models\\dovecote.fbx", cam_C, shader);
 		AA::Engine->GetGameObject(dovecote).SetTranslation(glm::vec3(0, 0, 0));
 
@@ -77,7 +79,7 @@ public:
 	{
 		AA::Engine->SoftReset();
 		static int cam_D = AA::Engine->AddCamera(AA::Engine->GetWindowWidth(), AA::Engine->GetWindowHeight());
-		int shader = AA::Engine->AddShader(AA::SHADERTYPE::DIFF);
+		int shader = AA::Engine->AddShader(diff_vert_src, diff_frag_src);
 
 		static int wasd = AA::Engine->AddObject("..\\..\\AAUnitTest\\res\\wasd.obj", cam_D, shader);
 
@@ -152,7 +154,7 @@ public:
 		AA::Cam(cam_E).ShiftYawAndPitch(90, 0);
 		AA::Cam(cam_E).SetMaxRenderDistance(3000);
 
-		int shader = AA::Engine->AddShader(AA::SHADERTYPE::DIFF);
+		int shader = AA::Engine->AddShader(diff_vert_src, diff_frag_src);
 
 		static int skele = AA::Engine->AddObject("..\\..\\AAUnitTest\\res\\fpp_test_text.obj", cam_E, shader);
 		AA::Engine->GetGameObject(skele).SetTranslation(glm::vec3(150, 0, -75));
@@ -250,7 +252,7 @@ public:
 	{
 		AA::Engine->SoftReset();
 		static int cam_F = AA::Engine->AddCamera(AA::Engine->GetWindowWidth(), AA::Engine->GetWindowHeight());
-		int shader = AA::Engine->AddShader("..\\..\\AAUnitTest\\res\\basicvert.glsl", "..\\..\\AAUnitTest\\res\\basicfrag.glsl", true);
+		int shader = AA::Engine->AddShader(Files::ReadToString("..\\..\\AAUnitTest\\res\\basicvert.glsl").c_str(), Files::ReadToString("..\\..\\AAUnitTest\\res\\basicfrag.glsl").c_str());
 
 		// put in your own model to test it out
 		int dovecote = AA::Engine->AddObject("E:\\storage\\Models\\dovecote.fbx", cam_F, shader);
@@ -338,7 +340,7 @@ public:
 		const std::shared_ptr<AA::Skybox> skybox = std::make_shared<AA::Skybox>(cubemapfiles);
 		AA::Engine->SetSkybox(skybox);
 
-		int shader = AA::Engine->AddShader(AA::SHADERTYPE::DIFF);
+		int shader = AA::Engine->AddShader(diff_vert_src, diff_frag_src);
 
 		int plane_thing = AA::Engine->AddObject("..\\..\\AAUnitTest\\res\\cube_stretched.obj", cam_G, shader);
 		Obj(plane_thing).SetScale(glm::vec3(11.f, .2f, 11.f));
