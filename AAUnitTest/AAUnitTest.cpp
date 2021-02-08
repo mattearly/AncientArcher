@@ -15,7 +15,6 @@ public:
 	TEST_METHOD(A_BaseRun)
 	{
 		static float timeholder_A = 0.f;
-
 		AA::Engine->AddToDeltaUpdate([](float dt)
 			{
 				timeholder_A += dt;
@@ -250,11 +249,14 @@ public:
 		AA::Engine->SoftReset();
 		static int cam_F = AA::Engine->AddCamera(AA::Engine->GetWindowWidth(), AA::Engine->GetWindowHeight());
 		int shader = AA::Engine->AddShader("..\\..\\AAUnitTest\\res\\basicvert.glsl", "..\\..\\AAUnitTest\\res\\basicfrag.glsl", true);
-		//int shader = AA::Engine->AddShader(AA::SHADERTYPE::DIFF);
 
 		// put in your own model to test it out
 		int dovecote = AA::Engine->AddObject("E:\\storage\\Models\\dovecote.fbx", cam_F, shader);
-		AA::Engine->GetGameObject(dovecote).SetTranslation(glm::vec3(0, 0, 0));
+		AA::Engine->GetGameObject(dovecote).SetTranslation(glm::vec3(0, -200, 0));
+
+		int ground = AA::Engine->AddObject("..\\..\\AAUnitTest\\res\\cube_stretched.obj", cam_F, shader);
+		Obj(ground).SetScale(glm::vec3(100, 1, 100));
+		Obj(ground).SetTranslation(glm::vec3(0, -300, 0));
 
 		AA::Cam(cam_F).SetCurrentLocation(glm::vec3(0, 0, 1600));
 		AA::Cam(cam_F).SetMaxRenderDistance(2700.f);
@@ -288,13 +290,10 @@ public:
 				Cam(cam_F).ShiftCurrentLocation(glm::vec3(0, dt * Velocity, 0));
 			if (down)
 				Cam(cam_F).ShiftCurrentLocation(glm::vec3(0, -dt * Velocity, 0));
-
 			if (left)
 				Cam(cam_F).ShiftCurrentLocation(glm::vec3(-dt * Velocity, 0, 0));
-
 			if (right)
 				Cam(cam_F).ShiftCurrentLocation(glm::vec3(dt * Velocity, 0, 0));
-
 			});
 
 		Engine->AddToTimedOutKeyHandling([](auto& kb) {
@@ -337,14 +336,11 @@ public:
 		const std::shared_ptr<AA::Skybox> skybox = std::make_shared<AA::Skybox>(cubemapfiles);
 		AA::Engine->SetSkybox(skybox);
 
-
 		int shader = AA::Engine->AddShader(AA::SHADERTYPE::DIFF);
 
 		int plane_thing = AA::Engine->AddObject("..\\..\\AAUnitTest\\res\\cube_stretched.obj", cam_G, shader);
-
-		Obj(plane_thing).SetScale(glm::vec3(2, 1, 2));
-		Obj(plane_thing).SetTranslation(glm::vec3(0, -50, 0));
-
+		Obj(plane_thing).SetScale(glm::vec3(11.f, .2f, 11.f));
+		Obj(plane_thing).SetTranslation(glm::vec3(0, -20, 0));
 
 		// First Person Mouse
 		AA::Engine->SetCursorToDisabled();
