@@ -503,7 +503,7 @@ void AncientArcher::render()
 	}
 
 	// draw skybox if one was specified
-	if (mSkybox) { mSkybox->render(mCameras.front()); }
+	if (mSkybox && !mCameras.empty()) { mSkybox->render(mCameras.front()); }
 
 	swapWindowBuffers();
 }
