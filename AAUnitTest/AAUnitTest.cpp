@@ -52,7 +52,7 @@ public:
 		int shader = AA::Engine->AddShader(AA::SHADERTYPE::DIFF);
 
 		// put in your own model to test it out
-		int dovecote = AA::Engine->AddObject("E:\\storage\\Models\\dovecote.fbx", cam_C, shader);
+		static int dovecote = AA::Engine->AddObject("E:\\storage\\Models\\dovecote.fbx", cam_C, shader);
 		AA::Engine->GetGameObject(dovecote).SetTranslation(glm::vec3(0, 0, 0));
 
 		AA::Cam(cam_C).SetCurrentLocation(glm::vec3(0, 350, 2300));
@@ -61,6 +61,7 @@ public:
 		AA::Engine->AddToDeltaUpdate([](float dt) {
 			float Velocity = 1200;
 			AA::Cam(cam_C).ShiftCurrentLocation(glm::vec3(0, 0, -dt * Velocity));
+			AA::Obj(dovecote).AddToRotation(glm::vec3(0, -dt, 0));
 			if (AA::Cam(cam_C).GetLocation().z < 300)
 			{
 				AA::Engine->Shutdown();
@@ -327,12 +328,11 @@ public:
 
 		const std::string skyboxfolder = "..\\..\\AAUnitTest\\res\\skybox\\";
 		const std::string order[6] = { "posx", "negx", "posy", "negy", "posz", "negz" };
-		//const std::string skyboxtype = "stormydays\\";
 		const std::string skyboxfileext = ".jpg";
 		std::vector<std::string> cubemapfiles;
 		for (int j = 0; j < 6; ++j)
 		{
-			cubemapfiles.emplace_back(skyboxfolder /*+ skyboxtype*/ + order[j] + skyboxfileext);
+			cubemapfiles.emplace_back(skyboxfolder + order[j] + skyboxfileext);
 		}
 		const std::shared_ptr<AA::Skybox> skybox = std::make_shared<AA::Skybox>(cubemapfiles);
 		AA::Engine->SetSkybox(skybox);
@@ -341,7 +341,7 @@ public:
 		int shader = AA::Engine->AddShader(AA::SHADERTYPE::DIFF);
 
 		int plane_thing = AA::Engine->AddObject("..\\..\\AAUnitTest\\res\\cube_stretched.obj", cam_G, shader);
-		
+
 		Obj(plane_thing).SetScale(glm::vec3(2, 1, 2));
 		Obj(plane_thing).SetTranslation(glm::vec3(0, -50, 0));
 
