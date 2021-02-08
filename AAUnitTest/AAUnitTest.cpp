@@ -2,6 +2,8 @@
 #include "CppUnitTest.h"
 #include "CppUnitTestLogger.h"
 #include <AncientArcher.h>
+#include <Sound/ShortSound.h>
+#include <Sound/SoundDevice.h>
 
 using namespace Microsoft::VisualStudio::CppUnitTestFramework;
 using namespace AA;
@@ -392,6 +394,17 @@ public:
 
 			});
 
+		Assert::AreEqual(AA::Engine->Run(), 0);
+	}
+
+	TEST_METHOD(H_SoundTest)
+	{
+		Engine->SoftReset();
+		SoundDevice::Init();
+		static ShortSound MySpeaker;
+		static auto MyWindSound = ShortSound::AddShortSound("E:\\downloads\\wind.ogg");
+		MySpeaker.Play(MyWindSound);
+		MySpeaker.SetLooping(true);
 		Assert::AreEqual(AA::Engine->Run(), 0);
 	}
 };
