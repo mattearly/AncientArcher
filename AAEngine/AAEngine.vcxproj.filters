@@ -105,9 +105,6 @@
     <ClInclude Include="include\Settings\Settings.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="include\Renderer\RenderFrameworks.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="include\Settings\SettingsOptions.h">
       <Filter>Header Files</Filter>
     </ClInclude>

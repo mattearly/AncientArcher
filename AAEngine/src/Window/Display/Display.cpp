@@ -14,7 +14,93 @@ namespace AA
 // hold for engine to change back to false if it becomes true, as it must process new camera view matrices for the shaders
 bool externWindowSizeDirty = false;
 
-Display::~Display()  // breaks rule of 5
+Display::Display()
+{
+
+	// set an error calback in case of failure we at least know
+	static auto glfw_error_callback = [](int e, const char* msg) {
+		if (e != 65543)
+			throw("glfw callback error");
+	};
+	glfwSetErrorCallback(glfw_error_callback);
+
+	glfwInit();
+
+	glfwWindowHint(GLFW_MAXIMIZED, GLFW_TRUE);
+
+	auto local_options = Settings::Get()->GetOptions();
+
+	if (local_options.MSAA == true)
+	{
+		glfwWindowHint(GLFW_SAMPLES, local_options.msaa_samples);
+	}
+
+	if (local_options.renderer == RenderingFramework::OPENGL)
+	{
+		// with core profile, you have to create and manage your own VAO's, no default 
+		glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
+#ifdef __APPLE__
+		glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);
+#endif
+		struct OpenGLVersion
+		{
+			OpenGLVersion() :major(-1), minor(-1) {}
+			OpenGLVersion(int maj, int min) :major(maj), minor(min) {}
+			int major = 0;
+			int minor = 0;
+		};
+		// try more modern versions of OpenGL, don't use older than 3.3
+		std::vector<OpenGLVersion> try_versions;
+		try_versions.push_back(OpenGLVersion(3, 3));
+		try_versions.push_back(OpenGLVersion(4, 0));
+		try_versions.push_back(OpenGLVersion(4, 1));
+		try_versions.push_back(OpenGLVersion(4, 2));
+		try_versions.push_back(OpenGLVersion(4, 3));
+		try_versions.push_back(OpenGLVersion(4, 5));
+		try_versions.push_back(OpenGLVersion(4, 6));
+
+		while (!mWindow && !try_versions.empty())
+		{
+			glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, try_versions.back().major);
+			glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, try_versions.back().minor);
+			mWindow = glfwCreateWindow(1280, 720, "AncientArcher Default Window Title", nullptr, nullptr);
+			if (!mWindow) {
+				try_versions.pop_back();
+			}
+			else  // save results to settings
+			{
+				auto game_opts = Settings::Get()->GetOptions();
+				game_opts.RendererVersionMajor = try_versions.back().major;
+				game_opts.RendererVersionMinor = try_versions.back().minor;
+				Settings::Get()->SetOptions(game_opts);
+			}
+		}
+	}
+
+	if (!mWindow)
+		throw("unsupported graphics");
+
+	glfwMakeContextCurrent(mWindow);
+
+	if (Settings::Get()->GetOptions().renderer == RenderingFramework::OPENGL)
+	{
+		if (!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress))  // tie context to glad opengl funcs
+		{
+			throw("unable to context to OpenGL");
+		}
+	}
+
+	SetupReshapeCallback();
+
+	SetupScrollWheelCallback();
+
+	SetReadMouseCurorAsStandard();
+
+	SetClearColor();
+
+}
+
+Display::~Display()
 {
 	glfwTerminate();
 }
@@ -90,44 +176,10 @@ void Display::SetReadMouseCurorAsStandard() noexcept
 	mMouseReporting = MouseReporting::STANDARD;
 }
 
-
 void Display::SetupScrollWheelCallback() noexcept
 {
 	::glfwSetScrollCallback(mWindow, DisplayCallbacks::scrollCallback);
 }
-
-//void Display::ToggleFullscreen() noexcept
-//{
-//	if (Settings::Get()->GetOptions().fullscreen)
-//		setWindowToWindowed();
-//	else
-//		setWindowToFullscreen();
-//}
-//
-//void Display::setWindowToFullscreen() noexcept
-//{
-//	// store previous windowed size and location
-//	glfwGetWindowSize(mWindow, &mLastWidth, &mLastHeight);
-//	glfwGetWindowPos(mWindow, &mLastxPos, &mLastyPos);
-//
-//	// get the main monitor so we can use its size for fullscreen
-//	const GLFWvidmode* mode = glfwGetVideoMode(glfwGetPrimaryMonitor());
-//
-//	// set our window to fullscreen on the primary monitor
-//	glfwSetWindowMonitor(mWindow, glfwGetPrimaryMonitor(), 0, 0, mode->width, mode->height, mode->refreshRate);
-//
-//	// update our control variable
-//	mWindowIsFullScreen = !mWindowIsFullScreen;
-//}
-//
-//void Display::setWindowToWindowed() noexcept
-//{
-//	// Set size in windowed mode
-//	glfwSetWindowMonitor(mWindow, nullptr, mLastxPos, mLastyPos, mLastWidth, mLastHeight, 0);
-//
-//	// update our control variable
-//	mWindowIsFullScreen = !mWindowIsFullScreen;
-//}
 
 void Display::SetupReshapeCallback() noexcept
 {
@@ -145,9 +197,7 @@ void Display::ReshapeWindowHandler(int width, int height)
 		break;
 	case RenderingFramework::VULKAN:
 		break;
-
 	}
-
 	externWindowSizeDirty = true;  // update cam view matrix before next render
 }
 
@@ -179,70 +229,6 @@ bool Display::isFPP() noexcept
 void Display::closeWindow() noexcept
 {
 	glfwSetWindowShouldClose(mWindow, 1);
-}
-
-void Display::initDisplayFromEngine()
-{
-	// set an error calback in case of failure we at least know
-	static auto glfw_error_callback = [](int e, const char* msg) {
-		if (e != 65543)
-			throw("glfw callback error");
-	};
-	glfwSetErrorCallback(glfw_error_callback);
-
-	glfwInit();
-
-	glfwWindowHint(GLFW_MAXIMIZED, GLFW_TRUE);
-
-	auto local_options = Settings::Get()->GetOptions();
-
-	if (local_options.MSAA == true)
-	{
-		glfwWindowHint(GLFW_SAMPLES, local_options.msaa_samples);
-	}
-
-	if (local_options.renderer == RenderingFramework::OPENGL)
-	{
-		// with core profile, you have to create and manage your own VAO's, no default 
-		glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
-#ifdef __APPLE__
-		glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);
-#endif
-
-		// try more modern versions of OpenGL, don't use older than 3.3
-		std::queue<std::pair<int, int> > try_versions;
-		try_versions.emplace(std::pair<int, int>(4, 6));
-		try_versions.emplace(std::pair<int, int>(4, 5));
-		try_versions.emplace(std::pair<int, int>(4, 4));
-		try_versions.emplace(std::pair<int, int>(4, 3));
-		try_versions.emplace(std::pair<int, int>(4, 2));
-		try_versions.emplace(std::pair<int, int>(4, 1));
-		try_versions.emplace(std::pair<int, int>(4, 0));
-		try_versions.emplace(std::pair<int, int>(3, 3));
-
-		while (!mWindow)
-		{
-			std::pair<int, int> ver = try_versions.front();
-			glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, ver.first);
-			glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, ver.second);
-			mWindow = glfwCreateWindow(local_options.default_window_width, local_options.default_window_height, "AncientArcher", nullptr, nullptr);
-			if (!mWindow)
-				try_versions.pop();
-		}
-	}
-
-	if (!mWindow)
-		throw("unsupported graphics");
-
-	glfwMakeContextCurrent(mWindow);
-
-	if (Settings::Get()->GetOptions().renderer == RenderingFramework::OPENGL)
-	{
-		if (!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress))  // tie context to glad opengl funcs
-		{
-			throw("unable to context to OpenGL");
-		}
-	}
 }
 
 void Display::pullButtonStateEvents()

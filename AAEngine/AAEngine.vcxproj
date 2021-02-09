@@ -85,7 +85,6 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="include\Renderer\OpenGL\OGLLights.h" />
-    <ClInclude Include="include\Renderer\RenderFrameworks.h" />
     <ClInclude Include="include\Renderer\TextureInfo.h" />
     <ClInclude Include="include\Scene\ColliderSphere.h" />
     <ClInclude Include="include\Scene\Camera.h" />

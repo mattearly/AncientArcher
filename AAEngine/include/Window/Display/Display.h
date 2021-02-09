@@ -42,8 +42,7 @@ protected:
 	void clearBackBuffer() const noexcept;
 	void swapWindowBuffers() const noexcept;
 
-	void initDisplayFromEngine();
-
+//private:
 	MouseReporting mMouseReporting = MouseReporting::STANDARD;
 
 	GLFWwindow* mWindow = nullptr;
@@ -53,6 +52,7 @@ protected:
 
 	bool isTryingToClose() noexcept;
 	bool isFPP() noexcept;
+	Display();
 
 private:
 

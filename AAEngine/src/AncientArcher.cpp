@@ -34,11 +34,6 @@ void AncientArcher::SoftReset()
 	resetEngine();
 }
 
-AncientArcher::AncientArcher()
-{
-	initEngine();
-}
-
 const Camera& AncientArcher::GetCamera(int camId) const
 {
 	for (const auto& cam : mCameras)
@@ -129,6 +124,14 @@ GameObject& AncientArcher::GetGameObject(int objId)
 	// if it didn't find it and return above ^^^^^^^^  show error message in console
 	//std::cout << "game object ID by the ID [" << objId << "] was not found.\n";
 	exit(-1);
+}
+
+AncientArcher::	AncientArcher()
+{
+	mNonSpammableKeysTimeout = 0.f;
+	mSlowUpdateTimeout = 0.f;
+	mNoSpamWaitLength = .5667f;
+	mSlowUpdateWaitLength = .3337f;
 }
 
 void AncientArcher::__updateCamViewMatrices(int width, int height)
@@ -342,23 +345,6 @@ void AncientArcher::SetSlowUpdateTimeoutLength(const float& newtime)
 	mSlowUpdateWaitLength = newtime;
 }
 
-
-void AncientArcher::initEngine()
-{
-	//resetEngine();
-
-	initDisplayFromEngine();
-
-	SetupReshapeCallback();
-
-	SetupScrollWheelCallback();
-
-	SetReadMouseCurorAsStandard();
-
-	SetClearColor();
-
-}
-
 void AncientArcher::begin()
 {
 	Display::keepWindowOpen();
@@ -543,10 +529,6 @@ void AncientArcher::resetEngine() noexcept
 	mSlowUpdateTimeout = 0.f;
 	mNoSpamWaitLength = .5667f;
 	mSlowUpdateWaitLength = .3337f;
-	
-	//mLastFrameTime = 0.f;
-	//mCurrentFrameTime = 0.f;
-	//mDeltaTime = 0.f;
 
 	SetCursorToEnabled();
 	SetReadMouseCurorAsStandard();

@@ -72,10 +72,7 @@ public:
 
 private:
 	AncientArcher();
-	
-	//float mLastFrameTime;                  ///< keeps track of the previous frame's time
-	//float mCurrentFrameTime;               ///< keeps track of the current frame's time
-	//float mDeltaTime;                      ///< the delta difference between previous and current frame
+
 	float mNonSpammableKeysTimeout;        ///< keeps track of how long the keys have timed out
 	float mNoSpamWaitLength;               ///< how long the non-spammable keys are to time out for at least
 	float mSlowUpdateTimeout;              ///< keeps track of how how long the slow update has been timed out
@@ -103,7 +100,6 @@ private:
 	void teardown();
 
 	// helpers
-	void initEngine();
 	void resetEngine() noexcept;
 
 	// todo: refactor - used for testing purposes until more elegant solution appears
