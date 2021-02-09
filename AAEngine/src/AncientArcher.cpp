@@ -543,10 +543,13 @@ void AncientArcher::resetEngine() noexcept
 	mSlowUpdateTimeout = 0.f;
 	mNoSpamWaitLength = .5667f;
 	mSlowUpdateWaitLength = .3337f;
-
+	
 	//mLastFrameTime = 0.f;
 	//mCurrentFrameTime = 0.f;
 	//mDeltaTime = 0.f;
+
+	SetCursorToEnabled();
+	SetReadMouseCurorAsStandard();
 
 	Display::SetClearColor();
 }
