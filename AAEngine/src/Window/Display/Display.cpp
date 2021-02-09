@@ -194,7 +194,14 @@ void Display::initDisplayFromEngine()
 
 	glfwWindowHint(GLFW_MAXIMIZED, GLFW_TRUE);
 
-	if (Settings::Get()->GetOptions().renderer == RenderingFramework::OPENGL)
+	auto local_options = Settings::Get()->GetOptions();
+
+	if (local_options.MSAA == true)
+	{
+		glfwWindowHint(GLFW_SAMPLES, local_options.msaa_samples);
+	}
+
+	if (local_options.renderer == RenderingFramework::OPENGL)
 	{
 		// with core profile, you have to create and manage your own VAO's, no default 
 		glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
@@ -212,24 +219,13 @@ void Display::initDisplayFromEngine()
 		try_versions.emplace(std::pair<int, int>(4, 1));
 		try_versions.emplace(std::pair<int, int>(4, 0));
 		try_versions.emplace(std::pair<int, int>(3, 3));
-		//try_versions.emplace(std::pair<int, int>(3, 2));
-		//try_versions.emplace(std::pair<int, int>(3, 1));
-		//try_versions.emplace(std::pair<int, int>(3, 0));
-		//try_versions.emplace(std::pair<int, int>(2, 1));
-		//try_versions.emplace(std::pair<int, int>(2, 0));
-		//try_versions.emplace(std::pair<int, int>(1, 5));
-		//try_versions.emplace(std::pair<int, int>(1, 4));
-		//try_versions.emplace(std::pair<int, int>(1, 3));
-		//try_versions.emplace(std::pair<int, int>(1, 2));  // there is also a 1.2.1
-		//try_versions.emplace(std::pair<int, int>(1, 1));
-		//try_versions.emplace(std::pair<int, int>(1, 0));
 
 		while (!mWindow)
 		{
 			std::pair<int, int> ver = try_versions.front();
 			glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, ver.first);
 			glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, ver.second);
-			mWindow = glfwCreateWindow(1280, 720, "AncientArcher", nullptr, nullptr);
+			mWindow = glfwCreateWindow(local_options.default_window_width, local_options.default_window_height, "AncientArcher", nullptr, nullptr);
 			if (!mWindow)
 				try_versions.pop();
 		}

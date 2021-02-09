@@ -7,7 +7,6 @@ class OGLShader
 {
 public:
 
-	//OGLShader(const SHADERTYPE& type);
 	OGLShader(const char* vert_src, const char* frag_src);
 	
 	void use() const noexcept;
