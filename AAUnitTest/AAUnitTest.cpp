@@ -324,8 +324,7 @@ public:
 		Engine->SoftReset();
 		SoundDevice::Init();
 		static ShortSound MySpeaker;
-		// replace with your own sound
-		static auto MyWindSound = ShortSound::AddShortSound("E:\\downloads\\wind.ogg");
+		static auto MyWindSound = ShortSound::AddShortSound("..\\..\\AAUnitTest\\res\\wind.ogg");
 		MySpeaker.Play(MyWindSound);
 		MySpeaker.SetLooping(true);
 		Assert::AreEqual(Engine->Run(), 0);
