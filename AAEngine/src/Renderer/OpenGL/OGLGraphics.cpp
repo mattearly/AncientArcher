@@ -1,4 +1,5 @@
 #include "../../../include/Renderer/OpenGL/OGLGraphics.h"
+#include "../../../include/Settings/Settings.h"
 #include <glm/glm.hpp>
 #include <glm/gtc/quaternion.hpp>
 #include <stb_image.h>
@@ -187,6 +188,11 @@ uint32_t OGLGraphics::UploadCubeMapTex(std::vector<unsigned char*> tex_data, int
 void OGLGraphics::DeleteTex(const uint32_t& id)
 {
 	glDeleteTextures(1, &id);
+}
+
+void OGLGraphics::SetMSAA(const bool enabled)
+{
+	glEnable(GL_MULTISAMPLE);
 }
 
 }  // end namespace AA

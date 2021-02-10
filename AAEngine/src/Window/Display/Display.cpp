@@ -69,10 +69,8 @@ Display::Display()
 			}
 			else  // save results to settings
 			{
-				auto game_opts = Settings::Get()->GetOptions();
-				game_opts.RendererVersionMajor = try_versions.back().major;
-				game_opts.RendererVersionMinor = try_versions.back().minor;
-				Settings::Get()->SetOptions(game_opts);
+				local_options.RendererVersionMajor = try_versions.back().major;
+				local_options.RendererVersionMinor = try_versions.back().minor;
 			}
 		}
 	}
@@ -82,13 +80,17 @@ Display::Display()
 
 	glfwMakeContextCurrent(mWindow);
 
-	if (Settings::Get()->GetOptions().renderer == RenderingFramework::OPENGL)
+	if (local_options.renderer == RenderingFramework::OPENGL)
 	{
-		if (!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress))  // tie context to glad opengl funcs
+		if (!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress))  // tie window context to glad's opengl funcs
 		{
-			throw("unable to context to OpenGL");
+			throw("Unable to context to OpenGL");
 		}
+		OGLGraphics::SetMSAA(local_options.MSAA);
 	}
+
+	// set all our options to what we set (mainly the major and minor version will be updated)
+	Settings::Get()->SetOptions(local_options);
 
 	SetupReshapeCallback();
 

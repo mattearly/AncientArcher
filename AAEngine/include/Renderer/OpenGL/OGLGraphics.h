@@ -25,5 +25,6 @@ private:
 	static uint32_t Upload2DTex(const unsigned char* tex_data, int width, int height);
 	static uint32_t UploadCubeMapTex(std::vector<unsigned char*> tex_data, int width, int height);
 	static void DeleteTex(const uint32_t& id);
+	static void SetMSAA(const bool enabled);
 };
 }  // end namespace AA
