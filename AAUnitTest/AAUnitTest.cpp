@@ -6,6 +6,7 @@
 #include <Sound/SoundDevice.h>
 #include <Utility/Files.h>
 #include <Shader/DiffShader.h>
+#include <Sound/LongSound.h>
 using namespace Microsoft::VisualStudio::CppUnitTestFramework;
 using namespace AA;
 namespace AAUnitTest
@@ -328,6 +329,19 @@ public:
 		MySpeaker.Play(MyWindSound);
 		MySpeaker.SetLooping(true);
 		Assert::AreEqual(Engine->Run(), 0);
+	}
+
+	TEST_METHOD(I_LongSoundTest)
+	{
+		Engine->SoftReset();
+		SoundDevice::Init();
+		// TownTheme is a larger file and thus not in project, replace with your own music file dir
+		static LongSound MyBackgroundMusic("E:\\downloads\\TownTheme.wav");
+		MyBackgroundMusic.SetVolume(.1f);
+		Engine->AddToOnBegin([](){MyBackgroundMusic.Play();});
+		Engine->AddToSlowUpdate([](){MyBackgroundMusic.UpdatePlayBuffer();});
+		Assert::AreEqual(Engine->Run(), 0);
+		
 	}
 };
 }
