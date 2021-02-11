@@ -13,6 +13,8 @@ class ShortSound
 public:
 	void Play(const ALuint buffer);
 
+	void PlayNoOverlap(const ALuint buf);
+
 	void SetPosition(const float& x, const float& y, const float& z);
 	void SetPosition(const glm::vec3& loc);
 	void SetLocation(const float& x, const float& y, const float& z);

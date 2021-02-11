@@ -69,6 +69,18 @@ void ShortSound::Play(const ALuint buf)
 	//std::cout << "done playing sound\n";
 }
 
+void ShortSound::PlayNoOverlap(const ALuint buf)
+{
+	ALint our_save;
+	alGetSourcei(p_Source, AL_SOURCE_STATE, &our_save);
+	if (our_save == AL_PLAYING)
+	{
+		return;
+	}
+
+	Play(buf);
+}
+
 void ShortSound::SetPosition(const float& x, const float& y, const float& z) {
 	SetLocation(x, y, z);
 }
