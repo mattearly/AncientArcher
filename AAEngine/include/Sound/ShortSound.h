@@ -12,7 +12,7 @@ class ShortSound
 {
 public:
 	void Play(const ALuint buffer);
-
+	void PlayInterrupt(const ALuint buf);
 	void PlayNoOverlap(const ALuint buf);
 
 	void SetPosition(const float& x, const float& y, const float& z);

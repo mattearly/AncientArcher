@@ -60,25 +60,17 @@ void ShortSound::Play(const ALuint buf)
 		throw("error playing short sound");
 }
 
-	//state = AL_PLAYING;
-	//std::cout << "playing sound\n";
-	//while (state == AL_PLAYING && alGetError() == AL_NO_ERROR)
-	//{
-	//	std::cout << "currently playing sound\n";
-	//	alGetSourcei(source, AL_SOURCE_STATE, &state);
-	//}
-	//std::cout << "done playing sound\n";
+void ShortSound::PlayInterrupt(const ALuint buf)
+{
+	if (isPlaying())
+		alSourceStop(p_Source);
+	Play(buf);
 }
 
 void ShortSound::PlayNoOverlap(const ALuint buf)
 {
-	ALint our_save;
-	alGetSourcei(p_Source, AL_SOURCE_STATE, &our_save);
-	if (our_save == AL_PLAYING)
-	{
+	if (isPlaying())
 		return;
-	}
-
 	Play(buf);
 }
 
@@ -156,21 +148,6 @@ void ShortSound::SetVolume(const float& gain)
 	{
 		throw("error setting short sound volume");
 	}
-
-	//ALenum ALerror = AL_NO_ERROR;
-	//ALerror = alGetError();
-	//auto geterrorstring = [](ALenum ALerror) {
-	//	switch (ALerror) {
-	//	case AL_NO_ERROR:       return std::string("AL_NO_ERROR - (No error)."); break;
-	//	case AL_INVALID_NAME:       return std::string("AL_INVALID_NAME - Invalid Name paramater passed to AL call."); break;
-	//	case AL_INVALID_ENUM:       return std::string("AL_INVALID_ENUM - Invalid parameter passed to AL call."); break;
-	//	case AL_INVALID_VALUE:      return std::string("AL_INVALID_VALUE - Invalid enum parameter value."); break;
-	//	case AL_INVALID_OPERATION:  return std::string("AL_INVALID_OPERATION"); break;
-	//	case AL_OUT_OF_MEMORY:      return std::string("AL_OUT_OF_MEMORY"); break;
-	//	default:            return std::string("AL Unknown Error."); break;
-	//	}
-	//};
-	//std::cout << geterrorstring(ALerror) << '\n';
 }
 
 void ShortSound::SetLooping(const bool& opt)
