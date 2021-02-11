@@ -324,10 +324,9 @@ public:
 	{
 		Engine->SoftReset();
 		SoundDevice::Init();
-		static ShortSound MySpeaker;
-		static auto MyWindSound = ShortSound::AddShortSound("..\\..\\AAUnitTest\\res\\wind.ogg");
+		ShortSound MySpeaker;
+		auto MyWindSound = ShortSound::AddShortSound("..\\..\\AAUnitTest\\res\\wind.ogg");
 		MySpeaker.Play(MyWindSound);
-		MySpeaker.SetLooping(true);
 		Assert::AreEqual(Engine->Run(), 0);
 	}
 
@@ -338,10 +337,25 @@ public:
 		// TownTheme is a larger file and thus not in project, replace with your own music file dir
 		static LongSound MyBackgroundMusic("E:\\downloads\\TownTheme.wav");
 		MyBackgroundMusic.SetVolume(.1f);
-		Engine->AddToOnBegin([](){MyBackgroundMusic.Play();});
-		Engine->AddToSlowUpdate([](){MyBackgroundMusic.UpdatePlayBuffer();});
+		Engine->AddToOnBegin([]() {MyBackgroundMusic.Play(); });
+		Engine->AddToSlowUpdate([]() {MyBackgroundMusic.UpdatePlayBuffer(); });
 		Assert::AreEqual(Engine->Run(), 0);
-		
+	}
+
+	TEST_METHOD(J_SameSourceMultiSoundMashUpTest)
+	{
+		Engine->SoftReset();
+		SoundDevice::Init();
+		static ShortSound MySpeaker;
+		static auto MyWindSound = ShortSound::AddShortSound("..\\..\\AAUnitTest\\res\\wind.ogg");
+		static auto MyEnchantSound = ShortSound::AddShortSound("..\\..\\AAUnitTest\\res\\enchant.ogg");
+		Engine->AddToKeyHandling([](KeyboardInput& kb){
+			if (kb.mouseButton1)
+				MySpeaker.PlayNoOverlap(MyEnchantSound);
+			if (kb.mouseButton2)
+				MySpeaker.PlayNoOverlap(MyWindSound);
+		});		
+		Assert::AreEqual(Engine->Run(), 0);
 	}
 };
 }
