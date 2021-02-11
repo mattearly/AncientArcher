@@ -42,6 +42,8 @@ private:
 	ALuint p_Source;
 	ALuint p_Buffer = 0;
 
+	bool isPlaying();
+
 };
 
 

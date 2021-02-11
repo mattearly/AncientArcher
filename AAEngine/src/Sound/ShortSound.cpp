@@ -344,4 +344,11 @@ void ShortSound::DestroyAllBuffers()
 	g_ShortSoundBuffers.clear();
 }
 
+bool ShortSound::isPlaying()
+{
+	ALint play_status;
+	alGetSourcei(p_Source, AL_SOURCE_STATE, &play_status);
+	return (play_status == AL_PLAYING);
+}
+
 } //end namespace AA
