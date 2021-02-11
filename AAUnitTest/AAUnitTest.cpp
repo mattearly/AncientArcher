@@ -352,8 +352,12 @@ public:
 		Engine->AddToKeyHandling([](KeyboardInput& kb){
 			if (kb.mouseButton1)
 				MySpeaker.PlayNoOverlap(MyEnchantSound);
+
 			if (kb.mouseButton2)
-				MySpeaker.PlayNoOverlap(MyWindSound);
+				MySpeaker.PlayInterrupt(MyEnchantSound);
+
+			if (kb.mouseButton3)
+				MySpeaker.Play(MyWindSound);
 		});		
 		Assert::AreEqual(Engine->Run(), 0);
 	}
