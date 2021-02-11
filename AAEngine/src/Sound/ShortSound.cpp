@@ -46,18 +46,19 @@ static std::vector<ALuint> g_ShortSoundBuffers;
 
 void ShortSound::Play(const ALuint buf)
 {
-	// update stored buffer to play if we need to
-	if (buf != p_Buffer) {
+	if (buf != p_Buffer) 
+	{
+		if (isPlaying())
+			alSourceStop(p_Source);
 		p_Buffer = buf;
-		alSourcei(p_Source, AL_BUFFER, (ALint)buf);
+		alSourcei(p_Source, AL_BUFFER, p_Buffer);
 	}
 
 	alSourcePlay(p_Source);
 
 	if (alGetError() != AL_NO_ERROR)
-	{
 		throw("error playing short sound");
-	}
+}
 
 	//state = AL_PLAYING;
 	//std::cout << "playing sound\n";
