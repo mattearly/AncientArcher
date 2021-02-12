@@ -23,7 +23,7 @@ void OGLGraphics::Render(const std::vector<MeshDrawInfo>& meshes, const std::vec
 	glEnable(GL_DEPTH_TEST);
 
 	// go through all meshes in the this
-	for (auto m : meshes)
+	for (const auto &m : meshes)
 	{
 		// go through all texture in this mesh
 		uint32_t i = 0;

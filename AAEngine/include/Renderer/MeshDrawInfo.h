@@ -15,6 +15,6 @@ struct MeshDrawInfo   // NodeDrawInfo a better name?
 	//float shininess;
 	//glm::vec4 specular;
 	uint32_t numElements;
-	glm::mat4 transformation;
+	//glm::mat4 transformation;
 };
 }  // end namespace AA
