@@ -189,6 +189,15 @@ ALint LongSound::GetPlayingState()
 	return curr_state;
 }
 
+bool LongSound::IsPlaying()
+{
+	if (GetPlayingState() == AL_PLAYING)
+		return true;
+
+
+	return false;
+}
+
 LongSound::LongSound(const char* filename)
 {
 	alGenSources(1, &p_Source);

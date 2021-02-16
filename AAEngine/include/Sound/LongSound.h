@@ -20,6 +20,7 @@ public:
 	void UpdatePlayBuffer();
 
 	ALint GetPlayingState();
+	bool IsPlaying();
 
 private:
 
