@@ -336,7 +336,8 @@ public:
 		SoundDevice::Init();
 		// TownTheme is a larger file and thus not in project, replace with your own music file dir
 		static LongSound MyBackgroundMusic("E:\\downloads\\TownTheme.wav");
-		MyBackgroundMusic.SetVolume(.1f);
+		//todo: figure out why this crashes (happens if these tests are run in sequence, something to do with the buffers or init from prev tests)
+		MyBackgroundMusic.SetVolume(.01f);
 		Engine->AddToOnBegin([]() {MyBackgroundMusic.Play(); });
 		Engine->AddToSlowUpdate([]() {MyBackgroundMusic.UpdatePlayBuffer(); });
 		Assert::AreEqual(Engine->Run(), 0);
