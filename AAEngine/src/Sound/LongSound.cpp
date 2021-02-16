@@ -216,6 +216,7 @@ LongSound::LongSound(const char* filename)
 	}
 
 	/* Get the sound format, and figure out the OpenAL format */
+	p_Format = 0;
 	if (p_Sfinfo.channels == 1)
 		p_Format = AL_FORMAT_MONO16;
 	else if (p_Sfinfo.channels == 2)
