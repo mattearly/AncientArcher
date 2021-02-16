@@ -92,10 +92,6 @@ void LongSound::SetVolume(const float& val)
 	//SoundDevice::Get()->ResumeContext();
 
 
-	if (alGetError() != AL_NO_ERROR)
-	{
-		throw("error setting gain");
-	}
 
 	//ALenum ALerror = AL_NO_ERROR;
 	//ALerror = alGetError();
@@ -110,6 +106,11 @@ void LongSound::SetVolume(const float& val)
 	//	default:            return std::string("AL Unknown Error."); break;
 	//	}; };
 	//std::cout << geterrorstring(ALerror) << '\n';
+
+
+
+	if (alGetError() != AL_NO_ERROR)
+		throw("Error Setting Gain.");
 }
 
 void LongSound::UpdatePlayBuffer()
@@ -187,19 +188,6 @@ ALint LongSound::GetPlayingState()
 	alGetSourcei(p_Source, AL_SOURCE_STATE, &curr_state);
 	return curr_state;
 }
-
-//LongSound::LongSound()
-//{
-//	alGenSources(1, &p_Source);
-//	assert(alGetError() == AL_NO_ERROR && "Could not create source");
-//
-//	/* Set parameters so mono sources play out the front-center speaker and
-//		* won't distance attenuate. */
-//		//alSource3i(p_Source, AL_POSITION, 0, 0, -1);
-//	//alSourcei(p_Source, AL_SOURCE_RELATIVE, AL_TRUE);
-//	//alSourcei(p_Source, AL_ROLLOFF_FACTOR, 0);
-//	//assert(alGetError() == AL_NO_ERROR && "Could not set source parameters");
-//}
 
 LongSound::LongSound(const char* filename)
 {
