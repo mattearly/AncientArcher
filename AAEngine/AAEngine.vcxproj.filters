@@ -111,13 +111,13 @@
     <ClInclude Include="src\Renderer\SceneLoader.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="include\Shader\DiffShader.h">
+    <ClInclude Include="include\AncientArcher\Shader\DiffShader.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="include\Shader\LitShader.h">
+    <ClInclude Include="include\AncientArcher\Shader\LitShader.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="include\Utility\Files.h">
+    <ClInclude Include="include\AncientArcher\Utility\Files.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

@@ -1,8 +1,6 @@
-#include "Scene/Camera.h"
 #include "Scene/GameObject.h"
 #include "Renderer/SceneLoader.h"
 #include "Renderer/OpenGL/OGLShader.h"
-#include "Renderer/OpenGL/Skybox.h"
 #include "../include/AncientArcher/AncientArcher.h"
 #include <vector>
 #include <string>
@@ -40,6 +38,21 @@ void AncientArcher::SoftReset()
 }
 
 Camera& AncientArcher::GetCamera(int camId)
+{
+	for (auto& cam : mCameras)
+	{
+		if (cam.GetID() == camId)
+		{
+			return cam;
+		}
+	}
+
+	// if it didn't find it and return above ^^^^^^^^  show error message in console
+	//std::cout << "cam ID by the ID [" << camId << "] was not found. unable to get AACamera\n";
+	exit(-1);
+}
+
+const Camera& AncientArcher::GetCamera(int camId) const
 {
 	for (auto& cam : mCameras)
 	{
