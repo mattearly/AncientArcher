@@ -1,13 +1,13 @@
 #pragma once
 #include "../../src/Window/Display/Display.h"
+#include "../../src/Scene/Camera.h"
+#include "../../src/Renderer/OpenGL/Skybox.h"
 #include <vector>
 #include <functional>
 #include <memory>
 #include <unordered_map>
 
-class Camera;
 class OGLShader;
-class Skybox;
 class GameObject;
 class Settings;
 enum class SHADERTYPE;
@@ -64,6 +64,7 @@ public:
 	void SetCursorToEnabled(bool isHardwareRendered = false);
 
 	Camera& GetCamera(int camId);
+	const Camera& GetCamera(int camId) const;
 	OGLShader& GetShader(int shadId);
 	GameObject& GetGameObject(int objId);
 
