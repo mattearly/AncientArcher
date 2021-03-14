@@ -1,4 +1,4 @@
-#include "..\..\include\Sound\SoundDevice.h"
+#include "..\Sound\SoundDevice.h"
 #include <AL\al.h>
 #include <AL\alext.h>
 namespace AA {

@@ -1,5 +1,5 @@
-#include "../../../include/Window/Display/DisplayCallbacks.h"
-#include "../../../include/AncientArcher.h"
+#include "DisplayCallbacks.h"
+#include "../../../include/AncientArcher/AncientArcher.h"
 
 namespace AA
 {

@@ -1,4 +1,4 @@
-#include "../../include/Scene/InstanceDetails.h"
+#include "../Scene/InstanceDetails.h"
 #include <glm/glm.hpp>
 #include <glm/gtx/transform.hpp>
 namespace AA

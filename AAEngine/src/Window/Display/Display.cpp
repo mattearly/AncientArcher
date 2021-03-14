@@ -1,7 +1,7 @@
-#include "../../../include/Window/Display/Display.h"
-#include "../../../include/Window/Display/DisplayCallbacks.h"
-#include "../../../include/Renderer/OpenGL/OGLGraphics.h"
-#include "../../../include/Settings/Settings.h"
+#include "../../Window/Display/Display.h"
+#include "../../Window/Display/DisplayCallbacks.h"
+#include "../../Renderer/OpenGL/OGLGraphics.h"
+#include "../../Settings/Settings.h"
 #include <memory>
 #include <glad/glad.h>
 #include <GLFW/glfw3.h>

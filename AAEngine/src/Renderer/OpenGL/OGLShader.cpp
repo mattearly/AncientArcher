@@ -1,4 +1,4 @@
-#include "../../../include/Renderer/OpenGL/OGLShader.h"
+#include "OGLShader.h"
 #include <glad/glad.h>
 #include <fstream>
 #include <sstream>

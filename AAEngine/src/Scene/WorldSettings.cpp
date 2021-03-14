@@ -1,4 +1,4 @@
-#include "../../include/Scene/WorldSettings.h"
+#include "../Scene/WorldSettings.h"
 namespace AA
 {
 WorldSettings::WorldSettings()

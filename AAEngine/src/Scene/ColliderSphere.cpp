@@ -1,4 +1,4 @@
-#include "../../include/Scene/ColliderSphere.h"
+#include "../Scene/ColliderSphere.h"
 
 ColliderSphere::ColliderSphere(glm::vec3 loc, float r) :
 	center(loc), radius(r)

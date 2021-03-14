@@ -1,15 +1,15 @@
 #pragma once
-#include "Window/Display/Display.h"
-#include "Scene/Camera.h"
-#include "Renderer/OpenGL/Skybox.h"
-#include "Scene/GameObject.h"
+#include "../../src/Window/Display/Display.h"
 #include <vector>
 #include <functional>
 #include <memory>
 #include <unordered_map>
-#include "Settings/Settings.h"
 
+class Camera;
 class OGLShader;
+class Skybox;
+class GameObject;
+class Settings;
 enum class SHADERTYPE;
 struct InstanceDetails;
 
@@ -63,11 +63,8 @@ public:
 	void SetProjectionMatrix(int shadId, int camId);
 	void SetCursorToEnabled(bool isHardwareRendered = false);
 
-	const Camera& GetCamera(int camId) const;
 	Camera& GetCamera(int camId);
-	const OGLShader& GetShader(int shadId) const;
 	OGLShader& GetShader(int shadId);
-	const GameObject& GetGameObject(int objId) const;
 	GameObject& GetGameObject(int objId);
 
 private:

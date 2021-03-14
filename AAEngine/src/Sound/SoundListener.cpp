@@ -1,5 +1,5 @@
-#include "../../include/Sound/SoundDevice.h"
-#include "../../include/Sound/SoundListener.h"
+#include "../Sound/SoundDevice.h"
+#include "../Sound/SoundListener.h"
 
 namespace AA {
 SoundListener* SoundListener::Get()

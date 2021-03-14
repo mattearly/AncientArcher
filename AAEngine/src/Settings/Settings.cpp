@@ -1,4 +1,4 @@
-#include "../../include/Settings/Settings.h"
+#include "../Settings/Settings.h"
 namespace AA {
 
 static Settings* ourSettings = nullptr;

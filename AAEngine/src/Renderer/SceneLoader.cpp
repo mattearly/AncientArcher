@@ -6,10 +6,10 @@
 #include <glad/glad.h>
 #include <glm/glm.hpp>
 #include <glm/gtc/quaternion.hpp>
-#include "../../include/Renderer/SceneLoader.h"
-#include "../../include/Renderer/OpenGL/OGLGraphics.h"
-#include "../../include/Renderer/Vertex.h"
-#include "../../include/Settings/Settings.h"
+#include "../Renderer/SceneLoader.h"
+#include "../Renderer/OpenGL/OGLGraphics.h"
+#include "../Renderer/Vertex.h"
+#include "../Settings/Settings.h"
 #include <stb_image.h>
 
 namespace AA

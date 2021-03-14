@@ -1,5 +1,5 @@
-#include "../../include/Sound/LongSound.h"
-#include "../../include/Sound/SoundDevice.h"
+#include "../Sound/LongSound.h"
+#include "../Sound/SoundDevice.h"
 #include <cassert>
 #include <AL\alc.h>
 #include <AL\alext.h>

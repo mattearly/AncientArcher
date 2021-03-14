@@ -1,10 +1,15 @@
-#include "../include/AncientArcher.h"
-#include "../include/Renderer/SceneLoader.h"
+#include "Scene/Camera.h"
+#include "Scene/GameObject.h"
+#include "Renderer/SceneLoader.h"
+#include "Renderer/OpenGL/OGLShader.h"
+#include "Renderer/OpenGL/Skybox.h"
+#include "../include/AncientArcher/AncientArcher.h"
 #include <vector>
 #include <string>
 #include <iomanip>
 #include <utility>
 #include <chrono>
+#include <memory>
 namespace AA
 {
 
@@ -34,22 +39,6 @@ void AncientArcher::SoftReset()
 	resetEngine();
 }
 
-const Camera& AncientArcher::GetCamera(int camId) const
-{
-	for (const auto& cam : mCameras)
-	{
-		if (cam.GetID() == camId)
-		{
-			return cam;
-		}
-	}
-
-	// if it didn't find it and return above ^^^^^^^^  show error message in console
-	//std::cout << "cam ID by the ID [" << camId << "] was not found. unable to get const AACamera\n";
-
-	exit(-1);
-}
-
 Camera& AncientArcher::GetCamera(int camId)
 {
 	for (auto& cam : mCameras)
@@ -65,21 +54,6 @@ Camera& AncientArcher::GetCamera(int camId)
 	exit(-1);
 }
 
-const OGLShader& AncientArcher::GetShader(int shadId) const
-{
-	for (const auto& shad : mShaders)
-	{
-		if (shad.GetID() == shadId)
-		{
-			return shad;
-		}
-	}
-
-	// if it didn't find it and return above ^^^^^^^^  show error message in console
-	//std::cout << "shad ID by the ID [" << shadId << "] was not found.\n";
-	exit(-1);
-}
-
 OGLShader& AncientArcher::GetShader(int shadId)
 {
 	for (auto& shad : mShaders)
@@ -92,21 +66,6 @@ OGLShader& AncientArcher::GetShader(int shadId)
 
 	// if it didn't find it and return above ^^^^^^^^  show error message in console
 	//std::cout << "shad ID by the ID [" << shadId << "] was not found.\n";
-	exit(-1);
-}
-
-const GameObject& AncientArcher::GetGameObject(int objId) const
-{
-	for (const auto& obj : mGameObjects)
-	{
-		if (obj.GetObjectId() == objId)
-		{
-			return obj;
-		}
-	}
-
-	// if it didn't find it and return above ^^^^^^^^  show error message in console
-	//std::cout << "game object ID by the ID [" << objId << "] was not found.\n";
 	exit(-1);
 }
 
@@ -126,7 +85,7 @@ GameObject& AncientArcher::GetGameObject(int objId)
 	exit(-1);
 }
 
-AncientArcher::	AncientArcher()
+AncientArcher::AncientArcher()
 {
 	mNonSpammableKeysTimeout = 0.f;
 	mSlowUpdateTimeout = 0.f;
@@ -369,7 +328,7 @@ void AncientArcher::deltaUpdate()
 	// update engine run delta times
 	currTime = std::chrono::system_clock::now();
 	deltaTime = currTime - lastTime;
-	lastTime  = currTime;
+	lastTime = currTime;
 
 	// go through all updates that need access to delta time
 	float elapsedTime = deltaTime.count();
@@ -504,7 +463,7 @@ void AncientArcher::teardown()
 	{
 		shader.deleteShader();
 	}
- }
+}
 
 
 void AncientArcher::resetEngine() noexcept

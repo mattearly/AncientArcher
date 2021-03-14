@@ -1,4 +1,4 @@
-#include "../../include/Renderer/MeshDrawInfo.h"
+#include "MeshDrawInfo.h"
 namespace AA
 {
 MeshDrawInfo::MeshDrawInfo(uint32_t a, uint32_t elcount, std::unordered_map<uint32_t, std::string> t_id, glm::mat4 trans) :

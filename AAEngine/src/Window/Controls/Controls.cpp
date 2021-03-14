@@ -1,8 +1,8 @@
-#include "../../../include/Window/Controls/Controls.h"
-#include "../../../include/Renderer/OpenGL/OGLGraphics.h"
+#include "Controls.h"
+#include "../../Renderer/OpenGL/OGLGraphics.h"
 #include <memory>
 #include <GLFW/glfw3.h>
-#include "../../../include/AncientArcher.h"
+#include "../../../include/AncientArcher/AncientArcher.h"
 
 namespace AA
 {

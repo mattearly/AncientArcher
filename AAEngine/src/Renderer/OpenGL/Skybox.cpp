@@ -1,8 +1,8 @@
 #include <glad/glad.h>
 #include <glm/glm.hpp>
-#include "../../../include/Renderer/OpenGL/Skybox.h"
-#include "../../../include/Renderer/OpenGL/OGLGraphics.h"
-#include "../../../include/Settings/Settings.h"
+#include "../../Renderer/OpenGL/Skybox.h"
+#include "../../Renderer/OpenGL/OGLGraphics.h"
+#include "../../Settings/Settings.h"
 #include <stb_image.h>
 
 namespace AA

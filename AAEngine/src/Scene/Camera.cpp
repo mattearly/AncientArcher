@@ -1,8 +1,8 @@
 #include <glm\ext\matrix_clip_space.hpp>
 #include <glm\gtx\transform.hpp>
-#include "../../include/Scene/WorldSettings.h"
-#include "../../include/Scene/Camera.h"
-#include "../../include/Window/Display/Display.h"
+#include "../Scene/WorldSettings.h"
+#include "../Scene/Camera.h"
+#include "../Window/Display/Display.h"
 namespace AA
 {
 

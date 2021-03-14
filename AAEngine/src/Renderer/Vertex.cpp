@@ -1,5 +1,5 @@
 
-#include "../../include/Renderer/Vertex.h"
+#include "Vertex.h"
 namespace AA
 {
 Vertex::Vertex(glm::vec3 pos, glm::vec2 texcoords, glm::vec3 norms) noexcept

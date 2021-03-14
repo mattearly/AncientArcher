@@ -1,7 +1,7 @@
-#include "../../include/Scene/GameObject.h"
-#include "../../include/Renderer/OpenGL/OGLGraphics.h"
-#include "../../include/Scene/Camera.h"
-#include "../../include/Renderer/SceneLoader.h"
+#include "../Scene/GameObject.h"
+#include "../Renderer/OpenGL/OGLGraphics.h"
+#include "../Scene/Camera.h"
+#include "../Renderer/SceneLoader.h"
 
 namespace AA
 {

@@ -1,5 +1,5 @@
-#include "../../../include/Renderer/OpenGL/OGLGraphics.h"
-#include "../../../include/Settings/Settings.h"
+#include "OGLGraphics.h"
+#include "../../Settings/Settings.h"
 #include <glm/glm.hpp>
 #include <glm/gtc/quaternion.hpp>
 #include <stb_image.h>

@@ -1,7 +1,7 @@
 #include <vector>
 #include <AL\al.h>
 #include <sndfile.h>
-#include "../../include/Sound/ShortSound.h"
+#include "../Sound/ShortSound.h"
 #include <unordered_map>
 #include <AL\alext.h>
 #include <inttypes.h>
