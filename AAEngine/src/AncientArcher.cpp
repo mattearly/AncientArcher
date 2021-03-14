@@ -2,6 +2,8 @@
 #include "Renderer/SceneLoader.h"
 #include "Renderer/OpenGL/OGLShader.h"
 #include "../include/AncientArcher/AncientArcher.h"
+#include "Sound/SoundDevice.h"
+#include "Sound/ShortSound.h"
 #include <vector>
 #include <string>
 #include <iomanip>
@@ -15,6 +17,7 @@ extern bool externWindowSizeDirty;
 
 AncientArcher* AncientArcher::Get()
 {
+	SoundDevice::Init();
 	static AncientArcher* aa = new AncientArcher();
 	return aa;
 }
@@ -98,6 +101,11 @@ GameObject& AncientArcher::GetGameObject(int objId)
 	exit(-1);
 }
 
+void AncientArcher::PlaySoundEffect(int effect_id, int speaker_id)
+{
+	mSpeakers[speaker_id].PlayNoOverlap(mSoundEffectBuffers[effect_id]);
+}
+
 AncientArcher::AncientArcher()
 {
 	mNonSpammableKeysTimeout = 0.f;
@@ -153,6 +161,43 @@ int AncientArcher::AddObject(const char* path, int cam_id, int shad_id, const st
 	mGameObjects.push_back(tmpObject);
 
 	return return_id;
+}
+
+/// <summary>
+/// adds a new sound effect buffer ready fro playback
+/// </summary>
+/// <param name="path">logical path to the sound effect file</param>
+/// <returns>-1 if already loaded, -2 if failed to load, else returns the location in the vector </returns>
+int AncientArcher::AddSoundEffect(const char* path)
+{
+	SoundDevice::Init();
+	for (const auto& pl : mLoadedSoundEffects)
+	{
+		if (path == pl.c_str())
+			return -1;  // sound already loaded
+	}
+
+	uint32_t tmp_id = ShortSound::AddShortSound(path);
+	if (tmp_id != 0)
+	{
+		mSoundEffectBuffers.push_back(tmp_id);
+		mLoadedSoundEffects.push_back(path);
+		return (mSoundEffectBuffers.size() - 1);  // the index into mSoundEffectBuffers 
+	}
+	else
+	{
+		return -2;  // failed to load
+	}
+
+	//return -3;  // should never get here
+}
+
+int AncientArcher::AddSpeaker()
+{
+	mSpeakers.resize(mSpeakers.size()+1);
+	//ShortSound new_speaker;
+	//mSpeakers.push_back(new_speaker);
+	return (mSpeakers.size() - 1);  // return index of last added
 }
 
 // todo: make a managed AddSkybox instead

@@ -120,6 +120,9 @@
     <ClInclude Include="include\AncientArcher\Utility\Files.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="src\Sound\SoundErrorCheck.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\vendor\stb\stb_image.cpp">

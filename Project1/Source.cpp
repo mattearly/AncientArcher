@@ -1,4 +1,5 @@
 #include <AncientArcher/AncientArcher.h>
+#include <iostream>
 using namespace AA;
 int main()
 {
@@ -15,8 +16,22 @@ int main()
 	const std::shared_ptr<Skybox> skybox = std::make_shared<Skybox>(cubemapfiles);
 	Engine->SetSkybox(skybox);
 
-	Engine->AddToDeltaUpdate([](float dt) {
-		Engine->GetCamera(ourcam).ShiftYawAndPitch(5*dt, 0);
+	static int enchantSound = Engine->AddSoundEffect("E:\\storage\\source\\repos\\AncientArcher\\AAUnitTest\\res\\enchant.ogg");
+	std::cout << "enchantSoundIndex " << enchantSound << '\n';
+	static int firstSpeaker = Engine->AddSpeaker();
+	std::cout << "speakerIndex " << firstSpeaker << '\n';
+
+	Engine->AddToDeltaUpdate([](float dt) 
+		{
+			Engine->GetCamera(ourcam).ShiftYawAndPitch(5 * dt, 0);
+		});
+
+	Engine->AddToKeyHandling([](KeyboardInput& kb)
+		{
+			if (kb.mouseButton1)
+			{
+				Engine->PlaySoundEffect(enchantSound, firstSpeaker);
+			}
 		});
 	Engine->Run();
 }

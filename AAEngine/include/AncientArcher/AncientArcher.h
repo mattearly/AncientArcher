@@ -2,6 +2,7 @@
 #include "../../src/Window/Display/Display.h"
 #include "../../src/Scene/Camera.h"
 #include "../../src/Renderer/OpenGL/Skybox.h"
+#include "../../src/Sound/ShortSound.h"
 #include <vector>
 #include <functional>
 #include <memory>
@@ -34,6 +35,8 @@ public:
 	int AddShader(const char* vert_src, const char* frag_src);
 	int AddObject(const char* path, int cam_id, int shad_id);
 	int AddObject(const char* path, int cam_id, int shad_id, const std::vector<InstanceDetails>& details);
+	int AddSoundEffect(const char* path);
+	int AddSpeaker();
 
 	void SetSkybox(const std::shared_ptr<Skybox>& skybox) noexcept;
 
@@ -67,6 +70,7 @@ public:
 	const Camera& GetCamera(int camId) const;
 	OGLShader& GetShader(int shadId);
 	GameObject& GetGameObject(int objId);
+	void PlaySoundEffect(int effect_id, int speaker_id);
 
 private:
 	AncientArcher();
@@ -76,10 +80,13 @@ private:
 	float mSlowUpdateTimeout;              ///< keeps track of how how long the slow update has been timed out
 	float mSlowUpdateWaitLength;           ///< ms length the slow update times out for at least
 
-	std::vector<Camera>     mCameras;      ///< list of available cameras
-	std::vector<OGLShader>  mShaders;      ///< list of available shaders
-	std::vector<GameObject> mGameObjects;  ///< list of available objects
-	std::shared_ptr<Skybox> mSkybox;       ///< the main skybox
+	std::vector<Camera>      mCameras;            ///< list of available cameras
+	std::vector<OGLShader>   mShaders;            ///< list of available shaders
+	std::vector<GameObject>  mGameObjects;        ///< list of available objects
+	std::vector<ShortSound>  mSpeakers;           ///< list of places to play sound effects from
+	std::vector<uint32_t>    mSoundEffectBuffers; ///< list of available sound effects
+	std::vector<std::string> mLoadedSoundEffects; ///< list of already loaded sound effects
+	std::shared_ptr<Skybox>  mSkybox;             ///< the main skybox
 
 	std::unordered_map<uint32_t, std::function<void()> >               onBegin;               ///< list of functions to run once when runMainAncientArcher is called
 	std::unordered_map<uint32_t, std::function<void(float)> >          onDeltaUpdate;         ///< list of functions that rely on deltatime in the main AncientArcher
@@ -92,9 +99,9 @@ private:
 	std::unordered_map<uint32_t, std::function<void()> >               onTearDown;            ///< list of functions to run when destroying
 
 	// called during Run
-	void begin();
+	void begin();  //< the green squigglies are a lie if you see them
 	void deltaUpdate();
-	void render();
+	void render();  //< the green squigglies are a lie if you see them
 	void teardown();
 
 	// helpers

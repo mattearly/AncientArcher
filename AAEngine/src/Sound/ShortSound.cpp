@@ -5,6 +5,8 @@
 #include <unordered_map>
 #include <AL\alext.h>
 #include <inttypes.h>
+#include <iostream>
+#include "SoundErrorCheck.h"
 
 /// <reference>
 /// AL_PITCH f, fv pitch multiplier, always positive
@@ -56,8 +58,11 @@ void ShortSound::Play(const ALuint buf)
 
 	alSourcePlay(p_Source);
 
-	if (alGetError() != AL_NO_ERROR)
-		throw("error playing short sound");
+
+	std::cout << ErrorCheck(alGetError()) << '\n';
+
+	//if (alGetError() != AL_NO_ERROR)
+	//	throw("error playing short sound");
 }
 
 void ShortSound::PlayInterrupt(const ALuint buf)

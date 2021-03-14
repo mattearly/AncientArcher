@@ -97,6 +97,7 @@
     <ClInclude Include="src\Settings\SettingsOptions.h" />
     <ClInclude Include="include\AncientArcher\Shader\DiffShader.h" />
     <ClInclude Include="include\AncientArcher\Shader\LitShader.h" />
+    <ClInclude Include="src\Sound\SoundErrorCheck.h" />
     <ClInclude Include="src\Sound\SoundListener.h" />
     <ClInclude Include="src\Sound\LongSound.h" />
     <ClInclude Include="include\AncientArcher\Utility\Files.h" />
