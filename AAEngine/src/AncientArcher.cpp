@@ -25,7 +25,11 @@ AncientArcher* AncientArcher::Get()
 int AncientArcher::Run()
 {
 	begin();
-	while (!Display::isTryingToClose()) { deltaUpdate(); render(); }
+	while (!Display::isTryingToClose()) 
+	{ 
+		deltaUpdate(); 
+		render(); 
+	}
 	teardown();
 	return 0;
 }
@@ -438,15 +442,7 @@ void AncientArcher::deltaUpdate()
 		{
 			oSU.second();
 		}
-		// we should also process whether the window size changed here
-		//if (WindowSizeDirty)
-		//{
-		//	// notify shader/cams
-		//	__setProjectionMatToAllShadersFromFirstCam_hack();
 
-		//	// don't process again
-		//	WindowSizeDirty = false;
-		//}
 		// reset timeout length to 0
 		mSlowUpdateTimeout = 0.f;
 	}
@@ -478,6 +474,7 @@ void AncientArcher::render()
 	if (externWindowSizeDirty)
 	{
 		__updateCamViewMatrices(Display::GetWindowWidth(), Display::GetWindowHeight());
+		externWindowSizeDirty = false;
 	}
 
 	for (auto& obj : mGameObjects)
