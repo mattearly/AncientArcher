@@ -64,6 +64,11 @@ void Camera::SetToPerspective() noexcept
 
 void Camera::SetDimensions(int width, int height) noexcept
 {
+	if (width < 1 || height < 1)
+	{
+		return;  // just some janky hack to make sure it doesn't try to divide by 0 later
+	}
+
 	mWidth = width;
 	mHeight = height;
 }
