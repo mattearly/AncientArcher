@@ -25,7 +25,7 @@ public:
 	void SetDirection(const float& x, const float& y, const float& z);
 	void SetDirection(const glm::vec3& dir);
 
-	void SetVolume(const float& gain);
+	void SetVolume(const float gain);
 
 	void SetLooping(const bool& opt);
 	void SetRelative(const bool& opt);

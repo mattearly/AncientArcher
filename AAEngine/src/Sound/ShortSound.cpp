@@ -130,16 +130,16 @@ void ShortSound::SetDirection(const glm::vec3& dir)
 	SetDirection(dir.x, dir.y, dir.z);
 }
 
-void ShortSound::SetVolume(const float& gain)
+void ShortSound::SetVolume(const float gain)
 {
 	float newvol = 0;
 	if (gain < 0.f)
 	{
 		newvol = 0;
 	}
-	else if (gain > 5.f)
+	else if (gain > 10.f)
 	{
-		newvol = 5.f;
+		newvol = 10.f;
 	}
 	else
 	{
