@@ -149,10 +149,13 @@ void ShortSound::SetVolume(const float gain)
 	alSourcef(p_Source, AL_GAIN, newvol);
 
 
-	if (alGetError() != AL_NO_ERROR)
-	{
-		throw("error setting short sound volume");
-	}
+
+	std::cout << ErrorCheck(alGetError()) << '\n';
+
+	//if (alGetError() != AL_NO_ERROR)
+	//{
+	//	throw("error setting short sound volume");
+	//}
 }
 
 void ShortSound::SetLooping(const bool& opt)

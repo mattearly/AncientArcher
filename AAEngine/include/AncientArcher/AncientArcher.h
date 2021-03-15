@@ -71,6 +71,7 @@ public:
 	const Camera& GetCamera(int camId) const;
 	OGLShader& GetShader(int shadId);
 	GameObject& GetGameObject(int objId);
+	ShortSound& GetSpeaker(int speaker_id);
 	void PlaySoundEffect(int effect_id, int speaker_id);
 
 private:

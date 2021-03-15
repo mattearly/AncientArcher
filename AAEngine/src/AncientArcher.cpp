@@ -10,6 +10,7 @@
 #include <utility>
 #include <chrono>
 #include <memory>
+#include <iostream>
 namespace AA
 {
 
@@ -103,6 +104,17 @@ GameObject& AncientArcher::GetGameObject(int objId)
 	// if it didn't find it and return above ^^^^^^^^  show error message in console
 	//std::cout << "game object ID by the ID [" << objId << "] was not found.\n";
 	exit(-1);
+}
+
+ShortSound& AncientArcher::GetSpeaker(int speaker_id)
+{
+	std::cout << "getting speaker\n";
+	//todo optimize
+	if (speaker_id < mSpeakers.size())
+		return mSpeakers[speaker_id];
+
+	// if it gets here you're doing something illegal
+	throw("out of range of added speakers");
 }
 
 void AncientArcher::PlaySoundEffect(int effect_id, int speaker_id)
