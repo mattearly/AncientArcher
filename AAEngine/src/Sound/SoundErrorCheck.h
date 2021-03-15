@@ -25,7 +25,7 @@ std::string ErrorCheck(ALenum error)
         return " Out of memory like! ";
     }
 
-    return " Don't know ";
+    return " No Error or don't know which error ";
 
 }
 }
