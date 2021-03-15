@@ -17,7 +17,9 @@ int main()
 	Engine->SetSkybox(skybox);
 
 	static int enchantSound = Engine->AddSoundEffect("E:\\storage\\source\\repos\\AncientArcher\\AAUnitTest\\res\\enchant.ogg");
+	static int windSound = Engine->AddSoundEffect("E:\\storage\\source\\repos\\AncientArcher\\AAUnitTest\\res\\wind.ogg");
 	std::cout << "enchantSoundIndex " << enchantSound << '\n';
+	std::cout << "windSoundIndex " << windSound << '\n';
 	static int firstSpeaker = Engine->AddSpeaker();
 	std::cout << "speakerIndex " << firstSpeaker << '\n';
 
@@ -32,6 +34,11 @@ int main()
 			{
 				Engine->PlaySoundEffect(enchantSound, firstSpeaker);
 			}
+			if (kb.mouseButton2)
+			{
+				Engine->PlaySoundEffect(windSound, firstSpeaker);
+			}
 		});
+
 	Engine->Run();
 }
