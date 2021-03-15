@@ -198,11 +198,20 @@ int AncientArcher::AddSoundEffect(const char* path)
 	//return -3;  // should never get here
 }
 
+void AncientArcher::RemoveSoundEffect(int effect_id)
+{
+	bool success = false;
+	success = ShortSound::RemoveShortSound(mLoadedSoundEffects[effect_id].id);
+	if (success)
+	{
+		mLoadedSoundEffects.erase(mLoadedSoundEffects.begin() + effect_id);
+	}
+}
+
+
 int AncientArcher::AddSpeaker()
 {
 	mSpeakers.resize(mSpeakers.size()+1);
-	//ShortSound new_speaker;
-	//mSpeakers.push_back(new_speaker);
 	return (mSpeakers.size() - 1);  // return index of last added
 }
 
@@ -520,8 +529,11 @@ void AncientArcher::teardown()
 	{
 		shader.deleteShader();
 	}
+	for (const auto& ss : mLoadedSoundEffects)
+	{
+		ShortSound::RemoveShortSound(ss.id);
+	}
 }
-
 
 void AncientArcher::resetEngine() noexcept
 {
@@ -531,6 +543,7 @@ void AncientArcher::resetEngine() noexcept
 	mCameras.clear();
 	mShaders.clear();
 	mGameObjects.clear();
+	mLoadedSoundEffects.clear();
 	onBegin.clear();
 	onDeltaUpdate.clear();
 	onKeyHandling.clear();

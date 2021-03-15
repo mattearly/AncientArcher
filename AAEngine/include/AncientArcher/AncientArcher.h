@@ -36,6 +36,7 @@ public:
 	int AddObject(const char* path, int cam_id, int shad_id);
 	int AddObject(const char* path, int cam_id, int shad_id, const std::vector<InstanceDetails>& details);
 	int AddSoundEffect(const char* path);
+	void RemoveSoundEffect(int effect_id);
 	int AddSpeaker();
 
 	void SetSkybox(const std::shared_ptr<Skybox>& skybox) noexcept;
@@ -80,16 +81,16 @@ private:
 	float mSlowUpdateTimeout;              ///< keeps track of how how long the slow update has been timed out
 	float mSlowUpdateWaitLength;           ///< ms length the slow update times out for at least
 
-	std::vector<Camera>      mCameras;            ///< list of available cameras
-	std::vector<OGLShader>   mShaders;            ///< list of available shaders
-	std::vector<GameObject>  mGameObjects;        ///< list of available objects
-	std::vector<ShortSound>  mSpeakers;           ///< list of places to play sound effects from
+	std::vector<Camera>      mCameras;            ///< array of available cameras
+	std::vector<OGLShader>   mShaders;            ///< array of available shaders
+	std::vector<GameObject>  mGameObjects;        ///< array of available objects
+	std::vector<ShortSound>  mSpeakers;           ///< array of places to play sound effects from
 	struct SoundEffect
 	{
 		uint32_t id;
 		std::string path;
 	};
-	std::vector<SoundEffect> mLoadedSoundEffects; ///< list of <play id, path>
+	std::vector<SoundEffect> mLoadedSoundEffects; ///< array of <play id, path>
 	std::shared_ptr<Skybox>  mSkybox;             ///< the main skybox
 
 	std::unordered_map<uint32_t, std::function<void()> >               onBegin;               ///< list of functions to run once when runMainAncientArcher is called
