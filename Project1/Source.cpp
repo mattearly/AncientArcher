@@ -28,6 +28,7 @@ int main()
 			Engine->GetCamera(ourcam).ShiftYawAndPitch(5 * dt, 0);
 		});
 
+	static float vol = 1;
 	Engine->AddToKeyHandling([](KeyboardInput& kb)
 		{
 			if (kb.mouseButton1)
@@ -37,6 +38,23 @@ int main()
 			if (kb.mouseButton2)
 			{
 				Engine->PlaySoundEffect(windSound, firstSpeaker);
+			}
+
+
+			if (kb.minus)
+			{
+				float new_vol = vol - .1f;
+				vol = new_vol;
+				Engine->GetSpeaker(firstSpeaker).SetVolume(new_vol);
+				std::cout << "sound vol reduced to : " << new_vol << '\n';
+			}
+			if (kb.equal)
+			{
+				float new_vol = vol + .1f;
+				vol = new_vol;
+				Engine->GetSpeaker(firstSpeaker).SetVolume(new_vol);
+				std::cout << "sound vol increased to: " << new_vol << '\n';
+
 			}
 		});
 
