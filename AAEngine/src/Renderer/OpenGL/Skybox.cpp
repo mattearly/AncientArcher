@@ -77,12 +77,7 @@ void Skybox::render(const Camera& cam)
 {
 	glDepthFunc(GL_LEQUAL);  // change depth function so depth test passes when values are equal to depth buffer's content
 
-	//if (AAViewport::getInstance()->hasViewportChanged())
-	//{
-	loadProjectionMatrix(cam);
-	//}
-
-	loadViewMatrix(cam);        // todo: only update when camera moved
+	loadViewMatrix(cam);  // todo: only update when camera moved
 
 	glBindVertexArray(mSkyboxVAO);
 
