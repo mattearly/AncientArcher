@@ -84,8 +84,12 @@ private:
 	std::vector<OGLShader>   mShaders;            ///< list of available shaders
 	std::vector<GameObject>  mGameObjects;        ///< list of available objects
 	std::vector<ShortSound>  mSpeakers;           ///< list of places to play sound effects from
-	std::vector<uint32_t>    mSoundEffectBuffers; ///< list of available sound effects
-	std::vector<std::string> mLoadedSoundEffects; ///< list of already loaded sound effects
+	struct SoundEffect
+	{
+		uint32_t id;
+		std::string path;
+	};
+	std::vector<SoundEffect> mLoadedSoundEffects; ///< list of <play id, path>
 	std::shared_ptr<Skybox>  mSkybox;             ///< the main skybox
 
 	std::unordered_map<uint32_t, std::function<void()> >               onBegin;               ///< list of functions to run once when runMainAncientArcher is called

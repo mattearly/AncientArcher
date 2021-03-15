@@ -107,7 +107,7 @@ GameObject& AncientArcher::GetGameObject(int objId)
 
 void AncientArcher::PlaySoundEffect(int effect_id, int speaker_id)
 {
-	mSpeakers[speaker_id].PlayNoOverlap(mSoundEffectBuffers[effect_id]);
+	mSpeakers[speaker_id].PlayNoOverlap(mLoadedSoundEffects[effect_id].id);
 }
 
 AncientArcher::AncientArcher()
@@ -177,16 +177,18 @@ int AncientArcher::AddSoundEffect(const char* path)
 	SoundDevice::Init();
 	for (const auto& pl : mLoadedSoundEffects)
 	{
-		if (path == pl.c_str())
+		if (path == pl.path.c_str())
 			return -1;  // sound already loaded
 	}
 
 	uint32_t tmp_id = ShortSound::AddShortSound(path);
 	if (tmp_id != 0)
 	{
-		mSoundEffectBuffers.push_back(tmp_id);
-		mLoadedSoundEffects.push_back(path);
-		return (mSoundEffectBuffers.size() - 1);  // the index into mSoundEffectBuffers 
+		SoundEffect e;
+		e.id = tmp_id;
+		e.path = path;
+		mLoadedSoundEffects.push_back(e);
+		return (mLoadedSoundEffects.size() - 1);  // the index into mSoundEffectBuffers 
 	}
 	else
 	{
