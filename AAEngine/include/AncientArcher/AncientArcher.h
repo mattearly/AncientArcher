@@ -45,6 +45,7 @@ public:
 
 	int AddSpotLight(glm::vec3 pos, glm::vec3 dir, float inner, float outer, float constant,
 		float linear, float quad, glm::vec3 amb, glm::vec3 diff, glm::vec3 spec);
+	int AddPointLight(glm::vec3 pos, float constant, float linear, float quad, glm::vec3 amb, glm::vec3 diff, glm::vec3 spec);
 	void MoveSpotLight(int which, glm::vec3 new_pos, glm::vec3 new_dir);
 	bool RemoveSpotLight(int which_by_id);
 	

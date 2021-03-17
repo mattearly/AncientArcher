@@ -249,7 +249,63 @@ void AncientArcher::SetDirectionalLight(glm::vec3 dir, glm::vec3 amb, glm::vec3 
 	}
 }
 
+// returns unique id assigned to this light
+int AncientArcher::AddPointLight(glm::vec3 pos, float constant, float linear, float quad, glm::vec3 amb,
+	glm::vec3 diff, glm::vec3 spec)
+{
+	if (mPointLights.size() >= MAXPOINTLIGHTS)
+		throw("too many point lights");
 
+	if (!mLitShader)
+		setupLitShader();
+
+	mPointLights.emplace_back(PointLight(pos, constant, linear, quad, amb, diff, spec));
+	int new_point_loc = mPointLights.size() - 1;
+
+	// push changes to shader
+	{
+		std::string position, constant, linear, quadratic, ambient, diffuse, specular;
+		constant = linear = quadratic = ambient = diffuse = specular = position = "pointLight[";
+		std::stringstream ss;
+		ss << new_point_loc;
+		position += ss.str();
+		constant += ss.str();
+		linear += ss.str();
+		quadratic += ss.str();
+		ambient += ss.str();
+		diffuse += ss.str();
+		specular += ss.str();
+		position += "].";
+		constant += "].";
+		linear += "].";
+		quadratic += "].";
+		ambient += "].";
+		diffuse += "].";
+		specular += "].";
+		position += "Position";
+		constant += "Constant";
+		linear += "Linear";
+		quadratic += "Quadratic";
+		ambient += "Ambient";
+		diffuse += "Diffuse";
+		specular += "Specular";
+
+		mLitShader->use();
+		mLitShader->setVec3(position, mPointLights.back().Position);
+		mLitShader->setFloat(constant, mPointLights.back().Constant);
+		mLitShader->setFloat(linear, mPointLights.back().Linear);
+		mLitShader->setFloat(quadratic, mPointLights.back().Quadratic);
+		mLitShader->setVec3(ambient, mPointLights.back().Ambient);
+		mLitShader->setVec3(diffuse, mPointLights.back().Diffuse);
+		mLitShader->setVec3(specular, mPointLights.back().Specular);
+		mLitShader->setInt("NUM_POINT_LIGHTS", new_point_loc + 1);
+	}
+
+	return mPointLights.back().id;  // unique id
+
+}
+
+// returns unique id assigned to this light
 int AncientArcher::AddSpotLight(glm::vec3 pos, glm::vec3 dir, float inner, float outer, float constant,
 	float linear, float quad, glm::vec3 amb, glm::vec3 diff, glm::vec3 spec)
 {
@@ -262,14 +318,14 @@ int AncientArcher::AddSpotLight(glm::vec3 pos, glm::vec3 dir, float inner, float
 		setupLitShader();
 
 	mSpotLights.emplace_back(SpotLight(pos, dir, inner, outer, constant, linear, quad, amb, diff, spec));
-	int new_loc = mSpotLights.size() - 1;
+	int new_spot_loc = mSpotLights.size() - 1;
 	
 	// push changes to shader
 	{
 		std::string pos, ambient, constant, cutoff, ocutoff, diffuse, direction, linear, quadrat, specular;
 		ambient = constant = cutoff = ocutoff = diffuse = direction = linear = quadrat = specular = pos = "spotLight[";
 		std::stringstream ss;
-		ss << new_loc;
+		ss << new_spot_loc;
 		pos += ss.str();
 		constant += ss.str();
 		cutoff += ss.str();
@@ -311,7 +367,7 @@ int AncientArcher::AddSpotLight(glm::vec3 pos, glm::vec3 dir, float inner, float
 		mLitShader->setVec3(ambient,   mSpotLights.back().Ambient);
 		mLitShader->setVec3(diffuse,   mSpotLights.back().Diffuse);
 		mLitShader->setVec3(specular,  mSpotLights.back().Specular);
-		mLitShader->setInt("NUM_SPOT_LIGHTS", new_loc+1);
+		mLitShader->setInt("NUM_SPOT_LIGHTS", new_spot_loc+1);
 	}
 	
 	return mSpotLights.back().id;  // unique id
@@ -354,7 +410,7 @@ bool AncientArcher::RemoveSpotLight(int which_by_id)
 	int after_size = mPointLights.size();
 
 	if (before_size != after_size)
-		return true;
+		return true;  //todo update shader - sync lights function?
 	else
 		return false;
 }
