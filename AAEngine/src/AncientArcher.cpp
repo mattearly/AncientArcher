@@ -6,11 +6,15 @@
 #include "Sound/ShortSound.h"
 #include <vector>
 #include <string>
+#include <sstream>
 #include <iomanip>
 #include <utility>
 #include <chrono>
 #include <memory>
 #include <iostream>
+#include <algorithm>
+#include "Shader/LitShader.h"
+#include "Shader/DiffShader.h"
 namespace AA
 {
 
@@ -56,8 +60,8 @@ Camera& AncientArcher::GetCamera(int camId)
 	}
 
 	// if it didn't find it and return above ^^^^^^^^  show error message in console
-	//std::cout << "cam ID by the ID [" << camId << "] was not found. unable to get AACamera\n";
-	exit(-1);
+	// std::cout << "cam ID by the ID [" << camId << "] was not found. unable to get AACamera\n";
+	throw("u messed up");
 }
 
 const Camera& AncientArcher::GetCamera(int camId) const
@@ -72,23 +76,23 @@ const Camera& AncientArcher::GetCamera(int camId) const
 
 	// if it didn't find it and return above ^^^^^^^^  show error message in console
 	//std::cout << "cam ID by the ID [" << camId << "] was not found. unable to get AACamera\n";
-	exit(-1);
+	throw("u messed up");
 }
 
-OGLShader& AncientArcher::GetShader(int shadId)
-{
-	for (auto& shad : mShaders)
-	{
-		if (shad.GetID() == shadId)
-		{
-			return shad;
-		}
-	}
-
-	// if it didn't find it and return above ^^^^^^^^  show error message in console
-	//std::cout << "shad ID by the ID [" << shadId << "] was not found.\n";
-	exit(-1);
-}
+//OGLShader& AncientArcher::GetShader(int shadId)
+//{
+//	for (auto& shad : mShaders)
+//	{
+//		if (shad.GetID() == shadId)
+//		{
+//			return shad;
+//		}
+//	}
+//
+//	// if it didn't find it and return above ^^^^^^^^  show error message in console
+//	//std::cout << "shad ID by the ID [" << shadId << "] was not found.\n";
+//	throw("u messed up");
+//}
 
 GameObject& AncientArcher::GetGameObject(int objId)
 {
@@ -103,7 +107,23 @@ GameObject& AncientArcher::GetGameObject(int objId)
 
 	// if it didn't find it and return above ^^^^^^^^  show error message in console
 	//std::cout << "game object ID by the ID [" << objId << "] was not found.\n";
-	exit(-1);
+	throw("u messed up");
+}
+
+const GameObject& AncientArcher::GetGameObject(int objId) const
+{
+	//todo optimize
+	for (auto& obj : mGameObjects)
+	{
+		if (obj.GetObjectId() == objId)
+		{
+			return obj;
+		}
+	}
+
+	// if it didn't find it and return above ^^^^^^^^  show error message in console
+	//std::cout << "game object ID by the ID [" << objId << "] was not found.\n";
+	throw("u messed up");
 }
 
 ShortSound& AncientArcher::GetSpeaker(int speaker_id)
@@ -117,6 +137,14 @@ ShortSound& AncientArcher::GetSpeaker(int speaker_id)
 	throw("out of range of added speakers");
 }
 
+LongSound& AncientArcher::GetMusic()
+{
+	if (mMusic)
+		return *mMusic;
+	else
+		std::cout << "no music loaded\n";
+}
+
 void AncientArcher::PlaySoundEffect(int effect_id, int speaker_id)
 {
 	mSpeakers[speaker_id].PlayNoOverlap(mLoadedSoundEffects[effect_id].id);
@@ -128,6 +156,10 @@ AncientArcher::AncientArcher()
 	mSlowUpdateTimeout = 0.f;
 	mNoSpamWaitLength = .5667f;
 	mSlowUpdateWaitLength = .3337f;
+	mDiffShader = NULL;
+	mLitShader = NULL;
+	mMusic = NULL;
+	mDirectionalLight = NULL;
 }
 
 void AncientArcher::__updateCamViewMatrices(int width, int height)
@@ -149,16 +181,21 @@ int AncientArcher::AddCamera(int w, int h)
 
 	return return_id;
 }
+//
+//int AncientArcher::AddShader(const char* vert_src, const char* frag_src)
+//{
+//	mShaders.emplace_back(OGLShader(vert_src, frag_src));
+//	return mShaders.back().GetID();
+//}
 
-int AncientArcher::AddShader(const char* vert_src, const char* frag_src)
+int AncientArcher::AddObject(const char* path, int camId, bool is_lit)
 {
-	mShaders.emplace_back(OGLShader(vert_src, frag_src));
-	return mShaders.back().GetID();
-}
+	if (is_lit)
+		setupLitShader();
+	else
+		setupDiffShader();
 
-int AncientArcher::AddObject(const char* path, int camId, int shadId)
-{
-	GameObject tmpObject(path, camId, shadId);
+	GameObject tmpObject(path, camId, is_lit);
 	const int return_id = tmpObject.GetObjectId();
 
 	mGameObjects.push_back(tmpObject);
@@ -166,17 +203,160 @@ int AncientArcher::AddObject(const char* path, int camId, int shadId)
 	return return_id;
 }
 
-int AncientArcher::AddObject(const char* path, int cam_id, int shad_id, const std::vector<InstanceDetails>& details)
+int AncientArcher::AddObject(const char* path, int cam_id, bool is_lit, const std::vector<InstanceDetails>& details)
 {
 	// todo: optimize. check if it is an object we already have loaded and use it again if so. this will require the same with textures
 
-	GameObject tmpObject(path, cam_id, shad_id, details);
+	if (is_lit)
+		setupLitShader();
+	else
+		setupDiffShader();
+
+	GameObject tmpObject(path, cam_id, is_lit, details);
 
 	const int return_id = tmpObject.GetObjectId();
 
 	mGameObjects.push_back(tmpObject);
 
 	return return_id;
+}
+
+void AncientArcher::SetDirectionalLight(glm::vec3 dir, glm::vec3 amb, glm::vec3 diff, glm::vec3 spec)
+{
+	if (!mLitShader)
+		setupLitShader();
+
+	if (!mDirectionalLight)
+	{
+		mDirectionalLight = new DirectionalLight(dir, amb, diff, spec);
+	}
+	else
+	{
+		//update whatever it was
+		mDirectionalLight->Direction = dir;
+		mDirectionalLight->Ambient = amb;
+		mDirectionalLight->Diffuse = diff;
+		mDirectionalLight->Specular = spec;
+	}
+
+
+	{
+		mLitShader->use();
+		mLitShader->setVec3("directionalLight.Direction", mDirectionalLight->Direction);
+		mLitShader->setVec3("directionalLight.Ambient", mDirectionalLight->Ambient);
+		mLitShader->setVec3("directionalLight.Diffuse", mDirectionalLight->Diffuse);
+		//mLitShader->setVec3("directionalLight.Specular", mDirectionalLight->Specular); // ?? not used or optimized away i guess
+	}
+}
+
+
+int AncientArcher::AddSpotLight(glm::vec3 pos, glm::vec3 dir, float inner, float outer, float constant,
+	float linear, float quad, glm::vec3 amb, glm::vec3 diff, glm::vec3 spec)
+{
+	if (mSpotLights.size() > MAXSPOTLIGHTS)
+	{
+		throw("too many spot lights");
+	}
+	
+	if (!mLitShader)
+		setupLitShader();
+
+	mSpotLights.emplace_back(SpotLight(pos, dir, inner, outer, constant, linear, quad, amb, diff, spec));
+	int new_loc = mSpotLights.size() - 1;
+	
+	// push changes to shader
+	{
+		std::string pos, ambient, constant, cutoff, ocutoff, diffuse, direction, linear, quadrat, specular;
+		ambient = constant = cutoff = ocutoff = diffuse = direction = linear = quadrat = specular = pos = "spotLight[";
+		std::stringstream ss;
+		ss << new_loc;
+		pos += ss.str();
+		constant += ss.str();
+		cutoff += ss.str();
+		ocutoff += ss.str();
+		direction += ss.str();
+		linear += ss.str();
+		quadrat += ss.str();
+		ambient += ss.str();
+		diffuse += ss.str();
+		specular += ss.str();
+		pos += "].";
+		constant += "].";
+		cutoff += "].";
+		ocutoff += "].";
+		direction += "].";
+		linear += "].";
+		quadrat += "].";
+		ambient += "].";
+		diffuse += "].";
+		specular += "].";
+		pos += "Position";
+		constant += "Constant";
+		cutoff += "CutOff";
+		ocutoff += "OuterCutOff";
+		direction += "Direction";
+		linear += "Linear";
+		quadrat += "Quadratic";
+		ambient += "Ambient";
+		diffuse += "Diffuse";
+		specular += "Specular";
+
+		mLitShader->use();
+		mLitShader->setVec3(pos,       mSpotLights.back().Position);
+		mLitShader->setFloat(cutoff,   mSpotLights.back().CutOff);
+		mLitShader->setFloat(ocutoff,  mSpotLights.back().OuterCutOff);
+		mLitShader->setVec3(direction, mSpotLights.back().Direction);
+		mLitShader->setFloat(linear,   mSpotLights.back().Linear);
+		mLitShader->setFloat(quadrat,  mSpotLights.back().Quadratic);
+		mLitShader->setVec3(ambient,   mSpotLights.back().Ambient);
+		mLitShader->setVec3(diffuse,   mSpotLights.back().Diffuse);
+		mLitShader->setVec3(specular,  mSpotLights.back().Specular);
+		mLitShader->setInt("NUM_SPOT_LIGHTS", new_loc+1);
+	}
+	
+	return mSpotLights.back().id;  // unique id
+}
+
+void AncientArcher::MoveSpotLight(int which, glm::vec3 new_pos, glm::vec3 new_dir)
+{
+	if (which < 0)
+		throw("dont");
+
+	for (auto& sl : mSpotLights)
+	{
+		if (sl.id == which)
+		{
+			sl.Position = new_pos;
+			sl.Direction = new_dir;
+			mLitShader->use();
+			mLitShader->setVec3("spotLight[0].Position", sl.Position);  //test
+			mLitShader->setVec3("spotLight[0].Direction", sl.Direction);  //test
+			std::cout << "updated spot light pos and dir\n";
+			return;
+		}
+	}
+
+	throw("u messed up");
+}
+
+// returns true if it removed the spot light, false otherwise
+bool AncientArcher::RemoveSpotLight(int which_by_id)
+{
+	if (mSpotLights.empty())
+		return false;
+
+	int before_size = mPointLights.size();
+
+	auto ret_it = mSpotLights.erase(
+		std::remove_if(mSpotLights.begin(), mSpotLights.end(), [&](const SpotLight sl) { return sl.id == which_by_id; }),
+		mSpotLights.end());
+
+	int after_size = mPointLights.size();
+
+	if (before_size != after_size)
+		return true;
+	else
+		return false;
 }
 
 /// <summary>
@@ -227,11 +407,90 @@ int AncientArcher::AddSpeaker()
 	return (mSpeakers.size() - 1);  // return index of last added
 }
 
+void AncientArcher::ChangeMusic(const char* path) 
+{
+	if (!mMusic)
+		mMusic = new LongSound(path);
+}
+
 // todo: make a managed AddSkybox instead
 void AncientArcher::SetSkybox(const std::shared_ptr<Skybox>& skybox) noexcept
 {
 	mSkybox = skybox;
 }
+//
+//void AncientArcher::SetLight(SpotLight light, int shadId, int which)
+//{
+//	if (which >= MAXSPOTLIGHTS)
+//	{
+//		std::cout << "couldn't set SpotLight light, too many\n";
+//		return;
+//	}
+//
+//	if (which >= NUM_SPOT_LIGHTS)
+//	{
+//		std::cout << "couldn't set SpotLight light("
+//			<< which 
+//			<< "), not enough in use(" 
+//			<< NUM_SPOT_LIGHTS 
+//			<< ")\n";
+//		return;
+//	}
+//
+//	//shader.use();
+//
+//	GetShader(shadId).setInt("NUM_SPOT_LIGHTS", NUM_SPOT_LIGHTS);
+//
+//	std::string pos, ambient, constant, cutoff, ocutoff, diffuse, direction, linear, quadrat, specular;
+//	ambient = constant = cutoff = ocutoff = diffuse = direction = linear = quadrat = specular = pos = "spotLight[";
+//
+//	std::stringstream ss;
+//	ss << which;
+//
+//	pos += ss.str();
+//	constant += ss.str();
+//	cutoff += ss.str();
+//	ocutoff += ss.str();
+//	direction += ss.str();
+//	linear += ss.str();
+//	quadrat += ss.str();
+//	ambient += ss.str();
+//	diffuse += ss.str();
+//	specular += ss.str();
+//
+//	pos += "].";
+//	constant += "].";
+//	cutoff += "].";
+//	ocutoff += "].";
+//	direction += "].";
+//	linear += "].";
+//	quadrat += "].";
+//	ambient += "].";
+//	diffuse += "].";
+//	specular += "].";
+//
+//	pos += "Position";
+//	constant += "Constant";
+//	cutoff += "CutOff";
+//	ocutoff += "OuterCutOff";
+//	direction += "Direction";
+//	linear += "Linear";
+//	quadrat += "Quadratic";
+//	ambient += "Ambient";
+//	diffuse += "Diffuse";
+//	specular += "Specular";
+//
+//	GetShader(shadId).setVec3(pos, light.Position);
+//	GetShader(shadId).setFloat(cutoff, light.CutOff);
+//	GetShader(shadId).setFloat(ocutoff, light.OuterCutOff);
+//	GetShader(shadId).setVec3(direction, light.Direction);
+//	GetShader(shadId).setFloat(linear, light.Linear);
+//	GetShader(shadId).setFloat(quadrat, light.Quadratic);
+//	GetShader(shadId).setVec3(ambient, light.Ambient);
+//	GetShader(shadId).setVec3(diffuse, light.Diffuse);
+//	GetShader(shadId).setVec3(specular, light.Specular);
+//}
+
 
 uint32_t AncientArcher::AddToOnBegin(void(*function)())
 {
@@ -376,12 +635,12 @@ void AncientArcher::SetMaxRenderDistance(int camId, float amt) noexcept
 	// if code gets here there is an error, camId not found
 	//std::cout << "cam not found for id [" << camId << "].\n";
 }
-
-void AncientArcher::SetProjectionMatrix(int shadId, int camId)
-{
-	GetShader(shadId).use();
-	GetShader(shadId).setMat4("projection", GetCamera(camId).GetProjectionMatrix());
-}
+//
+//void AncientArcher::SetProjectionMatrix(int shadId, int camId)
+//{
+//	GetShader(shadId).use();
+//	GetShader(shadId).setMat4("projection", GetCamera(camId).GetProjectionMatrix());
+//}
 
 void AncientArcher::SetSlowUpdateTimeoutLength(const float& newtime)
 {
@@ -502,20 +761,23 @@ void AncientArcher::render()
 
 	for (auto& obj : mGameObjects)
 	{
-		// get the id of the shader for this object
-		const int shaderID = obj.GetShaderId();
-
-		// switch to the shader
-		GetShader(shaderID).use();
-
-		// get the camera id for this object
-		const int cameraID = obj.GetCameraId();
-
 		// set the view matrix from the cam for this object
-		GetShader(shaderID).setMat4("view", GetCamera(cameraID).GetViewMatrix());
-
+		if (obj.mIsLit)  // && mLitShader?
+		{
+			//GetShader(obj.GetShaderId()).use();
+			//std::cout << "setting view for lit shader\n";
+			mLitShader->use();
+			mLitShader->setMat4("view", GetCamera(obj.GetCameraId()).GetViewMatrix());
+		}
+		else
+		{
+			//std::cout << "setting view for diff shader\n";
+			mDiffShader->use();
+			mDiffShader->setMat4("view", GetCamera(obj.GetCameraId()).GetViewMatrix());
+		}
+		
 		// draw using the shader for it
-		obj.draw(GetShader(shaderID));
+		obj.draw();
 	}
 
 	// draw skybox if one was specified
@@ -537,10 +799,13 @@ void AncientArcher::teardown()
 		SceneLoader::Get()->UnloadGameObject(model.mMeshes);
 	}
 	// delete all the shaders from GPU
-	for (auto& shader : mShaders)
-	{
-		shader.deleteShader();
-	}
+	//for (auto& shader : mShaders)
+	//{
+	//	shader.deleteShader();
+	//}
+	if (mLitShader) mLitShader->deleteShader();
+	if (mDiffShader) mDiffShader->deleteShader();
+
 	for (const auto& ss : mLoadedSoundEffects)
 	{
 		ShortSound::RemoveShortSound(ss.id);
@@ -553,7 +818,7 @@ void AncientArcher::resetEngine() noexcept
 	teardown();
 
 	mCameras.clear();
-	mShaders.clear();
+	//mShaders.clear();
 	mGameObjects.clear();
 	mLoadedSoundEffects.clear();
 	onBegin.clear();
@@ -577,21 +842,49 @@ void AncientArcher::resetEngine() noexcept
 	Display::SetClearColor();
 }
 
+void AncientArcher::setupLitShader()
+{
+	if (!mLitShader) {
+		mLitShader = new OGLShader(lit_vert_src, lit_frag_src);
+		std::cout << "Lit Shader is Live!\n";
+	}
+}
+
+void AncientArcher::setupDiffShader()
+{
+	if (!mDiffShader) {
+		mDiffShader = new OGLShader(diff_vert_src, diff_frag_src);
+		std::cout << "Diff Shader is Live!\n";
+	}
+}
+
 void AncientArcher::__setProjectionMatToAllShadersFromFirstCam_hack()
 {
 	// set proj matries hack from first cam
-	for (auto& shad : mShaders)
-	{
+	//for (auto& shad : mShaders)
+	//{
 		//shad.setMat4("projection", mCameras.front().GetProjectionMatrix());
-		const int sID = shad.GetID();
+		//const int sID = shad.GetID();
 		//std::cout << "shad id: " << sID << '\n';
-
-		const int cID = mCameras.front().GetID();
+		//const int cID = mCameras.front().GetID();
 		//std::cout << "shad id: " << sID << '\n';
+		//SetProjectionMatrix(sID, cID);  //set shader (sID) from cam (cID)
+	//}
 
-		SetProjectionMatrix(sID, cID);  //set shader (sID) from cam (cID)
+	if (mLitShader)
+	{
+		std::cout << "setting projection for lit shader\n";
+		mLitShader->use();
+		mLitShader->setMat4("projection", mCameras.front().GetProjectionMatrix());
 	}
 
+	if (mDiffShader)
+	{
+		std::cout << "setting projection for diff shader\n";
+		mDiffShader->use();
+		mDiffShader->setMat4("projection", mCameras.front().GetProjectionMatrix());
+	}
+	
 	// if there is a skybox
 	if (mSkybox)
 	{

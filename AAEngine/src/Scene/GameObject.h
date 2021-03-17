@@ -15,8 +15,8 @@ class GameObject
 {
 public:
 
-	GameObject(const char* path, int camId, int shadId);
-	GameObject(const char* path, int camId, int shadId, std::vector<InstanceDetails> details);
+	GameObject(const char* path, int camId, bool lit);
+	GameObject(const char* path, int camId, bool lit, std::vector<InstanceDetails> details);
 
 	// getters
 	const glm::vec3& GetLocation() const;
@@ -25,7 +25,7 @@ public:
 	const glm::vec3& GetRotation(int which) const;
 	int GetModelMatrix(const int& which, glm::mat4& out_mat4) const;
 	glm::mat4 GetModelMatrix(const int& which);
-	const int GetShaderId() const noexcept;
+	//const int GetShaderId() const noexcept;
 	const int GetCameraId() const noexcept;
 	const int GetObjectId() const noexcept;
 	const std::size_t GetInstanceCount() const noexcept;
@@ -59,10 +59,11 @@ public:
 private:
 
 	// only AncientArcher can call draw on Objects
-	void draw(const OGLShader& modelShader);
+	void draw();
 
 	int mCameraID = -1;
 	int mShaderID = -1;
+	bool mIsLit = false;
 	int mObjectID = -1;
 
 	std::vector<MeshDrawInfo> mMeshes;

@@ -72,7 +72,7 @@
     <ClInclude Include="src\Renderer\Vertex.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\Renderer\Lights.h">
+    <ClInclude Include="src\Scene\Lights.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="src\Renderer\OpenGL\OGLLights.h">
@@ -111,10 +111,10 @@
     <ClInclude Include="src\Renderer\SceneLoader.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="include\AncientArcher\Shader\DiffShader.h">
+    <ClInclude Include="src\Shader\DiffShader.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="include\AncientArcher\Shader\LitShader.h">
+    <ClInclude Include="src\Shader\LitShader.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="include\AncientArcher\Utility\Files.h">
@@ -192,6 +192,9 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="src\Renderer\SceneLoader.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Scene\Lights.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

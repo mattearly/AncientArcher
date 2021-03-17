@@ -1,15 +1,17 @@
 #pragma once
 #include "../../src/Window/Display/Display.h"
 #include "../../src/Scene/Camera.h"
+#include "../../src/Scene/GameObject.h"
+#include "../../src/Scene/Lights.h"
 #include "../../src/Renderer/OpenGL/Skybox.h"
 #include "../../src/Sound/ShortSound.h"
+#include "../../src/Sound/LongSound.h"
 #include <vector>
 #include <functional>
 #include <memory>
 #include <unordered_map>
 
 class OGLShader;
-class GameObject;
 class Settings;
 enum class SHADERTYPE;
 struct InstanceDetails;
@@ -19,6 +21,8 @@ namespace AA
 #define Engine AncientArcher::Get()
 #define Cam(X) AncientArcher::Get()->GetCamera(X)
 #define Obj(X) AncientArcher::Get()->GetGameObject(X)
+//static int NUM_POINT_LIGHTS = 0;
+static int NUM_SPOT_LIGHTS = 0;
 ///
 /// AncientArcher Class essentially ties everything together for render scenes
 ///
@@ -26,20 +30,35 @@ class AncientArcher : public Display
 {
 public:
 	static AncientArcher* Get();
+
 	int Run();
 	void Shutdown() noexcept;
 	void SoftReset();
 
 public:
 	int AddCamera(int w, int h);
-	int AddShader(const char* vert_src, const char* frag_src);
-	int AddObject(const char* path, int cam_id, int shad_id);
-	int AddObject(const char* path, int cam_id, int shad_id, const std::vector<InstanceDetails>& details);
+	//int AddShader(const char* vert_src, const char* frag_src);
+	int AddObject(const char* path, int cam_id, bool is_lit);
+	int AddObject(const char* path, int cam_id, bool is_lit, const std::vector<InstanceDetails>& details);
+	
+	void SetDirectionalLight(glm::vec3 dir, glm::vec3 amb, glm::vec3 diff, glm::vec3 spec);
+
+	int AddSpotLight(glm::vec3 pos, glm::vec3 dir, float inner, float outer, float constant,
+		float linear, float quad, glm::vec3 amb, glm::vec3 diff, glm::vec3 spec);
+	void MoveSpotLight(int which, glm::vec3 new_pos, glm::vec3 new_dir);
+	bool RemoveSpotLight(int which_by_id);
+	
+	int AddSpeaker();
 	int AddSoundEffect(const char* path);
 	void RemoveSoundEffect(int effect_id);
-	int AddSpeaker();
+	
+	void ChangeMusic(const char* path);
 
 	void SetSkybox(const std::shared_ptr<Skybox>& skybox) noexcept;
+
+	//void SetLight(SpotLight light, int shadId, int which);
+	//void SetLight(DirectionalLight light, int shadId);
+	//void SetLight(PointLight light, int shadId);
 
 	uint32_t AddToOnBegin(void(*function)());
 	uint32_t AddToDeltaUpdate(void(*function)(float));
@@ -64,26 +83,39 @@ public:
 	void SetSlowUpdateTimeoutLength(const float& newtime);
 	void SetMaxRenderDistance(int camId, float amt) noexcept;
 
-	void SetProjectionMatrix(int shadId, int camId);
+	//void SetProjectionMatrix(int shadId, int camId);
 	void SetCursorToEnabled(bool isHardwareRendered = false);
 
 	Camera& GetCamera(int camId);
 	const Camera& GetCamera(int camId) const;
-	OGLShader& GetShader(int shadId);
+	//OGLShader& GetShader(int shadId);
 	GameObject& GetGameObject(int objId);
+	const GameObject& GetGameObject(int objId) const;
 	ShortSound& GetSpeaker(int speaker_id);
+	LongSound& GetMusic();
+
 	void PlaySoundEffect(int effect_id, int speaker_id);
+	OGLShader* mLitShader;
+	OGLShader* mDiffShader;
 
 private:
 	AncientArcher();
 
+	const int MAXPOINTLIGHTS = 50;
+	const int MAXSPOTLIGHTS = 25;
+
+	std::vector<SpotLight> mSpotLights;
+	std::vector<PointLight> mPointLights;
+	DirectionalLight *mDirectionalLight;
+	
 	float mNonSpammableKeysTimeout;        ///< keeps track of how long the keys have timed out
 	float mNoSpamWaitLength;               ///< how long the non-spammable keys are to time out for at least
 	float mSlowUpdateTimeout;              ///< keeps track of how how long the slow update has been timed out
 	float mSlowUpdateWaitLength;           ///< ms length the slow update times out for at least
 
 	std::vector<Camera>      mCameras;            ///< array of available cameras
-	std::vector<OGLShader>   mShaders;            ///< array of available shaders
+	//std::vector<OGLShader>   mShaders;            ///< array of available shaders
+
 	std::vector<GameObject>  mGameObjects;        ///< array of available objects
 	std::vector<ShortSound>  mSpeakers;           ///< array of places to play sound effects from
 	struct SoundEffect
@@ -93,6 +125,7 @@ private:
 	};
 	std::vector<SoundEffect> mLoadedSoundEffects; ///< array of <play id, path>
 	std::shared_ptr<Skybox>  mSkybox;             ///< the main skybox
+	LongSound *mMusic;
 
 	std::unordered_map<uint32_t, std::function<void()> >               onBegin;               ///< list of functions to run once when runMainAncientArcher is called
 	std::unordered_map<uint32_t, std::function<void(float)> >          onDeltaUpdate;         ///< list of functions that rely on deltatime in the main AncientArcher
@@ -112,9 +145,12 @@ private:
 
 	// helpers
 	void resetEngine() noexcept;
+	void setupLitShader();
+	void setupDiffShader();
 
 	// todo: refactor - used for testing purposes until more elegant solution appears
 	void __updateCamViewMatrices(int width, int height);
 	void __setProjectionMatToAllShadersFromFirstCam_hack();
+
 };
 }  // end namespace AA

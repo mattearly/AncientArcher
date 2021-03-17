@@ -2,6 +2,7 @@
 #include "../Renderer/OpenGL/OGLGraphics.h"
 #include "../Scene/Camera.h"
 #include "../Renderer/SceneLoader.h"
+#include <iostream>
 
 namespace AA
 {
@@ -24,10 +25,10 @@ glm::mat4 GameObject::GetModelMatrix(const int& which)
 		throw("couldn't get model matrix");
 }
 
-const int GameObject::GetShaderId() const noexcept
-{
-	return mShaderID;
-}
+//const int GameObject::GetShaderId() const noexcept
+//{
+//	return mShaderID;
+//}
 
 const int GameObject::GetCameraId() const noexcept
 {
@@ -61,21 +62,21 @@ const ColliderSphere* GameObject::GetColliderSphere(uint32_t which) const
 	return mInstanceDetails.at(which).mColliderSphere;  //todo: check there are enough instances if this has problems
 }
 
-GameObject::GameObject(const char* path, int camId, int shadId)
+GameObject::GameObject(const char* path, int camId, bool lit)
 {
 	AA::SceneLoader::Get()->LoadGameObjectFromFile(mMeshes, path);
 	mInstanceDetails.push_back(InstanceDetails());
 	mCameraID = camId;
-	mShaderID = shadId;
+	mIsLit = lit;
 	mObjectID = uniqueGameObjectIDs++;
 }
 
-GameObject::GameObject(const char* path, int camId, int shadId, std::vector<InstanceDetails> details)
+GameObject::GameObject(const char* path, int camId, bool lit, std::vector<InstanceDetails> details)
 {
 	AA::SceneLoader::Get()->LoadGameObjectFromFile(mMeshes, path);
 	mInstanceDetails = details;
 	mCameraID = camId;
-	mShaderID = shadId;
+	mIsLit = lit;
 	mObjectID = uniqueGameObjectIDs++;
 }
 
@@ -103,13 +104,16 @@ void GameObject::AddInstance(const InstanceDetails& instance_details)
 	mInstanceDetails.push_back(instance_details);
 }
 
-void GameObject::draw(const OGLShader& modelShader)
+void GameObject::draw()
 {
-	if (mShaderID == -1 || mCameraID == -1 || mObjectID == -1)
+	//if (mShaderID == -1 || mCameraID == -1 || mObjectID == -1)
+	if (mCameraID == -1 || mObjectID == -1)
 		throw("bad something in the draw");
 
 	if (mInstanceDetails.size() > 0)
-		OGLGraphics::Render(mMeshes, mInstanceDetails, modelShader);
+	{
+		OGLGraphics::Render(mMeshes, mInstanceDetails, mIsLit);
+	}
 }
 
 // --------------------------SCALE
@@ -141,7 +145,8 @@ void GameObject::AddToScale(glm::vec3 amt)
 
 void GameObject::AddToScale(glm::vec3 amt, int which)
 {
-	if (which < GetInstanceCount()) {
+	if (which < GetInstanceCount()) 
+	{
 		mInstanceDetails.at(which).Scale += amt;
 		calculateNewModelMatrix(which);
 	}
@@ -168,7 +173,8 @@ void GameObject::AddToRotation(glm::vec3 radianAmt)
 
 void GameObject::AddToRotation(glm::vec3 radianAmt, int which)
 {
-	if (which < GetInstanceCount()) {
+	if (which < GetInstanceCount()) 
+	{
 		mInstanceDetails.at(which).Rotation += radianAmt;
 		calculateNewModelMatrix(which);
 	}
