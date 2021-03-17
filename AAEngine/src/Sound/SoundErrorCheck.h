@@ -2,7 +2,7 @@
 #include <string>
 #include <AL/al.h>
 namespace AA{
-std::string ErrorCheck(ALenum error)
+static std::string ErrorCheck(ALenum error)
 {
     if (error == AL_INVALID_NAME)
     {
