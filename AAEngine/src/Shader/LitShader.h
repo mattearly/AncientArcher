@@ -32,7 +32,7 @@ const char* lit_frag_src =
 "  vec3 Direction;\n"
 "  vec3 Ambient;\n"
 "  vec3 Diffuse;\n"
-"  vec3 Specular;\n"
+"  //vec3 Specular;\n"
 "};\n"
 "struct PointLight{\n"
 "  vec3 Position;\n"
