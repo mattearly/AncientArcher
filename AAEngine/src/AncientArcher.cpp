@@ -253,7 +253,7 @@ void AncientArcher::SetDirectionalLight(glm::vec3 dir, glm::vec3 amb, glm::vec3 
 int AncientArcher::AddSpotLight(glm::vec3 pos, glm::vec3 dir, float inner, float outer, float constant,
 	float linear, float quad, glm::vec3 amb, glm::vec3 diff, glm::vec3 spec)
 {
-	if (mSpotLights.size() > MAXSPOTLIGHTS)
+	if (mSpotLights.size() == MAXSPOTLIGHTS)
 	{
 		throw("too many spot lights");
 	}
