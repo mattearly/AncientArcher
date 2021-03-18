@@ -2,7 +2,6 @@
 #include <glm\gtx\transform.hpp>
 #include "../Scene/WorldSettings.h"
 #include "../Scene/Camera.h"
-#include "../Window/Display/Display.h"
 namespace AA
 {
 

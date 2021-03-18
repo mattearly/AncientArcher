@@ -1,5 +1,4 @@
 #include "OGLGraphics.h"
-#include "../../../include/AncientArcher/AncientArcher.h"
 #include <glm/glm.hpp>
 #include <glm/gtc/quaternion.hpp>
 #include <stb_image.h>
@@ -11,12 +10,14 @@
 namespace AA
 {
 
+namespace OGLGraphics
+{
 /** Render the meshes with the shader. Assumes Camera View Matrix is already set.
  *  @param[in] meshes to draw.
  *  @param[in] details about instances of the mesh to also render.
  *  @param[in] shader to use for mesh rendering pipeline.
  */
-void OGLGraphics::Render(const std::vector<MeshDrawInfo>& meshes, 
+void OGLGraphics::Render(const std::vector<MeshDrawInfo>& meshes,
 	const std::vector<InstanceDetails>& details, bool lit)
 {
 	//todo: consider render entire scenes so clearbackbuffer can be put in here as well, or does it have to wait for screen to be ready anyway?
@@ -24,7 +25,7 @@ void OGLGraphics::Render(const std::vector<MeshDrawInfo>& meshes,
 	glEnable(GL_DEPTH_TEST);
 
 	// go through all meshes in the this
-	for (const auto &m : meshes)
+	for (const auto& m : meshes)
 	{
 		// go through all texture in this mesh
 		uint32_t i = 0;
@@ -37,15 +38,15 @@ void OGLGraphics::Render(const std::vector<MeshDrawInfo>& meshes,
 
 			// tell opengl to bind the texture to a model shader uniform var
 			//glUniform1i(glGetUniformLocation(modelShader.GetID(), ("material." + texType).c_str()), i);
-			if (lit) 
+			if (lit)
 			{
-				Engine->mLitShader->use();
-				Engine->mLitShader->setInt(("material." + texType).c_str(), i);
+				mLitShader->use();
+				mLitShader->setInt(("material." + texType).c_str(), i);
 			}
 			else
 			{
-				Engine->mDiffShader->use();
-				Engine->mDiffShader->setInt(("material." + texType).c_str(), i);
+				mDiffShader->use();
+				mDiffShader->setInt(("material." + texType).c_str(), i);
 			}
 			glBindTexture(GL_TEXTURE_2D, texture.first);
 			i++;
@@ -58,13 +59,13 @@ void OGLGraphics::Render(const std::vector<MeshDrawInfo>& meshes,
 		for (const auto& instance : details)
 		{
 			if (lit) {
-				Engine->mLitShader->use();
-				Engine->mLitShader->setMat4("model", instance.ModelMatrix);
+				mLitShader->use();
+				mLitShader->setMat4("model", instance.ModelMatrix);
 			}
 			else
 			{
-				Engine->mDiffShader->use();
-				Engine->mDiffShader->setMat4("model", instance.ModelMatrix);
+				mDiffShader->use();
+				mDiffShader->setMat4("model", instance.ModelMatrix);
 			}
 
 			glDrawElements(GL_TRIANGLES, m.numElements, GL_UNSIGNED_INT, nullptr);
@@ -211,4 +212,5 @@ void OGLGraphics::SetMSAA(const bool enabled)
 	glEnable(GL_MULTISAMPLE);
 }
 
+}  // end namespace OGLGraphics
 }  // end namespace AA

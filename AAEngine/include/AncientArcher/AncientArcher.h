@@ -1,16 +1,19 @@
 #pragma once
-#include "../../src/Window/Display/Display.h"
 #include "../../src/Scene/Camera.h"
 #include "../../src/Scene/GameObject.h"
 #include "../../src/Scene/Lights.h"
 #include "../../src/Renderer/OpenGL/Skybox.h"
 #include "../../src/Sound/ShortSound.h"
 #include "../../src/Sound/LongSound.h"
+#include "../../src/Controls/KeyboardInput.h"
+#include "../../src/Controls/MouseInput.h"
+#include "../../src/Controls/ScrollInput.h"
 #include <vector>
 #include <functional>
 #include <memory>
 #include <unordered_map>
 
+struct GLFWwindow;
 class OGLShader;
 class Settings;
 enum class SHADERTYPE;
@@ -18,140 +21,98 @@ struct InstanceDetails;
 
 namespace AA
 {
-#define Engine AncientArcher::Get()
-#define Cam(X) AncientArcher::Get()->GetCamera(X)
-#define Obj(X) AncientArcher::Get()->GetGameObject(X)
-//static int NUM_POINT_LIGHTS = 0;
-static int NUM_SPOT_LIGHTS = 0;
-///
-/// AncientArcher Class essentially ties everything together for render scenes
-///
-class AncientArcher : public Display
-{
-public:
-	static AncientArcher* Get();
 
-	int Run();
-	void Shutdown() noexcept;
-	void SoftReset();
+void Init_Engine();
+int Run();
+void Shutdown() noexcept;
+void SoftReset();
 
-public:
-	int AddCamera(int w, int h);
-	//int AddShader(const char* vert_src, const char* frag_src);
-	int AddObject(const char* path, int cam_id, bool is_lit);
-	int AddObject(const char* path, int cam_id, bool is_lit, const std::vector<InstanceDetails>& details);
-	
-	void SetDirectionalLight(glm::vec3 dir, glm::vec3 amb, glm::vec3 diff, glm::vec3 spec);
+int AddCamera(int w, int h);
+int AddObject(const char* path, int cam_id, bool is_lit);
+int AddObject(const char* path, int cam_id, bool is_lit, const std::vector<InstanceDetails>& details);
 
-	int AddSpotLight(glm::vec3 pos, glm::vec3 dir, float inner, float outer, float constant,
-		float linear, float quad, glm::vec3 amb, glm::vec3 diff, glm::vec3 spec);
-	int AddPointLight(glm::vec3 pos, float constant, float linear, float quad, glm::vec3 amb, glm::vec3 diff, glm::vec3 spec);
-	void MoveSpotLight(int which, glm::vec3 new_pos, glm::vec3 new_dir);
-	bool RemoveSpotLight(int which_by_id);
-	
-	int AddSpeaker();
-	int AddSoundEffect(const char* path);
-	void RemoveSoundEffect(int effect_id);
-	
-	void ChangeMusic(const char* path);
+void SetDirectionalLight(glm::vec3 dir, glm::vec3 amb, glm::vec3 diff, glm::vec3 spec);
 
-	void SetSkybox(const std::shared_ptr<Skybox>& skybox) noexcept;
+int AddPointLight(glm::vec3 pos, float constant, float linear, float quad, glm::vec3 amb, glm::vec3 diff, glm::vec3 spec);
 
-	//void SetLight(SpotLight light, int shadId, int which);
-	//void SetLight(DirectionalLight light, int shadId);
-	//void SetLight(PointLight light, int shadId);
+int AddSpotLight(glm::vec3 pos, glm::vec3 dir, float inner, float outer, float constant,
+	float linear, float quad, glm::vec3 amb, glm::vec3 diff, glm::vec3 spec);
+void MoveSpotLight(int which, glm::vec3 new_pos, glm::vec3 new_dir);
+bool RemoveSpotLight(int which_by_id);
 
-	uint32_t AddToOnBegin(void(*function)());
-	uint32_t AddToDeltaUpdate(void(*function)(float));
-	uint32_t AddToUpdate(void(*function)());
-	uint32_t AddToSlowUpdate(void(*function)());
-	uint32_t AddToTimedOutKeyHandling(bool(*function)(KeyboardInput&));
-	uint32_t AddToScrollHandling(void(*function)(ScrollInput&));
-	uint32_t AddToKeyHandling(void(*function)(KeyboardInput&));
-	uint32_t AddToMouseHandling(void(*function)(MouseInput&));
-	uint32_t AddToOnTeardown(void(*function)());
+int AddSpeaker();
+int AddSoundEffect(const char* path);
+void RemoveSoundEffect(int effect_id);
 
-	bool RemoveFromOnBegin(uint32_t r_id);
-	bool RemoveFromDeltaUpdate(uint32_t r_id);
-	bool RemoveFromUpdate(uint32_t r_id);
-	bool RemoveFromSlowUpdate(uint32_t r_id);
-	bool RemoveFromTimedOutKeyHandling(uint32_t r_id);
-	bool RemoveFromScrollHandling(uint32_t r_id);
-	bool RemoveFromKeyHandling(uint32_t r_id);
-	bool RemoveFromMouseHandling(uint32_t r_id);
-	bool RemoveFromTeardown(uint32_t r_id);
+void ChangeMusic(const char* path);
 
-	void SetSlowUpdateTimeoutLength(const float& newtime);
-	void SetMaxRenderDistance(int camId, float amt) noexcept;
+void SetSkybox(const std::shared_ptr<Skybox>& skybox) noexcept;
 
-	//void SetProjectionMatrix(int shadId, int camId);
-	void SetCursorToEnabled(bool isHardwareRendered = false);
+uint32_t AddToOnBegin(void(*function)());
+uint32_t AddToDeltaUpdate(void(*function)(float));
+uint32_t AddToUpdate(void(*function)());
+uint32_t AddToSlowUpdate(void(*function)());
+uint32_t AddToTimedOutKeyHandling(bool(*function)(KeyboardInput&));
+uint32_t AddToScrollHandling(void(*function)(ScrollInput&));
+uint32_t AddToKeyHandling(void(*function)(KeyboardInput&));
+uint32_t AddToMouseHandling(void(*function)(MouseInput&));
+uint32_t AddToOnTeardown(void(*function)());
 
-	Camera& GetCamera(int camId);
-	const Camera& GetCamera(int camId) const;
-	//OGLShader& GetShader(int shadId);
-	GameObject& GetGameObject(int objId);
-	const GameObject& GetGameObject(int objId) const;
-	ShortSound& GetSpeaker(int speaker_id);
-	LongSound& GetMusic();
+bool RemoveFromOnBegin(uint32_t r_id);
+bool RemoveFromDeltaUpdate(uint32_t r_id);
+bool RemoveFromUpdate(uint32_t r_id);
+bool RemoveFromSlowUpdate(uint32_t r_id);
+bool RemoveFromTimedOutKeyHandling(uint32_t r_id);
+bool RemoveFromScrollHandling(uint32_t r_id);
+bool RemoveFromKeyHandling(uint32_t r_id);
+bool RemoveFromMouseHandling(uint32_t r_id);
+bool RemoveFromTeardown(uint32_t r_id);
 
-	void PlaySoundEffect(int effect_id, int speaker_id);
-	OGLShader* mLitShader;
-	OGLShader* mDiffShader;
+void SetSlowUpdateTimeoutLength(const float& newtime);
+void SetMaxRenderDistance(int camId, float amt) noexcept;
 
-private:
-	AncientArcher();
+void SetCursorToEnabled(bool isHardwareRendered = false);
 
-	const int MAXPOINTLIGHTS = 50;
-	const int MAXSPOTLIGHTS = 25;
+Camera& GetCamera(int camId);
+GameObject& GetGameObject(int objId);
+ShortSound& GetSpeaker(int speaker_id);
+LongSound& GetMusic();
 
-	std::vector<SpotLight> mSpotLights;
-	std::vector<PointLight> mPointLights;
-	DirectionalLight *mDirectionalLight;
-	
-	float mNonSpammableKeysTimeout;        ///< keeps track of how long the keys have timed out
-	float mNoSpamWaitLength;               ///< how long the non-spammable keys are to time out for at least
-	float mSlowUpdateTimeout;              ///< keeps track of how how long the slow update has been timed out
-	float mSlowUpdateWaitLength;           ///< ms length the slow update times out for at least
+void PlaySoundEffect(int effect_id, int speaker_id);
 
-	std::vector<Camera>      mCameras;            ///< array of available cameras
-	//std::vector<OGLShader>   mShaders;            ///< array of available shaders
+// window stuff
 
-	std::vector<GameObject>  mGameObjects;        ///< array of available objects
-	std::vector<ShortSound>  mSpeakers;           ///< array of places to play sound effects from
-	struct SoundEffect
-	{
-		uint32_t id;
-		std::string path;
-	};
-	std::vector<SoundEffect> mLoadedSoundEffects; ///< array of <play id, path>
-	std::shared_ptr<Skybox>  mSkybox;             ///< the main skybox
-	LongSound *mMusic;
+int GetWindowWidth() noexcept;
+int GetWindowHeight() noexcept;
+GLFWwindow* GetWindow() noexcept;
+int GetCursorMode() noexcept;
 
-	std::unordered_map<uint32_t, std::function<void()> >               onBegin;               ///< list of functions to run once when runMainAncientArcher is called
-	std::unordered_map<uint32_t, std::function<void(float)> >          onDeltaUpdate;         ///< list of functions that rely on deltatime in the main AncientArcher
-	std::unordered_map<uint32_t, std::function<void()> >               onUpdate;              ///< list of functions that run every frame in the main AncientArcher
-	std::unordered_map<uint32_t, std::function<void()> >               onSlowUpdate;          ///< list of functions to run every only every mSlowUpdateWaitLength in the main AncientArcher
-	std::unordered_map<uint32_t, std::function<bool(KeyboardInput&)> > onTimeoutKeyHandling;  ///< list of functions to handle key presses that time out for mNoSpamWaitLength after press
-	std::unordered_map<uint32_t, std::function<void(ScrollInput&)> >   onScrollHandling;      ///< list of functions to handle mouse wheel scroll every frame in the main AncientArcher
-	std::unordered_map<uint32_t, std::function<void(KeyboardInput&)> > onKeyHandling;         ///< list of functions to handle keypresses every frame in the main AncientArcher
-	std::unordered_map<uint32_t, std::function<void(MouseInput&)> >    onMouseHandling;       ///< list of functions to handle mouse movement every frame in the main AncientArcher
-	std::unordered_map<uint32_t, std::function<void()> >               onTearDown;            ///< list of functions to run when destroying
+enum class MouseReporting { STANDARD, PERSPECTIVE };
 
-	// called during Run
-	void begin();  //< the green squigglies are a lie if you see them
-	void deltaUpdate();
-	void render();  //< the green squigglies are a lie if you see them
-	void teardown();
+MouseReporting GetMouseReportingMode() noexcept;
 
-	// helpers
-	void resetEngine() noexcept;
-	void setupLitShader();
-	void setupDiffShader();
+void SetClearColor(glm::vec3 color = glm::vec3(.35f, .15f, .35f));
 
-	// todo: refactor - used for testing purposes until more elegant solution appears
-	void __updateCamViewMatrices(int width, int height);
-	void __setProjectionMatToAllShadersFromFirstCam_hack();
+void SetCursorToVisible() noexcept;   // to use the os pointer
+void SetCursorToHidden() noexcept;    // for hidden but still there (render your own pointer)
+void SetCursorToDisabled() noexcept;  // for first person hidden mouse type
 
-};
+void SetReadMouseCurorAsFPP() noexcept;
+void SetReadMouseCurorAsStandard() noexcept;
+
+void SetWindowTitle(const char* name) noexcept;
+
+void ReshapeWindowHandler(int width, int height);
+void SetupReshapeCallback() noexcept;
+
+//controls
+
+float GetMouseFPPSensitivity() noexcept;
+void SetMouseFPPSensitivity(float sensitivity) noexcept;
+
+void PerspectiveMouseHandler(float xpos, float ypos);
+void StandardMouseHandler(float xpos, float ypos);
+void ScrollHandler(float xpos, float ypos);
+
+
 }  // end namespace AA

@@ -8,23 +8,19 @@
 #include "../Vertex.h"
 namespace AA
 {
-class OGLGraphics
+extern OGLShader* mLitShader;
+extern OGLShader* mDiffShader;
+namespace OGLGraphics
 {
-	friend class GameObject;
-	friend class Display;
-	friend class SceneLoader;
-	friend class Skybox;
-private:
-	static void Render(const std::vector<MeshDrawInfo>& meshes, const std::vector<InstanceDetails>& details, bool lit);
-	static void SetViewportSize(int x, int y, int w, int h);
-	static void SetViewportClearColor(glm::vec3 color) noexcept;
-	static void ClearScreen() noexcept;
-	//static uint32_t UploadMesh(std::vector<Vertex> verts, std::vector<uint32_t> elems);
-	static uint32_t UploadMesh(const std::vector<Vertex>& verts, const std::vector<uint32_t>& elems);
-	static void DeleteMesh(const uint32_t&  VAO);
-	static uint32_t Upload2DTex(const unsigned char* tex_data, int width, int height);
-	static uint32_t UploadCubeMapTex(std::vector<unsigned char*> tex_data, int width, int height);
-	static void DeleteTex(const uint32_t& id);
-	static void SetMSAA(const bool enabled);
+	void Render(const std::vector<MeshDrawInfo>& meshes, const std::vector<InstanceDetails>& details, bool lit);
+	void SetViewportSize(int x, int y, int w, int h);
+	void SetViewportClearColor(glm::vec3 color) noexcept;
+	void ClearScreen() noexcept;
+	uint32_t UploadMesh(const std::vector<Vertex>& verts, const std::vector<uint32_t>& elems);
+	void DeleteMesh(const uint32_t&  VAO);
+	uint32_t Upload2DTex(const unsigned char* tex_data, int width, int height);
+	uint32_t UploadCubeMapTex(std::vector<unsigned char*> tex_data, int width, int height);
+	void DeleteTex(const uint32_t& id);
+	void SetMSAA(const bool enabled);
 };
 }  // end namespace AA

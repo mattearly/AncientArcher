@@ -54,21 +54,19 @@ public:
 	void AddInstance(const InstanceDetails& instance_details);
 	bool RemoveInstance(int which);
 
-	friend class AncientArcher;
+	void draw();
+	bool mIsLit = false;
+
+	std::vector<MeshDrawInfo> mMeshes;
 
 private:
 
-	// only AncientArcher can call draw on Objects
-	void draw();
-
 	int mCameraID = -1;
 	int mShaderID = -1;
-	bool mIsLit = false;
 	int mObjectID = -1;
 
-	std::vector<MeshDrawInfo> mMeshes;
 	std::vector<InstanceDetails> mInstanceDetails;  // for instancing multiple objects, sized to the number of this object in our world
-
+	
 	// helpers
 	void calculateNewModelMatrix(int which);
 };

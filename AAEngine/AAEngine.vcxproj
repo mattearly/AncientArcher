@@ -103,9 +103,8 @@
     <ClInclude Include="src\Sound\SoundListener.h" />
     <ClInclude Include="src\Sound\LongSound.h" />
     <ClInclude Include="include\AncientArcher\Utility\Files.h" />
-    <ClInclude Include="src\Window\Controls\MouseInput.h" />
-    <ClInclude Include="src\Window\Controls\ScrollInput.h" />
-    <ClInclude Include="src\Window\Display\DisplayCallbacks.h" />
+    <ClInclude Include="src\Controls\MouseInput.h" />
+    <ClInclude Include="src\Controls\ScrollInput.h" />
     <ClInclude Include="KHR\khrplatform.h" />
     <ClInclude Include="src\Renderer\SceneLoader.h" />
     <ClInclude Include="include\AncientArcher\AncientArcher.h" />
@@ -116,9 +115,7 @@
     <ClInclude Include="src\Renderer\OpenGL\OGLShader.h" />
     <ClInclude Include="src\Renderer\OpenGL\Skybox.h" />
     <ClInclude Include="src\Renderer\Vertex.h" />
-    <ClInclude Include="src\Window\Controls\Controls.h" />
-    <ClInclude Include="src\Window\Display\Display.h" />
-    <ClInclude Include="src\Window\Controls\KeyboardInput.h" />
+    <ClInclude Include="src\Controls\KeyboardInput.h" />
     <ClInclude Include="src\Scene\WorldSettings.h" />
     <ClInclude Include="src\Sound\SoundDevice.h" />
     <ClInclude Include="src\Sound\ShortSound.h" />
@@ -145,9 +142,6 @@
     <ClCompile Include="src\Renderer\OpenGL\Skybox.cpp" />
     <ClCompile Include="src\vendor\stb\stb_image.cpp" />
     <ClCompile Include="src\Renderer\Vertex.cpp" />
-    <ClCompile Include="src\Window\Controls\Controls.cpp" />
-    <ClCompile Include="src\Window\Display\Display.cpp" />
-    <ClCompile Include="src\Window\Display\DisplayCallbacks.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
