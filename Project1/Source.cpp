@@ -47,6 +47,7 @@ int main()
 	static int walking = AA::AddObject("E:\\storage\\3d Models\\Walking\\Walking.dae", ourcam, true);
 	static int maria = AA::AddObject("E:\\storage\\3d Models\\maria_j_j_ong.dae", ourcam, true);
 	static int peasant_man = AA::AddObject("E:\\storage\\3d Models\\peasant_man.dae", ourcam, true);
+	static int test_wall = AA::AddObject("E:\\storage\\source\\repos\\AncientArcher\\AAUnitTest\\res\\test_wall.dae", ourcam, true);
 
 	const float dist_from_us = 2.f;
 	const float dist_down = -1.2f;
@@ -58,13 +59,34 @@ int main()
 	AA::GetGameObject(peasant_man).SetTranslation(glm::vec3(-dist_from_us, dist_down,0));
 	AA::GetGameObject(peasant_man).SetRotation(glm::vec3(0,90, 0));
 
+	AA::GetGameObject(test_wall).SetTranslation(glm::vec3(0, dist_down, -10));
+	AA::GetGameObject(test_wall).SetRotation(glm::vec3(0, glm::radians(90.f), 0));
+
 	static int main_spotlight = AA::AddSpotLight(glm::vec3(0), glm::vec3(0,0,1), glm::cos(glm::radians(0.5f)), glm::cos(glm::radians(30.5f)),
+		1.f, .09f, .032f, glm::vec3(.4), glm::vec3(.4), glm::vec3(.1));	
+	
+	static int second_spotlight = AA::AddSpotLight(glm::vec3(0), glm::vec3(0,0,1), glm::cos(glm::radians(0.5f)), glm::cos(glm::radians(30.5f)),
 		1.f, .09f, .032f, glm::vec3(.4), glm::vec3(.4), glm::vec3(.1));
 
 	AA::AddToDeltaUpdate([](float dt) 
 		{
-			AA::GetCamera(ourcam).ShiftYawAndPitch(15 * dt, 0);
+			//AA::GetCamera(ourcam).ShiftYawAndPitch(15 * dt, 0);  // the spin
 			AA::MoveSpotLight(main_spotlight, AA::GetCamera(ourcam).GetLocation(), *AA::GetCamera(ourcam).GetFront());
+			static float curr_rot = 0;
+			curr_rot += dt * .1;
+			if (curr_rot > 360)
+				curr_rot = 0;
+			static float curr_amb = 0;
+			curr_amb += dt * .1;
+			if (curr_amb > 1.f)
+				curr_amb = 0;	
+			static float curr_diff = .4f;
+			curr_diff += dt * .1;
+			if (curr_diff > 1.f)
+				curr_diff = .4f;
+			AA::ChangeSpotLight(second_spotlight, glm::vec3(0), glm::vec3(cos(curr_rot), 0, sin(curr_rot)), glm::cos(glm::radians(0.5f)), glm::cos(glm::radians(30.5f)),
+				1.f, .09f, .032f, glm::vec3(curr_amb), glm::vec3(curr_diff), glm::vec3(.1));
+		
 		});
 
 	static float vol = 1;
@@ -112,6 +134,14 @@ int main()
 		{
 			AA::GetMusic().SetLooping(true);
 			return true;
+		}
+		if (kb.r)
+		{
+			AA::RemoveDirectionalLight();
+		}
+		if (kb.leftShift && kb.r)
+		{
+			AA::SetDirectionalLight(glm::vec3(-.15f), glm::vec3(.2f), glm::vec3(.4f), glm::vec3(.3f));
 		}
 		return false;
 		});
