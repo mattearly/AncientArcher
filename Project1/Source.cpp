@@ -164,6 +164,22 @@ int main()
 		{
 			AA::SetDirectionalLight(glm::vec3(-.15f), glm::vec3(.2f), glm::vec3(.4f), glm::vec3(.3f));
 		}
+		if (kb.f)
+		{
+			if (flashlight_on)
+			{
+				AA::RemoveSpotLight(main_spotlight);
+				flashlight_on = false;
+				return true;
+			}
+			else
+			{
+				main_spotlight = AA::AddSpotLight(glm::vec3(0), glm::vec3(0, 0, 1), glm::cos(glm::radians(0.5f)), glm::cos(glm::radians(30.5f)),
+					1.f, .09f, .032f, glm::vec3(.4), glm::vec3(.4), glm::vec3(.1));
+				flashlight_on = true;
+				return true;
+			}
+		}
 		return false;
 		});
 
