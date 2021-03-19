@@ -1,10 +1,25 @@
 #include <AncientArcher/AncientArcher.h>
 #include <iostream>
+#include "fpscontrols.h"
 int main()
 {
 	AA::Init_Engine();
 
 	static int ourcam = AA::AddCamera(AA::GetWindowWidth(), AA::GetWindowHeight());
+
+	// first person controls
+	setfpscontrols(ourcam);
+
+
+
+
+
+
+
+
+
+
+
 
 	const std::string skyboxfolder = "E:\\storage\\source\\repos\\AncientArcher\\AAUnitTest\\res\\skybox\\";
 	const std::string order[6] = { "posx", "negx", "posy", "negy", "posz", "negz" };
