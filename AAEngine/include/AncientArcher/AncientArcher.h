@@ -32,6 +32,7 @@ int AddObject(const char* path, int cam_id, bool is_lit);
 int AddObject(const char* path, int cam_id, bool is_lit, const std::vector<InstanceDetails>& details);
 
 void SetDirectionalLight(glm::vec3 dir, glm::vec3 amb, glm::vec3 diff, glm::vec3 spec);
+void RemoveDirectionalLight();
 
 int AddPointLight(glm::vec3 pos, float constant, float linear, float quad, glm::vec3 amb, glm::vec3 diff, glm::vec3 spec);
 

@@ -230,6 +230,13 @@ void SetDirectionalLight(glm::vec3 dir, glm::vec3 amb, glm::vec3 diff, glm::vec3
 	}
 }
 
+void RemoveDirectionalLight()
+{
+	SetDirectionalLight(glm::vec3(0), glm::vec3(0), glm::vec3(0), glm::vec3(0));
+	delete mDirectionalLight;
+	mDirectionalLight = NULL;
+}
+
 // returns unique id assigned to this light
 int AddPointLight(glm::vec3 pos, float constant, float linear, float quad, glm::vec3 amb,
 	glm::vec3 diff, glm::vec3 spec)
