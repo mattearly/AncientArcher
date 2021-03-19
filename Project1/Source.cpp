@@ -68,10 +68,14 @@ int main()
 	static int second_spotlight = AA::AddSpotLight(glm::vec3(0), glm::vec3(0,0,1), glm::cos(glm::radians(0.5f)), glm::cos(glm::radians(30.5f)),
 		1.f, .09f, .032f, glm::vec3(.4), glm::vec3(.4), glm::vec3(.1));
 
+	static bool flashlight_on = true;
 	AA::AddToDeltaUpdate([](float dt) 
 		{
 			//AA::GetCamera(ourcam).ShiftYawAndPitch(15 * dt, 0);  // the spin
-			AA::MoveSpotLight(main_spotlight, AA::GetCamera(ourcam).GetLocation(), *AA::GetCamera(ourcam).GetFront());
+			
+			if (flashlight_on)
+				AA::MoveSpotLight(main_spotlight, AA::GetCamera(ourcam).GetLocation(), *AA::GetCamera(ourcam).GetFront());
+			
 			static float curr_rot = 0;
 			curr_rot += dt * .1;
 			if (curr_rot > 360)

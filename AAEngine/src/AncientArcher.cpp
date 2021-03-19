@@ -301,13 +301,13 @@ int AddSpotLight(glm::vec3 pos, glm::vec3 dir, float inner, float outer, float c
 	{
 		throw("too many spot lights");
 	}
-	
+
 	if (!mLitShader)
 		setupLitShader();
 
 	mSpotLights.emplace_back(SpotLight(pos, dir, inner, outer, constant, linear, quad, amb, diff, spec));
 	int new_spot_loc = mSpotLights.size() - 1;
-	
+
 	// push changes to shader
 	{
 		std::string pos, ambient, constant, cutoff, ocutoff, diffuse, direction, linear, quadrat, specular;
@@ -346,24 +346,24 @@ int AddSpotLight(glm::vec3 pos, glm::vec3 dir, float inner, float outer, float c
 		specular += "Specular";
 
 		mLitShader->use(); // <- vs lies if u see green squigglies
-		mLitShader->setVec3(pos,       mSpotLights.back().Position);
-		mLitShader->setFloat(cutoff,   mSpotLights.back().CutOff);
-		mLitShader->setFloat(ocutoff,  mSpotLights.back().OuterCutOff);
+		mLitShader->setVec3(pos, mSpotLights.back().Position);
+		mLitShader->setFloat(cutoff, mSpotLights.back().CutOff);
+		mLitShader->setFloat(ocutoff, mSpotLights.back().OuterCutOff);
 		mLitShader->setVec3(direction, mSpotLights.back().Direction);
 		mLitShader->setFloat(constant, mSpotLights.back().Constant);
-		mLitShader->setFloat(linear,   mSpotLights.back().Linear);
-		mLitShader->setFloat(quadrat,  mSpotLights.back().Quadratic);
-		mLitShader->setVec3(ambient,   mSpotLights.back().Ambient);
-		mLitShader->setVec3(diffuse,   mSpotLights.back().Diffuse);
-		mLitShader->setVec3(specular,  mSpotLights.back().Specular);
-		mLitShader->setInt("NUM_SPOT_LIGHTS", new_spot_loc+1);
+		mLitShader->setFloat(linear, mSpotLights.back().Linear);
+		mLitShader->setFloat(quadrat, mSpotLights.back().Quadratic);
+		mLitShader->setVec3(ambient, mSpotLights.back().Ambient);
+		mLitShader->setVec3(diffuse, mSpotLights.back().Diffuse);
+		mLitShader->setVec3(specular, mSpotLights.back().Specular);
+		mLitShader->setInt("NUM_SPOT_LIGHTS", new_spot_loc + 1);
 	}
-	
+
 	return mSpotLights.back().id;  // unique id
 }
 
-void ChangeSpotLight(int which, glm::vec3 new_pos, glm::vec3 new_dir, float new_inner, 
-	float new_outer, float new_constant, float new_linear, float new_quad, glm::vec3 new_amb, 
+void ChangeSpotLight(int which, glm::vec3 new_pos, glm::vec3 new_dir, float new_inner,
+	float new_outer, float new_constant, float new_linear, float new_quad, glm::vec3 new_amb,
 	glm::vec3 new_diff, glm::vec3 new_spec)
 {
 	if (which < 0)
@@ -474,19 +474,39 @@ bool RemoveSpotLight(int which_by_id)
 	if (mSpotLights.empty())
 		return false;
 
-	int before_size = mPointLights.size();
+	int before_size = mSpotLights.size();
 
 	auto ret_it = mSpotLights.erase(
 		std::remove_if(mSpotLights.begin(), mSpotLights.end(), [&](const SpotLight sl) { return sl.id == which_by_id; }),
 		mSpotLights.end());
 
-	int after_size = mPointLights.size();
+	int after_size = mSpotLights.size();
 
 	if (before_size != after_size)
 	{
+		mLitShader->use();
 		mLitShader->setInt("NUM_SPOT_LIGHTS", after_size);
-		// should set it to zeros on the shader, however with the new size it won't update it anyway
-		return true;  
+
+		// sync lights on shader after the change
+		for (int i = 0; i < after_size; i++)
+		{
+			ChangeSpotLight(
+				mSpotLights[i].id,
+				mSpotLights[i].Position,
+				mSpotLights[i].Direction,
+				mSpotLights[i].CutOff,
+				mSpotLights[i].OuterCutOff,
+				mSpotLights[i].Constant,
+				mSpotLights[i].Linear,
+				mSpotLights[i].Quadratic,
+				mSpotLights[i].Ambient,
+				mSpotLights[i].Diffuse,
+				mSpotLights[i].Specular
+			);
+		}
+
+
+		return true;
 	}
 	else
 		return false;
@@ -536,11 +556,11 @@ void RemoveSoundEffect(int effect_id)
 
 int AddSpeaker()
 {
-	mSpeakers.resize(mSpeakers.size()+1);
+	mSpeakers.resize(mSpeakers.size() + 1);
 	return (mSpeakers.size() - 1);  // return index of last added
 }
 
-void ChangeMusic(const char* path) 
+void ChangeMusic(const char* path)
 {
 	if (!mMusic)
 		mMusic = new LongSound(path);
@@ -1608,7 +1628,7 @@ void render()
 			mDiffShader->use();
 			mDiffShader->setMat4("view", GetCamera(obj.GetCameraId()).GetViewMatrix());
 		}
-		
+
 		// draw using the shader for it
 		obj.draw();
 	}
@@ -1955,7 +1975,7 @@ void Init_Engine()
 					local_options.RendererVersionMinor = try_versions.back().minor;
 				}
 			}
-		}
+	}
 
 		if (!mWindow)
 			throw("unsupported graphics");
@@ -1981,7 +2001,7 @@ void Init_Engine()
 		SetReadMouseCurorAsStandard();
 
 		SetClearColor();
-	}
+}
 	isInit = true;
 }
 
@@ -2000,7 +2020,6 @@ int Run()
 	teardown();
 	return 0;
 }
-
 
 void Shutdown() noexcept
 {
