@@ -76,14 +76,31 @@ int main()
 			curr_rot += dt * .1;
 			if (curr_rot > 360)
 				curr_rot = 0;
-			static float curr_amb = 0;
-			curr_amb += dt * .1;
+			
+			static float curr_amb = .1f;
+			static bool amb_going_up = true;  // to oscilate
+			if (amb_going_up)
+				curr_amb += dt * .5f;
+			else
+				curr_amb -= dt * .5f;
 			if (curr_amb > 1.f)
-				curr_amb = 0;	
-			static float curr_diff = .4f;
-			curr_diff += dt * .1;
+				amb_going_up = false;
+			if (curr_amb < .1f)
+				amb_going_up = true;
+
+
+			static float curr_diff = .3f;
+			static bool diff_going_up = true;
+			if (diff_going_up)
+				curr_diff += dt * .5f;
+			else
+				curr_diff -= dt * .5f;
+
 			if (curr_diff > 1.f)
-				curr_diff = .4f;
+				diff_going_up = false;
+			if (curr_diff < .3f)
+				diff_going_up = true;
+
 			AA::ChangeSpotLight(second_spotlight, glm::vec3(0), glm::vec3(cos(curr_rot), 0, sin(curr_rot)), glm::cos(glm::radians(0.5f)), glm::cos(glm::radians(30.5f)),
 				1.f, .09f, .032f, glm::vec3(curr_amb), glm::vec3(curr_diff), glm::vec3(.1));
 		
