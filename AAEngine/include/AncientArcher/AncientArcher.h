@@ -39,6 +39,9 @@ int AddPointLight(glm::vec3 pos, float constant, float linear, float quad, glm::
 int AddSpotLight(glm::vec3 pos, glm::vec3 dir, float inner, float outer, float constant,
 	float linear, float quad, glm::vec3 amb, glm::vec3 diff, glm::vec3 spec);
 void MoveSpotLight(int which, glm::vec3 new_pos, glm::vec3 new_dir);
+void ChangeSpotLight(int which, glm::vec3 new_pos, glm::vec3 new_dir, float new_inner,
+	float new_outer, float new_constant, float new_linear, float new_quad, glm::vec3 new_amb,
+	glm::vec3 new_diff, glm::vec3 new_spec);
 bool RemoveSpotLight(int which_by_id);
 
 int AddSpeaker();

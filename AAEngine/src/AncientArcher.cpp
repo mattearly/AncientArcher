@@ -350,6 +350,7 @@ int AddSpotLight(glm::vec3 pos, glm::vec3 dir, float inner, float outer, float c
 		mLitShader->setFloat(cutoff,   mSpotLights.back().CutOff);
 		mLitShader->setFloat(ocutoff,  mSpotLights.back().OuterCutOff);
 		mLitShader->setVec3(direction, mSpotLights.back().Direction);
+		mLitShader->setFloat(constant, mSpotLights.back().Constant);
 		mLitShader->setFloat(linear,   mSpotLights.back().Linear);
 		mLitShader->setFloat(quadrat,  mSpotLights.back().Quadratic);
 		mLitShader->setVec3(ambient,   mSpotLights.back().Ambient);
@@ -361,11 +362,91 @@ int AddSpotLight(glm::vec3 pos, glm::vec3 dir, float inner, float outer, float c
 	return mSpotLights.back().id;  // unique id
 }
 
+void ChangeSpotLight(int which, glm::vec3 new_pos, glm::vec3 new_dir, float new_inner, 
+	float new_outer, float new_constant, float new_linear, float new_quad, glm::vec3 new_amb, 
+	glm::vec3 new_diff, glm::vec3 new_spec)
+{
+	if (which < 0)
+		throw("dont");
+
+	int loc_in_vec = 0;
+	for (auto& sl : mSpotLights)
+	{
+		if (sl.id == which)
+		{
+			// push changes to shader
+			{
+				sl.Position = new_pos;
+				sl.Direction = new_dir;
+				sl.Ambient = new_amb;
+				sl.Constant = new_constant;
+				sl.CutOff = new_inner;
+				sl.OuterCutOff = new_outer;
+				sl.Diffuse = new_diff;
+				sl.Linear = new_linear;
+				sl.Quadratic = new_quad;
+				sl.Specular = new_spec;
+				std::string pos, ambient, constant, cutoff, ocutoff, diffuse, direction, linear, quadrat, specular;
+				ambient = constant = cutoff = ocutoff = diffuse = direction = linear = quadrat = specular = pos = "spotLight[";
+				std::stringstream ss;
+				ss << loc_in_vec;
+				pos += ss.str();
+				constant += ss.str();
+				cutoff += ss.str();
+				ocutoff += ss.str();
+				direction += ss.str();
+				linear += ss.str();
+				quadrat += ss.str();
+				ambient += ss.str();
+				diffuse += ss.str();
+				specular += ss.str();
+				pos += "].";
+				constant += "].";
+				cutoff += "].";
+				ocutoff += "].";
+				direction += "].";
+				linear += "].";
+				quadrat += "].";
+				ambient += "].";
+				diffuse += "].";
+				specular += "].";
+				pos += "Position";
+				constant += "Constant";
+				cutoff += "CutOff";
+				ocutoff += "OuterCutOff";
+				direction += "Direction";
+				linear += "Linear";
+				quadrat += "Quadratic";
+				ambient += "Ambient";
+				diffuse += "Diffuse";
+				specular += "Specular";
+
+				mLitShader->use(); // <- vs lies if u see green squigglies
+				mLitShader->setVec3(pos, sl.Position);
+				mLitShader->setFloat(cutoff, sl.CutOff);
+				mLitShader->setFloat(ocutoff, sl.OuterCutOff);
+				mLitShader->setVec3(direction, sl.Direction);
+				mLitShader->setFloat(constant, sl.Constant);
+				mLitShader->setFloat(linear, sl.Linear);
+				mLitShader->setFloat(quadrat, sl.Quadratic);
+				mLitShader->setVec3(ambient, sl.Ambient);
+				mLitShader->setVec3(diffuse, sl.Diffuse);
+				mLitShader->setVec3(specular, sl.Specular);
+			}
+			return;
+		}
+		loc_in_vec++;
+	}
+
+	throw("u messed up");
+}
+
 void MoveSpotLight(int which, glm::vec3 new_pos, glm::vec3 new_dir)
 {
 	if (which < 0)
 		throw("dont");
 
+	int loc_in_vec = 0;
 	for (auto& sl : mSpotLights)
 	{
 		if (sl.id == which)
@@ -373,11 +454,15 @@ void MoveSpotLight(int which, glm::vec3 new_pos, glm::vec3 new_dir)
 			sl.Position = new_pos;
 			sl.Direction = new_dir;
 			mLitShader->use();
-			mLitShader->setVec3("spotLight[0].Position", sl.Position);  //test
-			mLitShader->setVec3("spotLight[0].Direction", sl.Direction);  //test
-			//std::cout << "updated spot light pos and dir\n";
+			std::stringstream ss;
+			ss << loc_in_vec;
+			std::string position = "spotLight[" + ss.str() + "].Position";
+			std::string direction = "spotLight[" + ss.str() + "].Direction";
+			mLitShader->setVec3(position.c_str(), sl.Position);
+			mLitShader->setVec3(direction.c_str(), sl.Direction);
 			return;
 		}
+		loc_in_vec++;
 	}
 
 	throw("u messed up");
@@ -398,7 +483,11 @@ bool RemoveSpotLight(int which_by_id)
 	int after_size = mPointLights.size();
 
 	if (before_size != after_size)
-		return true;  //todo update shader - sync lights function?
+	{
+		mLitShader->setInt("NUM_SPOT_LIGHTS", after_size);
+		// should set it to zeros on the shader, however with the new size it won't update it anyway
+		return true;  
+	}
 	else
 		return false;
 }
