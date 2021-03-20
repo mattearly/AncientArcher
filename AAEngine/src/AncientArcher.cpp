@@ -1906,7 +1906,7 @@ void mouseScrollWheelMovement(float x, float y) noexcept
 
 // core run functions
 
-void Init_Engine()
+void InitEngine()
 {
 	if (!isInit) {
 		SoundDevice::Init();

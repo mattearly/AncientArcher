@@ -22,7 +22,7 @@ struct InstanceDetails;
 namespace AA
 {
 
-void Init_Engine();
+void InitEngine();
 int Run();
 void Shutdown() noexcept;
 void SoftReset();
