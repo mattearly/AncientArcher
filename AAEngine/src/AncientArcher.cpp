@@ -293,6 +293,30 @@ int AddPointLight(glm::vec3 pos, float constant, float linear, float quad, glm::
 
 }
 
+void MovePointLight(int which, glm::vec3 new_pos)
+{
+	if (which < 0)
+		throw("dont");
+
+	int loc_in_vec = 0;
+	for (auto& pl : mPointLights)
+	{
+		if (pl.id == which)
+		{
+			pl.Position = new_pos;
+			std::stringstream ss;
+			ss << loc_in_vec;
+			std::string position = "pointLight[" + ss.str() + "].Position";
+			mLitShader->use();
+			mLitShader->setVec3(position.c_str(), pl.Position);
+			return;
+		}
+		loc_in_vec++;
+	}
+
+	throw("u messed up");
+}
+
 // returns unique id assigned to this light
 int AddSpotLight(glm::vec3 pos, glm::vec3 dir, float inner, float outer, float constant,
 	float linear, float quad, glm::vec3 amb, glm::vec3 diff, glm::vec3 spec)
@@ -1975,7 +1999,7 @@ void InitEngine()
 					local_options.RendererVersionMinor = try_versions.back().minor;
 				}
 			}
-	}
+		}
 
 		if (!mWindow)
 			throw("unsupported graphics");
@@ -2001,9 +2025,9 @@ void InitEngine()
 		SetReadMouseCurorAsStandard();
 
 		SetClearColor();
-}
+		}
 	isInit = true;
-}
+	}
 
 int Run()
 {
