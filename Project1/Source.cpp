@@ -179,6 +179,9 @@ int main()
 		}
 		if (kb.leftShift && kb.leftArrow)
 		{
+			if (main_point_light == -1)
+				return false;
+
 			if (main_point_diff.x > 0.f)
 				main_point_diff.x -= .1f;
 			else
@@ -193,6 +196,9 @@ int main()
 
 		if (kb.leftShift && kb.rightArrow)
 		{
+			if (main_point_light == -1)
+				return false;
+
 			if (main_point_diff.x < 1.f)
 				main_point_diff.x += .1f;
 			else
@@ -204,6 +210,23 @@ int main()
 			return true;
 		}
 
+		if (kb.n)
+		{
+			// toggle point light
+			if (main_point_light != -1)
+			{
+				bool success = AA::RemovePointLight(main_point_light);
+				if (success)
+					main_point_light = -1;
+				return true;
+			}
+			else if (main_point_light == -1)
+			{
+				main_point_light = AA::AddPointLight(glm::vec3(0.f), 1.f, .09f, .032f, glm::vec3(.8f),
+					glm::vec3(.8f), glm::vec3(.5f));
+				return true;
+			}
+		}
 		return false;
 		});
 
