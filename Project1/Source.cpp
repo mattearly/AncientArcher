@@ -55,7 +55,8 @@ int main()
 
 	//static int second_spotlight = AA::AddSpotLight(glm::vec3(0), glm::vec3(0, 0, 1), glm::cos(glm::radians(0.5f)), glm::cos(glm::radians(30.5f)),
 	//	1.f, .09f, .032f, glm::vec3(.4), glm::vec3(.4), glm::vec3(.1));
-	static int main_point_light = AA::AddPointLight(glm::vec3(0.f), 1.f, .09f, .032f, glm::vec3(.8f), glm::vec3(.8f), glm::vec3(.5f));
+	static int main_point_light = AA::AddPointLight(glm::vec3(0.f), 1.f, .09f, .032f, glm::vec3(.8f),
+		glm::vec3(.8f), glm::vec3(.5f));
 
 	AA::SetDirectionalLight(glm::vec3(-.15f), glm::vec3(.2f), glm::vec3(.4f), glm::vec3(.3f));
 
@@ -99,7 +100,7 @@ int main()
 			//	1.f, .09f, .032f, glm::vec3(curr_amb), glm::vec3(curr_diff), glm::vec3(.1));
 
 
-			AA::MovePointLight(main_point_light, AA::GetCamera(ourcam).GetLocation());
+			//AA::MovePointLight(main_point_light, AA::GetCamera(ourcam).GetLocation());
 
 		});
 
@@ -135,7 +136,10 @@ int main()
 				std::cout << "playing state: " << AA::GetMusic().GetPlayingState() << '\n';
 			}
 
+
 		});
+
+	static glm::vec3 main_point_diff = glm::vec3(.3f);
 
 	AA::AddToTimedOutKeyHandling([](AA::KeyboardInput& kb) {
 		if (kb.p)
@@ -173,6 +177,33 @@ int main()
 				return true;
 			}
 		}
+		if (kb.leftShift && kb.leftArrow)
+		{
+			if (main_point_diff.x > 0.f)
+				main_point_diff.x -= .1f;
+			else
+				main_point_diff.x = 0.f;
+
+			AA::ChangePointLight(main_point_light, glm::vec3(0.f), 1.f, .09f, .032f,
+				/*ambient*/ glm::vec3(.5f),
+				/*diffuse*/ main_point_diff,
+				glm::vec3(.5f));
+			return true;
+		}
+
+		if (kb.leftShift && kb.rightArrow)
+		{
+			if (main_point_diff.x < 1.f)
+				main_point_diff.x += .1f;
+			else
+				main_point_diff.x = 1.f;
+			AA::ChangePointLight(main_point_light, glm::vec3(0.f), 1.f, .09f, .032f,
+				/*ambient*/ glm::vec3(.5f),
+				/*diffuse*/ main_point_diff,
+				glm::vec3(.5f));
+			return true;
+		}
+
 		return false;
 		});
 
