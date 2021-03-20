@@ -317,6 +317,69 @@ void MovePointLight(int which, glm::vec3 new_pos)
 	throw("u messed up");
 }
 
+void ChangePointLight(int which, glm::vec3 new_pos, float new_constant, float new_linear, float new_quad, 
+	glm::vec3 new_amb, glm::vec3 new_diff, glm::vec3 new_spec)
+{
+	if (which < 0)
+		throw("dont");
+
+	int loc_in_vec = 0;
+	for (auto& pl : mPointLights)
+	{
+		if (pl.id == which)
+		{
+			// push changes to shader
+			{
+				pl.Position = new_pos;
+				pl.Ambient = new_amb;
+				pl.Constant = new_constant;
+				pl.Diffuse = new_diff;
+				pl.Linear = new_linear;
+				pl.Quadratic = new_quad;
+				pl.Specular = new_spec;
+				std::string pos, ambient, constant, diffuse, linear, quadrat, specular;
+				ambient = constant = diffuse = linear = quadrat = specular = pos = "pointLight[";
+				std::stringstream ss;
+				ss << loc_in_vec;
+				pos += ss.str();
+				constant += ss.str();
+				linear += ss.str();
+				quadrat += ss.str();
+				ambient += ss.str();
+				diffuse += ss.str();
+				specular += ss.str();
+				pos += "].";
+				constant += "].";
+				linear += "].";
+				quadrat += "].";
+				ambient += "].";
+				diffuse += "].";
+				specular += "].";
+				pos += "Position";
+				constant += "Constant";
+				linear += "Linear";
+				quadrat += "Quadratic";
+				ambient += "Ambient";
+				diffuse += "Diffuse";
+				specular += "Specular";
+
+				mLitShader->use(); // <- vs lies if u see green squigglies
+				mLitShader->setVec3(pos, pl.Position);
+				mLitShader->setFloat(constant, pl.Constant);
+				mLitShader->setFloat(linear, pl.Linear);
+				mLitShader->setFloat(quadrat, pl.Quadratic);
+				mLitShader->setVec3(ambient, pl.Ambient);
+				mLitShader->setVec3(diffuse, pl.Diffuse);
+				mLitShader->setVec3(specular, pl.Specular);
+			}
+			return;
+		}
+		loc_in_vec++;
+	}
+
+	throw("u messed up");
+}
+
 // returns unique id assigned to this light
 int AddSpotLight(glm::vec3 pos, glm::vec3 dir, float inner, float outer, float constant,
 	float linear, float quad, glm::vec3 amb, glm::vec3 diff, glm::vec3 spec)
