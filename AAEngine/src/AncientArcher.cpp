@@ -380,6 +380,47 @@ void ChangePointLight(int which, glm::vec3 new_pos, float new_constant, float ne
 	throw("u messed up");
 }
 
+// returns true if successfully removed the point light, false otherwise
+bool RemovePointLight(int which_by_id)
+{
+	if (mPointLights.empty())
+		return false;
+
+	int before_size = mPointLights.size();
+
+	auto ret_it = mPointLights.erase(
+		std::remove_if(mPointLights.begin(), mPointLights.end(), [&](const PointLight sl) { return sl.id == which_by_id; }),
+		mPointLights.end());
+
+	int after_size = mPointLights.size();
+
+	if (before_size != after_size)
+	{
+		mLitShader->use();
+		mLitShader->setInt("NUM_POINT_LIGHTS", after_size);
+
+		// sync lights on shader after the change
+		for (int i = 0; i < after_size; i++)
+		{
+			ChangePointLight(
+				mPointLights[i].id,
+				mPointLights[i].Position,
+				mPointLights[i].Constant,
+				mPointLights[i].Linear,
+				mPointLights[i].Quadratic,
+				mPointLights[i].Ambient,
+				mPointLights[i].Diffuse,
+				mPointLights[i].Specular
+			);
+		}
+
+
+		return true;
+	}
+	else
+		return false;
+}
+
 // returns unique id assigned to this light
 int AddSpotLight(glm::vec3 pos, glm::vec3 dir, float inner, float outer, float constant,
 	float linear, float quad, glm::vec3 amb, glm::vec3 diff, glm::vec3 spec)

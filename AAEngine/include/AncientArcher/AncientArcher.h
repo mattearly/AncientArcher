@@ -38,6 +38,7 @@ int AddPointLight(glm::vec3 pos, float constant, float linear, float quad, glm::
 void MovePointLight(int which, glm::vec3 new_pos);
 void ChangePointLight(int which, glm::vec3 new_pos, float new_constant, float new_linear, float new_quad,
 	glm::vec3 new_amb, glm::vec3 new_diff, glm::vec3 new_spec);
+bool RemovePointLight(int which_by_id);
 
 int AddSpotLight(glm::vec3 pos, glm::vec3 dir, float inner, float outer, float constant,
 	float linear, float quad, glm::vec3 amb, glm::vec3 diff, glm::vec3 spec);
