@@ -3,23 +3,12 @@
 #include "fpscontrols.h"
 int main()
 {
-	AA::Init_Engine();
+	AA::InitEngine();
 
 	static int ourcam = AA::AddCamera(AA::GetWindowWidth(), AA::GetWindowHeight());
 
 	// first person controls
 	setfpscontrols(ourcam);
-
-
-
-
-
-
-
-
-
-
-
 
 	const std::string skyboxfolder = "E:\\storage\\source\\repos\\AncientArcher\\AAUnitTest\\res\\skybox\\";
 	const std::string order[6] = { "posx", "negx", "posy", "negy", "posz", "negz" };
@@ -38,10 +27,9 @@ int main()
 	std::cout << "windSoundIndex " << windSound << '\n';
 	static int firstSpeaker = AA::AddSpeaker();
 	std::cout << "speakerIndex " << firstSpeaker << '\n';
-	
+
 	AA::ChangeMusic("E:\\storage\\source\\repos\\AncientArcher\\AAUnitTest\\res\\heroic_demise_music.ogg");
 
-	AA::SetDirectionalLight(glm::vec3(-.15f), glm::vec3(.2f), glm::vec3(.4f), glm::vec3(.3f));
 
 	static int mutant = AA::AddObject("E:\\storage\\3d Models\\mutant.dae", ourcam, true);
 	static int walking = AA::AddObject("E:\\storage\\3d Models\\Walking\\Walking.dae", ourcam, true);
@@ -51,36 +39,39 @@ int main()
 
 	const float dist_from_us = 2.f;
 	const float dist_down = -1.2f;
-	AA::GetGameObject(mutant).SetTranslation(glm::vec3(0, dist_down,-dist_from_us));
+	AA::GetGameObject(mutant).SetTranslation(glm::vec3(0, dist_down, -dist_from_us));
 	AA::GetGameObject(walking).SetTranslation(glm::vec3(dist_from_us, dist_down, 0));
-	AA::GetGameObject(walking).SetRotation(glm::vec3(0,-90, 0));
+	AA::GetGameObject(walking).SetRotation(glm::vec3(0, -90, 0));
 	AA::GetGameObject(maria).SetTranslation(glm::vec3(0, dist_down, dist_from_us));
-	AA::GetGameObject(maria).SetRotation(glm::vec3(0,180, 0));	
-	AA::GetGameObject(peasant_man).SetTranslation(glm::vec3(-dist_from_us, dist_down,0));
-	AA::GetGameObject(peasant_man).SetRotation(glm::vec3(0,90, 0));
+	AA::GetGameObject(maria).SetRotation(glm::vec3(0, 180, 0));
+	AA::GetGameObject(peasant_man).SetTranslation(glm::vec3(-dist_from_us, dist_down, 0));
+	AA::GetGameObject(peasant_man).SetRotation(glm::vec3(0, 90, 0));
 
 	AA::GetGameObject(test_wall).SetTranslation(glm::vec3(0, dist_down, -10));
 	AA::GetGameObject(test_wall).SetRotation(glm::vec3(0, glm::radians(90.f), 0));
 
-	static int main_spotlight = AA::AddSpotLight(glm::vec3(0), glm::vec3(0,0,1), glm::cos(glm::radians(0.5f)), glm::cos(glm::radians(30.5f)),
-		1.f, .09f, .032f, glm::vec3(.4), glm::vec3(.4), glm::vec3(.1));	
-	
-	static int second_spotlight = AA::AddSpotLight(glm::vec3(0), glm::vec3(0,0,1), glm::cos(glm::radians(0.5f)), glm::cos(glm::radians(30.5f)),
+	static int main_spotlight = AA::AddSpotLight(glm::vec3(0), glm::vec3(0, 0, 1), glm::cos(glm::radians(0.5f)), glm::cos(glm::radians(30.5f)),
 		1.f, .09f, .032f, glm::vec3(.4), glm::vec3(.4), glm::vec3(.1));
 
+	//static int second_spotlight = AA::AddSpotLight(glm::vec3(0), glm::vec3(0, 0, 1), glm::cos(glm::radians(0.5f)), glm::cos(glm::radians(30.5f)),
+	//	1.f, .09f, .032f, glm::vec3(.4), glm::vec3(.4), glm::vec3(.1));
+	static int main_point_light = AA::AddPointLight(glm::vec3(0.f), 1.f, .09f, .032f, glm::vec3(.8f), glm::vec3(.8f), glm::vec3(.5f));
+
+	AA::SetDirectionalLight(glm::vec3(-.15f), glm::vec3(.2f), glm::vec3(.4f), glm::vec3(.3f));
+
 	static bool flashlight_on = true;
-	AA::AddToDeltaUpdate([](float dt) 
+	AA::AddToDeltaUpdate([](float dt)
 		{
 			//AA::GetCamera(ourcam).ShiftYawAndPitch(15 * dt, 0);  // the spin
-			
+
 			if (flashlight_on)
 				AA::MoveSpotLight(main_spotlight, AA::GetCamera(ourcam).GetLocation(), *AA::GetCamera(ourcam).GetFront());
-			
+
 			static float curr_rot = 0;
 			curr_rot += dt * .1;
 			if (curr_rot > 360)
 				curr_rot = 0;
-			
+
 			static float curr_amb = .1f;
 			static bool amb_going_up = true;  // to oscilate
 			if (amb_going_up)
@@ -91,7 +82,6 @@ int main()
 				amb_going_up = false;
 			if (curr_amb < .1f)
 				amb_going_up = true;
-
 
 			static float curr_diff = .3f;
 			static bool diff_going_up = true;
@@ -105,9 +95,12 @@ int main()
 			if (curr_diff < .3f)
 				diff_going_up = true;
 
-			AA::ChangeSpotLight(second_spotlight, glm::vec3(0), glm::vec3(cos(curr_rot), 0, sin(curr_rot)), glm::cos(glm::radians(0.5f)), glm::cos(glm::radians(30.5f)),
-				1.f, .09f, .032f, glm::vec3(curr_amb), glm::vec3(curr_diff), glm::vec3(.1));
-		
+			//AA::ChangeSpotLight(second_spotlight, glm::vec3(0), glm::vec3(cos(curr_rot), 0, sin(curr_rot)), glm::cos(glm::radians(0.5f)), glm::cos(glm::radians(30.5f)),
+			//	1.f, .09f, .032f, glm::vec3(curr_amb), glm::vec3(curr_diff), glm::vec3(.1));
+
+
+			AA::MovePointLight(main_point_light, AA::GetCamera(ourcam).GetLocation());
+
 		});
 
 	static float vol = 1;
@@ -139,7 +132,7 @@ int main()
 
 			if (kb.u)
 			{
-				std::cout << "playing state: " <<  AA::GetMusic().GetPlayingState() << '\n';
+				std::cout << "playing state: " << AA::GetMusic().GetPlayingState() << '\n';
 			}
 
 		});
@@ -183,6 +176,6 @@ int main()
 		return false;
 		});
 
-	AA::AddToSlowUpdate([]() { AA::GetMusic().UpdatePlayBuffer();  });
+	AA::AddToSlowUpdate([]() { AA::GetMusic().UpdatePlayBuffer(); });
 	AA::Run();
 }
