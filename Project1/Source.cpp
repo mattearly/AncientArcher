@@ -28,7 +28,7 @@ int main()
 	static int firstSpeaker = AA::AddSpeaker();
 	std::cout << "speakerIndex " << firstSpeaker << '\n';
 
-	AA::ChangeMusic("E:\\storage\\source\\repos\\AncientArcher\\AAUnitTest\\res\\heroic_demise_music.ogg");
+	//AA::ChangeMusic("E:\\storage\\source\\repos\\AncientArcher\\AAUnitTest\\res\\heroic_demise_music.ogg");
 
 
 	static int mutant = AA::AddObject("E:\\storage\\3d Models\\mutant.dae", ourcam, true);
@@ -142,17 +142,16 @@ int main()
 	static glm::vec3 main_point_diff = glm::vec3(.3f);
 
 	AA::AddToTimedOutKeyHandling([](AA::KeyboardInput& kb) {
-		if (kb.p)
-		{
-			//AA::GetMusic().SetLooping(true);
-			AA::GetMusic().Play();
-			return true;
-		}
-		if (kb.l)
-		{
-			AA::GetMusic().SetLooping(true);
-			return true;
-		}
+		//if (kb.p)
+		//{
+		//	//AA::GetMusic().SetLooping(true);
+		//	//AA::GetMusic().Play();
+		//	return true;
+		//}
+		//if (kb.l)
+		//{
+		//	return true;
+		//}
 		if (kb.r)
 		{
 			AA::RemoveDirectionalLight();
@@ -230,6 +229,6 @@ int main()
 		return false;
 		});
 
-	AA::AddToSlowUpdate([]() { AA::GetMusic().UpdatePlayBuffer(); });
-	AA::Run();
+	//AA::AddToSlowUpdate([]() { AA::GetMusic().UpdatePlayBuffer(); });
+	return AA::Run();
 }
