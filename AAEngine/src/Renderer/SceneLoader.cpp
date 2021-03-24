@@ -11,6 +11,7 @@
 #include "../Renderer/Vertex.h"
 #include "../Settings/Settings.h"
 #include <stb_image.h>
+#include <iostream>
 
 namespace AA
 {
@@ -123,41 +124,6 @@ int SceneLoader::LoadGameObjectFromFile(std::vector<MeshDrawInfo>& out_MeshInfo,
 	return 0;
 }
 
-void SceneLoader::UnloadGameObject(const std::vector<MeshDrawInfo>& toUnload)
-{
-	for (const auto& meshIt : toUnload)
-	{
-		switch (Settings::Get()->GetOptions().renderer)
-		{
-		case RenderingFramework::OPENGL:
-			OGLGraphics::DeleteMesh(meshIt.vao);
-			for (const auto& texIt : meshIt.textureDrawIds)
-			{
-				for (auto loaded_tex = mLoadedTextures.begin(); loaded_tex != mLoadedTextures.end(); loaded_tex++)
-				{
-					if (texIt.first == loaded_tex->accessId)
-					{
-						loaded_tex->ref_count--;
-						if (loaded_tex->ref_count == 0)
-						{
-							OGLGraphics::DeleteTex(loaded_tex->accessId);
-						}
-					}
-				}
-
-				// sync textures
-				mLoadedTextures.remove_if([](const TextureInfo& ti) {
-					if (ti.ref_count == 0)
-						return true;
-					else
-						return false;
-					});
-			}
-			break;
-		}
-	}
-}
-
 void SceneLoader::processNode(aiNode* node, const aiScene* scene, std::vector<MeshDrawInfo>& out_MeshInfo)
 {
 	for (uint32_t i = 0; i < node->mNumMeshes; ++i)
@@ -202,15 +168,30 @@ MeshDrawInfo SceneLoader::processMesh(aiMesh* mesh, const aiScene* scene, aiMatr
 	}
 
 	// get the materials
-	const aiMaterial* material = scene->mMaterials[mesh->mMaterialIndex];
+	const aiMaterial* ai_material = scene->mMaterials[mesh->mMaterialIndex];
 	std::unordered_map<uint32_t, std::string> all_loaded_textures;
 	std::unordered_map<uint32_t, std::string> albedo_textures;
 
 	// if succeeds in loading texture add it to loaded texutres
-	if (loadMaterialTextures(scene, material, aiTextureType_DIFFUSE, "Albedo", albedo_textures) == 0)
+	if (loadMaterialTextures(scene, ai_material, aiTextureType_DIFFUSE, "Albedo", albedo_textures) == 0)
 	{
 		for (auto& newtexture : albedo_textures)
 			all_loaded_textures.insert(all_loaded_textures.end(), newtexture);
+	}
+
+	ai_real shininess;
+	if (!aiGetMaterialFloat(ai_material, AI_MATKEY_SHININESS, &shininess))
+	{
+		// set shininess to a default if it failed
+		shininess = .1f;
+		std::cout << "shininess not found, shininess defaulted to .1f\n";
+	}
+	aiColor4D spec_color;
+	if (AI_SUCCESS != aiGetMaterialColor(ai_material, AI_MATKEY_COLOR_SPECULAR, &spec_color))
+	{
+		// set spec_color to a default if it failed to find
+		spec_color = aiColor4D(0.1f, 0.1f, 0.1f, 1.f);
+		std::cout << "specular not found, defaulted to .1f\n";
 	}
 
 	uint32_t vao = 0;
@@ -220,7 +201,7 @@ MeshDrawInfo SceneLoader::processMesh(aiMesh* mesh, const aiScene* scene, aiMatr
 		vao = OGLGraphics::UploadMesh(loaded_vertices, loadedElements);
 		break;
 	}
-	return MeshDrawInfo(vao, (uint32_t)loadedElements.size(), all_loaded_textures, SceneLoader::aiMat4_to_glmMat4(*trans));
+	return MeshDrawInfo(vao, (uint32_t)loadedElements.size(), all_loaded_textures, aiColor4_to_glmVec4(spec_color), shininess, SceneLoader::aiMat4_to_glmMat4(*trans));
 }
 
 /// <summary>
@@ -372,5 +353,40 @@ int SceneLoader::loadMaterialTextures(const aiScene* scn, const aiMaterial* mat,
 
 	// went through the above loop without error, mLoadedTextures & out_texInfo should be updated
 	return 0;
+}
+
+void SceneLoader::UnloadGameObject(const std::vector<MeshDrawInfo>& toUnload)
+{
+	for (const auto& meshIt : toUnload)
+	{
+		switch (Settings::Get()->GetOptions().renderer)
+		{
+		case RenderingFramework::OPENGL:
+			OGLGraphics::DeleteMesh(meshIt.vao);
+			for (const auto& texIt : meshIt.textureDrawIds)
+			{
+				for (auto loaded_tex = mLoadedTextures.begin(); loaded_tex != mLoadedTextures.end(); loaded_tex++)
+				{
+					if (texIt.first == loaded_tex->accessId)
+					{
+						loaded_tex->ref_count--;
+						if (loaded_tex->ref_count == 0)
+						{
+							OGLGraphics::DeleteTex(loaded_tex->accessId);
+						}
+					}
+				}
+
+				// sync textures
+				mLoadedTextures.remove_if([](const TextureInfo& ti) {
+					if (ti.ref_count == 0)
+						return true;
+					else
+						return false;
+					});
+			}
+			break;
+		}
+	}
 }
 } // end namespace AA

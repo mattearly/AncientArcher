@@ -30,7 +30,6 @@ int main()
 
 	//AA::ChangeMusic("E:\\storage\\source\\repos\\AncientArcher\\AAUnitTest\\res\\heroic_demise_music.ogg");
 
-
 	static int mutant = AA::AddObject("E:\\storage\\3d Models\\mutant.dae", ourcam, true);
 	static int walking = AA::AddObject("E:\\storage\\3d Models\\Walking\\Walking.dae", ourcam, true);
 	static int maria = AA::AddObject("E:\\storage\\3d Models\\maria_j_j_ong.dae", ourcam, true);

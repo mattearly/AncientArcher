@@ -42,6 +42,8 @@ void OGLGraphics::Render(const std::vector<MeshDrawInfo>& meshes,
 			{
 				mLitShader->use();
 				mLitShader->setInt(("material." + texType).c_str(), i);
+				mLitShader->setVec3("material.Specular", m.specular);
+				mLitShader->setFloat("material.Shininess", m.shininess);
 			}
 			else
 			{
