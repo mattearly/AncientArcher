@@ -23,5 +23,8 @@
     <ClInclude Include="fpscontrols.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="setskybox.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

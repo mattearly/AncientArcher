@@ -170,29 +170,43 @@ MeshDrawInfo SceneLoader::processMesh(aiMesh* mesh, const aiScene* scene, aiMatr
 	// get the materials
 	const aiMaterial* ai_material = scene->mMaterials[mesh->mMaterialIndex];
 	std::unordered_map<uint32_t, std::string> all_loaded_textures;
-	std::unordered_map<uint32_t, std::string> albedo_textures;
 
-	// if succeeds in loading texture add it to loaded texutres
+	// get the albedo (diffuse) textures
+	std::unordered_map<uint32_t, std::string> albedo_textures;
 	if (loadMaterialTextures(scene, ai_material, aiTextureType_DIFFUSE, "Albedo", albedo_textures) == 0)
 	{
-		for (auto& newtexture : albedo_textures)
-			all_loaded_textures.insert(all_loaded_textures.end(), newtexture);
+		for (auto& a_tex : albedo_textures)
+		{
+			all_loaded_textures.insert(all_loaded_textures.end(), a_tex);
+			std::cout << "found&loaded Albedo texture\n";
+		}
 	}
 
-	ai_real shininess;
-	if (!aiGetMaterialFloat(ai_material, AI_MATKEY_SHININESS, &shininess))
+	// get the shininess textures
+	std::unordered_map<uint32_t, std::string> specular_textures;
+	if (loadMaterialTextures(scene, ai_material, aiTextureType_SPECULAR, "Specular", specular_textures) == 0)
 	{
-		// set shininess to a default if it failed
-		shininess = .1f;
-		std::cout << "shininess not found, shininess defaulted to .1f\n";
+		for (auto& s_tex : specular_textures)
+		{
+			all_loaded_textures.insert(all_loaded_textures.end(), s_tex);
+			std::cout << "found&loaded Specular texture\n";
+		}
 	}
-	aiColor4D spec_color;
-	if (AI_SUCCESS != aiGetMaterialColor(ai_material, AI_MATKEY_COLOR_SPECULAR, &spec_color))
-	{
-		// set spec_color to a default if it failed to find
-		spec_color = aiColor4D(0.1f, 0.1f, 0.1f, 1.f);
-		std::cout << "specular not found, defaulted to .1f\n";
-	}
+
+	//ai_real shininess;
+	//if (!aiGetMaterialFloat(ai_material, AI_MATKEY_SHININESS, &shininess))
+	//{
+	//	// set shininess to a default if it failed
+	//	shininess = .1f;
+	//	std::cout << "shininess not found, shininess defaulted to .1f\n";
+	//}
+	//aiColor4D spec_color;
+	//if (AI_SUCCESS != aiGetMaterialColor(ai_material, AI_MATKEY_COLOR_SPECULAR, &spec_color))
+	//{
+	//	// set spec_color to a default if it failed to find
+	//	spec_color = aiColor4D(0.1f, 0.1f, 0.1f, 1.f);
+	//	std::cout << "specular not found, defaulted to .1f\n";
+	//}
 
 	uint32_t vao = 0;
 	switch (Settings::Get()->GetOptions().renderer)
@@ -201,7 +215,7 @@ MeshDrawInfo SceneLoader::processMesh(aiMesh* mesh, const aiScene* scene, aiMatr
 		vao = OGLGraphics::UploadMesh(loaded_vertices, loadedElements);
 		break;
 	}
-	return MeshDrawInfo(vao, (uint32_t)loadedElements.size(), all_loaded_textures, aiColor4_to_glmVec4(spec_color), shininess, SceneLoader::aiMat4_to_glmMat4(*trans));
+	return MeshDrawInfo(vao, (uint32_t)loadedElements.size(), all_loaded_textures, SceneLoader::aiMat4_to_glmMat4(*trans));
 }
 
 /// <summary>

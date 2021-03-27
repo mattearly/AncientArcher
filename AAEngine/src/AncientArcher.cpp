@@ -43,7 +43,7 @@ std::vector<GameObject>  mGameObjects;        ///< array of available objects
 std::vector<ShortSound>  mSpeakers;           ///< array of places to play sound effects from
 struct SoundEffect
 {
-	uint32_t id;
+	uint32_t id = 0;
 	std::string path;
 };
 std::vector<SoundEffect> mLoadedSoundEffects; ///< array of <play id, path>
@@ -132,10 +132,8 @@ ShortSound& GetSpeaker(int speaker_id)
 
 LongSound& GetMusic()
 {
-	if (mMusic)
-		return *mMusic;
-	else
-		std::cout << "no music loaded\n";
+	assert(mMusic);
+	return *mMusic;
 }
 
 void PlaySoundEffect(int effect_id, int speaker_id)
@@ -213,26 +211,28 @@ void SetDirectionalLight(glm::vec3 dir, glm::vec3 amb, glm::vec3 diff, glm::vec3
 	}
 	else
 	{
-		//update whatever it was
 		mDirectionalLight->Direction = dir;
 		mDirectionalLight->Ambient = amb;
 		mDirectionalLight->Diffuse = diff;
 		mDirectionalLight->Specular = spec;
 	}
 
-
 	{
-		mLitShader->use();  // <- vs lies if u see green squigglies
+		assert(mLitShader);
+		mLitShader->use();
+		mLitShader->setInt("isDirectionalLightOn", 1);
 		mLitShader->setVec3("directionalLight.Direction", mDirectionalLight->Direction);
 		mLitShader->setVec3("directionalLight.Ambient", mDirectionalLight->Ambient);
 		mLitShader->setVec3("directionalLight.Diffuse", mDirectionalLight->Diffuse);
-		//mLitShader->setVec3("directionalLight.Specular", mDirectionalLight->Specular); // ?? not used or optimized away i guess
+		mLitShader->setVec3("directionalLight.Specular", mDirectionalLight->Specular);
 	}
 }
 
 void RemoveDirectionalLight()
 {
-	SetDirectionalLight(glm::vec3(0), glm::vec3(0), glm::vec3(0), glm::vec3(0));
+	assert(mLitShader);
+	mLitShader->use();
+	mLitShader->setInt("isDirectionalLightOn", 0);
 	delete mDirectionalLight;
 	mDirectionalLight = NULL;
 }
@@ -248,7 +248,7 @@ int AddPointLight(glm::vec3 pos, float constant, float linear, float quad, glm::
 		setupLitShader();
 
 	mPointLights.emplace_back(PointLight(pos, constant, linear, quad, amb, diff, spec));
-	int new_point_loc = mPointLights.size() - 1;
+	std::size_t new_point_loc = mPointLights.size() - 1;
 
 	// push changes to shader
 	{
@@ -278,6 +278,7 @@ int AddPointLight(glm::vec3 pos, float constant, float linear, float quad, glm::
 		diffuse += "Diffuse";
 		specular += "Specular";
 
+		assert(mLitShader);
 		mLitShader->use(); // <- vs lies if u see green squigglies
 		mLitShader->setVec3(position, mPointLights.back().Position);
 		mLitShader->setFloat(constant, mPointLights.back().Constant);
@@ -286,7 +287,7 @@ int AddPointLight(glm::vec3 pos, float constant, float linear, float quad, glm::
 		mLitShader->setVec3(ambient, mPointLights.back().Ambient);
 		mLitShader->setVec3(diffuse, mPointLights.back().Diffuse);
 		mLitShader->setVec3(specular, mPointLights.back().Specular);
-		mLitShader->setInt("NUM_POINT_LIGHTS", new_point_loc + 1);
+		mLitShader->setInt("NUM_POINT_LIGHTS", static_cast<int>(new_point_loc + 1));
 	}
 
 	return mPointLights.back().id;  // unique id
@@ -386,18 +387,18 @@ bool RemovePointLight(int which_by_id)
 	if (mPointLights.empty())
 		return false;
 
-	int before_size = mPointLights.size();
+	auto before_size = mPointLights.size();
 
 	auto ret_it = mPointLights.erase(
 		std::remove_if(mPointLights.begin(), mPointLights.end(), [&](const PointLight sl) { return sl.id == which_by_id; }),
 		mPointLights.end());
 
-	int after_size = mPointLights.size();
+	auto after_size = mPointLights.size();
 
 	if (before_size != after_size)
 	{
 		mLitShader->use();
-		mLitShader->setInt("NUM_POINT_LIGHTS", after_size);
+		mLitShader->setInt("NUM_POINT_LIGHTS", static_cast<int>(after_size));
 
 		// sync lights on shader after the change
 		for (int i = 0; i < after_size; i++)
@@ -434,7 +435,7 @@ int AddSpotLight(glm::vec3 pos, glm::vec3 dir, float inner, float outer, float c
 		setupLitShader();
 
 	mSpotLights.emplace_back(SpotLight(pos, dir, inner, outer, constant, linear, quad, amb, diff, spec));
-	int new_spot_loc = mSpotLights.size() - 1;
+	auto new_spot_loc = mSpotLights.size() - 1;
 
 	// push changes to shader
 	{
@@ -473,6 +474,7 @@ int AddSpotLight(glm::vec3 pos, glm::vec3 dir, float inner, float outer, float c
 		diffuse += "Diffuse";
 		specular += "Specular";
 
+		assert(mLitShader);
 		mLitShader->use(); // <- vs lies if u see green squigglies
 		mLitShader->setVec3(pos, mSpotLights.back().Position);
 		mLitShader->setFloat(cutoff, mSpotLights.back().CutOff);
@@ -484,7 +486,7 @@ int AddSpotLight(glm::vec3 pos, glm::vec3 dir, float inner, float outer, float c
 		mLitShader->setVec3(ambient, mSpotLights.back().Ambient);
 		mLitShader->setVec3(diffuse, mSpotLights.back().Diffuse);
 		mLitShader->setVec3(specular, mSpotLights.back().Specular);
-		mLitShader->setInt("NUM_SPOT_LIGHTS", new_spot_loc + 1);
+		mLitShader->setInt("NUM_SPOT_LIGHTS", static_cast<int>(new_spot_loc + 1));
 	}
 
 	return mSpotLights.back().id;  // unique id
@@ -602,18 +604,18 @@ bool RemoveSpotLight(int which_by_id)
 	if (mSpotLights.empty())
 		return false;
 
-	int before_size = mSpotLights.size();
+	auto before_size = mSpotLights.size();
 
 	auto ret_it = mSpotLights.erase(
 		std::remove_if(mSpotLights.begin(), mSpotLights.end(), [&](const SpotLight sl) { return sl.id == which_by_id; }),
 		mSpotLights.end());
 
-	int after_size = mSpotLights.size();
+	auto after_size = mSpotLights.size();
 
 	if (before_size != after_size)
 	{
 		mLitShader->use();
-		mLitShader->setInt("NUM_SPOT_LIGHTS", after_size);
+		mLitShader->setInt("NUM_SPOT_LIGHTS", static_cast<int>(after_size));
 
 		// sync lights on shader after the change
 		for (int i = 0; i < after_size; i++)
@@ -632,7 +634,6 @@ bool RemoveSpotLight(int which_by_id)
 				mSpotLights[i].Specular
 			);
 		}
-
 
 		return true;
 	}
@@ -661,7 +662,7 @@ int AddSoundEffect(const char* path)
 		e.id = tmp_id;
 		e.path = path;
 		mLoadedSoundEffects.push_back(e);
-		return (mLoadedSoundEffects.size() - 1);  // the index into mSoundEffectBuffers 
+		return static_cast<int>(mLoadedSoundEffects.size() - 1);  // the index into mSoundEffectBuffers 
 	}
 	else
 	{
@@ -685,7 +686,7 @@ void RemoveSoundEffect(int effect_id)
 int AddSpeaker()
 {
 	mSpeakers.resize(mSpeakers.size() + 1);
-	return (mSpeakers.size() - 1);  // return index of last added
+	return static_cast<int>(mSpeakers.size() - 1);  // return index of last added
 }
 
 void ChangeMusic(const char* path)
