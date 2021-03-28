@@ -24,11 +24,19 @@ void OGLGraphics::Render(const std::vector<MeshDrawInfo>& meshes,
 	// turn on depth test in case something else turned it off
 	glEnable(GL_DEPTH_TEST);
 
+	if (lit)
+		mLitShader->use();
+	else
+		mDiffShader->use();
+
 	// go through all meshes in the this
 	for (const auto& m : meshes)
 	{
 		// go through all texture in this mesh
-		uint32_t i = 0;
+		uint32_t i = 0;			
+		if (lit)
+			mLitShader->setFloat("material.Shininess", m.shininess);
+
 		for (const auto& texture : m.textureDrawIds)
 		{
 			// activate each texture
@@ -38,15 +46,12 @@ void OGLGraphics::Render(const std::vector<MeshDrawInfo>& meshes,
 
 			if (lit)
 			{
-				mLitShader->use();
 				mLitShader->setInt(("material." + texType).c_str(), i);
-				mLitShader->setFloat("material.Shininess", m.shininess);
 			}
 			else
 			{
 				// only one texture is relevant for a non-lit shader
 				if (texType == "Albedo") {
-					mDiffShader->use();
 					mDiffShader->setInt(("material." + texType).c_str(), i);
 				}
 			}
@@ -61,12 +66,10 @@ void OGLGraphics::Render(const std::vector<MeshDrawInfo>& meshes,
 		for (const auto& instance : details)
 		{
 			if (lit) {
-				mLitShader->use();
 				mLitShader->setMat4("model", instance.ModelMatrix);
 			}
 			else
 			{
-				mDiffShader->use();
 				mDiffShader->setMat4("model", instance.ModelMatrix);
 			}
 
