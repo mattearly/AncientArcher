@@ -155,6 +155,7 @@
     <ClCompile Include="Source.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="setupflashlight.h" />
     <ClInclude Include="fpscontrols.h" />
     <ClInclude Include="setskybox.h" />
   </ItemGroup>
