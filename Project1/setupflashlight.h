@@ -2,23 +2,22 @@
 #include <AncientArcher/AncientArcher.h>
 #include <iostream>
 
+bool isFlashlightSetup = false;
+bool flashlight_on = false;
+int flashlight = -1;
+float     fl_inner_radius = glm::cos(glm::radians(2.05f));
+float     fl_outer_radius = glm::cos(glm::radians(17.05f));
+float     fl_constant     = 1.f;
+float     fl_linear       = 0.039f;
+float     fl_quad         = 0.0044f;
+glm::vec3 fl_ambient      = glm::vec3(0.03f);
+glm::vec3 fl_diffuse      = glm::vec3(0.4f);
+glm::vec3 fl_specular     = glm::vec3(1.0f);
 void setupflashlight(int ourcam)
 {
+	isFlashlightSetup = true;
 	static int cam = ourcam;
-	static bool flashlight_on = false;
-	static int flashlight = -1;
-	AA::AddToUpdate([]() {
-		if (flashlight_on)
-			AA::MoveSpotLight(flashlight, AA::GetCamera(cam).GetLocation(), *AA::GetCamera(cam).GetFront());
-		});
-	static float fl_inner_radius = glm::cos(glm::radians(4.5f));
-	static float fl_outer_radius = glm::cos(glm::radians(24.5f));
-	static float fl_constant = 1.f;
-	static float fl_linear = .027f;
-	static float fl_quad = .0028f;
-	static glm::vec3 fl_ambient = glm::vec3(.2f);
-	static glm::vec3 fl_diffuse = glm::vec3(.4f);
-	static glm::vec3 fl_specular = glm::vec3(.1f);
+
 	// toggle flashlight
 	AA::AddToTimedOutKeyHandling([](AA::KeyboardInput& kb) {
 		if (kb.f)
@@ -51,4 +50,12 @@ void setupflashlight(int ourcam)
 		return false;
 		}
 	);
+
+	//stick flashlight to camera
+	AA::AddToUpdate([]() {
+		if (flashlight_on)
+			AA::MoveSpotLight(flashlight,
+				AA::GetCamera(cam).GetLocation()+glm::vec3(0.f,-.5f,0.f),
+				*AA::GetCamera(cam).GetFront());
+		});
 }
