@@ -2032,9 +2032,6 @@ void mouseScrollWheelMovement(float x, float y) noexcept
 	mMouseWheelScroll.yOffset = y;
 }
 
-
-// core run functions
-
 void InitEngine()
 {
 	if (!isInit) {
@@ -2070,9 +2067,7 @@ void InitEngine()
 		{
 			// with core profile, you have to create and manage your own VAO's, no default 
 			glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
-#ifdef __APPLE__
 			glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);
-#endif
 			struct OpenGLVersion
 			{
 				OpenGLVersion() :major(-1), minor(-1) {}
@@ -2080,13 +2075,14 @@ void InitEngine()
 				int major = 0;
 				int minor = 0;
 			};
-			// try more modern versions of OpenGL, don't use older than 3.3
+			// try more modern versions of OpenGL, don't use older than 4.3
 			std::vector<OpenGLVersion> try_versions;
-			try_versions.push_back(OpenGLVersion(3, 3));
-			try_versions.push_back(OpenGLVersion(4, 0));
-			try_versions.push_back(OpenGLVersion(4, 1));
-			try_versions.push_back(OpenGLVersion(4, 2));
+			//try_versions.push_back(OpenGLVersion(3, 3));
+			//try_versions.push_back(OpenGLVersion(4, 0));
+			//try_versions.push_back(OpenGLVersion(4, 1));
+			//try_versions.push_back(OpenGLVersion(4, 2));
 			try_versions.push_back(OpenGLVersion(4, 3));
+			try_versions.push_back(OpenGLVersion(4, 4));
 			try_versions.push_back(OpenGLVersion(4, 5));
 			try_versions.push_back(OpenGLVersion(4, 6));
 
