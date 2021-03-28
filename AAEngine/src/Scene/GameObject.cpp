@@ -25,11 +25,6 @@ glm::mat4 GameObject::GetModelMatrix(const int& which)
 		throw("couldn't get model matrix");
 }
 
-//const int GameObject::GetShaderId() const noexcept
-//{
-//	return mShaderID;
-//}
-
 const int GameObject::GetCameraId() const noexcept
 {
 	return mCameraID;

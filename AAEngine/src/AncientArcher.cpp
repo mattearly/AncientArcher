@@ -66,7 +66,6 @@ ScrollInput   mMouseWheelScroll = {};
 bool mRenewFPP = true;
 float mFPPMouseSensitivity = 0.1f;  ///< mouse sensitivity while in first person perspective
 
-
 enum class STANDARDMOUSEZEROS { DEFAULT, TOP_LEFT_0_to_1, BOT_LEFT_0_to_1, TOP_LEFT_FULL_RANGE, BOT_LEFT_FULL_RANGE };
 STANDARDMOUSEZEROS mStandardMouseZeros = STANDARDMOUSEZEROS::BOT_LEFT_0_to_1;
 
@@ -318,7 +317,7 @@ void MovePointLight(int which, glm::vec3 new_pos)
 	throw("u messed up");
 }
 
-void ChangePointLight(int which, glm::vec3 new_pos, float new_constant, float new_linear, float new_quad, 
+void ChangePointLight(int which, glm::vec3 new_pos, float new_constant, float new_linear, float new_quad,
 	glm::vec3 new_amb, glm::vec3 new_diff, glm::vec3 new_spec)
 {
 	if (which < 0)
@@ -1584,7 +1583,6 @@ void pullButtonStateEvents()
 	}
 }
 
-
 void __setProjectionMatToAllShadersFromFirstCam_hack()
 {
 	if (mLitShader)
@@ -1660,18 +1658,9 @@ void deltaUpdate()
 	// Snap cursor to the middle of the screen if it is in perspective and cursor is disabled (FPP mode)
 	if (isFPP())
 	{
-		//deb(mMousePosition.xOffset);
-		//deb(mMousePosition.yOffset);
-
 		mMousePosition.xOffset = 0;
 		mMousePosition.yOffset = 0;
 	}
-	//else if (getMouseReportingMode() == MouseReporting::STANDARD && getCursorMode() == GLFW_CURSOR_NORMAL) // standard and normal
-	//{
-		// dont snap the position
-		//showmousepos(PointerXOffset, PointerYOffset);
-		//std::cout << "X: " << PointerXOffset << " Y: " << PointerYOffset << '\n';
-	//}
 
 	// run through user prefered updates
 	for (auto& oU : onUpdate) { oU.second(); }
@@ -1688,7 +1677,6 @@ void deltaUpdate()
 			oSU.second();
 		}
 
-		// reset timeout length to 0
 		mSlowUpdateTimeout = 0.f;
 	}
 
@@ -1780,11 +1768,7 @@ void teardown()
 	{
 		SceneLoader::Get()->UnloadGameObject(model.mMeshes);
 	}
-	// delete all the shaders from GPU
-	//for (auto& shader : mShaders)
-	//{
-	//	shader.deleteShader();
-	//}
+
 	if (mLitShader) mLitShader->deleteShader();
 	if (mDiffShader) mDiffShader->deleteShader();
 
@@ -1800,7 +1784,6 @@ void resetEngine() noexcept
 	teardown();
 
 	mCameras.clear();
-	//mShaders.clear();
 	mGameObjects.clear();
 	mLoadedSoundEffects.clear();
 	onBegin.clear();
@@ -1823,7 +1806,6 @@ void resetEngine() noexcept
 
 	SetClearColor();
 }
-
 
 int GetWindowWidth() noexcept
 {
@@ -1852,8 +1834,6 @@ int GetCursorMode() noexcept
 {
 	return glfwGetInputMode(mWindow, GLFW_CURSOR);
 }
-
-
 
 void SetClearColor(glm::vec3 color)
 {
@@ -1936,8 +1916,6 @@ void ReshapeWindowHandler(int width, int height)
 	externWindowSizeDirty = true;  // update cam view matrix before next render
 }
 
-
-
 float GetMouseFPPSensitivity() noexcept
 {
 	return mFPPMouseSensitivity;
@@ -1948,13 +1926,10 @@ void SetMouseFPPSensitivity(float sensitivity) noexcept
 	mFPPMouseSensitivity = sensitivity;
 }
 
-
-
 void resetControlVars() noexcept
 {
 	mFPPMouseSensitivity = 0.1f;
 }
-
 
 void perspectiveMouseMovement(float x, float y) noexcept
 {
@@ -2126,9 +2101,9 @@ void InitEngine()
 		SetReadMouseCurorAsStandard();
 
 		SetClearColor();
-		}
-	isInit = true;
 	}
+	isInit = true;
+}
 
 int Run()
 {

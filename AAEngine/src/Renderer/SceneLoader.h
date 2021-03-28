@@ -23,7 +23,8 @@ private:
 
 	void processNode(aiNode* node, const aiScene* scene, std::vector<MeshDrawInfo>& out_);
 	MeshDrawInfo processMesh(aiMesh* mesh, const aiScene* scene, aiMatrix4x4* trans);
-	int loadMaterialTextures(const aiScene* scn, const aiMaterial* mat, aiTextureType type, std::string typeName, std::unordered_map<uint32_t, std::string>& out_texInfo);
+	int loadMaterialTextures(const aiScene* scn, const aiMaterial* mat, aiTextureType type,
+		std::string typeName, std::unordered_map<uint32_t, std::string>& out_texInfo);
 
 	// holder vars
 	std::string mModelDir = "";
