@@ -13,6 +13,8 @@ extern OGLShader* mDiffShader;
 namespace OGLGraphics
 {
 	void Render(const std::vector<MeshDrawInfo>& meshes, const std::vector<InstanceDetails>& details, bool lit);
+	void Render(const std::vector<MeshDrawInfo>& meshes, const glm::mat4& translationMatrix, bool lit);
+	//void Render(const std::vector<MeshDrawInfo>& meshes, bool lit);
 	void SetViewportSize(int x, int y, int w, int h);
 	void SetViewportClearColor(glm::vec3 color) noexcept;
 	void ClearScreen() noexcept;

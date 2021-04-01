@@ -1732,21 +1732,17 @@ void render()
 	for (auto& obj : mGameObjects)
 	{
 		// set the view matrix from the cam for this object
-		if (obj.mIsLit)  // && mLitShader?
+		if (obj.mIsLit)
 		{
-			//GetShader(obj.GetShaderId()).use();
-			//std::cout << "setting view for lit shader\n";
 			mLitShader->use();
 			mLitShader->setMat4("view", GetCamera(obj.GetCameraId()).GetViewMatrix());
 		}
 		else
 		{
-			//std::cout << "setting view for diff shader\n";
 			mDiffShader->use();
 			mDiffShader->setMat4("view", GetCamera(obj.GetCameraId()).GetViewMatrix());
 		}
 
-		// draw using the shader for it
 		obj.draw();
 	}
 

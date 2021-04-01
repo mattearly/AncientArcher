@@ -33,7 +33,7 @@ void OGLGraphics::Render(const std::vector<MeshDrawInfo>& meshes,
 	for (const auto& m : meshes)
 	{
 		// go through all texture in this mesh
-		uint32_t i = 0;			
+		uint32_t i = 0;
 		if (lit)
 			mLitShader->setFloat("material.Shininess", m.shininess);
 
@@ -75,6 +75,64 @@ void OGLGraphics::Render(const std::vector<MeshDrawInfo>& meshes,
 
 			glDrawElements(GL_TRIANGLES, m.numElements, GL_UNSIGNED_INT, nullptr);
 		}
+	}
+
+	// unbind vert array
+	glBindVertexArray(0);
+	// reset to first texture
+	glActiveTexture(GL_TEXTURE0);
+}
+
+void Render(const std::vector<MeshDrawInfo>& meshes, const glm::mat4& translationMatrix, bool lit)
+{
+	//todo: consider render entire scenes so clearbackbuffer can be put in here as well, or does it have to wait for screen to be ready anyway?
+	// turn on depth test in case something else turned it off
+	glEnable(GL_DEPTH_TEST);
+
+	if (lit)
+		mLitShader->use();
+	else
+		mDiffShader->use();
+
+	// go through all meshes in the this
+	for (const auto& m : meshes)
+	{
+		// go through all texture in this mesh
+		uint32_t i = 0;
+		if (lit) {
+			mLitShader->setFloat("material.Shininess", m.shininess);
+			mLitShader->setMat4("model", m.transformation * translationMatrix);
+		}
+		else
+		{
+			mDiffShader->setMat4("model", m.transformation * translationMatrix);
+		}
+
+		for (const auto& texture : m.textureDrawIds)
+		{
+			// activate each texture
+			glActiveTexture(GL_TEXTURE0 + i);
+			// get the texture type
+			const std::string texType = texture.second;
+
+			if (lit)
+			{
+				mLitShader->setInt(("material." + texType).c_str(), i);
+			}
+			else
+			{
+				// only one texture is relevant for a non-lit shader
+				if (texType == "Albedo") {
+					mDiffShader->setInt(("material." + texType).c_str(), i);
+				}
+			}
+			glBindTexture(GL_TEXTURE_2D, texture.first);
+			i++;
+		}
+
+		glBindVertexArray(m.vao);
+		glDrawElements(GL_TRIANGLES, m.numElements, GL_UNSIGNED_INT, nullptr);
+
 	}
 
 	// unbind vert array

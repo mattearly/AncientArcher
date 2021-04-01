@@ -85,17 +85,17 @@ int SceneLoader::LoadGameObjectFromFile(std::vector<MeshDrawInfo>& out_MeshInfo,
 	Assimp::Importer importer;
 	int post_processing_flags = 0;
 	//post processing -> http://assimp.sourceforge.net/lib_html/postprocess_8h.html
-	post_processing_flags |= aiProcess_JoinIdenticalVertices | aiProcess_Triangulate |
+	post_processing_flags |= aiProcess_JoinIdenticalVertices | aiProcess_Triangulate;// |
 #ifdef D3D
 		aiProcess_MakeLeftHanded | aiProcess_FlipWindingOrder | aiProcess_FlipUVs |
 #endif
-		aiProcess_PreTransformVertices |
-		aiProcess_CalcTangentSpace |
-		aiProcess_GenSmoothNormals |
-		aiProcess_Triangulate |
-		aiProcess_FixInfacingNormals |
-		aiProcess_FindInvalidData |
-		aiProcess_ValidateDataStructure;
+		//aiProcess_PreTransformVertices |
+		//aiProcess_CalcTangentSpace |
+		//aiProcess_GenSmoothNormals |
+		//aiProcess_Triangulate |
+		//aiProcess_FixInfacingNormals |
+		//aiProcess_FindInvalidData |
+		//aiProcess_ValidateDataStructure;
 
 	const aiScene* scene = importer.ReadFile(path, post_processing_flags);
 	if (!scene || scene->mFlags & AI_SCENE_FLAGS_INCOMPLETE || !scene->mRootNode)
