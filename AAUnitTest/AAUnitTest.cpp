@@ -1,84 +1,79 @@
 #include "pch.h"
 #include "CppUnitTest.h"
 #include "CppUnitTestLogger.h"
-#include <AncientArcher.h>
-#include <Sound/ShortSound.h>
-#include <Sound/SoundDevice.h>
-#include <Utility/Files.h>
-#include <Shader/DiffShader.h>
-#include <Sound/LongSound.h>
+#include <AncientArcher/AncientArcher.h>
 using namespace Microsoft::VisualStudio::CppUnitTestFramework;
 using namespace AA;
 namespace AAUnitTest
 {
+
+int test_camera = 0;
+float timeholder_1 = 0.f;
 TEST_CLASS(AAUnitTest)
 {
 public:
 	TEST_METHOD(A_BaseRun)
 	{
-		static float timeholder_A = 0.f;
-		Engine->AddToDeltaUpdate([](float dt)
+		SetWindowTitle("A_BaseRun");
+		timeholder_1 = 0.f;
+		AddToDeltaUpdate([](float dt)
 			{
-				timeholder_A += dt;
-				if (timeholder_A > 1.f)
+				timeholder_1 += dt;
+				if (timeholder_1 > 2.f)
 				{
-					Engine->Shutdown();
+					Shutdown();
 				}
 			});
-		Assert::AreEqual(Engine->Run(), 0);
-	}
-
-	TEST_METHOD(B_BaseReset)
-	{
-		Engine->SoftReset();
-		static float timeholder_B = 0.f;
-		Engine->AddToDeltaUpdate([](float dt) {
-			timeholder_B += dt;
-			if (timeholder_B > 1.f)
+		Assert::AreEqual(Run(), 0);
+		// RUN 2
+		SoftReset();
+		SetWindowTitle("A_BaseRun_2");
+		timeholder_1 = 0.f;
+		AddToDeltaUpdate([](float dt) {
+			timeholder_1 += dt;
+			if (timeholder_1 > 2.f)
 			{
-				Engine->Shutdown();
+				Shutdown();
 			}
 			});
-		Engine->AddToSlowUpdate([]() {Engine->SetClearColor(glm::vec3(.4f, .4f, .4f)); });
-		Assert::AreEqual(Engine->Run(), 0);
+		Assert::AreEqual(Run(), 0);
 	}
 
-	TEST_METHOD(C_AutoCamAndModelTest)
+	TEST_METHOD(B_AutoCamAndModelTest)
 	{
-		Engine->SoftReset();
-		static int cam_C = Engine->AddCamera(Engine->GetWindowWidth(), Engine->GetWindowHeight());
-		int shader = Engine->AddShader(diff_vert_src, diff_frag_src);
-		// local model, use your own
-		static int dovecote = Engine->AddObject("E:\\storage\\Models\\dovecote.fbx", cam_C, shader);
-		Engine->GetGameObject(dovecote).SetTranslation(glm::vec3(0, 0, 0));
-		Cam(cam_C).SetCurrentLocation(glm::vec3(0, 350, 2300));
-		Cam(cam_C).SetMaxRenderDistance(2700.f);
-		Engine->AddToDeltaUpdate([](float dt) {
+		SoftReset();
+		SetWindowTitle("B_AutoCamAndModelTest");
+		test_camera = AddCamera(GetWindowWidth(), GetWindowHeight());
+		static int man = AddObject("..\\..\\AAUnitTest\\res\\peasant_man.dae", test_camera, false);
+		GetGameObject(man).SetTranslation(glm::vec3(0, 0, 0));
+		GetCamera(test_camera).SetCurrentLocation(glm::vec3(0, 350, 2300));
+		GetCamera(test_camera).SetMaxRenderDistance(2700.f);
+		AddToDeltaUpdate([](float dt) {
 			float Velocity = 1200;
-			Cam(cam_C).ShiftCurrentLocation(glm::vec3(0, 0, -dt * Velocity));
-			Obj(dovecote).AddToRotation(glm::vec3(0, -dt, 0));
-			if (Cam(cam_C).GetLocation().z < 300)
+			GetCamera(test_camera).ShiftCurrentLocation(glm::vec3(0, 0, -dt * Velocity));
+			GetGameObject(man).AddToRotation(glm::vec3(0, -dt, 0));
+			if (GetCamera(test_camera).GetLocation().z < 300)
 			{
-				Engine->Shutdown();
+				Shutdown();
 			}
 			});
-		Assert::AreEqual(Engine->Run(), 0);
+		Assert::AreEqual(Run(), 0);
 	}
 
-	TEST_METHOD(D_WASDMovementTest)
+	TEST_METHOD(C_WASDMovementTest)
 	{
-		Engine->SoftReset();
-		static int cam_D = Engine->AddCamera(Engine->GetWindowWidth(), Engine->GetWindowHeight());
-		int shader = Engine->AddShader(diff_vert_src, diff_frag_src);
-		static int wasd = Engine->AddObject("..\\..\\AAUnitTest\\res\\wasd.obj", cam_D, shader);
-		Engine->GetGameObject(wasd).SetScale(glm::vec3(3));
-		Engine->GetGameObject(wasd).AddToRotation(glm::vec3(90, 0, 0));
-		Cam(cam_D).SetCurrentLocation(glm::vec3(0, 0, 30));
-		Cam(cam_D).SetCurrentPitch(0.f);
-		Cam(cam_D).SetCurrentYaw(270.f);
+		SoftReset();
+		SetWindowTitle("C_WASDMovementTest");
+		test_camera = AddCamera(GetWindowWidth(), GetWindowHeight());
+		static int wasd = AddObject("..\\..\\AAUnitTest\\res\\wasd.obj", test_camera, false);
+		GetGameObject(wasd).SetScale(glm::vec3(3));
+		GetGameObject(wasd).AddToRotation(glm::vec3(90, 0, 0));
+		GetCamera(test_camera).SetCurrentLocation(glm::vec3(0, 0, 30));
+		GetCamera(test_camera).SetCurrentPitch(0.f);
+		GetCamera(test_camera).SetCurrentYaw(270.f);
 		static bool left = false, right = false, forward = false, backwards = false;
 		static bool pressedleft = false, pressedright = false, pressedforward = false, pressedbackwards = false;
-		Engine->AddToKeyHandling([](KeyboardInput& kb) {
+		AddToKeyHandling([](KeyboardInput& kb) {
 			if (kb.w)
 				forward = pressedforward = true;
 			else
@@ -97,59 +92,59 @@ public:
 				right = false;
 			});
 		static float VELOCITY = 10;
-		Engine->AddToDeltaUpdate([](float dt) {
+		AddToDeltaUpdate([](float dt) {
 			if (forward)
-				Cam(cam_D).ShiftCurrentLocation(glm::vec3(0, 0, -dt * VELOCITY));
+				GetCamera(test_camera).ShiftCurrentLocation(glm::vec3(0, 0, -dt * VELOCITY));
 			if (backwards)
-				Cam(cam_D).ShiftCurrentLocation(glm::vec3(0, 0, dt * VELOCITY));
+				GetCamera(test_camera).ShiftCurrentLocation(glm::vec3(0, 0, dt * VELOCITY));
 			if (left)
-				Cam(cam_D).ShiftCurrentLocation(glm::vec3(-dt * VELOCITY, 0, 0));
+				GetCamera(test_camera).ShiftCurrentLocation(glm::vec3(-dt * VELOCITY, 0, 0));
 			if (right)
-				Cam(cam_D).ShiftCurrentLocation(glm::vec3(dt * VELOCITY, 0, 0));
+				GetCamera(test_camera).ShiftCurrentLocation(glm::vec3(dt * VELOCITY, 0, 0));
 			// rotate object
-			Engine->GetGameObject(wasd).AddToRotation(glm::vec3(0, dt * .2, 0));
+			GetGameObject(wasd).AddToRotation(glm::vec3(0, dt * .2, 0));
 			});
-		Engine->AddToSlowUpdate([]() {
+		AddToSlowUpdate([]() {
 			if (pressedleft && pressedright && pressedforward && pressedbackwards)
 			{
-				Engine->Shutdown();
+				Shutdown();
 			}
 			});
-		Assert::AreEqual(Engine->Run(), 0);
+		Assert::AreEqual(Run(), 0);
 	}
 
-	TEST_METHOD(E_FirstPersonPerspectiveTest)
+	TEST_METHOD(D_FirstPersonPerspectiveTest)
 	{
-		Engine->SoftReset();
-		static int cam_E = Engine->AddCamera(Engine->GetWindowWidth(), Engine->GetWindowHeight());
-		Cam(cam_E).SetCurrentLocation(glm::vec3(0, 0, 0));
-		Cam(cam_E).ShiftYawAndPitch(90, 0);
-		Cam(cam_E).SetMaxRenderDistance(3000);
-		int shader = Engine->AddShader(diff_vert_src, diff_frag_src);
-		static int fpp_test_text = Engine->AddObject("..\\..\\AAUnitTest\\res\\fpp_test_text.obj", cam_E, shader);
-		Engine->GetGameObject(fpp_test_text).SetTranslation(glm::vec3(150, 0, -75));
-		Engine->GetGameObject(fpp_test_text).SetScale(glm::vec3(10));
-		Engine->GetGameObject(fpp_test_text).SetRotation(glm::vec3(0, glm::radians(-90.f), 0));
-		static int negZ = Engine->AddObject("..\\..\\AAUnitTest\\res\\-z.obj", cam_E, shader);
-		Obj(negZ).SetTranslation(glm::vec3(0, 75, -1500));
-		Obj(negZ).SetScale(glm::vec3(50));
-		static int posZ = Engine->AddObject("..\\..\\AAUnitTest\\res\\z.obj", cam_E, shader);
-		Obj(posZ).SetTranslation(glm::vec3(0, 75, 1500));
-		Obj(posZ).SetScale(glm::vec3(50));
-		static int negX = Engine->AddObject("..\\..\\AAUnitTest\\res\\-x.obj", cam_E, shader);
-		Obj(negX).SetTranslation(glm::vec3(-1500, 75, 0));
-		Obj(negX).SetScale(glm::vec3(50));
-		static int posX = Engine->AddObject("..\\..\\AAUnitTest\\res\\x.obj", cam_E, shader);
-		Obj(posX).SetTranslation(glm::vec3(1500, 75, 0));
-		Obj(posX).SetScale(glm::vec3(50));
+		SoftReset();
+		SetWindowTitle("D_FirstPersonPerspectiveTest");
+		test_camera = AddCamera(GetWindowWidth(), GetWindowHeight());
+		GetCamera(test_camera).SetCurrentLocation(glm::vec3(0, 0, 0));
+		GetCamera(test_camera).ShiftYawAndPitch(90, 0);
+		GetCamera(test_camera).SetMaxRenderDistance(3000);
+		static int fpp_test_text = AddObject("..\\..\\AAUnitTest\\res\\fpp_test_text.obj", test_camera, false);
+		GetGameObject(fpp_test_text).SetTranslation(glm::vec3(150, 0, -75));
+		GetGameObject(fpp_test_text).SetScale(glm::vec3(10));
+		GetGameObject(fpp_test_text).SetRotation(glm::vec3(0, glm::radians(-90.f), 0));
+		static int negZ = AddObject("..\\..\\AAUnitTest\\res\\-z.obj", test_camera, false);
+		GetGameObject(negZ).SetTranslation(glm::vec3(0, 75, -1500));
+		GetGameObject(negZ).SetScale(glm::vec3(50));
+		static int posZ = AddObject("..\\..\\AAUnitTest\\res\\z.obj", test_camera, false);
+		GetGameObject(posZ).SetTranslation(glm::vec3(0, 75, 1500));
+		GetGameObject(posZ).SetScale(glm::vec3(50));
+		static int negX = AddObject("..\\..\\AAUnitTest\\res\\-x.obj", test_camera, false);
+		GetGameObject(negX).SetTranslation(glm::vec3(-1500, 75, 0));
+		GetGameObject(negX).SetScale(glm::vec3(50));
+		static int posX = AddObject("..\\..\\AAUnitTest\\res\\x.obj", test_camera, false);
+		GetGameObject(posX).SetTranslation(glm::vec3(1500, 75, 0));
+		GetGameObject(posX).SetScale(glm::vec3(50));
 		// First Person Mouse
-		Engine->SetCursorToDisabled();
-		Engine->SetReadMouseCurorAsFPP();
-		Engine->AddToMouseHandling([](MouseInput& cursor) {
-			Cam(cam_E).ShiftYawAndPitch(cursor.xOffset, cursor.yOffset);
+		SetCursorToDisabled();
+		SetReadMouseCurorAsFPP();
+		AddToMouseHandling([](MouseInput& cursor) {
+			GetCamera(test_camera).ShiftYawAndPitch(cursor.xOffset, cursor.yOffset);
 			});
 		static bool left = false, right = false, forward = false, backwards = false;
-		Engine->AddToKeyHandling([](KeyboardInput& kb) {
+		AddToKeyHandling([](KeyboardInput& kb) {
 			if (kb.w)
 				forward = true;
 			else
@@ -167,7 +162,7 @@ public:
 			else
 				right = false;
 			});
-		Engine->AddToTimedOutKeyHandling([](KeyboardInput& kb) -> bool {
+		AddToTimedOutKeyHandling([](KeyboardInput& kb) -> bool {
 			if (kb.f11)
 			{
 				//todo: toggle fullscreen
@@ -176,53 +171,53 @@ public:
 			if (kb.p)
 			{
 				//todo: set to perspective
-				Cam(cam_E).SetToPerspective();
+				GetCamera(test_camera).SetToPerspective();
 				return true;
 			}
 			if (kb.o)
 			{
 				//todo: set to ortho
-				Cam(cam_E).__setToOrtho();
+				GetCamera(test_camera).__setToOrtho();
 				return true;
 			}
 			return false;
 			});
 		static float VELOCITY = 2;
-		Engine->AddToDeltaUpdate([](float dt) {
-			glm::vec3 front_vec = *Cam(cam_E).GetFront();
-			glm::vec3 right_vec = *Cam(cam_E).GetRight();
+		AddToDeltaUpdate([](float dt) {
+			glm::vec3 front_vec = *GetCamera(test_camera).GetFront();
+			glm::vec3 right_vec = *GetCamera(test_camera).GetRight();
 			if (forward)
-				Cam(cam_E).ShiftCurrentLocation(front_vec * VELOCITY);
+				GetCamera(test_camera).ShiftCurrentLocation(front_vec * VELOCITY);
 			if (backwards)
-				Cam(cam_E).ShiftCurrentLocation(-front_vec * VELOCITY * .5f);
+				GetCamera(test_camera).ShiftCurrentLocation(-front_vec * VELOCITY * .5f);
 			if (left)
-				Cam(cam_E).ShiftCurrentLocation(-right_vec * VELOCITY * .7f);
+				GetCamera(test_camera).ShiftCurrentLocation(-right_vec * VELOCITY * .7f);
 			if (right)
-				Cam(cam_E).ShiftCurrentLocation(right_vec * VELOCITY * .7f);
+				GetCamera(test_camera).ShiftCurrentLocation(right_vec * VELOCITY * .7f);
 			//rotate x's and z's
-			Obj(negZ).AddToRotation(glm::vec3(0, dt * VELOCITY, 0));
-			Obj(posZ).AddToRotation(glm::vec3(0, dt * VELOCITY, 0));
-			Obj(negX).AddToRotation(glm::vec3(0, dt * VELOCITY, 0));
-			Obj(posX).AddToRotation(glm::vec3(0, dt * VELOCITY, 0));
+			GetGameObject(negZ).AddToRotation(glm::vec3(0, dt * VELOCITY, 0));
+			GetGameObject(posZ).AddToRotation(glm::vec3(0, dt * VELOCITY, 0));
+			GetGameObject(negX).AddToRotation(glm::vec3(0, dt * VELOCITY, 0));
+			GetGameObject(posX).AddToRotation(glm::vec3(0, dt * VELOCITY, 0));
 			});
-		Assert::AreEqual(Engine->Run(), 0);
+		Assert::AreEqual(Run(), 0);
 	}
 
-	TEST_METHOD(F_CustomShaderTest)
+	TEST_METHOD(E_CustomShaderTest)
 	{
-		Engine->SoftReset();
-		static int cam_F = Engine->AddCamera(Engine->GetWindowWidth(), Engine->GetWindowHeight());
-		int shader = Engine->AddShader(Files::ReadToString("..\\..\\AAUnitTest\\res\\basicvert.glsl").c_str(), Files::ReadToString("..\\..\\AAUnitTest\\res\\basicfrag.glsl").c_str());
-		// put in your own model to test it out
-		int dovecote = Engine->AddObject("E:\\storage\\Models\\dovecote.fbx", cam_F, shader);
-		Engine->GetGameObject(dovecote).SetTranslation(glm::vec3(0, -200, 0));
-		int ground = Engine->AddObject("..\\..\\AAUnitTest\\res\\cube_stretched.obj", cam_F, shader);
-		Obj(ground).SetScale(glm::vec3(100, 1, 100));
-		Obj(ground).SetTranslation(glm::vec3(0, -300, 0));
-		Cam(cam_F).SetCurrentLocation(glm::vec3(0, 0, 1600));
-		Cam(cam_F).SetMaxRenderDistance(2700.f);
+		SoftReset();
+		SetWindowTitle("E_CustomShaderTest");
+		test_camera = AddCamera(GetWindowWidth(), GetWindowHeight());
+		// put in your own model to test it outs
+		int dovecote = AddObject("E:\\storage\\Models\\dovecote.fbx", test_camera, false);
+		GetGameObject(dovecote).SetTranslation(glm::vec3(0, -200, 0));
+		int ground = AddObject("..\\..\\AAUnitTest\\res\\cube_stretched.obj", test_camera, false);
+		GetGameObject(ground).SetScale(glm::vec3(100, 1, 100));
+		GetGameObject(ground).SetTranslation(glm::vec3(0, -300, 0));
+		GetCamera(test_camera).SetCurrentLocation(glm::vec3(0, 0, 1600));
+		GetCamera(test_camera).SetMaxRenderDistance(2700.f);
 		static bool up = false, down = false, left = false, right = false;
-		Engine->AddToKeyHandling([](auto& kb) {
+		AddToKeyHandling([](auto& kb) {
 			if (kb.upArrow)
 				up = true;
 			else
@@ -240,27 +235,28 @@ public:
 			else
 				right = false;
 			});
-		Engine->AddToDeltaUpdate([](float dt) {
+		AddToDeltaUpdate([](float dt) {
 			float Velocity = 200;
 			if (up)
-				Cam(cam_F).ShiftCurrentLocation(glm::vec3(0, dt * Velocity, 0));
+				GetCamera(test_camera).ShiftCurrentLocation(glm::vec3(0, dt * Velocity, 0));
 			if (down)
-				Cam(cam_F).ShiftCurrentLocation(glm::vec3(0, -dt * Velocity, 0));
+				GetCamera(test_camera).ShiftCurrentLocation(glm::vec3(0, -dt * Velocity, 0));
 			if (left)
-				Cam(cam_F).ShiftCurrentLocation(glm::vec3(-dt * Velocity, 0, 0));
+				GetCamera(test_camera).ShiftCurrentLocation(glm::vec3(-dt * Velocity, 0, 0));
 			if (right)
-				Cam(cam_F).ShiftCurrentLocation(glm::vec3(dt * Velocity, 0, 0));
+				GetCamera(test_camera).ShiftCurrentLocation(glm::vec3(dt * Velocity, 0, 0));
 			});
-		Assert::AreEqual(Engine->Run(), 0);
+		Assert::AreEqual(Run(), 0);
 	}
 
-	TEST_METHOD(G_SkyboxTest)
+	TEST_METHOD(F_SkyboxTest)
 	{
-		Engine->SoftReset();
-		static int cam_G = Engine->AddCamera(Engine->GetWindowWidth(), Engine->GetWindowHeight());
-		Cam(cam_G).SetCurrentLocation(glm::vec3(0, 0, 0));
-		Cam(cam_G).ShiftYawAndPitch(90, 0);
-		Cam(cam_G).SetMaxRenderDistance(3000);
+		SoftReset();
+		SetWindowTitle("F_SkyboxTest");
+		test_camera = AddCamera(GetWindowWidth(), GetWindowHeight());
+		GetCamera(test_camera).SetCurrentLocation(glm::vec3(0, 0, 0));
+		GetCamera(test_camera).ShiftYawAndPitch(90, 0);
+		GetCamera(test_camera).SetMaxRenderDistance(3000);
 		const std::string skyboxfolder = "..\\..\\AAUnitTest\\res\\skybox\\";
 		const std::string order[6] = { "posx", "negx", "posy", "negy", "posz", "negz" };
 		const std::string skyboxfileext = ".jpg";
@@ -270,23 +266,22 @@ public:
 			cubemapfiles.emplace_back(skyboxfolder + order[j] + skyboxfileext);
 		}
 		const std::shared_ptr<Skybox> skybox = std::make_shared<Skybox>(cubemapfiles);
-		Engine->SetSkybox(skybox);
-		int shader = Engine->AddShader(diff_vert_src, diff_frag_src);
-		static int fpp_test_text = Engine->AddObject("..\\..\\AAUnitTest\\res\\fpp_test_text.obj", cam_G, shader);
-		Engine->GetGameObject(fpp_test_text).SetTranslation(glm::vec3(150, 0, -75));
-		Engine->GetGameObject(fpp_test_text).SetScale(glm::vec3(10));
-		Engine->GetGameObject(fpp_test_text).SetRotation(glm::vec3(0, glm::radians(-90.f), 0));
-		int plane_thing = Engine->AddObject("..\\..\\AAUnitTest\\res\\cube_stretched.obj", cam_G, shader);
-		Obj(plane_thing).SetScale(glm::vec3(11.f, .2f, 11.f));
-		Obj(plane_thing).SetTranslation(glm::vec3(0, -20, 0));
+		SetSkybox(skybox);
+		static int fpp_test_text = AddObject("..\\..\\AAUnitTest\\res\\fpp_test_text.obj", test_camera, false);
+		GetGameObject(fpp_test_text).SetTranslation(glm::vec3(150, 0, -75));
+		GetGameObject(fpp_test_text).SetScale(glm::vec3(10));
+		GetGameObject(fpp_test_text).SetRotation(glm::vec3(0, glm::radians(-90.f), 0));
+		int plane_thing = AddObject("..\\..\\AAUnitTest\\res\\cube_stretched.obj", test_camera, false);
+		GetGameObject(plane_thing).SetScale(glm::vec3(11.f, .2f, 11.f));
+		GetGameObject(plane_thing).SetTranslation(glm::vec3(0, -20, 0));
 		// First Person Mouse
-		Engine->SetCursorToDisabled();
-		Engine->SetReadMouseCurorAsFPP();
-		Engine->AddToMouseHandling([](MouseInput& cursor) {
-			Cam(cam_G).ShiftYawAndPitch(cursor.xOffset, cursor.yOffset);
+		SetCursorToDisabled();
+		SetReadMouseCurorAsFPP();
+		AddToMouseHandling([](MouseInput& cursor) {
+			GetCamera(test_camera).ShiftYawAndPitch(cursor.xOffset, cursor.yOffset);
 			});
 		static bool left = false, right = false, forward = false, backwards = false;
-		Engine->AddToKeyHandling([](KeyboardInput& kb) {
+		AddToKeyHandling([](KeyboardInput& kb) {
 			if (kb.w)
 				forward = true;
 			else
@@ -305,62 +300,59 @@ public:
 				right = false;
 			});
 		static float VELOCITY = 2;
-		Engine->AddToDeltaUpdate([](float dt) {
-			glm::vec3 front_vec = *Cam(cam_G).GetFront();
-			glm::vec3 right_vec = *Cam(cam_G).GetRight();
+		AddToDeltaUpdate([](float dt) {
+			glm::vec3 front_vec = *GetCamera(test_camera).GetFront();
+			glm::vec3 right_vec = *GetCamera(test_camera).GetRight();
 			if (forward)
-				Cam(cam_G).ShiftCurrentLocation(front_vec * VELOCITY);
+				GetCamera(test_camera).ShiftCurrentLocation(front_vec * VELOCITY);
 			if (backwards)
-				Cam(cam_G).ShiftCurrentLocation(-front_vec * VELOCITY * .5f);
+				GetCamera(test_camera).ShiftCurrentLocation(-front_vec * VELOCITY * .5f);
 			if (left)
-				Cam(cam_G).ShiftCurrentLocation(-right_vec * VELOCITY * .7f);
+				GetCamera(test_camera).ShiftCurrentLocation(-right_vec * VELOCITY * .7f);
 			if (right)
-				Cam(cam_G).ShiftCurrentLocation(right_vec * VELOCITY * .7f);
+				GetCamera(test_camera).ShiftCurrentLocation(right_vec * VELOCITY * .7f);
 			});
-		Assert::AreEqual(Engine->Run(), 0);
+		Assert::AreEqual(Run(), 0);
 	}
 
-	TEST_METHOD(H_SoundTest)
+	TEST_METHOD(G_SoundTest)
 	{
-		Engine->SoftReset();
-		SoundDevice::Init();
-		ShortSound MySpeaker;
-		auto MyWindSound = ShortSound::AddShortSound("..\\..\\AAUnitTest\\res\\wind.ogg");
-		MySpeaker.Play(MyWindSound);
-		Assert::AreEqual(Engine->Run(), 0);
+		SoftReset();
+		SetWindowTitle("G_SoundTest");
+		static auto speaker = AddSpeaker();
+		static auto MyWindSound = AddSoundEffect("..\\..\\AAUnitTest\\res\\wind.ogg");
+		AddToOnBegin([]() {GetSpeaker(speaker).Play(MyWindSound); });
+		Assert::AreEqual(Run(), 0);
 	}
 
-	TEST_METHOD(I_LongSoundTest)
+	TEST_METHOD(H_LongSoundTest)
 	{
-		Engine->SoftReset();
-		SoundDevice::Init();
-		// TownTheme is a larger file and thus not in project, replace with your own music file dir
-		static LongSound MyBackgroundMusic("E:\\downloads\\TownTheme.wav");
-		//todo: figure out why this crashes (happens if these tests are run in sequence, something to do with the buffers or init from prev tests)
-		MyBackgroundMusic.SetVolume(.01f);
-		Engine->AddToOnBegin([]() {MyBackgroundMusic.Play(); });
-		Engine->AddToSlowUpdate([]() {MyBackgroundMusic.UpdatePlayBuffer(); });
-		Assert::AreEqual(Engine->Run(), 0);
+		SoftReset();
+		SetWindowTitle("H_LongSoundTest");
+		ChangeMusic("..\\..\\AAUnitTest\\res\\cosmicd__annulet_of_absorption.wav");
+		AddToOnBegin([]() { GetMusic().Play(); });
+		AddToSlowUpdate([]() {GetMusic().UpdatePlayBuffer(); });
+		Assert::AreEqual(Run(), 0);
 	}
 
-	TEST_METHOD(J_SameSourceMultiSoundMashUpTest)
+	TEST_METHOD(I_SameSourceMultiSoundMashUpTest)
 	{
-		Engine->SoftReset();
-		SoundDevice::Init();
-		static ShortSound MySpeaker;
-		static auto MyWindSound = ShortSound::AddShortSound("..\\..\\AAUnitTest\\res\\wind.ogg");
+		SoftReset();
+		SetWindowTitle("I_SameSourceMultiSoundMashUpTest");
+		static auto speaker = AddSpeaker();
+		static auto MyWindSound = AddSoundEffect("..\\..\\AAUnitTest\\res\\wind.ogg");
 		static auto MyEnchantSound = ShortSound::AddShortSound("..\\..\\AAUnitTest\\res\\enchant.ogg");
-		Engine->AddToKeyHandling([](KeyboardInput& kb){
+		AddToKeyHandling([](KeyboardInput& kb) {
 			if (kb.mouseButton1)
-				MySpeaker.PlayNoOverlap(MyEnchantSound);
+				GetSpeaker(speaker).PlayNoOverlap(MyEnchantSound);
 
 			if (kb.mouseButton2)
-				MySpeaker.PlayInterrupt(MyEnchantSound);
+				GetSpeaker(speaker).PlayInterrupt(MyEnchantSound);
 
 			if (kb.mouseButton3)
-				MySpeaker.Play(MyWindSound);
-		});		
-		Assert::AreEqual(Engine->Run(), 0);
+				GetSpeaker(speaker).Play(MyWindSound);
+			});
+		Assert::AreEqual(Run(), 0);
 	}
 };
 }
