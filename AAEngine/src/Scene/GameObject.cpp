@@ -1,7 +1,7 @@
 #include "../Scene/GameObject.h"
 #include "../Renderer/OpenGL/OGLGraphics.h"
 #include "../Scene/Camera.h"
-#include "../Renderer/SceneLoader.h"
+#include "../Renderer/ModelLoader.h"
 #include <iostream>
 
 namespace AA
@@ -59,7 +59,7 @@ const int GameObject::GetObjectId() const noexcept
 
 GameObject::GameObject(const char* path, int camId, bool lit)
 {
-	AA::SceneLoader::Get()->LoadGameObjectFromFile(mMeshes, path);
+	ModelLoader::LoadGameObjectFromFile(mMeshes, path);
 	//mInstanceDetails.push_back(InstanceDetails());
 	mCameraID = camId;
 	mIsLit = lit;
@@ -68,7 +68,7 @@ GameObject::GameObject(const char* path, int camId, bool lit)
 
 GameObject::GameObject(const char* path, int camId, bool lit, std::vector<InstanceDetails> details)
 {
-	AA::SceneLoader::Get()->LoadGameObjectFromFile(mMeshes, path);
+	ModelLoader::LoadGameObjectFromFile(mMeshes, path);
 	//mInstanceDetails = details;
 	mCameraID = camId;
 	mIsLit = lit;
@@ -109,12 +109,23 @@ void GameObject::draw()
 
 void GameObject::updateFinalModelMatrix()
 {
+	// reset
 	finalModelMatrix = glm::mat4(1);
+	finalModelMatrix = glm::translate(finalModelMatrix, translation);
+	// apply current scale
 	finalModelMatrix = glm::scale(finalModelMatrix, scale);
-	
-	glm::quat rotation = rotationAngles;
+	// apply current rotation  (y only)
+	if (eulerRotationY == 0.f)
+		return;
+	if (eulerRotationY < 0.f)
+		eulerRotationY += 360.f;
+	if (eulerRotationY > 360.f)
+		eulerRotationY -= 360.f;
+	finalModelMatrix = glm::rotate(finalModelMatrix, eulerRotationY, glm::vec3(0,1,0));
+
+	//glm::quat rotation = rotationAngles;
 	//glm::mat4 tmp_modelMatrix = glm::toMat4(rotation);
-	finalModelMatrix = glm::toMat4(rotation) * finalModelMatrix;
+	//finalModelMatrix = glm::toMat4(rotation) * finalModelMatrix;
 
 	//const glm::vec3 rot_x = glm::vec3(1,0,0);
 	//const glm::vec3 rot_y = glm::vec3(0,1,0);
@@ -125,7 +136,6 @@ void GameObject::updateFinalModelMatrix()
 	//rotation = tmp_quat1 * tmp_quat2 * tmp_quat3;
 	//rotation = glm::rotate(rotation, rotationAngles.y, rot_y);
 
-	finalModelMatrix = glm::translate(finalModelMatrix, translation);	
 }
 
 //

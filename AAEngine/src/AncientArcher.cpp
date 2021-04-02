@@ -1,6 +1,6 @@
 #include "../include/AncientArcher/AncientArcher.h"
 #include "Scene/GameObject.h"
-#include "Renderer/SceneLoader.h"
+#include "Renderer/ModelLoader.h"
 #include "Renderer/OpenGL/OGLShader.h"
 #include "Renderer/OpenGL/OGLGraphics.h"
 #include "Sound/SoundDevice.h"
@@ -1609,6 +1609,7 @@ void __setProjectionMatToAllShadersFromFirstCam_hack()
 		}
 	}
 }
+
 void begin()
 {
 	keepWindowOpen();
@@ -1762,7 +1763,7 @@ void teardown()
 	// delete all the meshes and textures from GPU memory
 	for (const auto& model : mGameObjects)
 	{
-		SceneLoader::Get()->UnloadGameObject(model.mMeshes);
+		ModelLoader::UnloadGameObject(model.mMeshes);
 	}
 
 	if (mLitShader) mLitShader->deleteShader();
