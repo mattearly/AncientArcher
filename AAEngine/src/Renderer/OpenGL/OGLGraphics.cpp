@@ -9,80 +9,8 @@
 
 namespace AA
 {
-
 namespace OGLGraphics
 {
-/** Render the meshes with the shader. Assumes Camera View Matrix is already set.
- *  @param[in] meshes to draw.
- *  @param[in] details about instances of the mesh to also render.
- *  @param[in] shader to use for mesh rendering pipeline.
- */
-void OGLGraphics::Render(const std::vector<MeshDrawInfo>& meshes,
-	const std::vector<InstanceDetails>& details, bool lit)
-{
-	//todo: consider render entire scenes so clearbackbuffer can be put in here as well, or does it have to wait for screen to be ready anyway?
-	// turn on depth test in case something else turned it off
-	glEnable(GL_DEPTH_TEST);
-
-	if (lit)
-		mLitShader->use();
-	else
-		mDiffShader->use();
-
-	// go through all meshes in the this
-	for (const auto& m : meshes)
-	{
-		// go through all texture in this mesh
-		uint32_t i = 0;
-		if (lit)
-			mLitShader->setFloat("material.Shininess", m.shininess);
-
-		for (const auto& texture : m.textureDrawIds)
-		{
-			// activate each texture
-			glActiveTexture(GL_TEXTURE0 + i);
-			// get the texture type
-			const std::string texType = texture.second;
-
-			if (lit)
-			{
-				mLitShader->setInt(("material." + texType).c_str(), i);
-			}
-			else
-			{
-				// only one texture is relevant for a non-lit shader
-				if (texType == "Albedo") {
-					mDiffShader->setInt(("material." + texType).c_str(), i);
-				}
-			}
-			glBindTexture(GL_TEXTURE_2D, texture.first);
-			i++;
-		}
-
-		// bind vertex
-		glBindVertexArray(m.vao);
-
-		// draw all the instances with their differing model matrices
-		for (const auto& instance : details)
-		{
-			if (lit) {
-				mLitShader->setMat4("model", instance.ModelMatrix);
-			}
-			else
-			{
-				mDiffShader->setMat4("model", instance.ModelMatrix);
-			}
-
-			glDrawElements(GL_TRIANGLES, m.numElements, GL_UNSIGNED_INT, nullptr);
-		}
-	}
-
-	// unbind vert array
-	glBindVertexArray(0);
-	// reset to first texture
-	glActiveTexture(GL_TEXTURE0);
-}
-
 void Render(const std::vector<MeshDrawInfo>& meshes, const glm::mat4& translationMatrix, bool lit)
 {
 	//todo: consider render entire scenes so clearbackbuffer can be put in here as well, or does it have to wait for screen to be ready anyway?
@@ -99,7 +27,8 @@ void Render(const std::vector<MeshDrawInfo>& meshes, const glm::mat4& translatio
 	{
 		// go through all texture in this mesh
 		uint32_t i = 0;
-		if (lit) {
+		if (lit)
+		{
 			mLitShader->setFloat("material.Shininess", m.shininess);
 			mLitShader->setMat4("model", m.transformation * translationMatrix);
 		}
@@ -134,7 +63,6 @@ void Render(const std::vector<MeshDrawInfo>& meshes, const glm::mat4& translatio
 		glDrawElements(GL_TRIANGLES, m.numElements, GL_UNSIGNED_INT, nullptr);
 
 	}
-
 	// unbind vert array
 	glBindVertexArray(0);
 	// reset to first texture
@@ -219,21 +147,15 @@ void OGLGraphics::DeleteMesh(const uint32_t& VAO)
 uint32_t OGLGraphics::Upload2DTex(const unsigned char* tex_data, int width, int height)
 {
 	unsigned int out_texID = 0;
-
 	glGenTextures(1, &out_texID);
 	glBindTexture(GL_TEXTURE_2D, out_texID);
-
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
-
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-
-
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
 
-
 	//try: https://stackoverflow.com/questions/23150123/loading-png-with-stb-image-for-opengl-texture-gives-wrong-colors
-	glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
+	//glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
 
 	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, tex_data);
 	glGenerateMipmap(GL_TEXTURE_2D);
@@ -245,7 +167,6 @@ uint32_t OGLGraphics::Upload2DTex(const unsigned char* tex_data, int width, int 
 
 uint32_t OGLGraphics::UploadCubeMapTex(std::vector<unsigned char*> tex_data, int width, int height)
 {
-
 	unsigned int out_texID;
 	glGenTextures(1, &out_texID);
 	glBindTexture(GL_TEXTURE_CUBE_MAP, out_texID);

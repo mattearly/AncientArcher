@@ -12,19 +12,17 @@ int main()
 	setskybox();
 	setupflashlight(ourcam);
 	static int peasant_man = AA::AddObject("..\\ExampleProject\\res\\peasant_man.dae", ourcam, true);
-	//static int test_zone = AA::AddObject("E:\\storage\\3d Models\\grass_plain.dae", ourcam, true);
+	static int test_zone = AA::AddObject("E:\\storage\\3d Models\\grass_plain.dae", ourcam, true);
 	const float dist_from_us = 90.f;
 	const float dist_down = -1.2f;
 
 	AA::GetGameObject(peasant_man).translation = (glm::vec3(0, dist_down, -dist_from_us));
 	AA::GetGameObject(peasant_man).scale = glm::vec3(.1f);;
-	AA::GetGameObject(peasant_man).updateFinalModelMatrix();
 
 	//AA::GetGameObject(test_zone).SetTranslation(glm::vec3(0, dist_down, 0));
 	AA::SetDirectionalLight(glm::vec3(1.f), glm::vec3(.4f), glm::vec3(.4f), glm::vec3(1.f));
 	AA::AddToDeltaUpdate([](float dt) {
-
-		AA::GetGameObject(peasant_man).rotationAngles = (glm::vec3(0, dt + AA::GetGameObject(peasant_man).rotationAngles.y, 0));
+		AA::GetGameObject(peasant_man).eulerRotationY += 5*dt;
 		AA::GetGameObject(peasant_man).updateFinalModelMatrix();
 		}
 	);

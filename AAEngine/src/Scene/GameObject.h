@@ -63,7 +63,10 @@ public:
 	glm::vec3 translation = glm::vec3(0);
 
 	//glm::quat rotation = glm::quat();
-	glm::vec3 rotationAngles = glm::vec3(0);
+	//glm::vec3 rotationAngles = glm::vec3(0);
+	float eulerRotationX = 0.f;
+	float eulerRotationY = 0.f;  // direction
+	float eulerRotationZ = 0.f;
 
 	glm::vec3 scale = glm::vec3(1);
 
