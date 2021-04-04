@@ -1,22 +1,20 @@
 #pragma once
-#include <assimp/scene.h>
-#include <string>
 #include "MeshDrawInfo.h"
-#include <forward_list>
 #include "TextureInfo.h"
 #include "OpenGL/OGLGraphics.h"
 #include "Vertex.h"
 #include "../Settings/Settings.h"
 #include "../Utility/Conversions.h"
-#include <sstream>
-#include <utility>
 #include <assimp/Importer.hpp>
 #include <assimp/scene.h>
 #include <assimp/postprocess.h>
-#include <glad/glad.h>
 #include <glm/glm.hpp>
 #include <glm/gtc/quaternion.hpp>
 #include <stb_image.h>
+#include <string>
+#include <sstream>
+#include <utility>
+#include <forward_list>
 #include <iostream>
 
 namespace AA
