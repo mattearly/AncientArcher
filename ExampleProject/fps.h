@@ -23,8 +23,8 @@ void setfpscontrols(int cam)
 	static float currFlySpeed = DEFAULTMOVESPEED;
 	static float prevFlySpeed = currFlySpeed;
 	static glm::vec3 moveDir = glm::vec3(0.f);
-	static glm::vec3 frontFacingDir = glm::vec3(*AA::GetCamera(the_cam_to_move).GetFront());
-	static glm::vec3 rightFacingDir = glm::vec3(*AA::GetCamera(the_cam_to_move).GetRight());
+	static glm::vec3 frontFacingDir = AA::GetCamFront(the_cam_to_move);
+	static glm::vec3 rightFacingDir = AA::GetCamRight(the_cam_to_move);
 
 	// add WASD key first person movement function
 	const auto wasd = [](AA::KeyboardInput& key) {
@@ -50,18 +50,17 @@ void setfpscontrols(int cam)
 	const auto camMove = [](float dt) {
 		static float frameCalculatedVelocity = 0.f;
 		frameCalculatedVelocity = dt * currFlySpeed;
-		AA::GetCamera(the_cam_to_move).ShiftCurrentLocation(moveDir * frameCalculatedVelocity);
+		AA::ShiftCamPosition(the_cam_to_move, moveDir * frameCalculatedVelocity);
 		moveDir = glm::vec3(0.f);
-		frontFacingDir = glm::vec3(*AA::GetCamera(the_cam_to_move).GetFront());
-		rightFacingDir = glm::vec3(*AA::GetCamera(the_cam_to_move).GetRight());
-		//AA::GetCamera(the_cam_to_move).updateCameraVectors();
+		frontFacingDir = AA::GetCamFront(the_cam_to_move);
+		rightFacingDir = AA::GetCamRight(the_cam_to_move);
 	};
 	AA::AddToDeltaUpdate(camMove);
 
 	// add mouse movement to change our view direction
 	const auto mouselook = [](AA::MouseInput& cursor)
 	{
-		AA::GetCamera(the_cam_to_move).ShiftYawAndPitch(cursor.xOffset, cursor.yOffset);
+		AA::ShiftCamPitchAndYaw(the_cam_to_move, cursor.yOffset, cursor.xOffset);
 	};
 	AA::AddToMouseHandling(mouselook);
 

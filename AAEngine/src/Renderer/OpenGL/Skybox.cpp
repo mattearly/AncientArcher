@@ -165,9 +165,9 @@ void Skybox::loadSkybox()
  */
 void Skybox::loadViewMatrix(const Camera& cam)
 {
-	const glm::mat4 viewMatrix = glm::mat4(glm::mat3(cam.GetViewMatrix()));
-	skyboxShader->use();
-	skyboxShader->setMat4("view", viewMatrix);
+  const glm::mat4 viewMatrix = glm::mat4(glm::mat3(cam.View));
+  skyboxShader->use();
+  skyboxShader->setMat4("view", viewMatrix);
 }
 
 /**
@@ -176,8 +176,7 @@ void Skybox::loadViewMatrix(const Camera& cam)
  */
 void Skybox::loadProjectionMatrix(const Camera& cam)
 {
-	glm::mat4 projectionMatrix = cam.GetProjectionMatrix();
-	skyboxShader->use();
-	skyboxShader->setMat4("projection", projectionMatrix);
+  skyboxShader->use();
+  skyboxShader->setMat4("projection", cam.Projection);
 }
 }  // end namespace AA

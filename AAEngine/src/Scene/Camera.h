@@ -1,62 +1,34 @@
 #pragma once
+#include "../Base/UniqueInstance.h"
 #include <glm/glm.hpp>
 #include <memory>
 
 namespace AA
 {
 enum class RenderProjection { ORTHO, PERSPECTIVE };
-
-class Camera
+class Camera : public UniqueInstance
 {
 public:
 	Camera(int width, int height);
-
-
-	// setters
-	void SetMaxRenderDistance(float distance) noexcept;
-
-	void SetToPerspective() noexcept;
-	void SetDimensions(int width, int height) noexcept;
-	void SetCurrentLocation(glm::vec3 pos);
-	void SetCurrentPitch(float pitch);
-	void SetCurrentYaw(float yaw);
-
-	void ShiftCurrentLocation(const glm::vec3& offset);
-	void ShiftYawAndPitch(float yawOffset, float pitchOffset);
-
-	// experimental
-	void __setToOrtho() noexcept;
-
-	// getters
-	glm::mat4 GetViewMatrix() const;
-	glm::mat4 GetProjectionMatrix() const;
-	const glm::vec3& GetLocation() const noexcept;
-	const glm::vec3* GetFront() const noexcept;
-	const glm::vec3* GetRight() const noexcept;
-	float GetYaw() const noexcept;
-	float GetPitch() const noexcept;
-	float GetRenderDistance() const noexcept;
-	const int& GetID() const noexcept;
-
-private:
-
-	int              mWidth;
-	int              mHeight;
-	glm::vec3        mFront;
-	glm::vec3        mRight;
-	glm::vec3        mUp;
-	glm::vec3        mPosition;
-	float            mPerspectiveFieldOfView;
-	float            mYaw;
-	float            mPitch;
-	float            mMaxRenderDistance;
-	//bool             mProjectionChanged;
-	//glm::vec4        mOrthoFieldSize;
-	int              mUniqueViewportID;
-	RenderProjection mRenderProjection;
-
-	void resetViewportVars();
+	int              Width;
+	int              Height;
+	glm::vec3        Front;
+	glm::vec3        Right;
+	glm::vec3        Up;
+	glm::vec3        Position;
+	float            FOV;
+	float            Yaw;
+	float            Pitch;
+	float            MaxRenderDistance;
+	RenderProjection RenderProjection;
+	glm::mat4        Projection;
+	glm::mat4        View;
+	glm::vec2        TopLeftPositionOnScreen;
+	glm::vec2        RatioToScreen;
 	void updateCameraVectors();
-
+	void updateProjectionMatrix();
+	void updateViewMatrix();
+private:
+	void resetViewportVars();
 };
 } // end namespace AA
