@@ -120,8 +120,10 @@
     <ClInclude Include="src\Sound\SoundDevice.h" />
     <ClInclude Include="src\Sound\ShortSound.h" />
     <ClInclude Include="src\Utility\Conversions.h" />
+    <ClInclude Include="src\Base\UniqueInstance.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="src\Base\UniqueInstance.cpp" />
     <ClCompile Include="src\Scene\Lights.cpp" />
     <ClCompile Include="src\Settings\Settings.cpp" />
     <ClCompile Include="src\Scene\WorldSettings.cpp" />
