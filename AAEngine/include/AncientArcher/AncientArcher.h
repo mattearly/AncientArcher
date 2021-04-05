@@ -1,6 +1,4 @@
 #pragma once
-#include "../../src/Scene/GameObject.h"
-#include "../../src/Scene/Lights.h"
 #include "../../src/Renderer/OpenGL/Skybox.h"
 #include "../../src/Sound/ShortSound.h"
 #include "../../src/Sound/LongSound.h"
@@ -43,8 +41,13 @@ glm::vec3 GetCamPosition(int camId);
 glm::mat4 GetProjectionMatrix(int camId);
 // End Camera
 
-int AddObject(const char* path, int cam_id, bool is_lit);
-int AddObject(const char* path, int cam_id, bool is_lit, const std::vector<InstanceDetails>& details);
+// 3d Game Objects
+int AddProp(const char* path, int camId, bool is_lit);
+void SetPropTranslation(int propId, glm::vec3 new_pos);
+void SetPropScale(int propId, glm::vec3 new_scale);
+void SetPropRotationY(int propId, float new_y_rot);
+
+
 void SetDirectionalLight(glm::vec3 dir, glm::vec3 amb, glm::vec3 diff, glm::vec3 spec);
 void RemoveDirectionalLight();
 int AddPointLight(glm::vec3 pos, float constant, float linear, float quad, glm::vec3 amb, glm::vec3 diff, glm::vec3 spec);
@@ -84,7 +87,6 @@ bool RemoveFromMouseHandling(uint32_t r_id);
 bool RemoveFromTeardown(uint32_t r_id);
 void SetSlowUpdateTimeoutLength(const float& newtime);
 void SetCursorToEnabled(bool isHardwareRendered = false);
-GameObject& GetGameObject(int objId);
 ShortSound& GetSpeaker(int speaker_id);
 LongSound& GetMusic();
 void PlaySoundEffect(int effect_id, int speaker_id);

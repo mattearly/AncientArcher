@@ -1,5 +1,4 @@
 #include "../include/AncientArcher/AncientArcher.h"
-#include "Scene/GameObject.h"
 #include "Scene/Camera.h"
 #include "Renderer/ModelLoader.h"
 #include "Renderer/OpenGL/OGLShader.h"
@@ -12,6 +11,8 @@
 #include "Shader/DiffShader.h"
 #include "Settings/Settings.h"
 #include "Settings/SettingsOptions.h"
+#include "Scene/Lights.h"
+#include "Scene/Prop.h"
 #include <glad/glad.h>
 #include <GLFW/glfw3.h>
 #include <string>
@@ -40,7 +41,7 @@ float mSlowUpdateTimeout;       ///< keeps track of how how long the slow update
 float mSlowUpdateWaitLength;    ///< ms length the slow update times out for at least
 
 std::vector<Camera>      mCameras;     ///< array of available cameras
-std::vector<GameObject>  mGameObjects; ///< array of available objects
+std::vector<Prop>        mProps;       ///< array of available objects
 std::vector<ShortSound>  mSpeakers;    ///< array of places to play sound effects from
 struct SoundEffect
 {
@@ -87,21 +88,21 @@ bool isFPP() noexcept
     glfwGetInputMode(mWindow, GLFW_CURSOR) == GLFW_CURSOR_DISABLED);
 }
 
-GameObject& GetGameObject(int objId)
-{
-  //todo optimize
-  for (auto& obj : mGameObjects)
-  {
-    if (obj.GetObjectId() == objId)
-    {
-      return obj;
-    }
-  }
-
-  // if it didn't find it and return above ^^^^^^^^  show error message in console
-  //std::cout << "game object ID by the ID [" << objId << "] was not found.\n";
-  throw("u messed up");
-}
+//GameObject& GetGameObject(int objId)
+//{
+//  //todo optimize
+//  for (auto& obj : mGameObjects)
+//  {
+//    if (obj.GetObjectId() == objId)
+//    {
+//      return obj;
+//    }
+//  }
+//
+//  // if it didn't find it and return above ^^^^^^^^  show error message in console
+//  //std::cout << "game object ID by the ID [" << objId << "] was not found.\n";
+//  throw("u messed up");
+//}
 
 ShortSound& GetSpeaker(int speaker_id)
 {
@@ -169,37 +170,58 @@ void setupDiffShader()
   }
 }
 
-int AddObject(const char* path, int camId, bool is_lit)
+int AddProp(const char* path, int camId, bool is_lit)
 {
   if (is_lit)
     setupLitShader();
   else
     setupDiffShader();
 
-  GameObject tmpObject(path, camId, is_lit);
-  const int return_id = tmpObject.GetObjectId();
+  mProps.emplace_back(path, camId, is_lit);
 
-  mGameObjects.push_back(tmpObject);
-
-  return return_id;
+  return mProps.back().GetUID();
 }
 
-int AddObject(const char* path, int cam_id, bool is_lit, const std::vector<InstanceDetails>& details)
+void SetPropTranslation(int propId, glm::vec3 new_pos)
 {
-  // todo: optimize. check if it is an object we already have loaded and use it again if so. this will require the same with textures
+    for (auto& p : mProps)
+    {
+      if (p.GetUID() == propId)
+      {
+        p.translation = new_pos;
+        p.updateFinalModelMatrix();
+        return;
+      }
+    }
+    throw("prop id does not exist");
+}
 
-  if (is_lit)
-    setupLitShader();
-  else
-    setupDiffShader();
+void SetPropScale(int propId, glm::vec3 new_scale)
+{
+  for (auto& p : mProps)
+  {
+    if (p.GetUID() == propId)
+    {
+      p.scale = new_scale;
+      p.updateFinalModelMatrix();
+      return;
+    }
+  }
+  throw("prop id does not exist");
+}
 
-  GameObject tmpObject(path, cam_id, is_lit, details);
-
-  const int return_id = tmpObject.GetObjectId();
-
-  mGameObjects.push_back(tmpObject);
-
-  return return_id;
+void SetPropRotationY(int propId, float new_y_rot)
+{
+  for (auto& p : mProps)
+  {
+    if (p.GetUID() == propId)
+    {
+      p.eulerRotationY = new_y_rot;
+      p.updateFinalModelMatrix();
+      return;
+    }
+  }
+  throw("prop id does not exist");
 }
 
 void SetDirectionalLight(glm::vec3 dir, glm::vec3 amb, glm::vec3 diff, glm::vec3 spec)
@@ -1961,11 +1983,11 @@ void render()
     externWindowSizeDirty = false;
   }
 
-  for (auto& obj : mGameObjects)
+  for (auto& p : mProps)  // todo: test const
   {
     // set view matrix
     // set the view matrix from the primary camera for each object is probably overkill
-    if (obj.mIsLit)
+    if (p.mIsLit)
     {
       mLitShader->use();
       mLitShader->setMat4("view", mCameras.front().View);  // todo: hack
@@ -1975,7 +1997,7 @@ void render()
       mDiffShader->use();
       mDiffShader->setMat4("view", mCameras.front().View);  // todo: hack
     }
-    obj.draw();
+    p.draw();
   }
 
   // draw skybox if one was specified
@@ -1992,9 +2014,9 @@ void teardown()
     oTD.second();
   }
   // delete all the meshes and textures from GPU memory
-  for (const auto& model : mGameObjects)
+  for (const auto& p : mProps)
   {
-    ModelLoader::UnloadGameObject(model.mMeshes);
+    ModelLoader::UnloadGameObject(p.mMeshes);  // todo: consider moving to the destructor the prop
   }
 
   if (mLitShader) mLitShader->deleteShader();
@@ -2012,7 +2034,7 @@ void resetEngine() noexcept
   teardown();
 
   mCameras.clear();
-  mGameObjects.clear();
+  mProps.clear();
   mLoadedSoundEffects.clear();
   onBegin.clear();
   onDeltaUpdate.clear();
@@ -2352,6 +2374,7 @@ int Run()
     render();
   }
   teardown();
+  glfwTerminate();  //todo check if crash in debug still exists
   return 0;
 }
 

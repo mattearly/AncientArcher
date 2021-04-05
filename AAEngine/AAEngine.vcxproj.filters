@@ -33,7 +33,7 @@
     <ClInclude Include="src\Sound\ShortSound.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\Scene\GameObject.h">
+    <ClInclude Include="src\Scene\Prop.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="src\Scene\InstanceDetails.h">
@@ -143,7 +143,7 @@
     <ClCompile Include="src\Scene\ColliderSphere.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\Scene\GameObject.cpp">
+    <ClCompile Include="src\Scene\Prop.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="src\Scene\ColliderBox.cpp">

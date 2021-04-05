@@ -1,12 +1,11 @@
-#include "../Scene/GameObject.h"
+#include "Prop.h"
+#include "Camera.h"
 #include "../Renderer/OpenGL/OGLGraphics.h"
-#include "../Scene/Camera.h"
 #include "../Renderer/ModelLoader.h"
 #include <iostream>
 
 namespace AA
 {
-static int uniqueGameObjectIDs = 0;
 //int GameObject::GetModelMatrix(const int& which, glm::mat4& out_mat4) const
 //{
 //	if (which < GetInstanceCount())
@@ -25,16 +24,15 @@ static int uniqueGameObjectIDs = 0;
 //		throw("couldn't get model matrix");
 //}
 
-const int GameObject::GetCameraId() const noexcept
+const int Prop::GetCamId() const noexcept
 {
 	return mCameraID;
 }
 
-const int GameObject::GetObjectId() const noexcept
-{
-	return mObjectID;
-}
-
+//const int Prop::GetObjectId() const noexcept
+//{
+//	return mObjectID;
+//}
 // returns the size of the InstanceDetails vector.
 // a size of 1 would indicate a single instance of the object, accessable at location 0.
 // a size of 0 should never be seen
@@ -57,25 +55,24 @@ const int GameObject::GetObjectId() const noexcept
 //	return mInstanceDetails.at(which).mColliderSphere;  //todo: check there are enough instances if this has problems
 //}
 
-GameObject::GameObject(const char* path, int camId, bool lit)
+Prop::Prop(const char* path, int camId, bool lit)
 {
 	ModelLoader::LoadGameObjectFromFile(mMeshes, path);
 	//mInstanceDetails.push_back(InstanceDetails());
 	mCameraID = camId;
 	mIsLit = lit;
-	mObjectID = uniqueGameObjectIDs++;
 }
 
-GameObject::GameObject(const char* path, int camId, bool lit, std::vector<InstanceDetails> details)
-{
-	ModelLoader::LoadGameObjectFromFile(mMeshes, path);
-	//mInstanceDetails = details;
-	mCameraID = camId;
-	mIsLit = lit;
-	mObjectID = uniqueGameObjectIDs++;
-}
+//GameObject::GameObject(const char* path, int camId, bool lit, std::vector<InstanceDetails> details)
+//{
+//	ModelLoader::LoadGameObjectFromFile(mMeshes, path);
+//	//mInstanceDetails = details;
+//	mCameraID = camId;
+//	mIsLit = lit;
+//	mObjectID = uniqueGameObjectIDs++;
+//}
 
-void GameObject::SetCamera(int id) noexcept
+void Prop::SetCamera(int id) noexcept
 {
 	mCameraID = id;
 }
@@ -99,15 +96,15 @@ void GameObject::SetCamera(int id) noexcept
 //	mInstanceDetails.push_back(instance_details);
 //}
 //
-void GameObject::draw()
+void Prop::draw()
 {
-	if (mCameraID == -1 || mObjectID == -1)
-		throw("bad something in the draw");
+	if (mCameraID == -1)
+		throw("camera not set for this prop");
 
 	OGLGraphics::Render(mMeshes, finalModelMatrix, mIsLit);
 }
 
-void GameObject::updateFinalModelMatrix()
+void Prop::updateFinalModelMatrix()
 {
 	// reset
 	finalModelMatrix = glm::mat4(1);

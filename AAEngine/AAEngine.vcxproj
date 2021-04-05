@@ -92,7 +92,7 @@
     <ClInclude Include="src\Scene\Camera.h" />
     <ClInclude Include="src\Scene\ColliderBox.h" />
     <ClInclude Include="src\Scene\CollisionHandler.h" />
-    <ClInclude Include="src\Scene\GameObject.h" />
+    <ClInclude Include="src\Scene\Prop.h" />
     <ClInclude Include="glad\glad.h" />
     <ClInclude Include="src\Scene\InstanceDetails.h" />
     <ClInclude Include="src\Settings\Settings.h" />
@@ -136,7 +136,7 @@
     <ClCompile Include="src\Scene\Camera.cpp" />
     <ClCompile Include="src\Scene\ColliderBox.cpp" />
     <ClCompile Include="src\Scene\CollisionHandler.cpp" />
-    <ClCompile Include="src\Scene\GameObject.cpp" />
+    <ClCompile Include="src\Scene\Prop.cpp" />
     <ClCompile Include="src\AncientArcher.cpp" />
     <ClCompile Include="src\Renderer\MeshDrawInfo.cpp" />
     <ClCompile Include="src\Renderer\OpenGL\OGLGraphics.cpp" />
