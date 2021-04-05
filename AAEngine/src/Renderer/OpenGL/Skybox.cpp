@@ -13,61 +13,61 @@ namespace AA
  */
 Skybox::Skybox(std::vector<std::string> incomingSkymapFiles, bool useInternalShaders, const char* vertpath, const char* fragpath)
 {
-	if (useInternalShaders) {
-		const char* skycubevert =
-			"#version 330 core\n"
-			"layout(location = 0) in vec3 aPos;\n"
-			"out vec3 TexCoords;\n"
-			"uniform mat4 projection;\n"
-			"uniform mat4 view;\n"
-			"void main(){\n"
-			"	TexCoords = aPos;\n"
-			"	vec4 pos = projection * view * vec4(aPos, 1.0);\n"
-			"	gl_Position = pos.xyww;\n"
-			"}\n"
-			;
-		const char* skycubefrag =
-			"#version 330 core\n"
-			"in vec3 TexCoords;\n"
-			"out vec4 FragColor;\n"
-			"uniform samplerCube skybox;\n"
-			"void main()	{\n"
-			"	FragColor = texture(skybox, TexCoords);\n"
-			"}\n"
-			;
-		skyboxShader = std::make_unique<OGLShader>(
-			skycubevert,
-			skycubefrag
-			);
-	}
-	else {
-		if (vertpath == "" || fragpath == "")
-			throw("shader path must be provided if not using internal shaders");
-		skyboxShader = std::make_unique<OGLShader>(vertpath, fragpath);
-	}
-	loadSkybox();
+  if (useInternalShaders) {
+    const char* skycubevert =
+      "#version 430 core\n"
+      "layout(location = 0) in vec3 aPos;\n"
+      "out vec3 TexCoords;\n"
+      "uniform mat4 projection;\n"
+      "uniform mat4 view;\n"
+      "void main(){\n"
+      "  TexCoords = aPos;\n"
+      "  vec4 pos = projection * view * vec4(aPos, 1.0);\n"
+      "  gl_Position = pos.xyww;\n"
+      "}\n"
+      ;
+    const char* skycubefrag =
+      "#version 430 core\n"
+      "in vec3 TexCoords;\n"
+      "out vec4 FragColor;\n"
+      "uniform samplerCube skybox;\n"
+      "void main() {\n"
+      "  FragColor = texture(skybox, TexCoords);\n"
+      "}\n"
+      ;
+    skyboxShader = std::make_unique<OGLShader>(
+      skycubevert,
+      skycubefrag
+      );
+  }
+  else {
+    if (vertpath == "" || fragpath == "")
+      throw("shader path must be provided if not using internal shaders");
+    skyboxShader = std::make_unique<OGLShader>(vertpath, fragpath);
+  }
+  loadSkybox();
 
-	if (incomingSkymapFiles.size() != 6)
-	{
-		throw("wrong number of cubemap files for skybox");
-	}
-	else  // is size 6, load and use
-	{
-		int width, height, nrChannel;
-		stbi_set_flip_vertically_on_load(0); // tell stb_image.h to not flip loaded texture's on the y-axis.
-		std::vector<unsigned char*> data;
-		data.resize(6);
-		for (auto i = 0; i < 6; ++i)
-			data[i] = stbi_load(incomingSkymapFiles[i].c_str(), &width, &height, &nrChannel, STBI_rgb);
-		switch (Settings::Get()->GetOptions().renderer)
-		{
-		case RenderingFramework::OPENGL:
-			cubemapTexture = OGLGraphics::UploadCubeMapTex(data, width, height);
-			break;
-		}
-	}
-	skyboxShader->use();
-	skyboxShader->setInt("skybox", 0);
+  if (incomingSkymapFiles.size() != 6)
+  {
+    throw("wrong number of cubemap files for skybox");
+  }
+  else  // is size 6, load and use
+  {
+    int width, height, nrChannel;
+    stbi_set_flip_vertically_on_load(0); // tell stb_image.h to not flip loaded texture's on the y-axis.
+    std::vector<unsigned char*> data;
+    data.resize(6);
+    for (auto i = 0; i < 6; ++i)
+      data[i] = stbi_load(incomingSkymapFiles[i].c_str(), &width, &height, &nrChannel, STBI_rgb);
+    switch (Settings::Get()->GetOptions().renderer)
+    {
+    case RenderingFramework::OPENGL:
+      cubemapTexture = OGLGraphics::UploadCubeMapTex(data, width, height);
+      break;
+    }
+  }
+  skyboxShader->use();
+  skyboxShader->setInt("skybox", 0);
 }
 
 /**
