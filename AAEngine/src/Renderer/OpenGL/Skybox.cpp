@@ -75,23 +75,23 @@ Skybox::Skybox(std::vector<std::string> incomingSkymapFiles, bool useInternalSha
  */
 void Skybox::render(const Camera& cam)
 {
-	glDepthFunc(GL_LEQUAL);  // change depth function so depth test passes when values are equal to depth buffer's content
+  glDepthFunc(GL_LEQUAL);  // change depth function so depth test passes when values are equal to depth buffer's content
 
-	loadViewMatrix(cam);  // todo: only update when camera moved
+  loadViewMatrix(cam);  // todo: only update when camera moved
 
-	glBindVertexArray(mSkyboxVAO);
+  glBindVertexArray(mSkyboxVAO);
 
-	glActiveTexture(GL_TEXTURE0);
-	glBindTexture(GL_TEXTURE_CUBE_MAP, cubemapTexture);
-	skyboxShader->use();
-	glDrawArrays(GL_TRIANGLES, 0, 36);
-	glBindVertexArray(0);
-	glDepthFunc(GL_LESS); // set depth function back to default
+  glActiveTexture(GL_TEXTURE0);
+  glBindTexture(GL_TEXTURE_CUBE_MAP, cubemapTexture);
+  skyboxShader->use();
+  glDrawArrays(GL_TRIANGLES, 0, 36);
+  glBindVertexArray(0);
+  glDepthFunc(GL_LESS); // set depth function back to default
 }
 
 void Skybox::setProjectionMatrix(const Camera& cam)
 {
-	loadProjectionMatrix(cam);
+  loadProjectionMatrix(cam);
 }
 
 /**
@@ -99,64 +99,64 @@ void Skybox::setProjectionMatrix(const Camera& cam)
  */
 void Skybox::loadSkybox()
 {
-	const float SIZE = 1.f;
+  const float SIZE = 1.f;
 
-	float skyboxVertices[] = {
-		// positions
-		-SIZE,  SIZE, -SIZE,
-		-SIZE, -SIZE, -SIZE,
-		 SIZE, -SIZE, -SIZE,
-		 SIZE, -SIZE, -SIZE,
-		 SIZE,  SIZE, -SIZE,
-		-SIZE,  SIZE, -SIZE,
+  float skyboxVertices[] = {
+    // positions
+    -SIZE,  SIZE, -SIZE,
+    -SIZE, -SIZE, -SIZE,
+     SIZE, -SIZE, -SIZE,
+     SIZE, -SIZE, -SIZE,
+     SIZE,  SIZE, -SIZE,
+    -SIZE,  SIZE, -SIZE,
 
-		-SIZE, -SIZE,  SIZE,
-		-SIZE, -SIZE, -SIZE,
-		-SIZE,  SIZE, -SIZE,
-		-SIZE,  SIZE, -SIZE,
-		-SIZE,  SIZE,  SIZE,
-		-SIZE, -SIZE,  SIZE,
+    -SIZE, -SIZE,  SIZE,
+    -SIZE, -SIZE, -SIZE,
+    -SIZE,  SIZE, -SIZE,
+    -SIZE,  SIZE, -SIZE,
+    -SIZE,  SIZE,  SIZE,
+    -SIZE, -SIZE,  SIZE,
 
-		 SIZE, -SIZE, -SIZE,
-		 SIZE, -SIZE,  SIZE,
-		 SIZE,  SIZE,  SIZE,
-		 SIZE,  SIZE,  SIZE,
-		 SIZE,  SIZE, -SIZE,
-		 SIZE, -SIZE, -SIZE,
+     SIZE, -SIZE, -SIZE,
+     SIZE, -SIZE,  SIZE,
+     SIZE,  SIZE,  SIZE,
+     SIZE,  SIZE,  SIZE,
+     SIZE,  SIZE, -SIZE,
+     SIZE, -SIZE, -SIZE,
 
-		-SIZE, -SIZE,  SIZE,
-		-SIZE,  SIZE,  SIZE,
-		 SIZE,  SIZE,  SIZE,
-		 SIZE,  SIZE,  SIZE,
-		 SIZE, -SIZE,  SIZE,
-		-SIZE, -SIZE,  SIZE,
+    -SIZE, -SIZE,  SIZE,
+    -SIZE,  SIZE,  SIZE,
+     SIZE,  SIZE,  SIZE,
+     SIZE,  SIZE,  SIZE,
+     SIZE, -SIZE,  SIZE,
+    -SIZE, -SIZE,  SIZE,
 
-		-SIZE,  SIZE, -SIZE,
-		 SIZE,  SIZE, -SIZE,
-		 SIZE,  SIZE,  SIZE,
-		 SIZE,  SIZE,  SIZE,
-		-SIZE,  SIZE,  SIZE,
-		-SIZE,  SIZE, -SIZE,
+    -SIZE,  SIZE, -SIZE,
+     SIZE,  SIZE, -SIZE,
+     SIZE,  SIZE,  SIZE,
+     SIZE,  SIZE,  SIZE,
+    -SIZE,  SIZE,  SIZE,
+    -SIZE,  SIZE, -SIZE,
 
-		-SIZE, -SIZE, -SIZE,
-		-SIZE, -SIZE,  SIZE,
-		 SIZE, -SIZE, -SIZE,
-		 SIZE, -SIZE, -SIZE,
-		-SIZE, -SIZE,  SIZE,
-		 SIZE, -SIZE,  SIZE
-	};
+    -SIZE, -SIZE, -SIZE,
+    -SIZE, -SIZE,  SIZE,
+     SIZE, -SIZE, -SIZE,
+     SIZE, -SIZE, -SIZE,
+    -SIZE, -SIZE,  SIZE,
+     SIZE, -SIZE,  SIZE
+  };
 
-	//todo: use element buffers
-	glGenVertexArrays(1, &mSkyboxVAO);
+  //todo: use element buffers
+  glGenVertexArrays(1, &mSkyboxVAO);
 
-	unsigned int skyboxVBO = 0;
+  unsigned int skyboxVBO = 0;
 
-	glGenBuffers(1, &skyboxVBO);
-	glBindVertexArray(mSkyboxVAO);
-	glBindBuffer(GL_ARRAY_BUFFER, skyboxVBO);
-	glBufferData(GL_ARRAY_BUFFER, sizeof(skyboxVertices), &skyboxVertices, GL_STATIC_DRAW);
-	glEnableVertexAttribArray(0);
-	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), (void*)0);
+  glGenBuffers(1, &skyboxVBO);
+  glBindVertexArray(mSkyboxVAO);
+  glBindBuffer(GL_ARRAY_BUFFER, skyboxVBO);
+  glBufferData(GL_ARRAY_BUFFER, sizeof(skyboxVertices), &skyboxVertices, GL_STATIC_DRAW);
+  glEnableVertexAttribArray(0);
+  glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), (void*)0);
 }
 
 /**
