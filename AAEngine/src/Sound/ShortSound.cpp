@@ -137,10 +137,6 @@ void ShortSound::SetVolume(const float gain)
 	{
 		newvol = 0;
 	}
-	else if (gain > 10.f)
-	{
-		newvol = 10.f;
-	}
 	else
 	{
 		newvol = gain;

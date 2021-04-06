@@ -8,7 +8,7 @@ namespace AA
 /// <summary>
 /// Source of playback for a buffer.
 /// </summary>
-class ShortSound
+class ShortSound : public UniqueInstance
 {
 public:
 	void Play(const ALuint buffer);

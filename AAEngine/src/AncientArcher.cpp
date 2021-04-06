@@ -104,16 +104,16 @@ bool isFPP() noexcept
 //  throw("u messed up");
 //}
 
-ShortSound& GetSpeaker(int speaker_id)
-{
-  std::cout << "getting speaker\n";
-  //todo optimize
-  if (speaker_id < mSpeakers.size())
-    return mSpeakers[speaker_id];
-
-  // if it gets here you're doing something illegal
-  throw("out of range of added speakers");
-}
+//ShortSound& GetSpeaker(int speaker_id)
+//{
+//  std::cout << "getting speaker\n";
+//  //todo optimize
+//  if (speaker_id < mSpeakers.size())
+//    return mSpeakers[speaker_id];
+//
+//  // if it gets here you're doing something illegal
+//  throw("out of range of added speakers");
+//}
 
 LongSound& GetMusic()
 {
@@ -123,6 +123,7 @@ LongSound& GetMusic()
 
 void PlaySoundEffect(int effect_id, int speaker_id)
 {
+  //todo: operate on sound id
   mSpeakers[speaker_id].PlayNoOverlap(mLoadedSoundEffects[effect_id].id);
 }
 
@@ -681,7 +682,7 @@ int AddSoundEffect(const char* path)
 
   uint32_t tmp_id = ShortSound::AddShortSound(path);
   if (tmp_id != 0)
-  {
+  {  //todo: operate on ids
     SoundEffect e;
     e.id = tmp_id;
     e.path = path;
@@ -697,7 +698,7 @@ int AddSoundEffect(const char* path)
 }
 
 void RemoveSoundEffect(int effect_id)
-{
+{  //todo: operate on ids
   bool success = false;
   success = ShortSound::RemoveShortSound(mLoadedSoundEffects[effect_id].id);
   if (success)
@@ -709,8 +710,21 @@ void RemoveSoundEffect(int effect_id)
 
 int AddSpeaker()
 {
-  mSpeakers.resize(mSpeakers.size() + 1);
-  return static_cast<int>(mSpeakers.size() - 1);  // return index of last added
+  mSpeakers.emplace_back();
+  //mSpeakers.resize(mSpeakers.size() + 1);
+  //return static_cast<int>(mSpeakers.size() - 1);
+  return mSpeakers.back().GetUID();
+}
+
+void ChangeSpeakerVolume(int speakerId, float new_vol)
+{
+  for (auto& s : mSpeakers)
+  {
+    if (s.GetUID() == speakerId)
+    {
+      s.SetVolume(new_vol);
+    }
+  }
 }
 
 void ChangeMusic(const char* path)

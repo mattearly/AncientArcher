@@ -46,27 +46,44 @@ int AddProp(const char* path, int camId, bool is_lit);
 void SetPropTranslation(int propId, glm::vec3 new_pos);
 void SetPropScale(int propId, glm::vec3 new_scale);
 void SetPropRotationY(int propId, float new_y_rot);
+// End 3D Game Objects
 
-
+// Directional Light
 void SetDirectionalLight(glm::vec3 dir, glm::vec3 amb, glm::vec3 diff, glm::vec3 spec);
 void RemoveDirectionalLight();
+// End Directional Light
+
+// Point Light
 int AddPointLight(glm::vec3 pos, float constant, float linear, float quad, glm::vec3 amb, glm::vec3 diff, glm::vec3 spec);
+bool RemovePointLight(int which_by_id);
 void MovePointLight(int which, glm::vec3 new_pos);
 void ChangePointLight(int which, glm::vec3 new_pos, float new_constant, float new_linear, float new_quad,
 	glm::vec3 new_amb, glm::vec3 new_diff, glm::vec3 new_spec);
-bool RemovePointLight(int which_by_id);
+// End Point Light
+
+// Spot Light
 int AddSpotLight(glm::vec3 pos, glm::vec3 dir, float inner, float outer, float constant,
 	float linear, float quad, glm::vec3 amb, glm::vec3 diff, glm::vec3 spec);
+bool RemoveSpotLight(int which_by_id);
 void MoveSpotLight(int which, glm::vec3 new_pos, glm::vec3 new_dir);
 void ChangeSpotLight(int which, glm::vec3 new_pos, glm::vec3 new_dir, float new_inner,
 	float new_outer, float new_constant, float new_linear, float new_quad, glm::vec3 new_amb,
 	glm::vec3 new_diff, glm::vec3 new_spec);
-bool RemoveSpotLight(int which_by_id);
+// End Spot Light
+
+// Sound Effects
 int AddSpeaker();
+void ChangeSpeakerVolume(int speakerId, float new_vol);
 int AddSoundEffect(const char* path);
+void PlaySoundEffect(int effect_id, int speaker_id);
 void RemoveSoundEffect(int effect_id);
+// End Sound Effects
+
 void ChangeMusic(const char* path);
+
 void SetSkybox(const std::shared_ptr<Skybox>& skybox) noexcept;
+
+
 uint32_t AddToOnBegin(void(*function)());
 uint32_t AddToDeltaUpdate(void(*function)(float));
 uint32_t AddToUpdate(void(*function)());
@@ -85,11 +102,11 @@ bool RemoveFromScrollHandling(uint32_t r_id);
 bool RemoveFromKeyHandling(uint32_t r_id);
 bool RemoveFromMouseHandling(uint32_t r_id);
 bool RemoveFromTeardown(uint32_t r_id);
+
 void SetSlowUpdateTimeoutLength(const float& newtime);
 void SetCursorToEnabled(bool isHardwareRendered = false);
-ShortSound& GetSpeaker(int speaker_id);
+
 LongSound& GetMusic();
-void PlaySoundEffect(int effect_id, int speaker_id);
 int GetWindowWidth() noexcept;
 int GetWindowHeight() noexcept;
 GLFWwindow* GetWindow() noexcept;
