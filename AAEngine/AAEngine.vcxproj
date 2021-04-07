@@ -86,6 +86,7 @@
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="src\Sound\SoundEffect.h" />
     <ClInclude Include="src\Renderer\OpenGL\OGLLights.h" />
     <ClInclude Include="src\Renderer\TextureInfo.h" />
     <ClInclude Include="src\Scene\ColliderSphere.h" />
@@ -118,11 +119,12 @@
     <ClInclude Include="src\Controls\KeyboardInput.h" />
     <ClInclude Include="src\Scene\WorldSettings.h" />
     <ClInclude Include="src\Sound\SoundDevice.h" />
-    <ClInclude Include="src\Sound\ShortSound.h" />
+    <ClInclude Include="src\Sound\Speaker.h" />
     <ClInclude Include="src\Utility\Conversions.h" />
     <ClInclude Include="src\Base\UniqueInstance.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="src\Sound\SoundEffect.cpp" />
     <ClCompile Include="src\Base\UniqueInstance.cpp" />
     <ClCompile Include="src\Scene\Lights.cpp" />
     <ClCompile Include="src\Settings\Settings.cpp" />
@@ -130,7 +132,7 @@
     <ClCompile Include="src\Scene\InstanceDetails.cpp" />
     <ClCompile Include="src\Sound\SoundListener.cpp" />
     <ClCompile Include="src\Sound\LongSound.cpp" />
-    <ClCompile Include="src\Sound\ShortSound.cpp" />
+    <ClCompile Include="src\Sound\Speaker.cpp" />
     <ClCompile Include="src\Sound\SoundDevice.cpp" />
     <ClCompile Include="src\Scene\ColliderSphere.cpp" />
     <ClCompile Include="src\Scene\Camera.cpp" />

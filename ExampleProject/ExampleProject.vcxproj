@@ -83,6 +83,7 @@
     <ClInclude Include="flashlight.h" />
     <ClInclude Include="fps.h" />
     <ClInclude Include="setskybox.h" />
+    <ClInclude Include="soundeffects.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp" />

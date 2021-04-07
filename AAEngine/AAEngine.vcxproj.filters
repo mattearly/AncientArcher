@@ -30,7 +30,7 @@
     <ClInclude Include="src\Sound\LongSound.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\Sound\ShortSound.h">
+    <ClInclude Include="src\Sound\Speaker.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="src\Scene\Prop.h">
@@ -120,6 +120,9 @@
     <ClInclude Include="src\Base\UniqueInstance.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="src\Sound\SoundEffect.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\vendor\stb\stb_image.cpp">
@@ -131,7 +134,7 @@
     <ClCompile Include="src\Sound\SoundListener.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\Sound\ShortSound.cpp">
+    <ClCompile Include="src\Sound\Speaker.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="src\Sound\LongSound.cpp">
@@ -183,6 +186,9 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="src\Base\UniqueInstance.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Sound\SoundEffect.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

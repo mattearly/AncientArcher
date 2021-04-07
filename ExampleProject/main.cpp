@@ -3,6 +3,7 @@
 #include "fps.h"
 #include "setskybox.h"
 #include "flashlight.h"
+#include "soundeffects.h"
 int main()
 {
 	AA::InitEngine();
@@ -11,6 +12,7 @@ int main()
 	setfpscontrols(ourcam);
 	setskybox();
 	setupflashlight(ourcam);
+	setupsoundeffects();
 	static int peasant_man = AA::AddProp("..\\ExampleProject\\res\\peasant_man.dae", ourcam, true);
 	static int test_zone = AA::AddProp("E:\\storage\\3d Models\\grass_plain.dae", ourcam, true);
 	const float dist_from_us = 90.f;

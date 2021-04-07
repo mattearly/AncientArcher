@@ -1,6 +1,5 @@
 #pragma once
 #include "../../src/Renderer/OpenGL/Skybox.h"
-#include "../../src/Sound/ShortSound.h"
 #include "../../src/Sound/LongSound.h"
 #include "../../src/Controls/KeyboardInput.h"
 #include "../../src/Controls/MouseInput.h"
@@ -75,14 +74,13 @@ void ChangeSpotLight(int which, glm::vec3 new_pos, glm::vec3 new_dir, float new_
 int AddSpeaker();
 void ChangeSpeakerVolume(int speakerId, float new_vol);
 int AddSoundEffect(const char* path);
-void PlaySoundEffect(int effect_id, int speaker_id);
-void RemoveSoundEffect(int effect_id);
+void PlaySoundEffect(int speakerId, int soundId, bool interrupt = true);
+void RemoveSoundEffect(int soundId);
 // End Sound Effects
 
 void ChangeMusic(const char* path);
 
 void SetSkybox(const std::shared_ptr<Skybox>& skybox) noexcept;
-
 
 uint32_t AddToOnBegin(void(*function)());
 uint32_t AddToDeltaUpdate(void(*function)(float));

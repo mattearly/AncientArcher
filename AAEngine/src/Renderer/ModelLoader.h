@@ -15,6 +15,7 @@
 #include <sstream>
 #include <utility>
 #include <forward_list>
+#include <unordered_map>
 #include <iostream>
 
 namespace AA
@@ -349,5 +350,5 @@ inline void UnloadGameObject(const std::vector<MeshDrawInfo>& toUnload)
 		}
 	}
 }
-};
+} // end namespace ModelLoader
 } // end namespace AA

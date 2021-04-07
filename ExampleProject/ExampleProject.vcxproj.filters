@@ -24,6 +24,9 @@
     <ClInclude Include="flashlight.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="soundeffects.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
