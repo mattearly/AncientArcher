@@ -40,15 +40,15 @@ float mNoSpamWaitLength;         ///< how long the non-spammable keys are to tim
 float mSlowUpdateTimeout;        ///< keeps track of how how long the slow update has been timed out
 float mSlowUpdateWaitLength;     ///< ms length the slow update times out for at least
 
-DirectionalLight* mDirectionalLight; ///< directional light for lit shader(s)
-std::vector<SpotLight>                      mSpotLights;       ///< array of current spot lights
-std::vector<PointLight>                     mPointLights;      ///< array of current point lights
-std::vector<Camera>                         mCameras;          ///< array of available cameras
-std::vector<Prop>                           mProps;            ///< array of available objects
-LongSound* mMusic;            ///< background music
-std::vector<Speaker*>                        mSpeakers;         ///< array of places to play sound effects from
-std::vector<SoundEffect*>                    mSoundEffects;     ///< array of ready speaker id to sound effects
-std::shared_ptr<Skybox>                     mSkybox;           ///< the main skybox
+DirectionalLight*         mDirectionalLight; ///< directional light for lit shader(s)
+std::vector<SpotLight>    mSpotLights;       ///< array of current spot lights
+std::vector<PointLight>   mPointLights;      ///< array of current point lights
+std::vector<Camera>       mCameras;          ///< array of available cameras
+std::vector<Prop>         mProps;            ///< array of available objects
+LongSound*                mMusic;            ///< background music
+std::vector<Speaker*>     mSpeakers;         ///< array of places to play sound effects from
+std::vector<SoundEffect*> mSoundEffects;     ///< array of ready speaker id to sound effects
+std::shared_ptr<Skybox>   mSkybox;           ///< the main skybox
 
 std::unordered_map<uint32_t, std::function<void()> >               onBegin;               ///< list of functions to run once when runMainAncientArcher is called
 std::unordered_map<uint32_t, std::function<void(float)> >          onDeltaUpdate;         ///< list of functions that rely on deltatime in the main AncientArcher
@@ -63,8 +63,8 @@ std::unordered_map<uint32_t, std::function<void()> >               onTearDown;  
 KeyboardInput mButtonState = {};
 MouseInput    mMousePosition = {};
 ScrollInput   mMouseWheelScroll = {};
-bool mRenewFPP = true;
-float mFPPMouseSensitivity = 0.1f;  ///< mouse sensitivity while in first person perspective
+bool          mRenewFPP = true;
+float         mFPPMouseSensitivity = 0.1f;  ///< mouse sensitivity while in first person perspective
 
 enum class STANDARDMOUSEZEROS { DEFAULT, TOP_LEFT_0_to_1, BOT_LEFT_0_to_1, TOP_LEFT_FULL_RANGE, BOT_LEFT_FULL_RANGE };
 STANDARDMOUSEZEROS mStandardMouseZeros = STANDARDMOUSEZEROS::BOT_LEFT_0_to_1;
@@ -1845,7 +1845,7 @@ void begin()
 
 void deltaUpdate()
 {
-  pullButtonStateEvents();
+  pullButtonStateEvents();  //todo: move this after render?
 
   // init delta clock on first tap into deltaUpdate
   static std::chrono::system_clock::time_point currTime;
@@ -1904,7 +1904,7 @@ void deltaUpdate()
   if (mMusic) {
     static float reBufferCD = 0.f;
     reBufferCD += elapsedTime;
-    if (reBufferCD > 1.03f) {  //todo(maybe): math with file size and stuff to figure out how long this cd should actually be
+    if (reBufferCD > 1.03f) {  // todo(maybe): math with file size and stuff to figure out how long this cd should actually be
       mMusic->UpdatePlayBuffer();
     }
   }
@@ -2054,8 +2054,8 @@ void resetEngine() noexcept
 
   mNonSpammableKeysTimeout = 0.f;
   mSlowUpdateTimeout = 0.f;
-  mNoSpamWaitLength = .5667f;
   mSlowUpdateWaitLength = .3337f;
+  mNoSpamWaitLength = .5667f;
 
   SetCursorToEnabled();
   SetReadMouseCurorAsStandard();

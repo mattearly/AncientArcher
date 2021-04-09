@@ -38,7 +38,7 @@ public:
   ~Speaker();
 
 private:
-  bool isPlaying();
+  bool   isPlaying();
   bool   p_BufferSet = false;
   ALuint p_Source = 0;
 };
