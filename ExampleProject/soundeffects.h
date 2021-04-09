@@ -10,16 +10,15 @@ void setupsoundeffects()
   const char* enchant = "..\\ExampleProject\\res\\enchant.ogg";
   static int enchantId = AA::AddSoundEffect(enchant);
 
-  
   AA::AddToKeyHandling([](AA::KeyboardInput& kb) {
     if (kb.mouseButton1) {
-      AA::PlaySoundEffect(zap16Id, true);
+      AA::PlaySoundEffect(zap16Id, false);
       return;
     }
     if (kb.mouseButton2) {
-      AA::PlaySoundEffect(enchantId, true);
+      AA::PlaySoundEffect(enchantId, false);
       return;
     }
-    });
+  });
 
 }
