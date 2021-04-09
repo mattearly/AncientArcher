@@ -3,6 +3,7 @@
 #include <cassert>
 #include <AL\alc.h>
 #include <AL\alext.h>
+#include "ErrorCheck.h"
 
 namespace AA {
 
@@ -12,18 +13,15 @@ void LongSound::Play()
   if (GetPlayingState() == AL_PLAYING)
     return;
 
-  ALsizei i;
-
-  // clear any al errors
-  if (alGetError() != AL_NO_ERROR) {
-    throw("pre-existing sound error when attempting playback of long sound");
-  }
-
   /* Rewind the source position and clear the buffer queue */
   alSourceRewind(p_Source);  //?
+  local_alErrorCheck();
+
   alSourcei(p_Source, AL_BUFFER, 0); //?
+  local_alErrorCheck();
 
   /* Fill the buffer queue */
+  ALsizei i;
   for (i = 0; i < BUFFER_COUNT; i++)
   {
     /* Get some data to give it to the buffer */
@@ -32,20 +30,15 @@ void LongSound::Play()
 
     slen *= p_Sfinfo.channels * (sf_count_t)sizeof(short);
     alBufferData(p_Buffers[i], p_Format, p_Membuf, (ALsizei)slen, p_Sfinfo.samplerate);
-  }
-  if (alGetError() != AL_NO_ERROR)
-  {
-    throw("error buffering for playback");
+    local_alErrorCheck();
   }
 
   /* Now queue and start playback! */
   alSourceQueueBuffers(p_Source, i, p_Buffers);
-  alSourcePlay(p_Source);
-  if (alGetError() != AL_NO_ERROR)
-  {
-    throw("Error starting playback");
-  }
+  local_alErrorCheck();
 
+  alSourcePlay(p_Source);
+  local_alErrorCheck();
 }
 
 void LongSound::Pause()
@@ -55,6 +48,7 @@ void LongSound::Pause()
     return;
 
   alSourcePause(p_Source);
+  local_alErrorCheck();
 }
 
 void LongSound::Resume()
@@ -64,6 +58,7 @@ void LongSound::Resume()
     return;
 
   alSourcePlay(p_Source);
+  local_alErrorCheck();
 }
 
 void LongSound::Stop() {
@@ -72,6 +67,7 @@ void LongSound::Stop() {
     return;
 
   alSourceStop(p_Source);
+  local_alErrorCheck();
 }
 
 void LongSound::SetVolume(const float& val)
@@ -88,29 +84,12 @@ void LongSound::SetVolume(const float& val)
   }
 
   //SoundDevice::Get()->SuspendContext();
+
   alSourcef(p_Source, AL_GAIN, newvolume);
+  local_alErrorCheck();
+
   //SoundDevice::Get()->ResumeContext();
 
-
-
-  //ALenum ALerror = AL_NO_ERROR;
-  //ALerror = alGetError();
-  //auto geterrorstring = [](ALenum ALerror) {
-  //	switch (ALerror) {
-  //	case AL_NO_ERROR:       return std::string("AL_NO_ERROR - (No error)."); break;
-  //	case AL_INVALID_NAME:       return std::string("AL_INVALID_NAME - Invalid Name paramater passed to AL call."); break;
-  //	case AL_INVALID_ENUM:       return std::string("AL_INVALID_ENUM - Invalid parameter passed to AL call."); break;
-  //	case AL_INVALID_VALUE:      return std::string("AL_INVALID_VALUE - Invalid enum parameter value."); break;
-  //	case AL_INVALID_OPERATION:  return std::string("AL_INVALID_OPERATION"); break;
-  //	case AL_OUT_OF_MEMORY:      return std::string("AL_OUT_OF_MEMORY"); break;
-  //	default:            return std::string("AL Unknown Error."); break;
-  //	}; };
-  //std::cout << geterrorstring(ALerror) << '\n';
-
-
-
-  if (alGetError() != AL_NO_ERROR)
-    throw("Error Setting Gain.");
 }
 
 void LongSound::UpdatePlayBuffer()
@@ -118,24 +97,13 @@ void LongSound::UpdatePlayBuffer()
   if (GetPlayingState() != AL_PLAYING)
     return;
 
-
-
-  ALint processed, state;
-
-  // clear error 
-  if (alGetError() != AL_NO_ERROR)
-  {
-    throw("Rebuffering Error");
-  }
-
   /* Get relevant source info */
+  ALint processed, state;
   alGetSourcei(p_Source, AL_SOURCE_STATE, &state);
+  local_alErrorCheck();
+
   alGetSourcei(p_Source, AL_BUFFERS_PROCESSED, &processed);
-  if (alGetError() != AL_NO_ERROR)
-  {
-    fprintf(stderr, "Error checking source state\n");
-    return;
-  }
+  local_alErrorCheck();
 
   /* Unqueue and handle each processed buffer */
   while (processed > 0)
@@ -144,6 +112,8 @@ void LongSound::UpdatePlayBuffer()
     sf_count_t slen;
 
     alSourceUnqueueBuffers(p_Source, 1, &bufid);
+    local_alErrorCheck();
+
     processed--;
 
     /* Read the next chunk of data, refill the buffer, and queue it
@@ -153,12 +123,11 @@ void LongSound::UpdatePlayBuffer()
     {
       slen *= p_Sfinfo.channels * (sf_count_t)sizeof(short);
       alBufferData(bufid, p_Format, p_Membuf, (ALsizei)slen, p_Sfinfo.samplerate);
+      local_alErrorCheck();
+
       alSourceQueueBuffers(p_Source, 1, &bufid);
-    }
-    if (alGetError() != AL_NO_ERROR)
-    {
-      fprintf(stderr, "Error buffering data\n");
-      return;
+      local_alErrorCheck();
+
     }
   }
 
@@ -169,23 +138,21 @@ void LongSound::UpdatePlayBuffer()
 
     /* If no buffers are queued, playback is finished */
     alGetSourcei(p_Source, AL_BUFFERS_QUEUED, &queued);
+    local_alErrorCheck();
+
     if (queued == 0)
       return;
 
     alSourcePlay(p_Source);
-    if (alGetError() != AL_NO_ERROR)
-    {
-      fprintf(stderr, "Error restarting playback\n");
-      return;
-    }
+    local_alErrorCheck();
   }
-
 }
 
 ALint LongSound::GetPlayingState()
 {
   ALint curr_state;
   alGetSourcei(p_Source, AL_SOURCE_STATE, &curr_state);
+  local_alErrorCheck();
   return curr_state;
 }
 
@@ -194,15 +161,17 @@ bool LongSound::IsPlaying()
   if (GetPlayingState() == AL_PLAYING)
     return true;
 
-
   return false;
 }
 
 LongSound::LongSound(const char* filename)
 {
   alGenSources(1, &p_Source);
+  local_alErrorCheck();
 
   alGenBuffers(BUFFER_COUNT, p_Buffers);
+  local_alErrorCheck();
+
   std::size_t frame_size;
 
   p_Sndfile = sf_open(filename, SFM_READ, &p_Sfinfo);
@@ -244,6 +213,9 @@ LongSound::LongSound(const char* filename)
 
 LongSound::~LongSound()
 {
+  if (IsPlaying())
+    Stop();
+
   //routine: delete all buffer data and snd file stuff
   //close player file
   if (p_Sndfile)
