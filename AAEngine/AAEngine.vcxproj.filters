@@ -111,7 +111,7 @@
     <ClInclude Include="include\AncientArcher\Utility\Files.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\Sound\SoundErrorCheck.h">
+    <ClInclude Include="src\Sound\ErrorCheck.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="src\Utility\Conversions.h">

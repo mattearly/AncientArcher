@@ -1,5 +1,5 @@
 #include "Speaker.h"
-#include "SoundErrorCheck.h"
+#include "ErrorCheck.h"
 #include <vector>
 #include <AL\al.h>
 //#include <sndfile.h>
@@ -43,132 +43,132 @@
 namespace AA
 {
 
-void Speaker::Play(const ALuint buf)
-{
-  if (buf != p_LastPlayedBuffer)
-  {
-    if (isPlaying())
-      alSourceStop(p_Source);
-    p_LastPlayedBuffer = buf;
-    alSourcei(p_Source, AL_BUFFER, p_LastPlayedBuffer);
-  }
-
-  alSourcePlay(p_Source);
-
-  std::cout << ErrorCheck(alGetError()) << '\n';
-}
-
-void Speaker::PlayInterrupt(const ALuint buf)
-{
-  if (isPlaying())
+void Speaker::PlayInterrupt() {
+  if (isPlaying()) {
     alSourceStop(p_Source);
-  Play(buf);
+    local_alErrorCheck();
+  }
+  alSourcePlay(p_Source);
+  local_alErrorCheck();
 }
 
-void Speaker::PlayNoOverlap(const ALuint buf)
-{
+void Speaker::PlayNoOverlap() {
   if (isPlaying())
     return;
-  Play(buf);
+  alSourcePlay(p_Source);
+  local_alErrorCheck();
 }
 
-void Speaker::SetPosition(const float& x, const float& y, const float& z) {
-  SetLocation(x, y, z);
+void Speaker::StopPlay() {
+  if (isPlaying()){
+    alSourceStop(p_Source);
+    local_alErrorCheck();
+    }
 }
 
-void Speaker::SetLocation(const float& x, const float& y, const float& z) {
-  alSource3f(p_Source, AL_POSITION, x, y, z);
-
-  if (alGetError() != AL_NO_ERROR)
+void Speaker::AssociateBuffer(const ALuint& buffer) {
+  if (!p_BufferSet)
   {
-    throw("error setting short sound location");
-
+    alSourcei(p_Source, AL_BUFFER, buffer);
+    local_alErrorCheck();
+    p_BufferSet = true;
+    return;
   }
+  throw("buffer already set, changing not supported");
 }
+//
+//void Speaker::SetPosition(const float& x, const float& y, const float& z) {
+//  SetLocation(x, y, z);
+//}
+//
+//void Speaker::SetLocation(const float& x, const float& y, const float& z) {
+//  alSource3f(p_Source, AL_POSITION, x, y, z);
+//  local_alErrorCheck();
+//}
+//
+//void Speaker::SetPosition(const glm::vec3& loc)
+//{
+//  SetLocation(loc);
+//}
+//
+//void Speaker::SetLocation(const glm::vec3& loc)
+//{
+//  alSource3f(p_Source, AL_POSITION, loc.x, loc.y, loc.z);
+//  if (alGetError() != AL_NO_ERROR)
+//  {
+//    throw("error setting short sound Location");
+//  }
+//}
+//
+//void Speaker::SetVelocity(float velocity)
+//{
+//  alSourcef(p_Source, AL_VELOCITY, velocity);
+//  if (alGetError() != AL_NO_ERROR)
+//  {
+//    throw("error setting short sound velocity");
+//  }
+//}
+//
+//void Speaker::SetDirection(const float& x, const float& y, const float& z)
+//{
+//  alSource3f(p_Source, AL_DIRECTION, x, y, z);
+//  if (alGetError() != AL_NO_ERROR)
+//  {
+//    throw("error setting short sound direction");
+//  }
+//}
+//
+//void Speaker::SetDirection(const glm::vec3& dir)
+//{
+//  SetDirection(dir.x, dir.y, dir.z);
+//}
+//
+//void Speaker::SetVolume(const float gain)
+//{
+//  float newvol = 0;
+//  if (gain < 0.f)
+//  {
+//    newvol = 0;
+//  }
+//  else
+//  {
+//    newvol = gain;
+//  }
+//
+//  alSourcef(p_Source, AL_GAIN, newvol);
+//
+//  std::cout << ErrorCheck(alGetError()) << '\n';
+//
+//  //if (alGetError() != AL_NO_ERROR)
+//  //{
+//  //	throw("error setting short sound volume");
+//  //}
+//}
+//
+//void Speaker::SetLooping(const bool& opt)
+//{
+//  alSourcei(p_Source, AL_LOOPING, (ALint)opt);
+//  if (alGetError() != AL_NO_ERROR)
+//  {
+//    throw("error setting short sound looping status");
+//  }
+//}
+//
+///// <summary>
+///// determines if the positions are relative to the listener
+///// </summary>
+///// <param name="opt"></param>
+//void Speaker::SetRelative(const bool& opt)
+//{
+//  alSourcei(p_Source, AL_SOURCE_RELATIVE, (ALint)opt);
+//  if (alGetError() != AL_NO_ERROR)
+//  {
+//    throw("error setting short sound relative");
+//  }
+//}
 
-void Speaker::SetPosition(const glm::vec3& loc)
-{
-  SetLocation(loc);
-}
-
-void Speaker::SetLocation(const glm::vec3& loc)
-{
-  alSource3f(p_Source, AL_POSITION, loc.x, loc.y, loc.z);
-  if (alGetError() != AL_NO_ERROR)
-  {
-    throw("error setting short sound Location");
-  }
-}
-
-void Speaker::SetVelocity(float velocity)
-{
-  alSourcef(p_Source, AL_VELOCITY, velocity);
-  if (alGetError() != AL_NO_ERROR)
-  {
-    throw("error setting short sound velocity");
-  }
-}
-
-void Speaker::SetDirection(const float& x, const float& y, const float& z)
-{
-  alSource3f(p_Source, AL_DIRECTION, x, y, z);
-  if (alGetError() != AL_NO_ERROR)
-  {
-    throw("error setting short sound direction");
-  }
-}
-
-void Speaker::SetDirection(const glm::vec3& dir)
-{
-  SetDirection(dir.x, dir.y, dir.z);
-}
-
-void Speaker::SetVolume(const float gain)
-{
-  float newvol = 0;
-  if (gain < 0.f)
-  {
-    newvol = 0;
-  }
-  else
-  {
-    newvol = gain;
-  }
-
-  alSourcef(p_Source, AL_GAIN, newvol);
-
-  std::cout << ErrorCheck(alGetError()) << '\n';
-
-  //if (alGetError() != AL_NO_ERROR)
-  //{
-  //	throw("error setting short sound volume");
-  //}
-}
-
-void Speaker::SetLooping(const bool& opt)
-{
-  alSourcei(p_Source, AL_LOOPING, (ALint)opt);
-  if (alGetError() != AL_NO_ERROR)
-  {
-    throw("error setting short sound looping status");
-  }
-}
-
-/// <summary>
-/// determines if the positions are relative to the listener
-/// </summary>
-/// <param name="opt"></param>
-void Speaker::SetRelative(const bool& opt)
-{
-  alSourcei(p_Source, AL_SOURCE_RELATIVE, (ALint)opt);
-  if (alGetError() != AL_NO_ERROR)
-  {
-    throw("error setting short sound relative");
-  }
-}
-
-Speaker::Speaker()
-{
+Speaker::Speaker(){
+  //reset();
   float pitch = 1.f;
   float gain = 1.f;
   float position[3] = { 0,0,0 };
@@ -176,16 +176,30 @@ Speaker::Speaker()
   bool loop = false;
 
   alGenSources(1, &p_Source);
+  local_alErrorCheck();
+
   alSourcef(p_Source, AL_PITCH, pitch);
+  local_alErrorCheck();
+
   alSourcef(p_Source, AL_GAIN, gain);
+  local_alErrorCheck();
+
   alSource3f(p_Source, AL_POSITION, position[0], position[1], position[2]);
+  local_alErrorCheck();
+
   alSource3f(p_Source, AL_VELOCITY, velocity[0], velocity[1], velocity[2]);
+  local_alErrorCheck();
+
   alSourcei(p_Source, AL_LOOPING, (ALint)loop);
-  alSourcei(p_Source, AL_BUFFER, p_LastPlayedBuffer);
-  if (alGetError() != AL_NO_ERROR)
-  {
-    throw("error setting short sound data");
-  }
+  local_alErrorCheck();
+
+  //alSourcei(p_Source, AL_BUFFER, p_LastPlayedBuffer);
+}
+
+Speaker::Speaker(const Speaker& old_speaker)
+{
+  p_Source = old_speaker.p_Source;
+  p_BufferSet = old_speaker.p_BufferSet;
 }
 
 Speaker::~Speaker()
@@ -193,10 +207,17 @@ Speaker::~Speaker()
   alDeleteSources(1, &p_Source);
 }
 
+Speaker& Speaker::operator = (const Speaker &t)
+{
+  return *this;
+}
+
 bool Speaker::isPlaying()
 {
   ALint play_status;
   alGetSourcei(p_Source, AL_SOURCE_STATE, &play_status);
+  local_alErrorCheck();
+
   return (play_status == AL_PLAYING);
 }
 

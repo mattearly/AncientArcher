@@ -12,35 +12,35 @@ namespace AA
 class Speaker : public UniqueInstance
 {
 public:
-  void Play(const ALuint buffer);
-  void PlayInterrupt(const ALuint buf);
-  void PlayNoOverlap(const ALuint buf);
+  void PlayInterrupt();
+  void PlayNoOverlap();
+  void StopPlay();
+  void AssociateBuffer(const ALuint& buffer);
 
-  void SetPosition(const float& x, const float& y, const float& z);
-  void SetPosition(const glm::vec3& loc);
-  void SetLocation(const float& x, const float& y, const float& z);
-  void SetLocation(const glm::vec3& loc);
+  //void SetPosition(const float& x, const float& y, const float& z);
+  //void SetPosition(const glm::vec3& loc);
+  //void SetLocation(const float& x, const float& y, const float& z);
+  //void SetLocation(const glm::vec3& loc);
 
-  void SetVelocity(float velocity);
+  //void SetVelocity(float velocity);
 
-  void SetDirection(const float& x, const float& y, const float& z);
-  void SetDirection(const glm::vec3& dir);
+  //void SetDirection(const float& x, const float& y, const float& z);
+  //void SetDirection(const glm::vec3& dir);
 
-  void SetVolume(const float gain);
+  //void SetVolume(const float gain);
 
-  void SetLooping(const bool& opt);
-  void SetRelative(const bool& opt);
+  //void SetLooping(const bool& opt);
+  //void SetRelative(const bool& opt);
 
   Speaker();
+  Speaker(const Speaker &old_speaker); // copy
+  Speaker& operator = (const Speaker &t);
   ~Speaker();
 
 private:
-
-  ALuint p_Source;
-  ALuint p_LastPlayedBuffer = 0;
-
   bool isPlaying();
-
+  bool   p_BufferSet = false;
+  ALuint p_Source = 0;
 };
 
 } // end namespace AA
