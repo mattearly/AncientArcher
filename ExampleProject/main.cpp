@@ -7,6 +7,7 @@
 #include "soundeffects.h"
 int main()
 {
+  std::cout << "Running Version: " << AA::ENGINEVERSIONMAJOR << '.' << AA::ENGINEVERSIONMINOR << '.' << AA::ENGINEVERSIONPATCH << '\n';
   AA::InitEngine();
   AA::SetClearColor(glm::vec3(0));
   static int ourcam = AA::AddCamera(AA::GetWindowWidth(), AA::GetWindowHeight());
