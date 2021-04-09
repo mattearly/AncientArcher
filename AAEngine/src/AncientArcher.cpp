@@ -15,6 +15,7 @@
 #include "Sound/SoundDevice.h"
 #include "Sound/Speaker.h"
 #include "Sound/SoundEffect.h"
+#include "Sound/LongSound.h"
 #include <glad/glad.h>
 #include <GLFW/glfw3.h>
 #include <string>
@@ -83,12 +84,6 @@ bool isFPP() noexcept
 {
   return (mMouseReporting == MouseReporting::PERSPECTIVE &&
     glfwGetInputMode(mWindow, GLFW_CURSOR) == GLFW_CURSOR_DISABLED);
-}
-
-LongSound& GetMusic()
-{
-  assert(mMusic);
-  return *mMusic;
 }
 
 int AddCamera(int w, int h)
@@ -683,11 +678,34 @@ void RemoveSoundEffect(int soundId)
     throw("didn't remove anything");
 }
 
-void ChangeMusic(const char* path)
+void AddMusic(const char* path)
 {
-  if (!mMusic)
+  if (!mMusic) {
     mMusic = new LongSound(path);
+    //mMusic->m_SlowUpdateLoopId = AA::AddToSlowUpdate([]() { mMusic->UpdatePlayBuffer(); });
+  }
 }
+
+void RemoveMusic()
+{
+  if (mMusic) {
+    //AA::RemoveFromSlowUpdate(mMusic->m_SlowUpdateLoopId);
+    delete mMusic;
+    mMusic = NULL;
+    return;
+  }
+  throw("no music to remove");
+}
+
+void PlayMusic()
+{
+  if (mMusic) {
+    mMusic->Play();
+    return;
+  }
+  throw("no music to play");
+}
+
 
 // todo: make a managed AddSkybox instead
 void SetSkybox(const std::shared_ptr<Skybox>& skybox) noexcept
@@ -1880,8 +1898,15 @@ void deltaUpdate()
     {
       oSU.second();
     }
-
     mSlowUpdateTimeout = 0.f;
+  }
+
+  if (mMusic) {
+    static float reBufferCD = 0.f;
+    reBufferCD += elapsedTime;
+    if (reBufferCD > 1.03f) {  //todo(maybe): math with file size and stuff to figure out how long this cd should actually be
+      mMusic->UpdatePlayBuffer();
+    }
   }
 
   // needs updated, we'll use it in update with keyboard functions before the AncientArcher is done.
@@ -1989,14 +2014,19 @@ void teardown()
     ModelLoader::UnloadGameObject(p.mMeshes);  // todo: consider moving to the destructor the prop
   }
 
-  for (const auto& spkr : mSpeakers)
-  {
+  for (auto& spkr : mSpeakers) {
     delete spkr;
+    spkr = NULL;
   }
 
-  for (const auto& se : mSoundEffects)
-  {
+  for (auto& se : mSoundEffects) {
     delete se;
+    se = NULL;
+  }
+
+  if (mMusic) {
+    delete mMusic;
+    mMusic = NULL;
   }
 
   if (mLitShader) mLitShader->deleteShader();
@@ -2009,6 +2039,7 @@ void resetEngine() noexcept
   // process anything the user Requested and unload all meshes and textures
   teardown();
 
+  mMusic = NULL;
   mCameras.clear();
   mProps.clear();
   onBegin.clear();

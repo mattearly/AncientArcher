@@ -1,6 +1,5 @@
 #pragma once
 #include "../../src/Renderer/OpenGL/Skybox.h"
-#include "../../src/Sound/LongSound.h"
 #include "../../src/Controls/KeyboardInput.h"
 #include "../../src/Controls/MouseInput.h"
 #include "../../src/Controls/ScrollInput.h"
@@ -76,7 +75,11 @@ void PlaySoundEffect(int id, bool interrupt = true);
 void RemoveSoundEffect(int id);
 // End Sound Effects
 
-void ChangeMusic(const char* path);
+// Music
+void AddMusic(const char* path);
+void PlayMusic();
+// End Music
+
 
 void SetSkybox(const std::shared_ptr<Skybox>& skybox) noexcept;
 
@@ -102,7 +105,6 @@ bool RemoveFromTeardown(uint32_t r_id);
 void SetSlowUpdateTimeoutLength(const float& newtime);
 void SetCursorToEnabled(bool isHardwareRendered = false);
 
-LongSound& GetMusic();
 int GetWindowWidth() noexcept;
 int GetWindowHeight() noexcept;
 GLFWwindow* GetWindow() noexcept;

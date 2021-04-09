@@ -5,6 +5,7 @@
 #include "setskybox.h"
 #include "flashlight.h"
 #include "soundeffects.h"
+#include "talking.h"
 int main()
 {
   std::cout << "Running Version: " << AA::ENGINEVERSIONMAJOR << '.' << AA::ENGINEVERSIONMINOR << '.' << AA::ENGINEVERSIONPATCH << '\n';
@@ -15,6 +16,7 @@ int main()
   setskybox();
   setupflashlight(ourcam);
   setupsoundeffects();
+  addbackgroundtalking();
   static int peasant_man = AA::AddProp("..\\ExampleProject\\res\\peasant_man.dae", ourcam, true);
   //static int test_zone = AA::AddProp("E:\\storage\\3d Models\\grass_plain.dae", ourcam, true);
   const float dist_from_us = 90.f;
