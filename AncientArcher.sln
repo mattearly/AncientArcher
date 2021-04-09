@@ -7,6 +7,8 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "AAEngine", "AAEngine\AAEngi
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "ExampleProject", "ExampleProject\ExampleProject.vcxproj", "{791F62CF-AFD9-4D64-8581-D27F039F7C3A}"
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "BaseRun", "BaseRun\BaseRun.vcxproj", "{1F2A1E96-74B5-4333-8E54-FF4A56677F69}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|x64 = Debug|x64
@@ -21,6 +23,10 @@ Global
 		{791F62CF-AFD9-4D64-8581-D27F039F7C3A}.Debug|x64.Build.0 = Debug|x64
 		{791F62CF-AFD9-4D64-8581-D27F039F7C3A}.Release|x64.ActiveCfg = Release|x64
 		{791F62CF-AFD9-4D64-8581-D27F039F7C3A}.Release|x64.Build.0 = Release|x64
+		{1F2A1E96-74B5-4333-8E54-FF4A56677F69}.Debug|x64.ActiveCfg = Debug|x64
+		{1F2A1E96-74B5-4333-8E54-FF4A56677F69}.Debug|x64.Build.0 = Debug|x64
+		{1F2A1E96-74B5-4333-8E54-FF4A56677F69}.Release|x64.ActiveCfg = Release|x64
+		{1F2A1E96-74B5-4333-8E54-FF4A56677F69}.Release|x64.Build.0 = Release|x64
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
