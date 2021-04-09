@@ -204,6 +204,7 @@ Speaker::Speaker(const Speaker& old_speaker)
 
 Speaker::~Speaker()
 {
+  StopPlay();
   alDeleteSources(1, &p_Source);
 }
 
