@@ -24,6 +24,7 @@
 #include <chrono>
 #include <iostream>
 #include <algorithm>
+#include <unordered_map>
 
 namespace AA
 {
@@ -38,16 +39,15 @@ float mNoSpamWaitLength;         ///< how long the non-spammable keys are to tim
 float mSlowUpdateTimeout;        ///< keeps track of how how long the slow update has been timed out
 float mSlowUpdateWaitLength;     ///< ms length the slow update times out for at least
 
-DirectionalLight* mDirectionalLight;        ///< directional light for lit shader(s)
-std::vector<SpotLight>   mSpotLights;              ///< array of current spot lights
-std::vector<PointLight>  mPointLights;             ///< array of current point lights
-std::vector<Camera>      mCameras;                 ///< array of available cameras
-std::vector<Prop>        mProps;                   ///< array of available objects
-LongSound* mMusic;                   ///< background music
-std::vector<Speaker>     mSpeakers;                ///< array of places to play sound effects from
-//std::vector<std::string> mLoadedSoundEffectPaths;  ///< array of paths to laoded sounds(so we don't load twice)
-std::vector<SoundEffect> mSoundEffects;            ///< array of ready sound effects
-std::shared_ptr<Skybox>  mSkybox;                  ///< the main skybox
+DirectionalLight* mDirectionalLight; ///< directional light for lit shader(s)
+std::vector<SpotLight>                      mSpotLights;       ///< array of current spot lights
+std::vector<PointLight>                     mPointLights;      ///< array of current point lights
+std::vector<Camera>                         mCameras;          ///< array of available cameras
+std::vector<Prop>                           mProps;            ///< array of available objects
+LongSound* mMusic;            ///< background music
+std::vector<Speaker*>                        mSpeakers;         ///< array of places to play sound effects from
+std::vector<SoundEffect*>                    mSoundEffects;     ///< array of ready speaker id to sound effects
+std::shared_ptr<Skybox>                     mSkybox;           ///< the main skybox
 
 std::unordered_map<uint32_t, std::function<void()> >               onBegin;               ///< list of functions to run once when runMainAncientArcher is called
 std::unordered_map<uint32_t, std::function<void(float)> >          onDeltaUpdate;         ///< list of functions that rely on deltatime in the main AncientArcher
@@ -89,32 +89,6 @@ LongSound& GetMusic()
 {
   assert(mMusic);
   return *mMusic;
-}
-
-void PlaySoundEffect(int speakerId, int soundId, bool interrupt)
-{
-  if (mSpeakers.empty())
-    throw("no speakers");
-
-  for (auto& s : mSpeakers) {
-    if (s.GetUID() == speakerId) {
-      for (auto& se : mSoundEffects) {
-        if (se.GetUID() == soundId) {
-          if (interrupt) {
-            s.PlayInterrupt(se._Buffer);
-            return;
-          }
-          s.PlayNoOverlap(se._Buffer);
-          return;
-        }
-      }
-    }
-  }
-
-  throw("sound or speaker not found");
-
-  //todo: operate on sound id
-  //mSpeakers[speaker_id].PlayNoOverlap(mLoadedSoundEffects[effect_id].id);
 }
 
 int AddCamera(int w, int h)
@@ -656,85 +630,56 @@ bool RemoveSpotLight(int which_by_id)
     return false;
 }
 
-/// <summary>
-/// adds a new sound effect buffer ready fro playback
-/// </summary>
-/// <param name="path">logical path to the sound effect file</param>
-/// <returns>-1 if already loaded, -2 if failed to load, else returns the location in the vector </returns>
-int AddSoundEffect(const char* path)
-{
-  //SoundDevice::Init();  // should init with InitEngine() already
+int AddSoundEffect(const char* path) {
+  // make sure the sound effect hasn't already been loaded
   for (const auto& pl : mSoundEffects) {
-    if (path == pl._FilePath.c_str())
+    if (path == pl->_FilePath.c_str())
       throw("sound from that path already loaded");
   }
+  // Add a new sound effect
+  mSoundEffects.reserve(mSoundEffects.size()+1);
+  mSoundEffects.push_back(new SoundEffect(path));
 
-  mSoundEffects.emplace_back(path);
+  // Add a new speaker
+  mSpeakers.reserve(mSpeakers.size()+1);
+  mSpeakers.emplace_back(new Speaker());  //test, note, todo: same sound effects can be applied to multiple speakers
 
-  //mLoadedSoundEffectPaths.emplace_back(path);  // update list of loaded sounds
+  // Associate the sound effect to the speaker.
+  mSpeakers.back()->AssociateBuffer(mSoundEffects.back()->_Buffer);
 
-  return mSoundEffects.back().GetUID();
+  // return the unique ID of the speaker
+  return mSpeakers.back()->GetUID();
+}
 
-  //uint32_t tmp_id = ShortSound::AddShortSound(path);
-  //if (tmp_id != 0)
-  //{  //todo: operate on ids
-  //  SoundEffect e;
-  //  e.id = tmp_id;
-  //  e.path = path;
-  //  mLoadedSoundEffects.push_back(e);
-  //  return static_cast<int>(mLoadedSoundEffects.size() - 1);  // the index into mSoundEffectBuffers 
-  //}
-  //else
-  //{
-  //  return -2;  // failed to load
-  //}
+void PlaySoundEffect(int id, bool interrupt) {
+  if (mSpeakers.empty())
+    throw("no speakers");
 
-  //return -3;  // should never get here
+  for (auto& spkr : mSpeakers)
+  {
+    if (spkr->GetUID() == id) {
+      if (interrupt) {
+        spkr->PlayInterrupt();
+        return;
+      }
+      spkr->PlayNoOverlap();
+    }
+  }
+
+  throw("speaker not found");
 }
 
 void RemoveSoundEffect(int soundId)
 {
-  //todo: operate on ids
-  //bool success = false;
-  //success = ShortSound::RemoveShortSound(mLoadedSoundEffects[soundId].id);
-  //if (success)
-  //{
-  //  mLoadedSoundEffects.erase(mLoadedSoundEffects.begin() + soundId);
-  //}
   if (mSoundEffects.empty())
     throw("no sounds exist, nothing to remove");
 
   auto before_size = mSoundEffects.size();
 
-  /*auto ret_it = */mSoundEffects.erase(
-    std::remove_if(mSoundEffects.begin(), mSoundEffects.end(), [&](SoundEffect se) { return se.GetUID() == soundId; }),
-    mSoundEffects.end());
-
   auto after_size = mSoundEffects.size();
 
   if (before_size == after_size)
     throw("didn't remove anything");
-
-}
-
-
-int AddSpeaker()
-{
-  //mSpeakers.resize(mSpeakers.size() + 1);
-  //return static_cast<int>(mSpeakers.size() - 1);
-  mSpeakers.emplace_back();
-  return mSpeakers.back().GetUID();
-}
-
-void ChangeSpeakerVolume(int speakerId, float new_vol)
-{
-  for (auto& s : mSpeakers)
-  {
-    if (s.GetUID() == speakerId)
-    {
-      s.SetVolume(new_vol);
-    }
-  }
 }
 
 void ChangeMusic(const char* path)
