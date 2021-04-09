@@ -34,6 +34,6 @@ Use Windows MSVC16, x64. Visual Studio 2019 Community Edition.
 
 ## Run
 
-AAEngine : the core static library
-BaseRun  : a base application with AAEngine linked
-ExampleProject : a base fps project with AAEngine linked
+- AAEngine : the core static library
+- BaseRun  : a base application with AAEngine linked
+- ExampleProject : a base fps project with AAEngine linked
