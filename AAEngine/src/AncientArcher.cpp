@@ -1988,6 +1988,18 @@ void teardown()
     ModelLoader::UnloadGameObject(p.mMeshes);  // todo: consider moving to the destructor the prop
   }
 
+
+
+  for (const auto& spkr : mSpeakers)
+  {
+    delete spkr;
+  }
+
+  for (const auto& se : mSoundEffects)
+  {
+    delete se;
+  }
+
   if (mLitShader) mLitShader->deleteShader();
   if (mDiffShader) mDiffShader->deleteShader();
 
