@@ -663,6 +663,7 @@ void PlaySoundEffect(int id, bool interrupt) {
         return;
       }
       spkr->PlayNoOverlap();
+      return;
     }
   }
 
