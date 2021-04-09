@@ -637,11 +637,11 @@ int AddSoundEffect(const char* path) {
       throw("sound from that path already loaded");
   }
   // Add a new sound effect
-  mSoundEffects.reserve(mSoundEffects.size()+1);
+  mSoundEffects.reserve(mSoundEffects.size() + 1);
   mSoundEffects.push_back(new SoundEffect(path));
 
   // Add a new speaker
-  mSpeakers.reserve(mSpeakers.size()+1);
+  mSpeakers.reserve(mSpeakers.size() + 1);
   mSpeakers.emplace_back(new Speaker());  //test, note, todo: same sound effects can be applied to multiple speakers
 
   // Associate the sound effect to the speaker.
@@ -1988,8 +1988,6 @@ void teardown()
     ModelLoader::UnloadGameObject(p.mMeshes);  // todo: consider moving to the destructor the prop
   }
 
-
-
   for (const auto& spkr : mSpeakers)
   {
     delete spkr;
@@ -2003,10 +2001,6 @@ void teardown()
   if (mLitShader) mLitShader->deleteShader();
   if (mDiffShader) mDiffShader->deleteShader();
 
-  //for (const auto& ss : mLoadedSoundEffects)
-  //{
-  //  ShortSound::RemoveShortSound(ss.id);
-  //}
 }
 
 void resetEngine() noexcept
@@ -2016,7 +2010,6 @@ void resetEngine() noexcept
 
   mCameras.clear();
   mProps.clear();
-  //mLoadedSoundEffects.clear();
   onBegin.clear();
   onDeltaUpdate.clear();
   onKeyHandling.clear();

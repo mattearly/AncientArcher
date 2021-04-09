@@ -7,36 +7,36 @@ class LongSound
 {
 public:
 
-	LongSound(const char* filename);
-	~LongSound();
+  LongSound(const char* filename);
+  ~LongSound();
 
-	void Play();
-	void Pause();
-	void Resume();
-	void Stop();
+  void Play();
+  void Pause();
+  void Resume();
+  void Stop();
 
-	void SetVolume(const float& val);
+  void SetVolume(const float& val);
 
-	void UpdatePlayBuffer();
+  void UpdatePlayBuffer();
 
-	ALint GetPlayingState();
-	bool IsPlaying();
+  ALint GetPlayingState();
+  bool IsPlaying();
 
 private:
 
-	static const constexpr int BUFFER_COUNT = 4;
-	static const constexpr int BUFFER_SAMPLES = 8192;
-	
-	//uint32_t p_SlowUpdateLoopId;
+  static const constexpr int BUFFER_COUNT = 4;
+  static const constexpr int BUFFER_SAMPLES = 8192;
 
-	ALuint p_Source;
-	ALuint p_Buffers[BUFFER_COUNT];
-	SNDFILE* p_Sndfile;
-	SF_INFO p_Sfinfo;
-	short* p_Membuf;
-	ALenum p_Format;
+  //uint32_t p_SlowUpdateLoopId;
 
-	LongSound() = delete;
+  ALuint p_Source;
+  ALuint p_Buffers[BUFFER_COUNT];
+  SNDFILE* p_Sndfile;
+  SF_INFO p_Sfinfo;
+  short* p_Membuf;
+  ALenum p_Format;
+
+  LongSound() = delete;
 };
 
 }

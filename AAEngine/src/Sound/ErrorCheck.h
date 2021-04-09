@@ -2,7 +2,7 @@
 #include <string>
 #include <AL/al.h>
 namespace AA {
-static void local_alErrorCheck(){
+static void local_alErrorCheck() {
   auto error = alGetError();
   switch (error) {
   case AL_INVALID_NAME:

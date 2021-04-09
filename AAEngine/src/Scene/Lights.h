@@ -6,37 +6,37 @@ namespace AA
 // todo: something better with these limitation holders
 
 struct DirectionalLight {
-	DirectionalLight(glm::vec3 dir, glm::vec3 amb, glm::vec3 diff, glm::vec3 spec);
-	glm::vec3 Direction, Ambient, Diffuse, Specular;
+  DirectionalLight(glm::vec3 dir, glm::vec3 amb, glm::vec3 diff, glm::vec3 spec);
+  glm::vec3 Direction, Ambient, Diffuse, Specular;
 private:
-	DirectionalLight() = delete;
+  DirectionalLight() = delete;
 };
 
 struct PointLight {
-	PointLight(glm::vec3 pos, float constant, float linear, float quad, glm::vec3 amb,
-		glm::vec3 diff, glm::vec3 spec);
+  PointLight(glm::vec3 pos, float constant, float linear, float quad, glm::vec3 amb,
+    glm::vec3 diff, glm::vec3 spec);
 
-	glm::vec3 Position;
-	float Constant, Linear, Quadratic;
-	glm::vec3 Ambient, Diffuse, Specular;
+  glm::vec3 Position;
+  float Constant, Linear, Quadratic;
+  glm::vec3 Ambient, Diffuse, Specular;
 
-	int id;
+  int id;
 private:
-	PointLight() = delete;
+  PointLight() = delete;
 };
 
 struct SpotLight {
-	SpotLight(glm::vec3 pos, glm::vec3 dir, float inner, float outer, float constant,
-		float linear, float quad, glm::vec3 amb, glm::vec3 diff, glm::vec3 spec);
-	glm::vec3 Position, Direction;
-	float CutOff, OuterCutOff;
-	float Constant, Linear, Quadratic;
-	glm::vec3 Ambient, Diffuse, Specular;
+  SpotLight(glm::vec3 pos, glm::vec3 dir, float inner, float outer, float constant,
+    float linear, float quad, glm::vec3 amb, glm::vec3 diff, glm::vec3 spec);
+  glm::vec3 Position, Direction;
+  float CutOff, OuterCutOff;
+  float Constant, Linear, Quadratic;
+  glm::vec3 Ambient, Diffuse, Specular;
 
-	int id;
+  int id;
 
 private:
-	SpotLight() = delete;
+  SpotLight() = delete;
 };
 
 }  // end namespace AA

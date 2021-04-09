@@ -60,10 +60,10 @@ void Speaker::PlayNoOverlap() {
 }
 
 void Speaker::StopPlay() {
-  if (isPlaying()){
+  if (isPlaying()) {
     alSourceStop(p_Source);
     local_alErrorCheck();
-    }
+  }
 }
 
 void Speaker::AssociateBuffer(const ALuint& buffer) {
@@ -167,7 +167,7 @@ void Speaker::AssociateBuffer(const ALuint& buffer) {
 //  }
 //}
 
-Speaker::Speaker(){
+Speaker::Speaker() {
   //reset();
   float pitch = 1.f;
   float gain = 1.f;
@@ -208,7 +208,7 @@ Speaker::~Speaker()
   alDeleteSources(1, &p_Source);
 }
 
-Speaker& Speaker::operator = (const Speaker &t)
+Speaker& Speaker::operator = (const Speaker& t)
 {
   return *this;
 }

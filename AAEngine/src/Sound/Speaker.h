@@ -33,8 +33,8 @@ public:
   //void SetRelative(const bool& opt);
 
   Speaker();
-  Speaker(const Speaker &old_speaker); // copy
-  Speaker& operator = (const Speaker &t);
+  Speaker(const Speaker& old_speaker); // copy
+  Speaker& operator = (const Speaker& t);
   ~Speaker();
 
 private:

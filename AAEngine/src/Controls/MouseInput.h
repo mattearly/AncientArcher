@@ -3,7 +3,7 @@ namespace AA
 {
 struct MouseInput
 {
-	float xOffset;
-	float yOffset;
+  float xOffset;
+  float yOffset;
 };
 }

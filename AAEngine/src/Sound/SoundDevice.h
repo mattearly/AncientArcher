@@ -11,29 +11,29 @@ namespace AA {
 class SoundDevice
 {
 public:
-	static SoundDevice* Get();
-	static void Init();
-	static void Init(const char* devicename);
+  static SoundDevice* Get();
+  static void Init();
+  static void Init(const char* devicename);
 
-	void SwitchDevice(const char* devicename);
+  void SwitchDevice(const char* devicename);
 
-	void PopulateDeviceVec(std::vector<std::string>& devicesVec);
+  void PopulateDeviceVec(std::vector<std::string>& devicesVec);
 
 
 
-	void SuspendContext();
-	void ResumeContext();
+  void SuspendContext();
+  void ResumeContext();
 
 protected:
-	SoundDevice();
-	SoundDevice(const char* devicename);
-	~SoundDevice();
+  SoundDevice();
+  SoundDevice(const char* devicename);
+  ~SoundDevice();
 
 private:
 
 
-	ALCdevice* p_ALCDevice;
-	ALCcontext* p_ALCContext;
+  ALCdevice* p_ALCDevice;
+  ALCcontext* p_ALCContext;
 
 };
 

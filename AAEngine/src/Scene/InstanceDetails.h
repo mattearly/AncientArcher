@@ -6,20 +6,20 @@ namespace AA
 {
 struct InstanceDetails
 {
-	void calcModelMatrix();
+  void calcModelMatrix();
 
-	InstanceDetails();
-	InstanceDetails(glm::vec3 scale, glm::vec3 rot, glm::vec3 transl);
+  InstanceDetails();
+  InstanceDetails(glm::vec3 scale, glm::vec3 rot, glm::vec3 transl);
 
-	// UpdateModelMatrix uses these
-	glm::vec3 Scale = glm::vec3(1);
-	glm::vec3 Rotation = glm::vec3(0); // radians on each of xyz
-	glm::vec3 Translate = glm::vec3(0);
+  // UpdateModelMatrix uses these
+  glm::vec3 Scale = glm::vec3(1);
+  glm::vec3 Rotation = glm::vec3(0); // radians on each of xyz
+  glm::vec3 Translate = glm::vec3(0);
 
-	// final result
-	glm::mat4 ModelMatrix = glm::mat4(1);
+  // final result
+  glm::mat4 ModelMatrix = glm::mat4(1);
 
-	// for if the unit has collision
-	ColliderSphere* mColliderSphere = nullptr;
+  // for if the unit has collision
+  ColliderSphere* mColliderSphere = nullptr;
 };
 }  // end namespace AA

@@ -7,10 +7,10 @@ namespace AA
 class WorldSettings
 {
 public:
-	static WorldSettings* Get();
-	glm::vec3 GetUpDir() {return mWorldUp; };
+  static WorldSettings* Get();
+  glm::vec3 GetUpDir() { return mWorldUp; };
 private:
-	WorldSettings();
-	glm::vec3 mWorldUp;
+  WorldSettings();
+  glm::vec3 mWorldUp;
 };
 } // end namespace AA

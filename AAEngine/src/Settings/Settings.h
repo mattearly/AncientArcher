@@ -5,13 +5,13 @@ namespace AA
 class Settings
 {
 public:
-	static Settings* Get();
-	SettingsOptions GetOptions();
-	void SetOptions(SettingsOptions opt) noexcept;
-	void ResetSettings();
+  static Settings* Get();
+  SettingsOptions GetOptions();
+  void SetOptions(SettingsOptions opt) noexcept;
+  void ResetSettings();
 private:
-	Settings();
+  Settings();
 
-	SettingsOptions mOptions;
+  SettingsOptions mOptions;
 };
 } // end namespace AA

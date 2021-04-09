@@ -26,7 +26,7 @@ namespace AA
 
 const int Prop::GetCamId() const noexcept
 {
-	return mCameraID;
+  return mCameraID;
 }
 
 //const int Prop::GetObjectId() const noexcept
@@ -57,10 +57,10 @@ const int Prop::GetCamId() const noexcept
 
 Prop::Prop(const char* path, int camId, bool lit)
 {
-	ModelLoader::LoadGameObjectFromFile(mMeshes, path);
-	//mInstanceDetails.push_back(InstanceDetails());
-	mCameraID = camId;
-	mIsLit = lit;
+  ModelLoader::LoadGameObjectFromFile(mMeshes, path);
+  //mInstanceDetails.push_back(InstanceDetails());
+  mCameraID = camId;
+  mIsLit = lit;
 }
 
 //GameObject::GameObject(const char* path, int camId, bool lit, std::vector<InstanceDetails> details)
@@ -74,7 +74,7 @@ Prop::Prop(const char* path, int camId, bool lit)
 
 void Prop::SetCamera(int id) noexcept
 {
-	mCameraID = id;
+  mCameraID = id;
 }
 
 //void GameObject::SetShader(int id) noexcept
@@ -98,40 +98,40 @@ void Prop::SetCamera(int id) noexcept
 //
 void Prop::draw()
 {
-	if (mCameraID == -1)
-		throw("camera not set for this prop");
+  if (mCameraID == -1)
+    throw("camera not set for this prop");
 
-	OGLGraphics::Render(mMeshes, finalModelMatrix, mIsLit);
+  OGLGraphics::Render(mMeshes, finalModelMatrix, mIsLit);
 }
 
 void Prop::updateFinalModelMatrix()
 {
-	// reset
-	finalModelMatrix = glm::mat4(1);
-	finalModelMatrix = glm::translate(finalModelMatrix, translation);
-	// apply current scale
-	finalModelMatrix = glm::scale(finalModelMatrix, scale);
-	// apply current rotation  (y only)
-	if (eulerRotationY == 0.f)
-		return;
-	if (eulerRotationY < 0.f)
-		eulerRotationY += 360.f;
-	if (eulerRotationY > 360.f)
-		eulerRotationY -= 360.f;
-	finalModelMatrix = glm::rotate(finalModelMatrix, eulerRotationY, glm::vec3(0,1,0));
+  // reset
+  finalModelMatrix = glm::mat4(1);
+  finalModelMatrix = glm::translate(finalModelMatrix, translation);
+  // apply current scale
+  finalModelMatrix = glm::scale(finalModelMatrix, scale);
+  // apply current rotation  (y only)
+  if (eulerRotationY == 0.f)
+    return;
+  if (eulerRotationY < 0.f)
+    eulerRotationY += 360.f;
+  if (eulerRotationY > 360.f)
+    eulerRotationY -= 360.f;
+  finalModelMatrix = glm::rotate(finalModelMatrix, eulerRotationY, glm::vec3(0, 1, 0));
 
-	//glm::quat rotation = rotationAngles;
-	//glm::mat4 tmp_modelMatrix = glm::toMat4(rotation);
-	//finalModelMatrix = glm::toMat4(rotation) * finalModelMatrix;
+  //glm::quat rotation = rotationAngles;
+  //glm::mat4 tmp_modelMatrix = glm::toMat4(rotation);
+  //finalModelMatrix = glm::toMat4(rotation) * finalModelMatrix;
 
-	//const glm::vec3 rot_x = glm::vec3(1,0,0);
-	//const glm::vec3 rot_y = glm::vec3(0,1,0);
-	//const glm::vec3 rot_z = glm::vec3(0,0,1);
-	//glm::quat tmp_quat1 = glm::rotate(rotation, rotationAngles.x, rot_x);
-	//glm::quat tmp_quat2 = glm::rotate(rotation, rotationAngles.y, rot_y);
-	//glm::quat tmp_quat3 = glm::rotate(rotation, rotationAngles.z, rot_z);
-	//rotation = tmp_quat1 * tmp_quat2 * tmp_quat3;
-	//rotation = glm::rotate(rotation, rotationAngles.y, rot_y);
+  //const glm::vec3 rot_x = glm::vec3(1,0,0);
+  //const glm::vec3 rot_y = glm::vec3(0,1,0);
+  //const glm::vec3 rot_z = glm::vec3(0,0,1);
+  //glm::quat tmp_quat1 = glm::rotate(rotation, rotationAngles.x, rot_x);
+  //glm::quat tmp_quat2 = glm::rotate(rotation, rotationAngles.y, rot_y);
+  //glm::quat tmp_quat3 = glm::rotate(rotation, rotationAngles.z, rot_z);
+  //rotation = tmp_quat1 * tmp_quat2 * tmp_quat3;
+  //rotation = glm::rotate(rotation, rotationAngles.y, rot_y);
 
 }
 

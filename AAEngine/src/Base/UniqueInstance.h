@@ -1,6 +1,6 @@
 #pragma once
 #include <iostream>
-namespace AA{
+namespace AA {
 class UniqueInstance
 {
 private:
