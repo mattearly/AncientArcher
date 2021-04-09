@@ -17,7 +17,7 @@ class Prop : public UniqueInstance
 public:
 
   Prop(const char* path, int camId, bool lit);
-  Prop(const char* path, int camId, bool lit, std::vector<InstanceDetails> details);
+  //Prop(const char* path, int camId, bool lit, std::vector<InstanceDetails> details);
   const int GetCamId() const noexcept;
   void SetCamera(int id) noexcept;
 
