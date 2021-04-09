@@ -84,6 +84,7 @@
     <ClInclude Include="fps.h" />
     <ClInclude Include="setskybox.h" />
     <ClInclude Include="soundeffects.h" />
+    <ClInclude Include="talking.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp" />

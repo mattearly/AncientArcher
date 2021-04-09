@@ -27,6 +27,9 @@
     <ClInclude Include="soundeffects.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="talking.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
