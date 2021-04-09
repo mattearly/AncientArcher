@@ -20,18 +20,20 @@ int main()
 
 ## Build Ancient Archer
 
-### OS, Compiler
-
-Compiled on Windows MSVC16, x64. Installing the Visual Studio 2019 Community Edition.
-
 ### Dependencies
 
-glm, assimp, glfw3, glad, OpenAL, sndfile
+glm, assimp, glfw3, glad, OpenAL-Soft, sndfile
 
-#### Installing Dependencies
-
-For ease of use, use vcpkg to install these libraries. The line of code below should get you what you need from vcpkg.
+vcpkg required library install command. The line of code below should get you what you need from vcpkg.
 
 `vcpkg install glm:x64-windows assimp:x64-windows glfw3:x64-windows glad:x64-windows openal-soft:x64-windows libsndfile:x64-windows`
 
-If you don't know how to set up vcpkg, check their repo here: [vcpkg repo](https://github.com/microsoft/vcpkg). Or if you don't want to read and would rather watch, check my [vcpkg tutorial video](https://youtu.be/pSirBt4OgXQ).
+### OS, Compiler, IDE
+
+Use Windows MSVC16, x64. Visual Studio 2019 Community Edition.
+
+## Run
+
+AAEngine : the core static library
+BaseRun  : a base application with AAEngine linked
+ExampleProject : a base fps project with AAEngine linked
