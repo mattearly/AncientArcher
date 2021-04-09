@@ -1,4 +1,5 @@
 #include <AncientArcher/AncientArcher.h>
+#include <AncientArcher/Version.h>
 #include <iostream>
 #include "fps.h"
 #include "setskybox.h"

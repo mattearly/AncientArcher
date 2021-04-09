@@ -87,6 +87,7 @@
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="include\AncientArcher\Version.h" />
     <ClInclude Include="src\Sound\SoundEffect.h" />
     <ClInclude Include="src\Renderer\OpenGL\OGLLights.h" />
     <ClInclude Include="src\Renderer\TextureInfo.h" />
