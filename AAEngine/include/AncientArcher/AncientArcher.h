@@ -77,6 +77,7 @@ void RemoveSoundEffect(int id);
 
 // Music
 void AddMusic(const char* path);
+void RemoveMusic();
 void PlayMusic();
 // End Music
 
