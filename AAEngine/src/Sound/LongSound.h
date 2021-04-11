@@ -17,21 +17,22 @@ public:
 
   void SetVolume(const float& val);
 
-  void UpdatePlayBuffer();
-
-  ALint GetPlayingState();
   bool IsPlaying();
+
+  void UpdatePlayBuffer();
 
 private:
 
-  static const constexpr int BUFFER_COUNT = 4;
-  static const constexpr int BUFFER_SAMPLES = 8192;
+  ALint GetPlayingState();
+
+  static const constexpr uint16_t BUFFER_COUNT = 4;
+  static const constexpr uint16_t BUFFER_SAMPLES = 8192;
 
   ALuint   p_Source;
   ALuint   p_Buffers[BUFFER_COUNT];
   SNDFILE* p_Sndfile;
   SF_INFO  p_Sfinfo;
-  short*   p_Membuf;
+  short* p_Membuf;
   ALenum   p_Format;
 
   LongSound() = delete;
