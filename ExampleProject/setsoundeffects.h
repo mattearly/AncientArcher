@@ -19,6 +19,6 @@ void setupsoundeffects()
       AA::PlaySoundEffect(enchantId, false);
       return;
     }
-  });
+    });
 
 }

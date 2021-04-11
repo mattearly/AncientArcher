@@ -2,9 +2,9 @@
 #include <AncientArcher/AncientArcher.h>
 #include <iostream>
 
-bool isFlashlightSetup = false;
-bool flashlight_on = false;
-int flashlight = -1;
+bool      isFlashlightSetup = false;
+bool      flashlight_on = false;
+int       flashlight = -1;
 float     fl_inner_radius = glm::cos(glm::radians(2.05f));
 float     fl_outer_radius = glm::cos(glm::radians(17.05f));
 float     fl_constant = 1.f;

@@ -1,22 +1,23 @@
 #include <AncientArcher/AncientArcher.h>
 #include <AncientArcher/Version.h>
 #include <iostream>
-#include "fps.h"
 #include "setskybox.h"
-#include "flashlight.h"
-#include "soundeffects.h"
-#include "talking.h"
+#include "setfpsplayercontrols.h"
+#include "setflashlight.h"
+#include "setsoundeffects.h"
+#include "setmusic.h"
 int main()
 {
   std::cout << "Running Version: " << AA::ENGINEVERSIONMAJOR << '.' << AA::ENGINEVERSIONMINOR << '.' << AA::ENGINEVERSIONPATCH << '\n';
   AA::InitEngine();
-  AA::SetClearColor(glm::vec3(0));
+  AA::SetWindowClearColor(glm::vec3(0));
   static int ourcam = AA::AddCamera(AA::GetWindowWidth(), AA::GetWindowHeight());
-  setfpscontrols(ourcam);
+  setfpsplayercontrols(ourcam);
   setskybox();
   setupflashlight(ourcam);
   setupsoundeffects();
-  addbackgroundtalking();
+  setmusic();
+ 
   static int peasant_man = AA::AddProp("..\\ExampleProject\\res\\peasant_man.dae", ourcam, true);
   //static int test_zone = AA::AddProp("E:\\storage\\3d Models\\grass_plain.dae", ourcam, true);
   const float dist_from_us = 90.f;

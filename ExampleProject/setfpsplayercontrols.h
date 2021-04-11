@@ -3,14 +3,16 @@
 #include <glm/glm.hpp>
 
 bool fps_set = false;
-void setfpscontrols(int cam)
+bool is_inventory_open = false;
+
+void setfpsplayercontrols(int cam)
 {
   if (fps_set)
     return;
   fps_set = true;
 
-  AA::SetReadMouseCurorAsFPP();
-  AA::SetCursorToDisabled();
+  AA::SetMouseReadToFPP();
+  AA::SetMouseToDisabled();
 
   static int the_cam_to_move = cam;
 
@@ -28,24 +30,48 @@ void setfpscontrols(int cam)
 
   // add WASD key first person movement function
   const auto wasd = [](AA::KeyboardInput& key) {
-    if (key.w)
+    if (!is_inventory_open)
     {
-      moveDir += frontFacingDir;
-    }
-    else if (key.s)
-    {
-      moveDir -= frontFacingDir;
-    }
-    if (key.a)
-    {
-      moveDir -= rightFacingDir;
-    }
-    else if (key.d)
-    {
-      moveDir += rightFacingDir;
+      if (key.w)
+      {
+        moveDir += frontFacingDir;
+      }
+      else if (key.s)
+      {
+        moveDir -= frontFacingDir;
+      }
+      if (key.a)
+      {
+        moveDir -= rightFacingDir;
+      }
+      else if (key.d)
+      {
+        moveDir += rightFacingDir;
+      }
     }
   };
   AA::AddToKeyHandling(wasd);
+
+  // add ability to tab and get mouse control
+  AA::AddToTimedOutKeyHandling([](AA::KeyboardInput& kb)-> bool {
+    if (kb.tab) {
+      if (!is_inventory_open) {
+        // (open inventory) mouse on screen
+        AA::SetMouseReadToNormal();
+        AA::SetMouseToNormal();
+        is_inventory_open = true;
+        return true;
+      }
+      else {
+        // (close inventory) mouse in fpp hidden snapping ot middle mode
+        AA::SetMouseReadToFPP();
+        AA::SetMouseToDisabled();
+        is_inventory_open = false;
+        return true;
+      }
+    }
+    return false;
+    });
 
   const auto camMove = [](float dt) {
     static float frameCalculatedVelocity = 0.f;
@@ -60,7 +86,8 @@ void setfpscontrols(int cam)
   // add mouse movement to change our view direction
   const auto mouselook = [](AA::MouseInput& cursor)
   {
-    AA::ShiftCamPitchAndYaw(the_cam_to_move, cursor.yOffset, cursor.xOffset);
+    if (!is_inventory_open)
+      AA::ShiftCamPitchAndYaw(the_cam_to_move, cursor.yOffset, cursor.xOffset);
   };
   AA::AddToMouseHandling(mouselook);
 
