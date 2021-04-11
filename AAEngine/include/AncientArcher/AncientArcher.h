@@ -16,10 +16,13 @@ struct InstanceDetails;
 
 namespace AA
 {
+// Init, Run, Shutdown, Reset
 void InitEngine();
 int Run();
 void Shutdown() noexcept;
-void SoftReset();
+void SoftReset() noexcept;
+// End Init, Run, Shutdown, Reset
+
 
 // Camera
 int AddCamera(int w, int h);
@@ -39,6 +42,7 @@ glm::vec3 GetCamPosition(int camId);
 glm::mat4 GetProjectionMatrix(int camId);
 // End Camera
 
+
 // 3d Game Objects
 int AddProp(const char* path, int camId, bool is_lit);
 void SetPropTranslation(int propId, glm::vec3 new_pos);
@@ -46,10 +50,17 @@ void SetPropScale(int propId, glm::vec3 new_scale);
 void SetPropRotationY(int propId, float new_y_rot);
 // End 3D Game Objects
 
+
+// Skybox
+void SetSkybox(const std::shared_ptr<Skybox>& skybox) noexcept;
+// End Skybox
+
+
 // Directional Light
 void SetDirectionalLight(glm::vec3 dir, glm::vec3 amb, glm::vec3 diff, glm::vec3 spec);
 void RemoveDirectionalLight();
 // End Directional Light
+
 
 // Point Light
 int AddPointLight(glm::vec3 pos, float constant, float linear, float quad, glm::vec3 amb, glm::vec3 diff, glm::vec3 spec);
@@ -58,6 +69,7 @@ void MovePointLight(int which, glm::vec3 new_pos);
 void ChangePointLight(int which, glm::vec3 new_pos, float new_constant, float new_linear, float new_quad,
   glm::vec3 new_amb, glm::vec3 new_diff, glm::vec3 new_spec);
 // End Point Light
+
 
 // Spot Light
 int AddSpotLight(glm::vec3 pos, glm::vec3 dir, float inner, float outer, float constant,
@@ -69,21 +81,45 @@ void ChangeSpotLight(int which, glm::vec3 new_pos, glm::vec3 new_dir, float new_
   glm::vec3 new_diff, glm::vec3 new_spec);
 // End Spot Light
 
+
 // Sound Effects
 int AddSoundEffect(const char* path);
-void PlaySoundEffect(int id, bool interrupt = true);
 void RemoveSoundEffect(int id);
+void PlaySoundEffect(int id, bool interrupt = true);
 // End Sound Effects
+
 
 // Music
 void AddMusic(const char* path);
 void RemoveMusic();
 void PlayMusic();
+void StopMusic();
 // End Music
 
 
-void SetSkybox(const std::shared_ptr<Skybox>& skybox) noexcept;
+// Mouse
+void SetMouseToHidden() noexcept;
+void SetMouseToDisabled() noexcept;
+void SetMouseToNormal() noexcept;
+void SetMouseReadToFPP() noexcept;
+void SetMouseFPPSensitivity(float sensitivity) noexcept;
+float GetMouseFPPSensitivity() noexcept;
+void SetMouseReadToNormal() noexcept;
+void SetScrollWheelCallback() noexcept;
+// End Mouse
 
+
+// Window
+void SetWindowClearColor(glm::vec3 color = glm::vec3(.35f, .15f, .35f));
+int GetWindowWidth() noexcept;
+int GetWindowHeight() noexcept;
+void SetReshapeCallback() noexcept;
+void SetWindowTitle(const char* name) noexcept;
+// End Window
+
+
+// Loop Controls
+void SetSlowUpdateTimeoutLength(const float& newtime);
 uint32_t AddToOnBegin(void(*function)());
 uint32_t AddToDeltaUpdate(void(*function)(float));
 uint32_t AddToUpdate(void(*function)());
@@ -102,27 +138,7 @@ bool RemoveFromScrollHandling(uint32_t r_id);
 bool RemoveFromKeyHandling(uint32_t r_id);
 bool RemoveFromMouseHandling(uint32_t r_id);
 bool RemoveFromTeardown(uint32_t r_id);
+// End Loop Controls
 
-void SetSlowUpdateTimeoutLength(const float& newtime);
-void SetCursorToEnabled(bool isHardwareRendered = false);
-
-int GetWindowWidth() noexcept;
-int GetWindowHeight() noexcept;
-GLFWwindow* GetWindow() noexcept;
-enum class MouseReporting { STANDARD, PERSPECTIVE };
-void SetClearColor(glm::vec3 color = glm::vec3(.35f, .15f, .35f));
-void SetCursorToVisible() noexcept;   // to use the os pointer
-void SetCursorToHidden() noexcept;    // for hidden but still there (render your own pointer)
-void SetCursorToDisabled() noexcept;  // for first person hidden mouse type
-void SetReadMouseCurorAsFPP() noexcept;
-void SetReadMouseCurorAsStandard() noexcept;
-void SetWindowTitle(const char* name) noexcept;
-void ReshapeWindowHandler(int width, int height);
-void SetupReshapeCallback() noexcept;
-float GetMouseFPPSensitivity() noexcept;
-void SetMouseFPPSensitivity(float sensitivity) noexcept;
-void PerspectiveMouseHandler(float xpos, float ypos);
-void StandardMouseHandler(float xpos, float ypos);
-void ScrollHandler(float xpos, float ypos);
 
 }  // end namespace AA

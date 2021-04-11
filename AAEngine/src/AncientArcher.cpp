@@ -29,27 +29,56 @@
 
 namespace AA
 {
-OGLShader* mLitShader;
-OGLShader* mDiffShader;
-
-const int MAXPOINTLIGHTS = 50;
+// Interanl Only (helpers, states, types, etc)
+bool isEngineInit = false;
+bool isWindowSizeDirty = true;  ///< true if proj matrices nee`d re-adjusted for a new window size change
+GLFWwindow* mWindow = nullptr;
+float mFPPMouseSensitivity = 0.1f;  ///< mouse sensitivity while in first person perspective
+void resetFPPMouseSensitivity() noexcept {
+  mFPPMouseSensitivity = 0.1f;
+}
+bool mSwitchedToFPP = false;
+enum class MouseReporting { UNSET, STANDARD, PERSPECTIVE };
+MouseReporting mMouseReporting = MouseReporting::UNSET;
+bool isFPP() noexcept {
+  return (
+    (mMouseReporting == MouseReporting::PERSPECTIVE)
+    &&
+    (glfwGetInputMode(mWindow, GLFW_CURSOR) == GLFW_CURSOR_DISABLED)
+    );
+}
+OGLShader* mDiffShader = NULL;
+OGLShader* mLitShader = NULL;
+void setupLitShader() {
+  if (!mLitShader) {
+    mLitShader = new OGLShader(lit_vert_src, lit_frag_src);
+    std::cout << "Lit Shader is Live!\n";
+  }
+}
+void setupDiffShader() {
+  if (!mDiffShader) {
+    mDiffShader = new OGLShader(diff_vert_src, diff_frag_src);
+    std::cout << "Diff Shader is Live!\n";
+  }
+}
+DirectionalLight* mDirectionalLight;         ///< directional light for lit shader(s)
+int NUM_POINT_LIGHTS = 0;
 const int MAXSPOTLIGHTS = 25;
-
+std::vector<SpotLight>    mSpotLights;       ///< array of current spot lights
+int NUM_SPOT_LIGHTS = 0;
+const int MAXPOINTLIGHTS = 50;
+std::vector<PointLight>   mPointLights;      ///< array of current point lights
+std::vector<Camera>       mCameras;          ///< array of available cameras
+std::vector<Prop>         mProps;            ///< array of available objects
+std::shared_ptr<Skybox>   mSkybox;           ///< the main skybox
+std::vector<Speaker*>     mSpeakers;         ///< array of places to play sound effects from
+std::vector<SoundEffect*> mSoundEffects;     ///< array of ready speaker id to sound effects
+LongSound* mMusic;            ///< background music
+float mMusicRebufferCD = 0.f;
 float mNonSpammableKeysTimeout;  ///< keeps track of how long the keys have timed out
 float mNoSpamWaitLength;         ///< how long the non-spammable keys are to time out for at least
 float mSlowUpdateTimeout;        ///< keeps track of how how long the slow update has been timed out
 float mSlowUpdateWaitLength;     ///< ms length the slow update times out for at least
-
-DirectionalLight*         mDirectionalLight; ///< directional light for lit shader(s)
-std::vector<SpotLight>    mSpotLights;       ///< array of current spot lights
-std::vector<PointLight>   mPointLights;      ///< array of current point lights
-std::vector<Camera>       mCameras;          ///< array of available cameras
-std::vector<Prop>         mProps;            ///< array of available objects
-LongSound*                mMusic;            ///< background music
-std::vector<Speaker*>     mSpeakers;         ///< array of places to play sound effects from
-std::vector<SoundEffect*> mSoundEffects;     ///< array of ready speaker id to sound effects
-std::shared_ptr<Skybox>   mSkybox;           ///< the main skybox
-
 std::unordered_map<uint32_t, std::function<void()> >               onBegin;               ///< list of functions to run once when runMainAncientArcher is called
 std::unordered_map<uint32_t, std::function<void(float)> >          onDeltaUpdate;         ///< list of functions that rely on deltatime in the main AncientArcher
 std::unordered_map<uint32_t, std::function<void()> >               onUpdate;              ///< list of functions that run every frame in the main AncientArcher
@@ -59,1033 +88,32 @@ std::unordered_map<uint32_t, std::function<void(ScrollInput&)> >   onScrollHandl
 std::unordered_map<uint32_t, std::function<void(KeyboardInput&)> > onKeyHandling;         ///< list of functions to handle keypresses every frame in the main AncientArcher
 std::unordered_map<uint32_t, std::function<void(MouseInput&)> >    onMouseHandling;       ///< list of functions to handle mouse movement every frame in the main AncientArcher
 std::unordered_map<uint32_t, std::function<void()> >               onTearDown;            ///< list of functions to run when destroying
-
 KeyboardInput mButtonState = {};
 MouseInput    mMousePosition = {};
 ScrollInput   mMouseWheelScroll = {};
-bool          mRenewFPP = true;
-float         mFPPMouseSensitivity = 0.1f;  ///< mouse sensitivity while in first person perspective
-
-enum class STANDARDMOUSEZEROS { DEFAULT, TOP_LEFT_0_to_1, BOT_LEFT_0_to_1, TOP_LEFT_FULL_RANGE, BOT_LEFT_FULL_RANGE };
-STANDARDMOUSEZEROS mStandardMouseZeros = STANDARDMOUSEZEROS::BOT_LEFT_0_to_1;
-
-int NUM_POINT_LIGHTS = 0;
-int NUM_SPOT_LIGHTS = 0;
-bool isInit = false;
-bool externWindowSizeDirty = true;
-GLFWwindow* mWindow = nullptr;
 const int MINSCREENWIDTH = 100;
 const int MINSCREENHEIGHT = 100;
 const int MAXSCREENWIDTH = 7680;  //8k
 const int MAXSCREENHEIGHT = 4320;
-MouseReporting mMouseReporting = MouseReporting::STANDARD;
-
-bool isFPP() noexcept
-{
-  return (mMouseReporting == MouseReporting::PERSPECTIVE &&
-    glfwGetInputMode(mWindow, GLFW_CURSOR) == GLFW_CURSOR_DISABLED);
-}
-
-int AddCamera(int w, int h)
-{
-  mCameras.emplace_back(w, h);
-  return mCameras.back().GetUID();
-}
-
-bool RemoveCamera(const int camId)
-{
-  if (mCameras.empty())
-    return false;
-
-  auto before_size = mCameras.size();
-
-  auto ret_it = mCameras.erase(
-    std::remove_if(mCameras.begin(), mCameras.end(),
-      [&](Camera c) {
-        return c.GetUID() == camId;
-      }),
-    mCameras.end());
-
-  auto after_size = mCameras.size();
-
-  if (before_size != after_size)
-    return true;  // success remove
-
-  return false;   // fail remove
-}
-
-void setupLitShader()
-{
-  if (!mLitShader) {
-    mLitShader = new OGLShader(lit_vert_src, lit_frag_src);
-    std::cout << "Lit Shader is Live!\n";
-  }
-}
-
-void setupDiffShader()
-{
-  if (!mDiffShader) {
-    mDiffShader = new OGLShader(diff_vert_src, diff_frag_src);
-    std::cout << "Diff Shader is Live!\n";
-  }
-}
-
-int AddProp(const char* path, int camId, bool is_lit)
-{
-  if (is_lit)
-    setupLitShader();
-  else
-    setupDiffShader();
-
-  mProps.emplace_back(path, camId, is_lit);
-
-  return mProps.back().GetUID();
-}
-
-void SetPropTranslation(int propId, glm::vec3 new_pos)
-{
-  for (auto& p : mProps)
-  {
-    if (p.GetUID() == propId)
-    {
-      p.translation = new_pos;
-      p.updateFinalModelMatrix();
-      return;
-    }
-  }
-  throw("prop id does not exist");
-}
-
-void SetPropScale(int propId, glm::vec3 new_scale)
-{
-  for (auto& p : mProps)
-  {
-    if (p.GetUID() == propId)
-    {
-      p.scale = new_scale;
-      p.updateFinalModelMatrix();
-      return;
-    }
-  }
-  throw("prop id does not exist");
-}
-
-void SetPropRotationY(int propId, float new_y_rot)
-{
-  for (auto& p : mProps)
-  {
-    if (p.GetUID() == propId)
-    {
-      p.eulerRotationY = new_y_rot;
-      p.updateFinalModelMatrix();
-      return;
-    }
-  }
-  throw("prop id does not exist");
-}
-
-void SetDirectionalLight(glm::vec3 dir, glm::vec3 amb, glm::vec3 diff, glm::vec3 spec)
-{
-  if (!mLitShader)
-    setupLitShader();
-
-  if (!mDirectionalLight)
-  {
-    mDirectionalLight = new DirectionalLight(dir, amb, diff, spec);
-  }
-  else
-  {
-    mDirectionalLight->Direction = dir;
-    mDirectionalLight->Ambient = amb;
-    mDirectionalLight->Diffuse = diff;
-    mDirectionalLight->Specular = spec;
-  }
-
-  {
-    assert(mLitShader);
-    mLitShader->use();
-    mLitShader->setInt("isDirectionalLightOn", 1);
-    mLitShader->setVec3("directionalLight.Direction", mDirectionalLight->Direction);
-    mLitShader->setVec3("directionalLight.Ambient", mDirectionalLight->Ambient);
-    mLitShader->setVec3("directionalLight.Diffuse", mDirectionalLight->Diffuse);
-    mLitShader->setVec3("directionalLight.Specular", mDirectionalLight->Specular);
-  }
-}
-
-void RemoveDirectionalLight()
-{
-  assert(mLitShader);
-  mLitShader->use();
-  mLitShader->setInt("isDirectionalLightOn", 0);
-  delete mDirectionalLight;
-  mDirectionalLight = NULL;
-}
-
-// returns unique id assigned to this light
-int AddPointLight(glm::vec3 pos, float constant, float linear, float quad, glm::vec3 amb,
-  glm::vec3 diff, glm::vec3 spec)
-{
-  if (mPointLights.size() >= MAXPOINTLIGHTS)
-    throw("too many point lights");
-
-  if (!mLitShader)
-    setupLitShader();
-
-  mPointLights.emplace_back(PointLight(pos, constant, linear, quad, amb, diff, spec));
-  std::size_t new_point_loc = mPointLights.size() - 1;
-
-  // push changes to shader
-  {
-    std::string position, constant, linear, quadratic, ambient, diffuse, specular;
-    constant = linear = quadratic = ambient = diffuse = specular = position = "pointLight[";
-    std::stringstream ss;
-    ss << new_point_loc;
-    position += ss.str();
-    constant += ss.str();
-    linear += ss.str();
-    quadratic += ss.str();
-    ambient += ss.str();
-    diffuse += ss.str();
-    specular += ss.str();
-    position += "].";
-    constant += "].";
-    linear += "].";
-    quadratic += "].";
-    ambient += "].";
-    diffuse += "].";
-    specular += "].";
-    position += "Position";
-    constant += "Constant";
-    linear += "Linear";
-    quadratic += "Quadratic";
-    ambient += "Ambient";
-    diffuse += "Diffuse";
-    specular += "Specular";
-
-    assert(mLitShader);
-    mLitShader->use(); // <- vs lies if u see green squigglies
-    mLitShader->setVec3(position, mPointLights.back().Position);
-    mLitShader->setFloat(constant, mPointLights.back().Constant);
-    mLitShader->setFloat(linear, mPointLights.back().Linear);
-    mLitShader->setFloat(quadratic, mPointLights.back().Quadratic);
-    mLitShader->setVec3(ambient, mPointLights.back().Ambient);
-    mLitShader->setVec3(diffuse, mPointLights.back().Diffuse);
-    mLitShader->setVec3(specular, mPointLights.back().Specular);
-    mLitShader->setInt("NUM_POINT_LIGHTS", static_cast<int>(new_point_loc + 1));
-  }
-
-  return mPointLights.back().id;  // unique id
-
-}
-
-void MovePointLight(int which, glm::vec3 new_pos)
-{
-  if (which < 0)
-    throw("dont");
-
-  int loc_in_vec = 0;
-  for (auto& pl : mPointLights)
-  {
-    if (pl.id == which)
-    {
-      pl.Position = new_pos;
-      std::stringstream ss;
-      ss << loc_in_vec;
-      std::string position = "pointLight[" + ss.str() + "].Position";
-      mLitShader->use();
-      mLitShader->setVec3(position.c_str(), pl.Position);
-      return;
-    }
-    loc_in_vec++;
-  }
-
-  throw("u messed up");
-}
-
-void ChangePointLight(int which, glm::vec3 new_pos, float new_constant, float new_linear, float new_quad,
-  glm::vec3 new_amb, glm::vec3 new_diff, glm::vec3 new_spec)
-{
-  if (which < 0)
-    throw("dont");
-
-  int loc_in_vec = 0;
-  for (auto& pl : mPointLights)
-  {
-    if (pl.id == which)
-    {
-      // push changes to shader
-      {
-        pl.Position = new_pos;
-        pl.Ambient = new_amb;
-        pl.Constant = new_constant;
-        pl.Diffuse = new_diff;
-        pl.Linear = new_linear;
-        pl.Quadratic = new_quad;
-        pl.Specular = new_spec;
-        std::string pos, ambient, constant, diffuse, linear, quadrat, specular;
-        ambient = constant = diffuse = linear = quadrat = specular = pos = "pointLight[";
-        std::stringstream ss;
-        ss << loc_in_vec;
-        pos += ss.str();
-        constant += ss.str();
-        linear += ss.str();
-        quadrat += ss.str();
-        ambient += ss.str();
-        diffuse += ss.str();
-        specular += ss.str();
-        pos += "].";
-        constant += "].";
-        linear += "].";
-        quadrat += "].";
-        ambient += "].";
-        diffuse += "].";
-        specular += "].";
-        pos += "Position";
-        constant += "Constant";
-        linear += "Linear";
-        quadrat += "Quadratic";
-        ambient += "Ambient";
-        diffuse += "Diffuse";
-        specular += "Specular";
-
-        mLitShader->use(); // <- vs lies if u see green squigglies
-        mLitShader->setVec3(pos, pl.Position);
-        mLitShader->setFloat(constant, pl.Constant);
-        mLitShader->setFloat(linear, pl.Linear);
-        mLitShader->setFloat(quadrat, pl.Quadratic);
-        mLitShader->setVec3(ambient, pl.Ambient);
-        mLitShader->setVec3(diffuse, pl.Diffuse);
-        mLitShader->setVec3(specular, pl.Specular);
-      }
-      return;
-    }
-    loc_in_vec++;
-  }
-
-  throw("u messed up");
-}
-
-// returns true if successfully removed the point light, false otherwise
-bool RemovePointLight(int which_by_id)
-{
-  if (mPointLights.empty())
-    return false;
-
-  auto before_size = mPointLights.size();
-
-  auto ret_it = mPointLights.erase(
-    std::remove_if(mPointLights.begin(), mPointLights.end(), [&](const PointLight sl) { return sl.id == which_by_id; }),
-    mPointLights.end());
-
-  auto after_size = mPointLights.size();
-
-  if (before_size != after_size)
-  {
-    mLitShader->use();
-    mLitShader->setInt("NUM_POINT_LIGHTS", static_cast<int>(after_size));
-
-    // sync lights on shader after the change
-    for (int i = 0; i < after_size; i++)
-    {
-      ChangePointLight(
-        mPointLights[i].id,
-        mPointLights[i].Position,
-        mPointLights[i].Constant,
-        mPointLights[i].Linear,
-        mPointLights[i].Quadratic,
-        mPointLights[i].Ambient,
-        mPointLights[i].Diffuse,
-        mPointLights[i].Specular
-      );
-    }
-
-
-    return true;
-  }
-  else
-    return false;
-}
-
-// returns unique id assigned to this light
-int AddSpotLight(glm::vec3 pos, glm::vec3 dir, float inner, float outer, float constant,
-  float linear, float quad, glm::vec3 amb, glm::vec3 diff, glm::vec3 spec)
-{
-  if (mSpotLights.size() == MAXSPOTLIGHTS)
-  {
-    throw("too many spot lights");
-  }
-
-  if (!mLitShader)
-    setupLitShader();
-
-  mSpotLights.emplace_back(SpotLight(pos, dir, inner, outer, constant, linear, quad, amb, diff, spec));
-  auto new_spot_loc = mSpotLights.size() - 1;
-
-  // push changes to shader
-  {
-    std::string pos, ambient, constant, cutoff, ocutoff, diffuse, direction, linear, quadrat, specular;
-    ambient = constant = cutoff = ocutoff = diffuse = direction = linear = quadrat = specular = pos = "spotLight[";
-    std::stringstream ss;
-    ss << new_spot_loc;
-    pos += ss.str();
-    constant += ss.str();
-    cutoff += ss.str();
-    ocutoff += ss.str();
-    direction += ss.str();
-    linear += ss.str();
-    quadrat += ss.str();
-    ambient += ss.str();
-    diffuse += ss.str();
-    specular += ss.str();
-    pos += "].";
-    constant += "].";
-    cutoff += "].";
-    ocutoff += "].";
-    direction += "].";
-    linear += "].";
-    quadrat += "].";
-    ambient += "].";
-    diffuse += "].";
-    specular += "].";
-    pos += "Position";
-    constant += "Constant";
-    cutoff += "CutOff";
-    ocutoff += "OuterCutOff";
-    direction += "Direction";
-    linear += "Linear";
-    quadrat += "Quadratic";
-    ambient += "Ambient";
-    diffuse += "Diffuse";
-    specular += "Specular";
-
-    assert(mLitShader);
-    mLitShader->use(); // <- vs lies if u see green squigglies
-    mLitShader->setVec3(pos, mSpotLights.back().Position);
-    mLitShader->setFloat(cutoff, mSpotLights.back().CutOff);
-    mLitShader->setFloat(ocutoff, mSpotLights.back().OuterCutOff);
-    mLitShader->setVec3(direction, mSpotLights.back().Direction);
-    mLitShader->setFloat(constant, mSpotLights.back().Constant);
-    mLitShader->setFloat(linear, mSpotLights.back().Linear);
-    mLitShader->setFloat(quadrat, mSpotLights.back().Quadratic);
-    mLitShader->setVec3(ambient, mSpotLights.back().Ambient);
-    mLitShader->setVec3(diffuse, mSpotLights.back().Diffuse);
-    mLitShader->setVec3(specular, mSpotLights.back().Specular);
-    mLitShader->setInt("NUM_SPOT_LIGHTS", static_cast<int>(new_spot_loc + 1));
-  }
-
-  return mSpotLights.back().id;  // unique id
-}
-
-void ChangeSpotLight(int which, glm::vec3 new_pos, glm::vec3 new_dir, float new_inner,
-  float new_outer, float new_constant, float new_linear, float new_quad, glm::vec3 new_amb,
-  glm::vec3 new_diff, glm::vec3 new_spec)
-{
-  if (which < 0)
-    throw("dont");
-
-  int loc_in_vec = 0;
-  for (auto& sl : mSpotLights)
-  {
-    if (sl.id == which)
-    {
-      // push changes to shader
-      {
-        sl.Position = new_pos;
-        sl.Direction = new_dir;
-        sl.Ambient = new_amb;
-        sl.Constant = new_constant;
-        sl.CutOff = new_inner;
-        sl.OuterCutOff = new_outer;
-        sl.Diffuse = new_diff;
-        sl.Linear = new_linear;
-        sl.Quadratic = new_quad;
-        sl.Specular = new_spec;
-        std::string pos, ambient, constant, cutoff, ocutoff, diffuse, direction, linear, quadrat, specular;
-        ambient = constant = cutoff = ocutoff = diffuse = direction = linear = quadrat = specular = pos = "spotLight[";
-        std::stringstream ss;
-        ss << loc_in_vec;
-        pos += ss.str();
-        constant += ss.str();
-        cutoff += ss.str();
-        ocutoff += ss.str();
-        direction += ss.str();
-        linear += ss.str();
-        quadrat += ss.str();
-        ambient += ss.str();
-        diffuse += ss.str();
-        specular += ss.str();
-        pos += "].";
-        constant += "].";
-        cutoff += "].";
-        ocutoff += "].";
-        direction += "].";
-        linear += "].";
-        quadrat += "].";
-        ambient += "].";
-        diffuse += "].";
-        specular += "].";
-        pos += "Position";
-        constant += "Constant";
-        cutoff += "CutOff";
-        ocutoff += "OuterCutOff";
-        direction += "Direction";
-        linear += "Linear";
-        quadrat += "Quadratic";
-        ambient += "Ambient";
-        diffuse += "Diffuse";
-        specular += "Specular";
-
-        mLitShader->use(); // <- vs lies if u see green squigglies
-        mLitShader->setVec3(pos, sl.Position);
-        mLitShader->setFloat(cutoff, sl.CutOff);
-        mLitShader->setFloat(ocutoff, sl.OuterCutOff);
-        mLitShader->setVec3(direction, sl.Direction);
-        mLitShader->setFloat(constant, sl.Constant);
-        mLitShader->setFloat(linear, sl.Linear);
-        mLitShader->setFloat(quadrat, sl.Quadratic);
-        mLitShader->setVec3(ambient, sl.Ambient);
-        mLitShader->setVec3(diffuse, sl.Diffuse);
-        mLitShader->setVec3(specular, sl.Specular);
-      }
-      return;
-    }
-    loc_in_vec++;
-  }
-
-  throw("u messed up");
-}
-
-void MoveSpotLight(int which, glm::vec3 new_pos, glm::vec3 new_dir)
-{
-  if (which < 0)
-    throw("dont");
-
-  int loc_in_vec = 0;
-  for (auto& sl : mSpotLights)
-  {
-    if (sl.id == which)
-    {
-      sl.Position = new_pos;
-      sl.Direction = new_dir;
-      mLitShader->use();
-      std::stringstream ss;
-      ss << loc_in_vec;
-      std::string position = "spotLight[" + ss.str() + "].Position";
-      std::string direction = "spotLight[" + ss.str() + "].Direction";
-      mLitShader->setVec3(position.c_str(), sl.Position);
-      mLitShader->setVec3(direction.c_str(), sl.Direction);
-      return;
-    }
-    loc_in_vec++;
-  }
-
-  throw("u messed up");
-}
-
-// returns true if it removed the spot light, false otherwise
-bool RemoveSpotLight(int which_by_id)
-{
-  if (mSpotLights.empty())
-    return false;
-
-  auto before_size = mSpotLights.size();
-
-  /*auto ret_it = */mSpotLights.erase(
-    std::remove_if(mSpotLights.begin(), mSpotLights.end(), [&](const SpotLight sl) { return sl.id == which_by_id; }),
-    mSpotLights.end());
-
-  auto after_size = mSpotLights.size();
-
-  if (before_size != after_size)
-  {
-    mLitShader->use();
-    mLitShader->setInt("NUM_SPOT_LIGHTS", static_cast<int>(after_size));
-
-    // sync lights on shader after the change
-    for (int i = 0; i < after_size; i++)
-    {
-      ChangeSpotLight(
-        mSpotLights[i].id,
-        mSpotLights[i].Position,
-        mSpotLights[i].Direction,
-        mSpotLights[i].CutOff,
-        mSpotLights[i].OuterCutOff,
-        mSpotLights[i].Constant,
-        mSpotLights[i].Linear,
-        mSpotLights[i].Quadratic,
-        mSpotLights[i].Ambient,
-        mSpotLights[i].Diffuse,
-        mSpotLights[i].Specular
-      );
-    }
-
-    return true;
-  }
-  else
-    return false;
-}
-
-int AddSoundEffect(const char* path) {
-  // make sure the sound effect hasn't already been loaded
-  for (const auto& pl : mSoundEffects) {
-    if (path == pl->_FilePath.c_str())
-      throw("sound from that path already loaded");
-  }
-  // Add a new sound effect
-  mSoundEffects.reserve(mSoundEffects.size() + 1);
-  mSoundEffects.push_back(new SoundEffect(path));
-
-  // Add a new speaker
-  mSpeakers.reserve(mSpeakers.size() + 1);
-  mSpeakers.emplace_back(new Speaker());  //test, note, todo: same sound effects can be applied to multiple speakers
-
-  // Associate the sound effect to the speaker.
-  mSpeakers.back()->AssociateBuffer(mSoundEffects.back()->_Buffer);
-
-  // return the unique ID of the speaker
-  return mSpeakers.back()->GetUID();
-}
-
-void PlaySoundEffect(int id, bool interrupt) {
-  if (mSpeakers.empty())
-    throw("no speakers");
-
-  for (auto& spkr : mSpeakers)
-  {
-    if (spkr->GetUID() == id) {
-      if (interrupt) {
-        spkr->PlayInterrupt();
-        return;
-      }
-      spkr->PlayNoOverlap();
-      return;
-    }
-  }
-
-  throw("speaker not found");
-}
-
-void RemoveSoundEffect(int soundId)
-{
-  if (mSoundEffects.empty())
-    throw("no sounds exist, nothing to remove");
-
-  auto before_size = mSoundEffects.size();
-
-  auto after_size = mSoundEffects.size();
-
-  if (before_size == after_size)
-    throw("didn't remove anything");
-}
-
-void AddMusic(const char* path)
-{
-  if (!mMusic) {
-    mMusic = new LongSound(path);
-    //mMusic->m_SlowUpdateLoopId = AA::AddToSlowUpdate([]() { mMusic->UpdatePlayBuffer(); });
-  }
-}
-
-void RemoveMusic()
-{
-  if (mMusic) {
-    //AA::RemoveFromSlowUpdate(mMusic->m_SlowUpdateLoopId);
-    delete mMusic;
-    mMusic = NULL;
-    return;
-  }
-  throw("no music to remove");
-}
-
-void PlayMusic()
-{
-  if (mMusic) {
-    mMusic->Play();
-    return;
-  }
-  throw("no music to play");
-}
-
-
-// todo: make a managed AddSkybox instead
-void SetSkybox(const std::shared_ptr<Skybox>& skybox) noexcept
-{
-  mSkybox = skybox;
-}
-
-uint32_t AddToOnBegin(void(*function)())
-{
-  static uint32_t next_begin_id = 0;
-  next_begin_id++;
-  onBegin.emplace(next_begin_id, function);
-  return next_begin_id;
-}
-
-uint32_t AddToDeltaUpdate(void(*function)(float))
-{
-  static uint32_t next_deltaupdate_id = 0;
-  next_deltaupdate_id++;
-  onDeltaUpdate.emplace(next_deltaupdate_id, function);
-  return next_deltaupdate_id;
-}
-
-uint32_t AddToUpdate(void(*function)())
-{
-  static uint32_t next_update_id = 0;
-  next_update_id++;
-  onUpdate.emplace(next_update_id, function);
-  return next_update_id;
-}
-
-uint32_t AddToSlowUpdate(void(*function)())
-{
-  static uint32_t next_slowupdate_id = 0;
-  next_slowupdate_id++;
-  onSlowUpdate.emplace(next_slowupdate_id, function);
-  return next_slowupdate_id;
-}
-
-uint32_t AddToTimedOutKeyHandling(bool(*function)(KeyboardInput&))
-{
-  static uint32_t next_timedout_id = 0;
-  next_timedout_id++;
-  onTimeoutKeyHandling.emplace(next_timedout_id, function);
-  return next_timedout_id;
-}
-
-uint32_t AddToScrollHandling(void(*function)(ScrollInput&))
-{
-  static uint32_t next_scrollhandling_id = 0;
-  next_scrollhandling_id++;
-  onScrollHandling.emplace(next_scrollhandling_id, function);
-  return next_scrollhandling_id;
-}
-
-uint32_t AddToKeyHandling(void(*function)(KeyboardInput&))
-{
-  static uint32_t next_keyhandling_id = 0;
-  next_keyhandling_id++;
-  onKeyHandling.emplace(next_keyhandling_id, function);
-  return next_keyhandling_id;
-}
-
-uint32_t AddToMouseHandling(void(*function)(MouseInput&))
-{
-  static uint32_t next_mousehandling_id = 0;
-  next_mousehandling_id++;
-  onMouseHandling.emplace(next_mousehandling_id, function);
-  return next_mousehandling_id;
-}
-
-uint32_t AddToOnTeardown(void(*function)())
-{
-  static uint32_t next_teardown_id = 0;
-  next_teardown_id++;
-  onTearDown.emplace(next_teardown_id, function);
-  return next_teardown_id;
-}
-
-bool RemoveFromOnBegin(uint32_t r_id)
-{
-  return static_cast<bool>(onBegin.erase(r_id));
-}
-
-bool RemoveFromDeltaUpdate(uint32_t r_id)
-{
-  return static_cast<bool>(onDeltaUpdate.erase(r_id));
-}
-
-bool RemoveFromUpdate(uint32_t r_id)
-{
-  return static_cast<bool>(onUpdate.erase(r_id));
-}
-
-bool RemoveFromSlowUpdate(uint32_t r_id)
-{
-  return static_cast<bool>(onSlowUpdate.erase(r_id));
-}
-
-bool RemoveFromTimedOutKeyHandling(uint32_t r_id)
-{
-  return static_cast<bool>(onTimeoutKeyHandling.erase(r_id));
-}
-
-bool RemoveFromScrollHandling(uint32_t r_id)
-{
-  return static_cast<bool>(onScrollHandling.erase(r_id));
-}
-
-bool RemoveFromKeyHandling(uint32_t r_id)
-{
-  return static_cast<bool>(onKeyHandling.erase(r_id));
-}
-
-bool RemoveFromMouseHandling(uint32_t r_id)
-{
-  return static_cast<bool>(onMouseHandling.erase(r_id));
-}
-
-bool RemoveFromTeardown(uint32_t r_id)
-{
-  return static_cast<bool>(onTearDown.erase(r_id));
-}
-
-void SetCursorToEnabled(bool isHardwareRendered)
-{
-  if (isHardwareRendered)
-  {
-    SetCursorToHidden();
-  }
-  else
-  {
-    SetCursorToVisible();
-  }
-}
-
-void SetCamMaxRenderDistance(int camId, float amt)
-{
-  for (auto& cam : mCameras)
-  {
-    if (cam.GetUID() == camId)
-    {
-      cam.MaxRenderDistance = amt;
-      cam.updateProjectionMatrix();
-      return;
-    }
-  }
-  throw("cam id doesn't exist or is invalid");
-}
-
-void SetCamToPerspective(int camId)
-{
-  for (auto& cam : mCameras)
-  {
-    if (cam.GetUID() == camId)
-    {
-      cam.RenderProjection = RenderProjection::PERSPECTIVE;
-      cam.updateProjectionMatrix();
-      return;
-    }
-  }
-  throw("cam id doesn't exist or is invalid");
-}
-
-void SetCamFOV(int camId, float new_fov)
-{
-  for (auto& cam : mCameras)
-  {
-    if (cam.GetUID() == camId)
-    {
-      if (cam.RenderProjection != RenderProjection::PERSPECTIVE)
-        throw("changing FOV on wrong render projection");
-      cam.FOV = new_fov;
-      cam.updateProjectionMatrix();
-      return;
-    }
-  }
-  throw("cam id doesn't exist or is invalid");
-}
-
-void SetCamDimensions(int camId, int w, int h)
-{
-  if (w < MINSCREENWIDTH || h < MINSCREENHEIGHT ||
-    w > MAXSCREENWIDTH || h > MAXSCREENHEIGHT)
-    throw("invalid cam resize attempted");
-  for (auto& cam : mCameras)
-  {
-    if (cam.GetUID() == camId)
-    {
-      cam.Width = w;
-      cam.Height = h;
-      cam.updateProjectionMatrix();
-      return;
-    }
-  }
-  throw("cam id doesn't exist or is invalid");
-}
-
-void SetCamPosition(int camId, glm::vec3 new_loc)
-{
-  for (auto& cam : mCameras)
-  {
-    if (cam.GetUID() == camId)
-    {
-      cam.Position = new_loc;
-      cam.updateCameraVectors();
-      return;
-    }
-  }
-  throw("cam id doesn't exist or is invalid");
-}
-
-void SetCamPitch(int camId, float new_pitch_degrees)
-{
-  for (auto& cam : mCameras)
-  {
-    if (cam.GetUID() == camId)
-    {
-      if (new_pitch_degrees > 89.9f)
-        new_pitch_degrees = 89.9f;
-      else if (new_pitch_degrees < -89.9f)
-        new_pitch_degrees = -89.9f;
-      cam.Pitch = new_pitch_degrees;
-      cam.updateCameraVectors();
-      return;
-    }
-  }
-  throw("cam id doesn't exist or is invalid");
-}
-
-void SetCamYaw(int camId, float new_yaw_degrees)
-{
-  for (auto& cam : mCameras)
-  {
-    if (cam.GetUID() == camId)
-    {
-      if (new_yaw_degrees > 360.0f)
-        new_yaw_degrees -= 360.f;
-      else if (new_yaw_degrees < 0.f)
-        new_yaw_degrees += 360.f;
-      cam.Yaw = new_yaw_degrees;
-      cam.updateCameraVectors();
-      return;
-    }
-  }
-  throw("cam id doesn't exist or is invalid");
-}
-
-void ShiftCamPosition(int camId, glm::vec3 offset)
-{
-  for (auto& cam : mCameras)
-  {
-    if (cam.GetUID() == camId)
-    {
-      cam.Position += offset;
-      cam.updateCameraVectors();
-      return;
-    }
-  }
-  throw("cam id doesn't exist or is invalid");
-}
-
-void ShiftCamPitchAndYaw(int camId, float pitch_offset_degrees, float yaw_offset_degrees)
-{
-  for (auto& cam : mCameras)
-  {
-    if (cam.GetUID() == camId)
-    {
-      float new_pitch_degrees = cam.Pitch + pitch_offset_degrees;
-      if (new_pitch_degrees > 89.9f)
-        new_pitch_degrees = 89.9f;
-      else if (new_pitch_degrees < -89.9f)
-        new_pitch_degrees = -89.9f;
-      cam.Pitch = new_pitch_degrees;
-
-      float new_yaw_degrees = cam.Yaw + yaw_offset_degrees;
-      if (new_yaw_degrees > 360.0f)
-        new_yaw_degrees -= 360.f;
-      else if (new_yaw_degrees < 0.f)
-        new_yaw_degrees += 360.f;
-      cam.Yaw = new_yaw_degrees;
-
-      cam.updateCameraVectors();
-      return;
-    }
-  }
-  throw("cam id doesn't exist or is invalid");
-}
-
-glm::vec3 GetCamFront(int camId)
-{
-  for (auto& cam : mCameras)
-  {
-    if (cam.GetUID() == camId)
-    {
-      return cam.Front;
-    }
-  }
-  throw("cam id doesn't exist or is invalid");
-}
-
-glm::vec3 GetCamRight(int camId)
-{
-  for (auto& cam : mCameras)
-  {
-    if (cam.GetUID() == camId)
-    {
-      return cam.Right;
-    }
-  }
-  throw("cam id doesn't exist or is invalid");
-}
-
-glm::vec3 GetCamPosition(int camId)
-{
-  for (auto& cam : mCameras)
-  {
-    if (cam.GetUID() == camId)
-    {
-      return cam.Position;
-    }
-  }
-  throw("cam id doesn't exist or is invalid");
-}
-
-glm::mat4 GetProjectionMatrix(int camId)
-{
-  for (auto& cam : mCameras)
-  {
-    if (cam.GetUID() == camId)
-    {
-      glm::mat4 projection = glm::mat4(1);
-      switch (cam.RenderProjection)
-      {
-      case RenderProjection::PERSPECTIVE:
-      {
-        float aspectRatio = static_cast<float>(cam.Width) / static_cast<float>(cam.Height);
-        projection = glm::perspective(glm::radians(cam.FOV), aspectRatio, 0.0167f, cam.MaxRenderDistance);
-      }
-      break;
-      case RenderProjection::ORTHO:
-        projection = glm::ortho(
-          0.f,
-          static_cast<float>(cam.Width),
-          0.f,
-          static_cast<float>(cam.Height),
-          0.0167f,
-          cam.MaxRenderDistance
-        );
-        break;
-      default:
-        break;
-      }
-      return projection;
-    }
-  }
-  throw("cam id doesn't exist or is invalid");
-}
-
-void SetSlowUpdateTimeoutLength(const float& newtime)
-{
-  // !! warning, no checking, set at your own risk
-  mSlowUpdateWaitLength = newtime;
-}
-
 void keepWindowOpen() noexcept
 {
   glfwSetWindowShouldClose(mWindow, 0);
 }
-
 bool isTryingToClose() noexcept
 {
   return glfwWindowShouldClose(mWindow);
 }
-
-void closeWindow() noexcept
+void begin()
 {
-  glfwSetWindowShouldClose(mWindow, 1);
-}
+  keepWindowOpen();
 
+  for (const auto& oB : onBegin)
+  {
+    oB.second();
+  }
+
+  //__setProjectionMatToAllShadersFromFirstCam_hack();
+}
 void pullButtonStateEvents()
 {
   glfwPollEvents();
@@ -1803,48 +831,7 @@ void pullButtonStateEvents()
     mButtonState.mouseButton8 = false;
   }
 }
-
-//void __setProjectionMatToAllShadersFromFirstCam_hack()
-//{
-//  if (mLitShader)
-//  {
-//    std::cout << "setting projection for lit shader\n";
-//    mLitShader->use();
-//    mLitShader->setMat4("projection", mCameras.front().Projection);
-//  }
-//
-//  if (mDiffShader)
-//  {
-//    std::cout << "setting projection for diff shader\n";
-//    mDiffShader->use();
-//    mDiffShader->setMat4("projection", mCameras.front().Projection);
-//  }
-//
-//  // if there is a skybox
-//  if (mSkybox)
-//  {
-//    // if there is a camera
-//    if (mCameras.size() > 0) {
-//      // set the projection matrix on the skybox from the first cam proj matrix
-//      mSkybox->setProjectionMatrix(mCameras.front());
-//    }
-//  }
-//}
-
-void begin()
-{
-  keepWindowOpen();
-
-  for (const auto& oB : onBegin)
-  {
-    oB.second();
-  }
-
-  //__setProjectionMatToAllShadersFromFirstCam_hack();
-}
-
-void deltaUpdate()
-{
+void deltaUpdate() {
   pullButtonStateEvents();  //todo: move this after render?
 
   // init delta clock on first tap into deltaUpdate
@@ -1902,10 +889,10 @@ void deltaUpdate()
   }
 
   if (mMusic) {
-    static float reBufferCD = 0.f;
-    reBufferCD += elapsedTime;
-    if (reBufferCD > 1.03f) {  // todo(maybe): math with file size and stuff to figure out how long this cd should actually be
+    mMusicRebufferCD += elapsedTime;
+    if (mMusicRebufferCD > .5f) {  // todo(maybe): math with file size and stuff to figure out how long this cd should actually be
       mMusic->UpdatePlayBuffer();
+      mMusicRebufferCD = 0;
     }
   }
 
@@ -1914,11 +901,9 @@ void deltaUpdate()
   mNonSpammableKeysTimeout += elapsedTime;
 
   // only be executable after a timeout has been met, sort of like a cooldown
-  if (mNonSpammableKeysTimeout > mNoSpamWaitLength)
-  {
+  if (mNonSpammableKeysTimeout > mNoSpamWaitLength) {
     // process unspammable keys
-    for (auto& oTOK : onTimeoutKeyHandling)
-    {
+    for (auto& oTOK : onTimeoutKeyHandling) {
       // if we get a true we stop processing
       if (oTOK.second(mButtonState)) {
         //std::cout << "timeout key press detected. reseting timeoutkeytimer\n";
@@ -1932,27 +917,15 @@ void clearBackBuffer() noexcept
 {
   OGLGraphics::ClearScreen();
 }
-
 void swapWindowBuffers() noexcept
 {
   glfwSwapBuffers(mWindow);
 }
-
-//void __updateCamViewMatrices(int width, int height)
-//{
-//	for (auto& cam : mCameras)
-//	{
-//		cam.SetDimensions(width, height);
-//	}
-//
-//	__setProjectionMatToAllShadersFromFirstCam_hack();
-//}
-
 void render()
 {
   clearBackBuffer();
 
-  if (externWindowSizeDirty) {
+  if (isWindowSizeDirty) {
     if (mLitShader) {
       std::cout << "setting projection for lit shader on primary cam\n";
       mLitShader->use();
@@ -1975,7 +948,7 @@ void render()
         mSkybox->setProjectionMatrix(mCameras.front());
       }
     }
-    externWindowSizeDirty = false;
+    isWindowSizeDirty = false;
   }
 
   for (auto& p : mProps)  // todo: test const
@@ -2000,7 +973,6 @@ void render()
 
   swapWindowBuffers();
 }
-
 void teardown()
 {
   // run user preferred functions first
@@ -2033,245 +1005,12 @@ void teardown()
   if (mDiffShader) mDiffShader->deleteShader();
 
 }
+// End Interanl Only
 
-void resetEngine() noexcept
-{
-  // process anything the user Requested and unload all meshes and textures
-  teardown();
 
-  mMusic = NULL;
-  mCameras.clear();
-  mProps.clear();
-  onBegin.clear();
-  onDeltaUpdate.clear();
-  onKeyHandling.clear();
-  onTimeoutKeyHandling.clear();
-  onScrollHandling.clear();
-  onMouseHandling.clear();
-  onUpdate.clear();
-  onSlowUpdate.clear();
-  onTearDown.clear();
-
-  mNonSpammableKeysTimeout = 0.f;
-  mSlowUpdateTimeout = 0.f;
-  mSlowUpdateWaitLength = .3337f;
-  mNoSpamWaitLength = .5667f;
-
-  SetCursorToEnabled();
-  SetReadMouseCurorAsStandard();
-
-  SetClearColor();
-}
-
-int GetWindowWidth() noexcept
-{
-  int width, height;
-
-  glfwGetWindowSize(mWindow, &width, &height);
-
-  return width;
-}
-
-int GetWindowHeight() noexcept
-{
-  int width, height;
-
-  glfwGetWindowSize(mWindow, &width, &height);
-
-  return height;
-}
-
-GLFWwindow* GetWindow() noexcept
-{
-  return mWindow;
-}
-
-void SetClearColor(glm::vec3 color)
-{
-  OGLGraphics::SetViewportClearColor(color);
-}
-
-void SetCursorToVisible() noexcept
-{
-  glfwSetInputMode(mWindow, GLFW_CURSOR, GLFW_CURSOR_NORMAL);
-}
-
-void SetCursorToHidden() noexcept
-{
-  glfwSetInputMode(mWindow, GLFW_CURSOR, GLFW_CURSOR_HIDDEN);
-}
-
-void SetCursorToDisabled() noexcept
-{
-  glfwSetInputMode(mWindow, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
-}
-
-void SetWindowTitle(const char* name) noexcept
-{
-  glfwSetWindowTitle(mWindow, name);
-}
-
-// callback functions
-void perspectiveMouseCallback(GLFWwindow* window, double xpos, double ypos)
-{
-  PerspectiveMouseHandler(static_cast<float>(xpos), static_cast<float>(ypos));
-}
-void standardMouseCallback(GLFWwindow* window, double xpos, double ypos)
-{
-  StandardMouseHandler(static_cast<float>(xpos), static_cast<float>(ypos));
-}
-void scrollCallback(GLFWwindow* window, double xpos, double ypos)
-{
-  ScrollHandler(static_cast<float>(xpos), static_cast<float>(ypos));
-}
-void reshapeCallback(GLFWwindow* window, int w, int h)
-{
-  ReshapeWindowHandler(w, h);
-}
-
-void SetReadMouseCurorAsFPP() noexcept
-{
-  mRenewFPP = true;
-  ::glfwSetCursorPosCallback(mWindow, perspectiveMouseCallback);
-  mMouseReporting = MouseReporting::PERSPECTIVE;
-}
-
-void SetReadMouseCurorAsStandard() noexcept
-{
-  ::glfwSetCursorPosCallback(mWindow, standardMouseCallback);
-  mMouseReporting = MouseReporting::STANDARD;
-}
-
-void SetupScrollWheelCallback() noexcept
-{
-  ::glfwSetScrollCallback(mWindow, scrollCallback);
-}
-
-void SetupReshapeCallback() noexcept
-{
-  ::glfwSetFramebufferSizeCallback(mWindow, reshapeCallback);
-}
-
-void ReshapeWindowHandler(int width, int height)
-{
-  switch (Settings::Get()->GetOptions().renderer)
-  {
-  case RenderingFramework::OPENGL:
-    OGLGraphics::SetViewportSize(0, 0, width, height);
-    break;
-  case RenderingFramework::D3D:
-    break;
-  case RenderingFramework::VULKAN:
-    break;
-  }
-
-  // resize each camera
-  for (auto& cam : mCameras)
-  {
-    cam.Width = static_cast<int>(width * cam.RatioToScreen.x);
-    cam.Height = static_cast<int>(height * cam.RatioToScreen.y);
-    cam.updateProjectionMatrix();
-    std::cout << "projection updated for cam " << cam.GetUID() << '\n';
-  }
-  //TopLeftPositionOnScreen = glm::vec2(0.f);
-  //RatioToScreen = glm::vec2(1);
-  externWindowSizeDirty = true;
-}
-
-float GetMouseFPPSensitivity() noexcept
-{
-  return mFPPMouseSensitivity;
-}
-
-void SetMouseFPPSensitivity(float sensitivity) noexcept
-{
-  mFPPMouseSensitivity = sensitivity;
-}
-
-void resetControlVars() noexcept
-{
-  mFPPMouseSensitivity = 0.1f;
-}
-
-void perspectiveMouseMovement(float x, float y) noexcept
-{
-  float xOffset = 0, yOffset = 0;
-  static float lastX, lastY;
-  if (mRenewFPP)
-  {
-    mMousePosition.xOffset = 0;
-    mMousePosition.yOffset = 0;
-    lastX = x;
-    lastY = y;
-    mRenewFPP = false;
-  }
-
-  xOffset = x - lastX;
-  yOffset = lastY - y;
-
-  lastX = x;
-  lastY = y;
-
-  xOffset *= mFPPMouseSensitivity;
-  yOffset *= mFPPMouseSensitivity;
-
-  mMousePosition.xOffset = xOffset;
-  mMousePosition.yOffset = yOffset;
-}
-
-/**
-* Reports the mouse in x y space on the screen: bottom left should be 0,0
-*/
-void standardMouseMovement(float xpos, float ypos)
-{
-  float DisplayWindowWidth = static_cast<float>(GetWindowWidth());
-  float DisplayWindowHeight = static_cast<float>(GetWindowHeight());
-
-  switch (mStandardMouseZeros)
-  {
-  case STANDARDMOUSEZEROS::BOT_LEFT_0_to_1:
-  {
-    const float c_xpos = xpos / DisplayWindowWidth;
-    const float c_ypos = -(ypos - DisplayWindowHeight) / DisplayWindowHeight;
-    mMousePosition.xOffset = c_xpos;
-    mMousePosition.yOffset = c_ypos;
-  }
-  break;
-  case STANDARDMOUSEZEROS::TOP_LEFT_0_to_1:
-  {
-    const float c_xpos = xpos / DisplayWindowWidth;
-    const float c_ypos = ypos / DisplayWindowHeight;
-    mMousePosition.xOffset = c_xpos;
-    mMousePosition.yOffset = c_ypos;
-  }
-  break;
-  case STANDARDMOUSEZEROS::BOT_LEFT_FULL_RANGE:
-  {
-    const float c_xpos = xpos;
-    const float c_ypos = -(ypos - DisplayWindowHeight);
-    mMousePosition.xOffset = c_xpos;
-    mMousePosition.yOffset = c_ypos;
-  }
-  break;
-  case STANDARDMOUSEZEROS::TOP_LEFT_FULL_RANGE:
-  {
-    const float c_xpos = xpos;
-    const float c_ypos = ypos;
-    mMousePosition.xOffset = c_xpos;
-    mMousePosition.yOffset = c_ypos;
-  }
-  break;
-  }
-}
-void mouseScrollWheelMovement(float x, float y) noexcept
-{
-  mMouseWheelScroll.xOffset = x;
-  mMouseWheelScroll.yOffset = y;
-}
-
-void InitEngine()
-{
-  if (!isInit) {
+// Init, Run, Shutdown, Reset
+void InitEngine() {
+  if (!isEngineInit) {
     SoundDevice::Init();
     mNonSpammableKeysTimeout = 0.f;
     mSlowUpdateTimeout = 0.f;
@@ -2283,15 +1022,14 @@ void InitEngine()
     mDirectionalLight = NULL;
 
     // set an error calback in case of failure we at least know
-    static auto glfw_error_callback = [](int e, const char* msg) {
+    glfwSetErrorCallback([](int e, const char* msg) {
       if (e != 65543)
         throw("glfw callback error");
-    };
-    glfwSetErrorCallback(glfw_error_callback);
+      });
 
     glfwInit();
 
-    glfwWindowHint(GLFW_MAXIMIZED, GLFW_TRUE);
+    glfwWindowHint(GLFW_MAXIMIZED, GLFW_FALSE);
 
     auto local_options = Settings::Get()->GetOptions();
 
@@ -2342,6 +1080,8 @@ void InitEngine()
     if (!mWindow)
       throw("unsupported graphics");
 
+    glfwSetWindowSizeLimits(mWindow, MINSCREENWIDTH, MINSCREENHEIGHT, MAXSCREENWIDTH, MAXSCREENHEIGHT);
+
     glfwMakeContextCurrent(mWindow);
 
     if (local_options.renderer == RenderingFramework::OPENGL)
@@ -2356,20 +1096,21 @@ void InitEngine()
     // set all our options to what we set (mainly the major and minor version will be updated)
     Settings::Get()->SetOptions(local_options);
 
-    SetupReshapeCallback();
+    SetReshapeCallback();
 
-    SetupScrollWheelCallback();
+    SetScrollWheelCallback();
 
-    SetReadMouseCurorAsStandard();
+    SetMouseToNormal();
 
-    SetClearColor();
+    SetMouseReadToNormal();
+
+    SetWindowClearColor();
   }
-  isInit = true;
+  isEngineInit = true;
 }
-
 int Run()
 {
-  if (!isInit) {
+  if (!isEngineInit) {
     std::cout << "init first\n";
     return -4;
   }
@@ -2383,30 +1124,1071 @@ int Run()
   glfwTerminate();  //todo check if crash in debug still exists
   return 0;
 }
+void Shutdown() noexcept {
+  glfwSetWindowShouldClose(mWindow, 1);
+}
+void SoftReset() noexcept {
+  // process anything the user Requested and unload all meshes and textures
+  teardown();
 
-void Shutdown() noexcept
+  mMusic = NULL;
+  mCameras.clear();
+  mProps.clear();
+  onBegin.clear();
+  onDeltaUpdate.clear();
+  onKeyHandling.clear();
+  onTimeoutKeyHandling.clear();
+  onScrollHandling.clear();
+  onMouseHandling.clear();
+  onUpdate.clear();
+  onSlowUpdate.clear();
+  onTearDown.clear();
+
+  mNonSpammableKeysTimeout = 0.f;
+  mSlowUpdateTimeout = 0.f;
+  mSlowUpdateWaitLength = .3337f;
+  mNoSpamWaitLength = .5667f;
+
+  SetMouseToNormal();
+  SetMouseReadToNormal();
+
+  SetWindowClearColor();
+}
+// End Init, Run, Shutdown, Reset
+
+
+// Camera
+int AddCamera(int w, int h) {
+  mCameras.emplace_back(w, h);
+  return mCameras.back().GetUID();
+}
+bool RemoveCamera(const int camId) {
+  if (mCameras.empty())
+    return false;
+
+  auto before_size = mCameras.size();
+
+  auto ret_it = mCameras.erase(
+    std::remove_if(mCameras.begin(), mCameras.end(),
+      [&](Camera c) {
+        return c.GetUID() == camId;
+      }),
+    mCameras.end());
+
+  auto after_size = mCameras.size();
+
+  if (before_size != after_size)
+    return true;  // success remove
+
+  return false;   // fail remove
+}
+void SetCamMaxRenderDistance(int camId, float amt)
 {
-  closeWindow();
+  for (auto& cam : mCameras)
+  {
+    if (cam.GetUID() == camId)
+    {
+      cam.MaxRenderDistance = amt;
+      cam.updateProjectionMatrix();
+      return;
+    }
+  }
+  throw("cam id doesn't exist or is invalid");
+}
+void SetCamToPerspective(int camId)
+{
+  for (auto& cam : mCameras)
+  {
+    if (cam.GetUID() == camId)
+    {
+      cam.RenderProjection = RenderProjection::PERSPECTIVE;
+      cam.updateProjectionMatrix();
+      return;
+    }
+  }
+  throw("cam id doesn't exist or is invalid");
+}
+void SetCamFOV(int camId, float new_fov)
+{
+  for (auto& cam : mCameras)
+  {
+    if (cam.GetUID() == camId)
+    {
+      if (cam.RenderProjection != RenderProjection::PERSPECTIVE)
+        throw("changing FOV on wrong render projection");
+      cam.FOV = new_fov;
+      cam.updateProjectionMatrix();
+      return;
+    }
+  }
+  throw("cam id doesn't exist or is invalid");
+}
+void SetCamDimensions(int camId, int w, int h)
+{
+  if (w < MINSCREENWIDTH || h < MINSCREENHEIGHT ||
+    w > MAXSCREENWIDTH || h > MAXSCREENHEIGHT)
+    throw("invalid cam resize attempted");
+  for (auto& cam : mCameras)
+  {
+    if (cam.GetUID() == camId)
+    {
+      cam.Width = w;
+      cam.Height = h;
+      cam.updateProjectionMatrix();
+      return;
+    }
+  }
+  throw("cam id doesn't exist or is invalid");
+}
+void SetCamPosition(int camId, glm::vec3 new_loc) {
+  for (auto& cam : mCameras)
+  {
+    if (cam.GetUID() == camId)
+    {
+      cam.Position = new_loc;
+      cam.updateCameraVectors();
+      return;
+    }
+  }
+  throw("cam id doesn't exist or is invalid");
+}
+void SetCamPitch(int camId, float new_pitch_degrees)
+{
+  for (auto& cam : mCameras)
+  {
+    if (cam.GetUID() == camId)
+    {
+      if (new_pitch_degrees > 89.9f)
+        new_pitch_degrees = 89.9f;
+      else if (new_pitch_degrees < -89.9f)
+        new_pitch_degrees = -89.9f;
+      cam.Pitch = new_pitch_degrees;
+      cam.updateCameraVectors();
+      return;
+    }
+  }
+  throw("cam id doesn't exist or is invalid");
+}
+void SetCamYaw(int camId, float new_yaw_degrees)
+{
+  for (auto& cam : mCameras)
+  {
+    if (cam.GetUID() == camId)
+    {
+      if (new_yaw_degrees > 360.0f)
+        new_yaw_degrees -= 360.f;
+      else if (new_yaw_degrees < 0.f)
+        new_yaw_degrees += 360.f;
+      cam.Yaw = new_yaw_degrees;
+      cam.updateCameraVectors();
+      return;
+    }
+  }
+  throw("cam id doesn't exist or is invalid");
+}
+void ShiftCamPosition(int camId, glm::vec3 offset)
+{
+  for (auto& cam : mCameras)
+  {
+    if (cam.GetUID() == camId)
+    {
+      cam.Position += offset;
+      cam.updateCameraVectors();
+      return;
+    }
+  }
+  throw("cam id doesn't exist or is invalid");
+}
+void ShiftCamPitchAndYaw(int camId, float pitch_offset_degrees, float yaw_offset_degrees)
+{
+  for (auto& cam : mCameras)
+  {
+    if (cam.GetUID() == camId)
+    {
+      float new_pitch_degrees = cam.Pitch + pitch_offset_degrees;
+      if (new_pitch_degrees > 89.9f)
+        new_pitch_degrees = 89.9f;
+      else if (new_pitch_degrees < -89.9f)
+        new_pitch_degrees = -89.9f;
+      cam.Pitch = new_pitch_degrees;
+
+      float new_yaw_degrees = cam.Yaw + yaw_offset_degrees;
+      if (new_yaw_degrees > 360.0f)
+        new_yaw_degrees -= 360.f;
+      else if (new_yaw_degrees < 0.f)
+        new_yaw_degrees += 360.f;
+      cam.Yaw = new_yaw_degrees;
+
+      cam.updateCameraVectors();
+      return;
+    }
+  }
+  throw("cam id doesn't exist or is invalid");
+}
+glm::vec3 GetCamFront(int camId)
+{
+  for (auto& cam : mCameras)
+  {
+    if (cam.GetUID() == camId)
+    {
+      return cam.Front;
+    }
+  }
+  throw("cam id doesn't exist or is invalid");
+}
+glm::vec3 GetCamRight(int camId)
+{
+  for (auto& cam : mCameras)
+  {
+    if (cam.GetUID() == camId)
+    {
+      return cam.Right;
+    }
+  }
+  throw("cam id doesn't exist or is invalid");
+}
+glm::vec3 GetCamPosition(int camId)
+{
+  for (auto& cam : mCameras)
+  {
+    if (cam.GetUID() == camId)
+    {
+      return cam.Position;
+    }
+  }
+  throw("cam id doesn't exist or is invalid");
+}
+glm::mat4 GetProjectionMatrix(int camId)
+{
+  for (auto& cam : mCameras)
+  {
+    if (cam.GetUID() == camId)
+    {
+      glm::mat4 projection = glm::mat4(1);
+      switch (cam.RenderProjection)
+      {
+      case RenderProjection::PERSPECTIVE:
+      {
+        float aspectRatio = static_cast<float>(cam.Width) / static_cast<float>(cam.Height);
+        projection = glm::perspective(glm::radians(cam.FOV), aspectRatio, 0.0167f, cam.MaxRenderDistance);
+      }
+      break;
+      case RenderProjection::ORTHO:
+        projection = glm::ortho(
+          0.f,
+          static_cast<float>(cam.Width),
+          0.f,
+          static_cast<float>(cam.Height),
+          0.0167f,
+          cam.MaxRenderDistance
+        );
+        break;
+      default:
+        break;
+      }
+      return projection;
+    }
+  }
+  throw("cam id doesn't exist or is invalid");
+}
+// End Camera
+
+
+// 3d Game Objects
+int AddProp(const char* path, int camId, bool is_lit)
+{
+  if (is_lit)
+    setupLitShader();
+  else
+    setupDiffShader();
+
+  mProps.emplace_back(path, camId, is_lit);
+
+  return mProps.back().GetUID();
+}
+void SetPropTranslation(int propId, glm::vec3 new_pos)
+{
+  for (auto& p : mProps)
+  {
+    if (p.GetUID() == propId)
+    {
+      p.translation = new_pos;
+      p.updateFinalModelMatrix();
+      return;
+    }
+  }
+  throw("prop id does not exist");
+}
+void SetPropScale(int propId, glm::vec3 new_scale)
+{
+  for (auto& p : mProps)
+  {
+    if (p.GetUID() == propId)
+    {
+      p.scale = new_scale;
+      p.updateFinalModelMatrix();
+      return;
+    }
+  }
+  throw("prop id does not exist");
+}
+void SetPropRotationY(int propId, float new_y_rot)
+{
+  for (auto& p : mProps)
+  {
+    if (p.GetUID() == propId)
+    {
+      p.eulerRotationY = new_y_rot;
+      p.updateFinalModelMatrix();
+      return;
+    }
+  }
+  throw("prop id does not exist");
+}
+// End 3d Game Objects
+
+
+// Skybox
+void SetSkybox(const std::shared_ptr<Skybox>& skybox) noexcept {
+  mSkybox = skybox;
+}
+// End Skybox
+
+
+// Directional Ligts
+void SetDirectionalLight(glm::vec3 dir, glm::vec3 amb, glm::vec3 diff, glm::vec3 spec)
+{
+  if (!mLitShader)
+    setupLitShader();
+
+  if (!mDirectionalLight)
+  {
+    mDirectionalLight = new DirectionalLight(dir, amb, diff, spec);
+  }
+  else
+  {
+    mDirectionalLight->Direction = dir;
+    mDirectionalLight->Ambient = amb;
+    mDirectionalLight->Diffuse = diff;
+    mDirectionalLight->Specular = spec;
+  }
+
+  {
+    assert(mLitShader);
+    mLitShader->use();
+    mLitShader->setInt("isDirectionalLightOn", 1);
+    mLitShader->setVec3("directionalLight.Direction", mDirectionalLight->Direction);
+    mLitShader->setVec3("directionalLight.Ambient", mDirectionalLight->Ambient);
+    mLitShader->setVec3("directionalLight.Diffuse", mDirectionalLight->Diffuse);
+    mLitShader->setVec3("directionalLight.Specular", mDirectionalLight->Specular);
+  }
+}
+void RemoveDirectionalLight()
+{
+  assert(mLitShader);
+  mLitShader->use();
+  mLitShader->setInt("isDirectionalLightOn", 0);
+  delete mDirectionalLight;
+  mDirectionalLight = NULL;
+}
+// End Directional Light
+
+
+// Point Light
+int AddPointLight(glm::vec3 pos, float constant, float linear, float quad, glm::vec3 amb,
+  glm::vec3 diff, glm::vec3 spec)
+{
+  if (mPointLights.size() >= MAXPOINTLIGHTS)
+    throw("too many point lights");
+
+  if (!mLitShader)
+    setupLitShader();
+
+  mPointLights.emplace_back(PointLight(pos, constant, linear, quad, amb, diff, spec));
+  std::size_t new_point_loc = mPointLights.size() - 1;
+
+  // push changes to shader
+  {
+    std::string position, constant, linear, quadratic, ambient, diffuse, specular;
+    constant = linear = quadratic = ambient = diffuse = specular = position = "pointLight[";
+    std::stringstream ss;
+    ss << new_point_loc;
+    position += ss.str();
+    constant += ss.str();
+    linear += ss.str();
+    quadratic += ss.str();
+    ambient += ss.str();
+    diffuse += ss.str();
+    specular += ss.str();
+    position += "].";
+    constant += "].";
+    linear += "].";
+    quadratic += "].";
+    ambient += "].";
+    diffuse += "].";
+    specular += "].";
+    position += "Position";
+    constant += "Constant";
+    linear += "Linear";
+    quadratic += "Quadratic";
+    ambient += "Ambient";
+    diffuse += "Diffuse";
+    specular += "Specular";
+
+    assert(mLitShader);
+    mLitShader->use(); // <- vs lies if u see green squigglies
+    mLitShader->setVec3(position, mPointLights.back().Position);
+    mLitShader->setFloat(constant, mPointLights.back().Constant);
+    mLitShader->setFloat(linear, mPointLights.back().Linear);
+    mLitShader->setFloat(quadratic, mPointLights.back().Quadratic);
+    mLitShader->setVec3(ambient, mPointLights.back().Ambient);
+    mLitShader->setVec3(diffuse, mPointLights.back().Diffuse);
+    mLitShader->setVec3(specular, mPointLights.back().Specular);
+    mLitShader->setInt("NUM_POINT_LIGHTS", static_cast<int>(new_point_loc + 1));
+  }
+
+  return mPointLights.back().id;  // unique id
+}
+bool RemovePointLight(int which_by_id)
+{
+  // returns true if successfully removed the point light, false otherwise
+  if (mPointLights.empty())
+    return false;
+
+  auto before_size = mPointLights.size();
+
+  auto ret_it = mPointLights.erase(
+    std::remove_if(mPointLights.begin(), mPointLights.end(), [&](const PointLight sl) { return sl.id == which_by_id; }),
+    mPointLights.end());
+
+  auto after_size = mPointLights.size();
+
+  if (before_size != after_size)
+  {
+    mLitShader->use();
+    mLitShader->setInt("NUM_POINT_LIGHTS", static_cast<int>(after_size));
+
+    // sync lights on shader after the change
+    for (int i = 0; i < after_size; i++)
+    {
+      ChangePointLight(
+        mPointLights[i].id,
+        mPointLights[i].Position,
+        mPointLights[i].Constant,
+        mPointLights[i].Linear,
+        mPointLights[i].Quadratic,
+        mPointLights[i].Ambient,
+        mPointLights[i].Diffuse,
+        mPointLights[i].Specular
+      );
+    }
+    return true;
+  }
+  else
+    return false;
+}
+void MovePointLight(int which, glm::vec3 new_pos)
+{
+  if (which < 0)
+    throw("dont");
+
+  int loc_in_vec = 0;
+  for (auto& pl : mPointLights)
+  {
+    if (pl.id == which)
+    {
+      pl.Position = new_pos;
+      std::stringstream ss;
+      ss << loc_in_vec;
+      std::string position = "pointLight[" + ss.str() + "].Position";
+      mLitShader->use();
+      mLitShader->setVec3(position.c_str(), pl.Position);
+      return;
+    }
+    loc_in_vec++;
+  }
+
+  throw("u messed up");
+}
+void ChangePointLight(int which, glm::vec3 new_pos, float new_constant, float new_linear, float new_quad,
+  glm::vec3 new_amb, glm::vec3 new_diff, glm::vec3 new_spec)
+{
+  if (which < 0)
+    throw("dont");
+
+  int loc_in_vec = 0;
+  for (auto& pl : mPointLights)
+  {
+    if (pl.id == which)
+    {
+      // push changes to shader
+      {
+        pl.Position = new_pos;
+        pl.Ambient = new_amb;
+        pl.Constant = new_constant;
+        pl.Diffuse = new_diff;
+        pl.Linear = new_linear;
+        pl.Quadratic = new_quad;
+        pl.Specular = new_spec;
+        std::string pos, ambient, constant, diffuse, linear, quadrat, specular;
+        ambient = constant = diffuse = linear = quadrat = specular = pos = "pointLight[";
+        std::stringstream ss;
+        ss << loc_in_vec;
+        pos += ss.str();
+        constant += ss.str();
+        linear += ss.str();
+        quadrat += ss.str();
+        ambient += ss.str();
+        diffuse += ss.str();
+        specular += ss.str();
+        pos += "].";
+        constant += "].";
+        linear += "].";
+        quadrat += "].";
+        ambient += "].";
+        diffuse += "].";
+        specular += "].";
+        pos += "Position";
+        constant += "Constant";
+        linear += "Linear";
+        quadrat += "Quadratic";
+        ambient += "Ambient";
+        diffuse += "Diffuse";
+        specular += "Specular";
+
+        mLitShader->use(); // <- vs lies if u see green squigglies
+        mLitShader->setVec3(pos, pl.Position);
+        mLitShader->setFloat(constant, pl.Constant);
+        mLitShader->setFloat(linear, pl.Linear);
+        mLitShader->setFloat(quadrat, pl.Quadratic);
+        mLitShader->setVec3(ambient, pl.Ambient);
+        mLitShader->setVec3(diffuse, pl.Diffuse);
+        mLitShader->setVec3(specular, pl.Specular);
+      }
+      return;
+    }
+    loc_in_vec++;
+  }
+
+  throw("u messed up");
+}
+// End Point Light
+
+
+// Spot Light
+int AddSpotLight(glm::vec3 pos, glm::vec3 dir, float inner, float outer, float constant,
+  float linear, float quad, glm::vec3 amb, glm::vec3 diff, glm::vec3 spec)
+{
+  if (mSpotLights.size() == MAXSPOTLIGHTS)
+  {
+    throw("too many spot lights");
+  }
+
+  if (!mLitShader)
+    setupLitShader();
+
+  mSpotLights.emplace_back(SpotLight(pos, dir, inner, outer, constant, linear, quad, amb, diff, spec));
+  auto new_spot_loc = mSpotLights.size() - 1;
+
+  // push changes to shader
+  {
+    std::string pos, ambient, constant, cutoff, ocutoff, diffuse, direction, linear, quadrat, specular;
+    ambient = constant = cutoff = ocutoff = diffuse = direction = linear = quadrat = specular = pos = "spotLight[";
+    std::stringstream ss;
+    ss << new_spot_loc;
+    pos += ss.str();
+    constant += ss.str();
+    cutoff += ss.str();
+    ocutoff += ss.str();
+    direction += ss.str();
+    linear += ss.str();
+    quadrat += ss.str();
+    ambient += ss.str();
+    diffuse += ss.str();
+    specular += ss.str();
+    pos += "].";
+    constant += "].";
+    cutoff += "].";
+    ocutoff += "].";
+    direction += "].";
+    linear += "].";
+    quadrat += "].";
+    ambient += "].";
+    diffuse += "].";
+    specular += "].";
+    pos += "Position";
+    constant += "Constant";
+    cutoff += "CutOff";
+    ocutoff += "OuterCutOff";
+    direction += "Direction";
+    linear += "Linear";
+    quadrat += "Quadratic";
+    ambient += "Ambient";
+    diffuse += "Diffuse";
+    specular += "Specular";
+
+    assert(mLitShader);
+    mLitShader->use(); // <- vs lies if u see green squigglies
+    mLitShader->setVec3(pos, mSpotLights.back().Position);
+    mLitShader->setFloat(cutoff, mSpotLights.back().CutOff);
+    mLitShader->setFloat(ocutoff, mSpotLights.back().OuterCutOff);
+    mLitShader->setVec3(direction, mSpotLights.back().Direction);
+    mLitShader->setFloat(constant, mSpotLights.back().Constant);
+    mLitShader->setFloat(linear, mSpotLights.back().Linear);
+    mLitShader->setFloat(quadrat, mSpotLights.back().Quadratic);
+    mLitShader->setVec3(ambient, mSpotLights.back().Ambient);
+    mLitShader->setVec3(diffuse, mSpotLights.back().Diffuse);
+    mLitShader->setVec3(specular, mSpotLights.back().Specular);
+    mLitShader->setInt("NUM_SPOT_LIGHTS", static_cast<int>(new_spot_loc + 1));
+  }
+
+  return mSpotLights.back().id;  // unique id
+}
+bool RemoveSpotLight(int which_by_id) {
+  // returns true if it removed the spot light, false otherwise
+  if (mSpotLights.empty())
+    return false;
+
+  auto before_size = mSpotLights.size();
+
+  /*auto ret_it = */mSpotLights.erase(
+    std::remove_if(mSpotLights.begin(), mSpotLights.end(), [&](const SpotLight sl) { return sl.id == which_by_id; }),
+    mSpotLights.end());
+
+  auto after_size = mSpotLights.size();
+
+  if (before_size != after_size)
+  {
+    mLitShader->use();
+    mLitShader->setInt("NUM_SPOT_LIGHTS", static_cast<int>(after_size));
+
+    // sync lights on shader after the change
+    for (int i = 0; i < after_size; i++)
+    {
+      ChangeSpotLight(
+        mSpotLights[i].id,
+        mSpotLights[i].Position,
+        mSpotLights[i].Direction,
+        mSpotLights[i].CutOff,
+        mSpotLights[i].OuterCutOff,
+        mSpotLights[i].Constant,
+        mSpotLights[i].Linear,
+        mSpotLights[i].Quadratic,
+        mSpotLights[i].Ambient,
+        mSpotLights[i].Diffuse,
+        mSpotLights[i].Specular
+      );
+    }
+
+    return true;
+  }
+  else
+    return false;
+}
+void MoveSpotLight(int which, glm::vec3 new_pos, glm::vec3 new_dir) {
+  if (which < 0)
+    throw("dont");
+
+  int loc_in_vec = 0;
+  for (auto& sl : mSpotLights)
+  {
+    if (sl.id == which)
+    {
+      sl.Position = new_pos;
+      sl.Direction = new_dir;
+      mLitShader->use();
+      std::stringstream ss;
+      ss << loc_in_vec;
+      std::string position = "spotLight[" + ss.str() + "].Position";
+      std::string direction = "spotLight[" + ss.str() + "].Direction";
+      mLitShader->setVec3(position.c_str(), sl.Position);
+      mLitShader->setVec3(direction.c_str(), sl.Direction);
+      return;
+    }
+    loc_in_vec++;
+  }
+
+  throw("u messed up");
+}
+void ChangeSpotLight(int which, glm::vec3 new_pos, glm::vec3 new_dir, float new_inner,
+  float new_outer, float new_constant, float new_linear, float new_quad, glm::vec3 new_amb,
+  glm::vec3 new_diff, glm::vec3 new_spec)
+{
+  if (which < 0)
+    throw("dont");
+
+  int loc_in_vec = 0;
+  for (auto& sl : mSpotLights)
+  {
+    if (sl.id == which)
+    {
+      // push changes to shader
+      {
+        sl.Position = new_pos;
+        sl.Direction = new_dir;
+        sl.Ambient = new_amb;
+        sl.Constant = new_constant;
+        sl.CutOff = new_inner;
+        sl.OuterCutOff = new_outer;
+        sl.Diffuse = new_diff;
+        sl.Linear = new_linear;
+        sl.Quadratic = new_quad;
+        sl.Specular = new_spec;
+        std::string pos, ambient, constant, cutoff, ocutoff, diffuse, direction, linear, quadrat, specular;
+        ambient = constant = cutoff = ocutoff = diffuse = direction = linear = quadrat = specular = pos = "spotLight[";
+        std::stringstream ss;
+        ss << loc_in_vec;
+        pos += ss.str();
+        constant += ss.str();
+        cutoff += ss.str();
+        ocutoff += ss.str();
+        direction += ss.str();
+        linear += ss.str();
+        quadrat += ss.str();
+        ambient += ss.str();
+        diffuse += ss.str();
+        specular += ss.str();
+        pos += "].";
+        constant += "].";
+        cutoff += "].";
+        ocutoff += "].";
+        direction += "].";
+        linear += "].";
+        quadrat += "].";
+        ambient += "].";
+        diffuse += "].";
+        specular += "].";
+        pos += "Position";
+        constant += "Constant";
+        cutoff += "CutOff";
+        ocutoff += "OuterCutOff";
+        direction += "Direction";
+        linear += "Linear";
+        quadrat += "Quadratic";
+        ambient += "Ambient";
+        diffuse += "Diffuse";
+        specular += "Specular";
+
+        mLitShader->use(); // <- vs lies if u see green squigglies
+        mLitShader->setVec3(pos, sl.Position);
+        mLitShader->setFloat(cutoff, sl.CutOff);
+        mLitShader->setFloat(ocutoff, sl.OuterCutOff);
+        mLitShader->setVec3(direction, sl.Direction);
+        mLitShader->setFloat(constant, sl.Constant);
+        mLitShader->setFloat(linear, sl.Linear);
+        mLitShader->setFloat(quadrat, sl.Quadratic);
+        mLitShader->setVec3(ambient, sl.Ambient);
+        mLitShader->setVec3(diffuse, sl.Diffuse);
+        mLitShader->setVec3(specular, sl.Specular);
+      }
+      return;
+    }
+    loc_in_vec++;
+  }
+
+  throw("u messed up");
+}
+// End Spot Light
+
+
+// Sound Effects
+int AddSoundEffect(const char* path) {
+  // make sure the sound effect hasn't already been loaded
+  for (const auto& pl : mSoundEffects) {
+    if (path == pl->_FilePath.c_str())
+      throw("sound from that path already loaded");
+  }
+  // Add a new sound effect
+  mSoundEffects.reserve(mSoundEffects.size() + 1);
+  mSoundEffects.push_back(new SoundEffect(path));
+
+  // Add a new speaker
+  mSpeakers.reserve(mSpeakers.size() + 1);
+  mSpeakers.emplace_back(new Speaker());  //test, note, todo: same sound effects can be applied to multiple speakers
+
+  // Associate the sound effect to the speaker.
+  mSpeakers.back()->AssociateBuffer(mSoundEffects.back()->_Buffer);
+
+  // return the unique ID of the speaker
+  return mSpeakers.back()->GetUID();
+}
+void RemoveSoundEffect(int soundId)
+{
+  if (mSoundEffects.empty())
+    throw("no sounds exist, nothing to remove");
+
+  auto before_size = mSoundEffects.size();
+
+  auto after_size = mSoundEffects.size();
+
+  if (before_size == after_size)
+    throw("didn't remove anything");
+}
+void PlaySoundEffect(int id, bool interrupt) {
+  if (mSpeakers.empty())
+    throw("no speakers");
+
+  for (auto& spkr : mSpeakers)
+  {
+    if (spkr->GetUID() == id) {
+      if (interrupt) {
+        spkr->PlayInterrupt();
+        return;
+      }
+      spkr->PlayNoOverlap();
+      return;
+    }
+  }
+
+  throw("speaker not found");
+}
+// End Sound Effects
+
+
+// Music
+void AddMusic(const char* path) {
+  if (!mMusic) {
+    mMusic = new LongSound(path);
+    return;
+  }
+
+  throw("music already loaded, use remove music first");
+}
+void RemoveMusic() {
+  if (mMusic) {
+    delete mMusic;
+    mMusic = NULL;
+    return;
+  }
+  throw("no music to remove");
+}
+void PlayMusic() {
+  if (mMusic) {
+    mMusic->Play();
+    return;
+  }
+  throw("no music to play");
+}
+void StopMusic() {
+  if (mMusic) {
+    if (mMusic->IsPlaying()) {
+      mMusic->Stop();
+      return;
+    }
+    return;
+  }
+
+  throw("no music loaded");
+}
+// End Music
+
+
+// Mouse
+void SetMouseToHidden() noexcept {
+  //  If you only wish the cursor to become hidden when it is over a window but still want it to behave normally, set the cursor mode to GLFW_CURSOR_HIDDEN.
+  if (glfwGetInputMode(mWindow, GLFW_CURSOR) == GLFW_CURSOR_HIDDEN)
+    return;  //already hidden, do nothing
+  glfwSetInputMode(mWindow, GLFW_CURSOR, GLFW_CURSOR_HIDDEN);
+}
+void SetMouseToDisabled() noexcept {
+  //If you wish to implement mouse motion based camera controls or other input schemes that require unlimited mouse movement, set the cursor mode to GLFW_CURSOR_DISABLED.
+  if (glfwGetInputMode(mWindow, GLFW_CURSOR) == GLFW_CURSOR_DISABLED)
+    return;  //already disabled, do nothing
+  glfwSetInputMode(mWindow, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
+}
+void SetMouseToNormal() noexcept {
+  //To exit out of either of these special modes, restore the GLFW_CURSOR_NORMAL cursor mode.
+  if (glfwGetInputMode(mWindow, GLFW_CURSOR) == GLFW_CURSOR_NORMAL)
+    return;  //already normal, do nothing
+  glfwSetInputMode(mWindow, GLFW_CURSOR, GLFW_CURSOR_NORMAL);
 }
 
-void SoftReset()
+void SetMouseReadToFPP() noexcept {
+  if (mMouseReporting == MouseReporting::PERSPECTIVE)
+    return;  // already in perspective handling
+
+  mSwitchedToFPP = true;
+  ::glfwSetCursorPosCallback(mWindow, [](GLFWwindow* window, double x, double y) {
+    float xOffset = 0, yOffset = 0;
+    static float lastX, lastY;
+    if (mSwitchedToFPP) {
+      mMousePosition.xOffset = 0;
+      mMousePosition.yOffset = 0;
+      lastX = x;
+      lastY = y;
+      mSwitchedToFPP = false;
+    }
+    xOffset = x - lastX;
+    yOffset = lastY - y;
+    lastX = x;
+    lastY = y;
+    xOffset *= mFPPMouseSensitivity;
+    yOffset *= mFPPMouseSensitivity;
+    mMousePosition.xOffset = xOffset;
+    mMousePosition.yOffset = yOffset;
+    });
+
+  mMouseReporting = MouseReporting::PERSPECTIVE;
+}
+void SetMouseFPPSensitivity(float sensitivity) noexcept
 {
-  resetEngine();
+  mFPPMouseSensitivity = sensitivity;
+}
+float GetMouseFPPSensitivity() noexcept
+{
+  return mFPPMouseSensitivity;
 }
 
-void PerspectiveMouseHandler(float xpos, float ypos)
-{
-  perspectiveMouseMovement(xpos, ypos);
+void SetMouseReadToNormal() noexcept {
+  if (mMouseReporting == MouseReporting::STANDARD)
+    return;  // already in standard handling
+
+  ::glfwSetCursorPosCallback(mWindow, [](GLFWwindow* window, double xpos, double ypos) {
+    mMousePosition.xOffset = xpos;
+    mMousePosition.yOffset = ypos;
+    std::cout << "[standard mouse read] x: " << mMousePosition.xOffset;
+    std::cout << " y: " << mMousePosition.yOffset << std::endl;
+    });
+
+  mMouseReporting = MouseReporting::STANDARD;
 }
 
-void StandardMouseHandler(float xpos, float ypos)
-{
-  standardMouseMovement(xpos, ypos);
+void SetScrollWheelCallback() noexcept {
+  ::glfwSetScrollCallback(mWindow, [](GLFWwindow* w, double x, double y) {
+    mMouseWheelScroll.xOffset = x;
+    mMouseWheelScroll.yOffset = y;
+    });
 }
+// End Mouse
 
-void ScrollHandler(float xpos, float ypos)
-{
-  mouseScrollWheelMovement(xpos, ypos);
+
+// Window
+void SetWindowClearColor(glm::vec3 color) {
+  OGLGraphics::SetViewportClearColor(color);
+}
+int GetWindowWidth() noexcept {
+  int width, height;
+  glfwGetWindowSize(mWindow, &width, &height);
+  return width;
+}
+int GetWindowHeight() noexcept {
+  int width, height;
+  glfwGetWindowSize(mWindow, &width, &height);
+  return height;
+}
+void SetWindowTitle(const char* name) noexcept {
+  glfwSetWindowTitle(mWindow, name);
+}
+void SetReshapeCallback() noexcept {
+  ::glfwSetFramebufferSizeCallback(mWindow,
+    [](GLFWwindow* window, int w, int h) {
+      switch (Settings::Get()->GetOptions().renderer) {
+      case RenderingFramework::OPENGL:
+        OGLGraphics::SetViewportSize(0, 0, w, h);
+        break;
+      case RenderingFramework::D3D:
+        break;
+      case RenderingFramework::VULKAN:
+        break;
+      }
+      for (auto& cam : mCameras) {
+        cam.Width = static_cast<int>(w * cam.RatioToScreen.x);
+        cam.Height = static_cast<int>(h * cam.RatioToScreen.y);
+        cam.updateProjectionMatrix();
+        std::cout << "projection updated for cam " << cam.GetUID() << '\n';
+      }
+      isWindowSizeDirty = true;
+    }
+  );
+}
+// End Window
+
+
+// Loop Controls
+void SetSlowUpdateTimeoutLength(const float& newtime) {
+  // !! warning, no checking, set at your own risk
+  mSlowUpdateWaitLength = newtime;
+}
+uint32_t AddToOnBegin(void(*function)()) {
+  static uint32_t next_begin_id = 0;
+  next_begin_id++;
+  onBegin.emplace(next_begin_id, function);
+  return next_begin_id;
+}
+uint32_t AddToDeltaUpdate(void(*function)(float)) {
+  static uint32_t next_deltaupdate_id = 0;
+  next_deltaupdate_id++;
+  onDeltaUpdate.emplace(next_deltaupdate_id, function);
+  return next_deltaupdate_id;
+}
+uint32_t AddToUpdate(void(*function)()) {
+  static uint32_t next_update_id = 0;
+  next_update_id++;
+  onUpdate.emplace(next_update_id, function);
+  return next_update_id;
+}
+uint32_t AddToSlowUpdate(void(*function)()) {
+  static uint32_t next_slowupdate_id = 0;
+  next_slowupdate_id++;
+  onSlowUpdate.emplace(next_slowupdate_id, function);
+  return next_slowupdate_id;
+}
+uint32_t AddToTimedOutKeyHandling(bool(*function)(KeyboardInput&)) {
+  static uint32_t next_timedout_id = 0;
+  next_timedout_id++;
+  onTimeoutKeyHandling.emplace(next_timedout_id, function);
+  return next_timedout_id;
+}
+uint32_t AddToScrollHandling(void(*function)(ScrollInput&)) {
+  static uint32_t next_scrollhandling_id = 0;
+  next_scrollhandling_id++;
+  onScrollHandling.emplace(next_scrollhandling_id, function);
+  return next_scrollhandling_id;
+}
+uint32_t AddToKeyHandling(void(*function)(KeyboardInput&)) {
+  static uint32_t next_keyhandling_id = 0;
+  next_keyhandling_id++;
+  onKeyHandling.emplace(next_keyhandling_id, function);
+  return next_keyhandling_id;
+}
+uint32_t AddToMouseHandling(void(*function)(MouseInput&)) {
+  static uint32_t next_mousehandling_id = 0;
+  next_mousehandling_id++;
+  onMouseHandling.emplace(next_mousehandling_id, function);
+  return next_mousehandling_id;
+}
+uint32_t AddToOnTeardown(void(*function)()) {
+  static uint32_t next_teardown_id = 0;
+  next_teardown_id++;
+  onTearDown.emplace(next_teardown_id, function);
+  return next_teardown_id;
+}
+bool RemoveFromOnBegin(uint32_t r_id) {
+  return static_cast<bool>(onBegin.erase(r_id));
+}
+bool RemoveFromDeltaUpdate(uint32_t r_id) {
+  return static_cast<bool>(onDeltaUpdate.erase(r_id));
+}
+bool RemoveFromUpdate(uint32_t r_id) {
+  return static_cast<bool>(onUpdate.erase(r_id));
+}
+bool RemoveFromSlowUpdate(uint32_t r_id) {
+  return static_cast<bool>(onSlowUpdate.erase(r_id));
+}
+bool RemoveFromTimedOutKeyHandling(uint32_t r_id) {
+  return static_cast<bool>(onTimeoutKeyHandling.erase(r_id));
+}
+bool RemoveFromScrollHandling(uint32_t r_id) {
+  return static_cast<bool>(onScrollHandling.erase(r_id));
+}
+bool RemoveFromKeyHandling(uint32_t r_id) {
+  return static_cast<bool>(onKeyHandling.erase(r_id));
+}
+bool RemoveFromMouseHandling(uint32_t r_id) {
+  return static_cast<bool>(onMouseHandling.erase(r_id));
+}
+bool RemoveFromTeardown(uint32_t r_id) {
+  return static_cast<bool>(onTearDown.erase(r_id));
 }
 
 }  // end namespace AA
