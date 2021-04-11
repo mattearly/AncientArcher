@@ -97,11 +97,7 @@ void LongSound::UpdatePlayBuffer()
   if (GetPlayingState() != AL_PLAYING)
     return;
 
-  /* Get relevant source info */
-  ALint processed, state;
-  alGetSourcei(p_Source, AL_SOURCE_STATE, &state);
-  local_alErrorCheck();
-
+  ALint processed;
   alGetSourcei(p_Source, AL_BUFFERS_PROCESSED, &processed);
   local_alErrorCheck();
 
@@ -116,8 +112,7 @@ void LongSound::UpdatePlayBuffer()
 
     processed--;
 
-    /* Read the next chunk of data, refill the buffer, and queue it
-     * back on the source */
+    /* Read the next chunk of data, refill the buffer, and queue it back on the source */
     slen = sf_readf_short(p_Sndfile, p_Membuf, BUFFER_SAMPLES);
     if (slen > 0)
     {
@@ -129,22 +124,6 @@ void LongSound::UpdatePlayBuffer()
       local_alErrorCheck();
 
     }
-  }
-
-  /* Make sure the source hasn't underrun */
-  if (state != AL_PLAYING && state != AL_PAUSED)
-  {
-    ALint queued;
-
-    /* If no buffers are queued, playback is finished */
-    alGetSourcei(p_Source, AL_BUFFERS_QUEUED, &queued);
-    local_alErrorCheck();
-
-    if (queued == 0)
-      return;
-
-    alSourcePlay(p_Source);
-    local_alErrorCheck();
   }
 }
 
