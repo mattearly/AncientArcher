@@ -1,11 +1,10 @@
 #pragma once
 #include <AncientArcher/AncientArcher.h>
-const char* town_theme_stereo = "E:\\AssetPack\\TownTheme_stereo.wav";
-//const char* talking_stereo = "..\\ExampleProject\\res\\talking_stereo.wav";
+//const char* town_theme_stereo = "E:\\AssetPack\\TownTheme_stereo.wav";
+const char* talking_stereo = "..\\ExampleProject\\res\\talking_stereo.wav";
 
 void setmusic() {
-  AA::AddMusic(town_theme_stereo);
-
+  AA::AddMusic(talking_stereo);
   AA::AddToTimedOutKeyHandling([](AA::KeyboardInput& kb) -> bool {
     if (kb.p) {         // call to play music
       AA::PlayMusic();
@@ -23,13 +22,11 @@ void setmusic() {
       AA::RemoveMusic();
       return true;
     } else if (kb.r) {  // call to add (load) music
-      AA::AddMusic(town_theme_stereo);
+      AA::AddMusic(talking_stereo);
       return true;
     }
-
     return false;
   });
-
 
   static float the_vol = 1.f;
   AA::AddToScrollHandling([](AA::ScrollInput& si) {
@@ -37,14 +34,11 @@ void setmusic() {
       the_vol += .1f;
       AA::SetMusicVolume(the_vol);
       std::cout << "music vol increased to " << the_vol << "\n";
-
     }
     if (si.yOffset < 0) {
       the_vol -= .1f;
       AA::SetMusicVolume(the_vol);
       std::cout << "music vol decreased to " << the_vol << "\n";    }
   });
-
-  //AA::PlayMusic();
 
 }
