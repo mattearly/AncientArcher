@@ -126,6 +126,9 @@
     <ClInclude Include="include\AncientArcher\Version.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="src\Base\Types.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\vendor\stb\stb_image.cpp">
