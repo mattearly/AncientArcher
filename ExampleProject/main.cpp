@@ -31,6 +31,7 @@ int main()
   AA::AddToDeltaUpdate([](float dt) {
     static float current_rotation = 0.f;
     current_rotation += dt * 5;
+    current_rotation += dt * 2;
     AA::SetPropRotationY(peasant_man, current_rotation);
     }
   );
