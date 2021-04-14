@@ -14,7 +14,7 @@ void setfpsplayercontrols(int cam)
   AA::SetMouseReadToFPP();
   AA::SetMouseToDisabled();
 
-  static int the_cam_to_move = cam;
+  static int inherited_cam = cam;
 
   // for our move speed controls
   static const float DEFAULTMOVESPEED = 10.f;
@@ -25,8 +25,8 @@ void setfpsplayercontrols(int cam)
   static float currFlySpeed = DEFAULTMOVESPEED;
   static float prevFlySpeed = currFlySpeed;
   static glm::vec3 moveDir = glm::vec3(0.f);
-  static glm::vec3 frontFacingDir = AA::GetCamFront(the_cam_to_move);
-  static glm::vec3 rightFacingDir = AA::GetCamRight(the_cam_to_move);
+  static glm::vec3 frontFacingDir = AA::GetCamFront(inherited_cam);
+  static glm::vec3 rightFacingDir = AA::GetCamRight(inherited_cam);
 
   // add WASD key first person movement function
   const auto wasd = [](AA::KeyboardInput& key) {
@@ -52,7 +52,6 @@ void setfpsplayercontrols(int cam)
   };
   AA::AddToKeyHandling(wasd);
 
-  // add ability to tab and get mouse control
   AA::AddToTimedOutKeyHandling([](AA::KeyboardInput& kb)-> bool {
     if (kb.tab) {
       if (!is_inventory_open) {
@@ -76,10 +75,10 @@ void setfpsplayercontrols(int cam)
   const auto camMove = [](float dt) {
     static float frameCalculatedVelocity = 0.f;
     frameCalculatedVelocity = dt * currFlySpeed;
-    AA::ShiftCamPosition(the_cam_to_move, moveDir * frameCalculatedVelocity);
+    AA::ShiftCamPosition(inherited_cam, moveDir * frameCalculatedVelocity);
     moveDir = glm::vec3(0.f);
-    frontFacingDir = AA::GetCamFront(the_cam_to_move);
-    rightFacingDir = AA::GetCamRight(the_cam_to_move);
+    frontFacingDir = AA::GetCamFront(inherited_cam);
+    rightFacingDir = AA::GetCamRight(inherited_cam);
   };
   AA::AddToDeltaUpdate(camMove);
 
@@ -87,7 +86,7 @@ void setfpsplayercontrols(int cam)
   const auto mouselook = [](AA::MouseInput& cursor)
   {
     if (!is_inventory_open)
-      AA::ShiftCamPitchAndYaw(the_cam_to_move, cursor.yOffset, cursor.xOffset);
+      AA::ShiftCamPitchAndYaw(inherited_cam, cursor.yOffset, cursor.xOffset);
   };
   AA::AddToMouseHandling(mouselook);
 
