@@ -27,6 +27,6 @@ void setmusic() {
     return false;
     });
 
-  AA::PlayMusic();
+  //AA::PlayMusic();
 
 }
