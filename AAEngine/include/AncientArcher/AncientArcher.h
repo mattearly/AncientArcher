@@ -93,7 +93,10 @@ void PlaySoundEffect(int id, bool interrupt = true);
 void AddMusic(const char* path);
 void RemoveMusic();
 void PlayMusic();
+void PauseMusic();
+void ResumeMusic();
 void StopMusic();
+void SetMusicVolume(float new_vol);
 // End Music
 
 

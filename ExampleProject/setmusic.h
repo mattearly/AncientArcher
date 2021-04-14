@@ -1,31 +1,49 @@
 #pragma once
 #include <AncientArcher/AncientArcher.h>
-//const char* town_theme_stereo = "..\\ExampleProject\\res\\TownTheme_stereo.wav";
-const char* talking_stereo = "..\\ExampleProject\\res\\talking_stereo.wav";
+const char* town_theme_stereo = "E:\\AssetPack\\TownTheme_stereo.wav";
+//const char* talking_stereo = "..\\ExampleProject\\res\\talking_stereo.wav";
 
 void setmusic() {
-  AA::AddMusic(talking_stereo);
+  AA::AddMusic(town_theme_stereo);
 
   AA::AddToTimedOutKeyHandling([](AA::KeyboardInput& kb) -> bool {
-    if (kb.p) {
+    if (kb.p) {         // call to play music
       AA::PlayMusic();
       return true;
-    }
-    else if (kb.o) {
+    } else if (kb.o) {  // call to stop the music
       AA::StopMusic();
       return true;
-    }
-    else if (kb.u) {
+    } else if (kb.i) {  // call to pause
+      AA::PauseMusic();
+      return true;
+    } else if (kb.k) {  // call to resume (from pause)
+      AA::ResumeMusic();
+      return true;
+    } else if (kb.u) {  // call to remove (unload) music
       AA::RemoveMusic();
       return true;
-    }
-    else if (kb.r) {
-      AA::AddMusic(talking_stereo);
+    } else if (kb.r) {  // call to add (load) music
+      AA::AddMusic(town_theme_stereo);
       return true;
     }
 
     return false;
-    });
+  });
+
+
+  static float the_vol = 1.f;
+  AA::AddToScrollHandling([](AA::ScrollInput& si) {
+    if (si.yOffset > 0) {
+      the_vol += .1f;
+      AA::SetMusicVolume(the_vol);
+      std::cout << "music vol increased to " << the_vol << "\n";
+
+    }
+    if (si.yOffset < 0) {
+      the_vol -= .1f;
+      AA::SetMusicVolume(the_vol);
+      std::cout << "music vol decreased to " << the_vol << "\n";    }
+  });
 
   //AA::PlayMusic();
 

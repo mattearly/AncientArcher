@@ -5,14 +5,13 @@
 bool fps_set = false;
 bool is_inventory_open = false;
 
-void setfpsplayercontrols(int cam)
-{
+void setfpsplayercontrols(int cam) {
   if (fps_set)
     return;
   fps_set = true;
 
-  AA::SetMouseReadToFPP();
   AA::SetMouseToDisabled();
+  AA::SetMouseReadToFPP();
 
   static int inherited_cam = cam;
 

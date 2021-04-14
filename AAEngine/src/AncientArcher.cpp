@@ -1969,15 +1969,34 @@ void PlayMusic() {
   }
   throw("no music to play");
 }
-void StopMusic() {
+void PauseMusic() {
   if (mMusic) {
-    if (mMusic->IsPlaying()) {
-      mMusic->Stop();
-      return;
-    }
+    mMusic->Pause();
+    return;
+  }
+  throw("no music loaded");
+}
+void ResumeMusic() {
+  if (mMusic) {
+    mMusic->Resume();
     return;
   }
 
+  throw("no music loaded");
+
+}
+void StopMusic() {
+  if (mMusic) {
+    mMusic->Stop();
+    return;
+  }
+  throw("no music loaded");
+}
+void SetMusicVolume(float new_vol) {
+  if (mMusic) {
+    mMusic->SetVolume(new_vol);
+    return;
+  }
   throw("no music loaded");
 }
 // End Music
