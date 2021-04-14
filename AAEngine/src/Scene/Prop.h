@@ -10,13 +10,14 @@
 #include "InstanceDetails.h"
 #include "../Renderer/MeshDrawInfo.h"
 #include "ColliderSphere.h"
+#include "../../include/AncientArcher/ShaderType.h"
 namespace AA
 {
 class Prop : public UniqueInstance
 {
 public:
 
-  Prop(const char* path, int camId, bool lit);
+  Prop(const char* path, int camId, SHADERTYPE shadertype);
   //Prop(const char* path, int camId, bool lit, std::vector<InstanceDetails> details);
   const int GetCamId() const noexcept;
   void SetCamera(int id) noexcept;
@@ -57,7 +58,7 @@ public:
   //bool RemoveInstance(int which);
 
   void draw();
-  bool mIsLit = false;
+  SHADERTYPE mShaderType;
 
   std::vector<MeshDrawInfo> mMeshes;
 

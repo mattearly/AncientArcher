@@ -126,7 +126,16 @@
     <ClInclude Include="include\AncientArcher\Version.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="src\Shader\InterfaceShader.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="include\AncientArcher\ShaderType.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
     <ClInclude Include="src\Base\Types.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\GUI\PlainGUI.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
@@ -195,6 +204,9 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="src\Sound\SoundEffect.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\GUI\PlainGUI.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

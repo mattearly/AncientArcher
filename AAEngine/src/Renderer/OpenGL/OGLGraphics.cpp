@@ -11,30 +11,46 @@ namespace AA
 {
 namespace OGLGraphics
 {
-void Render(const std::vector<MeshDrawInfo>& meshes, const glm::mat4& translationMatrix, bool lit)
+void Render(const std::vector<MeshDrawInfo>& meshes, const glm::mat4& translationMatrix, SHADERTYPE shadertype)
 {
   //todo: consider render entire scenes so clearbackbuffer can be put in here as well, or does it have to wait for screen to be ready anyway?
   // turn on depth test in case something else turned it off
   glEnable(GL_DEPTH_TEST);
 
-  if (lit)
-    mLitShader->use();
-  else
-    mDiffShader->use();
+  switch (shadertype)
+  {
+    case SHADERTYPE::DIFF:
+      mDiffShader->use();
+      break;
+    case SHADERTYPE::LIT:
+      mLitShader->use();
+      break;
+    case SHADERTYPE::INTERFACE:
+      mInterfaceShader->use();
+      break;
+    default:
+      break;
+  }
 
   // go through all meshes in the this
   for (const auto& m : meshes)
   {
     // go through all texture in this mesh
     uint32_t i = 0;
-    if (lit)
+    switch (shadertype)
     {
+    case SHADERTYPE::DIFF:
+      mDiffShader->setMat4("model", m.transformation * translationMatrix);
+      break;
+    case SHADERTYPE::LIT:
       mLitShader->setFloat("material.Shininess", m.shininess);
       mLitShader->setMat4("model", m.transformation * translationMatrix);
-    }
-    else
-    {
-      mDiffShader->setMat4("model", m.transformation * translationMatrix);
+      break;
+    case SHADERTYPE::INTERFACE:
+      mInterfaceShader->setMat4("model", m.transformation * translationMatrix);
+      break;
+    default:
+      break;
     }
 
     for (const auto& texture : m.textureDrawIds)
@@ -43,17 +59,24 @@ void Render(const std::vector<MeshDrawInfo>& meshes, const glm::mat4& translatio
       glActiveTexture(GL_TEXTURE0 + i);
       // get the texture type
       const std::string texType = texture.second;
-
-      if (lit)
+      switch (shadertype)
       {
-        mLitShader->setInt(("material." + texType).c_str(), i);
-      }
-      else
-      {
+      case SHADERTYPE::DIFF:
         // only one texture is relevant for a non-lit shader
         if (texType == "Albedo") {
           mDiffShader->setInt(("material." + texType).c_str(), i);
-        }
+        }        break;
+      case SHADERTYPE::LIT:
+        mLitShader->setInt(("material." + texType).c_str(), i);
+        break;
+      case SHADERTYPE::INTERFACE:
+        // only one texture is relevant for a non-lit shader
+        if (texType == "Albedo") {
+          mInterfaceShader->setInt(("material." + texType).c_str(), i);
+        }     
+        break;
+      default:
+        break;
       }
       glBindTexture(GL_TEXTURE_2D, texture.first);
       i++;
@@ -132,6 +155,21 @@ uint32_t OGLGraphics::UploadMesh(const std::vector<Vertex>& verts, const std::ve
   glDeleteBuffers(1, &VBO);
   glDeleteBuffers(1, &EBO);
 
+  return VAO;
+}
+
+u32 UploadVerts(const std::vector<vec3>& points, const std::vector<u32>& elems) {
+  u32 VAO, VBO, EBO;
+  glGenVertexArrays(1, &VAO);
+  glGenBuffers(1, &VBO);
+  glBindVertexArray(VAO);
+  glBindBuffer(GL_ARRAY_BUFFER, VBO);
+  glBufferData(GL_ARRAY_BUFFER, points.size() * sizeof(vec3), &points[0], GL_STATIC_DRAW);
+  glEnableVertexAttribArray(0);
+  glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(vec3), (void*)0);
+  glGenBuffers(1, &EBO);
+  glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);
+  glBufferData(GL_ELEMENT_ARRAY_BUFFER, elems.size() * sizeof(u32), &elems[0], GL_STATIC_DRAW);
   return VAO;
 }
 

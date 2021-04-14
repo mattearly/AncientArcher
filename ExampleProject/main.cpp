@@ -18,21 +18,27 @@ int main()
   setupsoundeffects();
   setmusic();
  
-  static int peasant_man = AA::AddProp("..\\ExampleProject\\res\\peasant_man.dae", ourcam, true);
+  const float dist_from_us = 45.f;
+  const float dist_down = -2.2f;
+  static int peasant_man = AA::AddProp("..\\ExampleProject\\res\\peasant_man.dae", ourcam, AA::SHADERTYPE::LIT);
   //static int test_zone = AA::AddProp("E:\\storage\\3d Models\\grass_plain.dae", ourcam, true);
-  const float dist_from_us = 90.f;
-  const float dist_down = -1.2f;
-
-  AA::SetPropTranslation(peasant_man, glm::vec3(0, dist_down, -dist_from_us));
+    AA::SetPropTranslation(peasant_man, glm::vec3(0, dist_down, -dist_from_us));
   AA::SetPropScale(peasant_man, glm::vec3(.1f));
+  
+  static int cyber_man = AA::AddProp("E:\\AssetPack\\cyber_man.fbx", ourcam, AA::SHADERTYPE::LIT);
+  AA::SetPropTranslation(cyber_man, glm::vec3(25, dist_down, -dist_from_us));
+  AA::SetPropScale(cyber_man, glm::vec3(.1f));
 
   //AA::GetGameObject(test_zone).SetTranslation(glm::vec3(0, dist_down, 0));
   AA::SetDirectionalLight(glm::vec3(1.f), glm::vec3(.4f), glm::vec3(.4f), glm::vec3(1.f));
   AA::AddToDeltaUpdate([](float dt) {
     static float current_rotation = 0.f;
-    current_rotation += dt * 5;
     current_rotation += dt * 2;
     AA::SetPropRotationY(peasant_man, current_rotation);
+
+    AA::SetPropRotationX(cyber_man, current_rotation);
+
+    //AA::SetPropRotationZ(peasant_man, current_rotation);
     }
   );
   AA::AddToTimedOutKeyHandling([](AA::KeyboardInput& kb) {

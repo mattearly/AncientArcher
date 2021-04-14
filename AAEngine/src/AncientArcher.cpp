@@ -26,12 +26,13 @@
 #include <iostream>
 #include <algorithm>
 #include <unordered_map>
+#include "Shader/InterfaceShader.h"
+#include "GUI/PlainGUI.h"
 
-namespace AA
-{
+namespace AA {
 // Interanl Only (helpers, states, types, etc)
 bool isEngineInit = false;
-bool isWindowSizeDirty = true;  ///< true if proj matrices nee`d re-adjusted for a new window size change
+bool isWindowSizeDirty = true;  ///< true if proj matrices need re-adjusted for a new window size change
 GLFWwindow* mWindow = nullptr;
 float mFPPMouseSensitivity = 0.1f;  ///< mouse sensitivity while in first person perspective
 void resetFPPMouseSensitivity() noexcept {
@@ -49,6 +50,8 @@ bool isFPP() noexcept {
 }
 OGLShader* mDiffShader = NULL;
 OGLShader* mLitShader = NULL;
+OGLShader* mInterfaceShader = NULL;
+PlainGUI* mGUI = NULL;
 void setupLitShader() {
   if (!mLitShader) {
     mLitShader = new OGLShader(lit_vert_src, lit_frag_src);
@@ -59,6 +62,12 @@ void setupDiffShader() {
   if (!mDiffShader) {
     mDiffShader = new OGLShader(diff_vert_src, diff_frag_src);
     std::cout << "Diff Shader is Live!\n";
+  }
+}
+void setupInterfaceShader() {
+  if (!mInterfaceShader) {
+    mInterfaceShader = new OGLShader(interface_vert_src, interface_frag_src);
+    std::cout << "Interface Shader is Live!\n";
   }
 }
 DirectionalLight* mDirectionalLight;         ///< directional light for lit shader(s)
@@ -73,7 +82,7 @@ std::vector<Prop>         mProps;            ///< array of available objects
 std::shared_ptr<Skybox>   mSkybox;           ///< the main skybox
 std::vector<Speaker*>     mSpeakers;         ///< array of places to play sound effects from
 std::vector<SoundEffect*> mSoundEffects;     ///< array of ready speaker id to sound effects
-LongSound* mMusic;            ///< background music
+LongSound* mMusic;                           ///< background music
 float mMusicRebufferCD = 0.f;
 float mNonSpammableKeysTimeout;  ///< keeps track of how long the keys have timed out
 float mNoSpamWaitLength;         ///< how long the non-spammable keys are to time out for at least
@@ -95,739 +104,487 @@ const int MINSCREENWIDTH = 100;
 const int MINSCREENHEIGHT = 100;
 const int MAXSCREENWIDTH = 7680;  //8k
 const int MAXSCREENHEIGHT = 4320;
-void keepWindowOpen() noexcept
-{
+void keepWindowOpen() noexcept {
   glfwSetWindowShouldClose(mWindow, 0);
 }
-bool isTryingToClose() noexcept
-{
+bool isTryingToClose() noexcept {
   return glfwWindowShouldClose(mWindow);
 }
-void begin()
-{
+void begin() {
   keepWindowOpen();
 
-  for (const auto& oB : onBegin)
-  {
+  for (const auto& oB : onBegin) {
     oB.second();
   }
-
-  //__setProjectionMatToAllShadersFromFirstCam_hack();
 }
-void pullButtonStateEvents()
-{
+void pullButtonStateEvents() {
   glfwPollEvents();
 
   // esc
-  if (glfwGetKey(mWindow, GLFW_KEY_ESCAPE) == GLFW_PRESS)
-  {
+  if (glfwGetKey(mWindow, GLFW_KEY_ESCAPE) == GLFW_PRESS) {
     mButtonState.esc = true;
-  }
-  else if (glfwGetKey(mWindow, GLFW_KEY_ESCAPE) == GLFW_RELEASE)
-  {
+  } else if (glfwGetKey(mWindow, GLFW_KEY_ESCAPE) == GLFW_RELEASE) {
     mButtonState.esc = false;
   }
   // function keys
-  if (glfwGetKey(mWindow, GLFW_KEY_F1) == GLFW_PRESS)
-  {
+  if (glfwGetKey(mWindow, GLFW_KEY_F1) == GLFW_PRESS) {
     mButtonState.f1 = true;
-  }
-  else if (glfwGetKey(mWindow, GLFW_KEY_F1) == GLFW_RELEASE)
-  {
+  } else if (glfwGetKey(mWindow, GLFW_KEY_F1) == GLFW_RELEASE) {
     mButtonState.f1 = false;
   }
-  if (glfwGetKey(mWindow, GLFW_KEY_F2) == GLFW_PRESS)
-  {
+  if (glfwGetKey(mWindow, GLFW_KEY_F2) == GLFW_PRESS) {
     mButtonState.f2 = true;
-  }
-  else if (glfwGetKey(mWindow, GLFW_KEY_F2) == GLFW_RELEASE)
-  {
+  } else if (glfwGetKey(mWindow, GLFW_KEY_F2) == GLFW_RELEASE) {
     mButtonState.f2 = false;
   }
-  if (glfwGetKey(mWindow, GLFW_KEY_F3) == GLFW_PRESS)
-  {
+  if (glfwGetKey(mWindow, GLFW_KEY_F3) == GLFW_PRESS) {
     mButtonState.f3 = true;
-  }
-  else if (glfwGetKey(mWindow, GLFW_KEY_F3) == GLFW_RELEASE)
-  {
+  } else if (glfwGetKey(mWindow, GLFW_KEY_F3) == GLFW_RELEASE) {
     mButtonState.f3 = false;
   }
-  if (glfwGetKey(mWindow, GLFW_KEY_F4) == GLFW_PRESS)
-  {
+  if (glfwGetKey(mWindow, GLFW_KEY_F4) == GLFW_PRESS) {
     mButtonState.f4 = true;
-  }
-  else if (glfwGetKey(mWindow, GLFW_KEY_F4) == GLFW_RELEASE)
-  {
+  } else if (glfwGetKey(mWindow, GLFW_KEY_F4) == GLFW_RELEASE) {
     mButtonState.f4 = false;
   }
-  if (glfwGetKey(mWindow, GLFW_KEY_F5) == GLFW_PRESS)
-  {
+  if (glfwGetKey(mWindow, GLFW_KEY_F5) == GLFW_PRESS) {
     mButtonState.f5 = true;
-  }
-  else if (glfwGetKey(mWindow, GLFW_KEY_F5) == GLFW_RELEASE)
-  {
+  } else if (glfwGetKey(mWindow, GLFW_KEY_F5) == GLFW_RELEASE) {
     mButtonState.f5 = false;
   }
-  if (glfwGetKey(mWindow, GLFW_KEY_F6) == GLFW_PRESS)
-  {
+  if (glfwGetKey(mWindow, GLFW_KEY_F6) == GLFW_PRESS) {
     mButtonState.f6 = true;
-  }
-  else if (glfwGetKey(mWindow, GLFW_KEY_F6) == GLFW_RELEASE)
-  {
+  } else if (glfwGetKey(mWindow, GLFW_KEY_F6) == GLFW_RELEASE) {
     mButtonState.f6 = false;
   }
-  if (glfwGetKey(mWindow, GLFW_KEY_F7) == GLFW_PRESS)
-  {
+  if (glfwGetKey(mWindow, GLFW_KEY_F7) == GLFW_PRESS) {
     mButtonState.f7 = true;
-  }
-  else if (glfwGetKey(mWindow, GLFW_KEY_F7) == GLFW_RELEASE)
-  {
+  } else if (glfwGetKey(mWindow, GLFW_KEY_F7) == GLFW_RELEASE) {
     mButtonState.f7 = false;
   }
-  if (glfwGetKey(mWindow, GLFW_KEY_F8) == GLFW_PRESS)
-  {
+  if (glfwGetKey(mWindow, GLFW_KEY_F8) == GLFW_PRESS) {
     mButtonState.f8 = true;
-  }
-  else if (glfwGetKey(mWindow, GLFW_KEY_F8) == GLFW_RELEASE)
-  {
+  } else if (glfwGetKey(mWindow, GLFW_KEY_F8) == GLFW_RELEASE) {
     mButtonState.f8 = false;
   }
-  if (glfwGetKey(mWindow, GLFW_KEY_F9) == GLFW_PRESS)
-  {
+  if (glfwGetKey(mWindow, GLFW_KEY_F9) == GLFW_PRESS) {
     mButtonState.f9 = true;
-  }
-  else if (glfwGetKey(mWindow, GLFW_KEY_F9) == GLFW_RELEASE)
-  {
+  } else if (glfwGetKey(mWindow, GLFW_KEY_F9) == GLFW_RELEASE) {
     mButtonState.f9 = false;
   }
-  if (glfwGetKey(mWindow, GLFW_KEY_F10) == GLFW_PRESS)
-  {
+  if (glfwGetKey(mWindow, GLFW_KEY_F10) == GLFW_PRESS) {
     mButtonState.f10 = true;
-  }
-  else if (glfwGetKey(mWindow, GLFW_KEY_F10) == GLFW_RELEASE)
-  {
+  } else if (glfwGetKey(mWindow, GLFW_KEY_F10) == GLFW_RELEASE) {
     mButtonState.f10 = false;
   }
-  if (glfwGetKey(mWindow, GLFW_KEY_F11) == GLFW_PRESS)
-  {
+  if (glfwGetKey(mWindow, GLFW_KEY_F11) == GLFW_PRESS) {
     mButtonState.f11 = true;
-  }
-  else if (glfwGetKey(mWindow, GLFW_KEY_F11) == GLFW_RELEASE)
-  {
+  } else if (glfwGetKey(mWindow, GLFW_KEY_F11) == GLFW_RELEASE) {
     mButtonState.f11 = false;
   }
-  if (glfwGetKey(mWindow, GLFW_KEY_F12) == GLFW_PRESS)
-  {
+  if (glfwGetKey(mWindow, GLFW_KEY_F12) == GLFW_PRESS) {
     mButtonState.f12 = true;
-  }
-  else if (glfwGetKey(mWindow, GLFW_KEY_F12) == GLFW_RELEASE)
-  {
+  } else if (glfwGetKey(mWindow, GLFW_KEY_F12) == GLFW_RELEASE) {
     mButtonState.f12 = false;
   }
   // number key row
-  if (glfwGetKey(mWindow, GLFW_KEY_GRAVE_ACCENT) == GLFW_PRESS)
-  {
+  if (glfwGetKey(mWindow, GLFW_KEY_GRAVE_ACCENT) == GLFW_PRESS) {
     mButtonState.graveAccent = true;
-  }
-  else if (glfwGetKey(mWindow, GLFW_KEY_GRAVE_ACCENT) == GLFW_RELEASE)
-  {
+  } else if (glfwGetKey(mWindow, GLFW_KEY_GRAVE_ACCENT) == GLFW_RELEASE) {
     mButtonState.graveAccent = false;
   }
-  if (glfwGetKey(mWindow, GLFW_KEY_1) == GLFW_PRESS)
-  {
+  if (glfwGetKey(mWindow, GLFW_KEY_1) == GLFW_PRESS) {
     mButtonState.n1 = true;
-  }
-  else if (glfwGetKey(mWindow, GLFW_KEY_1) == GLFW_RELEASE)
-  {
+  } else if (glfwGetKey(mWindow, GLFW_KEY_1) == GLFW_RELEASE) {
     mButtonState.n1 = false;
   }
-  if (glfwGetKey(mWindow, GLFW_KEY_2) == GLFW_PRESS)
-  {
+  if (glfwGetKey(mWindow, GLFW_KEY_2) == GLFW_PRESS) {
     mButtonState.n2 = true;
-  }
-  else if (glfwGetKey(mWindow, GLFW_KEY_2) == GLFW_RELEASE)
-  {
+  } else if (glfwGetKey(mWindow, GLFW_KEY_2) == GLFW_RELEASE) {
     mButtonState.n2 = false;
   }
-  if (glfwGetKey(mWindow, GLFW_KEY_3) == GLFW_PRESS)
-  {
+  if (glfwGetKey(mWindow, GLFW_KEY_3) == GLFW_PRESS) {
     mButtonState.n3 = true;
-  }
-  else if (glfwGetKey(mWindow, GLFW_KEY_3) == GLFW_RELEASE)
-  {
+  } else if (glfwGetKey(mWindow, GLFW_KEY_3) == GLFW_RELEASE) {
     mButtonState.n3 = false;
   }
-  if (glfwGetKey(mWindow, GLFW_KEY_4) == GLFW_PRESS)
-  {
+  if (glfwGetKey(mWindow, GLFW_KEY_4) == GLFW_PRESS) {
     mButtonState.n4 = true;
-  }
-  else if (glfwGetKey(mWindow, GLFW_KEY_4) == GLFW_RELEASE)
-  {
+  } else if (glfwGetKey(mWindow, GLFW_KEY_4) == GLFW_RELEASE) {
     mButtonState.n4 = false;
   }
-  if (glfwGetKey(mWindow, GLFW_KEY_5) == GLFW_PRESS)
-  {
+  if (glfwGetKey(mWindow, GLFW_KEY_5) == GLFW_PRESS) {
     mButtonState.n5 = true;
-  }
-  else if (glfwGetKey(mWindow, GLFW_KEY_5) == GLFW_RELEASE)
-  {
+  } else if (glfwGetKey(mWindow, GLFW_KEY_5) == GLFW_RELEASE) {
     mButtonState.n5 = false;
   }
-  if (glfwGetKey(mWindow, GLFW_KEY_6) == GLFW_PRESS)
-  {
+  if (glfwGetKey(mWindow, GLFW_KEY_6) == GLFW_PRESS) {
     mButtonState.n6 = true;
-  }
-  else if (glfwGetKey(mWindow, GLFW_KEY_6) == GLFW_RELEASE)
-  {
+  } else if (glfwGetKey(mWindow, GLFW_KEY_6) == GLFW_RELEASE) {
     mButtonState.n6 = false;
   }
-  if (glfwGetKey(mWindow, GLFW_KEY_7) == GLFW_PRESS)
-  {
+  if (glfwGetKey(mWindow, GLFW_KEY_7) == GLFW_PRESS) {
     mButtonState.n7 = true;
-  }
-  else if (glfwGetKey(mWindow, GLFW_KEY_7) == GLFW_RELEASE)
-  {
+  } else if (glfwGetKey(mWindow, GLFW_KEY_7) == GLFW_RELEASE) {
     mButtonState.n7 = false;
   }
-  if (glfwGetKey(mWindow, GLFW_KEY_8) == GLFW_PRESS)
-  {
+  if (glfwGetKey(mWindow, GLFW_KEY_8) == GLFW_PRESS) {
     mButtonState.n8 = true;
-  }
-  else if (glfwGetKey(mWindow, GLFW_KEY_8) == GLFW_RELEASE)
-  {
+  } else if (glfwGetKey(mWindow, GLFW_KEY_8) == GLFW_RELEASE) {
     mButtonState.n8 = false;
   }
-  if (glfwGetKey(mWindow, GLFW_KEY_9) == GLFW_PRESS)
-  {
+  if (glfwGetKey(mWindow, GLFW_KEY_9) == GLFW_PRESS) {
     mButtonState.n9 = true;
-  }
-  else if (glfwGetKey(mWindow, GLFW_KEY_9) == GLFW_RELEASE)
-  {
+  } else if (glfwGetKey(mWindow, GLFW_KEY_9) == GLFW_RELEASE) {
     mButtonState.n9 = false;
   }
-  if (glfwGetKey(mWindow, GLFW_KEY_0) == GLFW_PRESS)
-  {
+  if (glfwGetKey(mWindow, GLFW_KEY_0) == GLFW_PRESS) {
     mButtonState.n0 = true;
-  }
-  else if (glfwGetKey(mWindow, GLFW_KEY_0) == GLFW_RELEASE)
-  {
+  } else if (glfwGetKey(mWindow, GLFW_KEY_0) == GLFW_RELEASE) {
     mButtonState.n0 = false;
   }
-  if (glfwGetKey(mWindow, GLFW_KEY_MINUS) == GLFW_PRESS)
-  {
+  if (glfwGetKey(mWindow, GLFW_KEY_MINUS) == GLFW_PRESS) {
     mButtonState.minus = true;
-  }
-  else if (glfwGetKey(mWindow, GLFW_KEY_MINUS) == GLFW_RELEASE)
-  {
+  } else if (glfwGetKey(mWindow, GLFW_KEY_MINUS) == GLFW_RELEASE) {
     mButtonState.minus = false;
   }
-  if (glfwGetKey(mWindow, GLFW_KEY_EQUAL) == GLFW_PRESS)
-  {
+  if (glfwGetKey(mWindow, GLFW_KEY_EQUAL) == GLFW_PRESS) {
     mButtonState.equal = true;
-  }
-  else if (glfwGetKey(mWindow, GLFW_KEY_EQUAL) == GLFW_RELEASE)
-  {
+  } else if (glfwGetKey(mWindow, GLFW_KEY_EQUAL) == GLFW_RELEASE) {
     mButtonState.equal = false;
   }
-  if (glfwGetKey(mWindow, GLFW_KEY_BACKSPACE) == GLFW_PRESS)
-  {
+  if (glfwGetKey(mWindow, GLFW_KEY_BACKSPACE) == GLFW_PRESS) {
     mButtonState.backspace = true;
-  }
-  else if (glfwGetKey(mWindow, GLFW_KEY_BACKSPACE) == GLFW_RELEASE)
-  {
+  } else if (glfwGetKey(mWindow, GLFW_KEY_BACKSPACE) == GLFW_RELEASE) {
     mButtonState.backspace = false;
   }
   // alphabet keys
-  if (glfwGetKey(mWindow, GLFW_KEY_A) == GLFW_PRESS)
-  {
+  if (glfwGetKey(mWindow, GLFW_KEY_A) == GLFW_PRESS) {
     mButtonState.a = true;
-  }
-  else if (glfwGetKey(mWindow, GLFW_KEY_A) == GLFW_RELEASE)
-  {
+  } else if (glfwGetKey(mWindow, GLFW_KEY_A) == GLFW_RELEASE) {
     mButtonState.a = false;
   }
-  if (glfwGetKey(mWindow, GLFW_KEY_B) == GLFW_PRESS)
-  {
+  if (glfwGetKey(mWindow, GLFW_KEY_B) == GLFW_PRESS) {
     mButtonState.b = true;
-  }
-  else if (glfwGetKey(mWindow, GLFW_KEY_B) == GLFW_RELEASE)
-  {
+  } else if (glfwGetKey(mWindow, GLFW_KEY_B) == GLFW_RELEASE) {
     mButtonState.b = false;
   }
-  if (glfwGetKey(mWindow, GLFW_KEY_C) == GLFW_PRESS)
-  {
+  if (glfwGetKey(mWindow, GLFW_KEY_C) == GLFW_PRESS) {
     mButtonState.c = true;
-  }
-  else if (glfwGetKey(mWindow, GLFW_KEY_C) == GLFW_RELEASE)
-  {
+  } else if (glfwGetKey(mWindow, GLFW_KEY_C) == GLFW_RELEASE) {
     mButtonState.c = false;
   }
-  if (glfwGetKey(mWindow, GLFW_KEY_D) == GLFW_PRESS)
-  {
+  if (glfwGetKey(mWindow, GLFW_KEY_D) == GLFW_PRESS) {
     mButtonState.d = true;
-  }
-  else if (glfwGetKey(mWindow, GLFW_KEY_D) == GLFW_RELEASE)
-  {
+  } else if (glfwGetKey(mWindow, GLFW_KEY_D) == GLFW_RELEASE) {
     mButtonState.d = false;
   }
-  if (glfwGetKey(mWindow, GLFW_KEY_E) == GLFW_PRESS)
-  {
+  if (glfwGetKey(mWindow, GLFW_KEY_E) == GLFW_PRESS) {
     mButtonState.e = true;
-  }
-  else if (glfwGetKey(mWindow, GLFW_KEY_E) == GLFW_RELEASE)
-  {
+  } else if (glfwGetKey(mWindow, GLFW_KEY_E) == GLFW_RELEASE) {
     mButtonState.e = false;
   }
-  if (glfwGetKey(mWindow, GLFW_KEY_F) == GLFW_PRESS)
-  {
+  if (glfwGetKey(mWindow, GLFW_KEY_F) == GLFW_PRESS) {
     mButtonState.f = true;
-  }
-  else if (glfwGetKey(mWindow, GLFW_KEY_F) == GLFW_RELEASE)
-  {
+  } else if (glfwGetKey(mWindow, GLFW_KEY_F) == GLFW_RELEASE) {
     mButtonState.f = false;
   }
-  if (glfwGetKey(mWindow, GLFW_KEY_G) == GLFW_PRESS)
-  {
+  if (glfwGetKey(mWindow, GLFW_KEY_G) == GLFW_PRESS) {
     mButtonState.g = true;
-  }
-  else if (glfwGetKey(mWindow, GLFW_KEY_G) == GLFW_RELEASE)
-  {
+  } else if (glfwGetKey(mWindow, GLFW_KEY_G) == GLFW_RELEASE) {
     mButtonState.g = false;
   }
-  if (glfwGetKey(mWindow, GLFW_KEY_H) == GLFW_PRESS)
-  {
+  if (glfwGetKey(mWindow, GLFW_KEY_H) == GLFW_PRESS) {
     mButtonState.h = true;
-  }
-  else if (glfwGetKey(mWindow, GLFW_KEY_H) == GLFW_RELEASE)
-  {
+  } else if (glfwGetKey(mWindow, GLFW_KEY_H) == GLFW_RELEASE) {
     mButtonState.h = false;
   }
-  if (glfwGetKey(mWindow, GLFW_KEY_I) == GLFW_PRESS)
-  {
+  if (glfwGetKey(mWindow, GLFW_KEY_I) == GLFW_PRESS) {
     mButtonState.i = true;
-  }
-  else if (glfwGetKey(mWindow, GLFW_KEY_I) == GLFW_RELEASE)
-  {
+  } else if (glfwGetKey(mWindow, GLFW_KEY_I) == GLFW_RELEASE) {
     mButtonState.i = false;
   }
-  if (glfwGetKey(mWindow, GLFW_KEY_J) == GLFW_PRESS)
-  {
+  if (glfwGetKey(mWindow, GLFW_KEY_J) == GLFW_PRESS) {
     mButtonState.j = true;
-  }
-  else if (glfwGetKey(mWindow, GLFW_KEY_J) == GLFW_RELEASE)
-  {
+  } else if (glfwGetKey(mWindow, GLFW_KEY_J) == GLFW_RELEASE) {
     mButtonState.j = false;
   }
-  if (glfwGetKey(mWindow, GLFW_KEY_K) == GLFW_PRESS)
-  {
+  if (glfwGetKey(mWindow, GLFW_KEY_K) == GLFW_PRESS) {
     mButtonState.k = true;
-  }
-  else if (glfwGetKey(mWindow, GLFW_KEY_K) == GLFW_RELEASE)
-  {
+  } else if (glfwGetKey(mWindow, GLFW_KEY_K) == GLFW_RELEASE) {
     mButtonState.k = false;
   }
-  if (glfwGetKey(mWindow, GLFW_KEY_L) == GLFW_PRESS)
-  {
+  if (glfwGetKey(mWindow, GLFW_KEY_L) == GLFW_PRESS) {
     mButtonState.l = true;
-  }
-  else if (glfwGetKey(mWindow, GLFW_KEY_L) == GLFW_RELEASE)
-  {
+  } else if (glfwGetKey(mWindow, GLFW_KEY_L) == GLFW_RELEASE) {
     mButtonState.l = false;
   }
-  if (glfwGetKey(mWindow, GLFW_KEY_M) == GLFW_PRESS)
-  {
+  if (glfwGetKey(mWindow, GLFW_KEY_M) == GLFW_PRESS) {
     mButtonState.m = true;
-  }
-  else if (glfwGetKey(mWindow, GLFW_KEY_M) == GLFW_RELEASE)
-  {
+  } else if (glfwGetKey(mWindow, GLFW_KEY_M) == GLFW_RELEASE) {
     mButtonState.m = false;
   }
-  if (glfwGetKey(mWindow, GLFW_KEY_N) == GLFW_PRESS)
-  {
+  if (glfwGetKey(mWindow, GLFW_KEY_N) == GLFW_PRESS) {
     mButtonState.n = true;
-  }
-  else if (glfwGetKey(mWindow, GLFW_KEY_N) == GLFW_RELEASE)
-  {
+  } else if (glfwGetKey(mWindow, GLFW_KEY_N) == GLFW_RELEASE) {
     mButtonState.n = false;
   }
-  if (glfwGetKey(mWindow, GLFW_KEY_O) == GLFW_PRESS)
-  {
+  if (glfwGetKey(mWindow, GLFW_KEY_O) == GLFW_PRESS) {
     mButtonState.o = true;
-  }
-  else if (glfwGetKey(mWindow, GLFW_KEY_O) == GLFW_RELEASE)
-  {
+  } else if (glfwGetKey(mWindow, GLFW_KEY_O) == GLFW_RELEASE) {
     mButtonState.o = false;
   }
-  if (glfwGetKey(mWindow, GLFW_KEY_P) == GLFW_PRESS)
-  {
+  if (glfwGetKey(mWindow, GLFW_KEY_P) == GLFW_PRESS) {
     mButtonState.p = true;
-  }
-  else if (glfwGetKey(mWindow, GLFW_KEY_P) == GLFW_RELEASE)
-  {
+  } else if (glfwGetKey(mWindow, GLFW_KEY_P) == GLFW_RELEASE) {
     mButtonState.p = false;
   }
-  if (glfwGetKey(mWindow, GLFW_KEY_Q) == GLFW_PRESS)
-  {
+  if (glfwGetKey(mWindow, GLFW_KEY_Q) == GLFW_PRESS) {
     mButtonState.q = true;
-  }
-  else if (glfwGetKey(mWindow, GLFW_KEY_Q) == GLFW_RELEASE)
-  {
+  } else if (glfwGetKey(mWindow, GLFW_KEY_Q) == GLFW_RELEASE) {
     mButtonState.q = false;
   }
-  if (glfwGetKey(mWindow, GLFW_KEY_R) == GLFW_PRESS)
-  {
+  if (glfwGetKey(mWindow, GLFW_KEY_R) == GLFW_PRESS) {
     mButtonState.r = true;
-  }
-  else if (glfwGetKey(mWindow, GLFW_KEY_R) == GLFW_RELEASE)
-  {
+  } else if (glfwGetKey(mWindow, GLFW_KEY_R) == GLFW_RELEASE) {
     mButtonState.r = false;
   }
-  if (glfwGetKey(mWindow, GLFW_KEY_S) == GLFW_PRESS)
-  {
+  if (glfwGetKey(mWindow, GLFW_KEY_S) == GLFW_PRESS) {
     mButtonState.s = true;
-  }
-  else if (glfwGetKey(mWindow, GLFW_KEY_S) == GLFW_RELEASE)
-  {
+  } else if (glfwGetKey(mWindow, GLFW_KEY_S) == GLFW_RELEASE) {
     mButtonState.s = false;
   }
-  if (glfwGetKey(mWindow, GLFW_KEY_T) == GLFW_PRESS)
-  {
+  if (glfwGetKey(mWindow, GLFW_KEY_T) == GLFW_PRESS) {
     mButtonState.t = true;
-  }
-  else if (glfwGetKey(mWindow, GLFW_KEY_T) == GLFW_RELEASE)
-  {
+  } else if (glfwGetKey(mWindow, GLFW_KEY_T) == GLFW_RELEASE) {
     mButtonState.t = false;
   }
-  if (glfwGetKey(mWindow, GLFW_KEY_U) == GLFW_PRESS)
-  {
+  if (glfwGetKey(mWindow, GLFW_KEY_U) == GLFW_PRESS) {
     mButtonState.u = true;
-  }
-  else if (glfwGetKey(mWindow, GLFW_KEY_U) == GLFW_RELEASE)
-  {
+  } else if (glfwGetKey(mWindow, GLFW_KEY_U) == GLFW_RELEASE) {
     mButtonState.u = false;
   }
-  if (glfwGetKey(mWindow, GLFW_KEY_V) == GLFW_PRESS)
-  {
+  if (glfwGetKey(mWindow, GLFW_KEY_V) == GLFW_PRESS) {
     mButtonState.v = true;
-  }
-  else if (glfwGetKey(mWindow, GLFW_KEY_V) == GLFW_RELEASE)
-  {
+  } else if (glfwGetKey(mWindow, GLFW_KEY_V) == GLFW_RELEASE) {
     mButtonState.v = false;
   }
-  if (glfwGetKey(mWindow, GLFW_KEY_W) == GLFW_PRESS)
-  {
+  if (glfwGetKey(mWindow, GLFW_KEY_W) == GLFW_PRESS) {
     mButtonState.w = true;
-  }
-  else if (glfwGetKey(mWindow, GLFW_KEY_W) == GLFW_RELEASE)
-  {
+  } else if (glfwGetKey(mWindow, GLFW_KEY_W) == GLFW_RELEASE) {
     mButtonState.w = false;
   }
-  if (glfwGetKey(mWindow, GLFW_KEY_X) == GLFW_PRESS)
-  {
+  if (glfwGetKey(mWindow, GLFW_KEY_X) == GLFW_PRESS) {
     mButtonState.x = true;
-  }
-  else if (glfwGetKey(mWindow, GLFW_KEY_X) == GLFW_RELEASE)
-  {
+  } else if (glfwGetKey(mWindow, GLFW_KEY_X) == GLFW_RELEASE) {
     mButtonState.x = false;
   }
-  if (glfwGetKey(mWindow, GLFW_KEY_Y) == GLFW_PRESS)
-  {
+  if (glfwGetKey(mWindow, GLFW_KEY_Y) == GLFW_PRESS) {
     mButtonState.y = true;
-  }
-  else if (glfwGetKey(mWindow, GLFW_KEY_Y) == GLFW_RELEASE)
-  {
+  } else if (glfwGetKey(mWindow, GLFW_KEY_Y) == GLFW_RELEASE) {
     mButtonState.y = false;
   }
-  if (glfwGetKey(mWindow, GLFW_KEY_Z) == GLFW_PRESS)
-  {
+  if (glfwGetKey(mWindow, GLFW_KEY_Z) == GLFW_PRESS) {
     mButtonState.z = true;
-  }
-  else if (glfwGetKey(mWindow, GLFW_KEY_Z) == GLFW_RELEASE)
-  {
+  } else if (glfwGetKey(mWindow, GLFW_KEY_Z) == GLFW_RELEASE) {
     mButtonState.z = false;
   }
   // tab-shift-control-alt
-  if (glfwGetKey(mWindow, GLFW_KEY_TAB) == GLFW_PRESS)
-  {
+  if (glfwGetKey(mWindow, GLFW_KEY_TAB) == GLFW_PRESS) {
     mButtonState.tab = true;
-  }
-  else if (glfwGetKey(mWindow, GLFW_KEY_TAB) == GLFW_RELEASE)
-  {
+  } else if (glfwGetKey(mWindow, GLFW_KEY_TAB) == GLFW_RELEASE) {
     mButtonState.tab = false;
   }
-  if (glfwGetKey(mWindow, GLFW_KEY_LEFT_SHIFT) == GLFW_PRESS)
-  {
+  if (glfwGetKey(mWindow, GLFW_KEY_LEFT_SHIFT) == GLFW_PRESS) {
     mButtonState.leftShift = true;
-  }
-  else if (glfwGetKey(mWindow, GLFW_KEY_LEFT_SHIFT) == GLFW_RELEASE)
-  {
+  } else if (glfwGetKey(mWindow, GLFW_KEY_LEFT_SHIFT) == GLFW_RELEASE) {
     mButtonState.leftShift = false;
   }
-  if (glfwGetKey(mWindow, GLFW_KEY_RIGHT_SHIFT) == GLFW_PRESS)
-  {
+  if (glfwGetKey(mWindow, GLFW_KEY_RIGHT_SHIFT) == GLFW_PRESS) {
     mButtonState.rightShift = true;
-  }
-  else if (glfwGetKey(mWindow, GLFW_KEY_RIGHT_SHIFT) == GLFW_RELEASE)
-  {
+  } else if (glfwGetKey(mWindow, GLFW_KEY_RIGHT_SHIFT) == GLFW_RELEASE) {
     mButtonState.rightShift = false;
   }
-  if (glfwGetKey(mWindow, GLFW_KEY_LEFT_CONTROL) == GLFW_PRESS)
-  {
+  if (glfwGetKey(mWindow, GLFW_KEY_LEFT_CONTROL) == GLFW_PRESS) {
     mButtonState.leftControl = true;
-  }
-  else if (glfwGetKey(mWindow, GLFW_KEY_LEFT_CONTROL) == GLFW_RELEASE)
-  {
+  } else if (glfwGetKey(mWindow, GLFW_KEY_LEFT_CONTROL) == GLFW_RELEASE) {
     mButtonState.leftControl = false;
   }
-  if (glfwGetKey(mWindow, GLFW_KEY_RIGHT_CONTROL) == GLFW_PRESS)
-  {
+  if (glfwGetKey(mWindow, GLFW_KEY_RIGHT_CONTROL) == GLFW_PRESS) {
     mButtonState.rightControl = true;
-  }
-  else if (glfwGetKey(mWindow, GLFW_KEY_RIGHT_CONTROL) == GLFW_RELEASE)
-  {
+  } else if (glfwGetKey(mWindow, GLFW_KEY_RIGHT_CONTROL) == GLFW_RELEASE) {
     mButtonState.rightControl = false;
   }
-  if (glfwGetKey(mWindow, GLFW_KEY_LEFT_ALT) == GLFW_PRESS)
-  {
+  if (glfwGetKey(mWindow, GLFW_KEY_LEFT_ALT) == GLFW_PRESS) {
     mButtonState.leftAlt = true;
-  }
-  else if (glfwGetKey(mWindow, GLFW_KEY_LEFT_ALT) == GLFW_RELEASE)
-  {
+  } else if (glfwGetKey(mWindow, GLFW_KEY_LEFT_ALT) == GLFW_RELEASE) {
     mButtonState.leftAlt = false;
   }
-  if (glfwGetKey(mWindow, GLFW_KEY_RIGHT_ALT) == GLFW_PRESS)
-  {
+  if (glfwGetKey(mWindow, GLFW_KEY_RIGHT_ALT) == GLFW_PRESS) {
     mButtonState.rightAlt = true;
-  }
-  else if (glfwGetKey(mWindow, GLFW_KEY_RIGHT_ALT) == GLFW_RELEASE)
-  {
+  } else if (glfwGetKey(mWindow, GLFW_KEY_RIGHT_ALT) == GLFW_RELEASE) {
     mButtonState.rightAlt = false;
   }
-  if (glfwGetKey(mWindow, GLFW_KEY_SPACE) == GLFW_PRESS)
-  {
+  if (glfwGetKey(mWindow, GLFW_KEY_SPACE) == GLFW_PRESS) {
     mButtonState.spacebar = true;
-  }
-  else if (glfwGetKey(mWindow, GLFW_KEY_SPACE) == GLFW_RELEASE)
-  {
+  } else if (glfwGetKey(mWindow, GLFW_KEY_SPACE) == GLFW_RELEASE) {
     mButtonState.spacebar = false;
   }
   // brackets
-  if (glfwGetKey(mWindow, GLFW_KEY_LEFT_BRACKET) == GLFW_PRESS)
-  {
+  if (glfwGetKey(mWindow, GLFW_KEY_LEFT_BRACKET) == GLFW_PRESS) {
     mButtonState.leftSquareBracket = true;
-  }
-  else if (glfwGetKey(mWindow, GLFW_KEY_LEFT_BRACKET) == GLFW_RELEASE)
-  {
+  } else if (glfwGetKey(mWindow, GLFW_KEY_LEFT_BRACKET) == GLFW_RELEASE) {
     mButtonState.leftSquareBracket = false;
   }
-  if (glfwGetKey(mWindow, GLFW_KEY_RIGHT_BRACKET) == GLFW_PRESS)
-  {
+  if (glfwGetKey(mWindow, GLFW_KEY_RIGHT_BRACKET) == GLFW_PRESS) {
     mButtonState.rightSquareBracket = true;
-  }
-  else if (glfwGetKey(mWindow, GLFW_KEY_RIGHT_BRACKET) == GLFW_RELEASE)
-  {
+  } else if (glfwGetKey(mWindow, GLFW_KEY_RIGHT_BRACKET) == GLFW_RELEASE) {
     mButtonState.rightSquareBracket = false;
   }
   // slash-quote-semicolon-enter
-  if (glfwGetKey(mWindow, GLFW_KEY_BACKSLASH) == GLFW_PRESS)
-  {
+  if (glfwGetKey(mWindow, GLFW_KEY_BACKSLASH) == GLFW_PRESS) {
     mButtonState.backslash = true;
-  }
-  else if (glfwGetKey(mWindow, GLFW_KEY_BACKSLASH) == GLFW_RELEASE)
-  {
+  } else if (glfwGetKey(mWindow, GLFW_KEY_BACKSLASH) == GLFW_RELEASE) {
     mButtonState.backslash = false;
   }
-  if (glfwGetKey(mWindow, GLFW_KEY_SEMICOLON) == GLFW_PRESS)
-  {
+  if (glfwGetKey(mWindow, GLFW_KEY_SEMICOLON) == GLFW_PRESS) {
     mButtonState.semiColon = true;
-  }
-  else if (glfwGetKey(mWindow, GLFW_KEY_SEMICOLON) == GLFW_RELEASE)
-  {
+  } else if (glfwGetKey(mWindow, GLFW_KEY_SEMICOLON) == GLFW_RELEASE) {
     mButtonState.semiColon = false;
   }
-  if (glfwGetKey(mWindow, GLFW_KEY_APOSTROPHE) == GLFW_PRESS)
-  {
+  if (glfwGetKey(mWindow, GLFW_KEY_APOSTROPHE) == GLFW_PRESS) {
     mButtonState.apostrophe = true;
-  }
-  else if (glfwGetKey(mWindow, GLFW_KEY_APOSTROPHE) == GLFW_RELEASE)
-  {
+  } else if (glfwGetKey(mWindow, GLFW_KEY_APOSTROPHE) == GLFW_RELEASE) {
     mButtonState.apostrophe = false;
   }
-  if (glfwGetKey(mWindow, GLFW_KEY_ENTER) == GLFW_PRESS)
-  {
+  if (glfwGetKey(mWindow, GLFW_KEY_ENTER) == GLFW_PRESS) {
     mButtonState.enter = true;
-  }
-  else if (glfwGetKey(mWindow, GLFW_KEY_ENTER) == GLFW_RELEASE)
-  {
+  } else if (glfwGetKey(mWindow, GLFW_KEY_ENTER) == GLFW_RELEASE) {
     mButtonState.enter = false;
   }
   // comma-period-forwardslash
-  if (glfwGetKey(mWindow, GLFW_KEY_COMMA) == GLFW_PRESS)
-  {
+  if (glfwGetKey(mWindow, GLFW_KEY_COMMA) == GLFW_PRESS) {
     mButtonState.comma = true;
-  }
-  else if (glfwGetKey(mWindow, GLFW_KEY_COMMA) == GLFW_RELEASE)
-  {
+  } else if (glfwGetKey(mWindow, GLFW_KEY_COMMA) == GLFW_RELEASE) {
     mButtonState.comma = false;
   }
-  if (glfwGetKey(mWindow, GLFW_KEY_PERIOD) == GLFW_PRESS)
-  {
+  if (glfwGetKey(mWindow, GLFW_KEY_PERIOD) == GLFW_PRESS) {
     mButtonState.period = true;
-  }
-  else if (glfwGetKey(mWindow, GLFW_KEY_PERIOD) == GLFW_RELEASE)
-  {
+  } else if (glfwGetKey(mWindow, GLFW_KEY_PERIOD) == GLFW_RELEASE) {
     mButtonState.period = false;
   }
-  if (glfwGetKey(mWindow, GLFW_KEY_SLASH) == GLFW_PRESS)
-  {
+  if (glfwGetKey(mWindow, GLFW_KEY_SLASH) == GLFW_PRESS) {
     mButtonState.forwardSlash = true;
-  }
-  else if (glfwGetKey(mWindow, GLFW_KEY_SLASH) == GLFW_RELEASE)
-  {
+  } else if (glfwGetKey(mWindow, GLFW_KEY_SLASH) == GLFW_RELEASE) {
     mButtonState.forwardSlash = false;
   }
   // printscreen-etc
-  if (glfwGetKey(mWindow, GLFW_KEY_PRINT_SCREEN) == GLFW_PRESS)
-  {
+  if (glfwGetKey(mWindow, GLFW_KEY_PRINT_SCREEN) == GLFW_PRESS) {
     mButtonState.printScreen = true;
-  }
-  else if (glfwGetKey(mWindow, GLFW_KEY_PRINT_SCREEN) == GLFW_RELEASE)
-  {
+  } else if (glfwGetKey(mWindow, GLFW_KEY_PRINT_SCREEN) == GLFW_RELEASE) {
     mButtonState.printScreen = false;
   }
-  if (glfwGetKey(mWindow, GLFW_KEY_SCROLL_LOCK) == GLFW_PRESS)
-  {
+  if (glfwGetKey(mWindow, GLFW_KEY_SCROLL_LOCK) == GLFW_PRESS) {
     mButtonState.scrollLock = true;
-  }
-  else if (glfwGetKey(mWindow, GLFW_KEY_SCROLL_LOCK) == GLFW_RELEASE)
-  {
+  } else if (glfwGetKey(mWindow, GLFW_KEY_SCROLL_LOCK) == GLFW_RELEASE) {
     mButtonState.scrollLock = false;
   }
-  if (glfwGetKey(mWindow, GLFW_KEY_PAUSE) == GLFW_PRESS)
-  {
+  if (glfwGetKey(mWindow, GLFW_KEY_PAUSE) == GLFW_PRESS) {
     mButtonState.pauseBreak = true;
-  }
-  else if (glfwGetKey(mWindow, GLFW_KEY_PAUSE) == GLFW_RELEASE)
-  {
+  } else if (glfwGetKey(mWindow, GLFW_KEY_PAUSE) == GLFW_RELEASE) {
     mButtonState.pauseBreak = false;
   }
-  if (glfwGetKey(mWindow, GLFW_KEY_INSERT) == GLFW_PRESS)
-  {
+  if (glfwGetKey(mWindow, GLFW_KEY_INSERT) == GLFW_PRESS) {
     mButtonState.insert = true;
-  }
-  else if (glfwGetKey(mWindow, GLFW_KEY_INSERT) == GLFW_RELEASE)
-  {
+  } else if (glfwGetKey(mWindow, GLFW_KEY_INSERT) == GLFW_RELEASE) {
     mButtonState.insert = false;
   }
-  if (glfwGetKey(mWindow, GLFW_KEY_DELETE) == GLFW_PRESS)
-  {
+  if (glfwGetKey(mWindow, GLFW_KEY_DELETE) == GLFW_PRESS) {
     mButtonState.del = true;
-  }
-  else if (glfwGetKey(mWindow, GLFW_KEY_DELETE) == GLFW_RELEASE)
-  {
+  } else if (glfwGetKey(mWindow, GLFW_KEY_DELETE) == GLFW_RELEASE) {
     mButtonState.del = false;
   }
-  if (glfwGetKey(mWindow, GLFW_KEY_HOME) == GLFW_PRESS)
-  {
+  if (glfwGetKey(mWindow, GLFW_KEY_HOME) == GLFW_PRESS) {
     mButtonState.home = true;
-  }
-  else if (glfwGetKey(mWindow, GLFW_KEY_HOME) == GLFW_RELEASE)
-  {
+  } else if (glfwGetKey(mWindow, GLFW_KEY_HOME) == GLFW_RELEASE) {
     mButtonState.home = false;
   }
-  if (glfwGetKey(mWindow, GLFW_KEY_END) == GLFW_PRESS)
-  {
+  if (glfwGetKey(mWindow, GLFW_KEY_END) == GLFW_PRESS) {
     mButtonState.end = true;
-  }
-  else if (glfwGetKey(mWindow, GLFW_KEY_END) == GLFW_RELEASE)
-  {
+  } else if (glfwGetKey(mWindow, GLFW_KEY_END) == GLFW_RELEASE) {
     mButtonState.end = false;
   }
   if (glfwGetKey(mWindow, GLFW_KEY_PAGE_UP) == GLFW_PRESS) {
     mButtonState.pageUp = true;
-  }
-  else if (glfwGetKey(mWindow, GLFW_KEY_PAGE_UP) == GLFW_RELEASE) {
+  } else if (glfwGetKey(mWindow, GLFW_KEY_PAGE_UP) == GLFW_RELEASE) {
     mButtonState.pageUp = false;
   }
   if (glfwGetKey(mWindow, GLFW_KEY_PAGE_DOWN) == GLFW_PRESS) {
     mButtonState.pageDown = true;
-  }
-  else if (glfwGetKey(mWindow, GLFW_KEY_PAGE_DOWN) == GLFW_RELEASE) {
+  } else if (glfwGetKey(mWindow, GLFW_KEY_PAGE_DOWN) == GLFW_RELEASE) {
     mButtonState.pageDown = false;
   }
   // arrows
   if (glfwGetKey(mWindow, GLFW_KEY_UP) == GLFW_PRESS) {
     mButtonState.upArrow = true;
-  }
-  else if (glfwGetKey(mWindow, GLFW_KEY_UP) == GLFW_RELEASE) {
+  } else if (glfwGetKey(mWindow, GLFW_KEY_UP) == GLFW_RELEASE) {
     mButtonState.upArrow = false;
   }
   if (glfwGetKey(mWindow, GLFW_KEY_DOWN) == GLFW_PRESS) {
     mButtonState.downArrow = true;
-  }
-  else if (glfwGetKey(mWindow, GLFW_KEY_DOWN) == GLFW_RELEASE) {
+  } else if (glfwGetKey(mWindow, GLFW_KEY_DOWN) == GLFW_RELEASE) {
     mButtonState.downArrow = false;
   }
   if (glfwGetKey(mWindow, GLFW_KEY_LEFT) == GLFW_PRESS) {
     mButtonState.leftArrow = true;
-  }
-  else if (glfwGetKey(mWindow, GLFW_KEY_LEFT) == GLFW_RELEASE) {
+  } else if (glfwGetKey(mWindow, GLFW_KEY_LEFT) == GLFW_RELEASE) {
     mButtonState.leftArrow = false;
   }
   if (glfwGetKey(mWindow, GLFW_KEY_RIGHT) == GLFW_PRESS) {
     mButtonState.rightArrow = true;
-  }
-  else if (glfwGetKey(mWindow, GLFW_KEY_RIGHT) == GLFW_RELEASE) {
+  } else if (glfwGetKey(mWindow, GLFW_KEY_RIGHT) == GLFW_RELEASE) {
     mButtonState.rightArrow = false;
   }
 
   // mouse clicks
   if (glfwGetMouseButton(mWindow, GLFW_MOUSE_BUTTON_LEFT) == GLFW_PRESS) {
     mButtonState.mouseButton1 = true;
-  }
-  else if (glfwGetMouseButton(mWindow, GLFW_MOUSE_BUTTON_LEFT) == GLFW_RELEASE) {
+  } else if (glfwGetMouseButton(mWindow, GLFW_MOUSE_BUTTON_LEFT) == GLFW_RELEASE) {
     mButtonState.mouseButton1 = false;
   }
   if (glfwGetMouseButton(mWindow, GLFW_MOUSE_BUTTON_RIGHT) == GLFW_PRESS) {
     mButtonState.mouseButton2 = true;
-  }
-  else if (glfwGetMouseButton(mWindow, GLFW_MOUSE_BUTTON_RIGHT) == GLFW_RELEASE) {
+  } else if (glfwGetMouseButton(mWindow, GLFW_MOUSE_BUTTON_RIGHT) == GLFW_RELEASE) {
     mButtonState.mouseButton2 = false;
   }
   if (glfwGetMouseButton(mWindow, GLFW_MOUSE_BUTTON_MIDDLE) == GLFW_PRESS) {
     mButtonState.mouseButton3 = true;
-  }
-  else if (glfwGetMouseButton(mWindow, GLFW_MOUSE_BUTTON_MIDDLE) == GLFW_RELEASE) {
+  } else if (glfwGetMouseButton(mWindow, GLFW_MOUSE_BUTTON_MIDDLE) == GLFW_RELEASE) {
     mButtonState.mouseButton3 = false;
   }
   if (glfwGetMouseButton(mWindow, GLFW_MOUSE_BUTTON_4) == GLFW_PRESS) {
     mButtonState.mouseButton4 = true;
-  }
-  else if (glfwGetMouseButton(mWindow, GLFW_MOUSE_BUTTON_4) == GLFW_RELEASE) {
+  } else if (glfwGetMouseButton(mWindow, GLFW_MOUSE_BUTTON_4) == GLFW_RELEASE) {
     mButtonState.mouseButton4 = false;
   }
   if (glfwGetMouseButton(mWindow, GLFW_MOUSE_BUTTON_5) == GLFW_PRESS) {
     mButtonState.mousebutton5 = true;
-  }
-  else if (glfwGetMouseButton(mWindow, GLFW_MOUSE_BUTTON_5) == GLFW_RELEASE) {
+  } else if (glfwGetMouseButton(mWindow, GLFW_MOUSE_BUTTON_5) == GLFW_RELEASE) {
     mButtonState.mousebutton5 = false;
   }
   if (glfwGetMouseButton(mWindow, GLFW_MOUSE_BUTTON_6) == GLFW_PRESS) {
     mButtonState.mouseButton6 = true;
-  }
-  else if (glfwGetMouseButton(mWindow, GLFW_MOUSE_BUTTON_6) == GLFW_RELEASE) {
+  } else if (glfwGetMouseButton(mWindow, GLFW_MOUSE_BUTTON_6) == GLFW_RELEASE) {
     mButtonState.mouseButton6 = false;
   }
   if (glfwGetMouseButton(mWindow, GLFW_MOUSE_BUTTON_7) == GLFW_PRESS) {
     mButtonState.mousebutton7 = true;
-  }
-  else if (glfwGetMouseButton(mWindow, GLFW_MOUSE_BUTTON_7) == GLFW_RELEASE) {
+  } else if (glfwGetMouseButton(mWindow, GLFW_MOUSE_BUTTON_7) == GLFW_RELEASE) {
     mButtonState.mousebutton7 = false;
   }
   if (glfwGetMouseButton(mWindow, GLFW_MOUSE_BUTTON_8) == GLFW_PRESS) {
     mButtonState.mouseButton8 = true;
-  }
-  else if (glfwGetMouseButton(mWindow, GLFW_MOUSE_BUTTON_8) == GLFW_RELEASE) {
+  } else if (glfwGetMouseButton(mWindow, GLFW_MOUSE_BUTTON_8) == GLFW_RELEASE) {
     mButtonState.mouseButton8 = false;
   }
 }
@@ -846,8 +603,7 @@ void deltaUpdate() {
 
   // go through all updates that need access to delta time
   float elapsedTime = deltaTime.count();
-  for (auto& oDU : onDeltaUpdate)
-  {
+  for (auto& oDU : onDeltaUpdate) {
     oDU.second(elapsedTime);
   }
 
@@ -865,8 +621,7 @@ void deltaUpdate() {
   for (auto& oMH : onMouseHandling) { oMH.second(mMousePosition); }
 
   // Snap cursor to the middle of the screen if it is in perspective and cursor is disabled (FPP mode)
-  if (isFPP())
-  {
+  if (isFPP()) {
     mMousePosition.xOffset = 0;
     mMousePosition.yOffset = 0;
   }
@@ -878,11 +633,9 @@ void deltaUpdate() {
   // update accum time for delayed updates
   mSlowUpdateTimeout += elapsedTime;
   // check to see if its time to process delayed updates
-  if (mSlowUpdateTimeout > mSlowUpdateWaitLength)
-  {
+  if (mSlowUpdateTimeout > mSlowUpdateWaitLength) {
     // process all delayed updates
-    for (auto& oSU : onSlowUpdate)
-    {
+    for (auto& oSU : onSlowUpdate) {
       oSU.second();
     }
     mSlowUpdateTimeout = 0.f;
@@ -913,18 +666,14 @@ void deltaUpdate() {
     }
   }
 }
-void clearBackBuffer() noexcept
-{
+void clearBackBuffer() noexcept {
   OGLGraphics::ClearScreen();
 }
-void swapWindowBuffers() noexcept
-{
+void swapWindowBuffers() noexcept {
   glfwSwapBuffers(mWindow);
 }
-void render()
-{
+void render() {
   clearBackBuffer();
-
   if (isWindowSizeDirty) {
     if (mLitShader) {
       std::cout << "setting projection for lit shader on primary cam\n";
@@ -932,38 +681,57 @@ void render()
       mLitShader->setMat4("projection", mCameras.front().Projection);
     }
 
-    if (mDiffShader)
-    {
+    if (mDiffShader) {
       std::cout << "setting projection for diff shader on primary cam\n";
       mDiffShader->use();
       mDiffShader->setMat4("projection", mCameras.front().Projection);
     }
 
+    //if (mInterfaceShader) {
+      //std::cout << "setting projection for inteface shader on primary cam\n";
+      //mInterfaceShader->use();
+      //mInterfaceShader->setMat4("projection", mCameras.front().Projection);
+    //}
+
     // if there is a skybox
-    if (mSkybox)
-    {
+    if (mSkybox) {
       // if there is a camera
       if (mCameras.size() > 0) {
         // set the projection matrix on the skybox from the first cam proj matrix
         mSkybox->setProjectionMatrix(mCameras.front());
       }
     }
+
+    if (mGUI) {
+      mGUI->Draw();
+    }
+
     isWindowSizeDirty = false;
   }
 
-  for (auto& p : mProps)  // todo: test const
-  {
-    // set view matrix
-    // set the view matrix from the primary camera for each object is probably overkill
-    if (p.mIsLit)
-    {
-      mLitShader->use();
-      mLitShader->setMat4("view", mCameras.front().View);  // todo: hack
-    }
-    else
-    {
-      mDiffShader->use();
-      mDiffShader->setMat4("view", mCameras.front().View);  // todo: hack
+  for (auto& p : mProps) {
+    switch (p.mShaderType) {
+    case SHADERTYPE::DIFF:
+      if (mDiffShader) {
+        mDiffShader->use();
+        mDiffShader->setMat4("view", mCameras.front().View);
+      }
+      break;
+    case SHADERTYPE::LIT:
+      if (mLitShader) {
+        mLitShader->use();
+        mLitShader->setMat4("view", mCameras.front().View);  // todo: hack
+        mLitShader->setVec3("viewPos", mCameras.front().Position);
+      }
+      break;
+    //case SHADERTYPE::INTERFACE:
+      //if (mInterfaceShader) {
+        //mInterfaceShader->use();
+        //mInterfaceShader->setMat4("view", mCameras.front().View);  // todo: hack
+      //}
+      //break;
+    default:
+      break;
     }
     p.draw();
   }
@@ -973,16 +741,13 @@ void render()
 
   swapWindowBuffers();
 }
-void teardown()
-{
+void teardown() {
   // run user preferred functions first
-  for (auto& oTD : onTearDown)
-  {
+  for (auto& oTD : onTearDown) {
     oTD.second();
   }
   // delete all the meshes and textures from GPU memory
-  for (const auto& p : mProps)
-  {
+  for (const auto& p : mProps) {
     ModelLoader::UnloadGameObject(p.mMeshes);  // todo: consider moving to the destructor the prop
   }
 
@@ -1025,7 +790,7 @@ void InitEngine() {
     glfwSetErrorCallback([](int e, const char* msg) {
       if (e != 65543)
         throw("glfw callback error");
-      });
+    });
 
     glfwInit();
 
@@ -1033,18 +798,15 @@ void InitEngine() {
 
     auto local_options = Settings::Get()->GetOptions();
 
-    if (local_options.MSAA == true)
-    {
+    if (local_options.MSAA == true) {
       glfwWindowHint(GLFW_SAMPLES, local_options.msaa_samples);
     }
 
-    if (local_options.renderer == RenderingFramework::OPENGL)
-    {
+    if (local_options.renderer == RenderingFramework::OPENGL) {
       // with core profile, you have to create and manage your own VAO's, no default 
       glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
       glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);
-      struct OpenGLVersion
-      {
+      struct OpenGLVersion {
         OpenGLVersion() :major(-1), minor(-1) {}
         OpenGLVersion(int maj, int min) :major(maj), minor(min) {}
         int major = 0;
@@ -1061,15 +823,13 @@ void InitEngine() {
       try_versions.push_back(OpenGLVersion(4, 5));
       try_versions.push_back(OpenGLVersion(4, 6));
 
-      while (!mWindow && !try_versions.empty())
-      {
+      while (!mWindow && !try_versions.empty()) {
         glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, try_versions.back().major);
         glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, try_versions.back().minor);
         mWindow = glfwCreateWindow(1280, 720, "AncientArcher Default Window Title", nullptr, nullptr);
         if (!mWindow) {
           try_versions.pop_back();
-        }
-        else  // save results to settings
+        } else  // save results to settings
         {
           local_options.RendererVersionMajor = try_versions.back().major;
           local_options.RendererVersionMinor = try_versions.back().minor;
@@ -1084,8 +844,7 @@ void InitEngine() {
 
     glfwMakeContextCurrent(mWindow);
 
-    if (local_options.renderer == RenderingFramework::OPENGL)
-    {
+    if (local_options.renderer == RenderingFramework::OPENGL) {
       if (!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress))  // tie window context to glad's opengl funcs
       {
         throw("Unable to context to OpenGL");
@@ -1108,15 +867,13 @@ void InitEngine() {
   }
   isEngineInit = true;
 }
-int Run()
-{
+int Run() {
   if (!isEngineInit) {
     std::cout << "init first\n";
     return -4;
   }
   begin();
-  while (!isTryingToClose())
-  {
+  while (!isTryingToClose()) {
     deltaUpdate();
     render();
   }
@@ -1171,8 +928,8 @@ bool RemoveCamera(const int camId) {
   auto ret_it = mCameras.erase(
     std::remove_if(mCameras.begin(), mCameras.end(),
       [&](Camera c) {
-        return c.GetUID() == camId;
-      }),
+    return c.GetUID() == camId;
+  }),
     mCameras.end());
 
   auto after_size = mCameras.size();
@@ -1182,12 +939,9 @@ bool RemoveCamera(const int camId) {
 
   return false;   // fail remove
 }
-void SetCamMaxRenderDistance(int camId, float amt)
-{
-  for (auto& cam : mCameras)
-  {
-    if (cam.GetUID() == camId)
-    {
+void SetCamMaxRenderDistance(int camId, float amt) {
+  for (auto& cam : mCameras) {
+    if (cam.GetUID() == camId) {
       cam.MaxRenderDistance = amt;
       cam.updateProjectionMatrix();
       return;
@@ -1195,12 +949,9 @@ void SetCamMaxRenderDistance(int camId, float amt)
   }
   throw("cam id doesn't exist or is invalid");
 }
-void SetCamToPerspective(int camId)
-{
-  for (auto& cam : mCameras)
-  {
-    if (cam.GetUID() == camId)
-    {
+void SetCamToPerspective(int camId) {
+  for (auto& cam : mCameras) {
+    if (cam.GetUID() == camId) {
       cam.RenderProjection = RenderProjection::PERSPECTIVE;
       cam.updateProjectionMatrix();
       return;
@@ -1208,12 +959,9 @@ void SetCamToPerspective(int camId)
   }
   throw("cam id doesn't exist or is invalid");
 }
-void SetCamFOV(int camId, float new_fov)
-{
-  for (auto& cam : mCameras)
-  {
-    if (cam.GetUID() == camId)
-    {
+void SetCamFOV(int camId, float new_fov) {
+  for (auto& cam : mCameras) {
+    if (cam.GetUID() == camId) {
       if (cam.RenderProjection != RenderProjection::PERSPECTIVE)
         throw("changing FOV on wrong render projection");
       cam.FOV = new_fov;
@@ -1223,15 +971,12 @@ void SetCamFOV(int camId, float new_fov)
   }
   throw("cam id doesn't exist or is invalid");
 }
-void SetCamDimensions(int camId, int w, int h)
-{
+void SetCamDimensions(int camId, int w, int h) {
   if (w < MINSCREENWIDTH || h < MINSCREENHEIGHT ||
     w > MAXSCREENWIDTH || h > MAXSCREENHEIGHT)
     throw("invalid cam resize attempted");
-  for (auto& cam : mCameras)
-  {
-    if (cam.GetUID() == camId)
-    {
+  for (auto& cam : mCameras) {
+    if (cam.GetUID() == camId) {
       cam.Width = w;
       cam.Height = h;
       cam.updateProjectionMatrix();
@@ -1241,10 +986,8 @@ void SetCamDimensions(int camId, int w, int h)
   throw("cam id doesn't exist or is invalid");
 }
 void SetCamPosition(int camId, glm::vec3 new_loc) {
-  for (auto& cam : mCameras)
-  {
-    if (cam.GetUID() == camId)
-    {
+  for (auto& cam : mCameras) {
+    if (cam.GetUID() == camId) {
       cam.Position = new_loc;
       cam.updateCameraVectors();
       return;
@@ -1252,12 +995,9 @@ void SetCamPosition(int camId, glm::vec3 new_loc) {
   }
   throw("cam id doesn't exist or is invalid");
 }
-void SetCamPitch(int camId, float new_pitch_degrees)
-{
-  for (auto& cam : mCameras)
-  {
-    if (cam.GetUID() == camId)
-    {
+void SetCamPitch(int camId, float new_pitch_degrees) {
+  for (auto& cam : mCameras) {
+    if (cam.GetUID() == camId) {
       if (new_pitch_degrees > 89.9f)
         new_pitch_degrees = 89.9f;
       else if (new_pitch_degrees < -89.9f)
@@ -1269,12 +1009,9 @@ void SetCamPitch(int camId, float new_pitch_degrees)
   }
   throw("cam id doesn't exist or is invalid");
 }
-void SetCamYaw(int camId, float new_yaw_degrees)
-{
-  for (auto& cam : mCameras)
-  {
-    if (cam.GetUID() == camId)
-    {
+void SetCamYaw(int camId, float new_yaw_degrees) {
+  for (auto& cam : mCameras) {
+    if (cam.GetUID() == camId) {
       if (new_yaw_degrees > 360.0f)
         new_yaw_degrees -= 360.f;
       else if (new_yaw_degrees < 0.f)
@@ -1286,12 +1023,9 @@ void SetCamYaw(int camId, float new_yaw_degrees)
   }
   throw("cam id doesn't exist or is invalid");
 }
-void ShiftCamPosition(int camId, glm::vec3 offset)
-{
-  for (auto& cam : mCameras)
-  {
-    if (cam.GetUID() == camId)
-    {
+void ShiftCamPosition(int camId, glm::vec3 offset) {
+  for (auto& cam : mCameras) {
+    if (cam.GetUID() == camId) {
       cam.Position += offset;
       cam.updateCameraVectors();
       return;
@@ -1299,25 +1033,22 @@ void ShiftCamPosition(int camId, glm::vec3 offset)
   }
   throw("cam id doesn't exist or is invalid");
 }
-void ShiftCamPitchAndYaw(int camId, float pitch_offset_degrees, float yaw_offset_degrees)
-{
-  for (auto& cam : mCameras)
-  {
-    if (cam.GetUID() == camId)
-    {
-      float new_pitch_degrees = cam.Pitch + pitch_offset_degrees;
+void ShiftCamPitchAndYaw(int camId, double pitch_offset_degrees, double yaw_offset_degrees) {
+  for (auto& cam : mCameras) {
+    if (cam.GetUID() == camId) {
+      double new_pitch_degrees = cam.Pitch + pitch_offset_degrees;
       if (new_pitch_degrees > 89.9f)
         new_pitch_degrees = 89.9f;
       else if (new_pitch_degrees < -89.9f)
         new_pitch_degrees = -89.9f;
-      cam.Pitch = new_pitch_degrees;
+      cam.Pitch = static_cast<float>(new_pitch_degrees);
 
-      float new_yaw_degrees = cam.Yaw + yaw_offset_degrees;
+      double new_yaw_degrees = cam.Yaw + yaw_offset_degrees;
       if (new_yaw_degrees > 360.0f)
         new_yaw_degrees -= 360.f;
       else if (new_yaw_degrees < 0.f)
         new_yaw_degrees += 360.f;
-      cam.Yaw = new_yaw_degrees;
+      cam.Yaw = static_cast<float>(new_yaw_degrees);
 
       cam.updateCameraVectors();
       return;
@@ -1325,48 +1056,51 @@ void ShiftCamPitchAndYaw(int camId, float pitch_offset_degrees, float yaw_offset
   }
   throw("cam id doesn't exist or is invalid");
 }
-glm::vec3 GetCamFront(int camId)
-{
-  for (auto& cam : mCameras)
-  {
-    if (cam.GetUID() == camId)
-    {
+glm::vec3 GetCamFront(int camId) {
+  for (auto& cam : mCameras) {
+    if (cam.GetUID() == camId) {
       return cam.Front;
     }
   }
   throw("cam id doesn't exist or is invalid");
 }
-glm::vec3 GetCamRight(int camId)
-{
-  for (auto& cam : mCameras)
-  {
-    if (cam.GetUID() == camId)
-    {
+glm::vec3 GetCamRight(int camId) {
+  for (auto& cam : mCameras) {
+    if (cam.GetUID() == camId) {
       return cam.Right;
     }
   }
   throw("cam id doesn't exist or is invalid");
 }
-glm::vec3 GetCamPosition(int camId)
-{
-  for (auto& cam : mCameras)
-  {
-    if (cam.GetUID() == camId)
-    {
+glm::vec3 GetCamPosition(int camId) {
+  for (auto& cam : mCameras) {
+    if (cam.GetUID() == camId) {
       return cam.Position;
     }
   }
   throw("cam id doesn't exist or is invalid");
 }
-glm::mat4 GetProjectionMatrix(int camId)
-{
-  for (auto& cam : mCameras)
-  {
-    if (cam.GetUID() == camId)
-    {
+float GetCamPitch(int camId) {
+  for (auto& cam : mCameras) {
+    if (cam.GetUID() == camId) {
+      return cam.Pitch;
+    }
+  }
+  throw("cam id doesn't exist or is invalid");
+}
+float GetCamYaw(int camId) {
+  for (auto& cam : mCameras) {
+    if (cam.GetUID() == camId) {
+      return cam.Yaw;
+    }
+  }
+  throw("cam id doesn't exist or is invalid");
+}
+glm::mat4 GetProjectionMatrix(int camId) {
+  for (auto& cam : mCameras) {
+    if (cam.GetUID() == camId) {
       glm::mat4 projection = glm::mat4(1);
-      switch (cam.RenderProjection)
-      {
+      switch (cam.RenderProjection) {
       case RenderProjection::PERSPECTIVE:
       {
         float aspectRatio = static_cast<float>(cam.Width) / static_cast<float>(cam.Height);
@@ -1391,27 +1125,49 @@ glm::mat4 GetProjectionMatrix(int camId)
   }
   throw("cam id doesn't exist or is invalid");
 }
+glm::mat4 GetOrthoMatrix(int camId) {
+  for (auto& cam : mCameras) {
+    if (cam.GetUID() == camId) {
+      glm::mat4 ortho = glm::mat4(1);
+      ortho = glm::ortho(
+        0.f,
+        static_cast<float>(cam.Width),
+        0.f,
+        static_cast<float>(cam.Height),
+        0.0167f,
+        cam.MaxRenderDistance
+      );
+      return ortho;
+    }
+  }
+  throw("cam id doesn't exist or is invalid");
+}
 // End Camera
 
 
 // 3d Game Objects
-int AddProp(const char* path, int camId, bool is_lit)
-{
-  if (is_lit)
-    setupLitShader();
-  else
+int AddProp(const char* path, int camId, SHADERTYPE shadertype) {
+  switch (shadertype) {
+  case SHADERTYPE::DIFF:
     setupDiffShader();
+    break;
+  case SHADERTYPE::LIT:
+    setupLitShader();
+    break;
+  case SHADERTYPE::INTERFACE:
+    setupInterfaceShader();
+    break;
+  default:
+    break;
+  }
 
-  mProps.emplace_back(path, camId, is_lit);
+  mProps.emplace_back(path, camId, shadertype);
 
   return mProps.back().GetUID();
 }
-void SetPropTranslation(int propId, glm::vec3 new_pos)
-{
-  for (auto& p : mProps)
-  {
-    if (p.GetUID() == propId)
-    {
+void SetPropTranslation(int propId, glm::vec3 new_pos) {
+  for (auto& p : mProps) {
+    if (p.GetUID() == propId) {
       p.translation = new_pos;
       p.updateFinalModelMatrix();
       return;
@@ -1419,12 +1175,9 @@ void SetPropTranslation(int propId, glm::vec3 new_pos)
   }
   throw("prop id does not exist");
 }
-void SetPropScale(int propId, glm::vec3 new_scale)
-{
-  for (auto& p : mProps)
-  {
-    if (p.GetUID() == propId)
-    {
+void SetPropScale(int propId, glm::vec3 new_scale) {
+  for (auto& p : mProps) {
+    if (p.GetUID() == propId) {
       p.scale = new_scale;
       p.updateFinalModelMatrix();
       return;
@@ -1432,13 +1185,30 @@ void SetPropScale(int propId, glm::vec3 new_scale)
   }
   throw("prop id does not exist");
 }
-void SetPropRotationY(int propId, float new_y_rot)
-{
-  for (auto& p : mProps)
-  {
-    if (p.GetUID() == propId)
-    {
+void SetPropRotationX(int propId, float new_x_rot) {
+  for (auto& p : mProps) {
+    if (p.GetUID() == propId) {
+      p.eulerRotationX = new_x_rot;
+      p.updateFinalModelMatrix();
+      return;
+    }
+  }
+  throw("prop id does not exist");
+}
+void SetPropRotationY(int propId, float new_y_rot) {
+  for (auto& p : mProps) {
+    if (p.GetUID() == propId) {
       p.eulerRotationY = new_y_rot;
+      p.updateFinalModelMatrix();
+      return;
+    }
+  }
+  throw("prop id does not exist");
+}
+void SetPropRotationZ(int propId, float new_z_rot) {
+  for (auto& p : mProps) {
+    if (p.GetUID() == propId) {
+      p.eulerRotationZ = new_z_rot;
       p.updateFinalModelMatrix();
       return;
     }
@@ -1456,17 +1226,13 @@ void SetSkybox(const std::shared_ptr<Skybox>& skybox) noexcept {
 
 
 // Directional Ligts
-void SetDirectionalLight(glm::vec3 dir, glm::vec3 amb, glm::vec3 diff, glm::vec3 spec)
-{
+void SetDirectionalLight(glm::vec3 dir, glm::vec3 amb, glm::vec3 diff, glm::vec3 spec) {
   if (!mLitShader)
     setupLitShader();
 
-  if (!mDirectionalLight)
-  {
+  if (!mDirectionalLight) {
     mDirectionalLight = new DirectionalLight(dir, amb, diff, spec);
-  }
-  else
-  {
+  } else {
     mDirectionalLight->Direction = dir;
     mDirectionalLight->Ambient = amb;
     mDirectionalLight->Diffuse = diff;
@@ -1483,8 +1249,7 @@ void SetDirectionalLight(glm::vec3 dir, glm::vec3 amb, glm::vec3 diff, glm::vec3
     mLitShader->setVec3("directionalLight.Specular", mDirectionalLight->Specular);
   }
 }
-void RemoveDirectionalLight()
-{
+void RemoveDirectionalLight() {
   assert(mLitShader);
   mLitShader->use();
   mLitShader->setInt("isDirectionalLightOn", 0);
@@ -1496,8 +1261,7 @@ void RemoveDirectionalLight()
 
 // Point Light
 int AddPointLight(glm::vec3 pos, float constant, float linear, float quad, glm::vec3 amb,
-  glm::vec3 diff, glm::vec3 spec)
-{
+  glm::vec3 diff, glm::vec3 spec) {
   if (mPointLights.size() >= MAXPOINTLIGHTS)
     throw("too many point lights");
 
@@ -1549,8 +1313,7 @@ int AddPointLight(glm::vec3 pos, float constant, float linear, float quad, glm::
 
   return mPointLights.back().id;  // unique id
 }
-bool RemovePointLight(int which_by_id)
-{
+bool RemovePointLight(int which_by_id) {
   // returns true if successfully removed the point light, false otherwise
   if (mPointLights.empty())
     return false;
@@ -1563,14 +1326,12 @@ bool RemovePointLight(int which_by_id)
 
   auto after_size = mPointLights.size();
 
-  if (before_size != after_size)
-  {
+  if (before_size != after_size) {
     mLitShader->use();
     mLitShader->setInt("NUM_POINT_LIGHTS", static_cast<int>(after_size));
 
     // sync lights on shader after the change
-    for (int i = 0; i < after_size; i++)
-    {
+    for (int i = 0; i < after_size; i++) {
       ChangePointLight(
         mPointLights[i].id,
         mPointLights[i].Position,
@@ -1583,20 +1344,16 @@ bool RemovePointLight(int which_by_id)
       );
     }
     return true;
-  }
-  else
+  } else
     return false;
 }
-void MovePointLight(int which, glm::vec3 new_pos)
-{
+void MovePointLight(int which, glm::vec3 new_pos) {
   if (which < 0)
     throw("dont");
 
   int loc_in_vec = 0;
-  for (auto& pl : mPointLights)
-  {
-    if (pl.id == which)
-    {
+  for (auto& pl : mPointLights) {
+    if (pl.id == which) {
       pl.Position = new_pos;
       std::stringstream ss;
       ss << loc_in_vec;
@@ -1611,16 +1368,13 @@ void MovePointLight(int which, glm::vec3 new_pos)
   throw("u messed up");
 }
 void ChangePointLight(int which, glm::vec3 new_pos, float new_constant, float new_linear, float new_quad,
-  glm::vec3 new_amb, glm::vec3 new_diff, glm::vec3 new_spec)
-{
+  glm::vec3 new_amb, glm::vec3 new_diff, glm::vec3 new_spec) {
   if (which < 0)
     throw("dont");
 
   int loc_in_vec = 0;
-  for (auto& pl : mPointLights)
-  {
-    if (pl.id == which)
-    {
+  for (auto& pl : mPointLights) {
+    if (pl.id == which) {
       // push changes to shader
       {
         pl.Position = new_pos;
@@ -1677,10 +1431,8 @@ void ChangePointLight(int which, glm::vec3 new_pos, float new_constant, float ne
 
 // Spot Light
 int AddSpotLight(glm::vec3 pos, glm::vec3 dir, float inner, float outer, float constant,
-  float linear, float quad, glm::vec3 amb, glm::vec3 diff, glm::vec3 spec)
-{
-  if (mSpotLights.size() == MAXSPOTLIGHTS)
-  {
+  float linear, float quad, glm::vec3 amb, glm::vec3 diff, glm::vec3 spec) {
+  if (mSpotLights.size() == MAXSPOTLIGHTS) {
     throw("too many spot lights");
   }
 
@@ -1757,14 +1509,12 @@ bool RemoveSpotLight(int which_by_id) {
 
   auto after_size = mSpotLights.size();
 
-  if (before_size != after_size)
-  {
+  if (before_size != after_size) {
     mLitShader->use();
     mLitShader->setInt("NUM_SPOT_LIGHTS", static_cast<int>(after_size));
 
     // sync lights on shader after the change
-    for (int i = 0; i < after_size; i++)
-    {
+    for (int i = 0; i < after_size; i++) {
       ChangeSpotLight(
         mSpotLights[i].id,
         mSpotLights[i].Position,
@@ -1781,8 +1531,7 @@ bool RemoveSpotLight(int which_by_id) {
     }
 
     return true;
-  }
-  else
+  } else
     return false;
 }
 void MoveSpotLight(int which, glm::vec3 new_pos, glm::vec3 new_dir) {
@@ -1790,10 +1539,8 @@ void MoveSpotLight(int which, glm::vec3 new_pos, glm::vec3 new_dir) {
     throw("dont");
 
   int loc_in_vec = 0;
-  for (auto& sl : mSpotLights)
-  {
-    if (sl.id == which)
-    {
+  for (auto& sl : mSpotLights) {
+    if (sl.id == which) {
       sl.Position = new_pos;
       sl.Direction = new_dir;
       mLitShader->use();
@@ -1812,16 +1559,13 @@ void MoveSpotLight(int which, glm::vec3 new_pos, glm::vec3 new_dir) {
 }
 void ChangeSpotLight(int which, glm::vec3 new_pos, glm::vec3 new_dir, float new_inner,
   float new_outer, float new_constant, float new_linear, float new_quad, glm::vec3 new_amb,
-  glm::vec3 new_diff, glm::vec3 new_spec)
-{
+  glm::vec3 new_diff, glm::vec3 new_spec) {
   if (which < 0)
     throw("dont");
 
   int loc_in_vec = 0;
-  for (auto& sl : mSpotLights)
-  {
-    if (sl.id == which)
-    {
+  for (auto& sl : mSpotLights) {
+    if (sl.id == which) {
       // push changes to shader
       {
         sl.Position = new_pos;
@@ -1912,8 +1656,7 @@ int AddSoundEffect(const char* path) {
   // return the unique ID of the speaker
   return mSpeakers.back()->GetUID();
 }
-void RemoveSoundEffect(int soundId)
-{
+void RemoveSoundEffect(int soundId) {
   if (mSoundEffects.empty())
     throw("no sounds exist, nothing to remove");
 
@@ -1928,8 +1671,7 @@ void PlaySoundEffect(int id, bool interrupt) {
   if (mSpeakers.empty())
     throw("no speakers");
 
-  for (auto& spkr : mSpeakers)
-  {
+  for (auto& spkr : mSpeakers) {
     if (spkr->GetUID() == id) {
       if (interrupt) {
         spkr->PlayInterrupt();
@@ -1977,7 +1719,6 @@ void StopMusic() {
     }
     return;
   }
-
   throw("no music loaded");
 }
 // End Music
@@ -2009,8 +1750,8 @@ void SetMouseReadToFPP() noexcept {
 
   mSwitchedToFPP = true;
   ::glfwSetCursorPosCallback(mWindow, [](GLFWwindow* window, double x, double y) {
-    float xOffset = 0, yOffset = 0;
-    static float lastX, lastY;
+    double xOffset = 0, yOffset = 0;
+    static double lastX, lastY;
     if (mSwitchedToFPP) {
       mMousePosition.xOffset = 0;
       mMousePosition.yOffset = 0;
@@ -2026,16 +1767,14 @@ void SetMouseReadToFPP() noexcept {
     yOffset *= mFPPMouseSensitivity;
     mMousePosition.xOffset = xOffset;
     mMousePosition.yOffset = yOffset;
-    });
+  });
 
   mMouseReporting = MouseReporting::PERSPECTIVE;
 }
-void SetMouseFPPSensitivity(float sensitivity) noexcept
-{
+void SetMouseFPPSensitivity(float sensitivity) noexcept {
   mFPPMouseSensitivity = sensitivity;
 }
-float GetMouseFPPSensitivity() noexcept
-{
+float GetMouseFPPSensitivity() noexcept {
   return mFPPMouseSensitivity;
 }
 
@@ -2048,7 +1787,7 @@ void SetMouseReadToNormal() noexcept {
     mMousePosition.yOffset = ypos;
     std::cout << "[standard mouse read] x: " << mMousePosition.xOffset;
     std::cout << " y: " << mMousePosition.yOffset << std::endl;
-    });
+  });
 
   mMouseReporting = MouseReporting::STANDARD;
 }
@@ -2057,7 +1796,7 @@ void SetScrollWheelCallback() noexcept {
   ::glfwSetScrollCallback(mWindow, [](GLFWwindow* w, double x, double y) {
     mMouseWheelScroll.xOffset = x;
     mMouseWheelScroll.yOffset = y;
-    });
+  });
 }
 // End Mouse
 
@@ -2082,28 +1821,46 @@ void SetWindowTitle(const char* name) noexcept {
 void SetReshapeCallback() noexcept {
   ::glfwSetFramebufferSizeCallback(mWindow,
     [](GLFWwindow* window, int w, int h) {
-      switch (Settings::Get()->GetOptions().renderer) {
-      case RenderingFramework::OPENGL:
-        OGLGraphics::SetViewportSize(0, 0, w, h);
-        break;
-      case RenderingFramework::D3D:
-        break;
-      case RenderingFramework::VULKAN:
-        break;
-      }
-      for (auto& cam : mCameras) {
-        cam.Width = static_cast<int>(w * cam.RatioToScreen.x);
-        cam.Height = static_cast<int>(h * cam.RatioToScreen.y);
-        cam.updateProjectionMatrix();
-        std::cout << "projection updated for cam " << cam.GetUID() << '\n';
-      }
-      isWindowSizeDirty = true;
+    switch (Settings::Get()->GetOptions().renderer) {
+    case RenderingFramework::OPENGL:
+      OGLGraphics::SetViewportSize(0, 0, w, h);
+      break;
+    case RenderingFramework::D3D:
+      break;
+    case RenderingFramework::VULKAN:
+      break;
     }
+    for (auto& cam : mCameras) {
+      cam.Width = static_cast<int>(w * cam.RatioToScreen.x);
+      cam.Height = static_cast<int>(h * cam.RatioToScreen.y);
+      cam.updateProjectionMatrix();
+      std::cout << "projection updated for cam " << cam.GetUID() << '\n';
+    }
+    isWindowSizeDirty = true;
+  }
   );
 }
 // End Window
 
+// Interface
+void AddInterfaceSlider(vec2 bot_left_loc, float low_val, float high_val, float bar_thickness, float bar_length, bool horizontal, 
+                        void(*returnvaluehandler)(float result)){
+  if (!mGUI)
+    mGUI = new PlainGUI();
+  
+  Slider tmp_slider;
+  tmp_slider.bot_left_loc = bot_left_loc;
+  tmp_slider.low_val = low_val;
+  tmp_slider.high_val = high_val;
+  tmp_slider.bar_thickness = bar_thickness;
+  tmp_slider.bar_length = bar_length;
+  tmp_slider.horizontal = horizontal;
+  mGUI->AddSlider(tmp_slider, returnvaluehandler);
 
+
+}
+// End Interface
+// 
 // Loop Controls
 void SetSlowUpdateTimeoutLength(const float& newtime) {
   // !! warning, no checking, set at your own risk

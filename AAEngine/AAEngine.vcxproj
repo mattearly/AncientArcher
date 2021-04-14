@@ -87,8 +87,11 @@
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="include\AncientArcher\ShaderType.h" />
     <ClInclude Include="include\AncientArcher\Version.h" />
+    <ClInclude Include="src\GUI\PlainGUI.h" />
     <ClInclude Include="src\Base\Types.h" />
+    <ClInclude Include="src\Shader\InterfaceShader.h" />
     <ClInclude Include="src\Sound\SoundEffect.h" />
     <ClInclude Include="src\Renderer\OpenGL\OGLLights.h" />
     <ClInclude Include="src\Renderer\TextureInfo.h" />
@@ -127,6 +130,7 @@
     <ClInclude Include="src\Base\UniqueInstance.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="src\GUI\PlainGUI.cpp" />
     <ClCompile Include="src\Sound\SoundEffect.cpp" />
     <ClCompile Include="src\Base\UniqueInstance.cpp" />
     <ClCompile Include="src\Scene\Lights.cpp" />
