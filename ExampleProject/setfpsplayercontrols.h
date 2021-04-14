@@ -27,26 +27,53 @@ void setfpsplayercontrols(int cam) {
   static glm::vec3 frontFacingDir = AA::GetCamFront(inherited_cam);
   static glm::vec3 rightFacingDir = AA::GetCamRight(inherited_cam);
 
+  static struct MoveBlock {
+    bool forward = 0, backwards = 0, left = 0, right = 0;
+  } move;
   // add WASD key first person movement function
   const auto wasd = [](AA::KeyboardInput& key) {
-    if (!is_inventory_open)
-    {
-      if (key.w)
-      {
-        moveDir += frontFacingDir;
-      }
-      else if (key.s)
-      {
-        moveDir -= frontFacingDir;
-      }
-      if (key.a)
-      {
-        moveDir -= rightFacingDir;
-      }
-      else if (key.d)
-      {
-        moveDir += rightFacingDir;
-      }
+    if (is_inventory_open)
+      return;
+
+    if (key.w) {
+      move.forward = true;
+      frontFacingDir = AA::GetCamFront(inherited_cam);
+      rightFacingDir = AA::GetCamRight(inherited_cam);
+
+    } else     if (!key.w) {
+      move.forward = false;
+    }
+
+    if (key.s) {
+      move.backwards = true;
+      frontFacingDir = AA::GetCamFront(inherited_cam);
+      rightFacingDir = AA::GetCamRight(inherited_cam);
+
+    } else if (!key.s) {
+      move.backwards = false;
+
+    }
+
+    if (key.a) {
+      move.left = true;
+      frontFacingDir = AA::GetCamFront(inherited_cam);
+      rightFacingDir = AA::GetCamRight(inherited_cam);
+
+
+    } else if (!key.a) {
+      move.left = false;
+    }
+
+
+
+    if (key.d) {
+      move.right = true;
+      frontFacingDir = AA::GetCamFront(inherited_cam);
+      rightFacingDir = AA::GetCamRight(inherited_cam);
+
+    } else if (!key.d) {
+      move.right = false;
+
     }
   };
   AA::AddToKeyHandling(wasd);
@@ -55,29 +82,46 @@ void setfpsplayercontrols(int cam) {
     if (kb.tab) {
       if (!is_inventory_open) {
         // (open inventory) mouse on screen
-        AA::SetMouseReadToNormal();
         AA::SetMouseToNormal();
+        AA::SetMouseReadToNormal();
         is_inventory_open = true;
         return true;
-      }
-      else {
+      } else {
         // (close inventory) mouse in fpp hidden snapping ot middle mode
-        AA::SetMouseReadToFPP();
         AA::SetMouseToDisabled();
+        AA::SetMouseReadToFPP();
         is_inventory_open = false;
         return true;
       }
     }
     return false;
-    });
+  });
 
   const auto camMove = [](float dt) {
-    static float frameCalculatedVelocity = 0.f;
+    float frameCalculatedVelocity = 0.f;
     frameCalculatedVelocity = dt * currFlySpeed;
-    AA::ShiftCamPosition(inherited_cam, moveDir * frameCalculatedVelocity);
-    moveDir = glm::vec3(0.f);
-    frontFacingDir = AA::GetCamFront(inherited_cam);
-    rightFacingDir = AA::GetCamRight(inherited_cam);
+    if (move.forward) {
+      moveDir += frontFacingDir;
+      AA::ShiftCamPosition(inherited_cam, moveDir * frameCalculatedVelocity);
+      moveDir = glm::vec3(0.f);
+
+    }
+    if (move.backwards) {
+      moveDir -= frontFacingDir;
+      AA::ShiftCamPosition(inherited_cam, moveDir * frameCalculatedVelocity);
+      moveDir = glm::vec3(0.f);
+
+    }
+    if (move.right) {
+      moveDir += rightFacingDir;
+      AA::ShiftCamPosition(inherited_cam, moveDir * frameCalculatedVelocity);
+      moveDir = glm::vec3(0.f);
+    }
+    if (move.left) {
+      moveDir -= rightFacingDir;
+      AA::ShiftCamPosition(inherited_cam, moveDir * frameCalculatedVelocity);
+      moveDir = glm::vec3(0.f);
+    }
   };
   AA::AddToDeltaUpdate(camMove);
 
@@ -93,30 +137,21 @@ void setfpsplayercontrols(int cam) {
   const auto mousewheelflyspeed = [](AA::ScrollInput& wheel)
   {
     // set flyspeed when mouse wheel moves
-    if (wheel.yOffset > 0.1f)
-    {
+    if (wheel.yOffset > 0.1f) {
       currFlySpeed += FLYINCR;
-      wheel.yOffset = 0;
-    }
-    else if (wheel.yOffset < -0.1f)
-    {
+    } else if (wheel.yOffset < -0.1f) {
       currFlySpeed -= FLYINCR;
-      wheel.yOffset = 0;
     }
 
     // cap flyspeed
-    if (currFlySpeed >= MAXSPEED)
-    {
+    if (currFlySpeed >= MAXSPEED) {
       currFlySpeed = MAXSPEED;
-    }
-    else if (currFlySpeed <= 1.f)
-    {
+    } else if (currFlySpeed <= 1.f) {
       currFlySpeed = 1.000001f;
     }
 
     // set flyspeed if it changed
-    if (currFlySpeed != prevFlySpeed)
-    {
+    if (currFlySpeed != prevFlySpeed) {
       prevFlySpeed = currFlySpeed;
     }
   };
