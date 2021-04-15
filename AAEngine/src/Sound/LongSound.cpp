@@ -14,16 +14,15 @@ void LongSound::Play()
     return;
 
   /* Rewind the source position and clear the buffer queue */
-  alSourceRewind(p_Source);  //?
+  alSourceRewind(p_Source);
   local_alErrorCheck();
 
-  alSourcei(p_Source, AL_BUFFER, 0); //?
+  alSourcei(p_Source, AL_BUFFER, 0);
   local_alErrorCheck();
 
   /* Fill the buffer queue */
   ALsizei i;
-  for (i = 0; i < BUFFER_COUNT; i++)
-  {
+  for (i = 0; i < BUFFER_COUNT; i++){
     /* Get some data to give it to the buffer */
     sf_count_t slen = sf_readf_short(p_Sndfile, p_Membuf, BUFFER_SAMPLES);
     if (slen < 1) break;
@@ -61,7 +60,7 @@ void LongSound::Resume()
   local_alErrorCheck();
 }
 
-void LongSound::Stop() {
+void LongSound::Stop(){
   // if already stopped, do nothing
   if (GetPlayingState() == AL_STOPPED)
     return;
@@ -70,26 +69,13 @@ void LongSound::Stop() {
   local_alErrorCheck();
 }
 
-void LongSound::SetVolume(const float& val)
-{
+void LongSound::SetVolume(const float& val){
   float newvolume = val;
-  if (newvolume < 0.f)  //can't be negative
-  {
+  if (newvolume < 0.f){
     newvolume = 0.f;
   }
-  else if (newvolume > 5.f)
-  {
-    // cap at 5
-    newvolume = 5.f;
-  }
-
-  //SoundDevice::Get()->SuspendContext();
-
   alSourcef(p_Source, AL_GAIN, newvolume);
   local_alErrorCheck();
-
-  //SoundDevice::Get()->ResumeContext();
-
 }
 
 void LongSound::UpdatePlayBuffer()
@@ -102,8 +88,7 @@ void LongSound::UpdatePlayBuffer()
   local_alErrorCheck();
 
   /* Unqueue and handle each processed buffer */
-  while (processed > 0)
-  {
+  while (processed > 0){
     ALuint bufid;
     sf_count_t slen;
 
@@ -122,7 +107,6 @@ void LongSound::UpdatePlayBuffer()
 
       alSourceQueueBuffers(p_Source, 1, &bufid);
       local_alErrorCheck();
-
     }
   }
 }

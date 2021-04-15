@@ -4,6 +4,6 @@ namespace AA
 struct ScrollInput
 {
   double xOffset;
-  double yOffset;
+  double yOffset;  // normal mouse
 };
 }

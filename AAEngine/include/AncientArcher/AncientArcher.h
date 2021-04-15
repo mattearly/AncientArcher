@@ -94,7 +94,10 @@ void PlaySoundEffect(int id, bool interrupt = true);
 void AddMusic(const char* path);
 void RemoveMusic();
 void PlayMusic();
+void PauseMusic();
+void ResumeMusic();
 void StopMusic();
+void SetMusicVolume(float new_vol);
 // End Music
 
 
@@ -106,7 +109,6 @@ void SetMouseReadToFPP() noexcept;
 void SetMouseFPPSensitivity(float sensitivity) noexcept;
 float GetMouseFPPSensitivity() noexcept;
 void SetMouseReadToNormal() noexcept;
-void SetScrollWheelCallback() noexcept;
 // End Mouse
 
 
@@ -114,7 +116,6 @@ void SetScrollWheelCallback() noexcept;
 void SetWindowClearColor(glm::vec3 color = glm::vec3(.35f, .15f, .35f));
 int GetWindowWidth() noexcept;
 int GetWindowHeight() noexcept;
-void SetReshapeCallback() noexcept;
 void SetWindowTitle(const char* name) noexcept;
 // End Window
 
