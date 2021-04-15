@@ -15,6 +15,7 @@ int main() {
             << "Hotkeys: " 
             << "    -" << "WASD: Move\n"
             << "    -" << "Mouse: Look\n"
+            << "    -" << "TAB:   Toggle Mouse Control\n"
             << "    -" << "F:  Toggle Flashlight\n"
             << "    -" << "Left/Right Click: Sound Effect Test\n"
             << "    -" << "F1: Toggle Sky Light\n"
