@@ -6,56 +6,39 @@
 #include "setflashlight.h"
 #include "setsoundeffects.h"
 #include "setmusic.h"
-int main()
-{
+#include "setdirlight.h"
+#include "setmodels.h"
+int main() {
+
   std::cout << "Running Version: " << AA::ENGINEVERSIONMAJOR << '.' << AA::ENGINEVERSIONMINOR << '.' << AA::ENGINEVERSIONPATCH << '\n';
+  std::cout << "EXAMPLE PROJECT: " << "sample code for above version\n"
+            << "Hotkeys: " 
+            << "    -" << "WASD: Move\n"
+            << "    -" << "Mouse: Look\n"
+            << "    -" << "F:  Toggle Flashlight\n"
+            << "    -" << "Left/Right Click: Sound Effect Test\n"
+            << "    -" << "F1: Toggle Sky Light\n"
+            << "    -" << "P: Play Long Sound Test (Music)\n"
+            << "    -" << "O: Stop Long Sound Test (Music)\n"
+            << "    -" << "I: Pause Long Sound Test (Music)\n"
+            << "    -" << "K: Resume Long Sound Test (Music)\n"
+            << "    -" << "U: Unload Long Sound Test (Music)\n"
+            << "    -" << "R: Reload Long Sound Test (Music)\n"
+            << "    -" << "ScrollWheel: Vol up/down Long Sound Test (Music)\n"
+            ;
+  
+
   AA::InitEngine();
-  AA::SetWindowClearColor(glm::vec3(0));
   static int ourcam = AA::AddCamera(AA::GetWindowWidth(), AA::GetWindowHeight());
   setfpsplayercontrols(ourcam);
   setskybox();
+  setdirlight();
   setupflashlight(ourcam);
   setupsoundeffects();
   setmusic();
- 
-  const float dist_from_us = 45.f;
-  const float dist_down = -2.2f;
-  static int peasant_man = AA::AddProp("..\\ExampleProject\\res\\peasant_man.dae", ourcam, AA::SHADERTYPE::LIT);
-  //static int test_zone = AA::AddProp("E:\\storage\\3d Models\\grass_plain.dae", ourcam, true);
-    AA::SetPropTranslation(peasant_man, glm::vec3(0, dist_down, -dist_from_us));
-  AA::SetPropScale(peasant_man, glm::vec3(.1f));
-  
-  static int cyber_man = AA::AddProp("E:\\AssetPack\\cyber_man.fbx", ourcam, AA::SHADERTYPE::LIT);
-  AA::SetPropTranslation(cyber_man, glm::vec3(25, dist_down, -dist_from_us));
-  AA::SetPropScale(cyber_man, glm::vec3(.1f));
+  setmodels(ourcam);
 
-  //AA::GetGameObject(test_zone).SetTranslation(glm::vec3(0, dist_down, 0));
-  AA::SetDirectionalLight(glm::vec3(1.f), glm::vec3(.4f), glm::vec3(.4f), glm::vec3(1.f));
-  AA::AddToDeltaUpdate([](float dt) {
-    static float current_rotation = 0.f;
-    current_rotation += dt * 2;
-    AA::SetPropRotationY(peasant_man, current_rotation);
 
-    AA::SetPropRotationX(cyber_man, current_rotation);
-
-    //AA::SetPropRotationZ(peasant_man, current_rotation);
-    }
-  );
-  AA::AddToTimedOutKeyHandling([](AA::KeyboardInput& kb) {
-    // turn directional light off
-    if (kb.leftShift && kb.r) {
-      AA::RemoveDirectionalLight();
-      std::cout << "dir light turned off\n";
-      return true;
-    }
-    // turn directional light on
-    if (kb.r) {
-      AA::SetDirectionalLight(glm::vec3(-.15f), glm::vec3(.2f), glm::vec3(.4f), glm::vec3(.3f));
-      std::cout << "dir light turned on\n";
-      return true;
-    }
-    return false;
-    }
-  );
+  AA::SetWindowClearColor(glm::vec3(0));
   return AA::Run();
 }

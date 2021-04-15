@@ -30,6 +30,12 @@
     <ClInclude Include="setmusic.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="setdirlight.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="setmodels.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">

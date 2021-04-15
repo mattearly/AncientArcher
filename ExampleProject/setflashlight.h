@@ -10,11 +10,14 @@ float     fl_outer_radius = glm::cos(glm::radians(17.05f));
 float     fl_constant = 1.f;
 float     fl_linear = 0.039f;
 float     fl_quad = 0.0044f;
-glm::vec3 fl_ambient = glm::vec3(0.03f);
-glm::vec3 fl_diffuse = glm::vec3(0.4f);
+glm::vec3 fl_ambient = glm::vec3(1.23f);
+glm::vec3 fl_diffuse = glm::vec3(3.57f);
 glm::vec3 fl_specular = glm::vec3(1.0f);
 void setupflashlight(int ourcam)
 {
+  if (isFlashlightSetup)
+    return;
+
   isFlashlightSetup = true;
   static int cam = ourcam;
 

@@ -80,8 +80,10 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="setdirlight.h" />
     <ClInclude Include="setflashlight.h" />
     <ClInclude Include="setfpsplayercontrols.h" />
+    <ClInclude Include="setmodels.h" />
     <ClInclude Include="setskybox.h" />
     <ClInclude Include="setsoundeffects.h" />
     <ClInclude Include="setmusic.h" />

@@ -2,8 +2,13 @@
 #include <AncientArcher/AncientArcher.h>
 #include <iostream>
 
+bool is_sound_effects_setup = false;
 void setupsoundeffects()
 {
+  if (is_sound_effects_setup)
+    return;
+
+  is_sound_effects_setup = true;
   const char* zap16 = "..\\ExampleProject\\res\\zap16.ogg";
   static int zap16Id = AA::AddSoundEffect(zap16);
 

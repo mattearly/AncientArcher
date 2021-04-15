@@ -3,7 +3,12 @@
 //const char* town_theme_stereo = "E:\\AssetPack\\TownTheme_stereo.wav";
 const char* talking_stereo = "..\\ExampleProject\\res\\talking_stereo.wav";
 
+bool is_music_setup = false;
 void setmusic() {
+  if (is_music_setup)
+    return;
+
+  is_music_setup = true;
   AA::AddMusic(talking_stereo);
   AA::AddToTimedOutKeyHandling([](AA::KeyboardInput& kb) -> bool {
     if (kb.p) {         // call to play music
@@ -32,11 +37,15 @@ void setmusic() {
   AA::AddToScrollHandling([](AA::ScrollInput& si) {
     if (si.yOffset > 0) {
       the_vol += .1f;
+      if (the_vol > 1.f)
+        the_vol = 1.f;
       AA::SetMusicVolume(the_vol);
       std::cout << "music vol increased to " << the_vol << "\n";
     }
     if (si.yOffset < 0) {
       the_vol -= .1f;
+      if (the_vol < .0f)
+        the_vol = .0f;
       AA::SetMusicVolume(the_vol);
       std::cout << "music vol decreased to " << the_vol << "\n";    }
   });
