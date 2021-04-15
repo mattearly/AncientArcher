@@ -132,7 +132,7 @@
     <ClInclude Include="include\AncientArcher\ShaderType.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\Base\Types.h">
+    <ClInclude Include="include\AncientArcher\Types.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="src\GUI\PlainGUI.h">

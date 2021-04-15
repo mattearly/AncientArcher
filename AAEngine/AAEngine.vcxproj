@@ -90,7 +90,7 @@
     <ClInclude Include="include\AncientArcher\ShaderType.h" />
     <ClInclude Include="include\AncientArcher\Version.h" />
     <ClInclude Include="src\GUI\PlainGUI.h" />
-    <ClInclude Include="src\Base\Types.h" />
+    <ClInclude Include="include\AncientArcher\Types.h" />
     <ClInclude Include="src\Shader\InterfaceShader.h" />
     <ClInclude Include="src\Sound\SoundEffect.h" />
     <ClInclude Include="src\Renderer\OpenGL\OGLLights.h" />
