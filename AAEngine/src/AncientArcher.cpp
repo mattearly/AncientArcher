@@ -252,9 +252,14 @@ void teardown() {
     mMusic = NULL;
   }
 
-  if (mLitShader) mLitShader->deleteShader();
-  if (mDiffShader) mDiffShader->deleteShader();
-
+  if (mLitShader) {
+    delete mLitShader;
+    mLitShader = NULL;
+  }
+  if (mDiffShader) {
+    delete mLitShader;
+    mDiffShader = NULL;
+  }
 }
 // End Interanl Only
 
