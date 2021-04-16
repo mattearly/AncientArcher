@@ -5,11 +5,12 @@
 namespace AA {
 
 struct Button {
-  Button(vec2 pos, float width, float height);
+  Button(vec2 pos, float width, float height, float alpha);
   vec2 pos;
   float width;
   float height;
   mat4 transformation;
+  float alpha;
 };
 
 struct Slider {
@@ -27,7 +28,7 @@ public:
   PlainGUI();
   ~PlainGUI();
 
-  void AddButton(vec2 pos, float width, float height);
+  void AddButton(vec2 pos, float width, float height, float alpha);
 
   //void AddSlider(Slider slider, void(*resulthandler)(float result));
 

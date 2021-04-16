@@ -113,7 +113,7 @@ void SetMouseReadToNormal() noexcept;
 
 
 // GUI
-void AddButton(vec2 pos, vec2 scale);
+void AddButton(vec2 pos, vec2 scale, float alpha);
 // End GUI
 
 

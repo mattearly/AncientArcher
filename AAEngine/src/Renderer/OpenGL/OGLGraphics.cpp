@@ -63,6 +63,12 @@ void Render(const std::vector<MeshDrawInfo>& meshes, const glm::mat4& translatio
   glActiveTexture(GL_TEXTURE0);
 }
 
+void RenderStrip(const int& vao, const int& count) {
+  glBindVertexArray(vao);
+  glDrawArrays(GL_TRIANGLE_STRIP, 0, count);
+  glBindVertexArray(0);
+}
+
 /// <summary>
 /// Sets the size of the OpenGL viewport
 /// </summary>
@@ -208,6 +214,11 @@ void OGLGraphics::DeleteTex(const uint32_t& id) {
 
 void OGLGraphics::SetMSAA(const bool enabled) {
   glEnable(GL_MULTISAMPLE);
+}
+
+void SetBlend(const bool enabled) {
+  glBlendFunc(GL_ONE, GL_ONE_MINUS_SRC_ALPHA);
+  glEnable(GL_BLEND);
 }
 
 }  // end namespace OGLGraphics

@@ -13,8 +13,8 @@ PlainGUI::~PlainGUI() {
   Shader = NULL;
 }
 
-void PlainGUI::AddButton(vec2 pos, float width_scale, float height_scale) {
-  p_Buttons.emplace_back(pos, width_scale, height_scale);
+void PlainGUI::AddButton(vec2 pos, float width_scale, float height_scale, float alpha) {
+  p_Buttons.emplace_back(pos, width_scale, height_scale, alpha);
 }
 
 //void PlainGUI::AddSlider(Slider slider, void(*resulthandler)(float result)) {
@@ -70,8 +70,9 @@ void PlainGUI::InitShader() {
     //"in vec2 textureCoords;\n"
     //"uniform sampler2D guiTexture;\n"
     "out vec4  out_Color;\n"
+    "uniform float alpha;\n"
     "void main() {\n"
-    "  vec4 tmp_color = vec4(0.6, 0.1, 0.1, 1.0);\n"
+    "  vec4 tmp_color = vec4(0.6, 0.1, 0.1, alpha);\n"
     //"  out_Color = texture(guiTexture, textureCoords);\n"
     "  out_Color = tmp_color;\n"
     "}\n"
@@ -82,20 +83,12 @@ void PlainGUI::InitShader() {
 }
 
 void PlainGUI::Draw() {
-  //glDepthFunc(GL_LEQUAL);  // change depth function so depth test passes when values are equal to depth buffer's content
-  //glEnable(GL_DEPTH_TEST);
-
   Shader->use();
-  glBindVertexArray(vao_id);
-
   for (const auto& button : p_Buttons) {
     Shader->setMat4("transformationMatrix", button.transformation);
-    glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);
+    Shader->setFloat("alpha", button.alpha);
+    OGLGraphics::RenderStrip(vao_id, 4);
   }
-  
-  glBindVertexArray(0);
-
-  //glDepthFunc(GL_LESS);  // set depth function back to default
 }
 
 void PlainGUI::UpdateUniforms(vec2 resolution, vec2 mouse_loc, float elapsed_time){
@@ -113,7 +106,7 @@ void PlainGUI::UpdateUniforms(vec2 resolution, vec2 mouse_loc, float elapsed_tim
 
 }
 
-Button::Button(vec2 pos, float width_scale, float height_scale) {
+Button::Button(vec2 pos, float width_scale, float height_scale, float alpha) {
   this->pos = pos;
   this->width = width_scale;
   this->height = height_scale;
@@ -122,6 +115,7 @@ Button::Button(vec2 pos, float width_scale, float height_scale) {
   float Y = (pos.y - 1.f);
   transformation = glm::translate(transformation, vec3(X, Y, 0.0));
   transformation = glm::scale(transformation, vec3(width_scale, height_scale, 1.f));
+  this->alpha = alpha;
 }
 
 }

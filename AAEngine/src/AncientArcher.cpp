@@ -321,11 +321,13 @@ void InitEngine() {
     glfwMakeContextCurrent(mWindow);
 
     if (local_options.renderer == RenderingFramework::OPENGL) {
+      
       if (!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress))  // tie window context to glad's opengl funcs
       {
         throw("Unable to context to OpenGL");
       }
       OGLGraphics::SetMSAA(local_options.MSAA);
+      OGLGraphics::SetBlend(true);
     }
 
     // set all our options to what we set (mainly the major and minor version will be updated)
@@ -1777,8 +1779,8 @@ void SetMouseReadToNormal() noexcept {
 // End Mouse
 
 
-void AddButton(vec2 pos, vec2 scale) {
-  mGUI->AddButton(pos, scale.x, scale.y);
+void AddButton(vec2 pos, vec2 scale, float alpha) {
+  mGUI->AddButton(pos, scale.x, scale.y, alpha);
 }
 
 // Window

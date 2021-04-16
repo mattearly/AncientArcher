@@ -11,9 +11,9 @@
 namespace AA {
 extern OGLShader* mLitShader;
 extern OGLShader* mDiffShader;
-extern OGLShader* mInterfaceShader;
 namespace OGLGraphics {
 void Render(const std::vector<MeshDrawInfo>& meshes, const glm::mat4& translationMatrix, SHADERTYPE shadertype);
+void RenderStrip(const int& vao, const int& count);
 void SetViewportSize(int x, int y, int w, int h);
 void SetViewportClearColor(glm::vec3 color) noexcept;
 void ClearScreen() noexcept;
@@ -25,5 +25,6 @@ uint32_t Upload2DTex(const unsigned char* tex_data, int width, int height);
 uint32_t UploadCubeMapTex(std::vector<unsigned char*> tex_data, int width, int height);
 void DeleteTex(const uint32_t& id);
 void SetMSAA(const bool enabled);
+void SetBlend(const bool enabled);
 };
 }  // end namespace AA
