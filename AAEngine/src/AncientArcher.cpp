@@ -216,14 +216,18 @@ void render() {
       break;
     }
 
-
     p.draw();
   }
 
   // draw skybox if one was specified
   if (mSkybox && !mCameras.empty()) { mSkybox->render(mCameras.front()); }
 
-  swapWindowBuffers();
+  // if there is a gui
+  if (mGUI) {
+    mGUI->Draw();
+  }
+
+  glfwSwapBuffers(mWindow);
 }
 void teardown() {
   // run user preferred functions first

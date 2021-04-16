@@ -112,6 +112,11 @@ void SetMouseReadToNormal() noexcept;
 // End Mouse
 
 
+// GUI
+void AddButton(vec2 pos, vec2 scale);
+// End GUI
+
+
 // Window
 void SetWindowClearColor(vec3 color = vec3(.35f, .15f, .35f));
 i32 GetWindowWidth() noexcept;
