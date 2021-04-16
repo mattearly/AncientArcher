@@ -46,7 +46,9 @@ glm::mat4 GetOrthoMatrix(i32 camId);
 i32 AddProp(const char* path, i32 camId, SHADERTYPE shadertype);
 void SetPropTranslation(i32 propId, vec3 new_pos);
 void SetPropScale(i32 propId, vec3 new_scale);
+void SetPropRotationX(i32 propId, f32 new_x_rot);
 void SetPropRotationY(i32 propId, f32 new_y_rot);
+void SetPropRotationZ(i32 propId, f32 new_z_rot);
 // End 3D Game Objects
 
 
