@@ -1790,6 +1790,10 @@ void SetMouseReadToNormal() noexcept {
 // End Mouse
 
 
+void AddButton(vec2 pos, vec2 scale) {
+  mGUI->AddButton(pos, scale.x, scale.y);
+}
+
 // Window
 void SetWindowClearColor(glm::vec3 color) {
   OGLGraphics::SetViewportClearColor(color);
