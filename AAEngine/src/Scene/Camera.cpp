@@ -2,13 +2,11 @@
 #include <glm\gtx\transform.hpp>
 #include "../Scene/WorldSettings.h"
 #include "../Scene/Camera.h"
-namespace AA
-{
+namespace AA {
 
 #define UP World->GetUpDir()
 
-Camera::Camera(int width, int height)
-{
+Camera::Camera(int width, int height) {
   resetViewportVars();
   Width = width;
   Height = height;
@@ -16,8 +14,7 @@ Camera::Camera(int width, int height)
   updateViewMatrix();
 }
 
-void Camera::updateCameraVectors()
-{
+void Camera::updateCameraVectors() {
   glm::vec3 front{};
   front.x = cos(glm::radians(Yaw)) * cos(glm::radians(Pitch));
   front.y = sin(glm::radians(Pitch));
@@ -30,8 +27,7 @@ void Camera::updateCameraVectors()
 }
 
 // same as default constructor but doesn't touch the uniqueId's
-void Camera::resetViewportVars()
-{
+void Camera::resetViewportVars() {
   TopLeftPositionOnScreen = glm::vec2(0.f);
   RatioToScreen = glm::vec2(1);
   Position = glm::vec3(0.f);
@@ -50,10 +46,8 @@ void Camera::resetViewportVars()
   Up = glm::normalize(Up);
 }
 
-void Camera::updateProjectionMatrix()
-{
-  switch (RenderProjection)
-  {
+void Camera::updateProjectionMatrix() {
+  switch (RenderProjection) {
   case RenderProjection::PERSPECTIVE:
   {
     float aspectRatio = static_cast<float>(Width) / static_cast<float>(Height);
@@ -75,8 +69,7 @@ void Camera::updateProjectionMatrix()
   }
 }
 
-void Camera::updateViewMatrix()
-{
+void Camera::updateViewMatrix() {
   View = glm::lookAt(Position, Position + Front, Up);
 }
 
