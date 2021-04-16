@@ -61,18 +61,19 @@ void PlainGUI::InitShader() {
     //"out vec2 textureCoords;\n"
     "uniform mat4 transformationMatrix;\n"
     "void main(){\n"
-    "  gl_Position = transformationMatrix * vec4(aPos, 0.0, 1.0);\n"
     //"  textureCoords = vec2((aPos.x+1.0)/2.0, 1-(aPos.y+1.0)/2.0);\n"
+    "  gl_Position = transformationMatrix * vec4(aPos, 0.0, 1.0);\n"
     "}\n"
     ;
   const char* frag =
     "#version 430 core\n"
     //"in vec2 textureCoords;\n"
-    "out vec4  out_Color;\n"
     //"uniform sampler2D guiTexture;\n"
+    "out vec4  out_Color;\n"
     "void main() {\n"
-    //"  out_Color = texture(guiTexture, textureCoords);"
-    "  out_Color = vec4(0.6, 0.1, 0.1, 1.0);\n"
+    "  vec4 tmp_color = vec4(0.6, 0.1, 0.1, 1.0);\n"
+    //"  out_Color = texture(guiTexture, textureCoords);\n"
+    "  out_Color = tmp_color;\n"
     "}\n"
     ;
   Shader = new OGLShader(vert, frag);
