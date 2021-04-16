@@ -12,7 +12,7 @@
 int main() {
   std::cout << "Running Version: " << AA::ENGINEVERSIONMAJOR << '.' << AA::ENGINEVERSIONMINOR << '.' << AA::ENGINEVERSIONPATCH << '\n';
   std::cout << "EXAMPLE PROJECT: " << "sample code for above version\n"
-            << "Hotkeys: " 
+            << "Hotkeys:\n" 
             << "    -" << "WASD: Move\n"
             << "    -" << "Mouse: Look\n"
             << "    -" << "TAB:   Toggle Mouse Control\n"
