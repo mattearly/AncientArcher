@@ -148,8 +148,8 @@ void update() {
     mSlowUpdateTimeout = 0.f;
   }
 
-  if (mGUI)
-    mGUI->UpdateUniforms(vec2(GetWindowWidth(), GetWindowHeight()), vec2(mMousePosition.xOffset, mMousePosition.yOffset), elapsedTime);
+  //if (mGUI)
+    //mGUI->UpdateUniforms(vec2(GetWindowWidth(), GetWindowHeight()), vec2(mMousePosition.xOffset, mMousePosition.yOffset), elapsedTime);
 
   if (mMusic) {
     mMusicRebufferCD += elapsedTime;
@@ -192,10 +192,6 @@ void render() {
         // set the projection matrix on the skybox from the first cam proj matrix
         mSkybox->setProjectionMatrix(mCameras.front());
       }
-    }
-
-    if (mGUI) {
-      mGUI->Draw();
     }
 
     isWindowSizeDirty = false;
