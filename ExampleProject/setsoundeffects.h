@@ -16,11 +16,11 @@ void setupsoundeffects()
   static int enchantId = AA::AddSoundEffect(enchant);
 
   AA::AddToKeyHandling([](AA::KeyboardInput& kb) {
-    if (kb.mouseButton1) {
+    if (kb.n1) {
       AA::PlaySoundEffect(zap16Id, false);
       return;
     }
-    if (kb.mouseButton2) {
+    if (kb.n2) {
       AA::PlaySoundEffect(enchantId, false);
       return;
     }

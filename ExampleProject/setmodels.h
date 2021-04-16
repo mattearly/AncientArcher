@@ -16,8 +16,10 @@ void setmodels(int cam)
   AA::SetPropScale(peasant_man, glm::vec3(.1f));
   AA::AddToDeltaUpdate([](float dt) {
     static float current_rotation = 0.f;
-    current_rotation += dt * 2;
+    current_rotation += dt * 120;
+    //AA::SetPropRotationX(peasant_man, current_rotation);
     AA::SetPropRotationY(peasant_man, current_rotation);
+    //AA::SetPropRotationZ(peasant_man, current_rotation);
   }
   );
 
