@@ -1159,6 +1159,16 @@ void SetPropScale(i32 propId, glm::vec3 new_scale) {
   }
   throw("prop id does not exist");
 }
+void SetPropRotationX(i32 propId, f32 new_x_rot) {
+  for (auto& p : mProps) {
+    if (p.GetUID() == propId) {
+      p.eulerRotationX = new_x_rot;
+      p.mModelMatrixChanged = true;
+      return;
+    }
+  }
+  throw("prop id does not exist");
+}
 void SetPropRotationY(i32 propId, f32 new_y_rot) {
   for (auto& p : mProps) {
     if (p.GetUID() == propId) {
@@ -1168,6 +1178,16 @@ void SetPropRotationY(i32 propId, f32 new_y_rot) {
     }
   }
   throw("prop id does not exist");
+}
+void SetPropRotationZ(i32 propId, f32 new_z_rot) { 
+for (auto& p : mProps) {
+  if (p.GetUID() == propId) {
+    p.eulerRotationZ = new_z_rot;
+    p.mModelMatrixChanged = true;
+    return;
+  }
+}
+throw("prop id does not exist");
 }
 // End 3d Game Objects
 
