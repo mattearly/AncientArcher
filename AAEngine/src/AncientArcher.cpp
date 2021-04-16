@@ -158,20 +158,11 @@ void update() {
       mMusicRebufferCD = 0;
     }
   }
-
-
-
   // run through every frame update
   for (auto& oU : onUpdate) { oU.second(); }
 }
-void clearBackBuffer() noexcept {
-  OGLGraphics::ClearScreen();
-}
-void swapWindowBuffers() noexcept {
-  glfwSwapBuffers(mWindow);
-}
 void render() {
-  clearBackBuffer();
+  OGLGraphics::ClearScreen();
   if (isWindowSizeDirty) {
     if (mLitShader) {
       std::cout << "setting projection for lit shader on primary cam\n";
