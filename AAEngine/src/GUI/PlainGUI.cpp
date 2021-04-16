@@ -110,11 +110,15 @@ Button::Button(vec2 pos, float width_scale, float height_scale, float alpha) {
   this->pos = pos;
   this->width = width_scale;
   this->height = height_scale;
+
   transformation = glm::mat4(1);
-  float X = (pos.x - 1.f);
-  float Y = (pos.y - 1.f);
-  transformation = glm::translate(transformation, vec3(X, Y, 0.0));
-  transformation = glm::scale(transformation, vec3(width_scale, height_scale, 1.f));
+
+  std::cout << "button pos X: " << pos.x << " Y: " << pos.y << '\n';
+  
+  transformation = glm::translate(transformation, vec3(pos.x, pos.y, 0.0));
+  
+  transformation = glm::scale(transformation, vec3(height, width, 1.f));
+  
   this->alpha = alpha;
 }
 
