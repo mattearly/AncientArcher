@@ -101,9 +101,6 @@ void begin() {
   //__setProjectionMatToAllShadersFromFirstCam_hack();
 }
 void update() {
-
-
-
   // init delta clock on first tap into update
   static std::chrono::system_clock::time_point currTime;
   static std::chrono::system_clock::time_point lastTime = std::chrono::system_clock::now();
@@ -833,15 +830,7 @@ void InitEngine() {
       mNewKeyReads = true;
 
     });
-    //::glfwSetCursorPosCallback(mWindow, [](GLFWwindow* w, f64 xpos, f64 ypos){
-    //  mMousePosition.xOffset = xpos;
-    //  mMousePosition.yOffset = ypos;
-    //  // handle mouse position, snap to center if FPP with disabled mouse
-    //  for (auto& oMH : onMouseHandling) { oMH.second(mMousePosition); }
-    //  if ((mMouseReporting == MouseReporting::PERSPECTIVE) && (glfwGetInputMode(mWindow, GLFW_CURSOR) == GLFW_CURSOR_DISABLED)) {
-    //    mMousePosition.xOffset = mMousePosition.yOffset = 0;
-    //  }
-    //});
+
     SetMouseToNormal();
     SetMouseReadToNormal();
     SetWindowClearColor();
@@ -1771,6 +1760,9 @@ void SetMouseReadToNormal() noexcept {
   ::glfwSetCursorPosCallback(mWindow, [](GLFWwindow* window, f64 xpos, f64 ypos) {
     mMousePosition.xOffset = xpos;
     mMousePosition.yOffset = ypos;
+    if (mGUI) 
+      mGUI->UpdateUniforms(vec2(0), vec2(mMousePosition.xOffset, mMousePosition.yOffset), 0.f);
+    std::cout << "mouse pos: " << mMousePosition.xOffset  << " " << mMousePosition.yOffset << '\n';
     // handle mouse position
     for (auto& oMH : onMouseHandling) { oMH.second(mMousePosition); }
   });

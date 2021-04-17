@@ -10,6 +10,6 @@ void setgui()
 {
   if (is_gui_set)
     return;
-  AA::AddButton(AA::vec2(.2f), AA::vec2(0.1f, 0.1f), .5);
+  AA::AddButton(AA::vec2(-.8,-.8), AA::vec2(.08, .11), .21f);
   is_gui_set = true;
 }

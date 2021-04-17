@@ -11,6 +11,7 @@ struct Button {
   float height;
   mat4 transformation;
   float alpha;
+  bool overlapped = false;
 };
 
 struct Slider {
@@ -40,9 +41,10 @@ public:
 
   void Draw();
 
-
-
 private:
+
+  void UpdateMouseOverlap(vec2 mouse_loc);
+
   std::vector<Slider> p_Sliders;
 
   std::vector<Button> p_Buttons;
