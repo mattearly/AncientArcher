@@ -101,11 +101,11 @@ void PlainGUI::Draw() {
 }
 
 void PlainGUI::UpdateMouseOverlap(vec2 mouse_loc) {
-  float halfwidth = GetWindowWidth()/2.0;
-  float halfheight= GetWindowHeight()/2.0;
+  float halfwidth = GetWindowWidth() / 2.0;
+  float halfheight = GetWindowHeight() / 2.0;
   float mouse_loc_x_neg1to1 = ((mouse_loc.x - halfwidth) / halfwidth);
   float mouse_loc_y_neg1to1 = -((mouse_loc.y - halfheight) / halfheight);
-  std::cout << "converted pos: " << mouse_loc_x_neg1to1 << " " << mouse_loc_y_neg1to1 << '\n';
+  //std::cout << "converted pos: " << mouse_loc_x_neg1to1 << " " << mouse_loc_y_neg1to1 << '\n';
   for (auto& button : p_Buttons) {
     if (
       mouse_loc_x_neg1to1 > button.pos.x - (button.width * halfwidth) / halfwidth
@@ -117,28 +117,23 @@ void PlainGUI::UpdateMouseOverlap(vec2 mouse_loc) {
       mouse_loc_y_neg1to1 < button.pos.y + (button.height * halfheight) / halfheight
       )
       button.overlapped = true;
-    else
-      button.overlapped = false;
-  }
-
-  /*  for (auto& button : p_Buttons) {
-    float leftXPos = button.pos.x * GetWindowWidth();
-
-    if (mouse_loc.x > leftXPos) {
-      button.overlapped = true;
-    } else {
+    else {
       button.overlapped = false;
     }
-  }*/
+  }
+}
+
+void PlainGUI::UpdateMouseLoc(vec2 mouse_loc) {
+  UpdateMouseOverlap(mouse_loc);
 }
 
 void PlainGUI::UpdateUniforms(vec2 resolution, vec2 mouse_loc, float elapsed_time) {
   if (!Shader)
     return;
 
-  total_time += elapsed_time;
+  //total_time += elapsed_time;
 
-  Shader->use();
+  //Shader->use();
 
   UpdateMouseOverlap(mouse_loc);
 
@@ -157,7 +152,7 @@ Button::Button(vec2 pos, float width_scale, float height_scale, float alpha) {
 
   transformation = glm::mat4(1);
 
-  std::cout << "button pos X: " << pos.x << " Y: " << pos.y << '\n';
+  //std::cout << "button pos X: " << pos.x << " Y: " << pos.y << '\n';
 
   transformation = glm::translate(transformation, vec3(pos.x, pos.y, 0.0));
 

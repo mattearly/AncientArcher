@@ -318,7 +318,7 @@ void InitEngine() {
     glfwMakeContextCurrent(mWindow);
 
     if (local_options.renderer == RenderingFramework::OPENGL) {
-      
+
       if (!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress))  // tie window context to glad's opengl funcs
       {
         throw("Unable to context to OpenGL");
@@ -1157,15 +1157,15 @@ void SetPropRotationY(i32 propId, f32 new_y_rot) {
   }
   throw("prop id does not exist");
 }
-void SetPropRotationZ(i32 propId, f32 new_z_rot) { 
-for (auto& p : mProps) {
-  if (p.GetUID() == propId) {
-    p.eulerRotationZ = new_z_rot;
-    p.mModelMatrixChanged = true;
-    return;
+void SetPropRotationZ(i32 propId, f32 new_z_rot) {
+  for (auto& p : mProps) {
+    if (p.GetUID() == propId) {
+      p.eulerRotationZ = new_z_rot;
+      p.mModelMatrixChanged = true;
+      return;
+    }
   }
-}
-throw("prop id does not exist");
+  throw("prop id does not exist");
 }
 // End 3d Game Objects
 
@@ -1760,9 +1760,11 @@ void SetMouseReadToNormal() noexcept {
   ::glfwSetCursorPosCallback(mWindow, [](GLFWwindow* window, f64 xpos, f64 ypos) {
     mMousePosition.xOffset = xpos;
     mMousePosition.yOffset = ypos;
-    if (mGUI) 
-      mGUI->UpdateUniforms(vec2(0), vec2(mMousePosition.xOffset, mMousePosition.yOffset), 0.f);
-    std::cout << "mouse pos: " << mMousePosition.xOffset  << " " << mMousePosition.yOffset << '\n';
+    if (mGUI) {
+      mGUI->UpdateMouseLoc(vec2(mMousePosition.xOffset, mMousePosition.yOffset));
+      //mGUI->UpdateUniforms(vec2(0), vec2(mMousePosition.xOffset, mMousePosition.yOffset), 0.f);
+    }
+    //std::cout << "mouse pos: " << mMousePosition.xOffset << " " << mMousePosition.yOffset << '\n';
     // handle mouse position
     for (auto& oMH : onMouseHandling) { oMH.second(mMousePosition); }
   });

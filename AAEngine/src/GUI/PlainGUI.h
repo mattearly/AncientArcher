@@ -34,8 +34,8 @@ public:
   //void AddSlider(Slider slider, void(*resulthandler)(float result));
 
   void InitShader();
+  void UpdateMouseLoc(vec2 mouse_loc);
 
-  void UpdateUniforms(vec2 resolution, vec2 mouse_loc, float elapsed_time);
 
   OGLShader* Shader;
 
@@ -44,6 +44,8 @@ public:
 private:
 
   void UpdateMouseOverlap(vec2 mouse_loc);
+  void UpdateUniforms(vec2 resolution, vec2 mouse_loc, float elapsed_time);
+
 
   std::vector<Slider> p_Sliders;
 
