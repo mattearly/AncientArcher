@@ -44,7 +44,8 @@ void Render(const std::vector<MeshDrawInfo>& meshes, const glm::mat4& translatio
       case SHADERTYPE::DIFF:
         if (texType == "Albedo") {
           mDiffShader->setInt(("material." + texType).c_str(), i);
-        }        break;
+        }
+        break;
       case SHADERTYPE::LIT:
         mLitShader->setInt(("material." + texType).c_str(), i);
         break;
