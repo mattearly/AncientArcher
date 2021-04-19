@@ -8,6 +8,7 @@ class OGLShader
 public:
 
   OGLShader(const char* vert_src, const char* frag_src);
+  ~OGLShader();
 
   void use() const noexcept;
   void stop() const noexcept;
@@ -35,7 +36,7 @@ public:
 
   int getAndCheckShaderUniform(const std::string& name) const;
 
-  void deleteShader();
+  //void deleteShader();
 
 private:
   OGLShader() = delete;

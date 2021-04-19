@@ -1,51 +1,43 @@
 #include <AncientArcher/AncientArcher.h>
 #include <AncientArcher/Version.h>
 #include <iostream>
-#include "fps.h"
 #include "setskybox.h"
-#include "flashlight.h"
-#include "soundeffects.h"
-int main()
-{
+#include "setfpsplayercontrols.h"
+#include "setflashlight.h"
+#include "setsoundeffects.h"
+#include "setmusic.h"
+#include "setdirlight.h"
+#include "setmodels.h"
+
+int main() {
   std::cout << "Running Version: " << AA::ENGINEVERSIONMAJOR << '.' << AA::ENGINEVERSIONMINOR << '.' << AA::ENGINEVERSIONPATCH << '\n';
+  std::cout << "EXAMPLE PROJECT: " << "sample code for above version\n"
+            << "Hotkeys:\n" 
+            << "    -" << "WASD: Move\n"
+            << "    -" << "Mouse: Look\n"
+            << "    -" << "TAB:   Toggle Mouse Control\n"
+            << "    -" << "F:  Toggle Flashlight\n"
+            << "    -" << "1: Sound Effect Test (lazer sound)\n"
+            << "    -" << "2: Sound Effect Test (enchant sound)\n"
+            << "    -" << "F1: Toggle Sky Light\n"
+            << "    -" << "P: Play Long Sound Test (Music)\n"
+            << "    -" << "O: Stop Long Sound Test (Music)\n"
+            << "    -" << "I: Pause Long Sound Test (Music)\n"
+            << "    -" << "K: Resume Long Sound Test (Music)\n"
+            << "    -" << "U: Unload Long Sound Test (Music)\n"
+            << "    -" << "R: Reload Long Sound Test (Music)\n"
+            << "    -" << "ScrollWheel: Vol up/down Long Sound Test (Music)\n"
+            ;
   AA::InitEngine();
-  AA::SetClearColor(glm::vec3(0));
   static int ourcam = AA::AddCamera(AA::GetWindowWidth(), AA::GetWindowHeight());
-  setfpscontrols(ourcam);
+  setfpsplayercontrols(ourcam);
   setskybox();
+  setdirlight();
   setupflashlight(ourcam);
   setupsoundeffects();
-  static int peasant_man = AA::AddProp("..\\ExampleProject\\res\\peasant_man.dae", ourcam, true);
-  //static int test_zone = AA::AddProp("E:\\storage\\3d Models\\grass_plain.dae", ourcam, true);
-  const float dist_from_us = 90.f;
-  const float dist_down = -1.2f;
+  setmusic();
+  setmodels(ourcam);
 
-  AA::SetPropTranslation(peasant_man, glm::vec3(0, dist_down, -dist_from_us));
-  AA::SetPropScale(peasant_man, glm::vec3(.1f));
-
-  //AA::GetGameObject(test_zone).SetTranslation(glm::vec3(0, dist_down, 0));
-  AA::SetDirectionalLight(glm::vec3(1.f), glm::vec3(.4f), glm::vec3(.4f), glm::vec3(1.f));
-  AA::AddToDeltaUpdate([](float dt) {
-    static float current_rotation = 0.f;
-    current_rotation += dt * 5;
-    AA::SetPropRotationY(peasant_man, current_rotation);
-    }
-  );
-  AA::AddToTimedOutKeyHandling([](AA::KeyboardInput& kb) {
-    // turn directional light off
-    if (kb.leftShift && kb.r) {
-      AA::RemoveDirectionalLight();
-      std::cout << "dir light turned off\n";
-      return true;
-    }
-    // turn directional light on
-    if (kb.r) {
-      AA::SetDirectionalLight(glm::vec3(-.15f), glm::vec3(.2f), glm::vec3(.4f), glm::vec3(.3f));
-      std::cout << "dir light turned on\n";
-      return true;
-    }
-    return false;
-    }
-  );
+  AA::SetWindowClearColor(glm::vec3(0));
   return AA::Run();
 }
