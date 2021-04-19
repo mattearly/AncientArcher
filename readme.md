@@ -13,7 +13,7 @@ Link as you would any other C++ library, and then you can begin using it in your
 int main()
 {
   AA::InitEngine();
-  // optional: your code here -> implement camera, lights, models, sounds, input handling, and their logic at will
+  // your code here -> implement camera, lights, models, sounds, input handling, and their logic at will
   AA::Run();
 }
 ```
@@ -37,3 +37,4 @@ Use Windows MSVC16, x64. Visual Studio 2019 Community Edition.
 - AAEngine : the core static library
 - BaseRun  : a base application with AAEngine linked
 - ExampleProject : a base fps project with AAEngine linked
+![AA v0.0.2 example project screenshot](https://i.imgur.com/OL5mloN.png)
