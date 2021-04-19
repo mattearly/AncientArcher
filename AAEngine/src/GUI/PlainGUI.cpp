@@ -18,6 +18,14 @@ void PlainGUI::AddButton(vec2 pos, float width_scale, float height_scale, float 
   p_Buttons.emplace_back(pos, width_scale, height_scale, alpha);
 }
 
+void PlainGUI::ShowInterface() {
+  p_HideAll = false;
+}
+
+void PlainGUI::HideInterface() {
+  p_HideAll = true;
+}
+
 //void PlainGUI::AddSlider(Slider slider, void(*resulthandler)(float result)) {
 //  if (slider.bot_left_loc.x < -1.f || slider.bot_left_loc.y < -1.f)
 //    throw("beyond -1");
@@ -91,6 +99,8 @@ void PlainGUI::InitShader() {
 }
 
 void PlainGUI::Draw() {
+  if (p_HideAll)
+    return;
   Shader->use();
   for (const auto& button : p_Buttons) {
     Shader->setMat4("transformationMatrix", button.transformation);

@@ -1777,6 +1777,16 @@ void AddButton(vec2 pos, vec2 scale, float alpha) {
   mGUI->AddButton(pos, scale.x, scale.y, alpha);
 }
 
+void SetGUIVisibility(const bool value) {
+  if (!mGUI)
+    return;
+
+  if (value)
+    mGUI->ShowInterface();
+  else
+    mGUI->HideInterface();
+}
+
 // Window
 void SetWindowClearColor(glm::vec3 color) {
   OGLGraphics::SetViewportClearColor(color);
