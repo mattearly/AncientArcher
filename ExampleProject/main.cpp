@@ -8,7 +8,7 @@
 #include "setmusic.h"
 #include "setdirlight.h"
 #include "setmodels.h"
-#include "setgui.h"
+
 int main() {
   std::cout << "Running Version: " << AA::ENGINEVERSIONMAJOR << '.' << AA::ENGINEVERSIONMINOR << '.' << AA::ENGINEVERSIONPATCH << '\n';
   std::cout << "EXAMPLE PROJECT: " << "sample code for above version\n"
@@ -37,7 +37,7 @@ int main() {
   setupsoundeffects();
   setmusic();
   setmodels(ourcam);
-  setgui();
+
   AA::SetWindowClearColor(glm::vec3(0));
   return AA::Run();
 }
