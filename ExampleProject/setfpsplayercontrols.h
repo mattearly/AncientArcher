@@ -70,6 +70,8 @@ void setfpsplayercontrols(int cam) {
   AA::AddToKeyHandling(wasd);
 
   const auto camMove = [](float dt) {
+    if (is_inventory_open)
+      return;
     float frameCalculatedVelocity = 0.f;
     frameCalculatedVelocity = dt * currFlySpeed;
     if (move.forward) {
