@@ -256,7 +256,7 @@ void InitEngine() {
     SoundDevice::Init();
     mNonSpammableKeysTimeout = 0.f;
     mSlowUpdateTimeout = 0.f;
-    mNoSpamWaitLength = .5667f;
+    mNoSpamWaitLength = .1667f;
     mSlowUpdateWaitLength = .3337f;
     mDiffShader = NULL;
     mLitShader = NULL;
