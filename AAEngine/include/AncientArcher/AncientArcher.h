@@ -128,6 +128,7 @@ void SetWindowTitle(const char* name) noexcept;
 
 
 // Loop Controls
+void SetTimedOutKeyHandlingLength(const f32& newtime);
 void SetSlowUpdateTimeoutLength(const f32& newtime);
 u32 AddToOnBegin(void(*function)());
 u32 AddToDeltaUpdate(void(*function)(f32));

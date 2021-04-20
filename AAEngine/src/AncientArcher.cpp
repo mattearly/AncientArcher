@@ -1851,6 +1851,10 @@ void SetReshapeCallback() noexcept {
 // End Interface
 
 
+void SetTimedOutKeyHandlingLength(const f32& newtime) {
+  mNoSpamWaitLength = newtime;
+}
+
 // Loop Controls
 void SetSlowUpdateTimeoutLength(const f32& newtime) {
   // !! warning, no checking, set at your own risk
