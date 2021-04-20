@@ -1053,6 +1053,29 @@ glm::vec3 GetCamPosition(i32 camId) {
   }
   throw("cam id doesn't exist or is invalid");
 }
+f32 GetCamPitch(i32 camId) {
+  for (auto& cam : mCameras) {
+    if (cam.GetUID() == camId) {
+      return cam.Pitch;
+    }
+  }
+  throw("cam id doesn't exist or is invalid");
+  }
+f32 GetCamYaw(i32 camId) {
+  for (auto& cam : mCameras) {
+    if (cam.GetUID() == camId) {
+      return cam.Yaw;
+    }
+  }
+  throw("cam id doesn't exist or is invalid");
+  }
+vec2 GetPitchAndYaw(i32 camId) {
+  for (auto& cam : mCameras) {
+    if (cam.GetUID() == camId) {
+      return vec2(cam.Pitch, cam.Yaw);
+    }
+  }
+  throw("cam id doesn't exist or is invalid");}
 glm::mat4 GetProjectionMatrix(i32 camId) {
   for (auto& cam : mCameras) {
     if (cam.GetUID() == camId) {

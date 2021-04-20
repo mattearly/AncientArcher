@@ -37,6 +37,7 @@ vec3 GetCamRight(i32 camId);
 vec3 GetCamPosition(i32 camId);
 f32 GetCamPitch(i32 camId);
 f32 GetCamYaw(i32 camId);
+vec2 GetPitchAndYaw(i32 camId);
 glm::mat4 GetProjectionMatrix(i32 camId);
 glm::mat4 GetOrthoMatrix(i32 camId);
 // End Camera
