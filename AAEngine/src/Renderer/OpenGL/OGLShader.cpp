@@ -79,7 +79,7 @@ int OGLShader::getAndCheckShaderUniform(const std::string& name) const {
   const int shader_var_id = glGetUniformLocation(ID, name.c_str());
 
   if (shader_var_id < 0) {
-    throw("shader id is invalid");
+    throw("shader_var_id is invalid (bad name?)");
   }
 
   return shader_var_id;
