@@ -5,13 +5,15 @@
 namespace AA {
 
 struct Button {
-  Button(vec2 pos, float width, float height, float alpha);
+  Button(vec2 pos, f32 width_scale, f32 height_scale, vec3 color, f32 alpha);
   vec2 pos;
-  float width;
-  float height;
+  f32 width;
+  f32 height;
   mat4 transformation;
-  float alpha;
-  bool overlapped = false;
+  vec3 color;
+  f32 alpha;
+  u32 texture_id;
+  tf overlapped = false;
 };
 
 //struct Slider {
@@ -29,7 +31,7 @@ public:
   PlainGUI();
   ~PlainGUI();
 
-  void AddButton(vec2 pos, float width, float height, float alpha);
+  void AddButton(vec2 pos, f32 width_scale, f32 height_scale, vec3 color, f32 alpha);
 
   //void AddSlider(Slider slider, void(*resulthandler)(float result));
 
@@ -49,15 +51,15 @@ private:
 
   void UpdateMouseOverlap(vec2 mouse_loc);
   
-  void UpdateUniforms(vec2 resolution, vec2 mouse_loc, float elapsed_time);
+  void UpdateUniforms(vec2 resolution, vec2 mouse_loc, f32 elapsed_time);
 
   //std::vector<Slider> p_Sliders;
 
   std::vector<Button> p_Buttons;
 
-  int vao_id;
+  i32 vao_id;
 
-  int ind_size;
+  i32 ind_size;
   
   f32 total_time = 0;
 

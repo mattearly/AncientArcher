@@ -1009,7 +1009,7 @@ void ShiftCamPosition(i32 camId, glm::vec3 offset) {
 void ShiftCamPitchAndYaw(i32 camId, f64 pitch_offset_degrees, f64 yaw_offset_degrees) {
   for (auto& cam : mCameras) {
     if (cam.GetUID() == camId) {
-      f32 new_pitch_degrees = cam.Pitch + pitch_offset_degrees;
+      f64 new_pitch_degrees = cam.Pitch + pitch_offset_degrees;
       if (new_pitch_degrees > 89.9f)
         new_pitch_degrees = 89.9f;
       else if (new_pitch_degrees < -89.9f)
@@ -1796,8 +1796,8 @@ void SetMouseReadToNormal() noexcept {
 // End Mouse
 
 
-void AddButton(vec2 pos, vec2 scale, float alpha) {
-  mGUI->AddButton(pos, scale.x, scale.y, alpha);
+void AddButton(vec2 pos, vec2 scale, vec3 color, float alpha) {
+  mGUI->AddButton(pos, scale.x, scale.y, color, alpha);
 }
 
 void SetGUIVisibility(const bool value) {

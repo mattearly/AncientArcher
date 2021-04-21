@@ -14,8 +14,9 @@ PlainGUI::~PlainGUI() {
   Shader = NULL;
 }
 
-void PlainGUI::AddButton(vec2 pos, float width_scale, float height_scale, float alpha) {
-  p_Buttons.emplace_back(pos, width_scale, height_scale, alpha);
+void PlainGUI::AddButton(vec2 pos, f32 width_scale, f32 height_scale, vec3 color, f32 alpha) {
+  p_Buttons.emplace_back(pos, width_scale, height_scale, color, alpha);
+}
 }
 
 void PlainGUI::ShowInterface() {
@@ -26,7 +27,7 @@ void PlainGUI::HideInterface() {
   p_HideAll = true;
 }
 
-//void PlainGUI::AddSlider(Slider slider, void(*resulthandler)(float result)) {
+//void PlainGUI::AddSlider(Slider slider, void(*resulthandler)(f32 result)) {
 //  if (slider.bot_left_loc.x < -1.f || slider.bot_left_loc.y < -1.f)
 //    throw("beyond -1");
 //  if (slider.bot_left_loc.x > 1.f || slider.bot_left_loc.y > 1.f)
@@ -82,6 +83,7 @@ void PlainGUI::InitShader() {
     "out vec4  out_Color;\n"
     "uniform int mouseOverlapping;\n"
     "uniform float alpha;\n"
+    "uniform vec3 u_color;\n"
     //"uinform vec2 u_resolution;\n"
     "void main() {\n"
     //"  out_Color = texture(guiTexture, textureCoords);\n"
@@ -89,7 +91,7 @@ void PlainGUI::InitShader() {
     "  if (mouseOverlapping == 1) {\n"
     "    tmp_alpha = 1.0;\n"
     "  }\n"
-    "  vec4 tmp_color = vec4(0.6, 0.1, 0.1, tmp_alpha);\n"
+    "  vec4 tmp_color = vec4(u_color, tmp_alpha);\n"
     "  out_Color = tmp_color;\n"
     "}\n"
     ;
@@ -104,6 +106,7 @@ void PlainGUI::Draw() {
   Shader->use();
   for (const auto& button : p_Buttons) {
     Shader->setMat4("transformationMatrix", button.transformation);
+    Shader->setVec3("u_color", button.color);
     Shader->setFloat("alpha", button.alpha);
     Shader->setInt("mouseOverlapping", (button.overlapped) ? 1 : 0);
     OGLGraphics::RenderStrip(vao_id, 4);
@@ -111,10 +114,10 @@ void PlainGUI::Draw() {
 }
 
 void PlainGUI::UpdateMouseOverlap(vec2 mouse_loc) {
-  float halfwidth = GetWindowWidth() / 2.0;
-  float halfheight = GetWindowHeight() / 2.0;
-  float mouse_loc_x_neg1to1 = ((mouse_loc.x - halfwidth) / halfwidth);
-  float mouse_loc_y_neg1to1 = -((mouse_loc.y - halfheight) / halfheight);
+  f64 halfwidth = GetWindowWidth() / 2.0;
+  f64 halfheight = GetWindowHeight() / 2.0;
+  f64 mouse_loc_x_neg1to1 = ((mouse_loc.x - halfwidth) / halfwidth);
+  f64 mouse_loc_y_neg1to1 = -((mouse_loc.y - halfheight) / halfheight);
   //std::cout << "converted pos: " << mouse_loc_x_neg1to1 << " " << mouse_loc_y_neg1to1 << '\n';
   for (auto& button : p_Buttons) {
     if (
@@ -137,7 +140,7 @@ void PlainGUI::UpdateMouseLoc(vec2 mouse_loc) {
   UpdateMouseOverlap(mouse_loc);
 }
 
-void PlainGUI::UpdateUniforms(vec2 resolution, vec2 mouse_loc, float elapsed_time) {
+void PlainGUI::UpdateUniforms(vec2 resolution, vec2 mouse_loc, f32 elapsed_time) {
   if (!Shader)
     return;
 
@@ -155,7 +158,16 @@ void PlainGUI::UpdateUniforms(vec2 resolution, vec2 mouse_loc, float elapsed_tim
 
 }
 
-Button::Button(vec2 pos, float width_scale, float height_scale, float alpha) {
+Button::Button(vec2 pos, f32 width_scale, f32 height_scale, vec3 color, f32 alpha) {
+  this->pos = pos;
+  this->width = width_scale;
+  this->height = height_scale;
+  transformation = glm::mat4(1);
+  transformation = glm::translate(transformation, vec3(pos.x, pos.y, 0.0));
+  transformation = glm::scale(transformation, vec3(height, width, 1.f));
+  this->color = color;
+  this->alpha = alpha;
+}
   this->pos = pos;
   this->width = width_scale;
   this->height = height_scale;

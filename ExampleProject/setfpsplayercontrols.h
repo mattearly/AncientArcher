@@ -131,7 +131,7 @@ void setfpsplayercontrols(int cam) {
   // INTERFACE STUFF
   for (float i = .4f; i < .9f; i += .1f)
     for (float j = -.8f; j < -.1f; j += .1f)
-      AA::AddButton(AA::vec2(i, j), AA::vec2(.045, .045), .69f);
+      AA::AddButton(AA::vec2(i, j), AA::vec2(.045, .045), AA::vec3(.5f), .85f);
 
   AA::SetGUIVisibility(is_inventory_open);
 
