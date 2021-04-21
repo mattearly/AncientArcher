@@ -115,6 +115,7 @@ void SetMouseReadToNormal() noexcept;
 
 // GUI
 void AddButton(vec2 pos, vec2 scale, vec3 color, float alpha);
+void AddButton(vec2 pos, vec2 scale, float alpha, const char* texture_path = "");
 void SetGUIVisibility(const bool value);
 // End GUI
 

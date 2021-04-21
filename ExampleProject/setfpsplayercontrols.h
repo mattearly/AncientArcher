@@ -131,7 +131,11 @@ void setfpsplayercontrols(int cam) {
   // INTERFACE STUFF
   for (float i = .4f; i < .9f; i += .1f)
     for (float j = -.8f; j < -.1f; j += .1f)
-      AA::AddButton(AA::vec2(i, j), AA::vec2(.045, .045), AA::vec3(.5f), .85f);
+      //AA::AddButton(AA::vec2(i, j), AA::vec2(.045, .045), AA::vec3(.5f), .85f);
+      AA::AddButton(AA::vec2(i, j), AA::vec2(.045, .045), .85f, "E:\\AssetPack\\tile.bmp");
+
+  //AA::AddButton(AA::vec2(.0, .0), AA::vec2(1, 1), .85f, "E:\\AssetPack\\tile.bmp");
+
 
   AA::SetGUIVisibility(is_inventory_open);
 

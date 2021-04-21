@@ -1799,11 +1799,13 @@ void SetMouseReadToNormal() noexcept {
 void AddButton(vec2 pos, vec2 scale, vec3 color, float alpha) {
   mGUI->AddButton(pos, scale.x, scale.y, color, alpha);
 }
+void AddButton(vec2 pos, vec2 scale, float alpha, const char* texture_path) {
+  mGUI->AddButton(pos, scale.x, scale.y, alpha, texture_path);
 
+}
 void SetGUIVisibility(const bool value) {
   if (!mGUI)
     return;
-
   if (value)
     mGUI->ShowInterface();
   else

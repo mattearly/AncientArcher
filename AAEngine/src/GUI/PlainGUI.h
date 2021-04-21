@@ -6,13 +6,14 @@ namespace AA {
 
 struct Button {
   Button(vec2 pos, f32 width_scale, f32 height_scale, vec3 color, f32 alpha);
+  Button(vec2 pos, f32 width_scale, f32 height_scale, f32 alpha, const char* texture_path);
   vec2 pos;
   f32 width;
   f32 height;
   mat4 transformation;
   vec3 color;
   f32 alpha;
-  u32 texture_id;
+  i32 texture_id = 0;
   tf overlapped = false;
 };
 
@@ -32,8 +33,9 @@ public:
   ~PlainGUI();
 
   void AddButton(vec2 pos, f32 width_scale, f32 height_scale, vec3 color, f32 alpha);
+  void AddButton(vec2 pos, f32 width_scale, f32 height_scale, f32 alpha, const char* texture_path);
 
-  //void AddSlider(Slider slider, void(*resulthandler)(float result));
+  //void AddSlider(Slider slider, void(*resulthandler)(f32 result));
 
   void ShowInterface();
 

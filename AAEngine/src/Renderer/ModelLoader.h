@@ -30,6 +30,62 @@ inline int loadMaterialTextures(const aiScene* scn, const aiMaterial* mat, aiTex
 {
   for (uint32_t i = 0; i < mat->GetTextureCount(type); ++i)
   {
+inline u32 LoadTexture(const string& texture_path) {
+  for (auto& a_tex : mLoadedTextures) {
+    if (texture_path == a_tex.path.data()) {
+      // texture already loaded, just give the mesh the details
+      a_tex.ref_count++;
+      return a_tex.accessId;  // the buck stops here
+    }
+  }
+
+  TextureInfo a_new_texture_info;
+  unsigned char* texture_data = nullptr;
+  int width = 0, height = 0, nrComponents = 0;
+  stbi_set_flip_vertically_on_load(1);
+  texture_data = stbi_load(texture_path.c_str(), &width, &height, &nrComponents, STBI_rgb);
+  if (texture_data) {
+    switch (Settings::Get()->GetOptions().renderer) {
+    case RenderingFramework::OPENGL:
+      a_new_texture_info.accessId = OGLGraphics::Upload2DTex(texture_data, width, height);
+      if (a_new_texture_info.accessId != 0) {
+        // add the new one to our list of loaded textures
+        a_new_texture_info.path = texture_path;
+        a_new_texture_info.type = "Custom";  // todo: make this sync better
+        a_new_texture_info.ref_count = 1;
+        mLoadedTextures.push_front(a_new_texture_info);
+        std::cout << "loaded a new texture @ " << texture_path << "!\n";
+      }
+      break;
+    default:
+      throw("no renderer");
+    }
+  }
+  stbi_image_free(texture_data);
+  return a_new_texture_info.accessId;
+}
+inline void UnloadGameObject(const std::vector<MeshDrawInfo>& toUnload) {
+  for (const auto& meshIt : toUnload) {
+    switch (Settings::Get()->GetOptions().renderer) {
+    case RenderingFramework::OPENGL:
+      OGLGraphics::DeleteMesh(meshIt.vao);
+      for (const auto& texIt : meshIt.textureDrawIds) {
+        for (auto loaded_tex = mLoadedTextures.begin(); loaded_tex != mLoadedTextures.end(); loaded_tex++) {
+          if (texIt.first == loaded_tex->accessId) {
+            loaded_tex->ref_count--;
+            if (loaded_tex->ref_count == 0) {
+              OGLGraphics::DeleteTex(loaded_tex->accessId);
+            }
+          }
+        }
+
+        // sync local loaded textures list
+        mLoadedTextures.remove_if([](const TextureInfo& ti) -> bool { return (ti.ref_count == 0) ? true : false;});
+      }
+      break;
+    }
+  }
+}
     aiString aiTmpStr;
     auto tex_success = mat->GetTexture(type, i, &aiTmpStr);
     switch (tex_success)
