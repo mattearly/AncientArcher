@@ -126,9 +126,6 @@
     <ClInclude Include="include\AncientArcher\Version.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\Shader\InterfaceShader.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="include\AncientArcher\ShaderType.h">
       <Filter>Header Files</Filter>
     </ClInclude>
