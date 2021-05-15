@@ -16,16 +16,19 @@
 #include <utility>
 #include <forward_list>
 #include <unordered_map>
-#include <iostream>
-
+//#include <iostream>
+#include <map>
+#include "../../include/AncientArcher/Utility/SceneCheck.h"
 
 namespace AA {
+
 namespace ModelLoader {
 
 static std::string mModelDir = "";
 static std::string mModelFileName = "";
 static std::string mModelFileExtension = "";
 static std::forward_list<TextureInfo> mLoadedTextures{};
+
 
 inline u32 LoadTexture(const string& texture_path) {
   for (auto& a_tex : mLoadedTextures) {
@@ -51,7 +54,7 @@ inline u32 LoadTexture(const string& texture_path) {
         a_new_texture_info.type = "Custom";  // todo: make this sync better
         a_new_texture_info.ref_count = 1;
         mLoadedTextures.push_front(a_new_texture_info);
-        std::cout << "loaded a new texture @ " << texture_path << "!\n";
+        //std::cout << "loaded a new texture @ " << texture_path << "!\n";
       }
       break;
     default:
@@ -77,15 +80,16 @@ inline void UnloadGameObject(const std::vector<MeshDrawInfo>& toUnload) {
         }
 
         // sync local loaded textures list
-        mLoadedTextures.remove_if([](const TextureInfo& ti) -> bool { return (ti.ref_count == 0) ? true : false;});
+        mLoadedTextures.remove_if([](const TextureInfo& ti) -> bool { return (ti.ref_count == 0) ? true : false; });
       }
       break;
     }
   }
 }
 
-inline int loadMaterialTextures(const aiScene* scn, const aiMaterial* mat, aiTextureType type, std::string typeName, std::unordered_map<uint32_t, std::string>& out_texInfo) {
-  for (uint32_t i = 0; i < mat->GetTextureCount(type); ++i) {
+
+inline int loadMaterialTextures(const aiScene* scn, const aiMaterial* mat, aiTextureType type, std::string typeName, std::unordered_map<u32, std::string>& out_texInfo) {
+  for (u32 i = 0; i < mat->GetTextureCount(type); ++i) {
     // make sure texture exists
     aiString aiTmpStr;
     auto tex_success = mat->GetTexture(type, i, &aiTmpStr);
@@ -133,7 +137,7 @@ inline int loadMaterialTextures(const aiScene* scn, const aiMaterial* mat, aiTex
               mLoadedTextures.push_front(a_new_texture_info);
               // to return for draw info on this current mesh
               out_texInfo.insert(out_texInfo.end(), { a_new_texture_info.accessId, a_new_texture_info.type });
-              std::cout << "loaded a new embedded texture @ " << a_new_texture_info.path << "!\n";
+              //std::cout << "loaded a new embedded texture @ " << a_new_texture_info.path << "!\n";
             }
             break;
           }
@@ -185,7 +189,7 @@ inline int loadMaterialTextures(const aiScene* scn, const aiMaterial* mat, aiTex
             mLoadedTextures.push_front(a_new_texture_info);
             // to return for draw info on this current mesh
             out_texInfo.insert(out_texInfo.end(), { a_new_texture_info.accessId, a_new_texture_info.type });
-            std::cout << "loaded a new texture @ " << a_new_texture_info.path << "!\n";
+            //std::cout << "loaded a new texture @ " << a_new_texture_info.path << "!\n";
             break;
           }
         }
@@ -199,10 +203,10 @@ inline int loadMaterialTextures(const aiScene* scn, const aiMaterial* mat, aiTex
 }
 inline MeshDrawInfo processMesh(aiMesh* mesh, const aiScene* scene, aiMatrix4x4* trans) {
   std::vector<Vertex> loaded_vertices;
-  uint32_t num_of_vertices_on_mesh = mesh->mNumVertices;
+  u32 num_of_vertices_on_mesh = mesh->mNumVertices;
 
   // get the vertices
-  for (uint32_t i = 0; i < num_of_vertices_on_mesh; ++i) {
+  for (u32 i = 0; i < num_of_vertices_on_mesh; ++i) {
     const glm::vec3 temp_position = aiVec3_to_glmVec3(mesh->mVertices[i]);
     glm::vec2 temp_tex_coords(0);
     if (mesh->mTextureCoords[0] != nullptr) {
@@ -213,47 +217,47 @@ inline MeshDrawInfo processMesh(aiMesh* mesh, const aiScene* scene, aiMatrix4x4*
   }
 
   // get the indices to draw triangle faces with
-  std::vector<uint32_t> loadedElements;
-  for (uint32_t i = 0; i < mesh->mNumFaces; ++i) {
+  std::vector<u32> loaded_elements;
+  for (u32 i = 0; i < mesh->mNumFaces; ++i) {
     aiFace face = mesh->mFaces[i];
-    for (uint32_t j = 0; j < face.mNumIndices; ++j) {
-      loadedElements.push_back(face.mIndices[j]);
+    for (u32 j = 0; j < face.mNumIndices; ++j) {
+      loaded_elements.push_back(face.mIndices[j]);
     }
   }
 
   // get the materials
   const aiMaterial* ai_material = scene->mMaterials[mesh->mMaterialIndex];
-  std::unordered_map<uint32_t, std::string> all_loaded_textures;
+  std::unordered_map<u32, std::string> all_loaded_textures;
 
   // get the albedo (diffuse) textures
-  std::unordered_map<uint32_t, std::string> albedo_textures;
+  std::unordered_map<u32, std::string> albedo_textures;
   if (loadMaterialTextures(scene, ai_material, aiTextureType_DIFFUSE, "Albedo", albedo_textures) == 0) {
     for (auto& a_tex : albedo_textures) {
       all_loaded_textures.insert(all_loaded_textures.end(), a_tex);
-      std::cout << "found&loaded Albedo texture\n";
+      //std::cout << "found&loaded Albedo texture\n";
     }
   }
 
   int shading_model;
   ai_material->Get(AI_MATKEY_SHADING_MODEL, shading_model);
-  std::cout << "shading model: " << shading_model << '\n';
+  //std::cout << "shading model: " << shading_model << '\n';
   ai_real shininess = .1f;
 
   if (shading_model == aiShadingMode_Phong) {
-    std::cout << "shading model is phong\n";
+    //std::cout << "shading model is phong\n";
 
-    std::unordered_map<uint32_t, std::string> specular_textures;
+    std::unordered_map<u32, std::string> specular_textures;
     if (loadMaterialTextures(scene, ai_material, aiTextureType_SPECULAR, "Specular", specular_textures) == 0) {
       for (auto& s_tex : specular_textures) {
         all_loaded_textures.insert(all_loaded_textures.end(), s_tex);
-        std::cout << "found&loaded Specular texture\n";
+        //std::cout << "found&loaded Specular texture\n";
       }
     }
 
     if (!ai_material->Get(AI_MATKEY_SHININESS, shininess)) {
       // set shininess to a default if it failed
       shininess = 6.1f;
-      std::cout << "shininess not found, shininess defaulted to 6.1f\n";
+      //std::cout << "shininess not found, shininess defaulted to 6.1f\n";
       //assimpDoesntFindShininessLetsDoItInstead(path, &shininess);
     }
   }
@@ -266,21 +270,21 @@ inline MeshDrawInfo processMesh(aiMesh* mesh, const aiScene* scene, aiMatrix4x4*
   //	std::cout << "specular not found, defaulted to .1f\n";
   //}
 
-  uint32_t vao = 0;
+  u32 vao = 0;
   switch (Settings::Get()->GetOptions().renderer) {
   case RenderingFramework::OPENGL:
-    vao = OGLGraphics::UploadMesh(loaded_vertices, loadedElements);
+    vao = OGLGraphics::UploadMesh(loaded_vertices, loaded_elements);
     break;
   }
-  return MeshDrawInfo(vao, (uint32_t)loadedElements.size(), all_loaded_textures, shininess, aiMat4_to_glmMat4(*trans));
+  return MeshDrawInfo(vao, (u32)loaded_elements.size(), all_loaded_textures, shininess, aiMat4_to_glmMat4(*trans));
 }
 inline void processNode(aiNode* node, const aiScene* scene, std::vector<MeshDrawInfo>& out_MeshInfo) {
-  for (uint32_t i = 0; i < node->mNumMeshes; ++i) {
+  for (u32 i = 0; i < node->mNumMeshes; ++i) {
     aiMesh* mesh = scene->mMeshes[node->mMeshes[i]];
     out_MeshInfo.push_back(processMesh(mesh, scene, &node->mTransformation));
   }
 
-  for (uint32_t i = 0; i < node->mNumChildren; ++i) {
+  for (u32 i = 0; i < node->mNumChildren; ++i) {
     processNode(node->mChildren[i], scene, out_MeshInfo);
   }
 }
@@ -303,7 +307,7 @@ inline int LoadGameObjectFromFile(std::vector<MeshDrawInfo>& out_MeshInfo, std::
 
   const aiScene* scene = importer.ReadFile(path, post_processing_flags);
   if (!scene || scene->mFlags & AI_SCENE_FLAGS_INCOMPLETE || !scene->mRootNode) {
-    std::cout << "failed to load scene @ " << path << '\n';
+    //std::cout << "failed to load scene @ " << path << '\n';
     return -1;  // failed to load scene
   }
 
