@@ -29,7 +29,7 @@
 #include "GUI/PlainGUI.h"
 
 namespace AA {
-// Interanl Only (helpers, states, types, etc)
+// Internal Only (helpers, states, types, etc)
 bool isEngineInit = false;
 bool isWindowSizeDirty = true;  ///< true if proj matrices need re-adjusted for a new window size change
 GLFWwindow* mWindow = nullptr;
@@ -67,10 +67,10 @@ std::vector<Speaker*>     mSpeakers;         ///< array of places to play sound 
 std::vector<SoundEffect*> mSoundEffects;     ///< array of ready speaker id to sound effects
 LongSound* mMusic;                           ///< background music
 f32 mMusicRebufferCD = 0.f;
-f32 mNonSpammableKeysTimeout;  ///< keeps track of how long the keys have timed out
-f32 mNoSpamWaitLength;         ///< how long the non-spammable keys are to time out for at least
-f32 mSlowUpdateTimeout;        ///< keeps track of how how long the slow update has been timed out
-f32 mSlowUpdateWaitLength;     ///< ms length the slow update times out for at least
+f32 mNonSpammableKeysTimeout;                ///< keeps track of how long the keys have timed out
+f32 mNoSpamWaitLength;                       ///< how long the non-spammable keys are to time out for at least
+f32 mSlowUpdateTimeout;                      ///< keeps track of how how long the slow update has been timed out
+f32 mSlowUpdateWaitLength;                   ///< ms length the slow update times out for at least
 std::unordered_map<u32, std::function<void()> >               onBegin;               ///< list of functions to run once when runMainAncientArcher is called
 std::unordered_map<u32, std::function<void(f32)> >            onDeltaUpdate;         ///< list of functions that rely on deltatime in the main AncientArcher
 std::unordered_map<u32, std::function<void()> >               onUpdate;              ///< list of functions that run every frame in the main AncientArcher
