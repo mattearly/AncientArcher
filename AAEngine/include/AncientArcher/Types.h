@@ -1,23 +1,22 @@
 #pragma once
 #include <cstdint>
+#include <string>
 #include <glm/ext/vector_float2.hpp>
 #include <glm/ext/vector_float3.hpp>
 #include <glm/ext/vector_float4.hpp>
 #include <glm/ext/matrix_float2x2.hpp>
 #include <glm/ext/matrix_float3x3.hpp>
 #include <glm/ext/matrix_float4x4.hpp>
-#include <string>
 #include <glm/ext/quaternion_float.hpp>
 namespace AA{
-typedef bool tf;
-typedef char* cstr;
-typedef std::string string;
 typedef uint32_t u32;
 typedef uint64_t u64;
 typedef int32_t i32;
 typedef int64_t i64;
 typedef float f32;
 typedef double f64;
+typedef bool tf;
+typedef std::string string;
 typedef glm::vec2 vec2;
 typedef glm::vec3 vec3;
 typedef glm::vec4 vec4;
