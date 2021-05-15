@@ -13,8 +13,7 @@ float     fl_quad = 0.0044f;
 glm::vec3 fl_ambient = glm::vec3(1.23f);
 glm::vec3 fl_diffuse = glm::vec3(3.57f);
 glm::vec3 fl_specular = glm::vec3(1.0f);
-void setupflashlight(int ourcam)
-{
+void setupflashlight(int ourcam) {
   if (isFlashlightSetup)
     return;
 
@@ -23,16 +22,12 @@ void setupflashlight(int ourcam)
 
   // toggle flashlight
   AA::AddToTimedOutKeyHandling([](AA::KeyboardInput& kb) {
-    if (kb.f)
-    {
-      if (flashlight_on)
-      {
+    if (kb.f) {
+      if (flashlight_on) {
         AA::RemoveSpotLight(flashlight);
         flashlight_on = false;
         std::cout << "flashlight turned off\n";
-      }
-      else
-      {
+      } else {
         flashlight = AA::AddSpotLight(
           AA::GetCamPosition(cam),
           AA::GetCamFront(cam),
@@ -51,7 +46,7 @@ void setupflashlight(int ourcam)
       return true;
     }
     return false;
-    }
+  }
   );
 
   //stick flashlight to camera
@@ -60,5 +55,5 @@ void setupflashlight(int ourcam)
       AA::MoveSpotLight(flashlight,
         AA::GetCamPosition(cam) + glm::vec3(0.f, -.5f, 0.f),
         AA::GetCamFront(cam));
-    });
+  });
 }
