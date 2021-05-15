@@ -199,6 +199,8 @@ void render() {
       mDiffShader->setMat4("view", mCameras.front().View);
       break;
     }
+    p.Draw();
+  }
 
     p.draw();
   }

@@ -19,7 +19,7 @@ void Prop::SetCamera(int id) noexcept {
   mCameraID = id;
 }
 
-void Prop::draw() {
+void Prop::Draw() {
   if (mCameraID == -1)
     throw("camera not set for this prop");
   if (mModelMatrixChanged) {
