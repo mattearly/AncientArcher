@@ -7,8 +7,7 @@
 #include <assimp/matrix4x4.h>
 
 namespace AA {
-inline glm::mat4 aiMat4_to_glmMat4(const aiMatrix4x4& inMat)
-{
+inline glm::mat4 aiMat4_to_glmMat4(const aiMatrix4x4& inMat) {
   glm::mat4 outMat{};
   outMat[0][0] = inMat.a1;
   outMat[1][0] = inMat.b1;
@@ -30,8 +29,7 @@ inline glm::mat4 aiMat4_to_glmMat4(const aiMatrix4x4& inMat)
   return outMat;
 }
 
-inline glm::vec3 aiVec3_to_glmVec3(const aiVector3D& inVec) noexcept
-{
+inline glm::vec3 aiVec3_to_glmVec3(const aiVector3D& inVec) noexcept {
   glm::vec3 outVec{};
   outVec.x = inVec.x;
   outVec.y = inVec.y;
@@ -39,8 +37,7 @@ inline glm::vec3 aiVec3_to_glmVec3(const aiVector3D& inVec) noexcept
   return outVec;
 }
 
-inline glm::vec4 aiColor4_to_glmVec4(const aiColor4D& inVec) noexcept
-{
+inline glm::vec4 aiColor4_to_glmVec4(const aiColor4D& inVec) noexcept {
   glm::vec4 outVec{};
   outVec.x = inVec.r;
   outVec.y = inVec.g;
@@ -50,8 +47,7 @@ inline glm::vec4 aiColor4_to_glmVec4(const aiColor4D& inVec) noexcept
   return outVec;
 }
 
-inline glm::quat aiQuat_to_glmQuat(const aiQuaternion& inQuat) noexcept
-{
+inline glm::quat aiQuat_to_glmQuat(const aiQuaternion& inQuat) noexcept {
   glm::quat outQuat{};
   outQuat.w = inQuat.w;
   outQuat.x = inQuat.x;
