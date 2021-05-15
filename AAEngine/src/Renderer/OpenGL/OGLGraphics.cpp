@@ -77,7 +77,7 @@ void RenderStrip(const int& vao, const int& count) {
 /// <param name="y">starting loc</param>
 /// <param name="w">width</param>
 /// <param name="h">height</param>
-void OGLGraphics::SetViewportSize(int x, int y, int w, int h) {
+void SetViewportSize(int x, int y, int w, int h) {
   glViewport(x, y, w, h);
 }
 
@@ -86,14 +86,14 @@ void OGLGraphics::SetViewportSize(int x, int y, int w, int h) {
 /// </summary>
 /// <param name="vec3">rgb floats between 0 and 1</param>
 /// <returns></returns>
-void OGLGraphics::SetViewportClearColor(glm::vec3 color) noexcept {
+void SetViewportClearColor(glm::vec3 color) noexcept {
   glClearColor(color.x, color.y, color.z, 0.0f);
 }
 
 /// <summary>
 /// pre-render function
 /// </summary>
-void OGLGraphics::ClearScreen()  noexcept {
+void ClearScreen()  noexcept {
   glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 }
 
@@ -103,8 +103,8 @@ void OGLGraphics::ClearScreen()  noexcept {
 /// <param name="verts">vertices to upload</param>
 /// <param name="elems">relevant indicies</param>
 /// <returns>the VAO</returns>
-uint32_t OGLGraphics::UploadMesh(const std::vector<Vertex>& verts, const std::vector<uint32_t>& elems) {
-  uint32_t VAO, VBO, EBO;
+u32 UploadMesh(const std::vector<Vertex>& verts, const std::vector<u32>& elems) {
+  u32 VAO, VBO, EBO;
   glGenBuffers(1, &VBO);
 
   glGenVertexArrays(1, &VAO);
@@ -167,11 +167,11 @@ u32 Upload2DVerts(const std::vector<float>& points) {
 /// removes the mesh from our GPU memory
 /// </summary>
 /// <param name="VAO">vao to delete</param>
-void OGLGraphics::DeleteMesh(const uint32_t& VAO) {
+void DeleteMesh(const u32& VAO) {
   glDeleteBuffers(1, &VAO);
 }
 
-uint32_t OGLGraphics::Upload2DTex(const unsigned char* tex_data, int width, int height) {
+u32 Upload2DTex(const unsigned char* tex_data, int width, int height) {
   unsigned int out_texID = 0;
   glGenTextures(1, &out_texID);
   glBindTexture(GL_TEXTURE_2D, out_texID);
@@ -191,7 +191,7 @@ uint32_t OGLGraphics::Upload2DTex(const unsigned char* tex_data, int width, int 
   return out_texID;
 }
 
-uint32_t OGLGraphics::UploadCubeMapTex(std::vector<unsigned char*> tex_data, int width, int height) {
+u32 UploadCubeMapTex(std::vector<unsigned char*> tex_data, int width, int height) {
   unsigned int out_texID;
   glGenTextures(1, &out_texID);
   glBindTexture(GL_TEXTURE_CUBE_MAP, out_texID);
@@ -209,11 +209,11 @@ uint32_t OGLGraphics::UploadCubeMapTex(std::vector<unsigned char*> tex_data, int
   return out_texID;
 }
 
-void OGLGraphics::DeleteTex(const uint32_t& id) {
+void DeleteTex(const u32& id) {
   glDeleteTextures(1, &id);
 }
 
-void OGLGraphics::SetMSAA(const bool enabled) {
+void SetMSAA(const bool enabled) {
   glEnable(GL_MULTISAMPLE);
 }
 
