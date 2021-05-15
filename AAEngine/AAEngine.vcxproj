@@ -115,7 +115,7 @@
     <ClInclude Include="src\Renderer\ModelLoader.h" />
     <ClInclude Include="include\AncientArcher\AncientArcher.h" />
     <ClInclude Include="src\Renderer\MeshDrawInfo.h" />
-    <ClInclude Include="src\Renderer\ModelHeader.h" />
+    <ClInclude Include="include\AncientArcher\Utility\SceneCheck.h" />
     <ClInclude Include="src\Renderer\OpenGL\OGLGraphics.h" />
     <ClInclude Include="src\Scene\Lights.h" />
     <ClInclude Include="src\Renderer\OpenGL\OGLShader.h" />
