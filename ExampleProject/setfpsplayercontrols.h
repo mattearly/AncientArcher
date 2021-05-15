@@ -15,10 +15,16 @@ void setfpsplayercontrols(int cam) {
 
   static int inherited_cam = cam;
 
+  // starting cam position
+  AA::SetCamPosition(inherited_cam, AA::vec3(0, 175, 175));
+  AA::SetCamPitch(inherited_cam, 0);
+  AA::SetCamYaw(inherited_cam, -90);
+
   // for our move speed controls
-  static const float DEFAULTMOVESPEED = 10.f;
-  static const float MAXSPEED = 400.f;
-  static const float FLYINCR = 1.f;
+  static const float DEFAULTMOVESPEED = 7.5f;
+
+  // character stats
+  static float sprint_bonus = 7.5f;
 
   // for our move direction and speed
   static float currFlySpeed = DEFAULTMOVESPEED;
@@ -29,6 +35,7 @@ void setfpsplayercontrols(int cam) {
 
   static struct MoveBlock {
     bool forward = 0, backwards = 0, left = 0, right = 0;
+    bool sprint = 0;
   } move;
   // add WASD key first person movement function
   const auto wasd = [](AA::KeyboardInput& key) {
@@ -66,6 +73,13 @@ void setfpsplayercontrols(int cam) {
     } else if (!key.d) {
       move.right = false;
     }
+
+    if (key.leftShift) {
+      move.sprint = true;
+    } else if (!key.leftShift) {
+      move.sprint = false;
+    }
+
   };
   AA::AddToKeyHandling(wasd);
 
@@ -73,7 +87,7 @@ void setfpsplayercontrols(int cam) {
     if (is_inventory_open)
       return;
     float frameCalculatedVelocity = 0.f;
-    frameCalculatedVelocity = dt * currFlySpeed;
+    frameCalculatedVelocity = dt * move.sprint ? sprint_bonus + currFlySpeed : currFlySpeed;
     if (move.forward) {
       moveDir += frontFacingDir;
       AA::ShiftCamPosition(inherited_cam, moveDir * frameCalculatedVelocity);
@@ -104,28 +118,28 @@ void setfpsplayercontrols(int cam) {
   };
   AA::AddToMouseHandling(mouselook);
 
-  // add mouse scroll wheel to change fly speed
-  const auto mousewheelflyspeed = [](AA::ScrollInput& wheel) {
-    // set flyspeed when mouse wheel moves
-    if (wheel.yOffset > 0.1f) {
-      currFlySpeed += FLYINCR;
-    } else if (wheel.yOffset < -0.1f) {
-      currFlySpeed -= FLYINCR;
-    }
+  //// add mouse scroll wheel to change fly speed
+  //const auto mousewheelflyspeed = [](AA::ScrollInput& wheel) {
+  //  // set flyspeed when mouse wheel moves
+  //  if (wheel.yOffset > 0.1f) {
+  //    currFlySpeed += FLYINCR;
+  //  } else if (wheel.yOffset < -0.1f) {
+  //    currFlySpeed -= FLYINCR;
+  //  }
 
-    // cap flyspeed
-    if (currFlySpeed >= MAXSPEED) {
-      currFlySpeed = MAXSPEED;
-    } else if (currFlySpeed <= 1.f) {
-      currFlySpeed = 1.000001f;
-    }
+  //  // cap flyspeed
+  //  if (currFlySpeed >= MAXSPEED) {
+  //    currFlySpeed = MAXSPEED;
+  //  } else if (currFlySpeed <= 1.f) {
+  //    currFlySpeed = 1.000001f;
+  //  }
 
-    // set flyspeed if it changed
-    if (currFlySpeed != prevFlySpeed) {
-      prevFlySpeed = currFlySpeed;
-    }
-  };
-  AA::AddToScrollHandling(mousewheelflyspeed);
+  //  // set flyspeed if it changed
+  //  if (currFlySpeed != prevFlySpeed) {
+  //    prevFlySpeed = currFlySpeed;
+  //  }
+  //};
+  //AA::AddToScrollHandling(mousewheelflyspeed);
 
 
   // INTERFACE STUFF
