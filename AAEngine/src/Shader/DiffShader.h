@@ -2,7 +2,7 @@
 namespace AA
 {
 const char* diff_vert_src =
-"#version 330 core\n"
+"#version 430 core\n"
 "layout(location=0)in vec3 inPos;\n"
 "layout(location=1)in vec2 inTexUV;\n"
 "out vec2 pass_TexUV;\n"
@@ -15,7 +15,7 @@ const char* diff_vert_src =
 "}\n"
 ;
 const char* diff_frag_src =
-"#version 330 core\n"
+"#version 430 core\n"
 "in vec2 pass_TexUV;\n"
 "out vec4 out_Color;\n"
 "struct Material {\n"
