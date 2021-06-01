@@ -4,6 +4,7 @@
 #include "../../Renderer/OpenGL/OGLGraphics.h"
 #include "../../Settings/Settings.h"
 #include <stb_image.h>
+#include "../../Utility/QueryShader.h"
 
 namespace AA
 {
@@ -37,8 +38,12 @@ Skybox::Skybox(std::vector<std::string> incomingSkymapFiles, bool useInternalSha
       ;
     skyboxShader = std::make_unique<OGLShader>(
       skycubevert,
-      skycubefrag
+      skycubefrag 
       );
+#ifdef _DEBUG
+    QueryInputAttribs(skyboxShader->GetID());
+    QueryUniforms(skyboxShader->GetID());
+#endif
   }
   else {
     if (vertpath == "" || fragpath == "")

@@ -15,6 +15,7 @@ void setupsoundeffects()
   const char* enchant = "..\\ExampleProject\\res\\enchant.ogg";
   static int enchantId = AA::AddSoundEffect(enchant);
 
+  std::cout << ", 1,2 = ability sounds";
   AA::AddToKeyHandling([](AA::KeyboardInput& kb) {
     if (kb.n1) {
       AA::PlaySoundEffect(zap16Id, false);

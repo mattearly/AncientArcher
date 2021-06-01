@@ -6,7 +6,8 @@
 #include "../../../include/AncientArcher/ShaderType.h"
 #include "../../../include/AncientArcher/Types.h"
 #include "../MeshDrawInfo.h"
-#include "../Vertex.h"
+#include "../../Scene/Vertex.h"
+#include "../../Scene/AnimVertex.h"
 
 namespace AA {
 extern OGLShader* mLitShader;

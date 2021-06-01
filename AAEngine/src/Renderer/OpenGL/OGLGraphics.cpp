@@ -9,32 +9,38 @@
 
 namespace AA {
 namespace OGLGraphics {
+
 void Render(const std::vector<MeshDrawInfo>& meshes, const glm::mat4& translationMatrix, SHADERTYPE shadertype) {
   glEnable(GL_DEPTH_TEST);
 
   switch (shadertype) {
   case SHADERTYPE::DIFF:
+  case SHADERTYPE::ANIM_DIFF:
     mDiffShader->use();
     break;
   case SHADERTYPE::LIT:
+  case SHADERTYPE::ANIM_LIT:
     mLitShader->use();
     break;
   }
 
   // go through all meshes in the this
   for (const auto& m : meshes) {
-    // go through all texture in this mesh
-    uint32_t i = 0;
+    // update translationMatrix
     switch (shadertype) {
     case SHADERTYPE::DIFF:
-      mDiffShader->setMat4("model", m.transformation * translationMatrix);
+    case SHADERTYPE::ANIM_DIFF:
+      mDiffShader->setMat4("u_model_matrix", /*m.transformation * */translationMatrix);
       break;
     case SHADERTYPE::LIT:
+    case SHADERTYPE::ANIM_LIT:
       mLitShader->setFloat("material.Shininess", m.shininess);
-      mLitShader->setMat4("model", m.transformation * translationMatrix);
+      mLitShader->setMat4("u_model_matrix", /*m.transformation * */translationMatrix);
       break;
     }
 
+    // go through all texture in this mesh
+    u32 i = 0;
     for (const auto& texture : m.textureDrawIds) {
       // activate each texture
       glActiveTexture(GL_TEXTURE0 + i);
@@ -42,11 +48,13 @@ void Render(const std::vector<MeshDrawInfo>& meshes, const glm::mat4& translatio
       const std::string texType = texture.second;
       switch (shadertype) {
       case SHADERTYPE::DIFF:
+      case SHADERTYPE::ANIM_DIFF:
         if (texType == "Albedo") {
           mDiffShader->setInt(("material." + texType).c_str(), i);
         }
         break;
       case SHADERTYPE::LIT:
+      case SHADERTYPE::ANIM_LIT:
         mLitShader->setInt(("material." + texType).c_str(), i);
         break;
       }
@@ -113,16 +121,53 @@ u32 UploadMesh(const std::vector<Vertex>& verts, const std::vector<u32>& elems) 
   glBufferData(GL_ARRAY_BUFFER, verts.size() * sizeof(Vertex), &verts[0], GL_STATIC_DRAW);
 
   glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), (const void*)offsetof(Vertex, Position));
-  glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, sizeof(Vertex), (const void*)offsetof(Vertex, TexCoords));
-  glVertexAttribPointer(2, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), (const void*)offsetof(Vertex, Normal));
+  glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), (const void*)offsetof(Vertex, Normal));
+  glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, sizeof(Vertex), (const void*)offsetof(Vertex, TexCoords));
+  glVertexAttribPointer(3, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), (const void*)offsetof(Vertex, Tangent));
+  glVertexAttribPointer(4, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), (const void*)offsetof(Vertex, BiTangent));
 
   glEnableVertexAttribArray(0);
   glEnableVertexAttribArray(1);
   glEnableVertexAttribArray(2);
+  glEnableVertexAttribArray(3);
+  glEnableVertexAttribArray(4);
 
   glGenBuffers(1, &EBO);
   glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);
-  glBufferData(GL_ELEMENT_ARRAY_BUFFER, elems.size() * sizeof(uint32_t), &elems[0], GL_STATIC_DRAW);
+  glBufferData(GL_ELEMENT_ARRAY_BUFFER, elems.size() * sizeof(u32), &elems[0], GL_STATIC_DRAW);
+
+  glBindVertexArray(0);
+
+  glDeleteBuffers(1, &VBO);
+  glDeleteBuffers(1, &EBO);
+
+  return VAO;
+}
+
+u32 UploadAnimMesh(const std::vector<AnimVertex>& animverts, const std::vector<u32>& elems) {
+  u32 VAO, VBO, EBO;
+  glGenBuffers(1, &VBO);
+
+  glGenVertexArrays(1, &VAO);
+  glBindVertexArray(VAO);
+  glBindBuffer(GL_ARRAY_BUFFER, VBO);
+  glBufferData(GL_ARRAY_BUFFER, animverts.size() * sizeof(AnimVertex), &animverts[0], GL_STATIC_DRAW);
+
+  glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(AnimVertex), (const void*)offsetof(AnimVertex, Position));
+  glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, sizeof(AnimVertex), (const void*)offsetof(AnimVertex, Normal));
+  glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, sizeof(AnimVertex), (const void*)offsetof(AnimVertex, TexCoords));
+  glVertexAttribPointer(3, 4, GL_INT, GL_FALSE, sizeof(AnimVertex), (const void*)offsetof(AnimVertex, BoneIds));
+  glVertexAttribPointer(4, 4, GL_FLOAT, GL_FALSE, sizeof(AnimVertex), (const void*)offsetof(AnimVertex, Weights));
+
+  glEnableVertexAttribArray(0);
+  glEnableVertexAttribArray(1);
+  glEnableVertexAttribArray(2);
+  glEnableVertexAttribArray(3);
+  glEnableVertexAttribArray(4);
+
+  glGenBuffers(1, &EBO);
+  glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);
+  glBufferData(GL_ELEMENT_ARRAY_BUFFER, elems.size() * sizeof(u32), &elems[0], GL_STATIC_DRAW);
 
   glBindVertexArray(0);
 

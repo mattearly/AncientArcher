@@ -53,6 +53,13 @@ void SetPropRotationZ(i32 propId, f32 new_z_rot);
 // End 3D Game Objects
 
 
+// Animated 3d Game Objects
+//i32 AddAnimProp(const char* path, i32 camId, SHADERTYPE shadertype);  // a model that has bones and is ready to be animated
+//void SetAnimation(i32 anim_prop_id, const char* path);     // sets the mAnimation on animprop from a mAnimation file that fits with anim prop
+//void UpdateAnimation(i32 anim_prop_id, f32 dt);  // updates the current mAnimation that is set on animprop
+// End Animated
+
+
 // Skybox
 void SetSkybox(const std::shared_ptr<Skybox>& skybox) noexcept;
 // End Skybox

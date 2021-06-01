@@ -1,4 +1,5 @@
 #include "../include/AncientArcher/AncientArcher.h"
+#include "../include/AncientArcher/Utility/Files.h"
 #include "Scene/Camera.h"
 #include "Scene/Prop.h"
 #include "Scene/Lights.h"
@@ -8,14 +9,15 @@
 #include "Controls/KeyboardInput.h"
 #include "Controls/MouseInput.h"
 #include "Controls/ScrollInput.h"
-#include "Shader/LitShader.h"
-#include "Shader/DiffShader.h"
 #include "Settings/Settings.h"
 #include "Settings/SettingsOptions.h"
 #include "Sound/SoundDevice.h"
 #include "Sound/Speaker.h"
 #include "Sound/SoundEffect.h"
 #include "Sound/LongSound.h"
+#include "GUI/PlainGUI.h"
+#include "Scene/AnimProp.h"
+#include "Utility/QueryShader.h"
 #include <glad/glad.h>
 #include <GLFW/glfw3.h>
 #include <string>
@@ -26,7 +28,6 @@
 #include <iostream>
 #include <algorithm>
 #include <unordered_map>
-#include "GUI/PlainGUI.h"
 
 namespace AA {
 // Internal Only (helpers, states, types, etc)
@@ -38,39 +39,56 @@ f32 mFPPMouseSensitivity = mDefaultFPPMouseSensitivity;  ///< mouse sensitivity 
 bool mSwitchedToFPP = false;
 enum class MouseReporting { UNSET, STANDARD, PERSPECTIVE };
 MouseReporting mMouseReporting = MouseReporting::UNSET;
-OGLShader* mDiffShader = NULL;
-OGLShader* mLitShader = NULL;
+
 PlainGUI* mGUI = NULL;
+const char* vert_path =      "..\\AAEngine\\GLSL_src\\vert_3D.glsl";
+const char* frag_lit_path =  "..\\AAEngine\\GLSL_src\\frag_lit.glsl";
+const char* frag_diff_path = "..\\AAEngine\\GLSL_src\\frag_diff.glsl";
+
+OGLShader* mDiffShader = nullptr;
+OGLShader* mLitShader = nullptr;
 void setupLitShader() {
   if (!mLitShader) {
-    mLitShader = new OGLShader(lit_vert_src, lit_frag_src);
-    std::cout << "Lit Shader is Live!\n";
+    mLitShader = new OGLShader(Files::ReadToString(vert_path).c_str(), Files::ReadToString(frag_lit_path).c_str());
+#ifdef _DEBUG
+    QueryInputAttribs(mLitShader->GetID());
+    QueryUniforms(mLitShader->GetID());
+#endif
   }
 }
 void setupDiffShader() {
   if (!mDiffShader) {
-    mDiffShader = new OGLShader(diff_vert_src, diff_frag_src);
-    std::cout << "Diff Shader is Live!\n";
+    mDiffShader = new OGLShader(Files::ReadToString(vert_path).c_str(), Files::ReadToString(frag_diff_path).c_str());
+#ifdef _DEBUG
+    QueryInputAttribs(mDiffShader->GetID());
+    QueryUniforms(mDiffShader->GetID());
+#endif
   }
 }
 DirectionalLight* mDirectionalLight;         ///< directional light for lit shader(s)
-i32 NUM_POINT_LIGHTS = 0;
-const i32 MAXSPOTLIGHTS = 25;
+i32                       NUM_POINT_LIGHTS = 0;
+const i32                 MAXSPOTLIGHTS = 25;
 std::vector<SpotLight>    mSpotLights;       ///< array of current spot lights
-i32 NUM_SPOT_LIGHTS = 0;
-const i32 MAXPOINTLIGHTS = 50;
+i32                       NUM_SPOT_LIGHTS = 0;
+const i32                 MAXPOINTLIGHTS = 50;
 std::vector<PointLight>   mPointLights;      ///< array of current poi32 lights
 std::vector<Camera>       mCameras;          ///< array of available cameras
-std::vector<Prop>         mProps;            ///< array of available objects
+void updateProjectionFromCam(OGLShader* shader_to_update, const Camera& from_cam) { 
+  if (!shader_to_update) 
+    return; 
+  shader_to_update->use(); 
+  shader_to_update->setMat4("u_projection_matrix", from_cam.Projection);
+}
+std::vector<Prop>         mProps;            ///< array of available inanimate props
+std::vector<AnimProp>     mAnimProps;        ///< array of available animated props
 std::shared_ptr<Skybox>   mSkybox;           ///< the main skybox
 std::vector<Speaker*>     mSpeakers;         ///< array of places to play sound effects from
 std::vector<SoundEffect*> mSoundEffects;     ///< array of ready speaker id to sound effects
 LongSound* mMusic;                           ///< background music
-f32 mMusicRebufferCD = 0.f;
-f32 mNonSpammableKeysTimeout;                ///< keeps track of how long the keys have timed out
-f32 mNoSpamWaitLength;                       ///< how long the non-spammable keys are to time out for at least
-f32 mSlowUpdateTimeout;                      ///< keeps track of how how long the slow update has been timed out
-f32 mSlowUpdateWaitLength;                   ///< ms length the slow update times out for at least
+f32                       mNonSpammableKeysTimeout; ///< keeps track of how long the keys have timed out
+f32                       mNoSpamWaitLength;        ///< how long the non-spammable keys are to time out for at least
+f32                       mSlowUpdateTimeout;       ///< keeps track of how how long the slow update has been timed out
+f32                       mSlowUpdateWaitLength;    ///< ms length the slow update times out for at least
 std::unordered_map<u32, std::function<void()> >               onBegin;               ///< list of functions to run once when runMainAncientArcher is called
 std::unordered_map<u32, std::function<void(f32)> >            onDeltaUpdate;         ///< list of functions that rely on deltatime in the main AncientArcher
 std::unordered_map<u32, std::function<void()> >               onUpdate;              ///< list of functions that run every frame in the main AncientArcher
@@ -83,22 +101,16 @@ std::unordered_map<u32, std::function<void()> >               onTearDown;       
 KeyboardInput mButtonState = {};
 MouseInput    mMousePosition = {};
 ScrollInput   mMouseWheelScroll = {};
-bool mNewKeyReads = false;
-const i32 MINSCREENWIDTH = 100;
-const i32 MINSCREENHEIGHT = 100;
-const i32 MAXSCREENWIDTH = 7680;  //8k
-const i32 MAXSCREENHEIGHT = 4320;
-void keepWindowOpen() noexcept {
-  glfwSetWindowShouldClose(mWindow, 0);
-}
+bool          mNewKeyReads = false;
+const i32     MINSCREENWIDTH = 100;
+const i32     MINSCREENHEIGHT = 100;
+const i32     MAXSCREENWIDTH = 7680;  //8k
+const i32     MAXSCREENHEIGHT = 4320;
 void begin() {
-  keepWindowOpen();
-
+  glfwSetWindowShouldClose(mWindow, 0);
   for (const auto& oB : onBegin) {
     oB.second();
   }
-
-  //__setProjectionMatToAllShadersFromFirstCam_hack();
 }
 void update() {
   // init delta clock on first tap into update
@@ -117,16 +129,12 @@ void update() {
   // process keyboard input
   mNonSpammableKeysTimeout += elapsedTime;
   if (mNewKeyReads) {
+    // regular key updates
     for (auto& oKH : onKeyHandling) { oKH.second(mButtonState); }
-    // needs updated, we'll use it in update with keyboard functions before the AncientArcher is done.
-    // note that the keyboard processing cant be here because we have yet to run processSystemKeys()
-    // only be executable after a timeout has been met, sort of like a cooldown
+    // non-spammable key updates
     if (mNonSpammableKeysTimeout > mNoSpamWaitLength) {
-      // process unspammable keys
       for (auto& oTOK : onTimeoutKeyHandling) {
-        // if we get a true we stop processing
         if (oTOK.second(mButtonState)) {
-          //std::cout << "timeout key press detected. reseting timeoutkeytimer\n";
           mNonSpammableKeysTimeout = 0.f;
           break;
         }
@@ -140,70 +148,61 @@ void update() {
   // update accum time for delayed updates
   mSlowUpdateTimeout += elapsedTime;
   if (mSlowUpdateTimeout > mSlowUpdateWaitLength) {
-    // process all delayed updates
     for (auto& oSU : onSlowUpdate) { oSU.second(); }
     mSlowUpdateTimeout = 0.f;
   }
 
-  //if (mGUI)
-    //mGUI->UpdateUniforms(vec2(GetWindowWidth(), GetWindowHeight()), vec2(mMousePosition.xOffset, mMousePosition.yOffset), elapsedTime);
-
   if (mMusic) {
-    mMusicRebufferCD += elapsedTime;
-    if (mMusicRebufferCD > .5f) {  // todo(maybe): math with file size and stuff to figure out how long this cd should actually be
+    static f32 music_rebuffer_cd = 0;
+    music_rebuffer_cd += elapsedTime;
+    if (music_rebuffer_cd > .5f) {  // todo(maybe): math with file size and stuff to figure out how long this cd should actually be
       mMusic->UpdatePlayBuffer();
-      mMusicRebufferCD = 0;
+      music_rebuffer_cd = 0;
     }
   }
+
   // run through every frame update
   for (auto& oU : onUpdate) { oU.second(); }
 }
 void render() {
   OGLGraphics::ClearScreen();
   if (isWindowSizeDirty) {
+    //if (mCameras.size() == 0) {
+    //  throw("no cameras");
+    //}
     if (mLitShader) {
-      std::cout << "setting projection for lit shader on primary cam\n";
-      mLitShader->use();
-      mLitShader->setMat4("projection", mCameras.front().Projection);
+      updateProjectionFromCam(mLitShader, mCameras.front());  //todo: not this front thing from cam blindly
     }
-
     if (mDiffShader) {
-      std::cout << "setting projection for diff shader on primary cam\n";
-      mDiffShader->use();
-      mDiffShader->setMat4("projection", mCameras.front().Projection);
+      updateProjectionFromCam(mDiffShader, mCameras.front());
     }
-
-    // if there is a skybox
     if (mSkybox) {
-      // if there is a camera
-      if (mCameras.size() > 0) {
-        // set the projection matrix on the skybox from the first cam proj matrix
-        mSkybox->setProjectionMatrix(mCameras.front());
-      }
+      mSkybox->setProjectionMatrix(mCameras.front());
     }
-
     isWindowSizeDirty = false;
   }
 
-  for (auto& p : mProps)  // todo: test const
-  {
-    // set view matrix
-    // set the view matrix from the primary camera for each object is probably overkill
+  for (auto& p : mProps) {
     switch (p.mShaderType) {
     case SHADERTYPE::LIT:
+      if (!mLitShader) break;
       mLitShader->use();
-      mLitShader->setMat4("view", mCameras.front().View);
+      mLitShader->setMat4("u_view_matrix", mCameras.front().View);
       break;
     case SHADERTYPE::DIFF:
+      if (!mDiffShader) break;
       mDiffShader->use();
-      mDiffShader->setMat4("view", mCameras.front().View);
+      mDiffShader->setMat4("u_view_matrix", mCameras.front().View);
       break;
     }
     p.Draw();
   }
 
-    p.draw();
-  }
+  //for (auto& ap : mAnimProps) {
+  //  mAnimDiffShader->use();
+  //  mAnimDiffShader->setMat4("view", mCameras.front().View);
+  //  ap.Draw();
+  //}
 
   // draw skybox if one was specified
   if (mSkybox && !mCameras.empty()) { mSkybox->render(mCameras.front()); }
@@ -223,6 +222,11 @@ void teardown() {
   // delete all the meshes and textures from GPU memory
   for (const auto& p : mProps) {
     ModelLoader::UnloadGameObject(p.mMeshes);  // todo: consider moving to the destructor the prop
+  }
+
+  // delete all the meshes and textures from animated props from GPU memory
+  for (const auto& ap : mAnimProps) {
+    ModelLoader::UnloadGameObject(ap.mMeshes);
   }
 
   for (auto& spkr : mSpeakers) {
@@ -258,8 +262,8 @@ void InitEngine() {
     SoundDevice::Init();
     mNonSpammableKeysTimeout = 0.f;
     mSlowUpdateTimeout = 0.f;
-    mNoSpamWaitLength = .1667f;
-    mSlowUpdateWaitLength = .3337f;
+    mNoSpamWaitLength = 0.4159f;
+    mSlowUpdateWaitLength = 0.1259f;
     mDiffShader = NULL;
     mLitShader = NULL;
     mMusic = NULL;
@@ -1062,7 +1066,7 @@ f32 GetCamPitch(i32 camId) {
     }
   }
   throw("cam id doesn't exist or is invalid");
-  }
+}
 f32 GetCamYaw(i32 camId) {
   for (auto& cam : mCameras) {
     if (cam.GetUID() == camId) {
@@ -1070,18 +1074,19 @@ f32 GetCamYaw(i32 camId) {
     }
   }
   throw("cam id doesn't exist or is invalid");
-  }
+}
 vec2 GetPitchAndYaw(i32 camId) {
   for (auto& cam : mCameras) {
     if (cam.GetUID() == camId) {
       return vec2(cam.Pitch, cam.Yaw);
     }
   }
-  throw("cam id doesn't exist or is invalid");}
-glm::mat4 GetProjectionMatrix(i32 camId) {
+  throw("cam id doesn't exist or is invalid");
+}
+mat4 GetProjectionMatrix(i32 camId) {
   for (auto& cam : mCameras) {
     if (cam.GetUID() == camId) {
-      glm::mat4 projection = glm::mat4(1);
+      mat4 projection = mat4(1);
       switch (cam.RenderProjection) {
       case RenderProjection::PERSPECTIVE:
       {
@@ -1107,10 +1112,10 @@ glm::mat4 GetProjectionMatrix(i32 camId) {
   }
   throw("cam id doesn't exist or is invalid");
 }
-glm::mat4 GetOrthoMatrix(i32 camId) {
+mat4 GetOrthoMatrix(i32 camId) {
   for (auto& cam : mCameras) {
     if (cam.GetUID() == camId) {
-      glm::mat4 ortho = glm::mat4(1);
+      mat4 ortho = mat4(1);
       ortho = glm::ortho(
         0.f,
         static_cast<f32>(cam.Width),
@@ -1193,6 +1198,33 @@ void SetPropRotationZ(i32 propId, f32 new_z_rot) {
   throw("prop id does not exist");
 }
 // End 3d Game Objects
+
+
+// Anim prop
+//i32 AddAnimProp(const char* path, i32 camId, SHADERTYPE shadertype) {
+//  setupAnimShader();
+//  mAnimProps.emplace_back(path, camId, shadertype);
+//  return mAnimProps.back().GetUID();
+//}
+//void SetAnimation(i32 anim_prop_id, const char* path) {
+//  for (auto& ap : mAnimProps) {
+//    if (ap.GetUID() == anim_prop_id) {
+//      ap.SetAnimation(path);
+//      return;
+//    }
+//  }
+//  throw("anim prop not found");
+//}
+//void UpdateAnimation(i32 anim_prop_id, f32 dt) {
+//  for (auto& ap : mAnimProps) {
+//    if (ap.GetUID() == anim_prop_id) {
+//      ap.UpdateAnimation(dt);
+//      return;
+//    }
+//  }
+//  throw("anim prop not found");
+//}
+// End Anim
 
 
 // Skybox
@@ -1287,7 +1319,6 @@ i32 AddPointLight(glm::vec3 pos, f32 constant, f32 linear, f32 quad, glm::vec3 a
     mLitShader->setVec3(specular, mPointLights.back().Specular);
     mLitShader->setInt("NUM_POINT_LIGHTS", static_cast<int>(new_point_loc + 1));
   }
-
   return mPointLights.back().id;  // unique id
 }
 bool RemovePointLight(i32 which_by_id) {
@@ -1341,7 +1372,6 @@ void MovePointLight(i32 which, glm::vec3 new_pos) {
     }
     loc_in_vec++;
   }
-
   throw("u messed up");
 }
 void ChangePointLight(i32 which, glm::vec3 new_pos, f32 new_constant, f32 new_linear, f32 new_quad,
@@ -1400,7 +1430,6 @@ void ChangePointLight(i32 which, glm::vec3 new_pos, f32 new_constant, f32 new_li
     }
     loc_in_vec++;
   }
-
   throw("u messed up");
 }
 // End Poi32 Light
@@ -1470,7 +1499,6 @@ i32 AddSpotLight(glm::vec3 pos, glm::vec3 dir, f32 inner, f32 outer, f32 constan
     mLitShader->setVec3(specular, mSpotLights.back().Specular);
     mLitShader->setInt("NUM_SPOT_LIGHTS", static_cast<int>(new_spot_loc + 1));
   }
-
   return mSpotLights.back().id;  // unique id
 }
 bool RemoveSpotLight(i32 which_by_id) {
@@ -1506,7 +1534,6 @@ bool RemoveSpotLight(i32 which_by_id) {
         mSpotLights[i].Specular
       );
     }
-
     return true;
   } else
     return false;
@@ -1525,13 +1552,12 @@ void MoveSpotLight(i32 which, glm::vec3 new_pos, glm::vec3 new_dir) {
       ss << loc_in_vec;
       std::string position = "spotLight[" + ss.str() + "].Position";
       std::string direction = "spotLight[" + ss.str() + "].Direction";
-      mLitShader->setVec3(position.c_str(), sl.Position);
-      mLitShader->setVec3(direction.c_str(), sl.Direction);
+      mLitShader->setVec3(position, sl.Position);
+      mLitShader->setVec3(direction, sl.Direction);
       return;
     }
     loc_in_vec++;
   }
-
   throw("u messed up");
 }
 void ChangeSpotLight(i32 which, glm::vec3 new_pos, glm::vec3 new_dir, f32 new_inner,
@@ -1606,7 +1632,6 @@ void ChangeSpotLight(i32 which, glm::vec3 new_pos, glm::vec3 new_dir, f32 new_in
     }
     loc_in_vec++;
   }
-
   throw("u messed up");
 }
 // End Spot Light
@@ -1658,7 +1683,6 @@ void PlaySoundEffect(i32 id, bool interrupt) {
       return;
     }
   }
-
   throw("speaker not found");
 }
 // End Sound Effects
@@ -1700,7 +1724,6 @@ void ResumeMusic() {
     return;
   }
   throw("no music loaded");
-
 }
 void StopMusic() {
   if (mMusic) {
@@ -1787,10 +1810,7 @@ void SetMouseReadToNormal() noexcept {
     mMousePosition.yOffset = ypos;
     if (mGUI) {
       mGUI->UpdateMouseLoc(vec2(mMousePosition.xOffset, mMousePosition.yOffset));
-      //mGUI->UpdateUniforms(vec2(0), vec2(mMousePosition.xOffset, mMousePosition.yOffset), 0.f);
     }
-    //std::cout << "mouse pos: " << mMousePosition.xOffset << " " << mMousePosition.yOffset << '\n';
-    // handle mouse position
     for (auto& oMH : onMouseHandling) { oMH.second(mMousePosition); }
   });
   mMouseReporting = MouseReporting::STANDARD;
@@ -1803,16 +1823,17 @@ void AddButton(vec2 pos, vec2 scale, vec3 color, float alpha) {
 }
 void AddButton(vec2 pos, vec2 scale, float alpha, const char* texture_path) {
   mGUI->AddButton(pos, scale.x, scale.y, alpha, texture_path);
-
 }
 void SetGUIVisibility(const bool value) {
   if (!mGUI)
     return;
-  if (value)
+  if (value) {
     mGUI->ShowInterface();
-  else
+  } else {
     mGUI->HideInterface();
+  }
 }
+
 
 // Window
 void SetWindowClearColor(glm::vec3 color) {
@@ -1837,29 +1858,10 @@ void SetReshapeCallback() noexcept {
 // End Window
 
 
-// Interface
-//void AddInterfaceSlider(vec2 bot_left_loc, f32 low_val, f32 high_val, f32 bar_thickness, f32 bar_length, bool horizontal,
-//  void(*returnvaluehandler)(f32 result)) {
-//  if (!mGUI)
-//    mGUI = new PlainGUI();
-//
-//  Slider tmp_slider{};
-//  tmp_slider.bot_left_loc = bot_left_loc;
-//  tmp_slider.low_val = low_val;
-//  tmp_slider.high_val = high_val;
-//  tmp_slider.bar_thickness = bar_thickness;
-//  tmp_slider.bar_length = bar_length;
-//  tmp_slider.horizontal = horizontal;
-//  mGUI->AddSlider(tmp_slider, returnvaluehandler);
-//}
-// End Interface
-
-
+// Loop Controls
 void SetTimedOutKeyHandlingLength(const f32& newtime) {
   mNoSpamWaitLength = newtime;
 }
-
-// Loop Controls
 void SetSlowUpdateTimeoutLength(const f32& newtime) {
   // !! warning, no checking, set at your own risk
   mSlowUpdateWaitLength = newtime;

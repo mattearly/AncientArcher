@@ -80,7 +80,7 @@ inline SceneHeader extractSceneInfo(const string& path) {
   if (scene->HasMaterials()) { ret.numMaterials = scene->mNumMaterials; }
   if (scene->HasAnimations()) {
     ret.numAnimations = scene->mNumAnimations;
-    for (u32 i = 0; i < ret.numAnimations; ++i) {
+    for (i32 i = 0; i < ret.numAnimations; ++i) {
       ret.animNames.push_back(scene->mAnimations[i]->mName.C_Str());
     }
   }
@@ -94,22 +94,22 @@ inline SceneHeader extractSceneInfo(const string& path) {
 inline void printSceneHeaderInfo(const SceneHeader& header) {
   std::cout
     << "--A Scene File--\n"
-    << "File Path:  " << header.sceneLoadPath << '\n'
-    << "Nodes:      " << header.numNodes << '\n'
-    << "Meshes:     " << header.numMeshes << '\n'
-    << " -WithNorms:" << header.numMeshesWithNormals << '\n'
-    << " -Verts:    " << header.numVertices << '\n'
-    << " -Faces:    " << header.numFaces << '\n'
-    << " -Bones:    " << header.numBones << '\n'
-    << "Textures:   " << header.numTextures << '\n'
-    << "Materials:  " << header.numMaterials << '\n'
+    << "File Path: " << header.sceneLoadPath << '\n'
+    << "Nodes: " << header.numNodes << '\n'
+    << "Meshes: " << header.numMeshes << '\n'
+    << " - WithNorms: " << header.numMeshesWithNormals << '\n'
+    << " - Verts: " << header.numVertices << '\n'
+    << " - Faces: " << header.numFaces << '\n'
+    << " - Bones: " << header.numBones << '\n'
+    << "Textures: " << header.numTextures << '\n'
+    << "Materials: " << header.numMaterials << '\n'
     << "Animations: " << header.numAnimations << '\n';
-  for (u32 i = 0; i < header.numAnimations; ++i) {
-    printf(" -Anim %d:   %s\n", i, header.animNames[i].c_str());
+  for (i32 i = 0; i < header.numAnimations; ++i) {
+    printf(" -Anim %d: %s\n", i, header.animNames[i].c_str());
   }
   std::cout
-    << "Lights:     " << header.numLights << '\n'
-    << "Cameras:    " << header.numCameras << '\n';
+    << "Lights: " << header.numLights << '\n'
+    << "Cameras: " << header.numCameras << '\n';
 
 }
 

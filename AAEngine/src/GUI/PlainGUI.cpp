@@ -4,6 +4,7 @@
 #include <glad/glad.h>
 #include <glm/gtx/transform.hpp>
 #include "../../include/AncientArcher/AncientArcher.h"
+#include "../Utility/QueryShader.h"
 namespace AA {
 
 PlainGUI::PlainGUI() {
@@ -105,6 +106,11 @@ void PlainGUI::InitShader() {
     ;
   Shader = new OGLShader(vert, frag);
 
+#if _DEBUG
+  QueryInputAttribs(Shader->GetID());
+  QueryUniforms(Shader->GetID());
+#endif
+
   total_time = 0;
 }
 
@@ -199,6 +205,6 @@ Button::Button(vec2 pos, f32 width_scale, f32 height_scale, f32 alpha, const cha
   transformation = glm::scale(transformation, vec3(height, width, 1.f));
   this->color = vec3(.7, .1, .7);
   this->alpha = alpha;
-  this->texture_id = ModelLoader::LoadTexture(texture_path);
+  this->texture_id = TextureLoader::LoadTexture(texture_path);
 }
 }

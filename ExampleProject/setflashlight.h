@@ -3,16 +3,17 @@
 #include <iostream>
 
 bool      isFlashlightSetup = false;
-bool      flashlight_on = false;
-int       flashlight = -1;
-float     fl_inner_radius = glm::cos(glm::radians(2.05f));
-float     fl_outer_radius = glm::cos(glm::radians(17.05f));
-float     fl_constant = 1.f;
-float     fl_linear = 0.039f;
-float     fl_quad = 0.0044f;
-glm::vec3 fl_ambient = glm::vec3(1.23f);
-glm::vec3 fl_diffuse = glm::vec3(3.57f);
-glm::vec3 fl_specular = glm::vec3(1.0f);
+bool      flashlight_on     = false;
+int       flashlight_id     = -1;
+float     fl_inner_radius   = glm::cos(glm::radians(12.05f));
+float     fl_outer_radius   = glm::cos(glm::radians(34.05f));
+float     fl_constant       = 1.f;
+float     fl_linear         = 0.007f;
+float     fl_quad           = 0.0002f;
+glm::vec3 fl_ambient        = glm::vec3(1.23f);
+glm::vec3 fl_diffuse        = glm::vec3(3.57f);
+glm::vec3 fl_specular       = glm::vec3(1.0f);
+
 void setupflashlight(int ourcam) {
   if (isFlashlightSetup)
     return;
@@ -20,15 +21,16 @@ void setupflashlight(int ourcam) {
   isFlashlightSetup = true;
   static int cam = ourcam;
 
-  // toggle flashlight
+  std::cout << ", f = toggle flashlight";
+  // toggle flashlight_id
   AA::AddToTimedOutKeyHandling([](AA::KeyboardInput& kb) {
     if (kb.f) {
       if (flashlight_on) {
-        AA::RemoveSpotLight(flashlight);
+        AA::RemoveSpotLight(flashlight_id);
         flashlight_on = false;
         std::cout << "flashlight turned off\n";
       } else {
-        flashlight = AA::AddSpotLight(
+        flashlight_id = AA::AddSpotLight(
           AA::GetCamPosition(cam),
           AA::GetCamFront(cam),
           fl_inner_radius,
@@ -49,11 +51,9 @@ void setupflashlight(int ourcam) {
   }
   );
 
-  //stick flashlight to camera
+  //stick flashlight_id to camera
   AA::AddToUpdate([]() {
     if (flashlight_on)
-      AA::MoveSpotLight(flashlight,
-        AA::GetCamPosition(cam) + glm::vec3(0.f, -.5f, 0.f),
-        AA::GetCamFront(cam));
+      AA::MoveSpotLight(flashlight_id, AA::GetCamPosition(cam), AA::GetCamFront(cam));
   });
 }

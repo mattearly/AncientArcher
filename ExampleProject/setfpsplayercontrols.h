@@ -2,13 +2,13 @@
 #include <AncientArcher/AncientArcher.h>
 #include <glm/glm.hpp>
 
-bool fps_set = false;
-bool is_inventory_open = false;
+bool is_fps_controls_set = false;
+extern bool is_inventory_open;
 
 void setfpsplayercontrols(int cam) {
-  if (fps_set)
+  if (is_fps_controls_set)
     return;
-  fps_set = true;
+  is_fps_controls_set = true;
 
   AA::SetMouseToDisabled();
   AA::SetMouseReadToFPP();
@@ -21,10 +21,10 @@ void setfpsplayercontrols(int cam) {
   AA::SetCamYaw(inherited_cam, -90);
 
   // for our move speed controls
-  static const float DEFAULTMOVESPEED = 7.5f;
+  static const float DEFAULTMOVESPEED = 100.0f;
 
   // character stats
-  static float sprint_bonus = 7.5f;
+  static float sprint_bonus = 100.0f;
 
   // for our move direction and speed
   static float currFlySpeed = DEFAULTMOVESPEED;
@@ -33,12 +33,17 @@ void setfpsplayercontrols(int cam) {
   static glm::vec3 frontFacingDir = AA::GetCamFront(inherited_cam);
   static glm::vec3 rightFacingDir = AA::GetCamRight(inherited_cam);
 
+  const glm::vec3 GRAVITY = glm::vec3(0,-1,0);
+
   static struct MoveBlock {
     bool forward = 0, backwards = 0, left = 0, right = 0;
     bool sprint = 0;
   } move;
+
+  std::cout << "fps controls: ";
+  std::cout << "move = wasd";
   // add WASD key first person movement function
-  const auto wasd = [](AA::KeyboardInput& key) {
+  AA::AddToKeyHandling([](AA::KeyboardInput& key) {
     if (is_inventory_open)
       return;
 
@@ -80,14 +85,15 @@ void setfpsplayercontrols(int cam) {
       move.sprint = false;
     }
 
-  };
-  AA::AddToKeyHandling(wasd);
+  });
 
-  const auto camMove = [](float dt) {
+  // Velocified Movement every delta frame
+  AA::AddToDeltaUpdate([](float dt) {
     if (is_inventory_open)
       return;
+
     float frameCalculatedVelocity = 0.f;
-    frameCalculatedVelocity = dt * move.sprint ? sprint_bonus + currFlySpeed : currFlySpeed;
+    frameCalculatedVelocity = dt * (move.sprint ? sprint_bonus + currFlySpeed : currFlySpeed);
     if (move.forward) {
       moveDir += frontFacingDir;
       AA::ShiftCamPosition(inherited_cam, moveDir * frameCalculatedVelocity);
@@ -108,78 +114,17 @@ void setfpsplayercontrols(int cam) {
       AA::ShiftCamPosition(inherited_cam, moveDir * frameCalculatedVelocity);
       moveDir = glm::vec3(0.f);
     }
-  };
-  AA::AddToDeltaUpdate(camMove);
+  });
 
+  std::cout << ", look = mouse";
   // add mouse movement to change our view direction
   const auto mouselook = [](AA::MouseInput& cursor) {
-    if (!is_inventory_open)
-      AA::ShiftCamPitchAndYaw(inherited_cam, cursor.yOffset, cursor.xOffset);
+    if (is_inventory_open)
+      return;
+
+    AA::ShiftCamPitchAndYaw(inherited_cam, cursor.yOffset, cursor.xOffset);
+
   };
   AA::AddToMouseHandling(mouselook);
-
-  //// add mouse scroll wheel to change fly speed
-  //const auto mousewheelflyspeed = [](AA::ScrollInput& wheel) {
-  //  // set flyspeed when mouse wheel moves
-  //  if (wheel.yOffset > 0.1f) {
-  //    currFlySpeed += FLYINCR;
-  //  } else if (wheel.yOffset < -0.1f) {
-  //    currFlySpeed -= FLYINCR;
-  //  }
-
-  //  // cap flyspeed
-  //  if (currFlySpeed >= MAXSPEED) {
-  //    currFlySpeed = MAXSPEED;
-  //  } else if (currFlySpeed <= 1.f) {
-  //    currFlySpeed = 1.000001f;
-  //  }
-
-  //  // set flyspeed if it changed
-  //  if (currFlySpeed != prevFlySpeed) {
-  //    prevFlySpeed = currFlySpeed;
-  //  }
-  //};
-  //AA::AddToScrollHandling(mousewheelflyspeed);
-
-
-  // INTERFACE STUFF
-  for (float i = .4f; i < .9f; i += .1f)
-    for (float j = -.8f; j < -.1f; j += .1f)
-      //AA::AddButton(AA::vec2(i, j), AA::vec2(.045, .045), AA::vec3(.5f), .85f);
-      AA::AddButton(AA::vec2(i, j), AA::vec2(.045, .045), .85f, "E:\\AssetPack\\tile.bmp");
-
-  //AA::AddButton(AA::vec2(.0, .0), AA::vec2(1, 1), .85f, "E:\\AssetPack\\tile.bmp");
-
-
-  AA::SetGUIVisibility(is_inventory_open);
-
-  const char* open_inv = "..\\ExampleProject\\res\\open_inv.ogg";
-  static int open_sound_id = AA::AddSoundEffect(open_inv);
-
-  const char* close_inv = "..\\ExampleProject\\res\\close_inv.ogg";
-  static int close_sound_id = AA::AddSoundEffect(close_inv);
-
-  AA::AddToTimedOutKeyHandling([](AA::KeyboardInput& kb)-> bool {
-    if (kb.tab) {
-      if (!is_inventory_open) {
-        // (open inventory) mouse on screen
-        AA::SetMouseToNormal();
-        AA::SetMouseReadToNormal();
-        is_inventory_open = true;
-        AA::SetGUIVisibility(is_inventory_open);
-        AA::PlaySoundEffect(open_sound_id);
-        return true;
-      } else {
-        // (close inventory) mouse in fpp hidden snapping ot middle mode
-        AA::SetMouseToDisabled();
-        AA::SetMouseReadToFPP();
-        is_inventory_open = false;
-        AA::SetGUIVisibility(is_inventory_open);
-        AA::PlaySoundEffect(close_sound_id);
-        return true;
-      }
-    }
-    return false;
-  });
 
 }

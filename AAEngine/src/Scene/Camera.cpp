@@ -31,7 +31,7 @@ void Camera::resetViewportVars() {
   TopLeftPositionOnScreen = glm::vec2(0.f);
   RatioToScreen = glm::vec2(1);
   Position = glm::vec3(0.f);
-  FOV = 45.f;
+  FOV = 75.f;
   Yaw = -90.f;
   Pitch = 0.f;
   MaxRenderDistance = 2500.f;
