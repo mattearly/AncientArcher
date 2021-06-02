@@ -85,13 +85,6 @@ int OGLShader::getAndCheckShaderUniform(const std::string& name) const {
   return shader_var_id;
 }
 
-/// <summary>
-/// Deletes the shader program from the GPU. The Shader is no longer usable after calling this.
-/// </summary>
-//void OGLShader::deleteShader() {
-//  glDeleteProgram(ID);
-//}
-
 void OGLShader::LoadShader(const char* vert_source, const char* frag_source) {
   /* compile vertex (points) shader */
   int vertexShader = glCreateShader(GL_VERTEX_SHADER);
