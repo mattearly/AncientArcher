@@ -26,7 +26,7 @@ void setplayerlightradius(int ourcam)
   * 600       1.0       0.007   0.0002
   * 3250      1.0       0.0014  0.000007
   */
-  static int raidus_light_id = AA::AddPointLight(AA::GetCamPosition(local_cam), 1.f, .007f, .0002f, glm::vec3(1.f), glm::vec3(1.f), glm::vec3(1.f));
+  static int raidus_light_id = AA::AddPointLight(AA::GetCamPosition(local_cam), 1.f, .0014f, .000007f, glm::vec3(1), glm::vec3(1), glm::vec3(1.f));
 
   AA::AddToUpdate([](){
     AA::MovePointLight(raidus_light_id, AA::GetCamPosition(local_cam));

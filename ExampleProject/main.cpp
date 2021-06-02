@@ -21,31 +21,30 @@ int main(int argc, char** argv) {
   setfpsplayercontrols(ourcam);
   //setupflashlight(ourcam);
   setplayerlightradius(ourcam);
-  setgui(ourcam);  
+  setgui(ourcam);
 
   setmodels(ourcam);
   setskybox();
-  setdirlight();
+  //setdirlight();
 
   setupsoundeffects();
   setmusic();
 
-    //<< "Hotkeys:\n"
-    //<< " WASD:  Move\n"
-    //<< " Mouse: Look\n"
-    //<< " TAB:   Toggle Mouse Control (Inventory GUI)\n"
-    //<< " F:     Toggle Flashlight\n"
-    //<< " 1:     Sound Effect (lazer sound)\n"
-    //<< " 2:     Sound Effect (enchant sound)\n"
-    //<< " F1:    Toggle Sky Light\n"
-    //<< " P:     Play Long Sound (Music)\n"
-    //<< " O:     Stop Long Sound (Music)\n"
-    //<< " I:     Pause Long Sound (Music)\n"
-    //<< " K:     Resume Long Sound (Music)\n"
-    //<< " U:     Unload Long Sound (Music)\n"
-    //<< " R:     Reload Long Sound (Music)\n"
-    //<< " Wheel: Vol Up/Down (Music)\n";
-
+  //<< "Hotkeys:\n"
+  //<< " WASD:  Move\n"
+  //<< " Mouse: Look\n"
+  //<< " TAB:   Toggle Mouse Control (Inventory GUI)\n"
+  //<< " F:     Toggle Flashlight\n"
+  //<< " 1:     Sound Effect (lazer sound)\n"
+  //<< " 2:     Sound Effect (enchant sound)\n"
+  //<< " F1:    Toggle Sky Light\n"
+  //<< " P:     Play Long Sound (Music)\n"
+  //<< " O:     Stop Long Sound (Music)\n"
+  //<< " I:     Pause Long Sound (Music)\n"
+  //<< " K:     Resume Long Sound (Music)\n"
+  //<< " U:     Unload Long Sound (Music)\n"
+  //<< " R:     Reload Long Sound (Music)\n"
+  //<< " Wheel: Vol Up/Down (Music)\n";
 
   //setanimmodels(ourcam);
   AA::SetWindowClearColor(glm::vec3(0));
