@@ -78,15 +78,7 @@ void RenderStrip(const int& vao, const int& count) {
   glBindVertexArray(0);
 }
 
-/// <summary>
-/// Sets the size of the OpenGL viewport
-/// </summary>
-/// <param name="x">starting loc</param>
-/// <param name="y">starting loc</param>
-/// <param name="w">width</param>
-/// <param name="h">height</param>
-void SetViewportSize(int x, int y, int w, int h) {
-  glViewport(x, y, w, h);
+void SetViewportSize(int x, int y, int w, int h) {  glViewport(x, y, w, h);
 }
 
 /// <summary>
@@ -228,7 +220,11 @@ u32 Upload2DTex(const unsigned char* tex_data, int width, int height) {
   //try: https://stackoverflow.com/questions/23150123/loading-png-with-stb-image-for-opengl-texture-gives-wrong-colors
   //glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
 
-  glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, tex_data);
+  //glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, tex_data);
+
+  //https://youtu.be/n4k7ANAFsIQ?t=910
+  glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA8, width, height, /*border*/0, GL_RGBA, GL_UNSIGNED_BYTE, tex_data);
+
   glGenerateMipmap(GL_TEXTURE_2D);
 
   glBindTexture(GL_TEXTURE_2D, 0);
@@ -263,8 +259,16 @@ void SetMSAA(const bool enabled) {
 }
 
 void SetBlend(const bool enabled) {
-  glBlendFunc(GL_ONE, GL_ONE_MINUS_SRC_ALPHA);
-  glEnable(GL_BLEND);
+  if(enabled)
+  {
+    //glBlendFunc(GL_ONE, GL_ONE_MINUS_SRC_ALPHA);
+    glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+    glEnable(GL_BLEND);
+  }
+  else
+  {
+    glDisable(GL_BLEND);
+  }
 }
 
 }  // end namespace OGLGraphics

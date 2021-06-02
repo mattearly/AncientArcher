@@ -29,11 +29,13 @@ inline u32 LoadTexture(const string& texture_path) {
     }
   }
 
+  auto rgb_type = STBI_rgb_alpha;
+
   TextureInfo a_new_texture_info;
   unsigned char* texture_data = nullptr;
   int width = 0, height = 0, nrComponents = 0;
   stbi_set_flip_vertically_on_load(1);
-  texture_data = stbi_load(texture_path.c_str(), &width, &height, &nrComponents, STBI_rgb);
+  texture_data = stbi_load(texture_path.c_str(), &width, &height, &nrComponents, rgb_type);
   if (texture_data) {
     switch (Settings::Get()->GetOptions().renderer) {
     case RenderingFramework::OPENGL:
@@ -61,6 +63,8 @@ inline int loadMaterialTextures(const aiScene* scn, const aiMaterial* mat, aiTex
   if (num_textures == 0) {
     return -3;
   }
+
+  auto rgb_type = STBI_rgb_alpha;
   
   for (u32 i = 0; i < num_textures; ++i) {
     // make sure texture exists
@@ -97,7 +101,7 @@ inline int loadMaterialTextures(const aiScene* scn, const aiMaterial* mat, aiTex
         int width, height, nrComponents;
         stbi_set_flip_vertically_on_load(1);
         int texture_size = ai_embedded_texture->mWidth * std::max(ai_embedded_texture->mHeight, 1u);
-        unsigned char* data = stbi_load_from_memory(reinterpret_cast<unsigned char*>(ai_embedded_texture->pcData), texture_size, &width, &height, &nrComponents, STBI_rgb);
+        unsigned char* data = stbi_load_from_memory(reinterpret_cast<unsigned char*>(ai_embedded_texture->pcData), texture_size, &width, &height, &nrComponents, rgb_type);
         if (data) {
           switch (Settings::Get()->GetOptions().renderer) {
           case RenderingFramework::OPENGL:
@@ -148,7 +152,7 @@ inline int loadMaterialTextures(const aiScene* scn, const aiMaterial* mat, aiTex
       // try
       unsigned char* data = nullptr;
       for (const auto& a_path : potential_paths) {
-        data = stbi_load(a_path.c_str(), &width, &height, &nrComponents, STBI_rgb);
+        data = stbi_load(a_path.c_str(), &width, &height, &nrComponents, rgb_type);
         if (data) {
           switch (Settings::Get()->GetOptions().renderer) {
           case RenderingFramework::OPENGL:
