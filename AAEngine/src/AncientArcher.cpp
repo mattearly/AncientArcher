@@ -342,15 +342,19 @@ void InitEngine() {
         OGLGraphics::SetViewportSize(0, 0, w, h);
         break;
       case RenderingFramework::D3D:
+        throw("d3d not implemented");
         break;
       case RenderingFramework::VULKAN:
+        throw("vulkan not implemented");
         break;
       }
       for (auto& cam : mCameras) {
         cam.Width = static_cast<int>(w * cam.RatioToScreen.x);
         cam.Height = static_cast<int>(h * cam.RatioToScreen.y);
         cam.updateProjectionMatrix();
+#if _DEBUG
         std::cout << "projection updated for cam " << cam.GetUID() << '\n';
+#endif
       }
       isWindowSizeDirty = true;
     });
@@ -847,8 +851,11 @@ void InitEngine() {
 }
 i32 Run() {
   if (!isEngineInit) {
-    std::cout << "init first\n";
+#if _DEBUG
+    std::cout << "Attempted Run but InitEngine has not been invoked.\n";
+#endif
     return -4;
+   
   }
   begin();
   while (!glfwWindowShouldClose(mWindow)) {
