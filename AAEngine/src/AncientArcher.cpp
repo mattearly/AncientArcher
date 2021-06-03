@@ -253,7 +253,7 @@ void teardown() {
     mDiffShader = NULL;
   }
 }
-// End Interanl Only
+// End Internal Only
 
 
 // Init, Run, Shutdown, Reset
