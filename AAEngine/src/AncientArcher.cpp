@@ -20,6 +20,9 @@
 #include "Utility/QueryShader.h"
 #include <glad/glad.h>
 #include <GLFW/glfw3.h>
+#include <imgui.h>
+#include "vendor/imgui/imgui_impl_glfw.h"
+#include "vendor/imgui/imgui_impl_opengl3.h"
 #include <string>
 #include <sstream>
 #include <iomanip>
@@ -166,6 +169,7 @@ void update() {
 }
 void render() {
   OGLGraphics::ClearScreen();
+
   if (isWindowSizeDirty) {
     //if (mCameras.size() == 0) {
     //  throw("no cameras");
@@ -211,6 +215,17 @@ void render() {
   if (mGUI) {
     mGUI->Draw();
   }
+  ImGui_ImplOpenGL3_NewFrame();
+  ImGui_ImplGlfw_NewFrame();
+  ImGui::NewFrame();
+
+
+  ImGui::Text("Hello, world!");
+
+  ImGui::Render();
+  ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
+
+
 
   glfwSwapBuffers(mWindow);
 }
@@ -228,6 +243,10 @@ void teardown() {
   for (const auto& ap : mAnimProps) {
     ModelLoader::UnloadGameObject(ap.mMeshes);
   }
+
+  ImGui_ImplOpenGL3_Shutdown();
+  ImGui_ImplGlfw_Shutdown();
+  ImGui::DestroyContext();
 
   for (auto& spkr : mSpeakers) {
     delete spkr;
