@@ -132,6 +132,8 @@
     <ClInclude Include="src\Utility\Conversions.h" />
     <ClInclude Include="src\Base\UniqueInstance.h" />
     <ClInclude Include="src\Utility\QueryShader.h" />
+    <ClInclude Include="src\vendor\imgui\imgui_impl_glfw.h" />
+    <ClInclude Include="src\vendor\imgui\imgui_impl_opengl3.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\Renderer\AnimModelLoader.cpp" />
@@ -163,6 +165,8 @@
     <ClCompile Include="src\Renderer\OpenGL\OGLGraphics.cpp" />
     <ClCompile Include="src\Renderer\OpenGL\OGLShader.cpp" />
     <ClCompile Include="src\Renderer\OpenGL\Skybox.cpp" />
+    <ClCompile Include="src\vendor\imgui\imgui_impl_glfw.cpp" />
+    <ClCompile Include="src\vendor\imgui\imgui_impl_opengl3.cpp" />
     <ClCompile Include="src\vendor\stb\stb_image.cpp" />
     <ClCompile Include="src\Scene\Vertex.cpp" />
   </ItemGroup>
