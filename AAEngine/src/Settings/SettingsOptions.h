@@ -1,6 +1,6 @@
 #pragma once
 namespace AA {
-enum class WindowingType { FULLSCREEN, WINDOWED, BORDERLESS };
+enum class WindowingType { FULLSCREEN, WINDOWED, BORDERLESS, MAXIMIZED };
 enum class RenderingFramework { OPENGL, D3D, VULKAN };
 struct SettingsOptions
 {
@@ -12,6 +12,7 @@ struct SettingsOptions
   WindowingType windowType = WindowingType::WINDOWED;
   int default_window_width = 1280;
   int default_window_height = 720;
+  bool vsync_enabled = false;
 };
 
 }
