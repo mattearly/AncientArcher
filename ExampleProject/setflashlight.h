@@ -21,8 +21,21 @@ void setupflashlight(int ourcam) {
   isFlashlightSetup = true;
   static int cam = ourcam;
 
+  flashlight_id = AA::AddSpotLight(
+    AA::GetCamPosition(cam),
+    AA::GetCamFront(cam),
+    fl_inner_radius,
+    fl_outer_radius,
+    fl_constant,
+    fl_linear,
+    fl_quad,
+    fl_ambient,
+    fl_diffuse,
+    fl_specular
+  );
+  flashlight_on = true;
+
   std::cout << ", f = toggle flashlight";
-  // toggle flashlight_id
   AA::AddToTimedOutKeyHandling([](AA::KeyboardInput& kb) {
     if (kb.f) {
       if (flashlight_on) {
