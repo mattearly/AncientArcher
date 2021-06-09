@@ -19,8 +19,8 @@ int main(int argc, char** argv) {
   setupengine();
   static int ourcam = AA::AddCamera(AA::GetWindowWidth(), AA::GetWindowHeight());
   setfpsplayercontrols(ourcam);
-  //setupflashlight(ourcam);
-  setplayerlightradius(ourcam);
+  setupflashlight(ourcam);
+  //setplayerlightradius(ourcam);
   setgui(ourcam);
 
   setmodels(ourcam);
