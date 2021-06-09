@@ -20,9 +20,6 @@
 #include "Utility/QueryShader.h"
 #include <glad/glad.h>
 #include <GLFW/glfw3.h>
-#include <imgui.h>
-#include "vendor/imgui/imgui_impl_glfw.h"
-#include "vendor/imgui/imgui_impl_opengl3.h"
 #include <string>
 #include <sstream>
 #include <iomanip>
@@ -31,6 +28,7 @@
 #include <iostream>
 #include <algorithm>
 #include <unordered_map>
+#include "GUI/imGUI.h"
 
 namespace AA {
 // Internal Only (helpers, states, types, etc)
@@ -44,6 +42,7 @@ enum class MouseReporting { UNSET, STANDARD, PERSPECTIVE };
 MouseReporting mMouseReporting = MouseReporting::UNSET;
 
 PlainGUI* mGUI = NULL;
+imGUI* mimGUI = NULL;
 const char* vert_path =      "..\\AAEngine\\GLSL_src\\vert_3D.glsl";
 const char* frag_lit_path =  "..\\AAEngine\\GLSL_src\\frag_lit.glsl";
 const char* frag_diff_path = "..\\AAEngine\\GLSL_src\\frag_diff.glsl";
@@ -215,17 +214,12 @@ void render() {
   if (mGUI) {
     mGUI->Draw();
   }
-  ImGui_ImplOpenGL3_NewFrame();
-  ImGui_ImplGlfw_NewFrame();
-  ImGui::NewFrame();
 
-
-  ImGui::Text("Hello, world!");
-
-  ImGui::Render();
-  ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
-
-
+  if (mimGUI) {
+    mimGUI->NewFrame();
+    mimGUI->Update();
+    mimGUI->Render();
+  }
 
   glfwSwapBuffers(mWindow);
 }
@@ -244,9 +238,9 @@ void teardown() {
     ModelLoader::UnloadGameObject(ap.mMeshes);
   }
 
-  ImGui_ImplOpenGL3_Shutdown();
-  ImGui_ImplGlfw_Shutdown();
-  ImGui::DestroyContext();
+  if (mimGUI) {
+    mimGUI->Shutdown();
+  }
 
   for (auto& spkr : mSpeakers) {
     delete spkr;
@@ -354,13 +348,8 @@ void InitEngine() {
     {
       throw("Unable to context to OpenGL");
     }
-#if _DEBUG
-    IMGUI_CHECKVERSION();
-#endif
-    ImGui::CreateContext();
 
-    ImGui_ImplGlfw_InitForOpenGL(mWindow, true);
-    ImGui_ImplOpenGL3_Init((char *)glGetString(GL_NUM_SHADING_LANGUAGE_VERSIONS));
+
 
     OGLGraphics::SetMSAA(local_options.MSAA);
     OGLGraphics::SetBlend(true);
@@ -1858,7 +1847,7 @@ void SetMouseReadToNormal() noexcept {
 }
 // End Mouse
 
-
+// GUI
 void AddButton(vec2 pos, vec2 scale, vec3 color, float alpha) {
   mGUI->AddButton(pos, scale.x, scale.y, color, alpha);
 }
@@ -1874,6 +1863,31 @@ void SetGUIVisibility(const bool value) {
     mGUI->HideInterface();
   }
 }
+// End GUI
+
+// imGUI
+void UseIMGUI(const bool value) {
+  if (value==false)
+  {
+    if (mimGUI){
+      delete mimGUI;
+      mimGUI = NULL;
+    }
+  }
+  else if (value==true)
+  {
+    if (mimGUI)
+    {
+      return;
+    }
+    else
+    {
+      mimGUI = new imGUI();
+      mimGUI->Init(mWindow, (char *)GL_NUM_SHADING_LANGUAGE_VERSIONS);
+    }
+  }
+}
+// End imGUI
 
 
 // Window

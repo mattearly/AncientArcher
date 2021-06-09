@@ -87,6 +87,7 @@
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="src\GUI\imGUI.h" />
     <ClInclude Include="src\Renderer\AnimModelLoader.h" />
     <ClInclude Include="src\Renderer\TextureLoader.h" />
     <ClInclude Include="src\Scene\AnimVertex.h" />
@@ -136,6 +137,7 @@
     <ClInclude Include="src\vendor\imgui\imgui_impl_opengl3.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="src\GUI\imGUI.cpp" />
     <ClCompile Include="src\Renderer\AnimModelLoader.cpp" />
     <ClCompile Include="src\Renderer\LoaderVars.cpp" />
     <ClCompile Include="src\Renderer\ModelLoader.cpp" />

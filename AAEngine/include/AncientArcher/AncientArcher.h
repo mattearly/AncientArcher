@@ -126,6 +126,9 @@ void AddButton(vec2 pos, vec2 scale, float alpha, const char* texture_path = "")
 void SetGUIVisibility(const bool value);
 // End GUI
 
+// imGUI
+void UseIMGUI(const bool value);
+// end imGUI
 
 // Window
 void SetWindowClearColor(vec3 color = vec3(.35f, .15f, .35f));
