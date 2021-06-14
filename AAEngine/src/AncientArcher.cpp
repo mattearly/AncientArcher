@@ -349,8 +349,6 @@ void InitEngine() {
       throw("Unable to context to OpenGL");
     }
 
-
-
     OGLGraphics::SetMSAA(local_options.MSAA);
     OGLGraphics::SetBlend(true);
     if (local_options.vsync_enabled) {
@@ -871,6 +869,33 @@ void InitEngine() {
   SetWindowClearColor();
 
   mGUI = new PlainGUI();
+
+  ::glfwSetDropCallback(mWindow, [](GLFWwindow* w, int count, const char** paths){
+    if (!Settings::Get()->GetOptions().drag_and_drop_files_support)
+      return;
+
+
+    int i;
+    for (i = 0;  i < count;  i++){
+      std::string proc_ = paths[i];
+
+
+      std::size_t the_last_slash = proc_.find_last_of("/\\") + 1;
+      std::size_t the_last_dot = proc_.find_last_of(".");
+
+      //std::string path_to = proc_.substr(0, the_last_slash);  // path to filename's dir
+
+      std::string file_extension = proc_.substr(
+        static_cast<std::basic_string<char,
+        std::char_traits<char>,
+        std::allocator<char>>::size_type>(the_last_dot) + 1);  // get the file extension (type of file)
+
+      if (file_extension == "fbx" || file_extension == "FBX")
+      {
+        AddProp(paths[i], 0, SHADERTYPE::LIT);
+      }
+    }
+  });
 }
 i32 Run() {
   if (!isEngineInit) {
@@ -919,6 +944,11 @@ void SoftReset() noexcept {
   SetMouseReadToNormal();
 
   SetWindowClearColor();
+}
+void DragAndDropFiles(bool allowed) {
+ auto tmp_settings = Settings::Get()->GetOptions();
+ tmp_settings.drag_and_drop_files_support = allowed;
+ Settings::Get()->SetOptions(tmp_settings);
 }
 // End Init, Run, Shutdown, Reset
 

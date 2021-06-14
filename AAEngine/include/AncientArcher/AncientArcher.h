@@ -12,11 +12,13 @@
 
 namespace AA {
 
+
 // Init, Run, Shutdown, Reset
 void InitEngine();
 i32 Run();
 void Shutdown() noexcept;
 void SoftReset() noexcept;
+void DragAndDropFiles(bool allowed);
 // End Init, Run, Shutdown, Reset
 
 
@@ -126,9 +128,11 @@ void AddButton(vec2 pos, vec2 scale, float alpha, const char* texture_path = "")
 void SetGUIVisibility(const bool value);
 // End GUI
 
+
 // imGUI
 void UseIMGUI(const bool value);
-// end imGUI
+// End imGUI
+
 
 // Window
 void SetWindowClearColor(vec3 color = vec3(.35f, .15f, .35f));

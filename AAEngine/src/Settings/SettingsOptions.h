@@ -13,6 +13,7 @@ struct SettingsOptions
   int default_window_width = 1280;
   int default_window_height = 720;
   bool vsync_enabled = false;
+  bool drag_and_drop_files_support = true;
 };
 
 }
