@@ -9,18 +9,23 @@ void setmodels(int cam) {
     return;
   is_models_set = true;
   int inherited_cam = cam;
+
+
+
+
+  // spinning peasant man demo
   static int peasant_man = AA::AddProp("..\\ExampleProject\\res\\peasant_man.dae", inherited_cam, AA::SHADERTYPE::LIT);
+  const float dist_from_us = 200.f;
+  const float dist_down = 10.f;
 
-  // mesh demos
-  //const float dist_from_us = 200.f;
-  //const float dist_down = 10.f;
+  AA::printSceneHeaderInfo(AA::extractSceneInfo("..\\ExampleProject\\res\\peasant_man.dae"));
+  AA::SetPropTranslation(peasant_man, AA::vec3(0, -dist_down, -dist_from_us));
+  AA::AddToDeltaUpdate([](float dt) {
+    static float current_rotation = 0.f;
+    current_rotation += dt * 120;
+    AA::SetPropRotationY(peasant_man, current_rotation);
+  }
+  );
 
-  //AA::printSceneHeaderInfo(AA::extractSceneInfo("..\\ExampleProject\\res\\peasant_man.dae"));
-  //AA::SetPropTranslation(peasant_man, AA::vec3(0, -dist_down, -dist_from_us));
-  //AA::AddToDeltaUpdate([](float dt) {
-  //  static float current_rotation = 0.f;
-  //  current_rotation += dt * 120;
-  //  AA::SetPropRotationY(peasant_man, current_rotation);
-  //}
-  //);
+
 }
