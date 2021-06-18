@@ -22,29 +22,22 @@ int main(int argc, char** argv) {
   setupflashlight(ourcam);
   //setplayerlightradius(ourcam);
   setgui(ourcam);
-
   setmodels(ourcam);
   setskybox();
   //setdirlight();
-
   setupsoundeffects();
   setmusic();
-
-  //<< "Hotkeys:\n"
-  //<< " WASD:  Move\n"
-  //<< " Mouse: Look\n"
-  //<< " TAB:   Toggle Mouse Control (Inventory GUI)\n"
-  //<< " F:     Toggle Flashlight\n"
-  //<< " 1:     Sound Effect (lazer sound)\n"
-  //<< " 2:     Sound Effect (enchant sound)\n"
-  //<< " F1:    Toggle Sky Light\n"
-  //<< " P:     Play Long Sound (Music)\n"
-  //<< " O:     Stop Long Sound (Music)\n"
-  //<< " I:     Pause Long Sound (Music)\n"
-  //<< " K:     Resume Long Sound (Music)\n"
-  //<< " U:     Unload Long Sound (Music)\n"
-  //<< " R:     Reload Long Sound (Music)\n"
-  //<< " Wheel: Vol Up/Down (Music)\n";
+  AA::AddToKeyHandling([](AA::KeyboardInput& kb){
+    if (kb.leftShift && kb.o) {
+      static bool perspective = true;
+      if (!perspective) {
+        AA::SetCamToPerspective(ourcam);
+      } else {
+        AA::SetCamToOrtho(ourcam);
+      }
+      perspective = !perspective;
+      }
+  });
 
   //setanimmodels(ourcam);
   AA::SetWindowClearColor(glm::vec3(0));
