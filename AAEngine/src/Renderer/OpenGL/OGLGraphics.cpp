@@ -55,7 +55,9 @@ void Render(const std::vector<MeshDrawInfo>& meshes, const glm::mat4& translatio
         break;
       case SHADERTYPE::LIT:
       case SHADERTYPE::ANIM_LIT:
-        mLitShader->setInt(("material." + texType).c_str(), i);
+        if (texType == "Albedo") {
+          mLitShader->setInt(("material." + texType).c_str(), i);
+          }
         break;
       }
       glBindTexture(GL_TEXTURE_2D, texture.first);

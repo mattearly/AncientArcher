@@ -11,7 +11,7 @@ out vec4 out_Color;
 struct Material {
   sampler2D Albedo;
   sampler2D Specular;
-  sampler2D Normal;
+//  sampler2D Normal;
   float Shininess;
 };
 
