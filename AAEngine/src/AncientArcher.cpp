@@ -24,11 +24,13 @@
 #include <sstream>
 #include <iomanip>
 #include <utility>
-#include <chrono>
-#include <iostream>
 #include <algorithm>
 #include <unordered_map>
 #include "GUI/imGUI.h"
+
+#ifdef _DEBUG
+#include <iostream>
+#endif
 
 namespace AA {
 // Internal Only (helpers, states, types, etc)
@@ -40,13 +42,11 @@ f32 mFPPMouseSensitivity = mDefaultFPPMouseSensitivity;  ///< mouse sensitivity 
 bool mSwitchedToFPP = false;
 enum class MouseReporting { UNSET, STANDARD, PERSPECTIVE };
 MouseReporting mMouseReporting = MouseReporting::UNSET;
-
 PlainGUI* mGUI = NULL;
 imGUI* mimGUI = NULL;
-const char* vert_path =      "..\\AAEngine\\GLSL_src\\vert_3D.glsl";
-const char* frag_lit_path =  "..\\AAEngine\\GLSL_src\\frag_lit.glsl";
+const char* vert_path = "..\\AAEngine\\GLSL_src\\vert_3D.glsl";
+const char* frag_lit_path = "..\\AAEngine\\GLSL_src\\frag_lit.glsl";
 const char* frag_diff_path = "..\\AAEngine\\GLSL_src\\frag_diff.glsl";
-
 OGLShader* mDiffShader = nullptr;
 OGLShader* mLitShader = nullptr;
 void setupLitShader() {
@@ -116,17 +116,15 @@ void begin() {
 }
 void update() {
   // init delta clock on first tap into update
-  static std::chrono::system_clock::time_point currTime;
-  static std::chrono::system_clock::time_point lastTime = std::chrono::system_clock::now();
-  static std::chrono::duration<f32> deltaTime;
+  static float currTime;
+  static float lastTime = (float)glfwGetTime();
+  f32 elapsedTime;
 
   // update engine run delta times
-  currTime = std::chrono::system_clock::now();
-  deltaTime = currTime - lastTime;
+  currTime = (float)glfwGetTime();
+  elapsedTime = currTime - lastTime;
   lastTime = currTime;
 
-  // go through all updates that need access to delta time
-  f32 elapsedTime = deltaTime.count();
 
   // process keyboard input
   mNonSpammableKeysTimeout += elapsedTime;
@@ -315,12 +313,10 @@ void InitEngine() {
   glfwInit();
 
   auto local_options = Settings::Get()->GetOptions();
-  if (local_options.windowType == WindowingType::MAXIMIZED)
-  {
+  if (local_options.windowType == WindowingType::MAXIMIZED) {
     glfwWindowHint(GLFW_MAXIMIZED, GLFW_FALSE);
   }
-  if (local_options.MSAA == true)
-  {
+  if (local_options.MSAA == true) {
     glfwWindowHint(GLFW_SAMPLES, local_options.msaa_samples);
   }
 
@@ -882,20 +878,12 @@ void InitEngine() {
     mNewKeyReads = true;
 
   });
-
-  SetMouseToNormal();
-  SetMouseReadToNormal();
-  SetWindowClearColor();
-
-  mGUI = new PlainGUI();
-
-  ::glfwSetDropCallback(mWindow, [](GLFWwindow* w, int count, const char** paths){
+  ::glfwSetDropCallback(mWindow, [](GLFWwindow* w, int count, const char** paths) {
     if (!Settings::Get()->GetOptions().drag_and_drop_files_support)
       return;
 
-
     int i;
-    for (i = 0;  i < count;  i++){
+    for (i = 0; i < count; i++) {
       std::string proc_ = paths[i];
 
 
@@ -909,20 +897,32 @@ void InitEngine() {
         std::char_traits<char>,
         std::allocator<char>>::size_type>(the_last_dot) + 1);  // get the file extension (type of file)
 
-      if (file_extension == "fbx" || file_extension == "FBX")
-      {
-        AddProp(paths[i], 0, SHADERTYPE::LIT);
+      if (file_extension == "fbx" || file_extension == "FBX") {
+        if (mCameras.empty()) {
+          AddProp(paths[i], 0, SHADERTYPE::DIFF);
+          mProps.back().translation.z = -40;
+          //mProps.back().translation.x = -1;
+        } else {
+          AddProp(paths[i], mCameras.front().GetUID(), SHADERTYPE::LIT);
+        }
       }
     }
   });
-}
+
+  SetMouseToNormal();
+  SetMouseReadToNormal();
+  SetWindowClearColor();
+
+  mGUI = new PlainGUI();
+
+  }
 i32 Run() {
   if (!isEngineInit) {
 #if _DEBUG
     std::cout << "Attempted Run but InitEngine has not been invoked.\n";
 #endif
     return -4;
-   
+
   }
   begin();
   while (!glfwWindowShouldClose(mWindow)) {
@@ -965,9 +965,9 @@ void SoftReset() noexcept {
   SetWindowClearColor();
 }
 void DragAndDropFiles(bool allowed) {
- auto tmp_settings = Settings::Get()->GetOptions();
- tmp_settings.drag_and_drop_files_support = allowed;
- Settings::Get()->SetOptions(tmp_settings);
+  auto tmp_settings = Settings::Get()->GetOptions();
+  tmp_settings.drag_and_drop_files_support = allowed;
+  Settings::Get()->SetOptions(tmp_settings);
 }
 // End Init, Run, Shutdown, Reset
 
@@ -1898,23 +1898,17 @@ void SetGUIVisibility(const bool value) {
 
 // imGUI
 void UseIMGUI(const bool value) {
-  if (value==false)
-  {
-    if (mimGUI){
+  if (value == false) {
+    if (mimGUI) {
       delete mimGUI;
       mimGUI = NULL;
     }
-  }
-  else if (value==true)
-  {
-    if (mimGUI)
-    {
+  } else if (value == true) {
+    if (mimGUI) {
       return;
-    }
-    else
-    {
+    } else {
       mimGUI = new imGUI();
-      mimGUI->Init(mWindow, (char *)GL_NUM_SHADING_LANGUAGE_VERSIONS);
+      mimGUI->Init(mWindow, (char*)GL_NUM_SHADING_LANGUAGE_VERSIONS);
     }
   }
 }
