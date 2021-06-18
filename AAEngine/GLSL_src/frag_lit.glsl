@@ -50,9 +50,12 @@ uniform int NUM_SPOT_LIGHTS;
 
 vec3 CalcDirectionalLight(vec3 normal, vec3 viewDir){
   vec3 lightDir = normalize(-directionalLight.Direction);
+  // diffuse shading
   float diff = max(dot(normal, lightDir), 0.);
+  // specular shading
   vec3 reflectDir = reflect(-lightDir, normal);
   float spec = pow(max(dot(viewDir, reflectDir), 0.), material.Shininess);
+  // combine results
   vec3 ambient = directionalLight.Ambient * texture(material.Albedo, pass_TexUV).rgb;
   vec3 diffuse = directionalLight.Diffuse * diff * texture(material.Albedo, pass_TexUV).rgb;
   vec3 specular = directionalLight.Specular * spec * texture(material.Specular, pass_TexUV).rgb;
@@ -61,11 +64,15 @@ vec3 CalcDirectionalLight(vec3 normal, vec3 viewDir){
 
 vec3 CalcPointLight(PointLight light, vec3 normal, vec3 viewDir){
   vec3 lightDir = normalize(light.Position - pass_Pos);
+  // diffuse shading
   float diff = max(dot(normal, lightDir), 0.0);
+  // specular shading
   vec3 reflectDir = reflect(-lightDir, normal);
   float spec = pow(max(dot(viewDir, reflectDir), 0.0), material.Shininess);
+  // attenuation
   float dist = length(light.Position - pass_Pos);
   float attenuation = 1.0 / (light.Constant + light.Linear * dist + light.Quadratic * (dist * dist));
+  // combine results
   vec3 ambient = light.Ambient * texture(material.Albedo, pass_TexUV).rgb;
   vec3 diffuse = light.Diffuse * diff * texture(material.Albedo, pass_TexUV).rgb;
   vec3 specular = light.Specular * spec * texture(material.Specular, pass_TexUV).rgb;
@@ -77,14 +84,19 @@ vec3 CalcPointLight(PointLight light, vec3 normal, vec3 viewDir){
 
 vec3 CalcSpotLight(SpotLight light, vec3 normal, vec3 viewDir){
   vec3 lightDir = normalize(light.Position - pass_Pos);
+  // diffuse shading
   float diff = max(dot(normal, lightDir), 0.0);
+  // specular shaing
   vec3 reflectDir = reflect(-lightDir, normal);
   float spec = pow(max(dot(viewDir, reflectDir), 0.0), material.Shininess);
+  // attenuation
   float dist = length(light.Position - pass_Pos);
   float attenuation = 1.0 / (light.Constant + light.Linear * dist + light.Quadratic * (dist * dist));
+  // cone of light
   float theta = dot(lightDir, normalize(-light.Direction));
   float epsilon = light.CutOff - light.OuterCutOff;
   float intensity = clamp((theta - light.OuterCutOff) / epsilon, 0.0, 1.0);
+  // combine results
   vec3 ambient = light.Ambient * texture(material.Albedo, pass_TexUV).rgb;
   vec3 diffuse = light.Diffuse * diff * texture(material.Albedo, pass_TexUV).rgb;
   vec3 specular = light.Specular * spec * texture(material.Specular, pass_TexUV).rgb;
