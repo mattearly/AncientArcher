@@ -29,7 +29,7 @@ uniform mat4 u_model_matrix;
 void main()
 {
   pass_Pos = (u_model_matrix * vec4(inPos, 1.0)).xyz;
-  pass_Norm = inNorm;
+  pass_Norm = mat3(transpose(inverse(u_model_matrix))) * inNorm;
   pass_TexUV = inTexUV;
   pass_Tangent = inTangent;
   pass_BiTangent = inBiTangent;
