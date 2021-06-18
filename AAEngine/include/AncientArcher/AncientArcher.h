@@ -24,9 +24,11 @@ void DragAndDropFiles(bool allowed);
 
 // Camera
 i32 AddCamera(i32 w, i32 h);
+i32 AddCamera();
 bool RemoveCamera(i32 camId);
 void SetCamMaxRenderDistance(i32 camId, f32 amt);
 void SetCamToPerspective(i32 camId);
+void SetCamToOrtho(i32 camId);
 void SetCamFOV(i32 camId, f32 new_fov);
 void SetCamDimensions(i32 camId, i32 w, i32 h);
 void SetCamPosition(i32 camId, vec3 new_loc);
@@ -41,7 +43,6 @@ f32 GetCamPitch(i32 camId);
 f32 GetCamYaw(i32 camId);
 vec2 GetPitchAndYaw(i32 camId);
 mat4 GetProjectionMatrix(i32 camId);
-mat4 GetOrthoMatrix(i32 camId);
 // End Camera
 
 

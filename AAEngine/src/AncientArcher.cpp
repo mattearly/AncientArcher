@@ -75,11 +75,11 @@ i32                       NUM_SPOT_LIGHTS = 0;
 const i32                 MAXPOINTLIGHTS = 50;
 std::vector<PointLight>   mPointLights;      ///< array of current poi32 lights
 std::vector<Camera>       mCameras;          ///< array of available cameras
-void updateProjectionFromCam(OGLShader* shader_to_update, const Camera& from_cam) { 
-  if (!shader_to_update) 
-    return; 
-  shader_to_update->use(); 
-  shader_to_update->setMat4("u_projection_matrix", from_cam.Projection);
+void updateProjectionFromCam(OGLShader* shader_to_update, const Camera& from_cam) {
+  if (!shader_to_update)
+    return;
+  shader_to_update->use();
+  shader_to_update->setMat4("u_projection_matrix", from_cam.mProjectionMatrix);
 }
 std::vector<Prop>         mProps;            ///< array of available inanimate props
 std::vector<AnimProp>     mAnimProps;        ///< array of available animated props
@@ -170,17 +170,29 @@ void render() {
   OGLGraphics::ClearScreen();
 
   if (isWindowSizeDirty) {
-    //if (mCameras.size() == 0) {
-    //  throw("no cameras");
-    //}
-    if (mLitShader) {
-      updateProjectionFromCam(mLitShader, mCameras.front());  //todo: not this front thing from cam blindly
-    }
-    if (mDiffShader) {
-      updateProjectionFromCam(mDiffShader, mCameras.front());
-    }
-    if (mSkybox) {
-      mSkybox->setProjectionMatrix(mCameras.front());
+    if (mCameras.empty()) {
+      float aspect_ratio = (float)GetWindowWidth() / GetWindowHeight();
+      float ortho_height = GetWindowHeight() / 2.f;
+      float ortho_width = ortho_height * aspect_ratio;
+
+      if (mLitShader) {
+        mLitShader->setMat4("u_projection_matrix", glm::ortho(-ortho_width, ortho_width, -ortho_height, ortho_height, .1f, 2000.f));
+        mLitShader->setMat4("u_view_matrix", glm::lookAt(glm::vec3(0), glm::vec3(0,0,-1), glm::vec3(0,1,0)));
+      }
+      if (mDiffShader) {
+        mDiffShader->setMat4("u_projection_matrix", glm::ortho(-ortho_width, ortho_width, -ortho_height, ortho_height, .1f, 2000.f));
+        mDiffShader->setMat4("u_view_matrix", glm::lookAt(glm::vec3(0), glm::vec3(0,0,-1), glm::vec3(0,1,0)));
+      }
+    } else {
+      if (mLitShader) {
+        updateProjectionFromCam(mLitShader, mCameras.front());  //todo: not this front thing from cam blindly
+      }
+      if (mDiffShader) {
+        updateProjectionFromCam(mDiffShader, mCameras.front());
+      }
+      if (mSkybox) {
+        mSkybox->setProjectionMatrix(mCameras.front());
+      }
     }
     isWindowSizeDirty = false;
   }
@@ -189,21 +201,30 @@ void render() {
     switch (p.mShaderType) {
     case SHADERTYPE::LIT:
       if (!mLitShader) break;
+
       mLitShader->use();
-      mLitShader->setMat4("u_view_matrix", mCameras.front().View);
+      if (mCameras.empty())
+        mLitShader->setMat4("u_view_matrix", glm::mat4(1));
+      else
+        mLitShader->setMat4("u_view_matrix", mCameras.front().mViewMatrix);
       break;
     case SHADERTYPE::DIFF:
       if (!mDiffShader) break;
+
       mDiffShader->use();
-      mDiffShader->setMat4("u_view_matrix", mCameras.front().View);
+      if (mCameras.empty())
+        mDiffShader->setMat4("u_view_matrix", glm::mat4(1));
+      else
+        mDiffShader->setMat4("u_view_matrix", mCameras.front().mViewMatrix);
       break;
     }
+
     p.Draw();
   }
 
   //for (auto& ap : mAnimProps) {
   //  mAnimDiffShader->use();
-  //  mAnimDiffShader->setMat4("view", mCameras.front().View);
+  //  mAnimDiffShader->setMat4("view", mCameras.front().mViewMatrix);
   //  ap.Draw();
   //}
 
@@ -372,8 +393,6 @@ void InitEngine() {
       break;
     }
     for (auto& cam : mCameras) {
-      cam.Width = static_cast<int>(w * cam.RatioToScreen.x);
-      cam.Height = static_cast<int>(h * cam.RatioToScreen.y);
       cam.updateProjectionMatrix();
 #if _DEBUG
       std::cout << "projection updated for cam " << cam.GetUID() << '\n';
@@ -958,6 +977,10 @@ i32 AddCamera(i32 w, i32 h) {
   mCameras.emplace_back(w, h);
   return mCameras.back().GetUID();
 }
+i32 AddCamera() {
+  mCameras.emplace_back();
+  return mCameras.back().GetUID();
+}
 bool RemoveCamera(const i32 camId) {
   if (mCameras.empty())
     return false;
@@ -991,8 +1014,24 @@ void SetCamMaxRenderDistance(i32 camId, f32 amt) {
 void SetCamToPerspective(i32 camId) {
   for (auto& cam : mCameras) {
     if (cam.GetUID() == camId) {
-      cam.RenderProjection = RenderProjection::PERSPECTIVE;
+      cam.mProjectionType = ProjectionType::PERSPECTIVE;
       cam.updateProjectionMatrix();
+      cam.updateViewMatrix();
+      updateProjectionFromCam(mLitShader, cam);
+      updateProjectionFromCam(mDiffShader, cam);
+      return;
+    }
+  }
+  throw("cam id doesn't exist or is invalid");
+}
+void SetCamToOrtho(i32 camId) {
+  for (auto& cam : mCameras) {
+    if (cam.GetUID() == camId) {
+      cam.mProjectionType = ProjectionType::ORTHO;
+      cam.updateProjectionMatrix();
+      cam.updateViewMatrix();
+      updateProjectionFromCam(mLitShader, cam);
+      updateProjectionFromCam(mDiffShader, cam);
       return;
     }
   }
@@ -1001,8 +1040,8 @@ void SetCamToPerspective(i32 camId) {
 void SetCamFOV(i32 camId, f32 new_fov) {
   for (auto& cam : mCameras) {
     if (cam.GetUID() == camId) {
-      if (cam.RenderProjection != RenderProjection::PERSPECTIVE)
-        throw("changing FOV on wrong render projection");
+      if (cam.mProjectionType != ProjectionType::PERSPECTIVE)
+        throw("changing FoV in ortho does nothing");
       cam.FOV = new_fov;
       cam.updateProjectionMatrix();
       return;
@@ -1146,45 +1185,7 @@ vec2 GetPitchAndYaw(i32 camId) {
 mat4 GetProjectionMatrix(i32 camId) {
   for (auto& cam : mCameras) {
     if (cam.GetUID() == camId) {
-      mat4 projection = mat4(1);
-      switch (cam.RenderProjection) {
-      case RenderProjection::PERSPECTIVE:
-      {
-        f32 aspectRatio = static_cast<f32>(cam.Width) / static_cast<f32>(cam.Height);
-        projection = glm::perspective(glm::radians(cam.FOV), aspectRatio, 0.0167f, cam.MaxRenderDistance);
-      }
-      break;
-      case RenderProjection::ORTHO:
-        projection = glm::ortho(
-          0.f,
-          static_cast<f32>(cam.Width),
-          0.f,
-          static_cast<f32>(cam.Height),
-          0.0167f,
-          cam.MaxRenderDistance
-        );
-        break;
-      default:
-        break;
-      }
-      return projection;
-    }
-  }
-  throw("cam id doesn't exist or is invalid");
-}
-mat4 GetOrthoMatrix(i32 camId) {
-  for (auto& cam : mCameras) {
-    if (cam.GetUID() == camId) {
-      mat4 ortho = mat4(1);
-      ortho = glm::ortho(
-        0.f,
-        static_cast<f32>(cam.Width),
-        0.f,
-        static_cast<f32>(cam.Height),
-        0.0167f,
-        cam.MaxRenderDistance
-      );
-      return ortho;
+      return cam.mProjectionMatrix;
     }
   }
   throw("cam id doesn't exist or is invalid");

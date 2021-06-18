@@ -5,10 +5,11 @@
 
 namespace AA
 {
-enum class RenderProjection { ORTHO, PERSPECTIVE };
+enum class ProjectionType { ORTHO, PERSPECTIVE };
 class Camera : public UniqueInstance
 {
 public:
+  Camera();
   Camera(int width, int height);
   int              Width;
   int              Height;
@@ -20,14 +21,13 @@ public:
   float            Yaw;
   float            Pitch;
   float            MaxRenderDistance;
-  RenderProjection RenderProjection;
-  glm::mat4        Projection;
-  glm::mat4        View;
-  glm::vec2        TopLeftPositionOnScreen;
-  glm::vec2        RatioToScreen;
+  glm::mat4        mProjectionMatrix;
+  glm::mat4        mViewMatrix;
+  ProjectionType   mProjectionType;
   void updateCameraVectors();
   void updateProjectionMatrix();
   void updateViewMatrix();
+  void changeProjection(ProjectionType new_type);
 private:
   void resetViewportVars();
 };
