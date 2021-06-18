@@ -34,7 +34,7 @@ void main()
   pass_Tangent = inTangent;
   pass_BiTangent = inBiTangent;
 
-  vec4 final_pos = (u_projection_matrix * u_view_matrix * u_model_matrix) * vec4(inPos, 1);
+  vec4 final_pos = u_projection_matrix * u_view_matrix * vec4(pass_Pos, 1);
 
   gl_Position = final_pos;
 
