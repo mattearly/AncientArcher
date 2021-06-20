@@ -10,6 +10,9 @@ void setmodels(int cam) {
   is_models_set = true;
   int inherited_cam = cam;
 
+#ifdef _DEBUG
+  AA::printSceneHeaderInfo(AA::extractSceneInfo("..\\ExampleProject\\res\\peasant_man.dae"));
+#endif
 
 
 
@@ -17,8 +20,6 @@ void setmodels(int cam) {
   static int peasant_man = AA::AddProp("..\\ExampleProject\\res\\peasant_man.dae", inherited_cam, AA::SHADERTYPE::LIT);
   const float dist_from_us = 200.f;
   const float dist_down = 10.f;
-
-  AA::printSceneHeaderInfo(AA::extractSceneInfo("..\\ExampleProject\\res\\peasant_man.dae"));
   AA::SetPropTranslation(peasant_man, AA::vec3(0, -dist_down, -dist_from_us));
   AA::AddToDeltaUpdate([](float dt) {
     static float current_rotation = 0.f;
