@@ -2,5 +2,5 @@
 namespace AA {
 constexpr unsigned int ENGINEVERSIONMAJOR = 0;
 constexpr unsigned int ENGINEVERSIONMINOR = 0;
-constexpr unsigned int ENGINEVERSIONPATCH = 3;
+constexpr unsigned int ENGINEVERSIONPATCH = 4;
 }
