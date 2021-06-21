@@ -99,7 +99,6 @@
     <ClInclude Include="include\AncientArcher\Types.h" />
     <ClInclude Include="src\Scene\BoneInfo.h" />
     <ClInclude Include="src\Sound\SoundEffect.h" />
-    <ClInclude Include="src\Renderer\OpenGL\OGLLights.h" />
     <ClInclude Include="src\Renderer\TextureInfo.h" />
     <ClInclude Include="src\Scene\ColliderSphere.h" />
     <ClInclude Include="src\Scene\Camera.h" />
