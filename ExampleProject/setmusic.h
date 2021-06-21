@@ -40,14 +40,19 @@ void setmusic() {
       if (the_vol > 1.f)
         the_vol = 1.f;
       AA::SetMusicVolume(the_vol);
+#ifdef _DEBUG
       std::cout << "music vol increased to " << the_vol << "\n";
+#endif
     }
     if (si.yOffset < 0) {
       the_vol -= .1f;
       if (the_vol < .0f)
         the_vol = .0f;
       AA::SetMusicVolume(the_vol);
-      std::cout << "music vol decreased to " << the_vol << "\n";    }
+#ifdef _DEBUG
+      std::cout << "music vol decreased to " << the_vol << "\n";
+#endif
+    }
   });
 
 }

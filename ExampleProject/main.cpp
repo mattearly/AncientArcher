@@ -9,7 +9,6 @@
 #include "setmusic.h"
 #include "setdirlight.h"
 #include "setmodels.h"
-#include "setanimmodels.h"
 #include "setgui.h"
 #include "setupengine.h"
 #include "setplayerlightradius.h"
@@ -18,13 +17,15 @@ int main(int argc, char** argv) {
   std::cout << "Running: " << AA::Files::extract_prog_name(argv[0]) << '\n';
   setupengine();
   static int ourcam = AA::AddCamera(AA::GetWindowWidth(), AA::GetWindowHeight());
+  AA::SetTimedOutKeyHandlingLength(.23f);
+
   setfpsplayercontrols(ourcam);
   setupflashlight(ourcam);
-  //setplayerlightradius(ourcam);
+  setplayerlightradius(ourcam);
   setgui(ourcam);
   setmodels(ourcam);
   setskybox();
-  //setdirlight();
+  setdirlight();
   setupsoundeffects();
   setmusic();
   AA::AddToKeyHandling([](AA::KeyboardInput& kb){

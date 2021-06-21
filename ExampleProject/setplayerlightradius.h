@@ -3,8 +3,7 @@
 
 bool is_player_radius_set = false;
 
-void setplayerlightradius(int ourcam)
-{
+void setplayerlightradius(int ourcam) {
   if (is_player_radius_set)
     return;
   is_player_radius_set = true;
@@ -26,14 +25,10 @@ void setplayerlightradius(int ourcam)
   * 600       1.0       0.007   0.0002
   * 3250      1.0       0.0014  0.000007
   */
-  static int raidus_light_id = AA::AddPointLight(AA::GetCamPosition(local_cam), 1.f, .0014f, .000007f, glm::vec3(1), glm::vec3(1), glm::vec3(1.f));
+  static int raidus_light_id = AA::AddPointLight(AA::GetCamPosition(local_cam), 1.f, 0.045f, 0.0075f, glm::vec3(1), glm::vec3(1), glm::vec3(1.f));
 
-  AA::AddToUpdate([](){
+  AA::AddToUpdate([]() {
     AA::MovePointLight(raidus_light_id, AA::GetCamPosition(local_cam));
   });
-
-  
-
-
 
 }

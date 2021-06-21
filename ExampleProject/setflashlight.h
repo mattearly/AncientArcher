@@ -36,7 +36,6 @@ void setupflashlight(int ourcam) {
   flashlight_on = true;
 
   std::cout << ", f = toggle flashlight";
-  AA::SetTimedOutKeyHandlingLength(.1f);
   AA::AddToTimedOutKeyHandling([](AA::KeyboardInput& kb) {
     if (kb.f) {
       if (flashlight_on) {

@@ -1,14 +1,16 @@
 #pragma once
 #include <AncientArcher/AncientArcher.h>
 #include <AncientArcher/Types.h>
+#ifdef _DEBUG
+#include <iostream>
+#endif
 
 bool is_dir_light_setup = false;
 bool dir_light_on = true;
 AA::vec3 dir_light_direction = AA::vec3(-.18f);
-AA::vec3 dir_light_ambient = AA::vec3(.5f);
-AA::vec3 dir_light_diff = AA::vec3(.5f);
-AA::vec3 dir_light_spec = AA::vec3(.5f);
-
+AA::vec3 dir_light_ambient = AA::vec3(.3f);
+AA::vec3 dir_light_diff = AA::vec3(.3f);
+AA::vec3 dir_light_spec = AA::vec3(.3f);
 
 void setdirlight() {
 
@@ -21,12 +23,16 @@ void setdirlight() {
     if (kb.f1) {
       if (dir_light_on) {
         AA::RemoveDirectionalLight();
+#ifdef _DEBUG
         std::cout << "dir light turned off\n";
+#endif
         dir_light_on = false;
         return true;
       } else {
         AA::SetDirectionalLight(dir_light_direction, dir_light_ambient, dir_light_diff, dir_light_spec);
+#ifdef _DEBUG
         std::cout << "dir light turned on\n";
+#endif
         dir_light_on = true;
         return true;
       }
