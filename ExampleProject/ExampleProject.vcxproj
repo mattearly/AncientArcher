@@ -80,7 +80,6 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClInclude Include="setanimmodels.h" />
     <ClInclude Include="setdirlight.h" />
     <ClInclude Include="setflashlight.h" />
     <ClInclude Include="setfpsplayercontrols.h" />

@@ -36,9 +36,6 @@
     <ClInclude Include="setmodels.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="setanimmodels.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="setgui.h">
       <Filter>Header Files</Filter>
     </ClInclude>
