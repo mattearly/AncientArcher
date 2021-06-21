@@ -67,30 +67,36 @@ void setupDiffShader() {
 #endif
   }
 }
-DirectionalLight* mDirectionalLight;         ///< directional light for lit shader(s)
-i32                       NUM_POINT_LIGHTS = 0;
-const i32                 MAXSPOTLIGHTS = 25;
-std::vector<SpotLight>    mSpotLights;       ///< array of current spot lights
-i32                       NUM_SPOT_LIGHTS = 0;
-const i32                 MAXPOINTLIGHTS = 50;
-std::vector<PointLight>   mPointLights;      ///< array of current poi32 lights
-std::vector<Camera>       mCameras;          ///< array of available cameras
+// single directional light
+DirectionalLight* mDirectionalLight;  ///< directional light for lit shader(s)
+// point light system
+i32 mNumPointLightsInUse = 0;
+const i32 MAXSPOTLIGHTS = 25;  // also change on shader if changed here
+std::vector<SpotLight> mSpotLights;  ///< array of current spot lights
+// spot light system
+i32 mNumSpotLightsInUse = 0;
+const i32 MAXPOINTLIGHTS = 50;  // also change on shader if changed here
+std::vector<PointLight> mPointLights;  ///< array of current point lights
+
+std::vector<Camera> mCameras;  ///< array of available cameras
 void updateProjectionFromCam(OGLShader* shader_to_update, const Camera& from_cam) {
   if (!shader_to_update)
     return;
   shader_to_update->use();
   shader_to_update->setMat4("u_projection_matrix", from_cam.mProjectionMatrix);
 }
-std::vector<Prop>         mProps;            ///< array of available inanimate props
-std::vector<AnimProp>     mAnimProps;        ///< array of available animated props
-std::shared_ptr<Skybox>   mSkybox;           ///< the main skybox
-std::vector<Speaker*>     mSpeakers;         ///< array of places to play sound effects from
-std::vector<SoundEffect*> mSoundEffects;     ///< array of ready speaker id to sound effects
-LongSound* mMusic;                           ///< background music
-f32                       mNonSpammableKeysTimeout; ///< keeps track of how long the keys have timed out
-f32                       mNoSpamWaitLength;        ///< how long the non-spammable keys are to time out for at least
-f32                       mSlowUpdateTimeout;       ///< keeps track of how how long the slow update has been timed out
-f32                       mSlowUpdateWaitLength;    ///< ms length the slow update times out for at least
+std::vector<Prop> mProps;  ///< array of available inanimate props
+//std::vector<AnimProp> mAnimProps;  ///< array of available animated props
+std::shared_ptr<Skybox> mSkybox;  ///< the main skybox
+// sound systems
+std::vector<Speaker*> mSpeakers;  ///< array of places to play sound effects from
+std::vector<SoundEffect*> mSoundEffects;  ///< array of ready speaker id to sound effects
+LongSound* mMusic;  ///< background music
+// input, timing, and update
+f32 mNonSpammableKeysTimeout;  ///< keeps track of how long the keys have timed out
+f32 mNoSpamWaitLength;  ///< how long the non-spammable keys are to time out for at least
+f32 mSlowUpdateTimeout;  ///< keeps track of how how long the slow update has been timed out
+f32 mSlowUpdateWaitLength;  ///< ms length the slow update times out for at least
 std::unordered_map<u32, std::function<void()> >               onBegin;               ///< list of functions to run once when runMainAncientArcher is called
 std::unordered_map<u32, std::function<void(f32)> >            onDeltaUpdate;         ///< list of functions that rely on deltatime in the main AncientArcher
 std::unordered_map<u32, std::function<void()> >               onUpdate;              ///< list of functions that run every frame in the main AncientArcher
@@ -104,10 +110,12 @@ KeyboardInput mButtonState = {};
 MouseInput    mMousePosition = {};
 ScrollInput   mMouseWheelScroll = {};
 bool          mNewKeyReads = false;
+// screen size limits
 const i32     MINSCREENWIDTH = 100;
 const i32     MINSCREENHEIGHT = 100;
 const i32     MAXSCREENWIDTH = 7680;  //8k
 const i32     MAXSCREENHEIGHT = 4320;
+// core routines
 void begin() {
   glfwSetWindowShouldClose(mWindow, 0);
   for (const auto& oB : onBegin) {
@@ -124,7 +132,6 @@ void update() {
   currTime = (float)glfwGetTime();
   elapsedTime = currTime - lastTime;
   lastTime = currTime;
-
 
   // process keyboard input
   mNonSpammableKeysTimeout += elapsedTime;
@@ -175,11 +182,11 @@ void render() {
 
       if (mLitShader) {
         mLitShader->setMat4("u_projection_matrix", glm::ortho(-ortho_width, ortho_width, -ortho_height, ortho_height, .1f, 2000.f));
-        mLitShader->setMat4("u_view_matrix", glm::lookAt(glm::vec3(0), glm::vec3(0,0,-1), glm::vec3(0,1,0)));
+        mLitShader->setMat4("u_view_matrix", glm::lookAt(glm::vec3(0), glm::vec3(0, 0, -1), glm::vec3(0, 1, 0)));
       }
       if (mDiffShader) {
         mDiffShader->setMat4("u_projection_matrix", glm::ortho(-ortho_width, ortho_width, -ortho_height, ortho_height, .1f, 2000.f));
-        mDiffShader->setMat4("u_view_matrix", glm::lookAt(glm::vec3(0), glm::vec3(0,0,-1), glm::vec3(0,1,0)));
+        mDiffShader->setMat4("u_view_matrix", glm::lookAt(glm::vec3(0), glm::vec3(0, 0, -1), glm::vec3(0, 1, 0)));
       }
     } else {
       if (mLitShader) {
@@ -253,9 +260,9 @@ void teardown() {
   }
 
   // delete all the meshes and textures from animated props from GPU memory
-  for (const auto& ap : mAnimProps) {
-    ModelLoader::UnloadGameObject(ap.mMeshes);
-  }
+  //for (const auto& ap : mAnimProps) {
+  //  ModelLoader::UnloadGameObject(ap.mMeshes);
+  //}
 
   if (mimGUI) {
     mimGUI->Shutdown();
@@ -915,7 +922,7 @@ void InitEngine() {
 
   mGUI = new PlainGUI();
 
-  }
+}
 i32 Run() {
   if (!isEngineInit) {
 #if _DEBUG
