@@ -27,6 +27,7 @@
 #include <algorithm>
 #include <unordered_map>
 #include "GUI/imGUI.h"
+#include "RenderingFramework.h"
 
 #ifdef _DEBUG
 #include <iostream>

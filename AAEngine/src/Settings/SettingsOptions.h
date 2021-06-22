@@ -1,7 +1,7 @@
 #pragma once
+#include "../WindowingType.h"
+#include "../RenderingFramework.h"
 namespace AA {
-enum class WindowingType { FULLSCREEN, WINDOWED, BORDERLESS, MAXIMIZED };
-enum class RenderingFramework { OPENGL, D3D, VULKAN };
 struct SettingsOptions
 {
   RenderingFramework renderer = RenderingFramework::OPENGL;

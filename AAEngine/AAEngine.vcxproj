@@ -88,8 +88,10 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="src\GUI\imGUI.h" />
+    <ClInclude Include="src\MouseReporting.h" />
     <ClInclude Include="src\Renderer\AnimModelLoader.h" />
     <ClInclude Include="src\Renderer\TextureLoader.h" />
+    <ClInclude Include="src\RenderingFramework.h" />
     <ClInclude Include="src\Scene\AnimVertex.h" />
     <ClInclude Include="src\Scene\Bone.h" />
     <ClInclude Include="src\Scene\AnimProp.h" />
@@ -134,6 +136,7 @@
     <ClInclude Include="src\Utility\QueryShader.h" />
     <ClInclude Include="src\vendor\imgui\imgui_impl_glfw.h" />
     <ClInclude Include="src\vendor\imgui\imgui_impl_opengl3.h" />
+    <ClInclude Include="src\WindowingType.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\GUI\imGUI.cpp" />

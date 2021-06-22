@@ -156,6 +156,15 @@
     <ClInclude Include="src\GUI\imGUI.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="src\MouseReporting.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\RenderingFramework.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\WindowingType.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\vendor\stb\stb_image.cpp">
