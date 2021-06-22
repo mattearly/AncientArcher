@@ -90,17 +90,14 @@
     <ClInclude Include="src\Core.h" />
     <ClInclude Include="src\GUI\imGUI.h" />
     <ClInclude Include="src\MouseReporting.h" />
-    <ClInclude Include="src\Renderer\AnimModelLoader.h" />
+    <ClInclude Include="src\Renderer\Cube.h" />
     <ClInclude Include="src\Renderer\TextureLoader.h" />
     <ClInclude Include="src\RenderingFramework.h" />
-    <ClInclude Include="src\Scene\AnimVertex.h" />
-    <ClInclude Include="src\Scene\Bone.h" />
-    <ClInclude Include="src\Scene\AnimProp.h" />
     <ClInclude Include="include\AncientArcher\ShaderType.h" />
     <ClInclude Include="include\AncientArcher\Version.h" />
     <ClInclude Include="src\GUI\PlainGUI.h" />
     <ClInclude Include="include\AncientArcher\Types.h" />
-    <ClInclude Include="src\Scene\BoneInfo.h" />
+    <ClInclude Include="src\Scene\Skybox.h" />
     <ClInclude Include="src\Sound\SoundEffect.h" />
     <ClInclude Include="src\Renderer\TextureInfo.h" />
     <ClInclude Include="src\Scene\ColliderSphere.h" />
@@ -116,8 +113,8 @@
     <ClInclude Include="src\Sound\SoundListener.h" />
     <ClInclude Include="src\Sound\LongSound.h" />
     <ClInclude Include="include\AncientArcher\Utility\Files.h" />
-    <ClInclude Include="src\Controls\MouseInput.h" />
-    <ClInclude Include="src\Controls\ScrollInput.h" />
+    <ClInclude Include="include\AncientArcher\Controls\MouseInput.h" />
+    <ClInclude Include="include\AncientArcher\Controls\ScrollInput.h" />
     <ClInclude Include="KHR\khrplatform.h" />
     <ClInclude Include="src\Renderer\ModelLoader.h" />
     <ClInclude Include="include\AncientArcher\AncientArcher.h" />
@@ -126,9 +123,8 @@
     <ClInclude Include="src\Renderer\OpenGL\OGLGraphics.h" />
     <ClInclude Include="src\Scene\Lights.h" />
     <ClInclude Include="src\Renderer\OpenGL\OGLShader.h" />
-    <ClInclude Include="src\Renderer\OpenGL\Skybox.h" />
     <ClInclude Include="src\Scene\Vertex.h" />
-    <ClInclude Include="src\Controls\KeyboardInput.h" />
+    <ClInclude Include="include\AncientArcher\Controls\KeyboardInput.h" />
     <ClInclude Include="src\Scene\WorldSettings.h" />
     <ClInclude Include="src\Sound\SoundDevice.h" />
     <ClInclude Include="src\Sound\Speaker.h" />
@@ -142,15 +138,12 @@
   <ItemGroup>
     <ClCompile Include="src\Core.cpp" />
     <ClCompile Include="src\GUI\imGUI.cpp" />
-    <ClCompile Include="src\Renderer\AnimModelLoader.cpp" />
-    <ClCompile Include="src\Renderer\LoaderVars.cpp" />
+    <ClCompile Include="src\Renderer\Cube.cpp" />
     <ClCompile Include="src\Renderer\ModelLoader.cpp" />
     <ClCompile Include="src\Renderer\TextureInfo.cpp" />
     <ClCompile Include="src\Renderer\TextureLoader.cpp" />
-    <ClCompile Include="src\Scene\AnimVertex.cpp" />
-    <ClCompile Include="src\Scene\Bone.cpp" />
-    <ClCompile Include="src\Scene\AnimProp.cpp" />
     <ClCompile Include="src\GUI\PlainGUI.cpp" />
+    <ClCompile Include="src\Scene\Skybox.cpp" />
     <ClCompile Include="src\Sound\SoundEffect.cpp" />
     <ClCompile Include="src\Base\UniqueInstance.cpp" />
     <ClCompile Include="src\Scene\Lights.cpp" />
@@ -170,7 +163,6 @@
     <ClCompile Include="src\Renderer\MeshDrawInfo.cpp" />
     <ClCompile Include="src\Renderer\OpenGL\OGLGraphics.cpp" />
     <ClCompile Include="src\Renderer\OpenGL\OGLShader.cpp" />
-    <ClCompile Include="src\Renderer\OpenGL\Skybox.cpp" />
     <ClCompile Include="src\vendor\imgui\imgui_impl_glfw.cpp" />
     <ClCompile Include="src\vendor\imgui\imgui_impl_opengl3.cpp" />
     <ClCompile Include="src\vendor\stb\stb_image.cpp" />
@@ -179,7 +171,9 @@
   <ItemGroup>
     <None Include="GLSL_src\frag_diff.glsl" />
     <None Include="GLSL_src\frag_lit.glsl" />
+    <None Include="GLSL_src\frag_skycube.glsl" />
     <None Include="GLSL_src\vert_3D.glsl" />
+    <None Include="GLSL_src\vert_skycube.glsl" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

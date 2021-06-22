@@ -118,13 +118,12 @@ void setfpsplayercontrols(int cam) {
 
   std::cout << ", look = mouse";
   // add mouse movement to change our view direction
-  const auto mouselook = [](AA::MouseInput& cursor) {
+  AA::AddToMouseHandling([](AA::MouseInput& cursor) {
     if (is_inventory_open)
       return;
 
     AA::ShiftCamPitchAndYaw(inherited_cam, cursor.yOffset, cursor.xOffset);
 
-  };
-  AA::AddToMouseHandling(mouselook);
+  });
 
 }

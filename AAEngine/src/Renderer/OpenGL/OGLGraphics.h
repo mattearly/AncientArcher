@@ -7,19 +7,20 @@
 #include "../../../include/AncientArcher/Types.h"
 #include "../MeshDrawInfo.h"
 #include "../../Scene/Vertex.h"
-#include "../../Scene/AnimVertex.h"
 
 namespace AA {
 extern OGLShader* mLitShader;
 extern OGLShader* mDiffShader;
 namespace OGLGraphics {
+void SetSamplerCube(int which, const int& cubetexID);
+void RenderSkybox(const int& vao, const int& count);
 void Render(const std::vector<MeshDrawInfo>& meshes, const glm::mat4& translationMatrix, SHADERTYPE shadertype);
 void RenderStrip(const int& vao, const int& count);
 void SetViewportSize(int x, int y, int w, int h);
 void SetViewportClearColor(glm::vec3 color) noexcept;
 void ClearScreen() noexcept;
+u32 UploadMesh(const float *points, const int num_points);
 u32 UploadMesh(const std::vector<Vertex>& verts, const std::vector<u32>& elems);
-u32 UploadAnimMesh(const std::vector<AnimVertex>& animverts, const std::vector<u32>& elems);
 u32 Upload2DVerts(const std::vector<vec2>& points);
 u32 Upload2DVerts(const std::vector<float>& points);
 void DeleteMesh(const u32& VAO);

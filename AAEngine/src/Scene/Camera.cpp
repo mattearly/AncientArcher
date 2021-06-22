@@ -54,6 +54,8 @@ void Camera::resetViewportVars() {
 }
 
 void Camera::updateProjectionMatrix() {
+  Width = GetWindowWidth();
+  Height = GetWindowHeight();
   switch (mProjectionType) {
   case ProjectionType::PERSPECTIVE:
   {

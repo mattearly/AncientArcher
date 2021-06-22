@@ -4,16 +4,12 @@
 #include "Scene/Prop.h"
 #include "Scene/Lights.h"
 #include "Renderer/ModelLoader.h"
-#include "Controls/KeyboardInput.h"
-#include "Controls/MouseInput.h"
-#include "Controls/ScrollInput.h"
 #include "Settings/Settings.h"
 #include "Settings/SettingsOptions.h"
 #include "Sound/Speaker.h"
 #include "Sound/SoundEffect.h"
 #include "Sound/LongSound.h"
 #include "GUI/PlainGUI.h"
-#include "Scene/AnimProp.h"
 #include "Utility/QueryShader.h"
 #include <string>
 #include <sstream>
@@ -396,10 +392,18 @@ void SetPropRotationZ(i32 propId, f32 new_z_rot) {
 
 
 // Skybox
-void SetSkybox(const std::shared_ptr<Skybox>& skybox) noexcept {
-  mSkybox = skybox;
+void SetSkybox(std::vector<std::string> incomingSkymapFiles) noexcept {
+  if (mSkybox)
+    return;  // already set
+
+  if (incomingSkymapFiles.size() != 6)
+    return;  // invalid size for a skybox
+
+  mSkybox = std::make_shared<Skybox>(incomingSkymapFiles);
+
 }
 // End Skybox
+
 
 
 // Directional Ligts
@@ -807,7 +811,7 @@ void ChangeSpotLight(i32 which, glm::vec3 new_pos, glm::vec3 new_dir, f32 new_in
 
 // Sound Effects
 i32 AddSoundEffect(const char* path) {
-  // make sure the sound effect hasn't already been loaded
+  // make sure the sound effect hasn't already been cube_loaded
   for (const auto& pl : mSoundEffects) {
     if (path == pl->_FilePath.c_str())
       throw("sound from that path already loaded");

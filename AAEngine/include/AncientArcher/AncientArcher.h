@@ -1,10 +1,9 @@
 #pragma once
 #include "Types.h"
-#include "../../src/Renderer/OpenGL/Skybox.h"
-#include "../../src/Controls/KeyboardInput.h"
-#include "../../src/Controls/MouseInput.h"
-#include "../../src/Controls/ScrollInput.h"
 #include "ShaderType.h"
+#include "Controls/KeyboardInput.h"
+#include "Controls/MouseInput.h"
+#include "Controls/ScrollInput.h"
 #include <vector>
 #include <functional>
 #include <memory>
@@ -62,7 +61,7 @@ void SetPropRotationZ(i32 propId, f32 new_z_rot);
 
 
 // Skybox
-void SetSkybox(const std::shared_ptr<Skybox>& skybox) noexcept;
+void SetSkybox(std::vector<std::string> incomingSkymapFiles) noexcept;
 // End Skybox
 
 

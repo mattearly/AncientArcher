@@ -1,27 +1,27 @@
 #include "../include/AncientArcher/Types.h"
 #include "../include/AncientArcher/Utility/Files.h"
+#include "../include/AncientArcher/Controls/KeyboardInput.h"
+#include "../include/AncientArcher/Controls/MouseInput.h"
+#include "../include/AncientArcher/Controls/ScrollInput.h"
 #include "GUI/PlainGUI.h"
 #include "GUI/imGUI.h"
 #include "Scene/Lights.h"
 #include "Scene/Camera.h"
 #include "Scene/Prop.h"
 #include "Renderer/OpenGL/OGLGraphics.h"
-#include "Renderer/OpenGL/Skybox.h"
 #include "Renderer/ModelLoader.h"
 #include "Sound/SoundDevice.h"
 #include "Sound/Speaker.h"
 #include "Sound/SoundEffect.h"
 #include "Sound/LongSound.h"
-#include "Controls/KeyboardInput.h"
-#include "Controls/ScrollInput.h"
-#include "Controls/MouseInput.h"
 #include "Settings/Settings.h"
 #include "MouseReporting.h"
+#include "Core.h"
+#include "Utility/QueryShader.h"
+#include "Scene/Skybox.h"
 #include <functional>
 #include <glad/glad.h>
 #include <GLFW/glfw3.h>
-#include "Core.h"
-#include "Utility/QueryShader.h"
 namespace AA {
 namespace Core {
 void SetMouseReadToFPP() noexcept {
@@ -197,7 +197,17 @@ void Init() {
       std::cout << "projection updated for cam " << cam.GetUID() << '\n';
 #endif
     }
-    isWindowSizeDirty = true;
+    if (mDiffShader) {
+      mDiffShader->use();
+      mDiffShader->setMat4("u_projection_matrix", mCameras.front().mProjectionMatrix);
+    }
+    if (mLitShader) {
+      mLitShader->use();
+      mLitShader->setMat4("u_projection_matrix", mCameras.front().mProjectionMatrix);
+    }
+    if (mSkybox && !mCameras.empty()) {
+      mSkybox->SetProjectionMatrix(mCameras.front().mProjectionMatrix);
+    }
   });
 
   ::glfwSetScrollCallback(mWindow, [](GLFWwindow* w, f64 x, f64 y) {
@@ -746,7 +756,6 @@ void Shutdown() {
 }
 
 bool isEngineInit = false;
-bool isWindowSizeDirty = true;  ///< true if proj matrices need re-adjusted for a new window size change
 GLFWwindow* mWindow = nullptr;
 const f32 mDefaultFPPMouseSensitivity = 0.1f;
 f32 mFPPMouseSensitivity = mDefaultFPPMouseSensitivity;  ///< mouse sensitivity while in first person perspective
@@ -771,6 +780,10 @@ void setupLitShader() {
     QueryInputAttribs(mLitShader->GetID());
     QueryUniforms(mLitShader->GetID());
 #endif
+    if (mCameras.empty())
+      return;
+    mLitShader->use();
+    mLitShader->setMat4("u_projection_matrix", mCameras.front().mProjectionMatrix);
   }
 }
 void setupDiffShader() {
@@ -780,6 +793,10 @@ void setupDiffShader() {
     QueryInputAttribs(mDiffShader->GetID());
     QueryUniforms(mDiffShader->GetID());
 #endif
+    if (mCameras.empty())
+      return;
+    mDiffShader->use();
+    mDiffShader->setMat4("u_projection_matrix", mCameras.front().mProjectionMatrix);
   }
 }
 
@@ -895,33 +912,33 @@ void update() {
 void render() {
   OGLGraphics::ClearScreen();
 
-  if (isWindowSizeDirty) {
-    if (mCameras.empty()) {
-      float aspect_ratio = (float)Core::GetWindowWidth() / Core::GetWindowHeight();
-      float ortho_height = Core::GetWindowHeight() / 2.f;
-      float ortho_width = ortho_height * aspect_ratio;
+  //if (isWindowSizeDirty) {
+  //  if (mCameras.empty()) {
+  //    float aspect_ratio = (float)Core::GetWindowWidth() / Core::GetWindowHeight();
+  //    float ortho_height = Core::GetWindowHeight() / 2.f;
+  //    float ortho_width = ortho_height * aspect_ratio;
 
-      if (mLitShader) {
-        mLitShader->setMat4("u_projection_matrix", glm::ortho(-ortho_width, ortho_width, -ortho_height, ortho_height, .1f, 2000.f));
-        mLitShader->setMat4("u_view_matrix", glm::lookAt(glm::vec3(0), glm::vec3(0, 0, -1), glm::vec3(0, 1, 0)));
-      }
-      if (mDiffShader) {
-        mDiffShader->setMat4("u_projection_matrix", glm::ortho(-ortho_width, ortho_width, -ortho_height, ortho_height, .1f, 2000.f));
-        mDiffShader->setMat4("u_view_matrix", glm::lookAt(glm::vec3(0), glm::vec3(0, 0, -1), glm::vec3(0, 1, 0)));
-      }
-    } else {
-      if (mLitShader) {
-        updateProjectionFromCam(mLitShader, mCameras.front());  //todo: not this front thing from cam blindly
-      }
-      if (mDiffShader) {
-        updateProjectionFromCam(mDiffShader, mCameras.front());
-      }
-      if (mSkybox) {
-        mSkybox->setProjectionMatrix(mCameras.front());
-      }
-    }
-    isWindowSizeDirty = false;
-  }
+  //    if (mLitShader) {
+  //      mLitShader->setMat4("u_projection_matrix", glm::ortho(-ortho_width, ortho_width, -ortho_height, ortho_height, .1f, 2000.f));
+  //      mLitShader->setMat4("u_view_matrix", glm::lookAt(glm::vec3(0), glm::vec3(0, 0, -1), glm::vec3(0, 1, 0)));
+  //    }
+  //    if (mDiffShader) {
+  //      mDiffShader->setMat4("u_projection_matrix", glm::ortho(-ortho_width, ortho_width, -ortho_height, ortho_height, .1f, 2000.f));
+  //      mDiffShader->setMat4("u_view_matrix", glm::lookAt(glm::vec3(0), glm::vec3(0, 0, -1), glm::vec3(0, 1, 0)));
+  //    }
+  //  } else {
+  //    if (mLitShader) {
+  //      updateProjectionFromCam(mLitShader, mCameras.front());  //todo: not this front thing from cam blindly
+  //    }
+  //    if (mDiffShader) {
+  //      updateProjectionFromCam(mDiffShader, mCameras.front());
+  //    }
+  //    if (mSkybox) {
+  //      mSkybox->SetProjectionMatrix(mCameras.front().mProjectionMatrix);
+  //    }
+  //  }
+  //  isWindowSizeDirty = false;
+  //}
 
   for (auto& p : mProps) {
     switch (p.mShaderType) {
@@ -954,8 +971,13 @@ void render() {
   //  ap.Draw();
   //}
 
-  // draw skybox if one was specified
-  if (mSkybox && !mCameras.empty()) { mSkybox->render(mCameras.front()); }
+  //if (mSkybox && !mCameras.empty()) { mSkybox->render(mCameras.front()); }
+  if (mSkybox && !mCameras.empty())
+  {
+    mSkybox->SetProjectionMatrix(mCameras.front().mProjectionMatrix);
+    mSkybox->SetViewMatrix(mCameras.front().mViewMatrix);
+    mSkybox->Render();
+  }
 
   // if there is a gui
   if (mGUI) {

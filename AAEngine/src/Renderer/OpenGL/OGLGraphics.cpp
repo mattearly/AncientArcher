@@ -9,7 +9,18 @@
 
 namespace AA {
 namespace OGLGraphics {
+void SetSamplerCube(int which, const int& cubetexID){
+  glActiveTexture(GL_TEXTURE0+which);
+  glBindTexture(GL_TEXTURE_CUBE_MAP, cubetexID);
+}
+void RenderSkybox(const int& vao, const int& count) {
+  glDepthFunc(GL_LEQUAL);  // change depth function so depth test passes when values are equal to depth buffer's content
+  glBindVertexArray(vao);
+  glDrawArrays(GL_TRIANGLES, 0, count);
 
+  glBindVertexArray(0);
+  glDepthFunc(GL_LESS); // set depth function back to default
+}
 void Render(const std::vector<MeshDrawInfo>& meshes, const glm::mat4& translationMatrix, SHADERTYPE shadertype) {
   glEnable(GL_DEPTH_TEST);
 
@@ -99,6 +110,29 @@ void ClearScreen()  noexcept {
   glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 }
 
+
+/// <summary>
+/// sends the mesh data to the graphics card
+/// </summary>
+/// <param name="points">array of points to upload</param>
+/// <param name="num_points">number in the array</param>
+/// <returns>the VAO</returns>
+u32 UploadMesh(const float *points, const int num_points) {
+  u32 VAO, VBO;
+
+  //todo: use element buffers
+  glGenVertexArrays(1, &VAO);
+
+  glGenBuffers(1, &VBO);
+  glBindVertexArray(VAO);
+  glBindBuffer(GL_ARRAY_BUFFER, VBO);
+  glBufferData(GL_ARRAY_BUFFER, sizeof(*points)*num_points, points, GL_STATIC_DRAW);
+  glEnableVertexAttribArray(0);
+  glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), (void*)0);
+
+  return VAO;
+}
+
 /// <summary>
 /// sends the mesh data to the graphics card
 /// </summary>
@@ -138,38 +172,6 @@ u32 UploadMesh(const std::vector<Vertex>& verts, const std::vector<u32>& elems) 
   return VAO;
 }
 
-u32 UploadAnimMesh(const std::vector<AnimVertex>& animverts, const std::vector<u32>& elems) {
-  u32 VAO, VBO, EBO;
-  glGenBuffers(1, &VBO);
-
-  glGenVertexArrays(1, &VAO);
-  glBindVertexArray(VAO);
-  glBindBuffer(GL_ARRAY_BUFFER, VBO);
-  glBufferData(GL_ARRAY_BUFFER, animverts.size() * sizeof(AnimVertex), &animverts[0], GL_STATIC_DRAW);
-
-  glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(AnimVertex), (const void*)offsetof(AnimVertex, Position));
-  glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, sizeof(AnimVertex), (const void*)offsetof(AnimVertex, Normal));
-  glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, sizeof(AnimVertex), (const void*)offsetof(AnimVertex, TexCoords));
-  glVertexAttribPointer(3, 4, GL_INT, GL_FALSE, sizeof(AnimVertex), (const void*)offsetof(AnimVertex, BoneIds));
-  glVertexAttribPointer(4, 4, GL_FLOAT, GL_FALSE, sizeof(AnimVertex), (const void*)offsetof(AnimVertex, Weights));
-
-  glEnableVertexAttribArray(0);
-  glEnableVertexAttribArray(1);
-  glEnableVertexAttribArray(2);
-  glEnableVertexAttribArray(3);
-  glEnableVertexAttribArray(4);
-
-  glGenBuffers(1, &EBO);
-  glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);
-  glBufferData(GL_ELEMENT_ARRAY_BUFFER, elems.size() * sizeof(u32), &elems[0], GL_STATIC_DRAW);
-
-  glBindVertexArray(0);
-
-  glDeleteBuffers(1, &VBO);
-  glDeleteBuffers(1, &EBO);
-
-  return VAO;
-}
 
 u32 Upload2DVerts(const std::vector<vec2>& points) {
   u32 VAO, VBO;

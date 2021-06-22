@@ -1,10 +1,12 @@
 #include "PlainGUI.h"
-#include <vector>
-#include "../Renderer/ModelLoader.h"
-#include <glad/glad.h>
-#include <glm/gtx/transform.hpp>
 #include "../../include/AncientArcher/AncientArcher.h"
+#include "../Renderer/ModelLoader.h"
+#include "../Renderer/OpenGL/OGLGraphics.h"
+#include "../Renderer/TextureLoader.h"
 #include "../Utility/QueryShader.h"
+#include <glm/gtx/transform.hpp>
+#include <glad/glad.h>
+#include <vector>
 namespace AA {
 
 PlainGUI::PlainGUI() {

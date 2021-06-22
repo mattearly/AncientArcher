@@ -12,6 +12,6 @@ void setskybox()
   cubemapfiles.reserve(6);
   for (int j = 0; j < 6; ++j)
     cubemapfiles.emplace_back(skyboxfolder + order[j] + skyboxfileext);
-  const std::shared_ptr<AA::Skybox> skybox = std::make_shared<AA::Skybox>(cubemapfiles);
-  AA::SetSkybox(skybox);
+  AA::SetSkybox(cubemapfiles);
+
 }

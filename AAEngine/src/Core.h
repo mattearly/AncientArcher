@@ -3,7 +3,7 @@
 #include "../include/AncientArcher/Types.h"
 #include "Scene/Lights.h"
 #include "Scene/Prop.h"
-#include "Renderer/OpenGL/Skybox.h"
+#include "Scene/Skybox.h"
 #include "Renderer/OpenGL/OGLShader.h"
 #include "Sound/Speaker.h"
 #include "Sound/SoundEffect.h"
