@@ -3,7 +3,7 @@
 #include<AncientArcher/Version.h>
 #include <iostream>
 void setupengine(){
-  AA::InitEngine();
+  AA::Init();
 #if _DEBUG
   printf("AncientArcherEngine ver: %i.%i.%i\n", AA::ENGINEVERSIONMAJOR, AA::ENGINEVERSIONMINOR, AA::ENGINEVERSIONPATCH);
 #endif

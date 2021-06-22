@@ -2,7 +2,7 @@
 
 int main()
 {
-  AA::InitEngine();
+  AA::Init();
 
   return AA::Run();
 }

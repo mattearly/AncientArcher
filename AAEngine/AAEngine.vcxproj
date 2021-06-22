@@ -87,6 +87,7 @@
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="src\Core.h" />
     <ClInclude Include="src\GUI\imGUI.h" />
     <ClInclude Include="src\MouseReporting.h" />
     <ClInclude Include="src\Renderer\AnimModelLoader.h" />
@@ -139,6 +140,7 @@
     <ClInclude Include="src\WindowingType.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="src\Core.cpp" />
     <ClCompile Include="src\GUI\imGUI.cpp" />
     <ClCompile Include="src\Renderer\AnimModelLoader.cpp" />
     <ClCompile Include="src\Renderer\LoaderVars.cpp" />

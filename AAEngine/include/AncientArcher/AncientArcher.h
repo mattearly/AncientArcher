@@ -12,15 +12,13 @@
 
 namespace AA {
 
-
 // Init, Run, Shutdown, Reset
-void InitEngine();
+void Init();
 i32 Run();
 void Shutdown() noexcept;
 void SoftReset() noexcept;
 void DragAndDropFiles(bool allowed);
 // End Init, Run, Shutdown, Reset
-
 
 // Camera
 i32 AddCamera(i32 w, i32 h);
@@ -117,9 +115,9 @@ void SetMouseToHidden() noexcept;
 void SetMouseToDisabled() noexcept;
 void SetMouseToNormal() noexcept;
 void SetMouseReadToFPP() noexcept;
+void SetMouseReadToNormal() noexcept;
 void SetMouseFPPSensitivity(f32 sensitivity) noexcept;
 f32 GetMouseFPPSensitivity() noexcept;
-void SetMouseReadToNormal() noexcept;
 // End Mouse
 
 
@@ -136,7 +134,7 @@ void UseIMGUI(const bool value);
 
 
 // Window
-void SetWindowClearColor(vec3 color = vec3(.35f, .15f, .35f));
+void SetWindowClearColor(vec3 color = vec3(.35f, .15f, .35f)) noexcept;
 i32 GetWindowWidth() noexcept;
 i32 GetWindowHeight() noexcept;
 void SetWindowTitle(const char* name) noexcept;
