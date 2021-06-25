@@ -212,7 +212,7 @@ void DeleteMesh(const u32& VAO) {
   glDeleteBuffers(1, &VAO);
 }
 
-u32 Upload2DTex(const unsigned char* tex_data, int width, int height) {
+u32 Upload2DTex(const unsigned char* tex_data, int width, int height, bool hasAlpha) {
   unsigned int out_texID = 0;
   glGenTextures(1, &out_texID);
   glBindTexture(GL_TEXTURE_2D, out_texID);
@@ -226,8 +226,12 @@ u32 Upload2DTex(const unsigned char* tex_data, int width, int height) {
 
   //glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, tex_data);
 
-  //https://youtu.be/n4k7ANAFsIQ?t=910
-  glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA8, width, height, /*border*/0, GL_RGBA, GL_UNSIGNED_BYTE, tex_data);
+  if (hasAlpha) {
+    //https://youtu.be/n4k7ANAFsIQ?t=910
+    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA8, width, height, /*border*/0, GL_RGBA, GL_UNSIGNED_BYTE, tex_data);
+  } else {
+    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, width, height, /*border*/0, GL_RGB, GL_UNSIGNED_BYTE, tex_data);
+  }
 
   glGenerateMipmap(GL_TEXTURE_2D);
 
@@ -236,7 +240,7 @@ u32 Upload2DTex(const unsigned char* tex_data, int width, int height) {
   return out_texID;
 }
 
-u32 UploadCubeMapTex(std::vector<unsigned char*> tex_data, int width, int height) {
+u32 UploadCubeMapTex(std::vector<unsigned char*> tex_data, int width, int height, bool hasAlpha) {
   unsigned int out_texID;
   glGenTextures(1, &out_texID);
   glBindTexture(GL_TEXTURE_CUBE_MAP, out_texID);
@@ -246,11 +250,22 @@ u32 UploadCubeMapTex(std::vector<unsigned char*> tex_data, int width, int height
   glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
   glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_R, GL_CLAMP_TO_EDGE);
 
-  for (auto i = 0; i < 6; ++i) {
-    if (tex_data[i]) {
-      glTexImage2D(GL_TEXTURE_CUBE_MAP_POSITIVE_X + i, 0, GL_RGB, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, tex_data[i]);
+
+  if (hasAlpha) {
+    for (auto i = 0; i < 6; ++i) {
+      if (tex_data[i]) {
+        glTexImage2D(GL_TEXTURE_CUBE_MAP_POSITIVE_X + i, 0, GL_RGBA8, width, height, 0, GL_RGBA, GL_UNSIGNED_BYTE, tex_data[i]);
+      }
     }
   }
+  else {
+    for (auto i = 0; i < 6; ++i) {
+      if (tex_data[i]) {
+        glTexImage2D(GL_TEXTURE_CUBE_MAP_POSITIVE_X + i, 0, GL_RGB, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, tex_data[i]);
+      }
+    }
+  }
+
   return out_texID;
 }
 
