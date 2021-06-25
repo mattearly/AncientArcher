@@ -198,12 +198,12 @@ void Init() {
 #endif
     }
     if (mDiffShader) {
-      mDiffShader->use();
-      mDiffShader->setMat4("u_projection_matrix", mCameras.front().mProjectionMatrix);
+      mDiffShader->Use();
+      mDiffShader->SetMat4("u_projection_matrix", mCameras.front().mProjectionMatrix);
     }
     if (mLitShader) {
-      mLitShader->use();
-      mLitShader->setMat4("u_projection_matrix", mCameras.front().mProjectionMatrix);
+      mLitShader->Use();
+      mLitShader->SetMat4("u_projection_matrix", mCameras.front().mProjectionMatrix);
     }
     if (mSkybox && !mCameras.empty()) {
       mSkybox->SetProjectionMatrix(mCameras.front().mProjectionMatrix);
@@ -782,8 +782,8 @@ void setupLitShader() {
 #endif
     if (mCameras.empty())
       return;
-    mLitShader->use();
-    mLitShader->setMat4("u_projection_matrix", mCameras.front().mProjectionMatrix);
+    mLitShader->Use();
+    mLitShader->SetMat4("u_projection_matrix", mCameras.front().mProjectionMatrix);
   }
 }
 void setupDiffShader() {
@@ -795,8 +795,8 @@ void setupDiffShader() {
 #endif
     if (mCameras.empty())
       return;
-    mDiffShader->use();
-    mDiffShader->setMat4("u_projection_matrix", mCameras.front().mProjectionMatrix);
+    mDiffShader->Use();
+    mDiffShader->SetMat4("u_projection_matrix", mCameras.front().mProjectionMatrix);
   }
 }
 
@@ -816,8 +816,8 @@ std::vector<Camera> mCameras;  ///< array of available cameras
 void updateProjectionFromCam(OGLShader* shader_to_update, const Camera& from_cam) {
   if (!shader_to_update)
     return;
-  shader_to_update->use();
-  shader_to_update->setMat4("u_projection_matrix", from_cam.mProjectionMatrix);
+  shader_to_update->Use();
+  shader_to_update->SetMat4("u_projection_matrix", from_cam.mProjectionMatrix);
 }
 
 std::vector<Prop> mProps;  ///< array of available inanimate props
@@ -945,20 +945,20 @@ void render() {
     case SHADERTYPE::LIT:
       if (!mLitShader) break;
 
-      mLitShader->use();
+      mLitShader->Use();
       if (mCameras.empty())
-        mLitShader->setMat4("u_view_matrix", glm::mat4(1));
+        mLitShader->SetMat4("u_view_matrix", glm::mat4(1));
       else
-        mLitShader->setMat4("u_view_matrix", mCameras.front().mViewMatrix);
+        mLitShader->SetMat4("u_view_matrix", mCameras.front().mViewMatrix);
       break;
     case SHADERTYPE::DIFF:
       if (!mDiffShader) break;
 
-      mDiffShader->use();
+      mDiffShader->Use();
       if (mCameras.empty())
-        mDiffShader->setMat4("u_view_matrix", glm::mat4(1));
+        mDiffShader->SetMat4("u_view_matrix", glm::mat4(1));
       else
-        mDiffShader->setMat4("u_view_matrix", mCameras.front().mViewMatrix);
+        mDiffShader->SetMat4("u_view_matrix", mCameras.front().mViewMatrix);
       break;
     }
 

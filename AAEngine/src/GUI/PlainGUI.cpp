@@ -120,21 +120,21 @@ void PlainGUI::Draw() {
   if (p_HideAll)
     return;
 
-  Shader->use();
+  Shader->Use();
   for (const auto& button : p_Buttons) {
-    Shader->setMat4("u_transform", button.transformation);
+    Shader->SetMat4("u_transform", button.transformation);
 
-    Shader->setBool("u_istextured", (button.texture_id != 0) ? true : false);
+    Shader->SetBool("u_istextured", (button.texture_id != 0) ? true : false);
 
     if (button.texture_id != 0) {
       glActiveTexture(GL_TEXTURE0);
       glBindTexture(GL_TEXTURE_2D, button.texture_id);
     }
-    Shader->setInt("u_texture", 0);
-    Shader->setVec3("u_color", button.color);
+    Shader->SetInt("u_texture", 0);
+    Shader->SetVec3("u_color", button.color);
 
-    Shader->setFloat("u_alpha", button.alpha);
-    Shader->setBool("u_mouseoverlapping", (button.overlapped) ? true : false);
+    Shader->SetFloat("u_alpha", button.alpha);
+    Shader->SetBool("u_mouseoverlapping", (button.overlapped) ? true : false);
 
     OGLGraphics::RenderStrip(vao_id, 4);
   }

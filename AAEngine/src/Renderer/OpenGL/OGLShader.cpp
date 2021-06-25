@@ -5,13 +5,13 @@
 #include <iostream>
 namespace AA {
 OGLShader::OGLShader(const char* vert_src, const char* frag_src) {
-  LoadShader(vert_src, frag_src);
+  loadShader(vert_src, frag_src);
 }
 OGLShader::~OGLShader() {
   glDeleteProgram(ID);
 }
 
-void OGLShader::use() const noexcept {
+void OGLShader::Use() const noexcept {
   glUseProgram(ID);
 }
 
@@ -19,55 +19,55 @@ void OGLShader::stop() const noexcept {
   glUseProgram(0);
 }
 
-void OGLShader::setBool(const std::string& name, bool value) const {
+void OGLShader::SetBool(const std::string& name, bool value) const {
   glUniform1i(getAndCheckShaderUniform(name), (int)value);
 }
 
-void OGLShader::setInt(const std::string& name, int value) const {
+void OGLShader::SetInt(const std::string& name, int value) const {
   glUniform1i(getAndCheckShaderUniform(name), value);
 }
 
-void OGLShader::setUint(const std::string& name, unsigned int value) const {
+void OGLShader::SetUint(const std::string& name, unsigned int value) const {
   glUniform1ui(getAndCheckShaderUniform(name), value);
 }
 
-void OGLShader::setFloat(const std::string& name, float value) const {
+void OGLShader::SetFloat(const std::string& name, float value) const {
   glUniform1f(getAndCheckShaderUniform(name), value);
 }
 
-void OGLShader::setVec2(const std::string& name, const glm::vec2& value) const {
+void OGLShader::SetVec2(const std::string& name, const glm::vec2& value) const {
   glUniform2fv(getAndCheckShaderUniform(name), 1, &value[0]);
 }
 
-void OGLShader::setVec2(const std::string& name, float x, float y) const {
+void OGLShader::SetVec2(const std::string& name, float x, float y) const {
   glUniform2f(getAndCheckShaderUniform(name), x, y);
 }
 
-void OGLShader::setVec3(const std::string& name, const glm::vec3& value) const {
+void OGLShader::SetVec3(const std::string& name, const glm::vec3& value) const {
   glUniform3fv(getAndCheckShaderUniform(name), 1, &value[0]);
 }
 
-void OGLShader::setVec3(const std::string& name, float x, float y, float z) const {
+void OGLShader::SetVec3(const std::string& name, float x, float y, float z) const {
   glUniform3f(getAndCheckShaderUniform(name), x, y, z);
 }
 
-void OGLShader::setVec4(const std::string& name, const glm::vec4& value) const {
+void OGLShader::SetVec4(const std::string& name, const glm::vec4& value) const {
   glUniform4fv(getAndCheckShaderUniform(name), 1, &value[0]);
 }
 
-void OGLShader::setVec4(const std::string& name, float x, float y, float z, float w) const {
+void OGLShader::SetVec4(const std::string& name, float x, float y, float z, float w) const {
   glUniform4f(getAndCheckShaderUniform(name), x, y, z, w);
 }
 
-void OGLShader::setMat2(const std::string& name, const glm::mat2& mat) const {
+void OGLShader::SetMat2(const std::string& name, const glm::mat2& mat) const {
   glUniformMatrix2fv(getAndCheckShaderUniform(name), 1, GL_FALSE, &mat[0][0]);
 }
 
-void OGLShader::setMat3(const std::string& name, const glm::mat3& mat) const {
+void OGLShader::SetMat3(const std::string& name, const glm::mat3& mat) const {
   glUniformMatrix3fv(getAndCheckShaderUniform(name), 1, GL_FALSE, &mat[0][0]);
 }
 
-void OGLShader::setMat4(const std::string& name, const glm::mat4& mat) const {
+void OGLShader::SetMat4(const std::string& name, const glm::mat4& mat) const {
   glUniformMatrix4fv(getAndCheckShaderUniform(name), 1, GL_FALSE, &mat[0][0]);
 }
 
@@ -85,7 +85,7 @@ int OGLShader::getAndCheckShaderUniform(const std::string& name) const {
   return shader_var_id;
 }
 
-void OGLShader::LoadShader(const char* vert_source, const char* frag_source) {
+void OGLShader::loadShader(const char* vert_source, const char* frag_source) {
   /* compile vertex (points) shader */
   int vertexShader = glCreateShader(GL_VERTEX_SHADER);
   glShaderSource(vertexShader, 1, &vert_source, nullptr);

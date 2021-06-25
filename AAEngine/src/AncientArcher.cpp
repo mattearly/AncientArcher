@@ -422,18 +422,18 @@ void SetDirectionalLight(glm::vec3 dir, glm::vec3 amb, glm::vec3 diff, glm::vec3
 
   {
     assert(mLitShader);
-    mLitShader->use();
-    mLitShader->setInt("isDirectionalLightOn", 1);
-    mLitShader->setVec3("directionalLight.Direction", mDirectionalLight->Direction);
-    mLitShader->setVec3("directionalLight.Ambient", mDirectionalLight->Ambient);
-    mLitShader->setVec3("directionalLight.Diffuse", mDirectionalLight->Diffuse);
-    mLitShader->setVec3("directionalLight.Specular", mDirectionalLight->Specular);
+    mLitShader->Use();
+    mLitShader->SetInt("isDirectionalLightOn", 1);
+    mLitShader->SetVec3("directionalLight.Direction", mDirectionalLight->Direction);
+    mLitShader->SetVec3("directionalLight.Ambient", mDirectionalLight->Ambient);
+    mLitShader->SetVec3("directionalLight.Diffuse", mDirectionalLight->Diffuse);
+    mLitShader->SetVec3("directionalLight.Specular", mDirectionalLight->Specular);
   }
 }
 void RemoveDirectionalLight() {
   assert(mLitShader);
-  mLitShader->use();
-  mLitShader->setInt("isDirectionalLightOn", 0);
+  mLitShader->Use();
+  mLitShader->SetInt("isDirectionalLightOn", 0);
   delete mDirectionalLight;
   mDirectionalLight = NULL;
 }
@@ -481,15 +481,15 @@ i32 AddPointLight(glm::vec3 pos, f32 constant, f32 linear, f32 quad, glm::vec3 a
     specular += "Specular";
 
     assert(mLitShader);
-    mLitShader->use(); // <- vs lies if u see green squigglies
-    mLitShader->setVec3(position, mPointLights.back().Position);
-    mLitShader->setFloat(constant, mPointLights.back().Constant);
-    mLitShader->setFloat(linear, mPointLights.back().Linear);
-    mLitShader->setFloat(quadratic, mPointLights.back().Quadratic);
-    mLitShader->setVec3(ambient, mPointLights.back().Ambient);
-    mLitShader->setVec3(diffuse, mPointLights.back().Diffuse);
-    mLitShader->setVec3(specular, mPointLights.back().Specular);
-    mLitShader->setInt("NUM_POINT_LIGHTS", static_cast<int>(new_point_loc + 1));
+    mLitShader->Use(); // <- vs lies if u see green squigglies
+    mLitShader->SetVec3(position, mPointLights.back().Position);
+    mLitShader->SetFloat(constant, mPointLights.back().Constant);
+    mLitShader->SetFloat(linear, mPointLights.back().Linear);
+    mLitShader->SetFloat(quadratic, mPointLights.back().Quadratic);
+    mLitShader->SetVec3(ambient, mPointLights.back().Ambient);
+    mLitShader->SetVec3(diffuse, mPointLights.back().Diffuse);
+    mLitShader->SetVec3(specular, mPointLights.back().Specular);
+    mLitShader->SetInt("NUM_POINT_LIGHTS", static_cast<int>(new_point_loc + 1));
   }
   return mPointLights.back().id;  // unique id
 }
@@ -507,8 +507,8 @@ bool RemovePointLight(i32 which_by_id) {
   auto after_size = mPointLights.size();
 
   if (before_size != after_size) {
-    mLitShader->use();
-    mLitShader->setInt("NUM_POINT_LIGHTS", static_cast<int>(after_size));
+    mLitShader->Use();
+    mLitShader->SetInt("NUM_POINT_LIGHTS", static_cast<int>(after_size));
 
     // sync lights on shader after the change
     for (i32 i = 0; i < after_size; i++) {
@@ -538,8 +538,8 @@ void MovePointLight(i32 which, glm::vec3 new_pos) {
       std::stringstream ss;
       ss << loc_in_vec;
       std::string position = "pointLight[" + ss.str() + "].Position";
-      mLitShader->use();
-      mLitShader->setVec3(position.c_str(), pl.Position);
+      mLitShader->Use();
+      mLitShader->SetVec3(position.c_str(), pl.Position);
       return;
     }
     loc_in_vec++;
@@ -589,14 +589,14 @@ void ChangePointLight(i32 which, glm::vec3 new_pos, f32 new_constant, f32 new_li
         diffuse += "Diffuse";
         specular += "Specular";
 
-        mLitShader->use(); // <- vs lies if u see green squigglies
-        mLitShader->setVec3(pos, pl.Position);
-        mLitShader->setFloat(constant, pl.Constant);
-        mLitShader->setFloat(linear, pl.Linear);
-        mLitShader->setFloat(quadrat, pl.Quadratic);
-        mLitShader->setVec3(ambient, pl.Ambient);
-        mLitShader->setVec3(diffuse, pl.Diffuse);
-        mLitShader->setVec3(specular, pl.Specular);
+        mLitShader->Use(); // <- vs lies if u see green squigglies
+        mLitShader->SetVec3(pos, pl.Position);
+        mLitShader->SetFloat(constant, pl.Constant);
+        mLitShader->SetFloat(linear, pl.Linear);
+        mLitShader->SetFloat(quadrat, pl.Quadratic);
+        mLitShader->SetVec3(ambient, pl.Ambient);
+        mLitShader->SetVec3(diffuse, pl.Diffuse);
+        mLitShader->SetVec3(specular, pl.Specular);
       }
       return;
     }
@@ -658,18 +658,18 @@ i32 AddSpotLight(glm::vec3 pos, glm::vec3 dir, f32 inner, f32 outer, f32 constan
     specular += "Specular";
 
     assert(mLitShader);
-    mLitShader->use(); // <- vs lies if u see green squigglies
-    mLitShader->setVec3(pos, mSpotLights.back().Position);
-    mLitShader->setFloat(cutoff, mSpotLights.back().CutOff);
-    mLitShader->setFloat(ocutoff, mSpotLights.back().OuterCutOff);
-    mLitShader->setVec3(direction, mSpotLights.back().Direction);
-    mLitShader->setFloat(constant, mSpotLights.back().Constant);
-    mLitShader->setFloat(linear, mSpotLights.back().Linear);
-    mLitShader->setFloat(quadrat, mSpotLights.back().Quadratic);
-    mLitShader->setVec3(ambient, mSpotLights.back().Ambient);
-    mLitShader->setVec3(diffuse, mSpotLights.back().Diffuse);
-    mLitShader->setVec3(specular, mSpotLights.back().Specular);
-    mLitShader->setInt("NUM_SPOT_LIGHTS", static_cast<int>(new_spot_loc + 1));
+    mLitShader->Use(); // <- vs lies if u see green squigglies
+    mLitShader->SetVec3(pos, mSpotLights.back().Position);
+    mLitShader->SetFloat(cutoff, mSpotLights.back().CutOff);
+    mLitShader->SetFloat(ocutoff, mSpotLights.back().OuterCutOff);
+    mLitShader->SetVec3(direction, mSpotLights.back().Direction);
+    mLitShader->SetFloat(constant, mSpotLights.back().Constant);
+    mLitShader->SetFloat(linear, mSpotLights.back().Linear);
+    mLitShader->SetFloat(quadrat, mSpotLights.back().Quadratic);
+    mLitShader->SetVec3(ambient, mSpotLights.back().Ambient);
+    mLitShader->SetVec3(diffuse, mSpotLights.back().Diffuse);
+    mLitShader->SetVec3(specular, mSpotLights.back().Specular);
+    mLitShader->SetInt("NUM_SPOT_LIGHTS", static_cast<int>(new_spot_loc + 1));
   }
   return mSpotLights.back().id;  // unique id
 }
@@ -687,8 +687,8 @@ bool RemoveSpotLight(i32 which_by_id) {
   auto after_size = mSpotLights.size();
 
   if (before_size != after_size) {
-    mLitShader->use();
-    mLitShader->setInt("NUM_SPOT_LIGHTS", static_cast<int>(after_size));
+    mLitShader->Use();
+    mLitShader->SetInt("NUM_SPOT_LIGHTS", static_cast<int>(after_size));
 
     // sync lights on shader after the change
     for (i32 i = 0; i < after_size; i++) {
@@ -719,13 +719,13 @@ void MoveSpotLight(i32 which, glm::vec3 new_pos, glm::vec3 new_dir) {
     if (sl.id == which) {
       sl.Position = new_pos;
       sl.Direction = new_dir;
-      mLitShader->use();
+      mLitShader->Use();
       std::stringstream ss;
       ss << loc_in_vec;
       std::string position = "spotLight[" + ss.str() + "].Position";
       std::string direction = "spotLight[" + ss.str() + "].Direction";
-      mLitShader->setVec3(position, sl.Position);
-      mLitShader->setVec3(direction, sl.Direction);
+      mLitShader->SetVec3(position, sl.Position);
+      mLitShader->SetVec3(direction, sl.Direction);
       return;
     }
     loc_in_vec++;
@@ -788,17 +788,17 @@ void ChangeSpotLight(i32 which, glm::vec3 new_pos, glm::vec3 new_dir, f32 new_in
         diffuse += "Diffuse";
         specular += "Specular";
 
-        mLitShader->use(); // <- vs lies if u see green squigglies
-        mLitShader->setVec3(pos, sl.Position);
-        mLitShader->setFloat(cutoff, sl.CutOff);
-        mLitShader->setFloat(ocutoff, sl.OuterCutOff);
-        mLitShader->setVec3(direction, sl.Direction);
-        mLitShader->setFloat(constant, sl.Constant);
-        mLitShader->setFloat(linear, sl.Linear);
-        mLitShader->setFloat(quadrat, sl.Quadratic);
-        mLitShader->setVec3(ambient, sl.Ambient);
-        mLitShader->setVec3(diffuse, sl.Diffuse);
-        mLitShader->setVec3(specular, sl.Specular);
+        mLitShader->Use(); // <- vs lies if u see green squigglies
+        mLitShader->SetVec3(pos, sl.Position);
+        mLitShader->SetFloat(cutoff, sl.CutOff);
+        mLitShader->SetFloat(ocutoff, sl.OuterCutOff);
+        mLitShader->SetVec3(direction, sl.Direction);
+        mLitShader->SetFloat(constant, sl.Constant);
+        mLitShader->SetFloat(linear, sl.Linear);
+        mLitShader->SetFloat(quadrat, sl.Quadratic);
+        mLitShader->SetVec3(ambient, sl.Ambient);
+        mLitShader->SetVec3(diffuse, sl.Diffuse);
+        mLitShader->SetVec3(specular, sl.Specular);
       }
       return;
     }

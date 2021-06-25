@@ -27,11 +27,11 @@ void Render(const std::vector<MeshDrawInfo>& meshes, const glm::mat4& translatio
   switch (shadertype) {
   case SHADERTYPE::DIFF:
   case SHADERTYPE::ANIM_DIFF:
-    mDiffShader->use();
+    mDiffShader->Use();
     break;
   case SHADERTYPE::LIT:
   case SHADERTYPE::ANIM_LIT:
-    mLitShader->use();
+    mLitShader->Use();
     break;
   }
 
@@ -41,12 +41,12 @@ void Render(const std::vector<MeshDrawInfo>& meshes, const glm::mat4& translatio
     switch (shadertype) {
     case SHADERTYPE::DIFF:
     case SHADERTYPE::ANIM_DIFF:
-      mDiffShader->setMat4("u_model_matrix", /*m.transformation * */translationMatrix);
+      mDiffShader->SetMat4("u_model_matrix", /*m.transformation * */translationMatrix);
       break;
     case SHADERTYPE::LIT:
     case SHADERTYPE::ANIM_LIT:
-      mLitShader->setFloat("material.Shininess", m.shininess);
-      mLitShader->setMat4("u_model_matrix", /*m.transformation * */translationMatrix);
+      mLitShader->SetFloat("material.Shininess", m.shininess);
+      mLitShader->SetMat4("u_model_matrix", /*m.transformation * */translationMatrix);
       break;
     }
 
@@ -61,13 +61,13 @@ void Render(const std::vector<MeshDrawInfo>& meshes, const glm::mat4& translatio
       case SHADERTYPE::DIFF:
       case SHADERTYPE::ANIM_DIFF:
         if (texType == "Albedo") {
-          mDiffShader->setInt(("material." + texType).c_str(), i);
+          mDiffShader->SetInt(("material." + texType).c_str(), i);
         }
         break;
       case SHADERTYPE::LIT:
       case SHADERTYPE::ANIM_LIT:
         if (texType == "Albedo") {
-          mLitShader->setInt(("material." + texType).c_str(), i);
+          mLitShader->SetInt(("material." + texType).c_str(), i);
           }
         break;
       }

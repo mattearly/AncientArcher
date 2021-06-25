@@ -25,28 +25,28 @@ Skybox::Skybox(std::vector<std::string> incomingSkymapFiles) {
   std::vector<unsigned char*> data;
   data.resize(6);
   for (auto i = 0; i < 6; ++i)
-    data[i] = stbi_load(incomingSkymapFiles[i].c_str(), &width, &height, &nrChannel, STBI_rgb);
-  mCubemapTexId = OGLGraphics::UploadCubeMapTex(data, width, height);
-  mSkyboxShader->use();
-  mSkyboxShader->setInt("skybox", 0);
+    data[i] = stbi_load(incomingSkymapFiles[i].c_str(), &width, &height, &nrChannel, STBI_rgb_alpha );
+  mCubemapTexId = OGLGraphics::UploadCubeMapTex(data, width, height, nrChannel == 4);
+  mSkyboxShader->Use();
+  mSkyboxShader->SetInt("skybox", 0);
 }
 
 void Skybox::Render() {
-  mSkyboxShader->use();
+  mSkyboxShader->Use();
   OGLGraphics::SetSamplerCube(0, mCubemapTexId);
   OGLGraphics::RenderSkybox(mSkyboxVAO, 36);
 }
 
 void Skybox::SetProjectionMatrix(glm::mat4 proj_mat) {
-  mSkyboxShader->use();
-  mSkyboxShader->setMat4("projection", proj_mat);
+  mSkyboxShader->Use();
+  mSkyboxShader->SetMat4("projection", proj_mat);
 }
 
 void Skybox::SetViewMatrix(glm::mat4 view_mat) {
   // turn the last column into 0's
   const glm::mat4 viewMatrix = glm::mat4(glm::mat3(view_mat));
-  mSkyboxShader->use();
-  mSkyboxShader->setMat4("view", viewMatrix);
+  mSkyboxShader->Use();
+  mSkyboxShader->SetMat4("view", viewMatrix);
 }
 
 }  // end namespace AA
