@@ -3,11 +3,12 @@
 #include <vector>
 #include <memory>
 #include <AncientArcher/AncientArcher.h>
-void setskybox()
-{
-  const std::string skyboxfolder = "..\\ExampleProject\\res\\skybox\\";
-  const std::string order[6] = { "posx", "negx", "posy", "negy", "posz", "negz" };
-  const std::string skyboxfileext = ".jpg";
+void setskybox() {
+  const std::string skyboxfolder = "..\\ExampleProject\\res\\skybox\\night\\";
+  //const std::string order[6] = { "posx", "negx", "posy", "negy", "posz", "negz" };
+  //const std::string skyboxfileext = ".jpg";
+  const std::string order[6] = { "right", "left", "top", "bottom", "front", "back" };
+  const std::string skyboxfileext = ".png";
   std::vector<std::string> cubemapfiles;
   cubemapfiles.reserve(6);
   for (int j = 0; j < 6; ++j)
