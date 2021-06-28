@@ -15,39 +15,39 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="setfpsplayercontrols.h">
+    <ClInclude Include="old\setskybox.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="setskybox.h">
+    <ClInclude Include="old\setsoundeffects.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="setflashlight.h">
+    <ClInclude Include="old\setmusic.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="setsoundeffects.h">
+    <ClInclude Include="old\setdirlight.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="setmusic.h">
+    <ClInclude Include="old\setmodels.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="setdirlight.h">
+    <ClInclude Include="old\setplayerlightradius.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="setmodels.h">
+    <ClInclude Include="BattleStats.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="setgui.h">
+    <ClInclude Include="MainCharacter.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="setupengine.h">
+    <ClInclude Include="FlashLight.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="setplayerlightradius.h">
+    <ClInclude Include="MainGame.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="main.cpp">
+    <ClCompile Include="__main.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

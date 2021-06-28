@@ -7,10 +7,10 @@
 
 bool is_dir_light_setup = false;
 bool dir_light_on = true;
-AA::vec3 dir_light_direction = AA::vec3(-.18f);
-AA::vec3 dir_light_ambient = AA::vec3(.3f);
-AA::vec3 dir_light_diff = AA::vec3(.3f);
-AA::vec3 dir_light_spec = AA::vec3(.3f);
+AA::vec3 dir_light_direction = AA::vec3(.25f);
+AA::vec3 dir_light_ambient = AA::vec3(.15f);
+AA::vec3 dir_light_diff = AA::vec3(.15f);
+AA::vec3 dir_light_spec = AA::vec3(.01f);
 
 void setdirlight() {
 

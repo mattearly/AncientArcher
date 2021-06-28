@@ -3,8 +3,7 @@
 #include <iostream>
 
 bool is_sound_effects_setup = false;
-void setupsoundeffects()
-{
+void setupsoundeffects() {
   if (is_sound_effects_setup)
     return;
 
@@ -25,6 +24,5 @@ void setupsoundeffects()
       AA::PlaySoundEffect(enchantId, false);
       return;
     }
-    });
-
+  });
 }

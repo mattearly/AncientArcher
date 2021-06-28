@@ -3,12 +3,12 @@
 
 bool is_player_radius_set = false;
 
-void setplayerlightradius(int ourcam) {
+void setplayerlightradius(int my_cam) {
   if (is_player_radius_set)
     return;
   is_player_radius_set = true;
 
-  static int local_cam = ourcam;
+  static int local_cam = my_cam;
 
   /*
   * Distance  Constant  Linear  Quadratic

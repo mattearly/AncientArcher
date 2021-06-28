@@ -80,24 +80,24 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClInclude Include="setdirlight.h" />
-    <ClInclude Include="setflashlight.h" />
-    <ClInclude Include="setfpsplayercontrols.h" />
-    <ClInclude Include="setgui.h" />
-    <ClInclude Include="setmodels.h" />
-    <ClInclude Include="setplayerlightradius.h" />
-    <ClInclude Include="setskybox.h" />
-    <ClInclude Include="setsoundeffects.h" />
-    <ClInclude Include="setmusic.h" />
-    <ClInclude Include="setupengine.h" />
-  </ItemGroup>
-  <ItemGroup>
-    <ClCompile Include="main.cpp" />
+    <ClInclude Include="BattleStats.h" />
+    <ClInclude Include="FlashLight.h" />
+    <ClInclude Include="MainCharacter.h" />
+    <ClInclude Include="MainGame.h" />
+    <ClInclude Include="old\setdirlight.h" />
+    <ClInclude Include="old\setmodels.h" />
+    <ClInclude Include="old\setplayerlightradius.h" />
+    <ClInclude Include="old\setskybox.h" />
+    <ClInclude Include="old\setsoundeffects.h" />
+    <ClInclude Include="old\setmusic.h" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\AAEngine\AAEngine.vcxproj">
       <Project>{091bacde-fe9f-44da-a52d-8ab3b026a626}</Project>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="__main.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
