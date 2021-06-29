@@ -90,7 +90,9 @@ void SetWindowTitle(const char* name) noexcept {
 void SetWindowFullscreen(const bool status) noexcept {
   const GLFWvidmode* mode = glfwGetVideoMode(glfwGetPrimaryMonitor());
   if (status == true) {
-    glfwSetWindowMonitor(mWindow, glfwGetPrimaryMonitor(), 0, 0, mode->width, mode->height, GLFW_DONT_CARE);
+    int was_maximized = glfwGetWindowAttrib(mWindow, GLFW_MAXIMIZED);
+    if (was_maximized) glfwRestoreWindow(mWindow); // turn of maximized before fullscreen (else there is a bug when turning it off)
+    glfwSetWindowMonitor(mWindow, glfwGetPrimaryMonitor(), 0, 0, mode->width, mode->height, mode->refreshRate);
   } else {
     glfwSetWindowMonitor(
       mWindow,
