@@ -13,6 +13,7 @@ MainGame my_game;
 void engine_tick(float dt) {
   my_game.Update();
   my_game.Update(dt);
+  //std::cout << "tick: " << dt << '\n';
 }
 
 void InitEngineAndGame() {
@@ -21,7 +22,19 @@ void InitEngineAndGame() {
 #endif
   AA::Init();
   my_game.Setup();
+
+  AA::AddToTimedOutKeyHandling([](AA::KeyboardInput& kb) -> bool {
+    if (kb.enter && (kb.leftAlt || kb.rightAlt)) {
+#if _DEBUG
+      std::cout << "toggle fullscreen\n";
+#endif
+      AA::ToggleFullscreen();
+      return true;
+    }
+  });
+
   AA::AddToDeltaUpdate([](float dt) { engine_tick(dt); });
+
 }
 
 int main(int argc, char** argv) {
