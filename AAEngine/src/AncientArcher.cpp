@@ -916,8 +916,8 @@ void SetMusicVolume(f32 new_vol) {
 
 // Mouse
 void SetMouseToHidden() noexcept { Core::SetMouseToHidden(); };
-void SetMouseToDisabled() noexcept{ Core::SetMouseToDisabled(); };
-void SetMouseToNormal() noexcept{ Core::SetMouseToNormal(); };
+void SetMouseToDisabled() noexcept { Core::SetMouseToDisabled(); };
+void SetMouseToNormal() noexcept { Core::SetMouseToNormal(); };
 void SetMouseReadToFPP() noexcept { Core::SetMouseReadToFPP(); };
 void SetMouseReadToNormal() noexcept { Core::SetMouseReadToNormal(); };
 void SetMouseFPPSensitivity(f32 sensitivity) noexcept {
@@ -972,6 +972,15 @@ void SetWindowClearColor(vec3 color) noexcept { Core::SetWindowClearColor(color)
 i32 GetWindowWidth() noexcept { return Core::GetWindowWidth(); }
 i32 GetWindowHeight() noexcept { return Core::GetWindowHeight(); }
 void SetWindowTitle(const char* name) noexcept { Core::SetWindowTitle(name); }
+void ToggleFullscreen() noexcept {
+  static bool to_fullscreen = true;
+  if (to_fullscreen) {
+    Core::SetWindowFullscreen(to_fullscreen);
+  } else {
+    Core::SetWindowFullscreen(to_fullscreen);
+  }
+  to_fullscreen = !to_fullscreen;
+}
 // End Window
 
 

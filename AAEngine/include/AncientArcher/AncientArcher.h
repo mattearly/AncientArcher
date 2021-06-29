@@ -137,6 +137,7 @@ void SetWindowClearColor(vec3 color = vec3(.35f, .15f, .35f)) noexcept;
 i32 GetWindowWidth() noexcept;
 i32 GetWindowHeight() noexcept;
 void SetWindowTitle(const char* name) noexcept;
+void ToggleFullscreen() noexcept;
 // End Window
 
 

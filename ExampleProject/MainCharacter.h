@@ -178,21 +178,18 @@ public:
     // SETUP PLAYER RADIUS LIGHT
     //setplayerlightradius(character_cam);
 
-
     // SETUP FLASHLIGHT TOGGLE
     {
       AA::AddToTimedOutKeyHandling([](AA::KeyboardInput& kb)-> bool {
         if (kb.f) {
-          if (flashlight.isOn) 
-          {
+          if (flashlight.isOn) {
             flashlight.turn_off();
-          }
-          else
-          {
+          } else {
             flashlight.turn_on();
           }
           return true;
         }
+        return false;
       });
     }
 
@@ -200,7 +197,7 @@ public:
   };
 
   void Update() {
-    if (flashlight.isOn){
+    if (flashlight.isOn) {
       flashlight.position = AA::GetCamPosition(character_cam);
       flashlight.direction = AA::GetCamFront(character_cam);
       flashlight.lock_in_movement();

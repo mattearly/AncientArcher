@@ -21,6 +21,7 @@ extern i32 GetWindowWidth() noexcept;
 extern i32 GetWindowHeight() noexcept;
 extern void SetWindowClearColor(glm::vec3 color) noexcept;
 extern void SetWindowTitle(const char* name) noexcept;
+extern void SetWindowFullscreen(const bool status) noexcept;
 extern void SetMouseToHidden() noexcept;
 extern void SetMouseToDisabled() noexcept;
 extern void SetMouseToNormal() noexcept;

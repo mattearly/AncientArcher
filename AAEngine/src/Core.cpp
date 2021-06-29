@@ -87,6 +87,22 @@ void SetWindowClearColor(glm::vec3 color) noexcept {
 void SetWindowTitle(const char* name) noexcept {
   glfwSetWindowTitle(mWindow, name);
 }
+void SetWindowFullscreen(const bool status) noexcept {
+  const GLFWvidmode* mode = glfwGetVideoMode(glfwGetPrimaryMonitor());
+  if (status == true) {
+    glfwSetWindowMonitor(mWindow, glfwGetPrimaryMonitor(), 0, 0, mode->width, mode->height, GLFW_DONT_CARE);
+  } else {
+    glfwSetWindowMonitor(
+      mWindow,
+      nullptr,
+      mode->width / 2.f - Settings::Get()->GetOptions().default_window_width / 2.f,  // middle of screen then up to the left half the window size
+      mode->height / 2.f - Settings::Get()->GetOptions().default_window_height / 2.f,  // should center the screen
+      Settings::Get()->GetOptions().default_window_width,
+      Settings::Get()->GetOptions().default_window_height,
+      GLFW_DONT_CARE);
+  }
+}
+}
 void SetMouseToHidden() noexcept {
   //  If you only wish the cursor to become hidden when it is over a window but still want it to behave normally, set the cursor mode to GLFW_CURSOR_HIDDEN.
   if (glfwGetInputMode(mWindow, GLFW_CURSOR) == GLFW_CURSOR_HIDDEN)
