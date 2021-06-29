@@ -97,8 +97,8 @@ void SetWindowFullscreen(const bool status) noexcept {
     glfwSetWindowMonitor(
       mWindow,
       nullptr,
-      mode->width / 2.f - Settings::Get()->GetOptions().default_window_width / 2.f,  // middle of screen then up to the left half the window size
-      mode->height / 2.f - Settings::Get()->GetOptions().default_window_height / 2.f,  // should center the screen
+      static_cast<int>(mode->width / 2.f - Settings::Get()->GetOptions().default_window_width / 2.f),    // These 2 lines should center the screen:
+      static_cast<int>(mode->height / 2.f - Settings::Get()->GetOptions().default_window_height / 2.f),  //  middle of screen then up and to the left half the window size
       Settings::Get()->GetOptions().default_window_width,
       Settings::Get()->GetOptions().default_window_height,
       GLFW_DONT_CARE);
