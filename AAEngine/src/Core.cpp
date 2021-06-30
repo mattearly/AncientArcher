@@ -23,7 +23,9 @@
 #include <functional>
 #include <glad/glad.h>
 #include <GLFW/glfw3.h>
+
 namespace AA {
+
 namespace Core {
 void SetMouseReadToFPP() noexcept {
   if (mMouseReporting == MouseReporting::PERSPECTIVE)
@@ -104,7 +106,6 @@ void SetWindowFullscreen(const bool status) noexcept {
       Settings::Get()->GetOptions().default_window_height,
       GLFW_DONT_CARE);
   }
-}
 }
 void SetMouseToHidden() noexcept {
   //  If you only wish the cursor to become hidden when it is over a window but still want it to behave normally, set the cursor mode to GLFW_CURSOR_HIDDEN.
@@ -746,8 +747,8 @@ void Init() {
       //    AddProp(paths[i], mCameras.front().GetUID(), SHADERTYPE::LIT);
       //  }
       //}
-  }
-});
+    }
+  });
 
 
 }
@@ -757,7 +758,7 @@ i32 Run() {
     std::cout << "Attempted Run but InitEngine has not been invoked.\n";
 #endif
     return -4;
-}
+  }
 
   begin();
   while (!glfwWindowShouldClose(mWindow)) {
@@ -772,7 +773,8 @@ i32 Run() {
 void Shutdown() {
   glfwSetWindowShouldClose(mWindow, 1);
 }
-}
+
+}  // end namespace Core
 
 bool isEngineInit = false;
 GLFWwindow* mWindow = nullptr;
@@ -834,8 +836,7 @@ void updateProjectionFromCam(OGLShader* shader_to_update, const Camera& from_cam
   shader_to_update->SetMat4("u_projection_matrix", from_cam.mProjectionMatrix);
 }
 
-std::vector<Prop> mProps;  ///< array of available inanimate props
-
+std::vector<Prop> mProps;            ///< array of inanimate props to draw
 std::shared_ptr<Skybox> mSkybox;  ///< the main skybox
                                   // sound systems
 std::vector<Speaker*> mSpeakers;  ///< array of places to play sound effects from
@@ -986,8 +987,7 @@ void render() {
   //}
 
   //if (mSkybox && !mCameras.empty()) { mSkybox->render(mCameras.front()); }
-  if (mSkybox && !mCameras.empty())
-  {
+  if (mSkybox && !mCameras.empty()) {
     mSkybox->SetProjectionMatrix(mCameras.front().mProjectionMatrix);
     mSkybox->SetViewMatrix(mCameras.front().mViewMatrix);
     mSkybox->Render();
@@ -1050,7 +1050,5 @@ void teardown() {
     mDiffShader = NULL;
   }
 }
-
-
 
 }  // end namespace AA

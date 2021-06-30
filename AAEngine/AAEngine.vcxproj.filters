@@ -230,9 +230,6 @@
     <ClCompile Include="src\Renderer\ModelLoader.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\Renderer\TextureInfo.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="src\Renderer\TextureLoader.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>

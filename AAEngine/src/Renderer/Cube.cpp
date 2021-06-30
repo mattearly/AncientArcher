@@ -7,6 +7,7 @@ namespace AA {
 static unsigned int vao_to_the_cube = 0;
 static bool cube_loaded = false;
 
+// returns the vao to a -1 by 1 cube
 unsigned int load_cube() {
   if (cube_loaded) {
 #ifdef _DEBUG
