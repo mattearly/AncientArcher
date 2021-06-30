@@ -88,6 +88,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="src\Core.h" />
+    <ClInclude Include="src\GLSL\Raw_Shaders.h" />
     <ClInclude Include="src\GUI\imGUI.h" />
     <ClInclude Include="src\MouseReporting.h" />
     <ClInclude Include="src\Renderer\Cube.h" />
@@ -167,13 +168,6 @@
     <ClCompile Include="src\vendor\imgui\imgui_impl_opengl3.cpp" />
     <ClCompile Include="src\vendor\stb\stb_image.cpp" />
     <ClCompile Include="src\Scene\Vertex.cpp" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="GLSL_src\frag_diff.glsl" />
-    <None Include="GLSL_src\frag_lit.glsl" />
-    <None Include="GLSL_src\frag_skycube.glsl" />
-    <None Include="GLSL_src\vert_3D.glsl" />
-    <None Include="GLSL_src\vert_skycube.glsl" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

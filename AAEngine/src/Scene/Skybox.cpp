@@ -5,12 +5,13 @@
 #include "../Settings/Settings.h"
 #include <stb_image.h>
 #include "../Utility/QueryShader.h"
+#include "../GLSL/Raw_Shaders.h"
 namespace AA{
 Skybox::Skybox(std::vector<std::string> incomingSkymapFiles) {
 
   mSkyboxShader = std::make_unique<OGLShader>(
-    Files::ReadToString( "..\\AAEngine\\GLSL_src\\vert_skycube.glsl").c_str(),
-    Files::ReadToString( "..\\AAEngine\\GLSL_src\\frag_skycube.glsl").c_str()
+    vert_skycube.c_str(),
+    frag_skycube.c_str()
   );
 #ifdef _DEBUG
   QueryInputAttribs(mSkyboxShader->GetID());

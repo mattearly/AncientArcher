@@ -156,6 +156,9 @@
     <ClInclude Include="src\Renderer\Cube.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="src\GLSL\Raw_Shaders.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\vendor\stb\stb_image.cpp">
@@ -251,12 +254,5 @@
     <ClCompile Include="src\Renderer\Cube.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="GLSL_src\vert_3D.glsl" />
-    <None Include="GLSL_src\frag_diff.glsl" />
-    <None Include="GLSL_src\frag_lit.glsl" />
-    <None Include="GLSL_src\frag_skycube.glsl" />
-    <None Include="GLSL_src\vert_skycube.glsl" />
   </ItemGroup>
 </Project>

@@ -19,6 +19,7 @@
 #include "Core.h"
 #include "Utility/QueryShader.h"
 #include "Scene/Skybox.h"
+#include "GLSL/Raw_Shaders.h"
 #include <functional>
 #include <glad/glad.h>
 #include <GLFW/glfw3.h>
@@ -784,16 +785,11 @@ MouseReporting mMouseReporting = MouseReporting::UNSET;
 PlainGUI* mGUI = NULL;
 imGUI* mimGUI = NULL;
 
-
-const char* vert_path = "..\\AAEngine\\GLSL_src\\vert_3D.glsl";
-const char* frag_lit_path = "..\\AAEngine\\GLSL_src\\frag_lit.glsl";
-const char* frag_diff_path = "..\\AAEngine\\GLSL_src\\frag_diff.glsl";
-
 OGLShader* mDiffShader = nullptr;
 OGLShader* mLitShader = nullptr;
 void setupLitShader() {
   if (!mLitShader) {
-    mLitShader = new OGLShader(Files::ReadToString(vert_path).c_str(), Files::ReadToString(frag_lit_path).c_str());
+    mLitShader = new OGLShader(vert_3D.c_str(), frag_lit.c_str());
 #ifdef _DEBUG
     QueryInputAttribs(mLitShader->GetID());
     QueryUniforms(mLitShader->GetID());
@@ -806,7 +802,7 @@ void setupLitShader() {
 }
 void setupDiffShader() {
   if (!mDiffShader) {
-    mDiffShader = new OGLShader(Files::ReadToString(vert_path).c_str(), Files::ReadToString(frag_diff_path).c_str());
+    mDiffShader = new OGLShader(vert_3D.c_str(), frag_diff.c_str());
 #ifdef _DEBUG
     QueryInputAttribs(mDiffShader->GetID());
     QueryUniforms(mDiffShader->GetID());
