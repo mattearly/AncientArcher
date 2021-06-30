@@ -31,6 +31,7 @@ void InitEngineAndGame() {
       AA::ToggleFullscreen();
       return true;
     }
+    return false;
   });
 
   AA::AddToDeltaUpdate([](float dt) { engine_tick(dt); });
