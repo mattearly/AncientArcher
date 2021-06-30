@@ -12,9 +12,9 @@ Link as you would any other static C++ library, and then you can begin using it 
 #include <AncientArcher.h>
 int main()
 {
-  AA::InitEngine();
+  AA::Init();
   // your code here -> implement camera, lights, models, sounds, input handling, and their logic at will
-  AA::Run();
+  return AA::Run();
 }
 ```
 
