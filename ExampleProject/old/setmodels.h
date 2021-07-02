@@ -34,4 +34,23 @@ void setmodels(int cam) {
   static int plane
   //= AA::AddProp("E:\\AssetPack\\plane.obj", inherited_cam, AA::SHADERTYPE::LIT);
   = AA::AddPlane();
+
+  AA::AddToTimedOutKeyHandling([](AA::KeyboardInput& kb)->bool{ 
+    static bool plane_live = true;
+    if (kb.p) {
+      if (plane_live)
+      {
+        AA::RemovePlane(plane);
+        plane_live = false;
+      }
+      else
+      {
+        plane = AA::AddPlane();
+        plane_live = true;
+      }
+
+      return true;
+    }
+    return false;
+  });
 }

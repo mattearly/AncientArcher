@@ -62,6 +62,7 @@ void SetPropRotationZ(i32 propId, f32 new_z_rot);
 
 // Basic Geometry
 i32 AddPlane(const SHADERTYPE shadertype = SHADERTYPE::DIFF);
+void RemovePlane(const int uid);
 // End Basic Geometry
 
 
