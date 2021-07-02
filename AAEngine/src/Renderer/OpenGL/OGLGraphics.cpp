@@ -9,8 +9,9 @@
 
 namespace AA {
 namespace OGLGraphics {
-void SetSamplerCube(int which, const int& cubetexID){
-  glActiveTexture(GL_TEXTURE0+which);
+
+void SetSamplerCube(int which, const int& cubetexID) {
+  glActiveTexture(GL_TEXTURE0 + which);
   glBindTexture(GL_TEXTURE_CUBE_MAP, cubetexID);
 }
 
@@ -18,6 +19,7 @@ void SetTexture(int which, const int& textureID) {
   glActiveTexture(GL_TEXTURE0 + which);
   glBindTexture(GL_TEXTURE_2D, textureID);
 }
+
 void RenderSkybox(const int& vao, const int& count) {
   glDepthFunc(GL_LEQUAL);  // change depth function so depth test passes when values are equal to depth buffer's content
   glBindVertexArray(vao);
@@ -26,16 +28,15 @@ void RenderSkybox(const int& vao, const int& count) {
   glBindVertexArray(0);
   glDepthFunc(GL_LESS); // set depth function back to default
 }
+
 void Render(const std::vector<MeshDrawInfo>& meshes, const glm::mat4& translationMatrix, SHADERTYPE shadertype) {
   glEnable(GL_DEPTH_TEST);
 
   switch (shadertype) {
   case SHADERTYPE::DIFF:
-  case SHADERTYPE::ANIM_DIFF:
     mDiffShader->Use();
     break;
   case SHADERTYPE::LIT:
-  case SHADERTYPE::ANIM_LIT:
     mLitShader->Use();
     break;
   }
@@ -45,11 +46,9 @@ void Render(const std::vector<MeshDrawInfo>& meshes, const glm::mat4& translatio
     // update translationMatrix
     switch (shadertype) {
     case SHADERTYPE::DIFF:
-    case SHADERTYPE::ANIM_DIFF:
       mDiffShader->SetMat4("u_model_matrix", /*m.transformation * */translationMatrix);
       break;
     case SHADERTYPE::LIT:
-    case SHADERTYPE::ANIM_LIT:
       mLitShader->SetFloat("material.Shininess", m.shininess);
       mLitShader->SetMat4("u_model_matrix", /*m.transformation * */translationMatrix);
       break;
@@ -58,32 +57,69 @@ void Render(const std::vector<MeshDrawInfo>& meshes, const glm::mat4& translatio
     // go through all texture in this mesh
     u32 i = 0;
     for (const auto& texture : m.textureDrawIds) {
-      // activate each texture
-      glActiveTexture(GL_TEXTURE0 + i);
-      // get the texture type
-      const std::string texType = texture.second;
+      const std::string texType = texture.second;  // get the texture type
       switch (shadertype) {
       case SHADERTYPE::DIFF:
-      case SHADERTYPE::ANIM_DIFF:
         if (texType == "Albedo") {
+          OGLGraphics::SetTexture(i, texture.first);  // activate texture & bind it
           mDiffShader->SetInt(("material." + texType).c_str(), i);
         }
         break;
       case SHADERTYPE::LIT:
-      case SHADERTYPE::ANIM_LIT:
-        if (texType == "Albedo") {
+        if (texType == "Albedo" || texType == "Specular") {
+          OGLGraphics::SetTexture(i, texture.first);  // activate texture & bind it
           mLitShader->SetInt(("material." + texType).c_str(), i);
-          }
+        }
         break;
       }
-      glBindTexture(GL_TEXTURE_2D, texture.first);
       i++;
     }
-
     glBindVertexArray(m.vao);
     glDrawElements(GL_TRIANGLES, m.numElements, GL_UNSIGNED_INT, nullptr);
-
   }
+  // unbind vert array
+  glBindVertexArray(0);
+  // reset to first texture
+  glActiveTexture(GL_TEXTURE0);
+}
+
+void Render(const MeshDrawInfo& mesh, SHADERTYPE shadertype) {
+  glEnable(GL_DEPTH_TEST);
+
+  switch (shadertype) {
+  case SHADERTYPE::DIFF:
+    mDiffShader->Use();
+    mDiffShader->SetMat4("u_model_matrix", mesh.transformation);
+    break;
+  case SHADERTYPE::LIT:
+    mLitShader->Use();
+    mLitShader->SetFloat("material.Shininess", mesh.shininess);
+    mLitShader->SetMat4("u_model_matrix", mesh.transformation);
+    break;
+  }
+
+  // go through all texture in this mesh
+  u32 i = 0;
+  for (const auto& texture : mesh.textureDrawIds) {
+    const std::string texType = texture.second;  // get the texture type
+    switch (shadertype) {
+    case SHADERTYPE::DIFF:
+      if (texType == "Albedo") {
+        OGLGraphics::SetTexture(i, texture.first);  // activate texture & bind it
+        mDiffShader->SetInt(("material." + texType).c_str(), i);
+      }
+      break;
+    case SHADERTYPE::LIT:
+      if (texType == "Albedo" || texType == "Specular") {
+        OGLGraphics::SetTexture(i, texture.first);  // activate texture & bind it
+        mLitShader->SetInt(("material." + texType).c_str(), i);
+      }
+      break;
+    }
+    i++;
+  }
+  glBindVertexArray(mesh.vao);
+  glDrawElements(GL_TRIANGLES, mesh.numElements, GL_UNSIGNED_INT, nullptr);
   // unbind vert array
   glBindVertexArray(0);
   // reset to first texture
@@ -96,7 +132,8 @@ void RenderStrip(const int& vao, const int& count) {
   glBindVertexArray(0);
 }
 
-void SetViewportSize(int x, int y, int w, int h) {  glViewport(x, y, w, h);
+void SetViewportSize(int x, int y, int w, int h) {
+  glViewport(x, y, w, h);
 }
 
 /// <summary>
@@ -115,14 +152,13 @@ void ClearScreen()  noexcept {
   glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 }
 
-
 /// <summary>
 /// sends the mesh data to the graphics card
 /// </summary>
 /// <param name="points">array of points to upload</param>
 /// <param name="num_points">number in the array</param>
 /// <returns>the VAO</returns>
-u32 UploadMesh(const float *points, const int num_points) {
+u32 UploadMesh(const float* points, const int num_points) {
   u32 VAO, VBO;
 
   //todo: use element buffers
@@ -131,7 +167,7 @@ u32 UploadMesh(const float *points, const int num_points) {
   glGenBuffers(1, &VBO);
   glBindVertexArray(VAO);
   glBindBuffer(GL_ARRAY_BUFFER, VBO);
-  glBufferData(GL_ARRAY_BUFFER, sizeof(*points)*num_points, points, GL_STATIC_DRAW);
+  glBufferData(GL_ARRAY_BUFFER, sizeof(*points) * num_points, points, GL_STATIC_DRAW);
   glEnableVertexAttribArray(0);
   glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), (void*)0);
 
@@ -233,7 +269,6 @@ u32 Upload2DVerts(const std::vector<float>& points) {
   return VAO;
 }
 
-
 /// <summary>
 /// removes the mesh from our GPU memory
 /// </summary>
@@ -287,8 +322,7 @@ u32 UploadCubeMapTex(std::vector<unsigned char*> tex_data, int width, int height
         glTexImage2D(GL_TEXTURE_CUBE_MAP_POSITIVE_X + i, 0, GL_RGBA8, width, height, 0, GL_RGBA, GL_UNSIGNED_BYTE, tex_data[i]);
       }
     }
-  }
-  else {
+  } else {
     for (auto i = 0; i < 6; ++i) {
       if (tex_data[i]) {
         glTexImage2D(GL_TEXTURE_CUBE_MAP_POSITIVE_X + i, 0, GL_RGB, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, tex_data[i]);
@@ -308,14 +342,11 @@ void SetMSAA(const bool enabled) {
 }
 
 void SetBlend(const bool enabled) {
-  if(enabled)
-  {
+  if (enabled) {
     //glBlendFunc(GL_ONE, GL_ONE_MINUS_SRC_ALPHA);
     glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
     glEnable(GL_BLEND);
-  }
-  else
-  {
+  } else {
     glDisable(GL_BLEND);
   }
 }
