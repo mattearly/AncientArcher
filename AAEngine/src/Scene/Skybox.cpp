@@ -1,7 +1,7 @@
 #include "Skybox.h"
 #include "../../include/AncientArcher/Utility/Files.h"
 #include "../Renderer/OpenGL/OGLGraphics.h"
-#include "../Renderer/Cube.h"
+#include "../Renderer/LoadCube.h"
 #include "../Settings/Settings.h"
 #include <stb_image.h>
 #include "../Utility/QueryShader.h"

@@ -1,4 +1,4 @@
-#include "Cube.h"
+#include "LoadCube.h"
 #include "OpenGL/OGLGraphics.h"
 #ifdef _DEBUG
 #include<iostream>
