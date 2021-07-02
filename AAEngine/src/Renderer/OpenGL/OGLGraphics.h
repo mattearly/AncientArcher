@@ -29,5 +29,6 @@ u32 UploadCubeMapTex(std::vector<unsigned char*> tex_data, int width, int height
 void DeleteTex(const u32& id);
 void SetMSAA(const bool enabled);
 void SetBlend(const bool enabled);
+void SetCullFace(const bool enabled);
 };
 }  // end namespace AA

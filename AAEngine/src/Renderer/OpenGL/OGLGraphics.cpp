@@ -290,5 +290,12 @@ void SetBlend(const bool enabled) {
   }
 }
 
+void SetCullFace(const bool enabled) {
+  if (enabled)
+    glEnable(GL_CULL_FACE);
+  else
+    glDisable(GL_CULL_FACE);
+}
+
 }  // end namespace OGLGraphics
 }  // end namespace AA
