@@ -8,15 +8,13 @@ in vec2 pass_TexUV;
 
 out vec4 out_Color;
 
-struct Material
-{
+struct Material {
   sampler2D Albedo;
 };
 
 uniform Material material;
 
-void main()
-{
+void main() {
   out_Color = texture(material.Albedo, pass_TexUV);
 }
 )";
@@ -72,7 +70,7 @@ uniform SpotLight spotLight[MAXSPOTLIGHTS];
 uniform int NUM_POINT_LIGHTS;
 uniform int NUM_SPOT_LIGHTS;
 
-vec3 CalcDirectionalLight(vec3 normal, vec3 viewDir){
+vec3 CalcDirectionalLight(vec3 normal, vec3 viewDir) {
   vec3 lightDir = normalize(-directionalLight.Direction);
   // diffuse shading
   float diff = max(dot(normal, lightDir), 0.);
@@ -268,10 +266,10 @@ uniform mat4 u_model_matrix;
 void main() {
   pass_Pos = (u_model_matrix * vec4(inPos, 0, 1.0)).xyz;
   pass_TexUV = vec2((inPos.x+1.0)/2.0, 1-(inPos.y+1.0)/2.0);
-  vec4 final_pos = u_projection_matrix * u_view_matrix * u_model_matrix * vec4(inPos, 0, 1);
+  vec4 final_pos = u_projection_matrix * u_view_matrix * pass_Pos;
   gl_Position = final_pos;
 }
-
 )";
+
 
 }  // end namespace AA

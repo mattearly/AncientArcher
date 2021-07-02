@@ -1,6 +1,9 @@
 #pragma once
-#include "MouseReporting.h"
 #include "../include/AncientArcher/Types.h"
+#include "../include/AncientArcher/Controls/KeyboardInput.h"
+#include "../include/AncientArcher/Controls/MouseInput.h"
+#include "../include/AncientArcher/Controls/ScrollInput.h"
+#include "MouseReporting.h"
 #include "Scene/Lights.h"
 #include "Scene/Prop.h"
 #include "Scene/Skybox.h"
