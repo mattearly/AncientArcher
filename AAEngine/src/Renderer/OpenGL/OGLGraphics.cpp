@@ -177,6 +177,31 @@ u32 UploadMesh(const std::vector<Vertex>& verts, const std::vector<u32>& elems) 
   return VAO;
 }
 
+u32 UploadMesh(const float* points, const int num_points, const u32* indices, const int ind_count) {
+  u32 VAO, VBO, EBO;
+  glGenBuffers(1, &VBO);
+
+  glGenVertexArrays(1, &VAO);
+  glBindVertexArray(VAO);
+  glBindBuffer(GL_ARRAY_BUFFER, VBO);
+  glBufferData(GL_ARRAY_BUFFER,num_points * sizeof(float), points, GL_STATIC_DRAW);
+
+  glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(float)*3, 0);
+
+  glEnableVertexAttribArray(0);
+
+  glGenBuffers(1, &EBO);
+  glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);
+  glBufferData(GL_ELEMENT_ARRAY_BUFFER, ind_count * sizeof(u32), indices, GL_STATIC_DRAW);
+
+  glBindVertexArray(0);
+
+  glDeleteBuffers(1, &VBO);
+  glDeleteBuffers(1, &EBO);
+
+  return VAO;
+}
+
 
 u32 Upload2DVerts(const std::vector<vec2>& points) {
   u32 VAO, VBO;

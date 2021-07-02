@@ -22,6 +22,7 @@ void SetViewportClearColor(glm::vec3 color) noexcept;
 void ClearScreen() noexcept;
 u32 UploadMesh(const float *points, const int num_points);
 u32 UploadMesh(const std::vector<Vertex>& verts, const std::vector<u32>& elems);
+u32 UploadMesh(const float *points, const int num_points, const u32 *indices, const int ind_count);
 u32 Upload2DVerts(const std::vector<vec2>& points);
 u32 Upload2DVerts(const std::vector<float>& points);
 void DeleteMesh(const u32& VAO);
