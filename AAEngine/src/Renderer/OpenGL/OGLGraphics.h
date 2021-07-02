@@ -13,6 +13,7 @@ extern OGLShader* mLitShader;
 extern OGLShader* mDiffShader;
 namespace OGLGraphics {
 void SetSamplerCube(int which, const int& cubetexID);
+void SetTexture(int which, const int& textureID);
 void RenderSkybox(const int& vao, const int& count);
 void Render(const std::vector<MeshDrawInfo>& meshes, const glm::mat4& translationMatrix, SHADERTYPE shadertype);
 void RenderStrip(const int& vao, const int& count);

@@ -13,6 +13,11 @@ void SetSamplerCube(int which, const int& cubetexID){
   glActiveTexture(GL_TEXTURE0+which);
   glBindTexture(GL_TEXTURE_CUBE_MAP, cubetexID);
 }
+
+void SetTexture(int which, const int& textureID) {
+  glActiveTexture(GL_TEXTURE0 + which);
+  glBindTexture(GL_TEXTURE_2D, textureID);
+}
 void RenderSkybox(const int& vao, const int& count) {
   glDepthFunc(GL_LEQUAL);  // change depth function so depth test passes when values are equal to depth buffer's content
   glBindVertexArray(vao);
