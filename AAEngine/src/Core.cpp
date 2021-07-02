@@ -23,6 +23,7 @@
 #include <functional>
 #include <glad/glad.h>
 #include <GLFW/glfw3.h>
+#include "Scene/Plane.h"
 
 namespace AA {
 
@@ -787,7 +788,6 @@ MouseReporting mMouseReporting = MouseReporting::UNSET;
 PlainGUI* mGUI = NULL;
 imGUI* mimGUI = NULL;
 
-OGLShader* mDiffShader = nullptr;
 OGLShader* mLitShader = nullptr;
 void setupLitShader() {
   if (!mLitShader) {
@@ -802,6 +802,7 @@ void setupLitShader() {
     mLitShader->SetMat4("u_projection_matrix", mCameras.front().mProjectionMatrix);
   }
 }
+OGLShader* mDiffShader = nullptr;
 void setupDiffShader() {
   if (!mDiffShader) {
     mDiffShader = new OGLShader(vert_3D.c_str(), frag_diff.c_str());
@@ -815,7 +816,6 @@ void setupDiffShader() {
     mDiffShader->SetMat4("u_projection_matrix", mCameras.front().mProjectionMatrix);
   }
 }
-
 
 // single directional light
 DirectionalLight* mDirectionalLight = nullptr;  ///< directional light for lit shader(s)
@@ -836,7 +836,8 @@ void updateProjectionFromCam(OGLShader* shader_to_update, const Camera& from_cam
   shader_to_update->SetMat4("u_projection_matrix", from_cam.mProjectionMatrix);
 }
 
-std::vector<Prop> mProps;            ///< array of inanimate props to draw
+std::vector<Prop> mProps;         ///< array of inanimate props to draw
+std::vector<Plane> mPlanes;       ///< arry of planes to draw
 std::shared_ptr<Skybox> mSkybox;  ///< the main skybox
                                   // sound systems
 std::vector<Speaker*> mSpeakers;  ///< array of places to play sound effects from
@@ -927,73 +928,40 @@ void update() {
 void render() {
   OGLGraphics::ClearScreen();
 
-  //if (isWindowSizeDirty) {
-  //  if (mCameras.empty()) {
-  //    float aspect_ratio = (float)Core::GetWindowWidth() / Core::GetWindowHeight();
-  //    float ortho_height = Core::GetWindowHeight() / 2.f;
-  //    float ortho_width = ortho_height * aspect_ratio;
-
-  //    if (mLitShader) {
-  //      mLitShader->setMat4("u_projection_matrix", glm::ortho(-ortho_width, ortho_width, -ortho_height, ortho_height, .1f, 2000.f));
-  //      mLitShader->setMat4("u_view_matrix", glm::lookAt(glm::vec3(0), glm::vec3(0, 0, -1), glm::vec3(0, 1, 0)));
-  //    }
-  //    if (mDiffShader) {
-  //      mDiffShader->setMat4("u_projection_matrix", glm::ortho(-ortho_width, ortho_width, -ortho_height, ortho_height, .1f, 2000.f));
-  //      mDiffShader->setMat4("u_view_matrix", glm::lookAt(glm::vec3(0), glm::vec3(0, 0, -1), glm::vec3(0, 1, 0)));
-  //    }
-  //  } else {
-  //    if (mLitShader) {
-  //      updateProjectionFromCam(mLitShader, mCameras.front());  //todo: not this front thing from cam blindly
-  //    }
-  //    if (mDiffShader) {
-  //      updateProjectionFromCam(mDiffShader, mCameras.front());
-  //    }
-  //    if (mSkybox) {
-  //      mSkybox->SetProjectionMatrix(mCameras.front().mProjectionMatrix);
-  //    }
-  //  }
-  //  isWindowSizeDirty = false;
-  //}
-
   for (auto& p : mProps) {
     switch (p.mShaderType) {
     case SHADERTYPE::LIT:
-      if (!mLitShader) break;
-
       mLitShader->Use();
-      if (mCameras.empty())
-        mLitShader->SetMat4("u_view_matrix", glm::mat4(1));
-      else
-        mLitShader->SetMat4("u_view_matrix", mCameras.front().mViewMatrix);
+      mLitShader->SetMat4("u_view_matrix", mCameras.front().mViewMatrix);
       break;
     case SHADERTYPE::DIFF:
-      if (!mDiffShader) break;
-
       mDiffShader->Use();
-      if (mCameras.empty())
-        mDiffShader->SetMat4("u_view_matrix", glm::mat4(1));
-      else
-        mDiffShader->SetMat4("u_view_matrix", mCameras.front().mViewMatrix);
+      mDiffShader->SetMat4("u_view_matrix", mCameras.front().mViewMatrix);
       break;
     }
-
     p.Draw();
   }
 
-  //for (auto& ap : mAnimProps) {
-  //  mAnimDiffShader->use();
-  //  mAnimDiffShader->setMat4("view", mCameras.front().mViewMatrix);
-  //  ap.Draw();
-  //}
+  for (auto& plane : mPlanes) {
+    // view and projection should already be set by prop drawing
+    // but in case it isn't, lets do it agian
+    if (mLitShader) {
+      mLitShader->Use();
+      mLitShader->SetMat4("u_view_matrix", mCameras.front().mViewMatrix);
+    }
+    if (mDiffShader) {
+      mDiffShader->Use();
+      mDiffShader->SetMat4("u_view_matrix", mCameras.front().mViewMatrix);
+    }
+    plane.Draw();
+  }
 
-  //if (mSkybox && !mCameras.empty()) { mSkybox->render(mCameras.front()); }
   if (mSkybox && !mCameras.empty()) {
     mSkybox->SetProjectionMatrix(mCameras.front().mProjectionMatrix);
     mSkybox->SetViewMatrix(mCameras.front().mViewMatrix);
     mSkybox->Render();
   }
 
-  // if there is a gui
   if (mGUI) {
     mGUI->Draw();
   }

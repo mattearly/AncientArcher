@@ -87,11 +87,13 @@
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="src\Scene\Plane.h" />
     <ClInclude Include="src\Core.h" />
     <ClInclude Include="src\GLSL\Raw_Shaders.h" />
     <ClInclude Include="src\GUI\imGUI.h" />
     <ClInclude Include="src\MouseReporting.h" />
-    <ClInclude Include="src\Renderer\Cube.h" />
+    <ClInclude Include="src\Renderer\LoadCube.h" />
+    <ClInclude Include="src\Renderer\LoadPlane.h" />
     <ClInclude Include="src\Renderer\TextureLoader.h" />
     <ClInclude Include="src\RenderingFramework.h" />
     <ClInclude Include="include\AncientArcher\ShaderType.h" />
@@ -137,10 +139,12 @@
     <ClInclude Include="src\WindowingType.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="src\Scene\Plane.cpp" />
     <ClCompile Include="src\Core.cpp" />
     <ClCompile Include="src\GUI\imGUI.cpp" />
-    <ClCompile Include="src\Renderer\Cube.cpp" />
+    <ClCompile Include="src\Renderer\LoadCube.cpp" />
     <ClCompile Include="src\Renderer\ModelLoader.cpp" />
+    <ClCompile Include="src\Renderer\LoadPlane.cpp" />
     <ClCompile Include="src\Renderer\TextureLoader.cpp" />
     <ClCompile Include="src\GUI\PlainGUI.cpp" />
     <ClCompile Include="src\Scene\Skybox.cpp" />

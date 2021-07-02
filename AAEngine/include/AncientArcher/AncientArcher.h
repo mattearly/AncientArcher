@@ -60,6 +60,11 @@ void SetPropRotationZ(i32 propId, f32 new_z_rot);
 // End Animated
 
 
+// Basic Geometry
+i32 AddPlane(const SHADERTYPE shadertype = SHADERTYPE::DIFF);
+// End Basic Geometry
+
+
 // Skybox
 void SetSkybox(std::vector<std::string> incomingSkymapFiles) noexcept;
 // End Skybox

@@ -15,6 +15,7 @@
 #include "GUI/imGUI.h"
 #include <glm/glm.hpp>
 #include <functional>
+#include "Scene/Plane.h"
 
 namespace AA{
 namespace Core {
@@ -45,9 +46,9 @@ extern imGUI* mimGUI;
 extern const char* vert_path;
 extern const char* frag_lit_path;
 extern const char* frag_diff_path;
-extern OGLShader* mDiffShader;
 extern OGLShader* mLitShader;
 extern void setupLitShader();
+extern OGLShader* mDiffShader;
 extern void setupDiffShader();
 extern DirectionalLight* mDirectionalLight;
 extern std::vector<PointLight> mPointLights;
@@ -59,6 +60,7 @@ extern const i32 MAXSPOTLIGHTS;
 extern std::vector<Camera> mCameras;
 extern void updateProjectionFromCam(OGLShader* shader_to_update, const Camera& from_cam);
 extern std::vector<Prop> mProps;
+extern std::vector<Plane> mPlanes;
 extern std::shared_ptr<Skybox> mSkybox;
 extern std::vector<Speaker*> mSpeakers;
 extern std::vector<SoundEffect*> mSoundEffects;

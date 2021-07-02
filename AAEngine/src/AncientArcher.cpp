@@ -391,6 +391,19 @@ void SetPropRotationZ(i32 propId, f32 new_z_rot) {
 // End Anim
 
 
+// Basic Geometry
+i32 AddPlane(const SHADERTYPE shadertype) {
+  if (shadertype == SHADERTYPE::LIT)
+    setupLitShader();
+  else if (shadertype==SHADERTYPE::DIFF)
+    setupDiffShader();
+  mPlanes.emplace_back();
+  mPlanes.back().shadertype = shadertype;
+  return mPlanes.back().GetUID();
+}
+// End Basic Geometry
+
+
 // Skybox
 void SetSkybox(std::vector<std::string> incomingSkymapFiles) noexcept {
   if (mSkybox)

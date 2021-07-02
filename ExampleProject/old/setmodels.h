@@ -28,5 +28,10 @@ void setmodels(int cam) {
   }
   );
 
+  // plane test
+  //static int plane_id = AA::AddPlane();
 
+  static int plane
+  //= AA::AddProp("E:\\AssetPack\\plane.obj", inherited_cam, AA::SHADERTYPE::LIT);
+  = AA::AddPlane();
 }
