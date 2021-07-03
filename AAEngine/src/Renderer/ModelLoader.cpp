@@ -52,6 +52,7 @@ void UnloadGameObject(const std::vector<MeshDrawInfo>& toUnload) {
     }
   }
 }
+
 MeshDrawInfo processMesh(aiMesh* mesh, const aiScene* scene, aiMatrix4x4* trans) {
   u32 num_of_vertices_on_mesh = mesh->mNumVertices;
   if (num_of_vertices_on_mesh == 0)
@@ -60,8 +61,7 @@ MeshDrawInfo processMesh(aiMesh* mesh, const aiScene* scene, aiMatrix4x4* trans)
   std::vector<Vertex> loaded_vertices;
 
   // Get the vertices
-  if (mesh->mTextureCoords[0])
-  {
+  if (mesh->mTextureCoords[0]) {
     for (u32 i = 0; i < num_of_vertices_on_mesh; ++i) {
       loaded_vertices.emplace_back(
         Vertex(
@@ -69,9 +69,7 @@ MeshDrawInfo processMesh(aiMesh* mesh, const aiScene* scene, aiMatrix4x4* trans)
           aiVec3_to_glmVec3(mesh->mNormals[i]),
           vec2(mesh->mTextureCoords[0][i].x, mesh->mTextureCoords[0][i].y)));
     }
-  }
-  else
-  {
+  } else {
     for (u32 i = 0; i < num_of_vertices_on_mesh; ++i) {
       loaded_vertices.emplace_back(
         Vertex(
@@ -99,7 +97,9 @@ MeshDrawInfo processMesh(aiMesh* mesh, const aiScene* scene, aiMatrix4x4* trans)
   if (TextureLoader::loadMaterialTextures(scene, ai_material, aiTextureType_DIFFUSE, "Albedo", albedo_textures) == 0) {
     for (auto& a_tex : albedo_textures) {
       all_loaded_textures.insert(all_loaded_textures.end(), a_tex);
-      //std::cout << "found&cube_loaded Albedo texture\n";
+#if _DEBUG
+      std::cout << "found&loaded Albedo texture\n";
+#endif
     }
   }
 

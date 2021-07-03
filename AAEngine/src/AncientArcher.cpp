@@ -404,14 +404,10 @@ i32 AddPlane(const SHADERTYPE shadertype) {
 void RemovePlane(const int uid) {
   // erase is probably not very efficient
   mPlanes.erase(remove_if(mPlanes.begin(), mPlanes.end(), [&](Plane p) -> bool { 
-    if (p.GetUID() == uid) 
-    {
+    if (p.GetUID() == uid) {
       return true;
-    }
-    else 
-    {
+    } else {
       return false;
-
     }
   }));
 }
