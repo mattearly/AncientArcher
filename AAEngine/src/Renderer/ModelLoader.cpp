@@ -52,12 +52,13 @@ void UnloadGameObject(const std::vector<MeshDrawInfo>& toUnload) {
   }
 }
 
-MeshDrawInfo processMesh(aiMesh* mesh, const aiScene* scene, aiMatrix4x4* trans) {
+void processMesh(aiMesh* mesh, const aiScene* scene, aiMatrix4x4* trans, Prop& out_model) {
   u32 num_of_vertices_on_mesh = mesh->mNumVertices;
   if (num_of_vertices_on_mesh == 0)
     throw("mesh has no vertices");
 
   std::vector<Vertex> loaded_vertices;
+  VertexBoneData bone_data{};
 
   // Get the vertices
   if (mesh->mTextureCoords[0]) {
@@ -87,6 +88,39 @@ MeshDrawInfo processMesh(aiMesh* mesh, const aiScene* scene, aiMatrix4x4* trans)
     }
   }
 
+  // load bones
+  if (out_model.isAnimated) {
+    for (u32 i = 0; i < mesh->mNumBones; i++) {
+      u32 BoneIndex = 0;
+      string BoneName(mesh->mBones[i]->mName.data);
+
+      if (out_model.mBoneMapping.find(BoneName) == out_model.mBoneMapping.end()) {
+        // Allocate an index for a new bone
+        BoneIndex = out_model.mNumBones;
+        out_model.mNumBones++;
+        BoneInfo bi;
+        out_model.mBoneInfo.push_back(bi);
+        out_model.mBoneInfo[BoneIndex].BoneOffset = aiMat4_to_glmMat4(mesh->mBones[i]->mOffsetMatrix);
+        out_model.mBoneMapping[BoneName] = BoneIndex;
+      } else {
+        BoneIndex = out_model.mBoneMapping[BoneName];
+      }
+
+      for (u32 j = 0 ; j < mesh->mBones[i]->mNumWeights ; j++) {
+        u32 VertexID = /*out_model.mMeshes[meshIndex].BaseVertex + */mesh->mBones[i]->mWeights[j].mVertexId;
+        float Weight  = mesh->mBones[i]->mWeights[j].mWeight;
+        for (u32 k = 0 ; k < 4 ; k++) {
+          if (out_model.mMeshes[VertexID].boneData.Weights[k] == 0.0f) {
+            out_model.mMeshes[VertexID].boneData.IDs[k] = BoneIndex;
+            out_model.mMeshes[VertexID].boneData.Weights[k] = Weight;
+            break; // ???????????????????????????????????????????????
+          }
+        }
+      }
+    }
+  }
+
+
   // get the materials
   const aiMaterial* ai_material = scene->mMaterials[mesh->mMaterialIndex];
   std::unordered_map<u32, std::string> all_loaded_textures;
@@ -102,15 +136,14 @@ MeshDrawInfo processMesh(aiMesh* mesh, const aiScene* scene, aiMatrix4x4* trans)
     }
   }
 
-  int shading_model;
-  ai_material->Get(AI_MATKEY_SHADING_MODEL, shading_model);
-  ai_real shininess = .1f;
-
-  if (shading_model == aiShadingMode_Phong) {
-#if _DEBUG
-    std::cout << mModelFileName << ": ";
-    std::cout << "Shading model is phong\n";
-#endif
+  //ai_real shininess = .1f;
+  //int shading_model;
+  //ai_material->Get(AI_MATKEY_SHADING_MODEL, shading_model);
+//  if (shading_model == aiShadingMode_Phong) {
+//#if _DEBUG
+//    std::cout << mModelFileName << ": ";
+//    std::cout << "Shading model is phong\n";
+//#endif
     std::unordered_map<u32, std::string> specular_textures;
     if (TextureLoader::loadMaterialTextures(scene, ai_material, aiTextureType_SPECULAR, "Specular", specular_textures) == 0) {
       for (auto& s_tex : specular_textures) {
@@ -129,15 +162,13 @@ MeshDrawInfo processMesh(aiMesh* mesh, const aiScene* scene, aiMatrix4x4* trans)
         std::cout << "found&loaded Normal texture\n";
 #endif
       }
-    }
-
-
-    if (!ai_material->Get(AI_MATKEY_SHININESS, shininess)) {
-      // set shininess to a default if it failed
-#if _DEBUG
-      std::cout << "shininess not found, shininess defaulted to 1.f\n";
-#endif
-    }
+    //}
+//    if (!ai_material->Get(AI_MATKEY_SHININESS, shininess)) {
+//      // set shininess to a default if it failed
+//#if _DEBUG
+//      std::cout << "shininess not found, shininess defaulted to 1.f\n";
+//#endif
+//    }
   }
 
   u32 vao = 0;
@@ -146,13 +177,20 @@ MeshDrawInfo processMesh(aiMesh* mesh, const aiScene* scene, aiMatrix4x4* trans)
     vao = OGLGraphics::UploadMesh(loaded_vertices, loaded_elements);
     break;
   }
-  return MeshDrawInfo(vao, (u32)loaded_elements.size(), all_loaded_textures, shininess, aiMat4_to_glmMat4(*trans));
+
+  if (out_model.isAnimated)
+    out_model.mMeshes.push_back(MeshDrawInfo(vao, (u32)loaded_elements.size(), all_loaded_textures, /*shininess*/ 1, aiMat4_to_glmMat4(*trans), bone_data));
+  else 
+    out_model.mMeshes.push_back(MeshDrawInfo(vao, (u32)loaded_elements.size(), all_loaded_textures, /*shininess*/ 1, aiMat4_to_glmMat4(*trans)));
+
 }
 
 void processNode(aiNode* node, const aiScene* scene, Prop& out_model) {
   for (u32 i = 0; i < node->mNumMeshes; ++i) {
     aiMesh* mesh = scene->mMeshes[node->mMeshes[i]];
-    out_model.mMeshes.push_back(processMesh(mesh, scene, &node->mTransformation));
+    //out_model.mMeshes.push_back(processMesh(mesh, scene, &node->mTransformation, out_model.isAnimated));
+
+    processMesh(mesh, scene, &node->mTransformation, out_model);
   }
 
   for (u32 i = 0; i < node->mNumChildren; ++i) {
@@ -160,18 +198,18 @@ void processNode(aiNode* node, const aiScene* scene, Prop& out_model) {
   }
 }
 
-int LoadGameObjectFromFile(Prop& out_model, string path) {
+int LoadGameObjectFromFile(Prop& out_model, string path, bool animate) {
   Assimp::Importer importer;
   int post_processing_flags = 0;
   //post processing -> http://assimp.sourceforge.net/lib_html/postprocess_8h.html
-  post_processing_flags |= aiProcess_JoinIdenticalVertices | aiProcess_Triangulate;
-  // |
-  //#ifdef D3D
-  //	aiProcess_MakeLeftHanded | aiProcess_FlipWindingOrder | aiProcess_FlipUVs |
-  //#endif
+  post_processing_flags |= /*aiProcess_JoinIdenticalVertices |*/ aiProcess_Triangulate/*;*/
+   |
+  #ifdef D3D
+  	aiProcess_MakeLeftHanded | aiProcess_FlipWindingOrder | aiProcess_FlipUVs |
+  #endif
   //aiProcess_PreTransformVertices |
   //aiProcess_CalcTangentSpace |
-  //aiProcess_GenSmoothNormals |
+  aiProcess_GenSmoothNormals /*|*/;
   //aiProcess_Triangulate |
   //aiProcess_FixInfacingNormals |
   //aiProcess_FindInvalidData |
@@ -181,6 +219,13 @@ int LoadGameObjectFromFile(Prop& out_model, string path) {
   if (!scene || scene->mFlags & AI_SCENE_FLAGS_INCOMPLETE || !scene->mRootNode) {
     //std::cout << "failed to load scene @ " << path << '\n';
     return -1;  // failed to load scene
+  }
+
+  if (scene && animate) {
+    out_model.isAnimated = true;
+    out_model.mGlobalInverseTransform = glm::inverse(aiMat4_to_glmMat4(scene->mRootNode->mTransformation));
+  } else {
+    throw("model didn't load");
   }
 
   std::size_t the_last_slash = path.find_last_of("/\\") + 1;

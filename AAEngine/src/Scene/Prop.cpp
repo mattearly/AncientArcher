@@ -26,15 +26,15 @@ void Prop::Draw() {
     updateFinalModelMatrix();
     mModelMatrixChanged = false;
   }
-  OGLGraphics::Render(mMeshes, finalModelMatrix, mShaderType);
+  OGLGraphics::Render(mMeshes, currentWorldTransform, mShaderType);
 }
 
 void Prop::updateFinalModelMatrix() {
   // reset to identity matrix
-  finalModelMatrix = glm::mat4(1);
+  currentWorldTransform = glm::mat4(1);
 
   // apply translation
-  finalModelMatrix = glm::translate(finalModelMatrix, translation);
+  currentWorldTransform = glm::translate(currentWorldTransform, translation);
 
   // fix angles between 0 & 360
   if (eulerRotationX < 0.f)
@@ -52,13 +52,12 @@ void Prop::updateFinalModelMatrix() {
   if (eulerRotationZ > 360.f)
     eulerRotationZ -= 360.f;
 
-
-  finalModelMatrix = glm::rotate(finalModelMatrix, glm::radians(eulerRotationX), glm::vec3(1, 0, 0));
-  finalModelMatrix = glm::rotate(finalModelMatrix, glm::radians(eulerRotationY), glm::vec3(0, 1, 0));
-  finalModelMatrix = glm::rotate(finalModelMatrix, glm::radians(eulerRotationZ), glm::vec3(0, 0, 1));
+  currentWorldTransform = glm::rotate(currentWorldTransform, glm::radians(eulerRotationX), glm::vec3(1, 0, 0));
+  currentWorldTransform = glm::rotate(currentWorldTransform, glm::radians(eulerRotationY), glm::vec3(0, 1, 0));
+  currentWorldTransform = glm::rotate(currentWorldTransform, glm::radians(eulerRotationZ), glm::vec3(0, 0, 1));
 
   // apply current scale
-  finalModelMatrix = glm::scale(finalModelMatrix, scale);
+  currentWorldTransform = glm::scale(currentWorldTransform, scale);
 }
 
 }  // end namespace AA
