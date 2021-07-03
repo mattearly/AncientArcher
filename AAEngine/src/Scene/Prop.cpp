@@ -10,7 +10,7 @@ const int Prop::GetCamId() const noexcept {
 }
 
 Prop::Prop(const char* path, int camId, SHADERTYPE shadertype) {
-  ModelLoader::LoadGameObjectFromFile(mMeshes, path);
+  ModelLoader::LoadGameObjectFromFile(*this, path);
   mCameraID = camId;
   mShaderType = shadertype;
 }

@@ -5,7 +5,6 @@
 #include "../Settings/Settings.h"
 #include "../Utility/Conversions.h"
 #include "OpenGL/OGLGraphics.h"
-#include "TextureInfo.h"
 #include "TextureLoader.h"
 
 #include <assimp/Importer.hpp>
@@ -149,17 +148,19 @@ MeshDrawInfo processMesh(aiMesh* mesh, const aiScene* scene, aiMatrix4x4* trans)
   }
   return MeshDrawInfo(vao, (u32)loaded_elements.size(), all_loaded_textures, shininess, aiMat4_to_glmMat4(*trans));
 }
-void processNode(aiNode* node, const aiScene* scene, std::vector<MeshDrawInfo>& out_MeshInfo) {
+
+void processNode(aiNode* node, const aiScene* scene, Prop& out_model) {
   for (u32 i = 0; i < node->mNumMeshes; ++i) {
     aiMesh* mesh = scene->mMeshes[node->mMeshes[i]];
-    out_MeshInfo.push_back(processMesh(mesh, scene, &node->mTransformation));
+    out_model.mMeshes.push_back(processMesh(mesh, scene, &node->mTransformation));
   }
 
   for (u32 i = 0; i < node->mNumChildren; ++i) {
-    processNode(node->mChildren[i], scene, out_MeshInfo);
+    processNode(node->mChildren[i], scene, out_model);
   }
 }
-int LoadGameObjectFromFile(std::vector<MeshDrawInfo>& out_MeshInfo, string path) {
+
+int LoadGameObjectFromFile(Prop& out_model, string path) {
   Assimp::Importer importer;
   int post_processing_flags = 0;
   //post processing -> http://assimp.sourceforge.net/lib_html/postprocess_8h.html
@@ -198,7 +199,7 @@ int LoadGameObjectFromFile(std::vector<MeshDrawInfo>& out_MeshInfo, string path)
     std::char_traits<char>,
     std::allocator<char>>::size_type>(the_last_dot) - the_last_slash);  // get the name of the file
 
-  processNode(scene->mRootNode, scene, out_MeshInfo);
+  processNode(scene->mRootNode, scene, out_model);
 
   return 0;
 }
