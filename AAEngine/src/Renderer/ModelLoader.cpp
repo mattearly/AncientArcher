@@ -58,14 +58,14 @@ void processMesh(aiMesh* mesh, const aiScene* scene, aiMatrix4x4* trans, Prop& o
     throw("mesh has no vertices");
 
   std::vector<Vertex> loaded_vertices;
-  VertexBoneData bone_data{};
 
   // Get the vertices
   if (mesh->mTextureCoords[0]) {
     for (u32 i = 0; i < num_of_vertices_on_mesh; ++i) {
+
       loaded_vertices.emplace_back(
         Vertex(
-          aiVec3_to_glmVec3(mesh->mVertices[i]), 
+          aiVec3_to_glmVec3(mesh->mVertices[i]),
           aiVec3_to_glmVec3(mesh->mNormals[i]),
           vec2(mesh->mTextureCoords[0][i].x, mesh->mTextureCoords[0][i].y)));
     }
@@ -73,22 +73,12 @@ void processMesh(aiMesh* mesh, const aiScene* scene, aiMatrix4x4* trans, Prop& o
     for (u32 i = 0; i < num_of_vertices_on_mesh; ++i) {
       loaded_vertices.emplace_back(
         Vertex(
-          aiVec3_to_glmVec3(mesh->mVertices[i]), 
+          aiVec3_to_glmVec3(mesh->mVertices[i]),
           aiVec3_to_glmVec3(mesh->mNormals[i])));
     }
   }
 
-  // Get the Indices to draw triangle faces with
-  std::vector<u32> loaded_elements;
-  u32 num_faces = mesh->mNumFaces;
-  for (u32 i = 0; i < num_faces; ++i) {
-    aiFace face = mesh->mFaces[i];
-    for (u32 j = 0; j < face.mNumIndices; ++j) {
-      loaded_elements.push_back(face.mIndices[j]);
-    }
-  }
-
-  // load bones
+  // load bones if animated
   if (out_model.isAnimated) {
     for (u32 i = 0; i < mesh->mNumBones; i++) {
       u32 BoneIndex = 0;
@@ -110,16 +100,26 @@ void processMesh(aiMesh* mesh, const aiScene* scene, aiMatrix4x4* trans, Prop& o
         u32 VertexID = /*out_model.mMeshes[meshIndex].BaseVertex + */mesh->mBones[i]->mWeights[j].mVertexId;
         float Weight  = mesh->mBones[i]->mWeights[j].mWeight;
         for (u32 k = 0 ; k < 4 ; k++) {
-          if (out_model.mMeshes[VertexID].boneData.Weights[k] == 0.0f) {
-            out_model.mMeshes[VertexID].boneData.IDs[k] = BoneIndex;
-            out_model.mMeshes[VertexID].boneData.Weights[k] = Weight;
-            break; // ???????????????????????????????????????????????
+          if (loaded_vertices[VertexID].Weights[k] == 0.0f) {
+            loaded_vertices[VertexID].BoneIds[k] = BoneIndex;
+            loaded_vertices[VertexID].Weights[k] = Weight;
+            break; // should we be breaking here?
           }
         }
       }
+
     }
   }
 
+  // Get the Indices to draw triangle faces with
+  std::vector<u32> loaded_elements;
+  u32 num_faces = mesh->mNumFaces;
+  for (u32 i = 0; i < num_faces; ++i) {
+    aiFace face = mesh->mFaces[i];
+    for (u32 j = 0; j < face.mNumIndices; ++j) {
+      loaded_elements.push_back(face.mIndices[j]);
+    }
+  }
 
   // get the materials
   const aiMaterial* ai_material = scene->mMaterials[mesh->mMaterialIndex];
@@ -162,14 +162,14 @@ void processMesh(aiMesh* mesh, const aiScene* scene, aiMatrix4x4* trans, Prop& o
         std::cout << "found&loaded Normal texture\n";
 #endif
       }
-    //}
+    }
 //    if (!ai_material->Get(AI_MATKEY_SHININESS, shininess)) {
 //      // set shininess to a default if it failed
 //#if _DEBUG
 //      std::cout << "shininess not found, shininess defaulted to 1.f\n";
 //#endif
 //    }
-  }
+  //}
 
   u32 vao = 0;
   switch (Settings::Get()->GetOptions().renderer) {
@@ -179,7 +179,7 @@ void processMesh(aiMesh* mesh, const aiScene* scene, aiMatrix4x4* trans, Prop& o
   }
 
   if (out_model.isAnimated)
-    out_model.mMeshes.push_back(MeshDrawInfo(vao, (u32)loaded_elements.size(), all_loaded_textures, /*shininess*/ 1, aiMat4_to_glmMat4(*trans), bone_data));
+    out_model.mMeshes.push_back(MeshDrawInfo(vao, (u32)loaded_elements.size(), all_loaded_textures, /*shininess*/ 1, aiMat4_to_glmMat4(*trans)));
   else 
     out_model.mMeshes.push_back(MeshDrawInfo(vao, (u32)loaded_elements.size(), all_loaded_textures, /*shininess*/ 1, aiMat4_to_glmMat4(*trans)));
 
@@ -198,7 +198,7 @@ void processNode(aiNode* node, const aiScene* scene, Prop& out_model) {
   }
 }
 
-int LoadGameObjectFromFile(Prop& out_model, string path, bool animate) {
+int LoadGameObjectFromFile(string path, Prop& out_model, bool animate) {
   Assimp::Importer importer;
   int post_processing_flags = 0;
   //post processing -> http://assimp.sourceforge.net/lib_html/postprocess_8h.html

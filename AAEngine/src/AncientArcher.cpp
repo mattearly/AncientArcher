@@ -297,8 +297,8 @@ mat4 GetProjectionMatrix(i32 camId) {
 
 
 // 3d Game Objects
-i32 AddProp(const char* path, i32 camId, SHADERTYPE shadertype) {
-  switch (shadertype) {
+i32 AddProp(const char* path, i32 camId, SHADERTYPE shadertype, bool animated) {
+    switch (shadertype) {
   case SHADERTYPE::LIT:
     setupLitShader();
     break;
@@ -307,7 +307,7 @@ i32 AddProp(const char* path, i32 camId, SHADERTYPE shadertype) {
     break;
   }
 
-  mProps.emplace_back(path, camId, shadertype);
+  mProps.emplace_back(path, camId, shadertype, animated);
 
   return mProps.back().GetUID();
 }

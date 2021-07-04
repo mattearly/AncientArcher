@@ -23,7 +23,7 @@ struct BoneInfo
 class Prop : public UniqueInstance {
 public:
 
-  Prop(const char* path, int camId, SHADERTYPE shadertype);
+  Prop(const char* path, int camId, SHADERTYPE shadertype, bool animated = false);
 
   const int GetCamId() const noexcept;
   void SetCamera(int id) noexcept;
@@ -44,7 +44,7 @@ public:
 
   bool isAnimated = false;
   std::map<string, u32> mBoneMapping;
-  u32 mNumBones;
+  u32 mNumBones = 0;
   std::vector<BoneInfo> mBoneInfo;
   mat4 mGlobalInverseTransform;
 

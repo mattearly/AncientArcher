@@ -44,7 +44,7 @@ mat4 GetProjectionMatrix(i32 camId);
 
 
 // 3d Game Objects
-i32 AddProp(const char* path, i32 camId, SHADERTYPE shadertype);
+i32 AddProp(const char* path, i32 camId, SHADERTYPE shadertype, bool animated = false);
 void SetPropTranslation(i32 propId, vec3 new_pos);
 void SetPropScale(i32 propId, vec3 new_scale);
 void SetPropRotationX(i32 propId, f32 new_x_rot);

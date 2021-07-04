@@ -14,7 +14,8 @@ struct MainGame {
     my_character.Setup();
     AA::SetTimedOutKeyHandlingLength(.23f); 
     setmodels(character_cam);
-    setskybox();   // sets to the first cam (engine)
+    AA::SetWindowClearColor();
+    //setskybox();   // sets to the first cam (engine)
     setdirlight();  // sets the world light
   };
 

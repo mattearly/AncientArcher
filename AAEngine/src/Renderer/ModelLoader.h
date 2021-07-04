@@ -17,6 +17,6 @@ namespace ModelLoader {
 void UnloadGameObject(const std::vector<MeshDrawInfo>& toUnload);
 void processMesh(aiMesh* mesh, const aiScene* scene, aiMatrix4x4* trans, Prop& out_model);
 void processNode(aiNode* node, const aiScene* scene, Prop& out_model);
-int LoadGameObjectFromFile(Prop& out_model, string path, bool animate = false);
+int LoadGameObjectFromFile(string path, Prop& out_model, bool animate = false);
 } // end namespace ModelLoader
 } // end namespace AA
