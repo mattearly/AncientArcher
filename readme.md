@@ -64,7 +64,7 @@ int main(int argc, char** argv) {
 
 ### Future Development
 
-*No longer maintained - future development (AncientArcher2) has moved to a private space, where access is given to supporters.*
+*No longer maintained - future development (AncientArcher2) is [here](https://github.com/mattearly/AncientArcher2)*
 
 still on the todo list:
 - Vulkan renderer
