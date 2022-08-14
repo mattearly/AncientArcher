@@ -64,14 +64,8 @@ int main(int argc, char** argv) {
 
 ### Future Development
 
-*No longer maintained - future development (AncientArcher2) is [here](https://github.com/mattearly/ArcherEngine)*
+* This version is no longer maintained. 
 
-still on the todo list:
-- Vulkan renderer
-- Shadow mappings
-- HDR lighting
-- PBR workflow
-- Proper physics implementation
-- Sound improvements
-- Multi instance runtime
-- and more...
+* AncientArcher is legacy.
+
+* The new repo and future development (*ArcherEngine*) is [*here*](https://github.com/mattearly/ArcherEngine)*
